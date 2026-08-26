@@ -60,6 +60,21 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from typing import TypedDict
+
+
+class Clip(TypedDict):
+    id: str            # stable key across re-runs: the file's resolved absolute path
+    title: str
+    path: str
+    note: str
+    description: str
+    prompt: str
+    dur: str            # human-readable, e.g. "1:05" or "IMG"
+    durSec: float
+    isImage: bool
+    thumb: str | None   # data: URI, or None when extraction failed
+
 
 VIDEO_EXTS = {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi", ".mpg", ".mpeg"}
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".tiff", ".gif"}
@@ -207,9 +222,9 @@ def gather_files(paths):
     return unique
 
 
-def collect_clips(paths):
+def collect_clips(paths) -> list[Clip]:
     files = gather_files(paths)
-    clips = []
+    clips: list[Clip] = []
     for i, p in enumerate(files, 1):
         print(f"  [{i}/{len(files)}] {p}", flush=True)
         if is_image(p):
@@ -258,7 +273,7 @@ def load_notes_sidecar(path: Path):
     return data
 
 
-def apply_notes_sidecar(clips, sidecar):
+def apply_notes_sidecar(clips: list[Clip], sidecar: dict) -> list[Clip]:
     """Merge a notes sidecar's order/notes/descriptions/prompts onto freshly
     scanned clips — same reconciliation the in-page JS does against
     localStorage: sidecar order/annotations win, scan wins for media, new
@@ -268,7 +283,7 @@ def apply_notes_sidecar(clips, sidecar):
     prompts = sidecar.get("prompts") or {}
     order = sidecar.get("order") or []
 
-    def annotate(c):
+    def annotate(c: Clip) -> Clip:
         return {**c, "note": notes.get(c["id"], ""),
                 "description": descriptions.get(c["id"], ""),
                 "prompt": prompts.get(c["id"], "")}
@@ -935,7 +950,7 @@ render();
 """
 
 
-def build_html(sources_label: str, store_key: str, clips, default_preflight=None, default_story_text=None):
+def build_html(sources_label: str, store_key: str, clips: list[Clip], default_preflight=None, default_story_text=None):
     page = PAGE_TEMPLATE
     page = page.replace("__TITLE__", html.escape(sources_label))
     page = page.replace("__SOURCES__", html.escape(sources_label))
@@ -1778,7 +1793,7 @@ def slugify(text):
 
 
 def build_combined_html(boards, combo_key):
-    seen = {}
+    seen: dict[str, int] = {}
     stories = []
     for b in boards:
         title = Path(b["title"]).name if b["title"].startswith("/") else b["title"]

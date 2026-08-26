@@ -65,15 +65,22 @@ Run `storyboard --help` for the full option list.
 
 ```bash
 pip install -e ".[dev]"
+pre-commit install   # one-time: runs ruff + mypy on every commit
 ruff check .
+mypy
 pytest -q
 ```
 
 The test suite covers the pure logic (scanning, sidecar merging, HTML/board
 round-tripping) without needing `ffmpeg`. One additional test exercises real
 thumbnail/duration extraction and is skipped automatically if `ffmpeg`/
-`ffprobe` aren't on `PATH`. CI ([.github/workflows/ci.yml](.github/workflows/ci.yml))
-runs both across macOS, Linux, and Windows on Python 3.9 and 3.12.
+`ffprobe` aren't on `PATH`. The clip objects passed between functions are
+typed as a `Clip` TypedDict and checked with `mypy`. CI
+([.github/workflows/ci.yml](.github/workflows/ci.yml)) runs lint, type
+checking, and tests across macOS, Linux, and Windows on Python 3.9 and 3.12.
+
+`storyline.py` isn't part of this package yet, so it's deliberately left out
+of the lint/type-check/pre-commit scope above.
 
 ## License
 

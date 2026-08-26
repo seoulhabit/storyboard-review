@@ -1,0 +1,194 @@
+<title>PDRN Renewal Codex</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,700;0,900;1,700&family=Noto+Sans+TC:wght@700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg-1:#0b0407;
+    --bg-2:#1e0a13;
+    --bg-3:#2c0f1c;
+    --cream:#f7ece4;
+    --rose-cream:#f2d7dc;
+    --muted:#9c7482;
+    --gold:#e0b47c;
+    --gold-bright:#eec08a;
+    --gold-dim:#6f5540;
+    --rose:#ff7b93;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ background:#111; }
+
+  .stage{
+    position:relative; width:1080px; height:1350px; margin:0 auto; overflow:hidden;
+    background:
+      radial-gradient(900px 700px at 16% 94%, rgba(255,123,147,0.16), transparent 60%),
+      radial-gradient(700px 900px at 86% 6%, rgba(224,180,124,0.14), transparent 55%),
+      linear-gradient(165deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+    font-family:'IBM Plex Mono',monospace;
+  }
+
+  canvas#helix{ position:absolute; inset:0; z-index:2; }
+
+  /* ---------- eyebrow ---------- */
+  .eyebrow{ position:absolute; top:64px; left:64px; right:64px; z-index:6;
+    display:flex; justify-content:space-between; align-items:flex-start; }
+  .eyebrow-left{ display:flex; align-items:center; gap:12px; }
+  .credit{ font-size:12px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-dim); opacity:0.85; }
+  .eyebrow-right{ text-align:right; font-size:12px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--gold-dim); line-height:1.7; }
+  .eyebrow-right b{ color:var(--gold); font-weight:600; }
+
+  /* ---------- glow at helix origin ---------- */
+  .glow{ position:absolute; left:6px; top:572px; width:250px; height:250px; border-radius:50%; z-index:1;
+    background:radial-gradient(circle, rgba(255,123,147,0.38) 0%, rgba(255,123,147,0.08) 45%, transparent 72%);
+    filter:blur(6px); }
+
+  /* ---------- headline ---------- */
+  .headline{ position:absolute; left:66px; top:868px; width:660px; z-index:6; }
+  .headline h1{
+    margin:0; font-family:'Bodoni Moda',serif; font-weight:900; font-style:normal; font-size:186px;
+    line-height:0.8; letter-spacing:-0.005em; color:var(--cream); text-wrap:balance;
+  }
+  .headline .rule{ width:170px; height:3px; margin:22px 0 0;
+    background:linear-gradient(90deg, var(--gold) 0%, transparent 100%); }
+  .headline h2{
+    margin:22px 0 0; font-family:'Noto Sans TC',sans-serif; font-weight:900; font-size:50px;
+    color:var(--rose-cream); letter-spacing:0.04em; text-wrap:balance;
+  }
+  .headline p{
+    margin:22px 0 0; max-width:540px; font-family:'IBM Plex Mono',monospace; font-weight:500;
+    font-size:14.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); line-height:1.8;
+  }
+
+  /* ---------- spec strip ---------- */
+  .spec{ position:absolute; left:66px; right:66px; bottom:68px; z-index:6; }
+  .spec .hairline{ height:1px; margin-bottom:28px;
+    background:linear-gradient(90deg, var(--gold) 0%, rgba(224,180,124,0.15) 70%, transparent 100%); }
+  .spec .row{ display:flex; align-items:center; gap:56px; }
+  .spec-block{ display:flex; align-items:baseline; gap:18px; }
+  .spec-num{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:60px; color:var(--gold-bright);
+    font-variant-numeric:tabular-nums; letter-spacing:-0.02em; }
+  .spec-text{ display:flex; flex-direction:column; gap:4px; }
+  .spec-label{ font-family:'Noto Sans TC',sans-serif; font-weight:900; font-size:25px; color:var(--cream); }
+  .spec-caption{ font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:11px; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--muted); }
+  .spec-divider{ width:1px; height:52px; background:var(--gold-dim); }
+</style>
+
+<div class="stage">
+
+  <div class="glow"></div>
+  <canvas id="helix" width="1080" height="1350"></canvas>
+
+  <!-- eyebrow -->
+  <div class="eyebrow">
+    <div class="eyebrow-left">
+      <span class="credit">Trinity Medical Aesthetics</span>
+    </div>
+    <div class="eyebrow-right">
+      Regenerative Series — <b>N° 02</b><br>
+      Polydeoxyribonucleotide Complex
+    </div>
+  </div>
+
+  <!-- headline -->
+  <div class="headline">
+    <h1>PDRN</h1>
+    <div class="rule"></div>
+    <h2>逆齡嫩肌療程</h2>
+    <p>Salmon-derived DNA complex · cellular renewal ampoule</p>
+  </div>
+
+  <!-- spec strip -->
+  <div class="spec">
+    <div class="hairline"></div>
+    <div class="row">
+      <div class="spec-block">
+        <span class="spec-num">04</span>
+        <div class="spec-text">
+          <span class="spec-label">個步驟</span>
+          <span class="spec-caption">Step Protocol</span>
+        </div>
+      </div>
+      <div class="spec-divider"></div>
+      <div class="spec-block">
+        <span class="spec-num">07</span>
+        <div class="spec-text">
+          <span class="spec-label">大功效</span>
+          <span class="spec-caption">Clinical Benefits</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var canvas = document.getElementById('helix');
+  var ctx = canvas.getContext('2d');
+  var cssW = 1080, cssH = 1350;
+  var dpr = Math.max(window.devicePixelRatio || 1, 2);
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.width = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  ctx.scale(dpr, dpr);
+
+  var A = { x: 130, y: 700 };
+  var B = { x: 930, y: 150 };
+  var dx = B.x - A.x, dy = B.y - A.y;
+  var len = Math.sqrt(dx*dx + dy*dy);
+  var ux = dx/len, uy = dy/len;
+  var px = -uy, py = ux;
+
+  var amp = 72;
+  var twists = 4.3;
+  var steps = 420;
+
+  function pointOn(phase, t){
+    var cx = A.x + dx*t, cy = A.y + dy*t;
+    var wave = Math.sin(t*twists*Math.PI*2 + phase);
+    var fade = Math.min(1, t/0.07, (1-t)/0.07);
+    var off = amp*wave*fade;
+    return { x: cx+px*off, y: cy+py*off, fade: fade };
+  }
+
+  function strand(phase, color){
+    ctx.beginPath();
+    for(var i=0;i<=steps;i++){
+      var t = i/steps, p = pointOn(phase,t);
+      if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y);
+    }
+    ctx.strokeStyle = color; ctx.lineWidth = 3.2; ctx.globalAlpha = 0.85;
+    ctx.stroke(); ctx.globalAlpha = 1;
+  }
+
+  ctx.lineWidth = 1.3;
+  for(var i=0;i<=42;i++){
+    var t = i/42;
+    if(t<0.05 || t>0.95) continue;
+    var p1 = pointOn(0,t), p2 = pointOn(Math.PI,t);
+    ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
+    ctx.strokeStyle = 'rgba(224,180,124,' + (0.24*p1.fade) + ')';
+    ctx.stroke();
+  }
+
+  strand(0, 'rgba(255,123,147,0.9)');
+  strand(Math.PI, 'rgba(224,180,124,0.9)');
+
+  function nodes(phase, color){
+    for(var i=0;i<=34;i++){
+      var t = i/34;
+      if(t<0.06 || t>0.94) continue;
+      var p = pointOn(phase,t);
+      var r = 3 + 3*Math.abs(Math.cos(t*twists*Math.PI*2));
+      ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2);
+      ctx.fillStyle = color; ctx.shadowColor = color; ctx.shadowBlur = 14;
+      ctx.globalAlpha = 0.5 + 0.4*p.fade;
+      ctx.fill(); ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    }
+  }
+  nodes(0, '#ff8ba1');
+  nodes(Math.PI, '#eec08a');
+})();
+</script>

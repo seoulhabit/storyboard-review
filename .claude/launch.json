@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "skin-routes-3d",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "python3 -m http.server $PORT --directory /Users/sumitchoudhary/Desktop/proof/skin-routes-3d"],
+      "autoPort": true
+    },
+    {
+      "name": "story-board-static",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "python3 -m http.server $PORT --directory \"/Users/sumitchoudhary/Desktop/Story Board\""],
+      "autoPort": true
+    }
+  ]
+}

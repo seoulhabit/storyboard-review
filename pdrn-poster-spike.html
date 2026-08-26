@@ -1,0 +1,231 @@
+<title>PDRN Renewal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,700&family=Noto+Serif+TC:wght@700;900&family=Poppins:wght@500;600;700&display=swap">
+<style>
+  :root{
+    --ground-1:#fdf5f7;
+    --ground-2:#fbe6ec;
+    --ground-3:#f4c9d8;
+    --ink-dark:#17040a;
+    --ink-maroon:#3c0f1d;
+    --accent-red:#d8435c;
+    --accent-red-deep:#ad2c43;
+    --serum-light:#ffc7d8;
+    --serum-mid:#f2517e;
+    --serum-deep:#d61f5c;
+    --logo-cyan-1:#33c2e2;
+    --logo-cyan-2:#2c7fc0;
+    --bubble-fill:rgba(240,140,168,0.26);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{ margin:0; padding:0; }
+  body{ background:#e9e9ec; }
+
+  .stage{
+    position:relative;
+    width:1080px;
+    height:1350px;
+    margin:0 auto;
+    overflow:hidden;
+    background:
+      radial-gradient(620px 620px at 80% 24%, #ffffff 0%, rgba(255,255,255,0) 62%),
+      radial-gradient(1200px 1200px at 20% 100%, var(--ground-3) 0%, transparent 60%),
+      linear-gradient(160deg, var(--ground-1) 0%, var(--ground-2) 55%, var(--ground-3) 100%);
+    font-family:'Poppins',sans-serif;
+  }
+
+  /* ---------- brand ---------- */
+  .brand{
+    position:absolute; top:66px; left:66px;
+    display:flex; align-items:center; gap:14px; z-index:5;
+  }
+  .brand-name{
+    font-family:'Poppins',sans-serif; font-weight:700; font-size:34px;
+    letter-spacing:-0.01em; line-height:1;
+    background:linear-gradient(100deg, var(--logo-cyan-1), var(--logo-cyan-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .brand-sub{
+    margin-top:5px;
+    font-family:'Poppins',sans-serif; font-weight:600; font-size:12.5px;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--logo-cyan-2);
+  }
+
+  /* ---------- headline ---------- */
+  .headline{ position:absolute; top:246px; left:66px; width:660px; z-index:5; }
+  .headline h1{
+    margin:0; font-family:'Fraunces',serif; font-weight:900; font-size:176px;
+    line-height:0.86; letter-spacing:-0.01em;
+    background:linear-gradient(160deg, var(--ink-maroon) 0%, var(--ink-dark) 75%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .headline h2{
+    margin:26px 0 0; font-family:'Noto Serif TC',serif; font-weight:900; font-size:64px;
+    color:var(--ink-maroon); letter-spacing:0.05em; text-wrap:balance;
+  }
+
+  /* ---------- bubbles ---------- */
+  .bubble{
+    position:absolute; border-radius:50%; z-index:3;
+    background:
+      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.6) 9%, rgba(255,255,255,0.1) 21%, var(--bubble-fill) 48%, rgba(240,140,168,0.10) 78%, rgba(255,255,255,0.03) 100%);
+    box-shadow:
+      inset -10px -14px 26px rgba(255,255,255,0.55),
+      inset 10px 12px 30px rgba(180,55,90,0.16),
+      0 16px 30px rgba(180,55,90,0.14);
+  }
+  .bubble::after{
+    content:""; position:absolute; top:13%; left:20%; width:24%; height:17%;
+    background:rgba(255,255,255,0.92); border-radius:50%; filter:blur(1.5px);
+  }
+
+  .callout{
+    position:absolute; border-radius:50%; z-index:6;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding-bottom:6%;
+  }
+  .callout .num{
+    font-family:'Fraunces',serif; font-weight:900; font-style:normal;
+    color:var(--accent-red); line-height:0.8;
+  }
+  .callout .label{
+    font-family:'Noto Serif TC',serif; font-weight:900; color:var(--accent-red-deep);
+    margin-top:2px;
+  }
+
+  /* ---------- ampoule ---------- */
+  .ampoule{
+    position:absolute; top:52px; right:-56px; width:300px; z-index:4;
+    transform:rotate(33deg); transform-origin:60% 40%;
+    filter:drop-shadow(-18px 30px 34px rgba(150,40,75,0.22));
+  }
+</style>
+
+<div class="stage">
+
+  <!-- brand -->
+  <div class="brand">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48">
+          <stop offset="0%" stop-color="#3fd0ea"/>
+          <stop offset="100%" stop-color="#2c7fc0"/>
+        </linearGradient>
+      </defs>
+      <path d="M24 24C24 13 15 7 7 9c-3 8 3 17 17 15Z" fill="url(#logoGrad)"/>
+      <path d="M24 24C24 13 33 7 41 9c3 8-3 17-17 15Z" fill="url(#logoGrad)" opacity="0.85"/>
+      <path d="M24 24C15 24 9 33 11 41c8 3 17-3 15-17Z" fill="url(#logoGrad)" opacity="0.7"/>
+      <circle cx="24" cy="25" r="4.2" fill="url(#logoGrad)"/>
+    </svg>
+    <div>
+      <div class="brand-name">Trinity</div>
+      <div class="brand-sub">medical&nbsp; aesthetics</div>
+    </div>
+  </div>
+
+  <!-- headline -->
+  <div class="headline">
+    <h1>PDRN</h1>
+    <h2>逆齡嫩肌療程</h2>
+  </div>
+
+  <!-- ampoule illustration -->
+  <div class="ampoule">
+    <svg viewBox="0 0 260 800" width="100%" fill="none">
+      <defs>
+        <linearGradient id="glassGrad" x1="0" y1="0" x2="260" y2="800" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
+          <stop offset="30%" stop-color="#ffffff" stop-opacity="0.16"/>
+          <stop offset="55%" stop-color="#ffffff" stop-opacity="0.05"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.22"/>
+        </linearGradient>
+        <linearGradient id="liquidGrad" x1="0" y1="150" x2="0" y2="700" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffcdda"/>
+          <stop offset="55%" stop-color="#f2517e"/>
+          <stop offset="100%" stop-color="#d61f5c"/>
+        </linearGradient>
+        <clipPath id="glassClip">
+          <path d="M100,0 L160,0 L196,40 L216,82 L222,108 L222,520 L164,600 L164,650 L130,715 L96,650 L96,600 L38,520 L38,108 L44,82 L64,40 Z"/>
+        </clipPath>
+      </defs>
+
+      <!-- glass body -->
+      <path d="M100,0 L160,0 L196,40 L216,82 L222,108 L222,520 L164,600 L164,650 L130,715 L96,650 L96,600 L38,520 L38,108 L44,82 L64,40 Z"
+            fill="url(#glassGrad)" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
+
+      <!-- liquid -->
+      <path d="M58,178 Q130,158 202,178 L202,520 L154,592 L154,642 L130,695 L106,642 L106,592 L58,520 Z"
+            fill="url(#liquidGrad)"/>
+
+      <!-- bubbles inside liquid -->
+      <g fill="#ffffff" clip-path="url(#glassClip)">
+        <circle cx="90" cy="230" r="5" opacity="0.9"/>
+        <circle cx="152" cy="250" r="4" opacity="0.75"/>
+        <circle cx="172" cy="290" r="6.5" opacity="0.85"/>
+        <circle cx="100" cy="330" r="4" opacity="0.7"/>
+        <circle cx="140" cy="368" r="7.5" opacity="0.8"/>
+        <circle cx="186" cy="390" r="4" opacity="0.75"/>
+        <circle cx="80" cy="418" r="5" opacity="0.75"/>
+        <circle cx="160" cy="448" r="6.5" opacity="0.8"/>
+        <circle cx="112" cy="478" r="4" opacity="0.7"/>
+        <circle cx="190" cy="310" r="5" opacity="0.75"/>
+        <circle cx="70" cy="505" r="4" opacity="0.7"/>
+        <circle cx="130" cy="525" r="6.5" opacity="0.75"/>
+        <circle cx="150" cy="205" r="4" opacity="0.7"/>
+        <circle cx="120" cy="560" r="5" opacity="0.7"/>
+      </g>
+
+      <!-- glossy streak -->
+      <polygon points="78,118 96,118 178,556 160,556" fill="#ffffff" opacity="0.28" clip-path="url(#glassClip)"/>
+
+      <!-- facet accents on cap -->
+      <path d="M100,0 L92,108 M160,0 L168,108" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+
+      <!-- outline restroke on top for crispness -->
+      <path d="M100,0 L160,0 L196,40 L216,82 L222,108 L222,520 L164,600 L164,650 L130,715 L96,650 L96,600 L38,520 L38,108 L44,82 L64,40 Z"
+            fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1"/>
+
+      <!-- drip droplet -->
+      <path d="M130,715 C118,735 114,760 130,780 C146,760 142,735 130,715 Z" fill="url(#liquidGrad)" opacity="0.92"/>
+      <ellipse cx="120" cy="737" rx="4" ry="6" fill="#ffffff" opacity="0.55"/>
+
+      <!-- stray droplets near cap -->
+      <circle cx="208" cy="26" r="11" fill="#f0708f" opacity="0.45"/>
+      <circle cx="230" cy="88" r="6" fill="#f0708f" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <!-- scattered bokeh bubbles -->
+  <div class="bubble" style="top:150px; left:870px; width:42px; height:42px;"></div>
+  <div class="bubble" style="top:640px; left:995px; width:66px; height:66px;"></div>
+  <div class="bubble" style="top:430px; left:1010px; width:86px; height:86px;"></div>
+  <div class="bubble" style="top:995px; left:955px; width:118px; height:118px;"></div>
+  <div class="bubble" style="top:760px; left:55px; width:96px; height:96px;"></div>
+  <div class="bubble" style="top:1155px; left:965px; width:150px; height:150px;"></div>
+  <div class="bubble" style="top:1220px; left:290px; width:58px; height:58px;"></div>
+  <div class="bubble" style="top:1105px; left:40px; width:52px; height:52px;"></div>
+  <div class="bubble" style="top:870px; left:200px; width:150px; height:150px;"></div>
+  <div class="bubble" style="top:1190px; left:600px; width:44px; height:44px;"></div>
+  <div class="bubble" style="top:520px; left:615px; width:34px; height:34px;"></div>
+  <div class="bubble" style="top:660px; left:730px; width:24px; height:24px;"></div>
+  <div class="bubble" style="top:600px; left:840px; width:20px; height:20px;"></div>
+  <div class="bubble" style="top:800px; left:640px; width:28px; height:28px;"></div>
+
+  <!-- callout: 4 steps -->
+  <div class="callout" style="top:948px; left:96px; width:404px; height:404px; background:radial-gradient(circle at 30% 26%, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.62) 9%, rgba(255,255,255,0.14) 22%, var(--bubble-fill) 50%, rgba(240,140,168,0.10) 80%, rgba(255,255,255,0.04) 100%); box-shadow: inset -12px -16px 30px rgba(255,255,255,0.55), inset 12px 14px 34px rgba(180,55,90,0.16), 0 18px 34px rgba(180,55,90,0.16);">
+    <div style="display:flex; align-items:baseline; gap:10px;">
+      <span class="num" style="font-size:150px;">4</span>
+      <span class="label" style="font-size:44px;">個步驟</span>
+    </div>
+  </div>
+
+  <!-- callout: 7 benefits -->
+  <div class="callout" style="top:1075px; left:660px; width:360px; height:360px; background:radial-gradient(circle at 30% 26%, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.62) 9%, rgba(255,255,255,0.14) 22%, var(--bubble-fill) 50%, rgba(240,140,168,0.10) 80%, rgba(255,255,255,0.04) 100%); box-shadow: inset -12px -16px 30px rgba(255,255,255,0.55), inset 12px 14px 34px rgba(180,55,90,0.16), 0 18px 34px rgba(180,55,90,0.16);">
+    <div style="display:flex; align-items:baseline; gap:10px;">
+      <span class="num" style="font-size:130px;">7</span>
+      <span class="label" style="font-size:44px;">大功效</span>
+    </div>
+  </div>
+
+</div>

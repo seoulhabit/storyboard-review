@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GradedScale — Strict Enum Spike</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+<style>
+  :root{
+    --paper:#F7F5F0;
+    --paper-deep:#F0EBE1;
+    --ink:#211F1B;
+    --ink-muted:#6B6B6B;
+    --ink-faint:#9C978D;
+    --line:#E3E3E3;
+    --line-strong:#D9D3C6;
+    --celadon:#6F8F72;
+    --celadon-deep:#4F6B52;
+    --track-empty:#EAEAEA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    min-height:100vh;
+  }
+  .mono{font-family:"JetBrains Mono","SF Mono",Consolas,monospace;}
+
+  /* ---------- page chrome (not part of the component) ---------- */
+  .stage{max-width:960px;margin:0 auto;padding:56px 32px 96px;}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+  }
+  h1{font-size:32px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em;}
+  .lede{font-size:15px;line-height:1.55;color:var(--ink-muted);max-width:560px;margin:0 0 28px;}
+  .lede code{
+    font-family:"JetBrains Mono",monospace;font-size:13px;background:var(--paper-deep);
+    padding:1px 5px;border-radius:4px;color:var(--celadon-deep);
+  }
+
+  .rules{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    margin-bottom:56px;
+  }
+  .rule{background:var(--paper-deep);padding:14px 16px;}
+  .rule .tag{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--celadon-deep);margin:0 0 4px;
+  }
+  .rule p{margin:0;font-size:12px;line-height:1.45;color:var(--ink-muted);}
+
+  section{margin-bottom:64px;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    border-bottom:1px solid var(--line-strong);padding-bottom:10px;margin-bottom:28px;
+  }
+  .section-head h2{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink);margin:0;font-family:"JetBrains Mono",monospace;}
+  .section-head .hint{font-size:12px;color:var(--ink-faint);}
+
+  .proof-card{
+    display:inline-flex;flex-direction:column;gap:14px;
+    padding:28px;background:var(--paper-deep);border:1px solid var(--line);border-radius:10px;
+  }
+  .grid{display:flex;flex-wrap:wrap;gap:20px;}
+
+  .card-label{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faint);
+    letter-spacing:.04em;}
+
+  /* ---------- render-gate demo chrome (harness only) ---------- */
+  .gate-mount{min-height:40px;display:flex;align-items:center;}
+  .controls{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding-top:18px;border-top:1px dashed var(--line-strong);
+  }
+  .controls label{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-muted);}
+  .controls select{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line-strong);border-radius:6px;
+    padding:6px 10px;cursor:pointer;
+  }
+  .raw-data{
+    margin:0;font-size:11px;line-height:1.6;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:6px;
+    padding:10px 12px;overflow-x:auto;
+  }
+
+  /* a thrown build error is not a themed UI state — it reads like a CI log, on purpose */
+  .fatal-panel{
+    font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.7;
+    color:#FF9A90;background:#1B1916;border:1px solid #4A2A24;border-radius:6px;
+    padding:14px 16px;white-space:pre-wrap;word-break:break-word;max-width:520px;
+  }
+  .fatal-panel .fatal-tag{display:block;color:#FF5449;font-weight:700;letter-spacing:.04em;margin-bottom:6px;}
+  .fatal-note{margin:10px 0 0;font-size:11px;color:#8A8178;}
+
+  /* ================================================================
+     THE COMPONENT — everything below this line is the actual spec.
+     ================================================================ */
+  .graded-scale-lockup{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Pretendard',sans-serif;
+    background:var(--paper-deep);
+    padding:8px 16px;
+    border:1px solid var(--line);
+    border-radius:6px;
+  }
+
+  .scale-label{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;
+    font-weight:600;
+    color:var(--ink-muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    flex:0 0 var(--label-col, auto); /* stacked lockups set --label-col to align tracks */
+  }
+
+  .scale-track{
+    display:flex;
+    gap:4px;
+  }
+
+  .scale-node{
+    width:12px;
+    height:12px;
+    background-color:var(--track-empty); /* empty state */
+    border-radius:2px; /* slight technical rounding — not a pill, not a star */
+  }
+
+  .scale-node.active{
+    background-color:var(--celadon); /* the only tint this component knows */
+  }
+
+  /* stacked comparison rows share one label column so tracks line up */
+  .attribute-stack{
+    --label-col:132px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <p class="eyebrow">Spike · Component 4/5 · Not wired to build.mjs</p>
+  <h1>GradedScale — Strict Enum Badge</h1>
+  <p class="lede">
+    Five discrete nodes, no interpolation between them. The engineering isn't the CSS — it's the gate:
+    <code>validateGradedScale()</code> must refuse anything outside <code>{1,2,3,4,5}</code> before a single
+    node paints, so a bad value kills the build instead of drawing a plausible-looking lie.
+  </p>
+
+  <div class="rules">
+    <div class="rule"><p class="tag">Hard enum</p><p>Only integers 1–5 render. No clamping a 0–100 score, no rounding 3.5 up or down.</p></div>
+    <div class="rule"><p class="tag">No success color</p><p>Celadon marks every active node at every score. 1-of-5 must not read as failing, 5-of-5 must not read as a win.</p></div>
+    <div class="rule"><p class="tag">Fails loud</p><p>Invalid input throws before a single node paints — no default grade, no last-known-good fallback.</p></div>
+    <div class="rule"><p class="tag">Fixed label column</p><p>The label sits in a constant-width slot so stacked attributes keep their tracks in one column.</p></div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>01 · Render gate</h2>
+      <span class="hint">value is the only input that can kill this — everything else is presentation</span>
+    </div>
+
+    <div class="proof-card">
+      <span class="card-label">LIVE INSTANCE — render gate</span>
+
+      <div class="gate-mount" id="gate-mount"></div>
+
+      <div class="controls">
+        <label for="gate-select">componentData.value —</label>
+        <select id="gate-select"></select>
+      </div>
+
+      <pre class="raw-data mono" id="gate-raw"></pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>02 · Resting states</h2>
+      <span class="hint">same fixed track, five grades</span>
+    </div>
+
+    <div class="grid" id="resting-grid"></div>
+
+    <div class="proof-card" style="margin-top:20px;">
+      <span class="card-label">STACKED — fixed label column, three attributes</span>
+      <div class="attribute-stack" id="attribute-stack"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ================================================================
+  // THE COMPONENT — everything below this line is the actual spec.
+  // No try/catch lives in here. In build.mjs, this throw is fatal:
+  // it kills the headless Chrome render and exits the process non-zero.
+  // ================================================================
+
+  const GRADED_SCALE_ENUM = [1, 2, 3, 4, 5];
+
+  function validateGradedScale(data) {
+    if (!data || typeof data.attribute !== 'string' || !data.attribute.trim()) {
+      throw new Error(
+        `[FATAL] GradedScale refusal: missing or empty "attribute" label. Render aborted to prevent an unlabeled claim.`
+      );
+    }
+    if (!GRADED_SCALE_ENUM.includes(data.value)) {
+      throw new Error(
+        `[FATAL] GradedScale refusal on "${data.attribute}": value ${JSON.stringify(data.value)} falls outside the 5-step enum {1,2,3,4,5}. Render aborted to prevent a false claim.`
+      );
+    }
+    return true;
+  }
+
+  function renderGradedScale(data) {
+    validateGradedScale(data); // must run before a single node is built
+
+    const nodes = GRADED_SCALE_ENUM
+      .map(step => `<div class="scale-node ${step <= data.value ? 'active' : 'empty'}"></div>`)
+      .join('');
+
+    return (
+      `<div class="graded-scale-lockup">` +
+        `<span class="scale-label">${data.attribute}</span>` +
+        `<div class="scale-track">${nodes}</div>` +
+      `</div>`
+    );
+  }
+
+  // ================================================================
+  // Everything below is harness — proving the component, not part of it.
+  // ================================================================
+
+  // ---------- 01 · render-gate demo ----------
+  const GATE_PROBES = [
+    { value: 1,    note: 'valid' },
+    { value: 2,    note: 'valid' },
+    { value: 3,    note: 'valid' },
+    { value: 4,    note: 'valid' },
+    { value: 5,    note: 'valid' },
+    { value: 3.5,  note: 'invalid — fractional' },
+    { value: 6,    note: 'invalid — out of range' },
+    { value: 0,    note: 'invalid — out of range' },
+    { value: null, note: 'invalid — missing' },
+    { value: '4',  note: 'invalid — string, not number' },
+  ];
+
+  const gateSelect = document.getElementById('gate-select');
+  const gateMount = document.getElementById('gate-mount');
+  const gateRaw = document.getElementById('gate-raw');
+
+  GATE_PROBES.forEach((probe, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${JSON.stringify(probe.value)} — ${probe.note}`;
+    gateSelect.appendChild(opt);
+  });
+
+  function paintGate(i) {
+    const probe = GATE_PROBES[i];
+    const componentData = { attribute: 'Gentleness', value: probe.value };
+    gateRaw.textContent = JSON.stringify(componentData, (_, v) => v === undefined ? null : v, 2);
+    try {
+      // this try/catch is the demo page staying alive — build.mjs does not have one
+      gateMount.innerHTML = renderGradedScale(componentData);
+    } catch (err) {
+      gateMount.innerHTML =
+        `<div class="fatal-panel">` +
+          `<span class="fatal-tag">✕ RENDER ABORTED</span>${err.message}` +
+          `<p class="fatal-note">Real thrown Error, unmodified. In build.mjs there is no catch here — the process exits non-zero.</p>` +
+        `</div>`;
+    }
+  }
+
+  gateSelect.addEventListener('change', () => paintGate(gateSelect.value));
+  gateSelect.value = 3; // start on 4 — valid
+  paintGate(gateSelect.value);
+
+  // ---------- 02 · resting-state grid ----------
+  const RESTING = [
+    { attribute: 'Gentleness',        value: 1 },
+    { attribute: 'Hydration Boost',   value: 2 },
+    { attribute: 'Barrier Repair',    value: 3 },
+    { attribute: 'Brightening',       value: 4 },
+    { attribute: 'Antioxidant Load',  value: 5 },
+  ];
+
+  const restingGrid = document.getElementById('resting-grid');
+  RESTING.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'proof-card';
+    card.innerHTML = `<span class="card-label">${item.value} OF 5</span>` + renderGradedScale(item);
+    restingGrid.appendChild(card);
+  });
+
+  // ---------- stacked comparison (fixed label column proof) ----------
+  const stack = document.getElementById('attribute-stack');
+  stack.innerHTML = [
+    { attribute: 'Gentleness',       value: 4 },
+    { attribute: 'Hydration Boost',  value: 2 },
+    { attribute: 'Antioxidant Load', value: 5 },
+  ].map(renderGradedScale).join('');
+</script>
+</body>
+</html>

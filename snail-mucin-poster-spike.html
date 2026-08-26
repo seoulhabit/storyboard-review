@@ -1,0 +1,323 @@
+<title>Snail Mucin Essence</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Noto+Serif+TC:wght@700;900&display=swap">
+<style>
+  :root{
+    --ground-1:#f6f8f1;
+    --ground-2:#e8efdd;
+    --ground-3:#cddfb9;
+    --ink-dark:#0f2016;
+    --ink-moss:#2c4a34;
+    --shell:#b9835a;
+    --shell-deep:#8a5a37;
+    --shell-light:#e3bd8e;
+    --body-tan:#dcb98e;
+    --trail-a:#bdf0d4;
+    --trail-b:#f2e3b4;
+    --trail-c:#e4c8ec;
+    --pearl:#fbfaf4;
+    --bubble-fill:rgba(130,175,120,0.22);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ background:#e9e9ec; }
+
+  .stage{
+    position:relative;
+    width:1080px;
+    height:1350px;
+    margin:0 auto;
+    overflow:hidden;
+    background:
+      radial-gradient(640px 640px at 82% 20%, #ffffff 0%, rgba(255,255,255,0) 60%),
+      radial-gradient(1200px 1200px at 14% 102%, var(--ground-3) 0%, transparent 62%),
+      linear-gradient(160deg, var(--ground-1) 0%, var(--ground-2) 55%, var(--ground-3) 100%);
+    font-family:'Bricolage Grotesque',sans-serif;
+  }
+
+  /* ---------- botanical ghosts ---------- */
+  .leaf{ position:absolute; z-index:1; opacity:0.5; }
+
+  /* ---------- brand ---------- */
+  .brand{
+    position:absolute; top:66px; left:66px;
+    display:flex; align-items:center; gap:14px; z-index:6;
+  }
+  .brand-name{
+    font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:34px;
+    letter-spacing:-0.01em; line-height:1;
+    background:linear-gradient(100deg, #33c2e2, #2c7fc0);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .brand-sub{
+    margin-top:5px;
+    font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:12.5px;
+    letter-spacing:0.22em; text-transform:uppercase; color:#2c7fc0;
+  }
+
+  /* ---------- headline ---------- */
+  .headline{ position:absolute; top:224px; left:66px; width:640px; z-index:6; }
+  .kicker{
+    font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:26px;
+    letter-spacing:0.32em; text-transform:uppercase; color:var(--shell-deep);
+  }
+  .headline h1{
+    margin:10px 0 0; font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:166px;
+    line-height:0.86; letter-spacing:-0.01em;
+    background:linear-gradient(160deg, var(--ink-moss) 0%, var(--ink-dark) 75%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .descriptor{
+    margin:22px 0 0; max-width:520px; font-family:'Bricolage Grotesque',sans-serif; font-weight:500;
+    font-size:15px; letter-spacing:0.06em; color:var(--ink-moss); line-height:1.7;
+  }
+  .headline h2{
+    margin:26px 0 0; font-family:'Noto Serif TC',serif; font-weight:900; font-size:60px;
+    color:var(--shell-deep); letter-spacing:0.05em; text-wrap:balance;
+  }
+
+  /* ---------- bubbles ---------- */
+  .bubble{
+    position:absolute; border-radius:50%; z-index:3;
+    background:
+      radial-gradient(circle at 30% 26%, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.6) 9%, rgba(255,255,255,0.1) 21%, var(--bubble-fill) 48%, rgba(130,175,120,0.10) 78%, rgba(255,255,255,0.03) 100%);
+    box-shadow:
+      inset -10px -14px 26px rgba(255,255,255,0.55),
+      inset 10px 12px 30px rgba(70,110,60,0.14),
+      0 16px 30px rgba(70,110,60,0.12);
+  }
+  .bubble::after{
+    content:""; position:absolute; top:13%; left:20%; width:24%; height:17%;
+    background:rgba(255,255,255,0.92); border-radius:50%; filter:blur(1.5px);
+  }
+
+  .callout{
+    position:absolute; border-radius:50%; z-index:6;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding-bottom:6%;
+    background:radial-gradient(circle at 30% 26%, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.62) 9%, rgba(255,255,255,0.14) 22%, var(--bubble-fill) 50%, rgba(130,175,120,0.10) 80%, rgba(255,255,255,0.04) 100%);
+    box-shadow: inset -12px -16px 30px rgba(255,255,255,0.55), inset 12px 14px 34px rgba(70,110,60,0.14), 0 18px 34px rgba(70,110,60,0.14);
+  }
+  .callout .num{
+    font-family:'Bricolage Grotesque',sans-serif; font-weight:800;
+    color:var(--shell); line-height:0.8;
+  }
+  .callout .label{
+    font-family:'Noto Serif TC',serif; font-weight:900; color:var(--shell-deep);
+    margin-top:2px;
+  }
+  .callout .cap{
+    font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:13px;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-moss); opacity:0.75; margin-top:4px;
+  }
+
+  /* ---------- bottle ---------- */
+  .bottle{
+    position:absolute; top:186px; right:78px; width:276px; z-index:4;
+    transform:rotate(-3deg); transform-origin:50% 20%;
+    filter:drop-shadow(-14px 26px 30px rgba(60,90,55,0.22));
+  }
+</style>
+
+<div class="stage">
+
+  <!-- botanical ghost leaves -->
+  <svg class="leaf" style="top:900px; left:-60px; width:420px; height:420px;" viewBox="0 0 420 420" fill="none">
+    <path d="M20,400 C40,220 160,60 400,20 C360,180 260,340 20,400Z" fill="var(--ground-3)" opacity="0.55"/>
+  </svg>
+  <svg class="leaf" style="top:-70px; right:260px; width:260px; height:260px;" viewBox="0 0 260 260" fill="none">
+    <path d="M10,10 C90,10 250,40 250,180 C150,180 10,120 10,10Z" fill="var(--ground-3)" opacity="0.4"/>
+  </svg>
+
+  <!-- brand -->
+  <div class="brand">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48">
+          <stop offset="0%" stop-color="#3fd0ea"/>
+          <stop offset="100%" stop-color="#2c7fc0"/>
+        </linearGradient>
+      </defs>
+      <path d="M24 24C24 13 15 7 7 9c-3 8 3 17 17 15Z" fill="url(#logoGrad)"/>
+      <path d="M24 24C24 13 33 7 41 9c3 8-3 17-17 15Z" fill="url(#logoGrad)" opacity="0.85"/>
+      <path d="M24 24C15 24 9 33 11 41c8 3 17-3 15-17Z" fill="url(#logoGrad)" opacity="0.7"/>
+      <circle cx="24" cy="25" r="4.2" fill="url(#logoGrad)"/>
+    </svg>
+    <div>
+      <div class="brand-name">Trinity</div>
+      <div class="brand-sub">medical&nbsp; aesthetics</div>
+    </div>
+  </div>
+
+  <!-- headline -->
+  <div class="headline">
+    <div class="kicker">Snail</div>
+    <h1>Mucin</h1>
+    <div class="descriptor">Glycoprotein &middot; Hyaluronic Acid &middot; Allantoin Complex</div>
+    <h2>蝸牛黏液精華</h2>
+  </div>
+
+  <!-- bottle illustration -->
+  <div class="bottle">
+    <svg viewBox="0 0 320 900" width="100%" fill="none">
+      <defs>
+        <linearGradient id="capGrad" x1="0" y1="0" x2="0" y2="190" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#fbf7ee"/>
+          <stop offset="60%" stop-color="#efe8d8"/>
+          <stop offset="100%" stop-color="#ded4bd"/>
+        </linearGradient>
+        <linearGradient id="collarGrad" x1="112" y1="0" x2="208" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#e9eaea"/>
+          <stop offset="25%" stop-color="#b6b9bb"/>
+          <stop offset="50%" stop-color="#f6f7f7"/>
+          <stop offset="75%" stop-color="#a9adaf"/>
+          <stop offset="100%" stop-color="#dcdedf"/>
+        </linearGradient>
+        <linearGradient id="glassGrad" x1="45" y1="300" x2="275" y2="770" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+          <stop offset="30%" stop-color="#ffffff" stop-opacity="0.14"/>
+          <stop offset="55%" stop-color="#ffffff" stop-opacity="0.05"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0.20"/>
+        </linearGradient>
+        <linearGradient id="liquidGrad" x1="0" y1="350" x2="0" y2="740" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#e6f7ec"/>
+          <stop offset="55%" stop-color="#bdeccb"/>
+          <stop offset="100%" stop-color="#9adfb2"/>
+        </linearGradient>
+        <linearGradient id="trailGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="var(--trail-a)"/>
+          <stop offset="50%" stop-color="var(--trail-b)"/>
+          <stop offset="100%" stop-color="var(--trail-c)"/>
+        </linearGradient>
+        <radialGradient id="shellGradA" cx="35%" cy="32%" r="75%">
+          <stop offset="0%" stop-color="var(--shell-light)"/>
+          <stop offset="65%" stop-color="var(--shell)"/>
+          <stop offset="100%" stop-color="var(--shell-deep)"/>
+        </radialGradient>
+        <radialGradient id="shellGradB" cx="35%" cy="32%" r="75%">
+          <stop offset="0%" stop-color="var(--shell-light)"/>
+          <stop offset="65%" stop-color="var(--shell)"/>
+          <stop offset="100%" stop-color="var(--shell-deep)"/>
+        </radialGradient>
+        <clipPath id="bodyClip">
+          <rect x="45" y="300" width="230" height="470" rx="26"/>
+        </clipPath>
+      </defs>
+
+      <!-- dropper bulb cap -->
+      <rect x="122" y="4" width="76" height="188" rx="36" fill="url(#capGrad)"/>
+      <rect x="134" y="16" width="12" height="160" rx="6" fill="#ffffff" opacity="0.3"/>
+
+      <!-- metal collar -->
+      <rect x="112" y="190" width="96" height="62" rx="5" fill="url(#collarGrad)"/>
+      <rect x="112" y="209" width="96" height="2.2" fill="#6f7375" opacity="0.35"/>
+      <rect x="112" y="230" width="96" height="2.2" fill="#6f7375" opacity="0.35"/>
+
+      <!-- neck -->
+      <path d="M112,252 L208,252 L255,300 L65,300 Z" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+
+      <!-- body -->
+      <rect x="45" y="300" width="230" height="470" rx="26" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+
+      <!-- liquid + bubbles + streak (clipped) -->
+      <g clip-path="url(#bodyClip)">
+        <rect x="65" y="352" width="190" height="392" rx="16" fill="url(#liquidGrad)"/>
+        <g fill="#ffffff">
+          <circle cx="98" cy="410" r="4.5" opacity="0.85"/>
+          <circle cx="150" cy="440" r="3.5" opacity="0.7"/>
+          <circle cx="188" cy="470" r="6" opacity="0.8"/>
+          <circle cx="112" cy="500" r="3.5" opacity="0.65"/>
+          <circle cx="160" cy="540" r="6.5" opacity="0.75"/>
+          <circle cx="205" cy="565" r="3.5" opacity="0.7"/>
+          <circle cx="88" cy="590" r="4.5" opacity="0.7"/>
+          <circle cx="175" cy="620" r="6" opacity="0.75"/>
+          <circle cx="120" cy="655" r="3.5" opacity="0.65"/>
+          <circle cx="90" cy="690" r="4.5" opacity="0.65"/>
+          <circle cx="150" cy="710" r="5.5" opacity="0.7"/>
+        </g>
+        <polygon points="82,360 100,360 210,730 192,730" fill="#ffffff" opacity="0.22"/>
+      </g>
+
+      <!-- outline restroke -->
+      <rect x="45" y="300" width="230" height="470" rx="26" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+
+      <!-- snail A: large, on the shoulder near the cap -->
+      <g>
+        <path d="M228,240 C208,276 206,328 226,378 C206,396 178,386 168,358 C156,322 168,270 204,242 C212,236 222,234 228,240Z"
+              fill="url(#trailGrad)" opacity="0.55"/>
+        <path d="M222,248 C206,280 205,326 222,368" fill="none" stroke="var(--pearl)" stroke-width="2.2" opacity="0.65" stroke-linecap="round"/>
+
+        <path d="M212,270 C196,254 172,250 154,260 C136,270 130,290 142,304 C156,320 184,320 202,306 C214,296 220,282 212,270Z" fill="var(--body-tan)"/>
+        <path d="M148,262 C138,250 124,246 112,252" stroke="#8a6a44" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M156,272 C148,258 134,252 120,256" stroke="#8a6a44" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="112" cy="252" r="3.4" fill="#8a6a44"/>
+        <circle cx="120" cy="256" r="3.4" fill="#8a6a44"/>
+        <ellipse cx="170" cy="286" rx="9" ry="5.5" fill="#ffffff" opacity="0.35"/>
+
+        <circle cx="219" cy="244" r="46" fill="url(#shellGradA)"/>
+        <circle cx="223" cy="241" r="35" fill="none" stroke="var(--shell-deep)" stroke-width="4" opacity="0.5"/>
+        <circle cx="227" cy="238" r="25" fill="none" stroke="var(--shell-deep)" stroke-width="3.6" opacity="0.5"/>
+        <circle cx="230" cy="236" r="16" fill="none" stroke="var(--shell-deep)" stroke-width="3.2" opacity="0.55"/>
+        <circle cx="233" cy="234" r="8" fill="none" stroke="var(--shell-deep)" stroke-width="2.6" opacity="0.6"/>
+        <circle cx="235" cy="232" r="3" fill="var(--shell-deep)" opacity="0.75"/>
+        <ellipse cx="201" cy="226" rx="13" ry="8" fill="#ffffff" opacity="0.4"/>
+      </g>
+
+      <!-- snail B: small, lower on the body -->
+      <g>
+        <path d="M82,494 C68,518 67,550 81,580 C67,594 45,586 38,566 C30,542 40,510 64,490 C70,485 78,488 82,494Z"
+              fill="url(#trailGrad)" opacity="0.5"/>
+        <path d="M77,500 C66,522 65,550 78,574" fill="none" stroke="var(--pearl)" stroke-width="1.8" opacity="0.6" stroke-linecap="round"/>
+
+        <path d="M66,500 C80,486 104,482 122,490 C140,498 146,514 134,524 C120,536 94,534 78,522 C68,514 60,508 66,500Z" fill="var(--body-tan)"/>
+        <path d="M128,488 C140,476 156,472 168,478" stroke="#8a6a44" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M136,496 C146,482 160,476 172,480" stroke="#8a6a44" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <circle cx="168" cy="478" r="2.6" fill="#8a6a44"/>
+        <circle cx="172" cy="480" r="2.6" fill="#8a6a44"/>
+        <ellipse cx="100" cy="504" rx="7" ry="4.2" fill="#ffffff" opacity="0.35"/>
+
+        <circle cx="72" cy="492" r="33" fill="url(#shellGradB)"/>
+        <circle cx="75" cy="490" r="24" fill="none" stroke="var(--shell-deep)" stroke-width="3.2" opacity="0.5"/>
+        <circle cx="78" cy="488" r="16" fill="none" stroke="var(--shell-deep)" stroke-width="2.8" opacity="0.55"/>
+        <circle cx="81" cy="486" r="8" fill="none" stroke="var(--shell-deep)" stroke-width="2.4" opacity="0.6"/>
+        <circle cx="83" cy="484" r="2.6" fill="var(--shell-deep)" opacity="0.75"/>
+        <ellipse cx="59" cy="479" rx="9" ry="5.5" fill="#ffffff" opacity="0.4"/>
+      </g>
+
+      <!-- drip droplet at base -->
+      <path d="M160,780 C150,798 146,818 160,834 C174,818 170,798 160,780Z" fill="url(#liquidGrad)" opacity="0.9"/>
+      <ellipse cx="153" cy="800" rx="3.5" ry="5" fill="#ffffff" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <!-- scattered bokeh bubbles -->
+  <div class="bubble" style="top:150px; left:870px; width:38px; height:38px;"></div>
+  <div class="bubble" style="top:120px; left:970px; width:26px; height:26px;"></div>
+  <div class="bubble" style="top:800px; left:70px; width:96px; height:96px;"></div>
+  <div class="bubble" style="top:660px; left:40px; width:52px; height:52px;"></div>
+  <div class="bubble" style="top:520px; left:600px; width:34px; height:34px;"></div>
+  <div class="bubble" style="top:600px; left:660px; width:22px; height:22px;"></div>
+  <div class="bubble" style="top:940px; left:470px; width:44px; height:44px;"></div>
+  <div class="bubble" style="top:1150px; left:440px; width:58px; height:58px;"></div>
+  <div class="bubble" style="top:1080px; left:980px; width:64px; height:64px;"></div>
+  <div class="bubble" style="top:1250px; left:930px; width:36px; height:36px;"></div>
+
+  <!-- callout: active compounds -->
+  <div class="callout" style="top:1000px; left:70px; width:340px; height:340px;">
+    <div style="display:flex; align-items:baseline; gap:10px;">
+      <span class="num" style="font-size:126px;">05</span>
+      <span class="label" style="font-size:38px;">活性成分</span>
+    </div>
+    <div class="cap">Key Actives</div>
+  </div>
+
+  <!-- callout: skin benefits -->
+  <div class="callout" style="top:1035px; left:655px; width:300px; height:300px;">
+    <div style="display:flex; align-items:baseline; gap:10px;">
+      <span class="num" style="font-size:110px;">04</span>
+      <span class="label" style="font-size:34px;">肌膚功效</span>
+    </div>
+    <div class="cap">Skin Benefits</div>
+  </div>
+
+</div>

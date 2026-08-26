@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "storyboard-review"
+version = "0.1.0"
+description = "Generate a drag-and-drop HTML storyboard for reviewing and reordering video clips and images."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Sumit Choudhary" }]
+keywords = ["video", "editing", "review", "storyboard", "ffmpeg"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Multimedia :: Video :: Non-Linear Editor",
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR-USERNAME/storyboard-review"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.5"]
+
+[project.scripts]
+storyboard = "storyboard:main"
+
+[tool.hatch.build.targets.wheel]
+include = ["storyboard.py"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+# storyline.py is a separate, not-yet-packaged tool living in this same
+# folder — out of scope here, so leave it out of lint scope too.
+extend-exclude = ["storyline.py"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

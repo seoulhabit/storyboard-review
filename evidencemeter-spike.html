@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvidenceMeter — Lockup + Design Modes</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<style>
+  /* ================================================================
+     THE DEFINITIVE BLUEPRINT (rev. 3 — "Validation Gate") — locked
+     spec for this component. Every value below is implemented exactly;
+     do not deviate without an explicit new directive.
+
+     Rev. 1 (scaleX bar) and rev. 2 (hatched data-matrix squares) both
+     still answered a QUANTITY question — how much is filled — even
+     after the metaphor changed. This component answers a CERTAINTY
+     question instead: how many independent checkpoints has the
+     literature passed (petri dish -> tissue/animal model -> small
+     human trial -> double-blind consensus). Quantity metaphors get
+     read as a grade ("2/4 = 50% = mediocre"); a checkpoint that has or
+     hasn't been passed does not carry that reading, which is the whole
+     point — it lets a 2-of-4 stay an honest, non-punitive report of
+     where the evidence actually stands.
+
+     Philosophy: a clinical instrument, not a volume gauge — strictly
+     flat, no shadows, no 3D. A node does not fill like a container; it
+     is either an unlit checkpoint (hollow ring) or a passed one (solid
+     lit dot) — binary, like an indicator light, never partial.
+
+     Hierarchy (lockup mode), stacked vertically: claim (Pretendard
+     600, 19px) -> a row of 4 circular checkpoint nodes -> footnotes
+     (JetBrains Mono, 10px, uppercase, one shared baseline — chip left,
+     ordinal status right). The nodes carry no text of their own — the
+     tier name only ever appears once, in the footnote's ordinal status
+     (e.g. "03/04 · QUALIFIED").
+
+     Geometry: fixed 380px container, zero margin drift. Nodes are
+     fixed 48px-diameter circles (border-radius:50%), spaced with
+     justify-content:space-between across the full width so the row
+     still reads as anchored to the same box as the claim and footnote
+     above/below it. Circles, deliberately: design mode's own attribute
+     dots (below) already use hollow-ring/solid-dot for present/absent
+     — matching the shape here means both modes speak one visual
+     grammar for "confirmed," not two.
+
+     Color: an unpassed node is a transparent circle behind a 1.5px
+     --ink-faint ring (identical treatment to design mode's own
+     .dm-dot-hollow). A passed node is solid celadon #6F8F72, fill and
+     border both — the ring becomes invisible because it now matches
+     the fill, not because it was removed. Aqua #59B8AE stays scoped to
+     design mode's one-interrogated-attribute highlight. Never neon,
+     never read as pass/fail regardless of how many of the 4 are lit.
+
+     Motion: deterministic, GSAP driven by t alone. Each node locks in
+     — color snaps from hollow to solid celadon plus a flat (non-3D)
+     scale-up from 0.85, power3.out, ~120ms stagger per node, ~0.18s
+     duration so the arrival reads as a switch closing, not a fade-in.
+     Monotonic scale only, no overshoot-and-settle — that would read as
+     a bounce even without using a literal bounce/elastic ease, and no
+     bounce/elastic ease is ever used anywhere in this file. t===0 jumps
+     straight to progress(1) — frame zero always shows the fully
+     resolved state, never a fade-from-blank.
+     ================================================================ */
+  :root{
+    --bg:#131516;
+    --ink:#EEF0EF;
+    --ink-muted:#878B8C;
+    --ink-faint:#7C8082; /* 4.59:1 on --bg — dimmer than ink-muted but still AA */
+    --line:#333333;
+    --celadon:#6F8F72;
+    --celadon-bright:#93B896;
+    --aqua:#59B8AE;
+    --coral:#C97A5C;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    min-height:100vh;
+  }
+  .mono{font-family:"JetBrains Mono","SF Mono",Consolas,monospace;}
+
+  /* ---------- page chrome ---------- */
+  .stage{max-width:960px;margin:0 auto;padding:56px 32px 96px;}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+  }
+  h1{font-size:30px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em;color:var(--ink);}
+  .lede{font-size:14px;line-height:1.6;color:var(--ink-muted);max-width:600px;margin:0 0 28px;}
+
+  .rules{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:20px 0;margin-bottom:56px;
+  }
+  .rule .tag{
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--celadon-bright);margin:0 0 6px;
+  }
+  .rule p{margin:0;font-size:11.5px;line-height:1.5;color:var(--ink-muted);}
+
+  section{margin-bottom:72px;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:32px;
+  }
+  .section-head h2{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-muted);margin:0;font-family:"JetBrains Mono",monospace;}
+  .section-head .hint{font-size:11.5px;color:var(--ink-faint);}
+
+  .demo-block{display:flex;flex-direction:column;gap:16px;}
+  .card-label{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faint);
+    letter-spacing:.05em;text-transform:uppercase;}
+
+  .grid{display:flex;flex-wrap:wrap;gap:48px 56px;}
+
+  /* ---------- interactive controls (harness only) ---------- */
+  .controls{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    padding-top:20px;margin-top:4px;
+  }
+  .controls .btn{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.02em;color:var(--ink-muted);background:transparent;
+    border:1px solid var(--line);border-radius:5px;padding:6px 11px;cursor:pointer;
+  }
+  .controls .btn:hover{border-color:var(--celadon);color:var(--celadon-bright);}
+  .controls input[type=range]{flex:1;min-width:140px;accent-color:var(--celadon);}
+  .clock-readout{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-muted);min-width:150px;}
+  .clock-readout .state{color:var(--celadon-bright);font-weight:600;}
+
+  .toggle-row{
+    display:flex;align-items:center;gap:7px;font-family:"JetBrains Mono",monospace;
+    font-size:10.5px;color:var(--ink-faint);margin-top:2px;
+  }
+  .toggle-row input{accent-color:var(--celadon);}
+
+  /* a measurement guide, not a debug box: thin, close, quiet */
+  body.show-bounds .evidence-lockup,
+  body.show-bounds .evidence-design{outline:1px solid var(--ink-faint);outline-offset:6px;}
+
+  /* ================================================================
+     COMPONENT — LOCKUP MODE. Vertical hierarchy: hero claim, then the
+     instrument, then footnotes on one shared baseline. Ultra-thin track,
+     empty segments recede into the page instead of sitting on a card.
+     ================================================================ */
+  .evidence-lockup{
+    display:flex;
+    flex-direction:column;
+    width:380px; /* fixed — never resizes based on text */
+    font-family:'Pretendard',sans-serif;
+  }
+
+  .claim-text{
+    font-size:19px;
+    font-weight:600;
+    line-height:1.3;
+    min-height:calc(1.3em * 2);
+    color:#FFFFFF;
+    letter-spacing:-0.01em;
+    margin-bottom:16px;
+  }
+
+  .checkpoint-row{
+    display:flex;
+    justify-content:space-between; /* fixed-size nodes, still anchored to the full 380px box */
+    margin-bottom:16px;
+  }
+  .checkpoint-node{
+    flex:0 0 48px;
+    width:48px;
+    height:48px; /* fixed diameter — a compact instrument row, not a banner */
+    border-radius:50%;
+    background-color:transparent; /* unpassed — a hollow checkpoint */
+    border:1.5px solid var(--ink-faint); /* same treatment as .dm-dot-hollow, deliberately */
+  }
+
+  .footnote-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:"JetBrains Mono",monospace;
+    font-size:10px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+  .source-chip{
+    color:var(--ink-faint);
+    border:1px solid var(--line);
+    padding:3px 6px;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+  .status-text{color:var(--ink-faint);white-space:nowrap;}
+  .status-highlight{color:#FFFFFF;font-weight:600;}
+
+  /* Composed scene — several .evidence-lockup instances shown together,
+     each arriving (opacity+y) before its own checkpoints lock in. Not a
+     new component: the exact same locked CSS above, just wrapped. */
+  .scene-grid{display:flex;flex-wrap:wrap;gap:40px 56px;}
+  .scene-card{opacity:0;transform:translateY(12px);}
+
+  /* ================================================================
+     COMPONENT — DESIGN MODE. Ported from renderEvidenceMeterDesign /
+     renderEvidenceAttributeRows in the live build.mjs. Same footnote-chip
+     language as lockup mode for cohesion on this dark canvas; the celadon/
+     aqua/coral ROLES are kept exactly as shipped (present / interrogated /
+     absent), only the literal hex values are unified to this page's palette.
+     ================================================================ */
+  .evidence-design{
+    display:flex;
+    flex-direction:column;
+    width:380px; /* matches the lockup's fixed width */
+    font-family:'Pretendard',sans-serif;
+  }
+  .dm-route{
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-muted);
+  }
+  .dm-row{display:flex;flex-direction:column;margin-top:14px;}
+  .dm-row-head{display:flex;align-items:flex-start;}
+  .dm-dot{flex-shrink:0;width:14px;height:14px;border-radius:50%;margin-top:3px;}
+  .dm-dot-celadon{background:var(--celadon);}
+  .dm-dot-aqua{background:var(--aqua);}
+  .dm-dot-hollow{background:transparent;border:1.5px solid var(--ink-faint);}
+  .dm-label{margin-left:10px;font-size:15px;font-weight:600;color:var(--ink);}
+  .dm-detail{margin-left:8px;font-size:13px;color:var(--ink-muted);}
+  .dm-note{margin:3px 0 0 24px;font-size:12.5px;line-height:1.35;color:var(--coral);}
+  .dm-chip-row{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;}
+  .dm-chip{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-muted);
+    border:1px solid var(--line);border-radius:2px;padding:3px 6px;white-space:nowrap;
+  }
+  .dm-refused{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--coral);}
+
+  /* ================================================================
+     COLOR EXPLORATION — comparison only. Scoped entirely to its own
+     --pc-* custom properties so it cannot leak into or drift the
+     locked component above. Same content, same "3 of 4" resolved
+     state, same layout in every card — color is the only variable.
+     ================================================================ */
+  .palette-grid{display:flex;flex-wrap:wrap;gap:20px;}
+  .palette-card{width:280px;padding:24px;background:var(--pc-bg);}
+  .palette-name{
+    display:block;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--pc-muted);margin-bottom:16px;
+  }
+  .palette-name b{color:var(--pc-confirmed);font-weight:600;}
+  .palette-claim{
+    font-family:'Pretendard',sans-serif;font-size:16px;font-weight:600;line-height:1.3;
+    color:var(--pc-ink);letter-spacing:-0.01em;margin-bottom:14px;
+  }
+  .palette-row{display:flex;justify-content:space-between;margin-bottom:14px;}
+  .palette-node{width:36px;height:36px;border-radius:50%;background:transparent;border:1.5px solid var(--pc-hollow);}
+  .palette-node.is-on{background:var(--pc-confirmed);border-color:var(--pc-confirmed);}
+  .palette-footnote{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;
+  }
+  .palette-chip{color:var(--pc-muted);border:1px solid var(--pc-muted);border-radius:2px;padding:2px 5px;opacity:.75;}
+  .palette-status{color:var(--pc-muted);}
+  .palette-status b{color:var(--pc-ink);}
+  .palette-note{margin:12px 0 0;font-size:11px;line-height:1.5;color:var(--pc-muted);}
+
+  .palette-a{--pc-bg:#131516;--pc-ink:#FFFFFF;--pc-muted:#7C8082;--pc-confirmed:#6F8F72;--pc-hollow:#7C8082;}
+  .palette-b{--pc-bg:#10151A;--pc-ink:#F2F6F5;--pc-muted:#7E8C90;--pc-confirmed:#4A9188;--pc-hollow:#7E8C90;}
+  .palette-c{--pc-bg:#17231E;--pc-ink:#F7FAF8;--pc-muted:#83968C;--pc-confirmed:#C9DFD0;--pc-hollow:#83968C;}
+  .palette-d{--pc-bg:#131516;--pc-ink:#FFFFFF;--pc-muted:#7C8082;--pc-confirmed:#E4E2DC;--pc-hollow:#707172;}
+  .palette-e{--pc-bg:#FAF3EA;--pc-ink:#3A332C;--pc-muted:#7A6A58;--pc-confirmed:#6F8F72;--pc-hollow:#A38268;}
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <p class="eyebrow">Spike · Component 3/5 · Not wired to build.mjs</p>
+  <h1>EvidenceMeter</h1>
+  <p class="lede">
+    A precision readout, not a loading bar. Hero claim, then the instrument, then
+    footnotes on one shared baseline — flat, clinical, physically bound to its claim
+    or route, and driven by a deterministic <code class="mono">renderFrame(t)</code> clock.
+  </p>
+
+  <div class="rules">
+    <div class="rule"><p class="tag">No volume</p><p>Flat fill only. Depth on a readout implies magnitude — an exaggerated claim.</p></div>
+    <div class="rule"><p class="tag">No success color</p><p>Celadon/aqua at every fill level. 2-of-4 must not read as failing, 4-of-4 must not read as a win.</p></div>
+    <div class="rule"><p class="tag">Locked to claim</p><p>Never renders alone — always paired with its claim (or route) and source chip.</p></div>
+    <div class="rule"><p class="tag">Zero margin drift</p><p>Fixed 380px box, reserved claim height. Typography never shifts the container.</p></div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>01 · Deterministic clock — lockup mode</h2>
+      <span class="hint">t is the only input — scrub it like a frame index</span>
+    </div>
+
+    <div class="demo-block">
+      <span class="card-label">Live instance — target 3 of 4</span>
+
+      <div class="evidence-lockup" id="lockup-primary">
+        <div class="claim-text">Restores structural spring and bounce</div>
+        <div class="checkpoint-row">
+          <div class="checkpoint-node"></div>
+          <div class="checkpoint-node"></div>
+          <div class="checkpoint-node"></div>
+          <div class="checkpoint-node"></div>
+        </div>
+        <div class="footnote-row">
+          <span class="source-chip">ING-ginseng-S002</span>
+          <span class="status-text">03/04 &middot; <span class="status-highlight">QUALIFIED</span></span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="btn-play">▶ replay build</button>
+        <button class="btn" id="btn-zero">⇤ jump to t=0</button>
+        <input type="range" id="scrubber" min="0" max="1" step="0.001" value="0">
+        <span class="clock-readout mono" id="clock-readout">t = 0.000s / 0.000s</span>
+      </div>
+      <label class="toggle-row">
+        <input type="checkbox" id="toggle-bounds">
+        show measurement guide (proves zero margin drift)
+      </label>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>02 · Resting states</h2>
+      <span class="hint">same fixed box, four fill counts</span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>03 · Composed scene</h2>
+      <span class="hint">what this actually looks like on screen — not one meter, several</span>
+    </div>
+    <p class="lede">
+      The point of an evidence meter isn't one claim demoed in isolation — it's a set of
+      independent claims about the same ingredient, each honestly graded on its own. This is
+      the four instances from section 02, but shown the way a real scene would: together,
+      each claim arriving and locking in its own evidence on the same deterministic clock.
+    </p>
+
+    <div class="demo-block">
+      <div class="scene-grid" id="scene"></div>
+      <div class="controls">
+        <button class="btn" id="btn-scene-play">▶ play scene</button>
+        <button class="btn" id="btn-scene-zero">⇤ jump to t=0</button>
+        <input type="range" id="scene-scrubber" min="0" max="1" step="0.001" value="0">
+        <span class="clock-readout mono" id="scene-readout">t = 0.000s / 0.000s</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>04 · Design mode</h2>
+      <span class="hint">mode='design' — non-ordinal, no fill or score</span>
+    </div>
+    <p class="lede">
+      A different semantics, not a restyle: four independent present/absent attributes
+      (human subjects, comparison arm, randomized, facial skin), locked to a route word
+      and its source chips instead of a claim. A hollow dot <em>is</em> the content —
+      never hidden or greyed away. Real data below, ported from <code class="mono">pdrn-claim-free.json</code>.
+    </p>
+
+    <div class="grid">
+      <div class="demo-block">
+        <span class="card-label">Real scene — Injected · syringe</span>
+        <div id="design-injected"></div>
+        <label class="toggle-row">
+          <input type="checkbox" id="toggle-refuse-injected">
+          strip source chips (proves never-renders-alone)
+        </label>
+        <span class="dm-refused mono" id="refusal-note-injected" style="display:none;"></span>
+      </div>
+
+      <div class="demo-block">
+        <span class="card-label">Real scene — Topical · dropper</span>
+        <div id="design-topical"></div>
+        <span class="dm-refused mono" style="color:var(--ink-faint);">aqua dot on "Facial skin" — the one interrogated attribute this scene spotlights, not an extra success state.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>05 · Color exploration</h2>
+      <span class="hint">comparison only — not applied to the locked component above</span>
+    </div>
+    <p class="lede">
+      Same claim, same 3-of-4 resolved state, same layout in every card — color is the
+      only thing changing. Every card still holds the standing rule: whatever reads as
+      "confirmed" must never slide into a literal success/failing-grade color. Card E
+      also breaks the dark-canvas rule on purpose, flagged in its own note rather than
+      silently — a real comparison, not a quiet override.
+    </p>
+
+    <div class="palette-grid">
+      <div class="palette-card palette-a">
+        <span class="palette-name">A · Celadon / Graphite <b>(current)</b></span>
+        <div class="palette-claim">Restores structural spring and bounce</div>
+        <div class="palette-row">
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node"></div>
+        </div>
+        <div class="palette-footnote">
+          <span class="palette-chip">ING-ginseng-S002</span>
+          <span class="palette-status">03/04 &middot; <b>QUALIFIED</b></span>
+        </div>
+        <p class="palette-note">The baseline. Warm-neutral graphite canvas, sage celadon confirm.</p>
+      </div>
+
+      <div class="palette-card palette-b">
+        <span class="palette-name">B · Slate &amp; Jade</span>
+        <div class="palette-claim">Restores structural spring and bounce</div>
+        <div class="palette-row">
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node"></div>
+        </div>
+        <div class="palette-footnote">
+          <span class="palette-chip">ING-ginseng-S002</span>
+          <span class="palette-status">03/04 &middot; <b>QUALIFIED</b></span>
+        </div>
+        <p class="palette-note">Cooler, bluer canvas; confirm reads as a deep lab-glass jade rather than a plant.</p>
+      </div>
+
+      <div class="palette-card palette-c">
+        <span class="palette-name">C · SeoulHabit Brand</span>
+        <div class="palette-claim">Restores structural spring and bounce</div>
+        <div class="palette-row">
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node"></div>
+        </div>
+        <div class="palette-footnote">
+          <span class="palette-chip">ING-ginseng-S002</span>
+          <span class="palette-status">03/04 &middot; <b>QUALIFIED</b></span>
+        </div>
+        <p class="palette-note">Pulled from the real build.mjs PALETTE tokens — ink as the canvas, the pale mint celadon inverted into a glow.</p>
+      </div>
+
+      <div class="palette-card palette-d">
+        <span class="palette-name">D · Monochrome Ink</span>
+        <div class="palette-claim">Restores structural spring and bounce</div>
+        <div class="palette-row">
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node"></div>
+        </div>
+        <div class="palette-footnote">
+          <span class="palette-chip">ING-ginseng-S002</span>
+          <span class="palette-status">03/04 &middot; <b>QUALIFIED</b></span>
+        </div>
+        <p class="palette-note">No hue at all — confirmed is pure luminance. The most literal reading of "no success color."</p>
+      </div>
+
+      <div class="palette-card palette-e">
+        <span class="palette-name">E · Hanji &amp; Celadon</span>
+        <div class="palette-claim">Restores structural spring and bounce</div>
+        <div class="palette-row">
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node is-on"></div>
+          <div class="palette-node"></div>
+        </div>
+        <div class="palette-footnote">
+          <span class="palette-chip">ING-ginseng-S002</span>
+          <span class="palette-status">03/04 &middot; <b>QUALIFIED</b></span>
+        </div>
+        <p class="palette-note">The odd one out, deliberately: warm hanji paper instead of a dark canvas, unglazed-clay hollow ring firing into celadon glaze once confirmed. Breaks the standing dark-UI rule on purpose, as a genuine comparison point — not a quiet swap-in.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const SNAP_EASE = 'power3.out'; // fast + decisive, never bounce/elastic
+
+  // ---------- lockup mode: deterministic clock ----------
+  function initLockup(root, targetScore) {
+    const nodes = [...root.querySelectorAll('.checkpoint-node')];
+    const tl = gsap.timeline({ paused: true });
+    for (let i = 0; i < targetScore; i++) {
+      // hollow -> solid celadon: a passed checkpoint, not a partial fill.
+      // fromTo (not to) so idle nodes sit at their natural scale:1 both
+      // before and after — the 0.85 dip only exists transiently, during
+      // the snap itself, never as a resting-state size difference.
+      tl.fromTo(nodes[i],
+        { scale: 0.85 },
+        { backgroundColor: '#6F8F72', borderColor: '#6F8F72', scale: 1, duration: 0.18, ease: SNAP_EASE, immediateRender: false },
+        i * 0.12
+      );
+    }
+    function renderFrame(t) {
+      if (t === 0) {
+        tl.progress(1); // scroll-stop rule: frame zero shows resolved instantly
+      } else {
+        tl.time(t);
+      }
+    }
+    return { tl, renderFrame, duration: tl.duration() };
+  }
+
+  const primary = initLockup(document.getElementById('lockup-primary'), 3);
+  const scrubber = document.getElementById('scrubber');
+  const readout = document.getElementById('clock-readout');
+  const btnPlay = document.getElementById('btn-play');
+  const btnZero = document.getElementById('btn-zero');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  scrubber.max = primary.duration;
+  scrubber.step = 0.001;
+
+  function paint(t) {
+    primary.renderFrame(t);
+    scrubber.value = t;
+    const state = t === 0 ? 'RESOLVED · scroll-stop' : 'SCRUBBING';
+    readout.innerHTML = `t = ${t.toFixed(3)}s / ${primary.duration.toFixed(3)}s &nbsp; <span class="state">${state}</span>`;
+  }
+
+  scrubber.addEventListener('input', () => paint(parseFloat(scrubber.value)));
+  btnZero.addEventListener('click', () => paint(0));
+  btnPlay.addEventListener('click', () => {
+    if (reducedMotion) { paint(primary.duration); return; }
+    scrubber.disabled = true;
+    const start = performance.now();
+    paint(0.0001);
+    function tick(now) {
+      const t = Math.min((now - start) / 1000, primary.duration);
+      paint(t);
+      if (t < primary.duration) requestAnimationFrame(tick);
+      else scrubber.disabled = false;
+    }
+    requestAnimationFrame(tick);
+  });
+  paint(primary.duration * 0.45);
+
+  document.getElementById('toggle-bounds').addEventListener('change', e => {
+    document.body.classList.toggle('show-bounds', e.target.checked);
+  });
+
+  // ---------- resting-state grid ----------
+  const TIERS = [
+    { score: 1, name: 'OPEN',      claim: 'Improves visible tone evenness',            chip: 'ING-ginseng-S011' },
+    { score: 2, name: 'INFERRED',  claim: "Reinforces the moisture barrier",           chip: 'ING-pdrn-S004' },
+    { score: 3, name: 'QUALIFIED', claim: 'Restores structural spring and bounce',     chip: 'ING-ginseng-S002' },
+    { score: 4, name: 'KNOWN',     claim: 'Reduces visible transepidermal water loss', chip: 'ING-pdrn-S001' },
+  ];
+
+  const grid = document.getElementById('grid');
+  TIERS.forEach(tier => {
+    const block = document.createElement('div');
+    block.className = 'demo-block';
+    const nodes = TIERS.map(() => `
+          <div class="checkpoint-node"></div>`).join('');
+    block.innerHTML = `
+      <span class="card-label">${tier.score} of 4 — ${tier.name}</span>
+      <div class="evidence-lockup">
+        <div class="claim-text">${tier.claim}</div>
+        <div class="checkpoint-row">${nodes}</div>
+        <div class="footnote-row">
+          <span class="source-chip">${tier.chip}</span>
+          <span class="status-text">0${tier.score}/04 &middot; <span class="status-highlight">${tier.name}</span></span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(block);
+    const instance = initLockup(block.querySelector('.evidence-lockup'), tier.score);
+    instance.renderFrame(0);
+  });
+
+  // ---------- composed scene: several claims, one deterministic clock ----------
+  // Not a new component — the same TIERS data, the same .evidence-lockup markup
+  // as the resting-state grid above, just shown together the way a real scene
+  // would, with a card-level arrival (opacity+y) ahead of each card's own
+  // checkpoint lock-in. Answers the actual open question: does the scene fade
+  // whole cards in, or fill circles one by one? Here, both — gently for content
+  // arriving, mechanically for evidence resolving — nested, not either/or.
+  const sceneEl = document.getElementById('scene');
+  TIERS.forEach(tier => {
+    const card = document.createElement('div');
+    card.className = 'scene-card';
+    const nodes = TIERS.map(() => `
+          <div class="checkpoint-node"></div>`).join('');
+    card.innerHTML = `
+      <div class="evidence-lockup">
+        <div class="claim-text">${tier.claim}</div>
+        <div class="checkpoint-row">${nodes}</div>
+        <div class="footnote-row">
+          <span class="source-chip">${tier.chip}</span>
+          <span class="status-text">0${tier.score}/04 &middot; <span class="status-highlight">${tier.name}</span></span>
+        </div>
+      </div>
+    `;
+    sceneEl.appendChild(card);
+  });
+
+  function initScene(root, tiers) {
+    const cards = [...root.querySelectorAll('.scene-card')];
+    const tl = gsap.timeline({ paused: true });
+    const CARD_GAP = 0.45; // next claim starts arriving before this one's evidence fully resolves
+    cards.forEach((card, i) => {
+      const cardStart = i * CARD_GAP;
+      tl.fromTo(card,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', immediateRender: false },
+        cardStart
+      );
+      const nodes = [...card.querySelectorAll('.checkpoint-node')];
+      const meterStart = cardStart + 0.22; // overlaps the fade's tail, doesn't wait for it
+      for (let n = 0; n < tiers[i].score; n++) {
+        tl.fromTo(nodes[n],
+          { scale: 0.85 },
+          { backgroundColor: '#6F8F72', borderColor: '#6F8F72', scale: 1, duration: 0.18, ease: SNAP_EASE, immediateRender: false },
+          meterStart + n * 0.12
+        );
+      }
+    });
+    function renderFrame(t) {
+      if (t === 0) { tl.progress(1); } else { tl.time(t); }
+    }
+    return { tl, renderFrame, duration: tl.duration() };
+  }
+
+  const scene = initScene(sceneEl, TIERS);
+  const sceneScrubber = document.getElementById('scene-scrubber');
+  const sceneReadout = document.getElementById('scene-readout');
+  const btnScenePlay = document.getElementById('btn-scene-play');
+  const btnSceneZero = document.getElementById('btn-scene-zero');
+
+  sceneScrubber.max = scene.duration;
+  sceneScrubber.step = 0.001;
+
+  function paintScene(t) {
+    scene.renderFrame(t);
+    sceneScrubber.value = t;
+    const state = t === 0 ? 'RESOLVED · scroll-stop' : 'SCRUBBING';
+    sceneReadout.innerHTML = `t = ${t.toFixed(3)}s / ${scene.duration.toFixed(3)}s &nbsp; <span class="state">${state}</span>`;
+  }
+
+  sceneScrubber.addEventListener('input', () => paintScene(parseFloat(sceneScrubber.value)));
+  btnSceneZero.addEventListener('click', () => paintScene(0));
+  btnScenePlay.addEventListener('click', () => {
+    if (reducedMotion) { paintScene(scene.duration); return; }
+    sceneScrubber.disabled = true;
+    const start = performance.now();
+    paintScene(0.0001);
+    function tick(now) {
+      const t = Math.min((now - start) / 1000, scene.duration);
+      paintScene(t);
+      if (t < scene.duration) requestAnimationFrame(tick);
+      else sceneScrubber.disabled = false;
+    }
+    requestAnimationFrame(tick);
+  });
+  paintScene(0); // resolved by default — same scroll-stop convention as every other section
+
+  // ---------- design mode: ported from renderEvidenceMeterDesign ----------
+  function validateFourAttributes(attrs) {
+    if (!Array.isArray(attrs) || attrs.length !== 4) {
+      return { ok: false, reason: `attributes (need 4, got ${attrs ? attrs.length : 0})` };
+    }
+    const interrogatedCount = attrs.filter(a => a.interrogated).length;
+    if (interrogatedCount > 1) {
+      return { ok: false, reason: `${interrogatedCount} attributes marked interrogated, at most one allowed` };
+    }
+    return { ok: true };
+  }
+
+  function renderAttributeRow(a) {
+    const filled = !!a.present;
+    const isAqua = filled && a.interrogated;
+    const row = document.createElement('div');
+    row.className = 'dm-row';
+
+    const head = document.createElement('div');
+    head.className = 'dm-row-head';
+
+    const dot = document.createElement('span');
+    dot.className = 'dm-dot ' + (filled ? (isAqua ? 'dm-dot-aqua' : 'dm-dot-celadon') : 'dm-dot-hollow');
+    head.appendChild(dot);
+
+    const label = document.createElement('span');
+    label.className = 'dm-label';
+    label.textContent = a.label;
+    head.appendChild(label);
+
+    if (filled && a.detail) {
+      const detail = document.createElement('span');
+      detail.className = 'dm-detail';
+      detail.textContent = a.detail;
+      head.appendChild(detail);
+    }
+
+    row.appendChild(head);
+
+    if (!filled) {
+      const note = document.createElement('p');
+      note.className = 'dm-note';
+      note.textContent = a.note || 'unstated in the record';
+      row.appendChild(note);
+    }
+    return row;
+  }
+
+  function renderDesignCard(mount, data, sourceIds) {
+    mount.innerHTML = '';
+    if (!data.route) return { ok: false, reason: 'route' };
+    const v = validateFourAttributes(data.attributes);
+    if (!v.ok) return v;
+    const ids = (sourceIds || []).filter(Boolean);
+    if (!ids.length) return { ok: false, reason: 'source chip(s)' };
+
+    const wrap = document.createElement('div');
+    wrap.className = 'evidence-design';
+
+    const route = document.createElement('span');
+    route.className = 'dm-route';
+    route.textContent = data.route;
+    wrap.appendChild(route);
+
+    data.attributes.forEach(a => wrap.appendChild(renderAttributeRow(a)));
+
+    const chipRow = document.createElement('div');
+    chipRow.className = 'dm-chip-row';
+    ids.forEach(id => {
+      const chip = document.createElement('span');
+      chip.className = 'dm-chip';
+      chip.textContent = id;
+      chipRow.appendChild(chip);
+    });
+    wrap.appendChild(chipRow);
+
+    mount.appendChild(wrap);
+    return { ok: true };
+  }
+
+  // real data, ported from scripts/pdrn-claim-free.json scenes 3 & 4
+  const INJECTED = {
+    route: 'Injected',
+    attributes: [
+      { label: 'Human subjects', present: true,  detail: null,        note: null, interrogated: false },
+      { label: 'Comparison arm', present: true,  detail: 'Placebo',   note: null, interrogated: false },
+      { label: 'Randomized',     present: true,  detail: null,        note: null, interrogated: false },
+      { label: 'Facial skin',    present: false, detail: null,        note: 'Tested on diabetic foot ulcers', interrogated: false },
+    ],
+  };
+  const INJECTED_SOURCES = ['ING-pdrn-S001', 'ING-pdrn-S003'];
+
+  const TOPICAL = {
+    route: 'Topical',
+    attributes: [
+      { label: 'Human subjects', present: true,  detail: 'N=32',       note: null, interrogated: false },
+      { label: 'Comparison arm', present: true,  detail: 'Split-face', note: null, interrogated: false },
+      { label: 'Randomized',     present: false, detail: null,         note: 'Not stated in the record', interrogated: false },
+      { label: 'Facial skin',    present: true,  detail: 'Periorbital',note: null, interrogated: true },
+    ],
+  };
+  const TOPICAL_SOURCES = ['ING-pdrn-S001', 'ING-pdrn-S004'];
+
+  renderDesignCard(document.getElementById('design-injected'), INJECTED, INJECTED_SOURCES);
+  renderDesignCard(document.getElementById('design-topical'), TOPICAL, TOPICAL_SOURCES);
+
+  document.getElementById('toggle-refuse-injected').addEventListener('change', e => {
+    const mount = document.getElementById('design-injected');
+    const note = document.getElementById('refusal-note-injected');
+    const result = renderDesignCard(mount, INJECTED, e.target.checked ? [] : INJECTED_SOURCES);
+    if (!result.ok) {
+      note.style.display = '';
+      note.textContent = `→ renders nothing. refused: missing ${result.reason}.`;
+    } else {
+      note.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>

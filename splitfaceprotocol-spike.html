@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SplitFaceProtocol — Clinical Vector Map Spike</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<style>
+  /* ================================================================
+     SplitFaceProtocol — spike, rev. 1. Not wired to build.mjs.
+
+     Zone: periorbital / eye area. Grounded in ING-pdrn-S004, the only
+     source in this project actually run as a split-face design
+     ("clinical split-face anti-aging trial", N=32, topical anti-aging
+     eye-area cream/serum) — chosen over ginseng's S001 crow's-feet
+     claim because S001 is a standard (non-split-face) trial. If this
+     component is later reused for a different ingredient/zone, swap
+     the geometry + grounding note together, not just the label.
+
+     Philosophy: abstract clinical geometry, not a portrait. Two
+     symmetrical half-outlines meeting at a dashed bisector; the only
+     asymmetry ever drawn is the treatment-zone tint on the active
+     side. Everything else about the two halves is identical on
+     purpose — that identity IS the study design.
+
+     Structure: left half -> #control-arm, right half -> #active-arm,
+     each a real DOM group so a rendering engine can address either
+     side without touching the other (proven below via the two
+     visibility toggles, not just asserted).
+
+     Motion: one paused GSAP timeline, driven by t alone, three phases —
+     (1) cranial bounds + bisector draw in via stroke-dashoffset,
+     (2) both periorbital zones fade in as neutral wireframe (identical,
+     pre-treatment), (3) only the active-arm zone floods celadon. t=0 is
+     special-cased to the fully resolved frame (same scroll-stop
+     convention as evidencemeter-spike) so an idle/unscrubbed instance
+     never sits half-drawn; the Play button starts from t=0.0001 to show
+     the true first frame. The bisector is dashed AND draws progressively —
+     those two asks fight over stroke-dasharray, so the dash pattern lives
+     on the visible line while a same-geometry mask line (solid, its own
+     dasharray/dashoffset trick) reveals it top-to-bottom.
+     ================================================================ */
+  :root{
+    --bg:#131210;
+    --ink:#EEF0EF;
+    --ink-muted:#878B8C;
+    --ink-faint:#7C8082;
+    --line:#333333;
+    --celadon:#6F8F72;
+    --celadon-bright:#93B896;
+    --control-line:#3D3D3D;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    min-height:100vh;
+  }
+  .mono{font-family:"JetBrains Mono","SF Mono",Consolas,monospace;}
+
+  /* ---------- page chrome ---------- */
+  .stage{max-width:960px;margin:0 auto;padding:56px 32px 96px;}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+  }
+  h1{font-size:30px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em;color:var(--ink);}
+  .lede{font-size:14px;line-height:1.6;color:var(--ink-muted);max-width:620px;margin:0 0 16px;}
+  .lede code{
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;background:#1C1A17;
+    padding:1px 5px;border-radius:4px;color:var(--celadon-bright);
+  }
+
+  .source-chip{
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-faint);border:1px solid var(--line);padding:3px 6px;border-radius:2px;white-space:nowrap;
+  }
+  .grounding-row{display:flex;align-items:center;gap:8px;margin:0 0 28px;}
+  .grounding-row span.label{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;}
+
+  .rules{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:20px 0;margin-bottom:56px;
+  }
+  .rule .tag{
+    font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--celadon-bright);margin:0 0 6px;
+  }
+  .rule p{margin:0;font-size:11.5px;line-height:1.5;color:var(--ink-muted);}
+
+  section{margin-bottom:56px;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:32px;
+  }
+  .section-head h2{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-muted);margin:0;font-family:"JetBrains Mono",monospace;}
+  .section-head .hint{font-size:11.5px;color:var(--ink-faint);}
+
+  .proof-card{
+    display:inline-flex;flex-direction:column;gap:16px;
+    padding:28px;background:#1A1815;border:1px solid var(--line);border-radius:10px;
+  }
+  .card-label{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faint);
+    letter-spacing:.05em;text-transform:uppercase;}
+
+  .instance-row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;}
+
+  /* ---------- interactive controls (harness only) ---------- */
+  .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:4px;}
+  .controls .btn{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.02em;color:var(--ink-muted);background:transparent;
+    border:1px solid var(--line);border-radius:5px;padding:6px 11px;cursor:pointer;
+  }
+  .controls .btn:hover{border-color:var(--celadon);color:var(--celadon-bright);}
+  .controls input[type=range]{flex:1;min-width:140px;accent-color:var(--celadon);}
+  .clock-readout{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-muted);}
+  .clock-readout .state{color:var(--celadon-bright);font-weight:600;}
+
+  .phase-jumps{display:flex;gap:8px;flex-wrap:wrap;}
+
+  .toggle-row{
+    display:flex;align-items:center;gap:18px;font-family:"JetBrains Mono",monospace;
+    font-size:10.5px;color:var(--ink-faint);padding-top:14px;border-top:1px dashed var(--line);
+  }
+  .toggle-row label{display:flex;align-items:center;gap:6px;cursor:pointer;}
+  .toggle-row input{accent-color:var(--celadon);}
+
+  .raw-data{
+    margin:0;font-size:11px;line-height:1.6;color:var(--ink-muted);
+    background:#0F0E0C;border:1px solid var(--line);border-radius:6px;
+    padding:12px 14px;overflow-x:auto;max-width:340px;
+  }
+
+  /* ================================================================
+     THE COMPONENT — everything below this line is the actual spec.
+     ================================================================ */
+  .sfp-svg{width:320px;height:400px;display:block;flex:0 0 auto;}
+
+  .sfp-cranial{fill:none;stroke:var(--control-line);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;}
+  .sfp-bisector{stroke:var(--control-line);stroke-width:1.25;stroke-dasharray:3 5;stroke-linecap:round;}
+  .sfp-zone-wire{fill:none;stroke:var(--control-line);stroke-width:1.5;opacity:0;}
+  .sfp-zone-active{fill:rgba(111,143,114,0.15);stroke:var(--celadon);stroke-width:2;opacity:0;}
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <p class="eyebrow">Spike · SplitFaceProtocol · Not wired to build.mjs</p>
+  <h1>SplitFaceProtocol — Periorbital Split-Face Diagram</h1>
+  <p class="lede">
+    A pure vector schematic of the study design, not a photograph — no lighting bias, no
+    "before/after" vibe. The left half renders as <code>#control-arm</code> (untreated), the right
+    half as <code>#active-arm</code> (periorbital treatment), so the rendering engine can target
+    either side independently.
+  </p>
+  <div class="grounding-row">
+    <span class="label">Grounded in</span>
+    <span class="source-chip">ING-pdrn-S004</span>
+    <span class="label" style="text-transform:none;letter-spacing:0;color:var(--ink-faint);">
+      clinical split-face anti-aging trial (N=32) · topical eye-area cream/serum
+    </span>
+  </div>
+
+  <div class="rules">
+    <div class="rule"><p class="tag">Vector, not photo</p><p>Every element is an inline SVG path. No imported imagery, so no lighting or skin-tone variance sneaks in as bias.</p></div>
+    <div class="rule"><p class="tag">Bilateral symmetry</p><p>control-arm and active-arm share identical geometry, mirrored across the bisector. The tint is the only asymmetry — never the shape.</p></div>
+    <div class="rule"><p class="tag">Independently targetable</p><p>Left half lives in #control-arm, right half in #active-arm — either side can be addressed without touching the other.</p></div>
+    <div class="rule"><p class="tag">Deterministic clock</p><p>One paused GSAP timeline, scrubbed by t alone. No autoplay, no wall-clock — any t reproduces the same frame.</p></div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>01 · Live instance</h2>
+      <span class="hint">t drives every phase — scrub, play, or jump to a checkpoint</span>
+    </div>
+
+    <div class="proof-card">
+      <span class="card-label">LIVE INSTANCE — #control-arm / #active-arm, t-driven</span>
+
+      <div class="instance-row">
+        <svg class="sfp-svg" id="sfp-live" viewBox="0 0 480 600" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="Split-face protocol diagram: a symmetrical facial outline divided by a vertical bisector into an untreated control arm and an active periorbital treatment arm.">
+          <defs>
+            <mask id="sfp-bisector-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="480" height="600">
+              <line class="sfp-reveal" x1="240" y1="76" x2="240" y2="508" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+            </mask>
+          </defs>
+
+          <line class="sfp-bisector" x1="240" y1="76" x2="240" y2="508" mask="url(#sfp-bisector-mask)"/>
+
+          <g id="control-arm" data-arm="control">
+            <path class="sfp-cranial" d="M240,56 C172,58 116,94 108,172 C102,222 100,250 101,278 C102,318 114,378 144,424 C174,466 208,498 240,522"/>
+            <rect class="sfp-zone-wire" x="142" y="246" width="72" height="28" rx="14" ry="14"/>
+          </g>
+
+          <g id="active-arm" data-arm="active">
+            <path class="sfp-cranial" d="M240,56 C308,58 364,94 372,172 C378,222 380,250 379,278 C378,318 366,378 336,424 C306,466 272,498 240,522"/>
+            <rect class="sfp-zone-wire" x="266" y="246" width="72" height="28" rx="14" ry="14"/>
+            <rect class="sfp-zone-active" x="266" y="246" width="72" height="28" rx="14" ry="14"/>
+          </g>
+        </svg>
+
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:280px;flex:1;">
+          <div class="controls">
+            <button class="btn" id="sfp-play">▶ play</button>
+            <button class="btn" id="sfp-reset">reset (t=0)</button>
+            <input type="range" id="sfp-scrubber" min="0" value="0" step="0.001">
+          </div>
+          <div class="clock-readout" id="sfp-readout"></div>
+
+          <div class="phase-jumps">
+            <button class="btn" data-t="0.0001">idle start</button>
+            <button class="btn" data-t="1.25">bounds drawn</button>
+            <button class="btn" data-t="2.05">zones defined</button>
+            <button class="btn" data-t="2.85">active confirmed</button>
+          </div>
+
+          <div class="toggle-row">
+            <label><input type="checkbox" id="sfp-toggle-control" checked> #control-arm</label>
+            <label><input type="checkbox" id="sfp-toggle-active" checked> #active-arm</label>
+          </div>
+
+          <pre class="raw-data mono" id="sfp-raw"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ================================================================
+  // THE COMPONENT — everything below this line is the actual spec.
+  // ================================================================
+
+  const LINEAR = 'none';       // constant-speed draw — reads as instrument, not hand-drawn
+  const SNAP_EASE = 'power2.out'; // fades/tints only; no bounce/elastic anywhere in this file
+
+  const PHASES = {
+    boundsStart: 0,    boundsEnd: 0.9,   // cranial bounds, both halves, stroke-dashoffset draw
+    bisectorStart: 0.55, bisectorEnd: 1.25, // dashed bisector reveal, overlapping the bounds' tail
+    zonesStart: 1.45,  zonesEnd: 2.05,   // both periorbital zones fade in as neutral wireframe
+    tintStart: 2.2,    tintEnd: 2.85,    // active-arm zone only: celadon fill + stroke flood in
+  };
+
+  function initSplitFace(root) {
+    const cranialPaths = [...root.querySelectorAll('.sfp-cranial')];
+    const revealLine = root.querySelector('.sfp-reveal');
+    const zoneWires = [...root.querySelectorAll('.sfp-zone-wire')];
+    const zoneActive = root.querySelector('.sfp-zone-active');
+
+    cranialPaths.forEach(p => {
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+    });
+    const revealLen = revealLine.getTotalLength();
+    revealLine.style.strokeDasharray = revealLen;
+    revealLine.style.strokeDashoffset = revealLen;
+
+    const tl = gsap.timeline({ paused: true });
+
+    tl.to(cranialPaths, {
+      strokeDashoffset: 0,
+      duration: PHASES.boundsEnd - PHASES.boundsStart,
+      ease: LINEAR,
+    }, PHASES.boundsStart);
+
+    tl.to(revealLine, {
+      strokeDashoffset: 0,
+      duration: PHASES.bisectorEnd - PHASES.bisectorStart,
+      ease: LINEAR,
+    }, PHASES.bisectorStart);
+
+    tl.fromTo(zoneWires,
+      { opacity: 0, scale: 0.92, transformOrigin: '50% 50%' },
+      { opacity: 1, scale: 1, duration: PHASES.zonesEnd - PHASES.zonesStart, ease: SNAP_EASE, immediateRender: false },
+      PHASES.zonesStart
+    );
+
+    tl.fromTo(zoneActive,
+      { opacity: 0 },
+      { opacity: 1, duration: PHASES.tintEnd - PHASES.tintStart, ease: SNAP_EASE, immediateRender: false },
+      PHASES.tintStart
+    );
+
+    function phaseNameAt(t) {
+      // thresholds key off when the NEXT phase's tween starts, not when the
+      // current one's drawing finishes — there's a gap (e.g. bisectorEnd=1.25
+      // to zonesStart=1.45) that belongs to the phase still resting, not the
+      // one about to begin.
+      if (t <= 0) return 'RESOLVED · scroll-stop';
+      if (t < PHASES.zonesStart) return 'PHASE 1 · BOUNDS + BISECTOR';
+      if (t < PHASES.tintStart) return 'PHASE 2 · ZONES DEFINED';
+      if (t < PHASES.tintEnd) return 'PHASE 3 · ACTIVE TINT';
+      return 'RESOLVED';
+    }
+
+    function renderFrame(t) {
+      if (t === 0) {
+        tl.progress(1); // scroll-stop rule: frame zero shows the resolved diagram instantly
+      } else {
+        tl.time(t);
+      }
+    }
+
+    return { tl, renderFrame, duration: tl.duration(), phaseNameAt };
+  }
+
+  // ================================================================
+  // Everything below is harness — proving the component, not part of it.
+  // ================================================================
+
+  const instance = initSplitFace(document.getElementById('sfp-live'));
+  const scrubber = document.getElementById('sfp-scrubber');
+  const readout = document.getElementById('sfp-readout');
+  const btnPlay = document.getElementById('sfp-play');
+  const btnReset = document.getElementById('sfp-reset');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  scrubber.max = instance.duration;
+  scrubber.step = 0.001;
+
+  function paint(t) {
+    instance.renderFrame(t);
+    scrubber.value = t;
+    readout.innerHTML = `t = ${t.toFixed(4)}s / ${instance.duration.toFixed(3)}s &nbsp; <span class="state">${instance.phaseNameAt(t)}</span>`;
+  }
+
+  scrubber.addEventListener('input', () => paint(parseFloat(scrubber.value)));
+  btnReset.addEventListener('click', () => paint(0));
+  btnPlay.addEventListener('click', () => {
+    if (reducedMotion) { paint(instance.duration); return; }
+    scrubber.disabled = true;
+    const start = performance.now();
+    paint(0.0001);
+    function tick(now) {
+      const t = Math.min((now - start) / 1000, instance.duration);
+      paint(t);
+      if (t < instance.duration) requestAnimationFrame(tick);
+      else scrubber.disabled = false;
+    }
+    requestAnimationFrame(tick);
+  });
+
+  document.querySelectorAll('.phase-jumps .btn').forEach(btn => {
+    btn.addEventListener('click', () => paint(parseFloat(btn.dataset.t)));
+  });
+
+  document.getElementById('sfp-toggle-control').addEventListener('change', e => {
+    document.getElementById('control-arm').style.display = e.target.checked ? '' : 'none';
+  });
+  document.getElementById('sfp-toggle-active').addEventListener('change', e => {
+    document.getElementById('active-arm').style.display = e.target.checked ? '' : 'none';
+  });
+
+  paint(instance.duration * 0.5);
+
+  document.getElementById('sfp-raw').textContent = JSON.stringify({
+    arms: {
+      control: '#control-arm — left, untreated/placebo',
+      active: '#active-arm — right, periorbital treatment zone',
+    },
+    zone: 'periorbital / eye area',
+    grounding: {
+      sourceId: 'ING-pdrn-S004',
+      design: 'clinical split-face anti-aging trial (N=32)',
+      route: 'topical — anti-aging eye-area cream/serum',
+    },
+    phases: PHASES,
+  }, null, 2);
+</script>
+</body>
+</html>

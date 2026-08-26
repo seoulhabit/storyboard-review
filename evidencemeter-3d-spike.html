@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvidenceMeter — Volumetric Monolith Spike</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<style>
+  :root{
+    --paper:#F7F5F0;
+    --paper-deep:#F0EBE1;
+    --ink:#211F1B;
+    --ink-muted:#6B6B6B;
+    --ink-faint:#9C978D;
+    --line:#E3E3E3;
+    --line-strong:#D9D3C6;
+    --celadon:#6F8F72;
+    --celadon-deep:#4F6B52;
+    /* new tokens for the 3D studio stage — a dark environment, not the paper page chrome */
+    --studio-dark:#1B1916;
+    --slate-empty:#57534C;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    min-height:100vh;
+  }
+  .mono{font-family:"JetBrains Mono","SF Mono",Consolas,monospace;}
+
+  /* ---------- page chrome (not part of the component) ---------- */
+  .stage{max-width:1040px;margin:0 auto;padding:56px 32px 96px;}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+  }
+  h1{font-size:32px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em;}
+  .lede{font-size:15px;line-height:1.55;color:var(--ink-muted);max-width:620px;margin:0 0 28px;}
+  .lede code{
+    font-family:"JetBrains Mono",monospace;font-size:13px;background:var(--paper-deep);
+    padding:1px 5px;border-radius:4px;color:var(--celadon-deep);
+  }
+
+  .rules{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    margin-bottom:56px;
+  }
+  .rule{background:var(--paper-deep);padding:14px 16px;}
+  .rule .tag{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--celadon-deep);margin:0 0 4px;
+  }
+  .rule p{margin:0;font-size:12px;line-height:1.45;color:var(--ink-muted);}
+
+  section{margin-bottom:64px;}
+  .section-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    border-bottom:1px solid var(--line-strong);padding-bottom:10px;margin-bottom:28px;
+  }
+  .section-head h2{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink);margin:0;font-family:"JetBrains Mono",monospace;}
+  .section-head .hint{font-size:12px;color:var(--ink-faint);}
+
+  .proof-card{
+    display:inline-flex;flex-direction:column;gap:14px;
+    padding:28px;background:var(--paper-deep);border:1px solid var(--line);border-radius:10px;
+  }
+  .grid{display:flex;flex-wrap:wrap;gap:20px;}
+
+  .card-label{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-faint);
+    letter-spacing:.04em;}
+
+  .controls{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    padding-top:18px;border-top:1px dashed var(--line-strong);
+  }
+  .controls .btn{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:500;
+    letter-spacing:.02em;color:var(--ink);background:var(--paper);
+    border:1px solid var(--line-strong);border-radius:6px;padding:7px 12px;cursor:pointer;
+  }
+  .controls .btn:hover{border-color:var(--celadon-deep);color:var(--celadon-deep);}
+  .controls input[type=range]{flex:1;min-width:160px;accent-color:var(--celadon-deep);}
+  .clock-readout{
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-muted);
+    min-width:150px;
+  }
+  .clock-readout .state{color:var(--celadon-deep);font-weight:600;}
+
+  /* ---------- the studio stage that hosts a WebGL instance (harness chrome around the canvas) ---------- */
+  .monolith-stage{
+    position:relative;
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--studio-dark); /* matches renderer.setClearColor — avoids a flash-of-paper before first render */
+  }
+  .monolith-stage canvas{display:block;}
+  /* legibility scrim — text sits over a floor/shadow gradient of unpredictable value,
+     so a fixed dark fade at the base guarantees contrast regardless of scene tuning */
+  .monolith-stage::after{
+    content:'';position:absolute;left:0;right:0;bottom:0;height:38%;
+    background:linear-gradient(to bottom, transparent, rgba(27,25,22,0.85));
+    pointer-events:none;
+  }
+  .monolith-text{
+    position:absolute;left:0;top:0;pointer-events:none;z-index:1;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
+  .monolith-tier{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+    color:#C9C2B4;white-space:nowrap;
+  }
+  .monolith-tier b{color:#F0EBE1;font-weight:700;}
+  .monolith-claim-row{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(0,0,0,0.001); /* keeps the row a flex box without adding a visible plate over the render */
+  }
+  .monolith-claim-text{
+    font-family:'Pretendard',sans-serif;font-size:13px;font-weight:500;color:#F0EBE1;
+    white-space:nowrap;
+  }
+  .monolith-source-chip{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#C9C2B4;
+    border:1px solid #4A463E;padding:2px 6px;border-radius:4px;white-space:nowrap;
+  }
+  /* compact variant — the resting-grid cards are too narrow for a single-line claim.
+     Tighter gaps/line-height than the live instance: this block has to stack tier + a
+     2-line claim + chip in far less canvas height, so every pixel here is budgeted. */
+  .monolith-text.compact{gap:2px;}
+  .monolith-text.compact .monolith-claim-row{flex-direction:column;gap:2px;}
+  .monolith-text.compact .monolith-claim-text{
+    white-space:normal;text-align:center;max-width:190px;font-size:11px;line-height:1.15;
+  }
+  .monolith-text.compact .monolith-tier{font-size:10.5px;}
+  .monolith-text.compact .monolith-source-chip{font-size:10px;padding:1px 5px;}
+
+  /* ================================================================
+     THE COMPONENT — everything below this line is the actual spec.
+     (createMonolithScene / initMonolith / the shading + alignment math)
+     ================================================================ */
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <p class="eyebrow">Spike · Component 3/5 · Volumetric revision · Not wired to build.mjs</p>
+  <h1>EvidenceMeter — Volumetric Monolith</h1>
+  <p class="lede">
+    Same four-tier evidence signal as the flat lockup, rebuilt as physical architecture instead of a
+    CSS track. Four <code>THREE.BoxGeometry</code> pillars share one fixed isometric stage — height
+    carries the magnitude, a shaded celadon carries the identity, and the claim stays flat HTML so the
+    geometry never has to hold text.
+  </p>
+
+  <div class="rules">
+    <div class="rule"><p class="tag">Discrete, not continuous</p><p>Each pillar is either fully grown or resting at its stub height — no partial fills, no interpolated grades between tiers.</p></div>
+    <div class="rule"><p class="tag">Shaded celadon, not flat</p><p>Active pillars are the same signature celadon at every tier. The six-face shade array does the modelling — not a lighter or darker hue swap between grades.</p></div>
+    <div class="rule"><p class="tag">Fixed isometric, no orbit</p><p>One static OrthographicCamera angle, shared with the rest of the 3D visual system. The monolith never rotates to prove its own depth.</p></div>
+    <div class="rule"><p class="tag">Text stays flat</p><p>The claim and source chip remain sharp HTML, aligned once to the pillars' base via translate3d — never baked into the WebGL scene as 3D text.</p></div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <h2>01 · Deterministic clock</h2>
+      <span class="hint">t is the only input — scrub it like a frame index</span>
+    </div>
+
+    <div class="proof-card">
+      <span class="card-label">LIVE INSTANCE — target 3 of 4</span>
+
+      <div class="monolith-stage" id="stage-primary" style="width:560px;height:440px;"></div>
+
+      <div class="controls">
+        <button class="btn" id="btn-play">▶ replay build</button>
+        <button class="btn" id="btn-zero">⇤ jump to t=0</button>
+        <input type="range" id="scrubber" min="0" max="1" step="0.001" value="0" aria-label="build timeline in seconds">
+        <span class="clock-readout mono" id="clock-readout" aria-hidden="true">t = 0.000s / 0.000s</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>02 · Resting states</h2>
+      <span class="hint">same fixed stage, four fill counts</span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+</div>
+
+<script>
+  // ================================================================
+  // THE COMPONENT — everything below this line is the actual spec.
+  // No try/catch, no orbit controls, no per-tier color — a real
+  // build.mjs Three.js adapter would ship exactly this.
+  // ================================================================
+
+  const css = getComputedStyle(document.documentElement);
+  const CELADON_HEX     = css.getPropertyValue('--celadon').trim()      || '#6F8F72';
+  const SLATE_HEX       = css.getPropertyValue('--slate-empty').trim()  || '#4B4944';
+  const STUDIO_DARK_HEX = css.getPropertyValue('--studio-dark').trim()  || '#1B1916';
+
+  const EVIDENCE_TIERS = { 1: 'OPEN', 2: 'INFERRED', 3: 'QUALIFIED', 4: 'KNOWN' };
+
+  function validateEvidenceMeter(data) {
+    if (!Number.isInteger(data.score) || !EVIDENCE_TIERS[data.score]) {
+      throw new Error(`[FATAL] EvidenceMeter refusal: score ${JSON.stringify(data.score)} falls outside the 4-tier enum {1,2,3,4}. Render aborted to prevent a false claim.`);
+    }
+    if (typeof data.claim !== 'string' || !data.claim.trim()) {
+      throw new Error(`[FATAL] EvidenceMeter refusal: missing claim text. The meter never renders alone.`);
+    }
+    if (typeof data.chip !== 'string' || !/^ING-/.test(data.chip)) {
+      throw new Error(`[FATAL] EvidenceMeter refusal: source chip ${JSON.stringify(data.chip)} is not an ING- record id.`);
+    }
+    return true;
+  }
+
+  const PILLAR_COUNT = 4;
+  const PILLAR_W = 1.05, PILLAR_D = 1.05, GAP = 0.55;
+  const FULL_H = 6, STUB_H = 0.5;
+
+  // BoxGeometry material-array face order: [+x, -x, +y(top), -y(bottom), +z(front), -z(back)].
+  // These multipliers fake a fixed studio key light without needing real shadow maps —
+  // the same trick used on the 3D skin model, so every WebGL component reads under one "sun".
+  const FACE_SHADE = [0.82, 0.82, 1.22, 0.48, 1.0, 0.7];
+
+  const SLATE_BASE   = new THREE.Color(SLATE_HEX);
+  const CELADON_BASE = new THREE.Color(CELADON_HEX);
+  const SLATE_FACES   = FACE_SHADE.map(m => SLATE_BASE.clone().multiplyScalar(m));
+  const CELADON_FACES = FACE_SHADE.map(m => CELADON_BASE.clone().multiplyScalar(m));
+
+  function buildFaceMaterials() {
+    return SLATE_FACES.map(c => new THREE.MeshPhysicalMaterial({
+      color: c.clone(), roughness: 0.4, metalness: 0.08,
+      clearcoat: 0.3, clearcoatRoughness: 0.4,
+    }));
+  }
+
+  function applyFaceMix(mesh, mix) {
+    mesh.material.forEach((m, i) => m.color.copy(SLATE_FACES[i]).lerp(CELADON_FACES[i], mix));
+  }
+
+  function makeShadowTexture() {
+    const size = 256;
+    const cnv = document.createElement('canvas');
+    cnv.width = cnv.height = size;
+    const ctx = cnv.getContext('2d');
+    const grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+    grad.addColorStop(0, 'rgba(0,0,0,0.55)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+    return new THREE.CanvasTexture(cnv);
+  }
+
+  // an EQUAL offset on x and z is the one move that stays pure vertical on screen — it's
+  // orthogonal to the camera's screen-right axis for this isometric rig, so nudging the
+  // anchor toward the viewer this way clears the stub pillars with zero horizontal drift.
+  // kept small: at this frustum a bigger push costs more headroom than the resting-grid
+  // canvas can spare once the compact (multi-line) text block is stacked underneath it.
+  const TEXT_ANCHOR = new THREE.Vector3(0.2, 0, 0.2);
+
+  function projectToOverlay(camera, width, height, worldPos) {
+    const ndc = worldPos.clone().project(camera);
+    return {
+      x: (ndc.x * 0.5 + 0.5) * width,
+      y: (1 - (ndc.y * 0.5 + 0.5)) * height,
+    };
+  }
+
+  function createMonolithScene(canvas, width, height) {
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(width, height);
+    renderer.setClearColor(STUDIO_DARK_HEX, 1);
+
+    const scene = new THREE.Scene();
+
+    // orthographic isometric rig — same recipe as the 3D skin model: equal x/y/z camera
+    // offset onto the origin, which is what makes world-Y read as pure vertical on screen.
+    // frustum is tight on purpose — a monolith should fill the stage, not float in it.
+    const frustum = 9.5;
+    const aspect = width / height;
+    const camera = new THREE.OrthographicCamera(
+      -frustum * aspect / 2, frustum * aspect / 2,
+      frustum / 2, -frustum / 2,
+      0.1, 100
+    );
+    camera.position.set(10, 10, 10);
+    camera.lookAt(0, 2.8, 0);
+    camera.updateMatrixWorld(); // project() needs this before the first render() ever runs
+
+    scene.add(new THREE.HemisphereLight(0xF7F5F0, STUDIO_DARK_HEX, 0.7));
+    const key = new THREE.DirectionalLight(0xFFFFFF, 0.85);
+    key.position.set(6, 10, 6);
+    scene.add(key);
+
+    // a contact shadow reads as "dark" only against something lighter than the void it's
+    // floating in — a flat floor sits between the two so the gradient has contrast to darken.
+    // sized square and small enough that the full plinth reads as deliberate, not clipped,
+    // at both the wide live-instance aspect and the narrower resting-grid cards.
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(7.6, 7.6),
+      new THREE.MeshBasicMaterial({ color: 0x2A2620 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = 0.001;
+    scene.add(floor);
+
+    const shadowPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(7, 5),
+      new THREE.MeshBasicMaterial({ map: makeShadowTexture(), transparent: true, depthWrite: false })
+    );
+    shadowPlane.rotation.x = -Math.PI / 2;
+    shadowPlane.position.y = 0.002; // above the floor, below the pillar bases
+    scene.add(shadowPlane);
+
+    const pillarGeo = new THREE.BoxGeometry(PILLAR_W, FULL_H, PILLAR_D);
+    pillarGeo.translate(0, FULL_H / 2, 0); // pivot at the base, so scale.y extrudes upward
+
+    // socket plates mark all four slots regardless of score — an empty slot must still be
+    // countable (the denominator is part of the claim), not just a stub that nearly vanishes.
+    const socketGeo = new THREE.BoxGeometry(PILLAR_W + 0.34, 0.07, PILLAR_D + 0.34);
+    const socketMat = new THREE.MeshBasicMaterial({ color: 0x37332C });
+
+    const pillars = [];
+    for (let i = 0; i < PILLAR_COUNT; i++) {
+      const x = (i - (PILLAR_COUNT - 1) / 2) * (PILLAR_W + GAP);
+
+      const socket = new THREE.Mesh(socketGeo, socketMat);
+      socket.position.set(x, 0.035, 0);
+      scene.add(socket);
+
+      const mesh = new THREE.Mesh(pillarGeo, buildFaceMaterials());
+      mesh.position.x = x;
+      mesh.scale.y = STUB_H / FULL_H; // resting stub — "sits low to the ground"
+      mesh.userData.driver = { mix: 0 };
+      scene.add(mesh);
+      pillars.push(mesh);
+    }
+
+    return { renderer, scene, camera, pillars };
+  }
+
+  function initMonolith(canvas, width, height, score) {
+    const { renderer, scene, camera, pillars } = createMonolithScene(canvas, width, height);
+
+    const EASE = 'power2.inOut';
+    const tl = gsap.timeline({ paused: true });
+    pillars.forEach((mesh, i) => {
+      if (i >= score) return; // stays resting/slate
+      const start = i * 0.22;
+      tl.to(mesh.scale, { y: 1, duration: 0.6, ease: EASE }, start);
+      tl.to(mesh.userData.driver, { mix: 1, duration: 0.6, ease: EASE }, start);
+    });
+
+    function renderFrame(t) {
+      if (t === 0) {
+        // scroll-stop rule: frame zero must show the fully resolved state instantly
+        tl.progress(1);
+      } else {
+        tl.time(t);
+      }
+      pillars.forEach(mesh => applyFaceMix(mesh, mesh.userData.driver.mix));
+      renderer.render(scene, camera);
+    }
+
+    const overlayPos = projectToOverlay(camera, width, height, TEXT_ANCHOR);
+
+    return { renderFrame, duration: tl.duration(), overlayPos };
+  }
+
+  // ================================================================
+  // Everything below is harness — proving the component, not part of it.
+  // ================================================================
+
+  const TEXT_PAD = 5; // fixed breathing room below the anchor — the anchor itself now does the work of clearing the geometry
+
+  function buildStageCard(mount, { width, height, score, claim, chip, compact }) {
+    validateEvidenceMeter({ score, claim, chip }); // must run before any THREE/DOM construction
+    const tierName = EVIDENCE_TIERS[score];
+    const tierLabel = `0${score} / 04`;
+
+    mount.style.width = width + 'px';
+    mount.style.height = height + 'px';
+    mount.setAttribute('role', 'img');
+    mount.setAttribute('aria-label', `EvidenceMeter — ${score} of 4, ${tierName}. ${claim} (${chip})`);
+
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('aria-hidden', 'true');
+    mount.appendChild(canvas);
+
+    const text = document.createElement('div');
+    text.className = 'monolith-text' + (compact ? ' compact' : '');
+    text.innerHTML =
+      `<span class="monolith-tier">${tierLabel} · <b>${tierName}</b></span>` +
+      `<div class="monolith-claim-row">` +
+        `<span class="monolith-claim-text">${claim}</span>` +
+        `<span class="monolith-source-chip">${chip}</span>` +
+      `</div>`;
+    mount.appendChild(text);
+
+    const instance = initMonolith(canvas, width, height, score);
+    text.style.transform =
+      `translate3d(${instance.overlayPos.x}px, ${instance.overlayPos.y + TEXT_PAD}px, 0) translate(-50%, 0)`;
+
+    return instance;
+  }
+
+  const TIERS = [
+    { score: 1, claim: 'Improves visible tone evenness',             chip: 'ING-ginseng-S011' },
+    { score: 2, claim: 'Reinforces the moisture barrier',            chip: 'ING-pdrn-S004' },
+    { score: 3, claim: 'Restores structural spring and bounce',      chip: 'ING-ginseng-S002' },
+    { score: 4, claim: 'Reduces visible transepidermal water loss',  chip: 'ING-pdrn-S001' },
+  ];
+
+  // ---------- primary interactive instance ----------
+  const primaryTier = TIERS[2]; // 3 of 4 — QUALIFIED
+  const primary = buildStageCard(document.getElementById('stage-primary'), {
+    width: 560, height: 440, score: primaryTier.score,
+    claim: primaryTier.claim, chip: primaryTier.chip,
+  });
+
+  const scrubber = document.getElementById('scrubber');
+  const readout = document.getElementById('clock-readout');
+  const btnPlay = document.getElementById('btn-play');
+  const btnZero = document.getElementById('btn-zero');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  scrubber.max = primary.duration;
+  scrubber.step = 0.001;
+
+  function paint(t) {
+    primary.renderFrame(t);
+    scrubber.value = t;
+    const state = t === 0 ? 'RESOLVED · scroll-stop' : 'SCRUBBING';
+    readout.innerHTML = `t = ${t.toFixed(3)}s / ${primary.duration.toFixed(3)}s &nbsp; <span class="state">${state}</span>`;
+  }
+
+  scrubber.addEventListener('input', () => paint(parseFloat(scrubber.value)));
+  btnZero.addEventListener('click', () => paint(0));
+
+  btnPlay.addEventListener('click', () => {
+    if (reducedMotion) { paint(primary.duration); return; }
+    scrubber.disabled = true;
+    const start = performance.now();
+    paint(0.0001);
+    function tick(now) {
+      const t = Math.min((now - start) / 1000, primary.duration);
+      paint(t);
+      if (t < primary.duration) requestAnimationFrame(tick);
+      else scrubber.disabled = false;
+    }
+    requestAnimationFrame(tick);
+  });
+
+  paint(primary.duration * 0.6); // initial paint: a genuine mid-build frame
+
+  // ---------- resting-state grid ----------
+  const grid = document.getElementById('grid');
+  TIERS.forEach(tier => {
+    const card = document.createElement('div');
+    card.className = 'proof-card';
+    card.innerHTML = `<span class="card-label">${tier.score} OF 4 — ${EVIDENCE_TIERS[tier.score]}</span>`;
+    const mount = document.createElement('div');
+    mount.className = 'monolith-stage';
+    card.appendChild(mount);
+    grid.appendChild(card);
+
+    const instance = buildStageCard(mount, {
+      width: 230, height: 280, score: tier.score, compact: true,
+      claim: tier.claim, chip: tier.chip,
+    });
+    instance.renderFrame(0); // resting = resolved
+  });
+</script>
+</body>
+</html>

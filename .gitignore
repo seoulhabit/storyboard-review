@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.venv/
+
+# storyboard.py / storyline.py generated output — regenerable, and some
+# embed base64 video/image data that shouldn't sit in version control
+storyboard.html
+storyboard_*.html
+storyline_*.html
+index.html
+*.notes.json
+*.feedback.json
+
+# macOS
+.DS_Store

@@ -1,0 +1,178 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 10,
+  "fps": 30,
+  "canvas": { "w": 1080, "h": 1920, "aspect": "9:16" },
+  "style": "Botanical-clinical glass-skin aesthetic carried over verbatim from the locked poster (snail-mucin-poster-spike.html): soft sage gradient ground with ghosted leaf silhouettes, glossy opalescent bubble highlights, an illustrated glass dropper bottle (silver ridged collar, white dropper bulb cap, pale-green bubbled serum) with two spiral-shell tan-bodied snails and their signature seafoam-to-gold-to-lilac slime trails flowing down the glass. Display type is Bricolage Grotesque (kicker/headline/descriptor/stat numerals+labels) paired with Noto Serif TC for the Chinese subhead and stat CN labels. Calm, confident, high-craft editorial pacing — not loud or gimmicky. No brand mark of any kind: do not reintroduce the Trinity Medical Aesthetics logo/wordmark carried by the PDRN sibling poster; this piece is unbranded.",
+  "palette": [
+    "#f6f8f1",
+    "#e8efdd",
+    "#cddfb9",
+    "#0f2016",
+    "#2c4a34",
+    "#b9835a",
+    "#8a5a37",
+    "#e3bd8e",
+    "#dcb98e",
+    "#bdf0d4",
+    "#f2e3b4",
+    "#e4c8ec",
+    "#fbfaf4"
+  ],
+  "font": "Bricolage Grotesque, Noto Serif TC",
+  "beats": [0.4, 1.6, 4.5, 6.0, 7.2],
+  "export": "mp4",
+  "shot_brief": "The viewer opens on the same botanical-clinical world as the locked snail-mucin poster: a soft sage gradient with ghosted leaves already in place, and the illustrated glass dropper bottle — two spiral-shell snails perched on its glass — draws in as their signature opalescent slime trails animate down the glass in a seafoam-to-gold-to-lilac stroke reveal, the piece's one dominant motion idea. Against that settling illustration, 'SNAIL' kicks up and 'MUCIN' lands with a confident punch, then the ingredient descriptor and the Chinese subhead 蝸牛黏液精華 cascade in beneath it to build credibility, before the two proof beats — '05 活性成分 Key Actives' and '04 肌膚功效 Skin Benefits' — land in a paired call-and-response rhythm inside their glassy callout discs. The piece closes on a ~2.8s hold of the fully assembled composition — headline, descriptor, subhead, both stats, and the illustrated bottle all legible together, bubbles drifting gently — so it reads as a complete, screenshot-worthy motion poster rather than a rushed reveal.",
+  "asset_needs": [],
+  "customize": {
+    "typography": {
+      "display_font": "Bricolage Grotesque — variable (opsz 12..96, wght 400..800)",
+      "cn_font": "Noto Serif TC — wght 700;900",
+      "google_fonts_import": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Noto+Serif+TC:wght@700;900&display=swap",
+      "sizes_from_poster_px": {
+        "kicker": 26,
+        "hero_h1": 166,
+        "descriptor": 15,
+        "cn_subhead_h2": 60,
+        "callout_num_active": 126,
+        "callout_label_active": 38,
+        "callout_cap": 13,
+        "callout_num_benefits": 110,
+        "callout_label_benefits": 34
+      }
+    },
+    "palette_map": {
+      "note": "the palette[] array above is the eyedropped poster palette, in the poster's own :root declaration order — labeled here for the Builder so no color is re-guessed.",
+      "ground_1": "#f6f8f1",
+      "ground_2": "#e8efdd",
+      "ground_3": "#cddfb9",
+      "ink_dark": "#0f2016",
+      "ink_moss": "#2c4a34",
+      "shell": "#b9835a",
+      "shell_deep": "#8a5a37",
+      "shell_light": "#e3bd8e",
+      "body_tan": "#dcb98e",
+      "trail_a_seafoam": "#bdf0d4",
+      "trail_b_gold": "#f2e3b4",
+      "trail_c_lilac": "#e4c8ec",
+      "pearl": "#fbfaf4",
+      "bubble_fill_companion": "rgba(130,175,120,0.22) — not a hex in palette[], carry over verbatim for bokeh bubbles"
+    },
+    "layout_zones_1080x1920": {
+      "note": "Adapted from the locked poster's 1080x1350 layout. Width is unchanged (1080 — no horizontal rescale). The extra ~570px of height is redistributed as: more top margin before the kicker, more breathing room in the new mid-canvas gap between the bottle and the callout pair, a ~10-15% larger bottle illustration, and a real bottom safe-margin (the poster's callouts sat only ~10px from its bottom edge, fine for a static image but too tight for a 9:16 video export). These are director-level approximate zones for the Builder to refine visually in Studio, not final CSS.",
+      "headline_block": { "top": 170, "left": 66, "width": 640, "contains": "kicker + hero H1 'MUCIN' + descriptor + CN subhead, stacked, left-aligned, poster font sizes unchanged" },
+      "bottle_illustration": { "top": 270, "right": 80, "width": "300-320 (poster was 276)", "note": "scale ~1.1-1.15x poster size, viewBox 0 0 320 900 aspect preserved; bottom lands roughly 1150-1180" },
+      "mid_gap": { "y_range": "~1150-1330", "note": "new breathing room from the taller canvas; seed 2-3 extra bokeh bubbles here so it doesn't read empty" },
+      "callout_actives": { "top": "1320-1360", "left": 70, "width": 340, "height": 340 },
+      "callout_benefits": { "top": "1355-1395", "left": "650-680", "width": 300, "height": 300 },
+      "bottom_safe_margin_px": "~200+ (poster had ~10px — not video-safe)",
+      "botanical_leaves": "reposition proportionally: one lower-left near callout_actives (~y1300), one upper-right corner near top (~y-40) — mirrors poster placement",
+      "bokeh_bubbles": "redistribute the poster's ~10 scattered bubbles across the taller canvas plus the mid_gap seeding above"
+    },
+    "element_positions_bottle_snails": {
+      "note": "informal geometric read of the poster's own authored SVG coordinates (viewBox 0 0 320 900) — no vision/locate-protocol grounding needed since this is exact hand-authored vector geometry, not a photographic asset.",
+      "snail_A_center_local": "(219,244) r46 — large, upper, on the shoulder near the cap; drawn first",
+      "snail_B_center_local": "(72,492) r33 — small, lower on the body; drawn second",
+      "trail_A_path": "flows down-left from snail A along the neck/shoulder",
+      "trail_B_path": "flows down-left from snail B along the lower body",
+      "text_avoid_zone": "no text/UI may overlap the bottle's bounding box (roughly the right ~30% of canvas width once repositioned) — the 640px-wide headline_block already respects this and must continue to at the taller canvas"
+    },
+    "motion_rules_by_scene": {
+      "hook-headline": [
+        "kinetic-beat-slam — hero-word 'MUCIN' slam entrance (scale+blur, power4.out), but capped to a restrained back.out(1.4-1.6) settle rather than the base vocabulary table's literal back.out(2.2), which reads too playful for this glossy/premium tone",
+        "spring-pop-entrance — calm variant (power3.out, Y_RISE <=12px) for the bottle group's draw-in and each snail's settle onto the glass, staggered ~0.1-0.15s apart, snail A (large) before snail B (small)",
+        "svg-path-draw — the twin slime-trail stroke-dasharray/dashoffset draw-on (measured getTotalLength(), power2.out, never back.out — 'pens don't bounce'), staggered at ~70-80% per svg-path-draw's own multi-path guidance, using its 'draw then fill' variation so each trail's seafoam-to-gold-to-lilac glow path cross-fades in just behind its own drawn stroke"
+      ],
+      "build-descriptor": [
+        "word_reveal + fade_blur — base motion-vocabulary primitives for the three co-equal terms, ~0.15-0.2s stagger",
+        "depth-of-field-blur — the filter:blur() tween discipline behind the fade_blur settle",
+        "no caption-* catalog block forced — this beat's calm, unweighted cascade doesn't match any of the 18 named gimmick blocks"
+      ],
+      "build-subhead-cn": [
+        "slide_bottom + fade_in — base motion-vocabulary primitives only; deliberately unadorned bridge beat between the hook's slam/draw-on energy and the punchier stat pair to come"
+      ],
+      "punch-stat-actives": [
+        "spring-pop-entrance — the glassy callout disc's scale_grow (scale 0->1, power3.out, transform-origin center)",
+        "counting-dynamic-scale — numeral 00->05 count + synced scale grow, power2.out, compressed to ~0.5-0.6s (shorter than the rule's 1.2-2.5s default — appropriate for a trivial single-digit count); tabular-nums mandatory; per that rule's own constraint NO back.out/scale_punch bounce on the numeral itself ('it's data, not decoration') — punch comes from the disc's pop + the count's speed, not a bounce",
+        "word_reveal — CN label '活性成分' + EN caption 'Key Actives', ~0.15s behind the numeral's count-start"
+      ],
+      "punch-stat-benefits": [
+        "exact mirror of punch-stat-actives's mechanism (spring-pop-entrance disc + counting-dynamic-scale 00->04, same compressed duration, same no-bounce discipline) — a deliberate MATCHED pair, not a varied beat: kinetic-beat-slam's 'distinct entrance per phrase' guidance is intentionally set aside here because the design intent is call-and-response repetition"
+      ],
+      "resolve-hold": [
+        "titlecard-reveal (blueprint) — its Scene-3 stillness discipline: the hold IS the deliverable, not an unanimated gap",
+        "sine-wave-loop — bounded onUpdate breathe for the ~10-13 bokeh bubbles, LOW amplitude (scale ~+/-0.01, y ~+/-2-3px), damped to default/sqrt(N) since many run concurrently, periods staggered (2.1s/1.9s/2.4s/2.6s...) so they read as one collective breath",
+        "sine-wave-loop — the slime-trail's 'slow shimmer' as a bounded sine-driven micro-shift on gradient position/opacity, NOT ambient-glow-bloom's shimmer-sweep variant (that is reserved for in-progress status text, which doesn't semantically fit a finished, resolved trail); alternative: a single one-pass ambient-glow-bloom traveling sweep early in the hold that fades and never repeats",
+        "ambient-glow-bloom — optional hero-bloom polish (peak opacity <=0.3) softly behind the bottle"
+      ]
+    },
+    "composition_structure_note": "This is a CUMULATIVE single-composition build, not a hard-cut montage: every element that enters across scenes 1-5 remains visible through resolve-hold — nothing exits mid-piece, matching the pdrn-skin-regeneration sibling's one-continuous-timeline precedent. Layout follows the poster's fixed absolute-positioned illustration (NOT the generic flex-centered-group pattern kinetic-type's default hand-author guidance describes) — each scene's content layers into its own fixed-position region of one persistent stage, each element entering via its own explicit GSAP fromTo() per builder-contract.md.",
+    "dominant_motif": "the glossy opal stroke-draw reveal (seafoam -> gold -> lilac) established on the slime trails at the hook; the resolve-hold's bounded ambient shimmer is a reprise of this same motif, not a new one — keeps the piece to ONE dominant motif per the director heuristics.",
+    "pattern_interrupt": "at ~4.4s (punch-stat-actives) the piece shifts from the calm vertical text-cascade of build-descriptor/build-subhead-cn into a punchier paired call-and-response rhythm for the two stat beats — the one deliberate energy change in an otherwise calm, editorial piece, per the '>2.5s runtime needs exactly one pattern-interrupt' heuristic.",
+    "no_brand_mark": "confirmed carried forward — the source poster already has no logo/wordmark; resolve-hold must not introduce one (no URL pill, no logo lockup) — the piece resolves on the product illustration itself, per the user's explicit no-brand-mark constraint."
+  },
+  "content": {
+    "scenes": [
+      {
+        "id": "hook-headline",
+        "start": 0,
+        "end": 1.8,
+        "text": "SNAIL / MUCIN",
+        "emphasis_words": ["MUCIN"],
+        "emotion": "confident, glossy, hero reveal",
+        "motion": "kicker 'SNAIL' fade_in + slide_bottom (base vocabulary primitives) lands ~0.15s. Hero word 'MUCIN' slams in via kinetic-beat-slam's scale+blur entrance (scale 1.4->1, blur 10px->0, power4.out, ~0.4s) with a restrained back.out(1.4-1.6) settle on landing — not the vocabulary table's literal back.out(2.2), which reads too playful for this glossy/premium tone — resolved by ~0.9s. Concurrently (0-0.4s) the illustrated bottle group draws in via spring-pop-entrance's calm variant (scale 0->1, power3.out, Y_RISE <=12px, 'a weighted, confident landing'); snail A (large, upper) and snail B (small, lower) settle ~0.1-0.15s apart on the same calm spring-pop, snail A first. From ~0.4s the twin opalescent slime-trails draw on via svg-path-draw: each trail's pearl-highlight stroke animates stroke-dashoffset (measured getTotalLength()) at power2.out; trail A (from snail A) runs ~0.4-1.0s, trail B staggered to start at ~70-80% of trail A's duration (~0.8-0.85s) and finish ~1.4s; each trail's filled seafoam-to-gold-to-lilac glow path cross-fades in (fillOpacity 0->0.55) just behind its own stroke per svg-path-draw's 'draw then fill' variation, completing by 1.6s. This stroke-draw + glow-fill is the piece's one dominant motif, reprised (not repeated) as a bounded ambient shimmer in resolve-hold.",
+        "beats": [0.15, 0.4, 1.6]
+      },
+      {
+        "id": "build-descriptor",
+        "start": 1.8,
+        "end": 3.2,
+        "text": "Glycoprotein · Hyaluronic Acid · Allantoin Complex",
+        "emphasis_words": [],
+        "emotion": "clinical, precise, credentialing",
+        "motion": "word_reveal stagger left-to-right across the three middle-dot-separated terms (~0.15-0.2s apart — wider than a dense-sentence default since there are only three, unhurried co-equal terms), each settling via fade_blur (opacity 0->1, blur 14px->0, power1.out per depth-of-field-blur's tween discipline), ink-moss color, no scale/bounce on any term — genuinely co-equal weight, no single term emphasized. Hand-authored from base vocabulary primitives; no caption-* block forced.",
+        "beats": [1.9]
+      },
+      {
+        "id": "build-subhead-cn",
+        "start": 3.2,
+        "end": 4.4,
+        "text": "蝸牛黏液精華",
+        "emphasis_words": [],
+        "emotion": "elegant, bridging, localized",
+        "motion": "slide_bottom + fade_in (base vocabulary primitives, power4.out), Noto Serif TC weight settling into its static 60px/900-weight resting state, brief hold before the next beat. Deliberately unadorned — the calm bridge between the hook's slam/draw-on energy and the punchier stat pair to come.",
+        "beats": [3.3]
+      },
+      {
+        "id": "punch-stat-actives",
+        "start": 4.4,
+        "end": 5.9,
+        "text": "05 · 活性成分 · Key Actives",
+        "emphasis_words": ["05"],
+        "emotion": "proof, tactile, payoff",
+        "motion": "glassy callout disc scale_grow in via spring-pop-entrance (scale 0->1, power3.out, transform-origin center — matches the poster's circular glass-bubble surface). Numeral '05' counts 00->05 via counting-dynamic-scale: a proxy value and the numeral's own scale grow (~50%->100%) share ONE tween, power2.out, compressed to ~0.5-0.6s (shorter than the rule's default 1.2-2.5s range — a trivial single-digit count reads sluggish at full length); tabular-nums mandatory. No back.out/scale_punch bounce on the numeral itself, per counting-dynamic-scale's own constraint — the punch comes from the disc's pop and the count's speed, not a bounce. CN label '活性成分' + EN caption 'Key Actives' word_reveal in ~0.15s behind the numeral's count-start.",
+        "beats": [4.5, 4.9]
+      },
+      {
+        "id": "punch-stat-benefits",
+        "start": 5.9,
+        "end": 7.2,
+        "text": "04 · 肌膚功效 · Skin Benefits",
+        "emphasis_words": ["04"],
+        "emotion": "proof, confirming, paired rhythm",
+        "motion": "exact mirror of punch-stat-actives's mechanism (spring-pop-entrance disc + counting-dynamic-scale 00->04 count, same ~0.5-0.6s compressed duration, same no-bounce discipline) at a ~0.15s stagger offset — a deliberate MATCHED pair for a paired call-and-response rhythm, not a varied beat: kinetic-beat-slam's usual 'distinct entrance per phrase' guidance is intentionally set aside since the intent here is repetition, not variety. CN label '肌膚功效' + EN caption 'Skin Benefits' word_reveal follows the same ~0.15s-behind pattern.",
+        "beats": [6.0, 6.4]
+      },
+      {
+        "id": "resolve-hold",
+        "start": 7.2,
+        "end": 10.0,
+        "text": "[hold — no new text; full assembled composition remains on screen]",
+        "emphasis_words": [],
+        "emotion": "settled, complete, screenshot-worthy",
+        "motion": "Ambient hold only, per the titlecard-reveal blueprint's stillness discipline — the hold IS the deliverable, not an unanimated gap; no new entrances, nothing from scenes 1-5 exits. Bokeh bubbles (~10-13, carried over from the poster) drift via sine-wave-loop's bounded onUpdate form: low amplitude (scale ~+/-0.01, y ~+/-2-3px), damped to default/sqrt(N) since many run concurrently, periods staggered (2.1s/1.9s/2.4s/2.6s...) so they read as one collective breath, not competing jitter. The slime-trail gradient carries its slow shimmer as a bounded sine-driven micro-shift on gradient position/opacity (same sine-wave-loop mechanism — not an infinitely-repeating shimmer-sweep, which ambient-glow-bloom reserves for in-progress status text); optionally a single one-pass ambient-glow-bloom traveling sweep early in the hold (once, fades, never repeats) as an alternative. A soft ambient-glow-bloom hero-bloom (peak opacity <=0.3) behind the bottle is an optional polish add. Final frame reads as the complete locked-poster composition — headline, descriptor, CN subhead, both stat callouts, and the illustrated bottle all legible together — screenshot-worthy, no brand mark anywhere.",
+        "beats": [7.2]
+      }
+    ]
+  }
+}

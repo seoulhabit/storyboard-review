@@ -38,25 +38,8 @@
   /* ---------- botanical ghosts ---------- */
   .leaf{ position:absolute; z-index:1; opacity:0.5; }
 
-  /* ---------- brand ---------- */
-  .brand{
-    position:absolute; top:66px; left:66px;
-    display:flex; align-items:center; gap:14px; z-index:6;
-  }
-  .brand-name{
-    font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:34px;
-    letter-spacing:-0.01em; line-height:1;
-    background:linear-gradient(100deg, #33c2e2, #2c7fc0);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .brand-sub{
-    margin-top:5px;
-    font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:12.5px;
-    letter-spacing:0.22em; text-transform:uppercase; color:#2c7fc0;
-  }
-
   /* ---------- headline ---------- */
-  .headline{ position:absolute; top:224px; left:66px; width:640px; z-index:6; }
+  .headline{ position:absolute; top:130px; left:66px; width:640px; z-index:6; }
   .kicker{
     font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:26px;
     letter-spacing:0.32em; text-transform:uppercase; color:var(--shell-deep);
@@ -128,26 +111,6 @@
   <svg class="leaf" style="top:-70px; right:260px; width:260px; height:260px;" viewBox="0 0 260 260" fill="none">
     <path d="M10,10 C90,10 250,40 250,180 C150,180 10,120 10,10Z" fill="var(--ground-3)" opacity="0.4"/>
   </svg>
-
-  <!-- brand -->
-  <div class="brand">
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <defs>
-        <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48">
-          <stop offset="0%" stop-color="#3fd0ea"/>
-          <stop offset="100%" stop-color="#2c7fc0"/>
-        </linearGradient>
-      </defs>
-      <path d="M24 24C24 13 15 7 7 9c-3 8 3 17 17 15Z" fill="url(#logoGrad)"/>
-      <path d="M24 24C24 13 33 7 41 9c3 8-3 17-17 15Z" fill="url(#logoGrad)" opacity="0.85"/>
-      <path d="M24 24C15 24 9 33 11 41c8 3 17-3 15-17Z" fill="url(#logoGrad)" opacity="0.7"/>
-      <circle cx="24" cy="25" r="4.2" fill="url(#logoGrad)"/>
-    </svg>
-    <div>
-      <div class="brand-name">Trinity</div>
-      <div class="brand-sub">medical&nbsp; aesthetics</div>
-    </div>
-  </div>
 
   <!-- headline -->
   <div class="headline">

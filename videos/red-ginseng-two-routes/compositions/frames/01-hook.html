@@ -1,0 +1,215 @@
+<template>
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    container-type: size;
+  }
+
+  .clip { position: absolute; inset: 0; }
+
+  /* full-bleed dark ground — the taproot-dark field the veins trace across */
+  .hook-ground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 130% 85% at 50% 30%, #2E251C 0%, #211A14 65%);
+  }
+
+  .hook-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+  }
+
+  .hook-veins {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+  }
+  .hook-vein {
+    fill: none;
+    stroke: #E8A55A;
+    stroke-width: 2.4px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* the two VO clauses — kinetic type, the true hero */
+  .hook-textzone {
+    position: absolute;
+    top: 60cqh;
+    bottom: auto;
+    left: 4.2cqw;
+    right: auto;
+    width: 78cqw;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4cqh;
+  }
+  .hook-line {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: 4.6cqw;
+    line-height: 1.06;
+    letter-spacing: -0.018em;
+    color: #F8F1E4;
+    text-align: left;
+  }
+  .hook-word {
+    display: inline-block;
+    margin-right: 0.26em;
+  }
+
+  /* supporting disclaimer tag — small, subordinate, low in the safe area */
+  .hook-tag {
+    position: absolute;
+    top: auto;
+    bottom: 21cqh;
+    left: 4.2cqw;
+    right: auto;
+  }
+  .hook-tag span {
+    display: inline-block;
+    font-family: "JetBrains Mono", "Courier New", monospace;
+    font-weight: 500;
+    font-size: 1.4cqw;
+    letter-spacing: 0.02em;
+    color: #F8F1E4;
+  }
+</style>
+<div data-hf-id="hf-kyyg" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="5.594">
+  <div data-hf-id="hf-sbgw" id="hook-ground" class="clip hook-ground" data-start="0" data-duration="5" data-track-index="0">
+    <svg data-hf-id="hf-x8qn" class="hook-veins" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <path data-hf-id="hf-114r" class="hook-vein" d="M 180 -60 C 220 180 140 360 260 560 C 360 720 300 900 400 1080 C 470 1200 420 1360 500 1520" />
+      <path data-hf-id="hf-osjr" class="hook-vein" d="M 900 -40 C 840 160 940 320 820 500 C 720 650 800 820 690 980 C 610 1100 660 1260 580 1400" />
+      <path data-hf-id="hf-k6kd" class="hook-vein" d="M 260 560 C 160 620 90 700 40 640" />
+      <path data-hf-id="hf-agbq" class="hook-vein" d="M 400 1080 C 500 1040 600 1060 660 980" />
+      <path data-hf-id="hf-zn33" class="hook-vein" d="M 820 500 C 900 460 980 480 1040 420" />
+      <path data-hf-id="hf-fs19" class="hook-vein" d="M 500 1520 C 560 1580 660 1560 720 1640" />
+    </svg>
+  </div>
+  <div data-hf-id="hf-or89" id="hook-grain" class="clip hook-grain" data-start="0" data-duration="5" data-track-index="0"></div>
+
+  <div data-hf-id="hf-92lv" id="hook-textzone" class="clip hook-textzone" data-start="0" data-duration="5" data-track-index="1">
+    <div data-hf-id="hf-wins" class="hook-line" id="hook-line-1"></div>
+    <div data-hf-id="hf-7e5f" class="hook-line" id="hook-line-2"></div>
+  </div>
+
+  <div data-hf-id="hf-9hxb" id="hook-tag" class="clip hook-tag" data-start="0" data-duration="5" data-track-index="2">
+    <span data-hf-id="hf-hpss" id="hook-tag-text">[Authored, marked not-a-claim]</span>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  window.__timelines["01-hook"] = tl;
+
+  // ---- word content: single source of truth for markup + timing ----
+  // (dynamic-content-sequencing pattern, applied at word granularity: each
+  // word's start is computed from content length, never a hardcoded offset)
+  const CLAUSE_1_WORDS = ["The", "strongest", "ginseng", "study", "never", "touched", "skin."];
+  const CLAUSE_2_WORDS = ["It", "was", "swallowed."];
+  const WORD_BASE = 0.16;
+  const WORD_PER_CHAR = 0.012;
+
+  function schedule(words, startTime) {
+    let t = startTime;
+    return words.map((w) => {
+      const dur = WORD_BASE + w.length * WORD_PER_CHAR;
+      const start = t;
+      t += dur;
+      return { word: w, start };
+    });
+  }
+
+  const clause1Schedule = schedule(CLAUSE_1_WORDS, 0.6);
+  const clause2Schedule = schedule(CLAUSE_2_WORDS, 3.0);
+
+  function mount(lineEl, entries) {
+    entries.forEach((entry) => {
+      const span = document.createElement("span");
+      span.className = "hook-word";
+      span.textContent = entry.word;
+      lineEl.appendChild(span);
+      entry.el = span;
+    });
+  }
+
+  mount(document.getElementById("hook-line-1"), clause1Schedule);
+  mount(document.getElementById("hook-line-2"), clause2Schedule);
+
+  // Scene 2 (0.6-2.6s) — clause 1, per-word stagger, confident power3 settle.
+  clause1Schedule.forEach((entry) => {
+    tl.fromTo(
+      entry.el,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+      entry.start,
+    );
+  });
+
+  // Scene 4 (3.0-4.4s) — clause 2, same family, smaller displacement:
+  // flat, quiet delivery, no emphasis pop. The reversal is in the plainness.
+  clause2Schedule.forEach((entry) => {
+    tl.fromTo(
+      entry.el,
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+      entry.start,
+    );
+  });
+
+  // Scene 1 (0.0-0.6s) into Scene 3 settle (~2.6-2.8s) — root-vein self-draw.
+  const veinPaths = document.querySelectorAll(".hook-vein");
+  veinPaths.forEach((p) => {
+    const len = p.getTotalLength();
+    p.style.strokeDasharray = String(len);
+    p.style.strokeDashoffset = String(len);
+  });
+
+  const VEIN_SEG_DUR = 0.58;
+  const VEIN_STAGGER = VEIN_SEG_DUR * 0.75;
+  const VEIN_START = 0.05;
+  veinPaths.forEach((p, i) => {
+    tl.to(
+      p,
+      { strokeDashoffset: 0, duration: VEIN_SEG_DUR, ease: "power2.out" },
+      VEIN_START + i * VEIN_STAGGER,
+    );
+  });
+
+  // Scene 5 (4.4-5.0s) — supporting tag, small and low-opacity.
+  tl.fromTo(
+    "#hook-tag-text",
+    { opacity: 0 },
+    { opacity: 0.6, duration: 0.5, ease: "power1.out" },
+    4.4,
+  );
+
+  // Scene 5 — both clauses hold still, subtle jitter only (sine-wave-loop,
+  // low amplitude; phase starts at 0 so there is no jump off the entry tail).
+  const textZoneEl = document.querySelector(".hook-textzone");
+  const jitterPhase = { p: 0 };
+  tl.to(
+    jitterPhase,
+    {
+      p: Math.PI * 2 * 0.3,
+      duration: 0.6,
+      ease: "none",
+      onUpdate: () => {
+        const s = Math.sin(jitterPhase.p);
+        textZoneEl.style.transform = `translateY(${(s * 2).toFixed(2)}px)`;
+      },
+    },
+    4.4,
+  );
+</script>
+</template>

@@ -1,0 +1,161 @@
+<title>Celestial Arc</title>
+<style>
+  :root{
+    --page-bg:#FBF6EF;
+    --ink:#2B2420;
+    --ink-soft:#6B5F55;
+    --am-soft:#E08A3C;
+    --pm-soft:#6B5B95;
+    --sky-dawn:#FFDFAE;
+    --sky-dusk:#362C55;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page-bg:#1C1720;
+      --ink:#F3ECE4;
+      --ink-soft:#B9AEA3;
+      --am-soft:#F6BE7C;
+      --pm-soft:#B0A4D9;
+      --sky-dawn:#4A3826;
+      --sky-dusk:#14101F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page-bg:#1C1720;
+    --ink:#F3ECE4;
+    --ink-soft:#B9AEA3;
+    --am-soft:#F6BE7C;
+    --pm-soft:#B0A4D9;
+    --sky-dawn:#4A3826;
+    --sky-dusk:#14101F;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:32px;
+    background:var(--page-bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    padding:48px 24px;
+  }
+  .label{
+    max-width:52ch;
+    font-size:12px;
+    line-height:1.6;
+    letter-spacing:.02em;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  .label b{ color:var(--ink); }
+  .demo{ width:min(760px, 100%); }
+
+  /* ---------- celestial arc ----------
+     Extracted verbatim from dawn-to-dusk-routine/am-pm-skincare-spike.html,
+     where it's the hero backdrop above the AM/PM routine cards. */
+  .arc-strip{
+    position:relative;
+    height:clamp(120px,16vw,180px);
+  }
+  .arc-strip svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .arc-strip .arc-path{
+    fill:none;
+    stroke:url(#arcGradient);
+    stroke-width:1.5;
+    stroke-linecap:round;
+    stroke-dasharray:4 8;
+    opacity:0.55;
+  }
+  .arc-dot{ filter:drop-shadow(0 0 6px currentColor); }
+
+  .celestial{
+    position:absolute;
+    top:8%;
+    width:clamp(46px,7vw,64px);
+    height:clamp(46px,7vw,64px);
+    border-radius:50%;
+  }
+  .sun{
+    left:6%;
+    background:radial-gradient(circle at 35% 30%, var(--sky-dawn), var(--am-soft) 70%);
+    box-shadow:0 0 0 6px color-mix(in srgb, var(--am-soft) 14%, transparent),
+               0 0 34px 4px color-mix(in srgb, var(--am-soft) 45%, transparent);
+    animation:glow-pulse 5s ease-in-out infinite;
+  }
+  .sun::before{
+    content:"";
+    position:absolute; inset:-34%;
+    background:
+      repeating-conic-gradient(from 0deg, currentColor 0deg 2.2deg, transparent 2.2deg 45deg);
+    color:var(--am-soft);
+    opacity:0.35;
+    border-radius:50%;
+    mask:radial-gradient(circle, transparent 58%, black 62%, black 74%, transparent 78%);
+    animation:spin-slow 50s linear infinite;
+  }
+  .moon{
+    right:6%;
+    background:var(--sky-dusk);
+    box-shadow:
+      inset 9px -4px 0 0 var(--pm-soft),
+      0 0 26px 2px color-mix(in srgb, var(--pm-soft) 35%, transparent);
+  }
+  .stars{ position:absolute; inset:0; pointer-events:none; }
+  .stars span{
+    position:absolute;
+    width:3px; height:3px;
+    background:var(--pm-soft);
+    border-radius:50%;
+    animation:twinkle 3.2s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse{
+    0%,100%{ box-shadow:0 0 0 6px color-mix(in srgb, var(--am-soft) 14%, transparent), 0 0 34px 4px color-mix(in srgb, var(--am-soft) 45%, transparent); }
+    50%{ box-shadow:0 0 0 9px color-mix(in srgb, var(--am-soft) 10%, transparent), 0 0 44px 10px color-mix(in srgb, var(--am-soft) 55%, transparent); }
+  }
+  @keyframes spin-slow{ to{ transform:rotate(360deg); } }
+  @keyframes twinkle{ 0%,100%{ opacity:0.25; transform:scale(0.8); } 50%{ opacity:1; transform:scale(1.15); } }
+
+  @media (prefers-reduced-motion: reduce){
+    .sun::before,.moon,.stars span,.arc-dot,.sun{ animation:none !important; }
+  }
+</style>
+
+<p class="label"><b>Celestial Arc</b> — SPIKE, not wired to build.mjs. Extracted
+from <a href="../dawn-to-dusk-routine/am-pm-skincare-spike.html">Dawn to Dusk
+Skincare</a>. Runs on plain CSS <code>infinite</code> keyframes — not yet a
+deterministic <code>t</code>-driven clock, so not seek-safe for a real
+render.</p>
+
+<div class="demo">
+  <div class="arc-strip" aria-hidden="true">
+    <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="arcGradient" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--am-soft)"/>
+          <stop offset="100%" stop-color="var(--pm-soft)"/>
+        </linearGradient>
+      </defs>
+      <path id="arcPath" class="arc-path" d="M 70 150 Q 500 -30 930 150"/>
+      <circle class="arc-dot" r="4" fill="var(--am-soft)">
+        <animateMotion dur="9s" repeatCount="indefinite" path="M 70 150 Q 500 -30 930 150"/>
+        <animate attributeName="fill" values="var(--am-soft);var(--pm-soft);var(--am-soft)" dur="9s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <div class="celestial sun"></div>
+    <div class="celestial moon">
+      <div class="stars">
+        <span style="top:-14px;left:6px;animation-delay:0s;"></span>
+        <span style="top:8px;left:-16px;animation-delay:.6s;"></span>
+        <span style="top:44px;left:-8px;animation-delay:1.2s;"></span>
+        <span style="top:-6px;left:52px;animation-delay:1.8s;"></span>
+        <span style="top:40px;left:56px;animation-delay:.9s;"></span>
+      </div>
+    </div>
+  </div>
+</div>

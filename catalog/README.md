@@ -16,7 +16,7 @@ A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all eleven (click a
+Open [index.html](index.html) for a browsable gallery of all twelve (click a
 card to load its live preview — they're not auto-loaded so the page doesn't
 try to run four GSAP timelines and a WebGL scene at once).
 
@@ -70,6 +70,7 @@ side; this folder is the design-reference side.
 | [GradedScale — Strict Enum Badge](visual-components/graded-scale/gradedscale-spike.html) | `gradedscale-spike.html` | 5-node hard-enum badge (integers 1–5 only); `validateGradedScale()` fails loud on anything else | Component 4/5 |
 | [SplitFaceProtocol — Clinical Vector Map](visual-components/split-face-protocol/splitfaceprotocol-spike.html) | `splitfaceprotocol-spike.html` | Pure-SVG bilateral study diagram — `#control-arm` / `#active-arm`, independently targetable, no photography | Unnumbered |
 | [Dawn to Dusk Skincare](visual-components/dawn-to-dusk-routine/am-pm-skincare-spike.html) | `am-pm-skincare-spike.html` | AM ("Protect", 5 steps) vs PM ("Treat + Replenish", 5 steps) routine checklist | Unnumbered, earlier-stage — no design-law framing or deterministic clock yet |
+| [Celestial Arc](visual-components/celestial-arc/celestial-arc-spike.html) | `celestial-arc-spike.html` | Day/night sky motif — dashed sunrise-to-sunset arc, traveling color-shift dot, pulsing CSS sun, crescent moon + twinkling stars | Unnumbered — extracted from Dawn to Dusk Skincare's hero backdrop so the motif is reusable on its own |
 
 The in-page numbering (3/5, 4/5) is the components' own — slots 1, 2, and 5
 don't appear among today's files, so treat that as a hint about a larger

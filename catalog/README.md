@@ -11,12 +11,16 @@ here:
   to any one ingredient (an evidence meter, a graded-scale badge, a
   split-face diagram, an AM/PM routine layout). Any ingredient can be dropped
   into one of these.
+- **`marks/`** — standalone identity/logo exploration: flat vector marks
+  (primary pick + alternates), not full posters or explainers. Some are
+  ingredient-specific (PDRN, ginseng), one is a generic ingredient study,
+  one is a brand-level proposal not tied to any ingredient at all.
 
 A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all twelve (click a
+Open [index.html](index.html) for a browsable gallery of all sixteen (click a
 card to load its live preview — they're not auto-loaded so the page doesn't
 try to run four GSAP timelines and a WebGL scene at once).
 
@@ -75,6 +79,23 @@ side; this folder is the design-reference side.
 The in-page numbering (3/5, 4/5) is the components' own — slots 1, 2, and 5
 don't appear among today's files, so treat that as a hint about a larger
 plan rather than a complete series.
+
+## Marks
+
+Standalone identity/logo exploration — a primary pick plus alternates per
+folder, generated via Recraft AI (provenance embedded in each SVG's own
+C2PA metadata). Not posters, not reusable UI patterns — just marks.
+
+| Item | Files | What it is |
+|---|---|---|
+| [PDRN Mark](marks/pdrn/README.md) | `pdrn-primary.svg` + 8 alts | Double-helix abstraction, clinical teal with a coral accent strand |
+| [Ginseng Mark](marks/ginseng/README.md) | `ginseng-primary.svg` + 3 alts | Abstract root mark matched to a real reference photo — ringed neck, tapering body, root-hair tendrils |
+| [Ingredient Mark (generic)](marks/ingredient-generic/README.md) | `ingredient-primary.svg` + 3 alts | Generic study preceding the named marks — leaf/droplet silhouette in jade, not tied to one ingredient |
+| [Fold & Spark Brand Mark](marks/brand-education/README.md) | `logo-primary.svg` + 3 alts | Brand-level proposal, not ingredient-specific — angular fan/pages symbol with a spark facet, on deep slate navy |
+
+`Fold & Spark` doesn't appear anywhere else in this repo yet — flagged in
+its own README as worth confirming with whoever's driving brand strategy
+before the name spreads further.
 
 ## Status legend
 

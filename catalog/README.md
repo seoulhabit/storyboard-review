@@ -16,7 +16,7 @@ A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all ten (click a
+Open [index.html](index.html) for a browsable gallery of all eleven (click a
 card to load its live preview — they're not auto-loaded so the page doesn't
 try to run four GSAP timelines and a WebGL scene at once).
 
@@ -48,6 +48,7 @@ rediscovering per file:
 | [Snail Mucin Essence](ingredients/snail-mucin/snail-mucin-poster-spike.html) | `snail-mucin-poster-spike.html` | Same poster template family as PDRN Renewal (5 actives / 4 benefits) applied to a different ingredient | Spike — full video since produced at `../videos/snail-mucin-glass-skin/` |
 | [Ginseng](ingredients/ginseng/README.md) | *(linked, not duplicated)* | "Red Ginseng: Two Routes" — oral vs. topical delivery aren't interchangeable, split-screen comparison scene is the thesis | Linked to `../videos/red-ginseng-two-routes/` — no spike file, real project already has a proper home |
 | [Retinal vs. Retinol](ingredients/retinal-vs-retinol/README.md) | *(no asset yet)* | "What the Research Actually Compared" — validated script exists, but no poster/spike/video project in this repo | Gap — flagged, not fabricated |
+| [Skincare Ingredient Glossary](ingredients/skincare-ingredient-glossary/README.md) | *(linked, not duplicated)* | 76s breadth-first pass — 20 ingredients, AHA/BHA through Vitamin C, one "what it is / best for" card each | Linked to `../videos/skincare-ingredient-glossary/` — already rendered, overlaps 3 ingredients with dedicated entries above without duplicating them |
 
 Reference images: [pdrn-poster-bubbles.png](ingredients/pdrn/pdrn-poster-bubbles.png), [pdrn-poster-helix.png](ingredients/pdrn/pdrn-poster-helix.png) — two visual-motif options reviewed side by side (see `storyboard_pdrn-poster.html` at the repo root).
 

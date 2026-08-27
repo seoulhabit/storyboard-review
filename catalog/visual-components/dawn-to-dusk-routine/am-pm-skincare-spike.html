@@ -27,7 +27,7 @@
     --am-1:#D9A441; --am-2:#D6853C; --am-3:#C96A2C; --am-4:#BC5A35; --am-5:#A8472E;
     --pm-1:#7A6BA8; --pm-2:#6B5B95; --pm-3:#4A3D6B; --pm-4:#5C4A8A; --pm-5:#3D3160;
 
-    /* am-1 / am-2 are too light for the page-bg badge numeral to clear 3:1 — ink instead */
+    /* am-1 / am-2 are too light to clear 3:1 as leader-line text on the panel — ink instead */
     --am-1-num:var(--ink); --am-2-num:var(--ink);
   }
   @media (prefers-color-scheme: dark){
@@ -61,8 +61,8 @@
       --pm-4:color-mix(in srgb, #5C4A8A 65%, white);
       --pm-5:color-mix(in srgb, #3D3160 65%, white);
 
-      /* dark-mode am-1/am-2 are lightened pastels — page-bg (near-black) numeral already clears 3:1 */
-      --am-1-num:var(--page-bg); --am-2-num:var(--page-bg);
+      /* dark-mode am-1/am-2 pastels pass 3:1 as leader-line text on the dark panel directly */
+      --am-1-num:var(--am-1); --am-2-num:var(--am-2);
     }
   }
   :root[data-theme="dark"]{
@@ -95,7 +95,7 @@
     --pm-4:color-mix(in srgb, #5C4A8A 65%, white);
     --pm-5:color-mix(in srgb, #3D3160 65%, white);
 
-    --am-1-num:var(--page-bg); --am-2-num:var(--page-bg);
+    --am-1-num:var(--am-1); --am-2-num:var(--am-2);
   }
 
   *{ box-sizing:border-box; }
@@ -289,44 +289,44 @@
   .routine--pm .step-node{ color:var(--pm); }
   .step:hover .step-node{ box-shadow:0 0 0 1px var(--line), 0 6px 16px -6px currentColor; }
 
-  .step-num{
+  .step-tick{
     position:absolute;
-    bottom:-3px; right:-3px;
-    width:18px; height:18px;
-    border-radius:50%;
-    font-size:0.62rem;
+    left:100%; bottom:6px;
+    margin-left:6px;
+    display:flex; align-items:center; gap:5px;
+    white-space:nowrap;
+  }
+  .step-tick-line{ width:12px; height:1.5px; background:var(--line-strong); }
+  .step-ordinal{
+    font-size:1.2rem;
     font-weight:700;
-    display:flex; align-items:center; justify-content:center;
-    color:var(--page-bg);
-    box-shadow:0 0 0 2px var(--page-bg);
+    line-height:1;
     font-variant-numeric:tabular-nums;
   }
-  .routine--am .step-num{ background:var(--am); }
-  .routine--pm .step-num{ background:var(--pm); }
 
   /* each step gets its own hue within the routine's warm/cool family — the
      register still reads at a glance, but no two icons repeat the same color */
   .routine--am .step:nth-of-type(1) .step-node{ color:var(--am-1); }
-  .routine--am .step:nth-of-type(1) .step-num{ background:var(--am-1); color:var(--am-1-num); }
+  .routine--am .step:nth-of-type(1) .step-ordinal{ color:var(--am-1-num); }
   .routine--am .step:nth-of-type(2) .step-node{ color:var(--am-2); }
-  .routine--am .step:nth-of-type(2) .step-num{ background:var(--am-2); color:var(--am-2-num); }
+  .routine--am .step:nth-of-type(2) .step-ordinal{ color:var(--am-2-num); }
   .routine--am .step:nth-of-type(3) .step-node{ color:var(--am-3); }
-  .routine--am .step:nth-of-type(3) .step-num{ background:var(--am-3); }
+  .routine--am .step:nth-of-type(3) .step-ordinal{ color:var(--am-3); }
   .routine--am .step:nth-of-type(4) .step-node{ color:var(--am-4); }
-  .routine--am .step:nth-of-type(4) .step-num{ background:var(--am-4); }
+  .routine--am .step:nth-of-type(4) .step-ordinal{ color:var(--am-4); }
   .routine--am .step:nth-of-type(5) .step-node{ color:var(--am-5); }
-  .routine--am .step:nth-of-type(5) .step-num{ background:var(--am-5); }
+  .routine--am .step:nth-of-type(5) .step-ordinal{ color:var(--am-5); }
 
   .routine--pm .step:nth-of-type(1) .step-node{ color:var(--pm-1); }
-  .routine--pm .step:nth-of-type(1) .step-num{ background:var(--pm-1); }
+  .routine--pm .step:nth-of-type(1) .step-ordinal{ color:var(--pm-1); }
   .routine--pm .step:nth-of-type(2) .step-node{ color:var(--pm-2); }
-  .routine--pm .step:nth-of-type(2) .step-num{ background:var(--pm-2); }
+  .routine--pm .step:nth-of-type(2) .step-ordinal{ color:var(--pm-2); }
   .routine--pm .step:nth-of-type(3) .step-node{ color:var(--pm-3); }
-  .routine--pm .step:nth-of-type(3) .step-num{ background:var(--pm-3); }
+  .routine--pm .step:nth-of-type(3) .step-ordinal{ color:var(--pm-3); }
   .routine--pm .step:nth-of-type(4) .step-node{ color:var(--pm-4); }
-  .routine--pm .step:nth-of-type(4) .step-num{ background:var(--pm-4); }
+  .routine--pm .step:nth-of-type(4) .step-ordinal{ color:var(--pm-4); }
   .routine--pm .step:nth-of-type(5) .step-node{ color:var(--pm-5); }
-  .routine--pm .step:nth-of-type(5) .step-num{ background:var(--pm-5); }
+  .routine--pm .step:nth-of-type(5) .step-ordinal{ color:var(--pm-5); }
 
   .step-copy{ margin-top:10px; }
   .step-copy h3{
@@ -398,7 +398,7 @@
         <li class="step" style="--i:0">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 1 1-12 0c0-3.5 3-7 6-11z"/></svg>
-            <span class="step-num">1</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">1</span></span>
           </span>
           <div class="step-copy"><h3>Cleanser</h3><p>Remove sweat &amp; oil from overnight</p></div>
         </li>
@@ -406,7 +406,7 @@
         <li class="step" style="--i:1">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.3" y="4.4" width="11.4" height="16.4" rx="3.2"/><rect x="9.3" y="1.4" width="5.4" height="3" rx="1.2"/><rect x="8.8" y="8.6" width="6.4" height="4.4" rx="0.6"/></svg>
-            <span class="step-num">2</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">2</span></span>
           </span>
           <div class="step-copy"><h3>Toner</h3><p>Refresh &amp; prep the skin</p></div>
         </li>
@@ -414,7 +414,7 @@
         <li class="step" style="--i:2">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6l-1.1 4.3h-3.8z"/><path d="M9.5 7.5 8.2 15a3.9 3.9 0 0 0 7.6 0l-1.3-7.5"/><circle cx="12" cy="19.4" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="step-num">3</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">3</span></span>
           </span>
           <div class="step-copy"><h3>Antioxidant Serum</h3><p>Brighten &amp; fight free radicals</p></div>
         </li>
@@ -422,7 +422,7 @@
         <li class="step" style="--i:3">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9.5" width="12" height="10.5" rx="3"/><path d="M8.2 9.5V7.3a2 2 0 0 1 2-2h3.6a2 2 0 0 1 2 2v2.2"/><line x1="6" y1="13.3" x2="18" y2="13.3"/></svg>
-            <span class="step-num">4</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">4</span></span>
           </span>
           <div class="step-copy"><h3>Moisturizer</h3><p>Hydrate &amp; soften skin</p></div>
         </li>
@@ -430,7 +430,7 @@
         <li class="step" style="--i:4">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3.4"/><path d="M12 3.2v1.3M17.2 5.4l-1 1M19.6 10.2h-1.3M6.4 5.4l1 1M4.4 10.2h1.3"/><path d="M6.2 14.6c1.4 2.8 3.8 4.2 5.8 4.2s4.4-1.4 5.8-4.2"/></svg>
-            <span class="step-num">5</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">5</span></span>
           </span>
           <div class="step-copy"><h3>Sunscreen</h3><p>Protect from UV rays</p></div>
         </li>
@@ -451,7 +451,7 @@
         <li class="step" style="--i:0">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 1 1-12 0c0-3.5 3-7 6-11z"/></svg>
-            <span class="step-num">1</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">1</span></span>
           </span>
           <div class="step-copy"><h3>Cleanser</h3><p>Remove makeup &amp; buildup</p></div>
         </li>
@@ -459,7 +459,7 @@
         <li class="step" style="--i:1">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.3" y="4.4" width="11.4" height="16.4" rx="3.2"/><rect x="9.3" y="1.4" width="5.4" height="3" rx="1.2"/><rect x="8.8" y="8.6" width="6.4" height="4.4" rx="0.6"/></svg>
-            <span class="step-num">2</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">2</span></span>
           </span>
           <div class="step-copy"><h3>Toner</h3><p>Rebalance after cleansing</p></div>
         </li>
@@ -467,7 +467,7 @@
         <li class="step" style="--i:2">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="step-num">3</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">3</span></span>
           </span>
           <div class="step-copy"><h3>Treatment</h3><p>Target acne, aging, or pigmentation</p></div>
         </li>
@@ -475,7 +475,7 @@
         <li class="step" style="--i:3">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6l-1.1 4.3h-3.8z"/><path d="M9.5 7.5 8.2 15a3.9 3.9 0 0 0 7.6 0l-1.3-7.5"/><circle cx="12" cy="19.4" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="step-num">4</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">4</span></span>
           </span>
           <div class="step-copy"><h3>Serum or Booster</h3><p>Deep hydration &amp; nourishment</p></div>
         </li>
@@ -483,7 +483,7 @@
         <li class="step" style="--i:4">
           <span class="step-node">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="10.2" width="12" height="9.8" rx="3"/><line x1="6" y1="14" x2="18" y2="14"/><path d="M10 6.6a2.6 2.6 0 1 0 3 3 2 2 0 0 1-3-3z" fill="currentColor" stroke="none"/></svg>
-            <span class="step-num">5</span>
+            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">5</span></span>
           </span>
           <div class="step-copy"><h3>Night Cream</h3><p>Lock in moisture overnight</p></div>
         </li>

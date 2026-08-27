@@ -9,11 +9,19 @@ Dawn to Dusk / "Cape Family Medical" mess in
 for why that matters).
 
 **Project:** `../../../videos/red-ginseng-two-routes/` — "Red Ginseng: Two
-Routes." Six-scene, 40s, 1080x1920 concept-explainer. Hook: *"The strongest
+Routes." Six-scene, 1080x1920 concept-explainer. Hook: *"The strongest
 ginseng study never touched skin. It was swallowed."* The whole video argues
 that oral and topical red ginseng aren't interchangeable — each delivery
-route is backed by a separate real clinical study (`ING-ginseng-S001`,
-`S002`, `S005`, `S006`), with its own sample size, duration, and claim.
+route is backed by a separate real clinical study (oral: `ING-ginseng-S002`;
+topical: `S001`, `S005`, `S006`), with its own sample size, duration, and
+claim.
+
+**Rendered:** `renders/video.mp4` — 40.1s, 1080x1920, 5.4MB (confirmed via
+`ffprobe`). Finished with a Hanbang/apothecary art-direction pass over the
+earlier build: concentric root/ripple ring motifs, sine-wave linework
+replacing a jagged wrinkle line, a gold-seal treatment for the 인삼 Hangul,
+softer corners throughout. Passed the full lint/layout/motion/contrast
+check clean (41/41 contrast).
 
 Scenes: hook (dried-root pan) → botanical identity → oral/systemic route →
 topical route → **side-by-side comparison** (the crux — split-screen

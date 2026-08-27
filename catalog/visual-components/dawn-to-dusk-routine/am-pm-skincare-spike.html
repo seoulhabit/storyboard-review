@@ -22,6 +22,13 @@
     --line-strong:rgba(43,36,32,0.24);
     --shadow:0 1px 2px rgba(43,36,32,0.06);
     --shadow-lift:0 18px 32px -20px rgba(43,36,32,0.35);
+
+    /* one unique, harmonious hue per step icon — still reads as one warm/cool family */
+    --am-1:#D9A441; --am-2:#D6853C; --am-3:#C96A2C; --am-4:#BC5A35; --am-5:#A8472E;
+    --pm-1:#7A6BA8; --pm-2:#6B5B95; --pm-3:#4A3D6B; --pm-4:#5C4A8A; --pm-5:#3D3160;
+
+    /* am-1 / am-2 are too light for the page-bg badge numeral to clear 3:1 — ink instead */
+    --am-1-num:var(--ink); --am-2-num:var(--ink);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -42,6 +49,20 @@
       --line-strong:rgba(243,236,228,0.26);
       --shadow:0 1px 2px rgba(0,0,0,0.3);
       --shadow-lift:0 18px 36px -18px rgba(0,0,0,0.6);
+
+      --am-1:color-mix(in srgb, #D9A441 65%, white);
+      --am-2:color-mix(in srgb, #D6853C 65%, white);
+      --am-3:#F0A857;
+      --am-4:color-mix(in srgb, #BC5A35 65%, white);
+      --am-5:color-mix(in srgb, #A8472E 65%, white);
+      --pm-1:color-mix(in srgb, #7A6BA8 65%, white);
+      --pm-2:#B0A4D9;
+      --pm-3:#9587C4;
+      --pm-4:color-mix(in srgb, #5C4A8A 65%, white);
+      --pm-5:color-mix(in srgb, #3D3160 65%, white);
+
+      /* dark-mode am-1/am-2 are lightened pastels — page-bg (near-black) numeral already clears 3:1 */
+      --am-1-num:var(--page-bg); --am-2-num:var(--page-bg);
     }
   }
   :root[data-theme="dark"]{
@@ -62,6 +83,19 @@
     --line-strong:rgba(243,236,228,0.26);
     --shadow:0 1px 2px rgba(0,0,0,0.3);
     --shadow-lift:0 18px 36px -18px rgba(0,0,0,0.6);
+
+    --am-1:color-mix(in srgb, #D9A441 65%, white);
+    --am-2:color-mix(in srgb, #D6853C 65%, white);
+    --am-3:#F0A857;
+    --am-4:color-mix(in srgb, #BC5A35 65%, white);
+    --am-5:color-mix(in srgb, #A8472E 65%, white);
+    --pm-1:color-mix(in srgb, #7A6BA8 65%, white);
+    --pm-2:#B0A4D9;
+    --pm-3:#9587C4;
+    --pm-4:color-mix(in srgb, #5C4A8A 65%, white);
+    --pm-5:color-mix(in srgb, #3D3160 65%, white);
+
+    --am-1-num:var(--page-bg); --am-2-num:var(--page-bg);
   }
 
   *{ box-sizing:border-box; }
@@ -88,17 +122,6 @@
   .hero{
     padding-top:clamp(56px,9vw,104px);
     padding-bottom:clamp(28px,5vw,48px);
-  }
-  .eyebrow{
-    font-size:0.75rem;
-    font-weight:600;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--ink-faint);
-    margin-bottom:18px;
-    opacity:0;
-    transform:translateY(8px);
-    animation:rise 0.7s ease forwards;
   }
   h1.title{
     font-size:clamp(2.6rem,6vw,4.4rem);
@@ -236,26 +259,13 @@
     margin:0; padding:0;
     position:relative;
   }
-  .timeline-track{
-    position:absolute;
-    left:23px;
-    top:24px;
-    bottom:24px;
-    width:2px;
-    transform:scaleY(0);
-    transform-origin:top;
-    transition:transform 1.1s cubic-bezier(.4,.1,.2,1);
-  }
-  .routine--am .timeline-track{ background:linear-gradient(var(--am-soft), color-mix(in srgb, var(--am) 55%, transparent)); }
-  .routine--pm .timeline-track{ background:linear-gradient(var(--pm-soft), color-mix(in srgb, var(--pm) 55%, transparent)); }
-  .routine.in-view .timeline-track{ transform:scaleY(1); }
-
   .step{
-    display:grid;
-    grid-template-columns:48px 1fr;
-    column-gap:16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
     position:relative;
-    padding-block:11px;
+    padding-block:16px;
     opacity:0;
     transform:translateY(14px);
     transition:opacity 0.6s ease, transform 0.6s ease, background-color .25s ease;
@@ -294,7 +304,31 @@
   .routine--am .step-num{ background:var(--am); }
   .routine--pm .step-num{ background:var(--pm); }
 
-  .step-copy{ padding-top:2px; }
+  /* each step gets its own hue within the routine's warm/cool family — the
+     register still reads at a glance, but no two icons repeat the same color */
+  .routine--am .step:nth-of-type(1) .step-node{ color:var(--am-1); }
+  .routine--am .step:nth-of-type(1) .step-num{ background:var(--am-1); color:var(--am-1-num); }
+  .routine--am .step:nth-of-type(2) .step-node{ color:var(--am-2); }
+  .routine--am .step:nth-of-type(2) .step-num{ background:var(--am-2); color:var(--am-2-num); }
+  .routine--am .step:nth-of-type(3) .step-node{ color:var(--am-3); }
+  .routine--am .step:nth-of-type(3) .step-num{ background:var(--am-3); }
+  .routine--am .step:nth-of-type(4) .step-node{ color:var(--am-4); }
+  .routine--am .step:nth-of-type(4) .step-num{ background:var(--am-4); }
+  .routine--am .step:nth-of-type(5) .step-node{ color:var(--am-5); }
+  .routine--am .step:nth-of-type(5) .step-num{ background:var(--am-5); }
+
+  .routine--pm .step:nth-of-type(1) .step-node{ color:var(--pm-1); }
+  .routine--pm .step:nth-of-type(1) .step-num{ background:var(--pm-1); }
+  .routine--pm .step:nth-of-type(2) .step-node{ color:var(--pm-2); }
+  .routine--pm .step:nth-of-type(2) .step-num{ background:var(--pm-2); }
+  .routine--pm .step:nth-of-type(3) .step-node{ color:var(--pm-3); }
+  .routine--pm .step:nth-of-type(3) .step-num{ background:var(--pm-3); }
+  .routine--pm .step:nth-of-type(4) .step-node{ color:var(--pm-4); }
+  .routine--pm .step:nth-of-type(4) .step-num{ background:var(--pm-4); }
+  .routine--pm .step:nth-of-type(5) .step-node{ color:var(--pm-5); }
+  .routine--pm .step:nth-of-type(5) .step-num{ background:var(--pm-5); }
+
+  .step-copy{ margin-top:10px; }
   .step-copy h3{
     font-family:'Karla',sans-serif;
     font-size:1.02rem;
@@ -308,33 +342,16 @@
     color:var(--ink-soft);
   }
 
-  /* ---------- footer ---------- */
-  footer{
-    padding:clamp(28px,5vw,44px) 0 clamp(56px,8vw,80px);
-    text-align:left;
-  }
-  .divider{ height:1px; background:var(--line); margin-bottom:24px; }
-  .footer-label{ font-size:0.8rem; color:var(--ink-faint); }
-  .footer-handle{
-    margin-top:4px;
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-size:1.4rem;
-    color:var(--ink);
-  }
-
   @media (prefers-reduced-motion: reduce){
-    .eyebrow,h1.title,.hero-sub{ animation:none; opacity:1; transform:none; }
+    h1.title,.hero-sub{ animation:none; opacity:1; transform:none; }
     .sun::before,.moon,.stars span,.arc-dot,.sun{ animation:none !important; }
     .step{ transition:none; opacity:1; transform:none; }
-    .timeline-track{ transition:none; transform:scaleY(1); }
   }
 </style>
 
 <div class="wrap">
 
   <header class="hero">
-    <p class="eyebrow">A guide from Cape Family Medical</p>
     <h1 class="title"><span class="tt-am">AM</span> <em>vs</em> <span class="tt-pm">PM</span><br>Skincare</h1>
     <p class="hero-sub">What actually changes between sunrise and sundown &mdash; and why the order you apply things in still matters.</p>
   </header>
@@ -377,7 +394,6 @@
       <p class="tagline">Morning = Protect</p>
 
       <ol class="steps">
-        <div class="timeline-track"></div>
 
         <li class="step" style="--i:0">
           <span class="step-node">
@@ -389,7 +405,7 @@
 
         <li class="step" style="--i:1">
           <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c2 2.6 4 5 4 7.4a4 4 0 1 1-8 0C8 11 10 8.6 12 6z"/><circle cx="5.3" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="18.2" cy="6.6" r="0.8" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.3" y="4.4" width="11.4" height="16.4" rx="3.2"/><rect x="9.3" y="1.4" width="5.4" height="3" rx="1.2"/><rect x="8.8" y="8.6" width="6.4" height="4.4" rx="0.6"/></svg>
             <span class="step-num">2</span>
           </span>
           <div class="step-copy"><h3>Toner</h3><p>Refresh &amp; prep the skin</p></div>
@@ -431,7 +447,6 @@
       <p class="tagline">Night = Treat + Replenish</p>
 
       <ol class="steps">
-        <div class="timeline-track"></div>
 
         <li class="step" style="--i:0">
           <span class="step-node">
@@ -443,7 +458,7 @@
 
         <li class="step" style="--i:1">
           <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c2 2.6 4 5 4 7.4a4 4 0 1 1-8 0C8 11 10 8.6 12 6z"/><circle cx="5.3" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="18.2" cy="6.6" r="0.8" fill="currentColor" stroke="none"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.3" y="4.4" width="11.4" height="16.4" rx="3.2"/><rect x="9.3" y="1.4" width="5.4" height="3" rx="1.2"/><rect x="8.8" y="8.6" width="6.4" height="4.4" rx="0.6"/></svg>
             <span class="step-num">2</span>
           </span>
           <div class="step-copy"><h3>Toner</h3><p>Rebalance after cleansing</p></div>
@@ -476,12 +491,6 @@
     </section>
 
   </main>
-
-  <footer>
-    <div class="divider"></div>
-    <p class="footer-label">As shared by</p>
-    <p class="footer-handle">@capefamilymedicalclinic</p>
-  </footer>
 
 </div>
 

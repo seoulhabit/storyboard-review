@@ -16,7 +16,7 @@ A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all ten (click a
+Open [index.html](index.html) for a browsable gallery of all nine (click a
 card to load its live preview — they're not auto-loaded so the page doesn't
 try to run four GSAP timelines and a WebGL scene at once).
 
@@ -44,11 +44,15 @@ rediscovering per file:
 | Item | File | Format | Status |
 |---|---|---|---|
 | [PDRN Renewal](ingredients/pdrn/pdrn-poster-spike.html) | `pdrn-poster-spike.html` | Branded hero poster — 4 steps / 7 benefits, Trinity Medical Aesthetics, Traditional Chinese copy | Spike |
-| [PDRN Renewal Codex](ingredients/pdrn/pdrn-poster-variation-spike.html) | `pdrn-poster-variation-spike.html` | DNA-helix variation of PDRN Renewal — dark biotech-lab palette, spec-sheet step index (04/07) instead of bubble callouts, Trinity credit pulled back to a quiet line | Spike |
 | [PDRN Skin Regeneration](ingredients/pdrn/pdrn-skin-regeneration-spike.html) | `pdrn-skin-regeneration-spike.html` | 3-point mechanism explainer (Barrier Repair / Reduces Inflammation / Boosts Cell Renewal) — not a poster, a different scene format entirely | Spike |
-| [Snail Mucin Essence](ingredients/snail-mucin/snail-mucin-poster-spike.html) | `snail-mucin-poster-spike.html` | Same poster template family as PDRN Renewal (5 actives / 4 benefits) applied to a different ingredient | Spike — mid-edit (brand lockup just removed) |
+| [Snail Mucin Essence](ingredients/snail-mucin/snail-mucin-poster-spike.html) | `snail-mucin-poster-spike.html` | Same poster template family as PDRN Renewal (5 actives / 4 benefits) applied to a different ingredient | Spike — full video since produced at `../videos/snail-mucin-glass-skin/` |
 
-Reference images: [pdrn-poster-bubbles.png](ingredients/pdrn/pdrn-poster-bubbles.png), [pdrn-poster-helix.png](ingredients/pdrn/pdrn-poster-helix.png) — two visual-motif options reviewed side by side (see `storyboard_pdrn-poster.html` at the repo root); `pdrn-poster-spike.html` and `pdrn-poster-variation-spike.html` above are the posters each one fed into.
+Reference images: [pdrn-poster-bubbles.png](ingredients/pdrn/pdrn-poster-bubbles.png), [pdrn-poster-helix.png](ingredients/pdrn/pdrn-poster-helix.png) — two visual-motif options reviewed side by side (see `storyboard_pdrn-poster.html` at the repo root).
+
+`pdrn-poster-variation-spike.html` ("PDRN Renewal Codex") has been dropped
+from the catalog twice now — once here, once by a separate session that then
+re-added it on a mistaken git-history assumption. Recoverable from git
+history if it's ever wanted back, but it's not part of the active catalog.
 
 A real HyperFrames project scaffold for PDRN skin regeneration already exists
 separately at `../videos/pdrn-skin-regeneration/` — that's the production

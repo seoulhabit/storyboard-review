@@ -1,0 +1,60 @@
+Production Script: Two Routes, Two Studies
+Format: 9:16 Vertical (YouTube Shorts / TikTok / Reels)
+Target Length: ~40 seconds
+
+Scene 1: The Hook (0:00 - 0:05)
+Visual Strategy: Start with a high-retention visual. Keep it minimal—no geometry or evidence meters yet, just text and voiceover over a captivating background (perhaps a slow, dramatic pan over dried red ginseng roots).
+Voiceover / Text: "The strongest ginseng study never touched skin. It was swallowed."
+On-Screen: [Authored, marked not-a-claim]
+
+Scene 2: Identity (0:05 - 0:10)
+Visual Strategy: Introduce the botanical subject clearly, like a scientific dossier or raw ingredient breakdown.
+On-Screen Text:
+- 인삼 · Panax ginseng
+- INCI: PANAX GINSENG ROOT EXTRACT
+- Botanical: Steamed or dried roots
+
+Scene 3: Route One - Oral (0:10 - 0:22)
+Visual Strategy: Show the DepthOfAction diagram. Highlight systemic arrival—place the marker deep in the dermis. Tag "Surface" and "Upper skin" as "Not reached."
+Voiceover Focus: The slow, structural build from within.
+On-Screen Text:
+- FRAME: This route never crosses the surface.
+- CLAIM: Restores structural spring and bounce to sagging skin, locks in hydration, and stops chronic peeling and dryness.
+- ROUTE: Oral — Systemic (750 mg daily capsules)
+- STUDY: 78 randomized individuals, double-blind, placebo-controlled, 24 weeks.
+- Note: Results build gradually over a 6-month period and require strict daily compliance.
+- CITATION: ⌞ ING-ginseng-S002 ⌟
+
+Scene 4: Route Two - Topical (0:22 - 0:32)
+Visual Strategy: Change the DepthOfAction diagram. Show topical entry from above, visualizing the strata traversed.
+Voiceover Focus: The targeted, surface-level correction.
+On-Screen Text:
+- FRAME: This route starts at the surface.
+- CLAIM: Significantly reduces wrinkle depth, smooths out eye area crow's feet, and plumps facial skin.
+- ROUTE: Topical (1.0% to 5.0% enzyme-modified or steamed extract)
+- STUDY: 23 healthy subjects with visible wrinkles, 8 weeks.
+- Note: Wrinkle reduction is highly dependent on the bioavailable rare ginsenosides; standard white extracts may require 12–24 weeks for comparable results.
+- CITATION: ⌞ ING-ginseng-S001 · S005 · S006 ⌟
+
+Scene 5: The Comparison (0:32 - 0:37)
+Visual Strategy: Bring both markers onto one block. Use an aqua accent to highlight the interrogated element. Bring up the EvidenceMeter lockup (claim + chips + meter).
+On-Screen Text:
+- FRAME: Same root. Different journeys.
+- Oral: 78 people, 24 weeks.
+- Topical: 23 people, 8 weeks.
+- CITATION: ⌞ S002 · S001 ⌟
+
+Scene 6: End Card (0:37 - 0:40)
+Visual Strategy: Frame zero holds this dense, information-rich state. No new claims, just credibility anchors and branding.
+On-Screen Text:
+- 습 SeoulHabit
+- Red Ginseng: What the Studies Actually Tested
+- Sources on every claim.
+
+---
+
+Scene 3 & 4 key-visual asset direction (illustrative/conceptual, supplied by user for the editor):
+
+Asset 1 — "The Epidermal Scan" (topical, Scene 4): A futuristic, conceptual 3D render of human skin layers as a semi-transparent voxel grid, like a stylized clinical scan. Multiple epidermal strata visible. Cool blue and deep amber/red with glowing white accents. An amber bead of Red Ginseng serum impacts the surface from above. Blue glowing light radiates only within the uppermost epidermal strata (Stratum Corneum and just below); the deep dermis remains dark. Glowing jagged lines representing wrinkles on the skin surface are visibly smoothed as the blue light pulses over them, as if the product is a fast-acting surface assassin. Camera: clean 3D render, gentle depth of field, a steady illustrative camera move (subtle tilt or zoom). Annotations: subtle UI data points and digital scan lines frame the asset; a small stylized timer icon and the words "8 WEEKS" (glowing font) near the smoothed wrinkle graphic, illustrative time-to-effect only; a stylized glowing "SMOOTH" graphic. Editor's note: all specific numbers and claims on this asset are illustrative concepts, not restated citations.
+
+Asset 2 — "The Dermal Matrix" (systemic/oral, Scene 3): Same Hyperframe futuristic clinical aesthetic, set below the epidermis depicted in Asset 1 — camera aggressively positioned in the dark, cavernous dermis, looking upward toward the stylized voxel underside of the epidermal layers far above. The visualization dives deep to reveal the internal "Dermal Matrix" — a complex scaffolding web that has become weak and collapsed. Pulsing red capillaries and blood vessels dominate the mid-ground. Distinct glowing amber light particles (the extract) are released from the bloodstream. Sagging, broken collagen and elastin strands resemble a fragile, dark web; as the amber particles attach to these broken strands, they instantly tighten and glow with a vibrant amber light, transforming from a broken structure into a firm scaffolding. Camera: an aggressive, powerful, fast, deliberate plunge from just under the skin (connecting from Asset 1's surface view) down into the heart of the dermis, bypassing the surface completely, stopping deep within the matrix. The deep reconstruction (amber transformation and tightening) reads as a clear, dramatic, and visibly different kind of "glow"/structural change compared to Asset 1's surface effect. Annotations: subtle glowing UI data points and digital scan lines matching Asset 1's aesthetic; a tiny stylized heart/blood-vessel icon and the words "BLOODSTREAM" and "SYSTEMIC" subtly visible in glowing white text; a stylized glowing "REBUILD" graphic. Editor's note: all specific numbers and claims on this asset are illustrative concepts, not restated citations.

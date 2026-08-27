@@ -17,5 +17,13 @@ build/
 *.notes.json
 *.feedback.json
 
+# HyperFrames per-project local state/caches (regenerable; absent from every
+# video/*/ project committed so far — preview server state, media-resolution
+# ledger, thumbnail cache, waveform cache).
+.hyperframes/
+.media/
+.thumbnails/
+.waveform-cache/
+
 # macOS
 .DS_Store

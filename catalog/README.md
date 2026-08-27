@@ -16,7 +16,7 @@ A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all nine (click a
+Open [index.html](index.html) for a browsable gallery of all ten (click a
 card to load its live preview — they're not auto-loaded so the page doesn't
 try to run four GSAP timelines and a WebGL scene at once).
 
@@ -46,6 +46,8 @@ rediscovering per file:
 | [PDRN Renewal](ingredients/pdrn/pdrn-poster-spike.html) | `pdrn-poster-spike.html` | Branded hero poster — 4 steps / 7 benefits, Trinity Medical Aesthetics, Traditional Chinese copy | Spike |
 | [PDRN Skin Regeneration](ingredients/pdrn/pdrn-skin-regeneration-spike.html) | `pdrn-skin-regeneration-spike.html` | 3-point mechanism explainer (Barrier Repair / Reduces Inflammation / Boosts Cell Renewal) — not a poster, a different scene format entirely | Spike |
 | [Snail Mucin Essence](ingredients/snail-mucin/snail-mucin-poster-spike.html) | `snail-mucin-poster-spike.html` | Same poster template family as PDRN Renewal (5 actives / 4 benefits) applied to a different ingredient | Spike — full video since produced at `../videos/snail-mucin-glass-skin/` |
+| [Ginseng](ingredients/ginseng/README.md) | *(linked, not duplicated)* | "Red Ginseng: Two Routes" — oral vs. topical delivery aren't interchangeable, split-screen comparison scene is the thesis | Linked to `../videos/red-ginseng-two-routes/` — no spike file, real project already has a proper home |
+| [Retinal vs. Retinol](ingredients/retinal-vs-retinol/README.md) | *(no asset yet)* | "What the Research Actually Compared" — validated script exists, but no poster/spike/video project in this repo | Gap — flagged, not fabricated |
 
 Reference images: [pdrn-poster-bubbles.png](ingredients/pdrn/pdrn-poster-bubbles.png), [pdrn-poster-helix.png](ingredients/pdrn/pdrn-poster-helix.png) — two visual-motif options reviewed side by side (see `storyboard_pdrn-poster.html` at the repo root).
 
@@ -80,3 +82,10 @@ plan rather than a complete series.
 - **Earlier-stage** — a layout sketch without the rules-based framing
   (no design-law callouts, no deterministic clock, no `ING-*` sourcing) the
   other components carry.
+- **Linked** — no file lives under `catalog/`; the entry points at a real
+  project elsewhere in the repo instead of duplicating it. Used when the
+  content already has a proper home (a `videos/` project), unlike a spike
+  that was otherwise homeless at the repo root.
+- **Gap** — no design asset exists in this repo at all yet. Documented
+  honestly rather than backfilled with a placeholder, so it reads as
+  "nothing built yet," not "something built badly."

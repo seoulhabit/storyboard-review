@@ -36,6 +36,10 @@
     padding:3px 8px;border-radius:99px;border:1px solid var(--card-edge);color:var(--text-muted);white-space:nowrap;}
   .badge.spike{color:var(--amber);border-color:var(--amber-dim);}
   .badge.sketch{color:var(--teal);border-color:#2f6058;}
+  .badge.linked{color:#6FA8C9;border-color:#3d6a80;}
+  .badge.gap{color:var(--text-faint);border-color:var(--card-edge);}
+  .no-preview{border:1px dashed var(--card-edge);border-radius:8px;padding:14px;
+    font-size:12px;color:var(--text-faint);text-align:center;}
   .card-desc{font-size:12.5px;color:var(--text-muted);line-height:1.5;margin:0;}
   .card-slot{}
   .load-btn{width:100%;background:var(--bg);border:1px dashed var(--card-edge);color:var(--text-muted);
@@ -82,6 +86,10 @@ const ITEMS = {
       status: "spike", desc: "3-point mechanism explainer — Barrier Repair, Reduces Inflammation, Boosts Cell Renewal. Not a poster." },
     { title: "Snail Mucin Essence", file: "snail-mucin-poster-spike.html", src: "ingredients/snail-mucin/snail-mucin-poster-spike.html",
       status: "spike", desc: "Same poster template family as PDRN Renewal — 5 key actives / 4 skin benefits, different ingredient." },
+    { title: "Ginseng — Two Routes", file: "→ videos/red-ginseng-two-routes/", src: null,
+      status: "linked", desc: "“Oral and topical red ginseng aren’t interchangeable.” Linked to the real project, not duplicated. Its scene files are template fragments (need the real HyperFrames runtime, not viewable standalone) — see README.md for the frame-packet write-ups instead." },
+    { title: "Retinal vs. Retinol", file: "no file yet", src: null,
+      status: "gap", desc: "“What the Research Actually Compared.” Validated script exists, but no poster/spike/video project lives in this repo yet." },
   ],
   "grid-components": [
     { title: "EvidenceMeter — Lockup + Design Modes", file: "evidencemeter-spike.html", src: "visual-components/evidence-meter/evidencemeter-spike.html",
@@ -98,8 +106,15 @@ const ITEMS = {
 };
 
 function cardHTML(item) {
-  const badge = item.status === "spike" ? "spike" : "sketch";
   const tag = item.tag ? ` &middot; ${item.tag}` : "";
+  const slot = item.src
+    ? `<div class="card-slot">
+        <button class="load-btn" data-src="${item.src}">&#9654; Load preview</button>
+      </div>
+      <div class="card-links">
+        <a href="${item.src}" target="_blank">Open in new tab &#8599;</a>
+      </div>`
+    : `<div class="no-preview">No local file to preview — see README.md for what exists and where.</div>`;
   return `
     <div class="card">
       <div class="card-head">
@@ -107,15 +122,10 @@ function cardHTML(item) {
           <div class="card-title">${item.title}</div>
           <div class="card-file mono">${item.file}${tag}</div>
         </div>
-        <span class="badge ${badge}">${item.status}</span>
+        <span class="badge ${item.status}">${item.status}</span>
       </div>
       <p class="card-desc">${item.desc}</p>
-      <div class="card-slot">
-        <button class="load-btn" data-src="${item.src}">&#9654; Load preview</button>
-      </div>
-      <div class="card-links">
-        <a href="${item.src}" target="_blank">Open in new tab &#8599;</a>
-      </div>
+      ${slot}
     </div>`;
 }
 

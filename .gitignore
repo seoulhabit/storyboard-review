@@ -7,11 +7,13 @@ build/
 .venv/
 
 # storyboard.py / storyline.py generated output — regenerable, and some
-# embed base64 video/image data that shouldn't sit in version control
-storyboard.html
-storyboard_*.html
-storyline_*.html
-index.html
+# embed base64 video/image data that shouldn't sit in version control.
+# Anchored to the repo root so it doesn't also catch hand-authored
+# index.html files elsewhere (e.g. catalog/index.html).
+/storyboard.html
+/storyboard_*.html
+/storyline_*.html
+/index.html
 *.notes.json
 *.feedback.json
 

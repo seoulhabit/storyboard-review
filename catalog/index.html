@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Catalog — Story Board</title>
+<style>
+  :root{
+    --bg:#1C1A17; --card:#2C2720; --card-edge:#3A342A;
+    --amber:#E8A33D; --amber-dim:#8A6528; --teal:#4F9B8E;
+    --text:#F0EBE3; --text-muted:#9C948A; --text-faint:#655D51;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(ellipse at top left, rgba(232,163,61,0.05), transparent 55%), var(--bg);
+    color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;min-height:100vh;}
+  .mono{font-family:"SF Mono","JetBrains Mono",Consolas,"Courier New",monospace;}
+  header{padding:28px 32px 20px;border-bottom:1px solid var(--card-edge);}
+  header h1{margin:0 0 4px;font-size:22px;font-weight:700;}
+  header p{margin:0;color:var(--text-muted);font-size:13px;}
+  header a{color:var(--amber);text-decoration:none;}
+  header a:hover{text-decoration:underline;}
+  main{padding:24px 32px 60px;max-width:1200px;margin:0 auto;}
+  .rules{background:var(--card);border:1px solid var(--card-edge);border-radius:10px;
+    padding:16px 20px;margin-bottom:32px;font-size:12.5px;color:var(--text-muted);line-height:1.6;}
+  .rules b{color:var(--text);}
+  section{margin-bottom:36px;}
+  section > h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);
+    margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--card-edge);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));gap:16px;}
+  .card{background:var(--card);border:1px solid var(--card-edge);border-radius:10px;
+    padding:18px 20px;display:flex;flex-direction:column;gap:10px;}
+  .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .card-title{font-size:15px;font-weight:600;}
+  .card-file{font-size:11px;color:var(--text-faint);margin-top:3px;word-break:break-all;}
+  .badge{flex-shrink:0;font-size:10px;text-transform:uppercase;letter-spacing:.04em;
+    padding:3px 8px;border-radius:99px;border:1px solid var(--card-edge);color:var(--text-muted);white-space:nowrap;}
+  .badge.spike{color:var(--amber);border-color:var(--amber-dim);}
+  .badge.sketch{color:var(--teal);border-color:#2f6058;}
+  .card-desc{font-size:12.5px;color:var(--text-muted);line-height:1.5;margin:0;}
+  .card-slot{}
+  .load-btn{width:100%;background:var(--bg);border:1px dashed var(--card-edge);color:var(--text-muted);
+    border-radius:8px;padding:14px;font-size:12px;cursor:pointer;font-family:inherit;}
+  .load-btn:hover{border-color:var(--amber-dim);color:var(--amber);}
+  .card iframe{width:100%;height:480px;border:1px solid var(--card-edge);border-radius:8px;background:#000;}
+  .card-links{display:flex;gap:14px;font-size:11px;}
+  .card-links a{color:var(--text-faint);text-decoration:none;}
+  .card-links a:hover{color:var(--amber);}
+  .empty{color:var(--text-muted);padding:40px 0;text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Component Catalog</h1>
+  <p><span class="mono">Story Board/catalog</span> &middot; see <a href="README.md">README.md</a> for the full write-up · click a card to load its live preview</p>
+</header>
+<main>
+  <div class="rules">
+    <b>Shared design rules</b> across the rules-based components (EvidenceMeter, GradedScale, SplitFaceProtocol):
+    no success color (confirmed reads the same at every level) &middot;
+    deterministic <span class="mono">t</span>-driven GSAP clocks (paused, scrubbed, no autoplay) &middot;
+    locked to their claim/source chip, never rendered standalone. Cards tagged
+    <span class="badge sketch" style="display:inline;padding:2px 6px;">sketch</span> don't follow these yet.
+  </div>
+
+  <section>
+    <h2>Ingredients — substance-specific</h2>
+    <div class="grid" id="grid-ingredients"></div>
+  </section>
+
+  <section>
+    <h2>Visual components — reusable, ingredient-agnostic</h2>
+    <div class="grid" id="grid-components"></div>
+  </section>
+</main>
+
+<script>
+const ITEMS = {
+  "grid-ingredients": [
+    { title: "PDRN Renewal", file: "pdrn-poster-spike.html", src: "ingredients/pdrn/pdrn-poster-spike.html",
+      status: "spike", desc: "Branded hero poster — 4 steps / 7 benefits, Trinity Medical Aesthetics, Traditional Chinese copy." },
+    { title: "PDRN Renewal Codex", file: "pdrn-poster-variation-spike.html", src: "ingredients/pdrn/pdrn-poster-variation-spike.html",
+      status: "spike", desc: "DNA-helix variation of PDRN Renewal — dark biotech-lab palette, spec-sheet step index instead of bubble callouts." },
+    { title: "PDRN Skin Regeneration", file: "pdrn-skin-regeneration-spike.html", src: "ingredients/pdrn/pdrn-skin-regeneration-spike.html",
+      status: "spike", desc: "3-point mechanism explainer — Barrier Repair, Reduces Inflammation, Boosts Cell Renewal. Not a poster." },
+    { title: "Snail Mucin Essence", file: "snail-mucin-poster-spike.html", src: "ingredients/snail-mucin/snail-mucin-poster-spike.html",
+      status: "spike", desc: "Same poster template family as PDRN Renewal — 5 key actives / 4 skin benefits, different ingredient." },
+  ],
+  "grid-components": [
+    { title: "EvidenceMeter — Lockup + Design Modes", file: "evidencemeter-spike.html", src: "visual-components/evidence-meter/evidencemeter-spike.html",
+      status: "spike", tag: "Component 3/5", desc: "Flat 2D instrument: claim → meter → source footnote. 4 confidence levels, 5 color modes, plus a present/absent design mode." },
+    { title: "EvidenceMeter — Volumetric Monolith", file: "evidencemeter-3d-spike.html", src: "visual-components/evidence-meter/evidencemeter-3d-spike.html",
+      status: "spike", tag: "Component 3/5 (alt)", desc: "Same component as a Three.js 3D object instead of a flat panel." },
+    { title: "GradedScale — Strict Enum Badge", file: "gradedscale-spike.html", src: "visual-components/graded-scale/gradedscale-spike.html",
+      status: "spike", tag: "Component 4/5", desc: "5-node hard-enum badge, integers 1–5 only. validateGradedScale() fails loud on anything else." },
+    { title: "SplitFaceProtocol — Clinical Vector Map", file: "splitfaceprotocol-spike.html", src: "visual-components/split-face-protocol/splitfaceprotocol-spike.html",
+      status: "spike", desc: "Pure-SVG bilateral study diagram — #control-arm / #active-arm, independently targetable, no photography." },
+    { title: "Dawn to Dusk Skincare", file: "am-pm-skincare-spike.html", src: "visual-components/dawn-to-dusk-routine/am-pm-skincare-spike.html",
+      status: "sketch", desc: "AM (“Protect”, 5 steps) vs PM (“Treat + Replenish”, 5 steps) routine checklist. The “day and night” component." },
+  ],
+};
+
+function cardHTML(item) {
+  const badge = item.status === "spike" ? "spike" : "sketch";
+  const tag = item.tag ? ` &middot; ${item.tag}` : "";
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-file mono">${item.file}${tag}</div>
+        </div>
+        <span class="badge ${badge}">${item.status}</span>
+      </div>
+      <p class="card-desc">${item.desc}</p>
+      <div class="card-slot">
+        <button class="load-btn" data-src="${item.src}">&#9654; Load preview</button>
+      </div>
+      <div class="card-links">
+        <a href="${item.src}" target="_blank">Open in new tab &#8599;</a>
+      </div>
+    </div>`;
+}
+
+for (const [gridId, items] of Object.entries(ITEMS)) {
+  document.getElementById(gridId).innerHTML = items.map(cardHTML).join("");
+}
+
+document.querySelectorAll(".load-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = btn.dataset.src;
+    btn.replaceWith(iframe);
+  });
+});
+</script>
+</body>
+</html>

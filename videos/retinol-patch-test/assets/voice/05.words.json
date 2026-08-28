@@ -1,0 +1,206 @@
+[
+  {
+    "id": "w0",
+    "text": "Retinol",
+    "start": 0.239,
+    "end": 0.599
+  },
+  {
+    "id": "w1",
+    "text": "reactions",
+    "start": 0.68,
+    "end": 1.22
+  },
+  {
+    "id": "w2",
+    "text": "can",
+    "start": 1.279,
+    "end": 1.399
+  },
+  {
+    "id": "w3",
+    "text": "be",
+    "start": 1.439,
+    "end": 1.5
+  },
+  {
+    "id": "w4",
+    "text": "delayed,",
+    "start": 1.579,
+    "end": 1.959
+  },
+  {
+    "id": "w5",
+    "text": "so",
+    "start": 2.379,
+    "end": 2.519
+  },
+  {
+    "id": "w6",
+    "text": "wait",
+    "start": 2.539,
+    "end": 2.72
+  },
+  {
+    "id": "w7",
+    "text": "48",
+    "start": 2.839,
+    "end": 3.259
+  },
+  {
+    "id": "w8",
+    "text": "hours.",
+    "start": 3.339,
+    "end": 3.759
+  },
+  {
+    "id": "w9",
+    "text": "A",
+    "start": 4.259,
+    "end": 4.319
+  },
+  {
+    "id": "w10",
+    "text": "little",
+    "start": 4.36,
+    "end": 4.519
+  },
+  {
+    "id": "w11",
+    "text": "dryness",
+    "start": 4.599,
+    "end": 4.94
+  },
+  {
+    "id": "w12",
+    "text": "is",
+    "start": 5,
+    "end": 5.079
+  },
+  {
+    "id": "w13",
+    "text": "normal",
+    "start": 5.179,
+    "end": 5.579
+  },
+  {
+    "id": "w14",
+    "text": "—",
+    "start": 5.579,
+    "end": 5.579
+  },
+  {
+    "id": "w15",
+    "text": "but",
+    "start": 5.639,
+    "end": 5.699
+  },
+  {
+    "id": "w16",
+    "text": "if",
+    "start": 5.739,
+    "end": 5.859
+  },
+  {
+    "id": "w17",
+    "text": "you",
+    "start": 5.9,
+    "end": 6.039
+  },
+  {
+    "id": "w18",
+    "text": "see",
+    "start": 6.099,
+    "end": 6.179
+  },
+  {
+    "id": "w19",
+    "text": "severe",
+    "start": 6.319,
+    "end": 6.659
+  },
+  {
+    "id": "w20",
+    "text": "redness,",
+    "start": 6.719,
+    "end": 7.159
+  },
+  {
+    "id": "w21",
+    "text": "stinging,",
+    "start": 7.599,
+    "end": 7.96
+  },
+  {
+    "id": "w22",
+    "text": "or",
+    "start": 8.34,
+    "end": 8.42
+  },
+  {
+    "id": "w23",
+    "text": "raised",
+    "start": 8.519,
+    "end": 8.779
+  },
+  {
+    "id": "w24",
+    "text": "bumps,",
+    "start": 8.88,
+    "end": 9.199
+  },
+  {
+    "id": "w25",
+    "text": "wash",
+    "start": 9.639,
+    "end": 9.819
+  },
+  {
+    "id": "w26",
+    "text": "it",
+    "start": 9.88,
+    "end": 9.939
+  },
+  {
+    "id": "w27",
+    "text": "off.",
+    "start": 10.019,
+    "end": 10.279
+  },
+  {
+    "id": "w28",
+    "text": "Your",
+    "start": 10.819,
+    "end": 10.92
+  },
+  {
+    "id": "w29",
+    "text": "skin",
+    "start": 11,
+    "end": 11.259
+  },
+  {
+    "id": "w30",
+    "text": "needs",
+    "start": 11.319,
+    "end": 11.5
+  },
+  {
+    "id": "w31",
+    "text": "a",
+    "start": 11.539,
+    "end": 11.56
+  },
+  {
+    "id": "w32",
+    "text": "gentler",
+    "start": 11.659,
+    "end": 12.06
+  },
+  {
+    "id": "w33",
+    "text": "formula.",
+    "start": 12.179,
+    "end": 12.659
+  }
+]

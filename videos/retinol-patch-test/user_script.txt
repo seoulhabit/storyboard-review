@@ -1,0 +1,33 @@
+Title Idea: Stop! Don't Ruin Your Skin Barrier (How to Patch Test Retinol)
+Vibe: Cautious but encouraging, educational, and aesthetic.
+
+0:00 - 0:05
+Visual: Hook — you holding the retinol serum looking excited, then putting up a hand to signal "stop."
+VO: "So you just got a brand new Retinol and you want to slather it all over your face immediately? Stop!"
+
+0:05 - 0:15
+Visual: Context — close up of the product texture on your finger. Text on screen: Retinol = Powerful.
+VO: "Retinol is the gold standard for anti-aging and breakouts, but it is incredibly strong. Before you risk a damaged skin barrier, you need to patch test. Here's how to do it safely."
+
+0:15 - 0:25
+Visual: Step 1 — zoom in on you pointing to the safe zone right behind the earlobe or along the jawline.
+VO: "Because retinol speeds up cell turnover, test it right behind your ear or along your jawline. This mimics the skin on your face perfectly."
+
+0:25 - 0:35
+Visual: Step 2 — applying a tiny, pea-sized amount to the skin at night.
+VO: "At night, apply a tiny, pea-sized amount to clean, dry skin. Rub it in gently, and then leave it alone. No other serums or moisturizers on top."
+
+0:35 - 0:45
+Visual: Step 3 — checking the spot. Text on screen: Wait 48 Hours.
+VO: "Retinol reactions can be delayed, so wait 48 hours. A little dryness is normal, but if you see severe redness, stinging, or raised bumps, wash it off—your skin needs a gentler formula."
+
+0:45 - 0:55
+Visual: Outro — smiling, pointing down or to the side. Text on screen: seoulhabit.com.
+VO: "If your skin looks normal, you're ready to start using it slowly. Check out the description or head to seoulhabit.com for our full guide on layering retinol!"
+
+--- adaptation note ---
+This on-camera storyboard was adapted to a faceless motion-graphics build for the
+SeoulHabit design system (see videos/kbeauty-one-percent-line and
+videos/seoulhabit-launch precedent). The six timed segments map 1:1 to the six
+scenes in STORYBOARD.md. See BRIEF.md and SCRIPT.md for the adapted VO and the
+one evidence-rigor edit made to Step 1's line (see frame.md § Content corrections).

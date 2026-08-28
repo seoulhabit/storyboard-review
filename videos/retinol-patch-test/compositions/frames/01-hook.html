@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        /* Tokens copied verbatim from the checked-in SeoulHabit design system:
+           videos/skincare-glossary-part-4-texture-anti-aging/index.html :root */
+        #root {
+          --paper: #f7f5f0;
+          --ink: #131516;
+          --ink-3-dark: #7c8082;
+          --highlighter: #e0a32b;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --short-safe-top: 120px;
+          --short-safe-left: 60px;
+          --short-safe-right: 162px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .hook-silhouette {
+          top: 240px; left: 0; width: 100%; height: 480px;
+          display: flex; justify-content: center; align-items: center;
+        }
+        .hook-bottle {
+          width: 160px; height: 360px;
+          border: 3px solid var(--ink-3-dark);
+          border-radius: 14px 14px 32px 32px;
+          opacity: 0;
+        }
+        .hook-bottle::before {
+          content: "";
+          display: block;
+          width: 56px; height: 48px;
+          margin: -3px auto 0;
+          border: 3px solid var(--ink-3-dark);
+          border-bottom: none;
+          border-radius: 8px 8px 0 0;
+        }
+
+        .hook-text-zone {
+          top: 880px; left: var(--short-safe-left); width: 960px;
+          display: flex; flex-direction: column; align-items: center; gap: 8px;
+        }
+        .hook-line {
+          font-weight: 800; font-size: 84px; line-height: 1.08;
+          letter-spacing: -0.01em; color: var(--ink); text-align: center;
+          text-transform: uppercase;
+        }
+        .hook-word { display: inline-block; margin: 0 0.14em; opacity: 0; }
+
+        .hook-strike-wrap { position: relative; margin-top: 24px; }
+        .hook-strike {
+          position: absolute; left: -24px; right: -24px; top: 50%;
+          height: 12px; background: var(--ink);
+          transform: scaleX(0); transform-origin: left center;
+        }
+
+        .hook-wait {
+          margin-top: 56px;
+          font-family: var(--font-mono);
+          font-weight: 700; font-size: 60px; letter-spacing: 0.04em;
+          color: var(--ink); background: var(--highlighter);
+          padding: 12px 40px; border-radius: 6px;
+          opacity: 0; transform: scale(0.92);
+        }
+      </style>
+
+      <div id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="6.796">
+        <div id="hook-silhouette" class="clip hook-silhouette" data-start="0" data-duration="6.796">
+          <div class="hook-bottle" id="hook-bottle"></div>
+        </div>
+
+        <div id="hook-text-zone" class="clip hook-text-zone" data-start="0" data-duration="6.796">
+          <div class="hook-line hook-line-1" id="hook-line-1"></div>
+          <div class="hook-line hook-line-2 hook-strike-wrap" id="hook-strike-wrap">
+            <span id="hook-line-2"></span>
+            <div class="hook-strike" id="hook-strike"></div>
+          </div>
+          <div class="hook-wait" id="hook-wait">WAIT.</div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#hook-bottle", { opacity: 0, y: 10 }, { opacity: 0.16, y: 0, duration: 0.6, ease: "power3.out" }, 0.1);
+        tl.to("#hook-bottle", { opacity: 0.05, duration: 0.5, ease: "power2.inOut" }, 5.7);
+
+        const LINE_1 = ["SLATHER", "IT", "ALL"];
+        const LINE_2 = ["OVER", "YOUR", "FACE?"];
+        const WORD_BASE = 0.22, WORD_PER_CHAR = 0.018;
+        function schedule(words, startTime) {
+          let t = startTime;
+          return words.map((w) => { const dur = WORD_BASE + w.length * WORD_PER_CHAR; const start = t; t += dur; return { word: w, start }; });
+        }
+        const sched1 = schedule(LINE_1, 0.25);
+        const sched2 = schedule(LINE_2, 1.55);
+        const line1El = document.getElementById("hook-line-1");
+        const line2El = document.getElementById("hook-line-2");
+        sched1.forEach((entry) => {
+          const span = document.createElement("span");
+          span.className = "hook-word";
+          span.textContent = entry.word;
+          line1El.appendChild(span);
+          entry.el = span;
+        });
+        sched2.forEach((entry) => {
+          const span = document.createElement("span");
+          span.className = "hook-word";
+          span.textContent = entry.word;
+          line2El.appendChild(span);
+          entry.el = span;
+        });
+        [...sched1, ...sched2].forEach((entry) => {
+          tl.fromTo(entry.el, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, entry.start);
+        });
+
+        tl.to("#hook-strike", { scaleX: 1, duration: 0.18, ease: "power2.in" }, 5.5);
+        tl.to(["#hook-line-1", "#hook-strike-wrap"], { opacity: 0.4, duration: 0.25, ease: "power2.out" }, 5.55);
+
+        tl.fromTo("#hook-wait", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 5.75);
+
+        tl.to({}, { duration: 6.796 }, 0);
+        window.__timelines["01-hook"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

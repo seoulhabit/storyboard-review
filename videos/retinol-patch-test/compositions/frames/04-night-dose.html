@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root {
+          --ink: #131516;
+          --paper: #f7f5f0;
+          --aqua: #59b8ae;
+          --ink-3-dark: #7c8082;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --short-safe-top: 120px;
+          --short-safe-left: 60px;
+          --short-safe-right: 162px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--ink);
+          font-family: var(--font-mono);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .night-zone {
+          top: var(--short-safe-top); bottom: auto; left: 0; width: 100%; height: 260px;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+        }
+        .arc-svg { width: 860px; height: 172px; display: block; }
+        .night-pm {
+          font-size: 24px; letter-spacing: 0.12em; color: var(--ink-3-dark);
+          opacity: 0;
+        }
+
+        .dose-zone {
+          top: 720px; left: 0; width: 100%;
+          display: flex; flex-direction: column; align-items: center; gap: 28px;
+        }
+        .dose-ruler { position: relative; width: 640px; height: 4px; background: #333333; }
+        .dose-dot {
+          position: absolute; top: 50%; left: 50%;
+          width: 26px; height: 26px; margin: -13px 0 0 -13px;
+          border-radius: 50%; background: var(--aqua);
+          opacity: 0; transform: scale(0);
+        }
+        .dose-label {
+          font-size: 32px; font-weight: 700; letter-spacing: 0.03em; color: var(--paper);
+          text-align: center;
+          opacity: 0;
+        }
+
+        .rules-zone {
+          top: 1180px; left: 0; width: 100%;
+          display: flex; flex-direction: column; align-items: center; gap: 24px;
+        }
+        .rule-chip {
+          display: flex; align-items: center; gap: 16px;
+          width: 700px; padding: 20px 32px;
+          border: 2px solid #333333; border-radius: 10px;
+          font-size: 28px; color: var(--paper); letter-spacing: 0.02em;
+          opacity: 0; transform: translateY(16px);
+        }
+        .rule-glyphs { display: inline-flex; gap: 10px; margin-left: auto; }
+        .rule-glyph {
+          position: relative;
+          width: 20px; height: 20px; border-radius: 50%;
+          border: 2px solid var(--ink-3-dark);
+        }
+        .rule-strike {
+          position: absolute; left: -30px; right: -6px; top: 50%;
+          height: 3px; background: var(--paper);
+          transform: scaleX(0); transform-origin: left center;
+        }
+      </style>
+
+      <!--
+        Day-to-night arc reused verbatim from the catalog's own checked-in
+        component: catalog/visual-components/celestial-arc/celestial-arc-spike.html
+        -- same "M 70 150 Q 500 -30 930 150" arc path in the same 1000x200
+        viewBox, and the same overlapping-circle crescent-moon technique
+        (here via an SVG mask, a more reliable port of the source's own
+        inset-box-shadow "subtract an offset shape" trick). The source runs
+        on plain CSS `infinite` keyframes and a blurred glow box-shadow --
+        neither is allowed here (seek-safe paused timeline; no glow), so
+        this is a deterministic, glow-free port: a dim static sun (day
+        already done) and a bright static moon+stars (now).
+      -->
+      <div id="root" data-composition-id="04-night-dose" data-width="1080" data-height="1920" data-duration="10.662">
+        <div id="night-zone" class="clip night-zone" data-start="0" data-duration="10.662">
+          <svg viewBox="0 0 1000 200" class="arc-svg" id="arc-svg">
+            <defs>
+              <mask id="moon-mask" maskUnits="userSpaceOnUse" x="895" y="115" width="70" height="70">
+                <rect x="895" y="115" width="70" height="70" fill="white" />
+                <circle cx="939" cy="143" r="19" fill="black" />
+              </mask>
+            </defs>
+            <path id="arc-path" d="M 70 150 Q 500 -30 930 150" fill="none" stroke="#7c8082" stroke-width="2.5" stroke-dasharray="4 8" opacity="0" />
+            <circle id="sun" cx="70" cy="150" r="20" fill="#7c8082" opacity="0" />
+            <g id="moon-group" opacity="0">
+              <circle id="moon-crescent" cx="930" cy="150" r="22" fill="#f7f5f0" mask="url(#moon-mask)" />
+              <circle cx="905" cy="112" r="2.5" fill="#f7f5f0" />
+              <circle cx="895" cy="140" r="1.8" fill="#f7f5f0" />
+              <circle cx="915" cy="98" r="1.5" fill="#f7f5f0" />
+              <circle cx="952" cy="106" r="1.8" fill="#f7f5f0" />
+            </g>
+          </svg>
+          <div class="night-pm" id="night-pm">NIGHT ROUTINE</div>
+        </div>
+
+        <div id="dose-zone" class="clip dose-zone" data-start="0" data-duration="10.662">
+          <div class="dose-ruler" id="dose-ruler">
+            <div class="dose-dot" id="dose-dot"></div>
+          </div>
+          <div class="dose-label" id="dose-label">PEA-SIZED. THAT'S IT.</div>
+        </div>
+
+        <div id="rules-zone" class="clip rules-zone" data-start="0" data-duration="10.662">
+          <div class="rule-chip" id="rule-1">
+            <span>CLEAN, DRY SKIN</span>
+          </div>
+          <div class="rule-chip" id="rule-2">
+            <span>RUB IN GENTLY</span>
+          </div>
+          <div class="rule-chip" id="rule-3">
+            <span>NOTHING ON TOP</span>
+            <span class="rule-glyphs">
+              <span class="rule-glyph"><span class="rule-strike" id="strike-1"></span></span>
+              <span class="rule-glyph"><span class="rule-strike" id="strike-2"></span></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#arc-path", { opacity: 0 }, { opacity: 0.5, duration: 0.4, ease: "power2.out" }, 0.1);
+        tl.fromTo("#sun", { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 0.7, scale: 1, duration: 0.3, ease: "power3.out" }, 0.3);
+        tl.fromTo("#moon-group", { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 0.5);
+        tl.fromTo("#night-pm", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out" }, 0.8);
+
+        tl.fromTo("#dose-ruler", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.2);
+        tl.fromTo("#dose-dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 3.0);
+        tl.fromTo("#dose-label", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 3.15);
+
+        tl.fromTo("#rule-1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 5.0);
+        tl.fromTo("#rule-2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 6.0);
+        tl.fromTo("#rule-3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 7.0);
+        tl.to(["#strike-1", "#strike-2"], { scaleX: 1, duration: 0.3, ease: "power2.in" }, 7.3);
+
+        tl.to(["#night-zone", "#dose-zone", "#rules-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 9.8);
+
+        tl.to({}, { duration: 10.662 }, 0);
+        window.__timelines["04-night-dose"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

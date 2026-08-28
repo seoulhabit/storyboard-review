@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root {
+          --paper: #f7f5f0;
+          --ink: #131516;
+          --ink-2-dark: #878b8c;
+          --aqua: #59b8ae;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --short-safe-top: 120px;
+          --short-safe-bottom: 360px;
+          --short-safe-left: 60px;
+          --short-safe-right: 162px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          font-family: var(--font-mono);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .kicker-zone {
+          top: var(--short-safe-top); bottom: auto; left: var(--short-safe-left); width: 960px;
+          display: flex; justify-content: center;
+        }
+        .kicker {
+          font-weight: 700; font-size: 24px; letter-spacing: 0.1em; color: var(--ink-2-dark);
+          text-transform: uppercase;
+          opacity: 0;
+        }
+
+        .diagram-zone { top: 0; left: 0; width: 100%; height: 100%; }
+        .diagram-zone svg { width: 100%; height: 100%; display: block; }
+        .diagram-zone text {
+          font-family: var(--font-mono); font-weight: 700;
+          fill: var(--ink);
+        }
+
+        .legend-zone {
+          top: 1180px; bottom: auto; left: var(--short-safe-left); width: 960px;
+          display: flex; justify-content: center; align-items: center; gap: 24px;
+        }
+        .legend-chip {
+          display: inline-flex; align-items: center; gap: 14px;
+          font-weight: 700; font-size: 26px; letter-spacing: 0.03em; color: var(--ink);
+          border: 2px solid var(--ink); border-radius: 999px;
+          padding: 16px 32px 16px 20px;
+          opacity: 0; transform: translateY(12px);
+        }
+        .legend-num {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 32px; height: 32px; border-radius: 50%;
+          background: var(--aqua); color: var(--ink); font-size: 20px; font-weight: 700;
+        }
+
+        .tagline-zone {
+          top: auto; bottom: var(--short-safe-bottom); left: var(--short-safe-left); width: 960px;
+          display: flex; justify-content: center;
+        }
+        .tagline {
+          font-weight: 700; font-size: 24px; letter-spacing: 0.04em; color: var(--ink-2-dark);
+          text-transform: uppercase; text-align: center;
+          opacity: 0;
+        }
+      </style>
+
+      <!--
+        Head outline reused verbatim from the catalog's own checked-in component:
+        catalog/visual-components/split-face-protocol/splitfaceprotocol-spike.html
+        #control-arm + #active-arm cranial paths (crown-to-chin bezier halves),
+        mirrored and closed into one outline here. Same "abstract clinical
+        geometry, not a portrait" language as the source. Markers use that
+        component's .sfp-zone-wire rounded-rect convention (recolored to
+        this project's aqua instead of its celadon).
+      -->
+      <div id="root" data-composition-id="03-test-site" data-width="1080" data-height="1920" data-duration="9.120">
+        <div id="kicker-zone" class="clip kicker-zone" data-start="0" data-duration="9.120">
+          <div class="kicker" id="kicker">Step 1 &middot; Pick a Test Site</div>
+        </div>
+
+        <div id="diagram-zone" class="clip diagram-zone" data-start="0" data-duration="9.120">
+          <svg viewBox="0 0 1080 1920">
+            <g id="head-group" transform="translate(156,210) scale(1.6)">
+              <path id="cranial-outline"
+                d="M240,56
+                   C172,58 116,94 108,172
+                   C102,222 100,250 101,278
+                   C102,318 114,378 144,424
+                   C174,466 208,498 240,522
+                   C272,498 306,466 336,424
+                   C366,378 378,318 379,278
+                   C380,250 378,222 372,172
+                   C364,94 308,58 240,56 Z"
+                fill="#f7f5f0" stroke="#131516" stroke-width="3.5" stroke-linejoin="round" />
+
+              <rect id="marker-1" x="334" y="253" width="92" height="36" rx="18" fill="#59b8ae" opacity="0" />
+              <text id="marker-1-label" x="380" y="277" font-size="24" text-anchor="middle" opacity="0">1</text>
+
+              <rect id="marker-2" x="255" y="443" width="92" height="36" rx="18" fill="#59b8ae" opacity="0" />
+              <text id="marker-2-label" x="301" y="467" font-size="24" text-anchor="middle" opacity="0">2</text>
+            </g>
+          </svg>
+        </div>
+
+        <div id="legend-zone" class="clip legend-zone" data-start="0" data-duration="9.120">
+          <div class="legend-chip" id="legend-1"><span class="legend-num">1</span>BEHIND EAR</div>
+          <div class="legend-chip" id="legend-2"><span class="legend-num">2</span>JAWLINE</div>
+        </div>
+
+        <div id="tagline-zone" class="clip tagline-zone" data-start="0" data-duration="9.120">
+          <div class="tagline" id="tagline">Same turnover, lower stakes</div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#kicker", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.1);
+
+        const outline = document.getElementById("cranial-outline");
+        const outlineLen = outline.getTotalLength();
+        gsap.set(outline, { strokeDasharray: outlineLen, strokeDashoffset: outlineLen });
+        tl.fromTo("#head-group", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0.1);
+        tl.to(outline, { strokeDashoffset: 0, duration: 1.1, ease: "power2.out" }, 0.2);
+
+        tl.fromTo(["#marker-1", "#marker-1-label"], { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 2.5);
+        tl.fromTo("#legend-1", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 2.55);
+
+        tl.fromTo(["#marker-2", "#marker-2-label"], { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, 5.0);
+        tl.fromTo("#legend-2", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 5.05);
+
+        tl.fromTo("#tagline", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 6.5);
+
+        tl.to(["#kicker-zone", "#diagram-zone", "#legend-zone", "#tagline-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 8.3);
+
+        tl.to({}, { duration: 9.120 }, 0);
+        window.__timelines["03-test-site"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

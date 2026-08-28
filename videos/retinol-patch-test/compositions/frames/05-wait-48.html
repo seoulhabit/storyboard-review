@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root {
+          --paper: #f7f5f0;
+          --ink: #131516;
+          --ink-2-dark: #878b8c;
+          --ink-3-dark: #7c8082;
+          /* coral: checked in via videos/red-ginseng-two-routes/capture/extracted/tokens.json
+             (its own captured 9-color palette, pre-remix) and used with the
+             same "limitation / refusal" role documented in catalog/README.md
+             and catalog/visual-components/evidence-meter. */
+          --coral: #c97a5c;
+          --rule: #e3e3e3;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --short-safe-top: 120px;
+          --short-safe-bottom: 360px;
+          --short-safe-left: 60px;
+          --short-safe-right: 162px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .headline-zone { top: var(--short-safe-top); left: var(--short-safe-left); width: 960px; text-align: center; }
+        .headline {
+          font-family: var(--font-display); font-weight: 400; font-size: 76px; color: var(--ink);
+          opacity: 0;
+        }
+
+        .ladder-zone { top: 380px; left: 0; width: 100%; display: flex; justify-content: center; }
+        .ladder { position: relative; width: 400px; height: 420px; }
+        .ladder-track {
+          position: absolute; left: 20px; top: 20px; width: 4px; height: 380px;
+          background: var(--ink); transform: scaleY(0); transform-origin: top center;
+        }
+        .rung { position: absolute; left: 0; display: flex; align-items: center; gap: 24px; opacity: 0; }
+        .rung-1 { top: 0; }
+        .rung-2 { top: 190px; }
+        .rung-3 { top: 380px; }
+        .rung-dot { width: 44px; height: 44px; border-radius: 50%; background: var(--paper); border: 4px solid var(--ink); }
+        .rung-label { font-family: var(--font-mono); font-weight: 700; font-size: 36px; color: var(--ink); }
+
+        .split-zone { top: 1160px; left: var(--short-safe-left); width: 960px; display: flex; align-items: center; gap: 32px; }
+        .split-col { flex: 1; padding: 32px; border-radius: 12px; opacity: 0; }
+        .split-normal { border: 2px solid var(--rule); background: transparent; }
+        .split-stop { border: 2px solid var(--coral); background: rgba(201, 122, 92, 0.08); }
+        .split-kicker {
+          font-family: var(--font-mono); font-weight: 700; font-size: 24px; letter-spacing: 0.06em;
+          margin-bottom: 12px;
+        }
+        .split-normal .split-kicker { color: var(--ink-3-dark); }
+        .split-stop .split-kicker { color: var(--coral); }
+        .split-body { font-family: var(--font-mono); font-size: 26px; line-height: 1.4; color: var(--ink-2-dark); }
+        .split-stop .split-body { color: var(--ink); }
+      </style>
+
+      <div id="root" data-composition-id="05-wait-48" data-width="1080" data-height="1920" data-duration="13.404">
+        <div id="headline-zone" class="clip headline-zone" data-start="0" data-duration="13.404">
+          <div class="headline" id="headline">Wait 48 Hours</div>
+        </div>
+
+        <div id="ladder-zone" class="clip ladder-zone" data-start="0" data-duration="13.404">
+          <div class="ladder" id="ladder">
+            <div class="ladder-track" id="ladder-track"></div>
+            <div class="rung rung-1" id="rung-1"><div class="rung-dot"></div><div class="rung-label">0H</div></div>
+            <div class="rung rung-2" id="rung-2"><div class="rung-dot"></div><div class="rung-label">24H</div></div>
+            <div class="rung rung-3" id="rung-3"><div class="rung-dot"></div><div class="rung-label">48H</div></div>
+          </div>
+        </div>
+
+        <div id="split-zone" class="clip split-zone" data-start="0" data-duration="13.404">
+          <div class="split-col split-normal" id="split-normal">
+            <div class="split-kicker">NORMAL</div>
+            <div class="split-body">Slight dryness at the test site is expected.</div>
+          </div>
+          <div class="split-col split-stop" id="split-stop">
+            <div class="split-kicker">STOP</div>
+            <div class="split-body">Severe redness, stinging, or raised bumps &mdash; wash it off. Your skin needs a gentler formula.</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#headline", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.2);
+
+        tl.to("#ladder-track", { scaleY: 1, duration: 8.0, ease: "none" }, 1.0);
+        tl.fromTo("#rung-1", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 1.3);
+        tl.fromTo("#rung-2", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.6);
+        tl.fromTo("#rung-3", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 9.0);
+
+        tl.fromTo("#split-normal", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 9.4);
+
+        tl.fromTo("#split-stop", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out" }, 10.5);
+
+        tl.to(["#headline-zone", "#ladder-zone", "#split-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 12.55);
+
+        tl.to({}, { duration: 13.404 }, 0);
+        window.__timelines["05-wait-48"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Sans KR Video";
+          font-weight: 500;
+          font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+        }
+        @font-face {
+          font-family: "Noto Sans KR";
+          font-weight: 500;
+          font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+        }
+        #root {
+          --paper: #f7f5f0;
+          --ink: #131516;
+          --ink-3-dark: #7c8082;
+          --aqua: #59b8ae;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          --short-safe-bottom: 360px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          color: var(--ink);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /*
+          Lockup structure (mark + title, single slide-up-and-breathe move)
+          reused from the checked-in videos/red-ginseng-two-routes
+          compositions/frames/06-endcard.html -- including the "습 SeoulHabit"
+          Noto Sans KR wordmark, which is genuinely checked in there.
+        */
+        .outro-lockup { left: 80px; top: 700px; width: 920px; text-align: center; opacity: 0; }
+        .outro-brand { font-family: var(--font-kr); font-size: 32px; font-weight: 500; letter-spacing: 0.04em; color: rgb(75, 155, 147); }
+        .outro-title {
+          font-family: var(--font-display); font-weight: 400; font-size: 64px;
+          line-height: 1.1; letter-spacing: -0.018em; color: var(--ink);
+          margin-top: 34px;
+        }
+        .outro-pill-wrap { display: flex; justify-content: center; margin-top: 40px; }
+        .outro-pill {
+          position: relative; display: inline-flex; align-items: center; justify-content: center;
+          padding: 20px 56px;
+          border: 2px solid var(--ink); border-radius: 999px;
+          font-family: var(--font-mono); font-weight: 700; font-size: 30px; letter-spacing: 0.03em;
+          color: var(--ink); background: var(--paper);
+        }
+        .outro-pill-underline {
+          position: absolute; left: 56px; right: 56px; bottom: 10px; height: 4px;
+          background: var(--aqua); transform: scaleX(0); transform-origin: left center;
+        }
+        .outro-subline {
+          margin-top: 30px; font-family: var(--font-body); font-size: 24px; line-height: 1.5;
+          color: var(--ink); opacity: 0.62;
+        }
+
+        .outro-disclaimer {
+          left: 80px; top: auto; bottom: 240px; width: 920px; text-align: center;
+          font-family: var(--font-mono); font-size: 20px; letter-spacing: 0.02em; color: rgb(116, 112, 105);
+          opacity: 0;
+        }
+      </style>
+
+      <div id="root" data-composition-id="06-outro" data-width="1080" data-height="1920" data-duration="10.553">
+        <div id="outro-lockup" class="clip outro-lockup" data-start="0" data-duration="10.553">
+          <div class="outro-brand">습 SeoulHabit</div>
+          <div class="outro-title">You're ready.</div>
+          <div class="outro-pill-wrap">
+            <div class="outro-pill" id="outro-pill">
+              seoulhabit.com
+              <div class="outro-pill-underline" id="outro-pill-underline"></div>
+            </div>
+          </div>
+          <div class="outro-subline" id="outro-subline">Full retinol layering guide.</div>
+        </div>
+
+        <div id="outro-disclaimer" class="clip outro-disclaimer" data-start="0" data-duration="10.553">
+          General patch-testing guide &mdash; not sourced claims, not medical advice.
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Lockup enters as ONE restrained slide-up crossfade (matches the
+        // checked-in 06-endcard.html pattern), timed with the chime sfx (index.html @1.0s)
+        tl.fromTo("#outro-lockup", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" }, 0.5);
+
+        // held, then one low-amplitude breath (matches the checked-in endcard)
+        tl.to("#outro-lockup", { y: -2, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.7);
+
+        // "seoulhabit.com" pill's own emphasis beat -- the frame's one aqua accent
+        tl.to("#outro-pill-underline", { scaleX: 1, duration: 0.3, ease: "power2.out" }, 3.0);
+
+        tl.fromTo("#outro-subline", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 5.5);
+
+        tl.fromTo("#outro-disclaimer", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.0);
+
+        tl.to({}, { duration: 10.553 }, 0);
+        window.__timelines["06-outro"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

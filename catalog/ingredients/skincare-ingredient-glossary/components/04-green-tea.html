@@ -74,7 +74,7 @@
     opacity: 0;
     animation: rise 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   }
-  .term-icon { width: 64px; height: 64px; color: var(--on-ink-primary); }
+  .term-image { display: block; width: 360px; height: 360px; object-fit: contain; }
   .term-name {
     margin-top: 20px;
     font-family: var(--font-display);
@@ -106,7 +106,7 @@
   }
 
   .card-inner > * { opacity: 0; animation: rise 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; }
-  .term-icon { animation-delay: 0.05s !important; }
+  .term-image { animation-delay: 0.05s !important; }
   .term-name { animation-delay: 0.13s !important; }
   .term-kr { animation-delay: 0.21s !important; }
   .term-category { animation-delay: 0.29s !important; }
@@ -125,7 +125,7 @@
     <div class="wordmark">SeoulHabit</div>
     <div class="doc-tag">Component 04 / 20</div>
     <div class="card-inner">
-      <svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.6"/><path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M5.8 5.8l2.5 2.5M15.7 15.7l2.5 2.5M18.2 5.8l-2.5 2.5M8.3 15.7l-2.5 2.5"/></svg>
+      <img class="term-image" src="../images/04-green-tea.png" alt="" />
       <h2 class="term-name">Green Tea</h2>
       <div class="term-kr">녹차</div>
       <div class="term-category">Botanical extract</div>

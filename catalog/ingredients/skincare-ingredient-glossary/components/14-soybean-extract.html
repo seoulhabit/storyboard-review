@@ -74,7 +74,7 @@
     opacity: 0;
     animation: rise 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   }
-  .term-icon { width: 64px; height: 64px; color: var(--on-ink-primary); }
+  .term-image { display: block; width: 360px; height: 360px; object-fit: contain; }
   .term-name {
     margin-top: 20px;
     font-family: var(--font-display);
@@ -106,7 +106,7 @@
   }
 
   .card-inner > * { opacity: 0; animation: rise 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; }
-  .term-icon { animation-delay: 0.05s !important; }
+  .term-image { animation-delay: 0.05s !important; }
   .term-name { animation-delay: 0.13s !important; }
   .term-kr { animation-delay: 0.21s !important; }
   .term-category { animation-delay: 0.29s !important; }
@@ -125,7 +125,7 @@
     <div class="wordmark">SeoulHabit</div>
     <div class="doc-tag">Component 14 / 20</div>
     <div class="card-inner">
-      <svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3.5C4.5 5 3 8.5 3.5 12.5c.6 5 4.5 8 9 8 5.2 0 9.5-4 9.5-9.5 0-2.3-.9-4.3-2-5.8"/><path d="M6.5 15c2 1.3 5.3 1.3 7.5-1s3-6 .8-8.5"/></svg>
+      <img class="term-image" src="../images/14-soybean-extract.png" alt="" />
       <h2 class="term-name">Soybean Extract</h2>
       <div class="term-kr">콩 추출물</div>
       <div class="term-category">Botanical extract</div>

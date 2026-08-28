@@ -5,7 +5,7 @@ entries in this folder — catalogued here as one entry rather than split
 across twenty mostly-empty ingredient folders.
 
 **Project:** `../../../videos/skincare-ingredient-glossary/` — rendered
-(`renders/skincare-ingredient-glossary_2026-08-27_21-23-54.mp4`, 76s,
+(`renders/skincare-ingredient-glossary_2026-08-27_23-15-09.mp4`, 76s,
 1080×1920, confirmed via `ffprobe`). Twenty ingredients, in order: AHA/BHA,
 Centella Asiatica, Bamboo Extract, Green Tea, Birch Sap, Ginseng, Bifida
 Ferment Lysate, Hyaluronic Acid, Ceramides, Niacinamide, Peptides, Snail
@@ -22,11 +22,8 @@ Design canvas), replacing the original standalone palette: flat ink
 Inter body / JetBrains Mono technical / Noto Sans KR for Hangul, the
 system's own type scale, spacing steps, radii, and the exact
 `--e-out`/`--e-in`/`--e-inout` cubic-bezier motion curves at token durations
-(`--d-snap`, `--d-fast`, `--d-base`, `--stagger-line`). Icons are
-hand-approximated in Lucide's outline style (24×24, `currentColor`, no
-per-ingredient accent) — not literally copied from the `lucide-icons/lucide`
-package, since that wasn't available to fetch here; flagged rather than
-silently claimed as verbatim.
+(`--d-snap`, `--d-fast`, `--d-base`, `--stagger-line`). Each card's icon has
+since been replaced by a full illustration — see **Images** below.
 
 **Content caveat, stated plainly:** the design system's core rule is that
 any on-screen claim of efficacy carries a source id or does not render. This
@@ -37,6 +34,38 @@ sourced claims, and the outro card carries an explicit disclaimer
 They do not meet the system's sourcing bar the way an `ING-*`-cited claim
 would — this is a breadth-first pass across twenty terms, not twenty
 fact-checked claims.
+
+## Images
+
+`images/` holds twenty flat illustrations, one per ingredient (`01-aha-bha.png`
+through `20-vitamin-c.png`, 1200×1200, transparent background, ~25KB each) —
+the component-image library the cards now draw on in place of the original
+64px line icons. Each is a bottle (or jar/vial/beaker, matched to the
+ingredient's form) styled with 1-3 category-appropriate props — leaves and
+roots for botanicals, a honeycomb and dripping honey for Propolis, a
+ball-and-stick model for Peptides and Retinol, citrus slices for Vitamin C,
+and so on — built entirely from flat SVG shapes in the design system's own
+token colors (perilla, highlighter, coral, aqua, paper), no gradients, no
+photography.
+
+They're generated *by* HyperFrames, not by an image model: authored as SVG
+in a throwaway 20-cell composition, then captured to PNG with
+`hyperframes snapshot --zoom "x,y,w,h"` (one crop per cell). An earlier pass
+tried an actual AI photo model instead — HyperFrames itself has no
+image-generation capability, only a render/capture pipeline, so a photoreal
+look would have had to come from an external model — but the photos were
+dropped in favor of this HyperFrames-native illustration approach per
+explicit direction, keeping the whole pipeline (art + composition + render)
+inside one framework and strictly on the design system's token palette
+rather than naturalistic photo color.
+
+Used via `<img>` in the card's old icon slot, sized 400×400 in the two video
+formats (`object-fit: contain`, no cropping) and 360×360 in the static
+components below. Wired into: this project's `index.html` (own `assets/`),
+each of the four Part 1–4 projects below (own `assets/`, just the five
+images each part uses), and all twenty `components/*.html` files (referenced
+directly via `../images/`, no per-file copies needed since those are static
+reference pages, not renderable projects).
 
 ## Components
 

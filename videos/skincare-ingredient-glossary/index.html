@@ -213,10 +213,11 @@
         border: 1px solid var(--rule-dark);
         border-radius: var(--r-card);
       }
-      .term-icon {
-        width: 64px;
-        height: 64px;
-        color: var(--on-ink-primary);
+      .term-image {
+        display: block;
+        width: 400px;
+        height: 400px;
+        object-fit: contain;
         will-change: transform, opacity;
       }
       .term-name {
@@ -363,35 +364,6 @@
       // Korean glosses included only where the term is standard, common
       // K-beauty vocabulary; omitted rather than guessed where uncertain.
       // -----------------------------------------------------------------
-      var ICONS = {
-        flaskConical:
-          '<path d="M9 2h6"/><path d="M10 2v6.5L4.5 19a1.5 1.5 0 0 0 1.3 2.2h12.4a1.5 1.5 0 0 0 1.3-2.2L14 8.5V2"/><path d="M6.5 14.5h11"/>',
-        leaf: '<path d="M11 20A7 7 0 0 1 4 13c0-5.5 4.5-10 10-11.5C15 6 18 8.5 18 13a7 7 0 0 1-7 7Z"/><path d="M4.5 14.5C9 14.5 13 11 15 5.5"/>',
-        sprout:
-          '<path d="M6 20h9"/><path d="M9.5 20c0-4-1.5-6-5-7.5 2.5-2.5 6-1.5 6.5 2"/><path d="M14.5 20c0-6.5 3-9 7.5-9.5-1 5.5-2.5 9.5-7.5 9.5Z"/>',
-        droplet: '<path d="M12 3s7 8.5 7 13.5a7 7 0 0 1-14 0C5 11.5 12 3 12 3Z"/>',
-        hexagon: '<path d="M12 2.5l8 4.6v9.8l-8 4.6-8-4.6V7.1Z"/>',
-        shield:
-          '<path d="M12 2.5l7.5 3.4v6c0 5-3.2 8.3-7.5 9.6-4.3-1.3-7.5-4.6-7.5-9.6v-6Z"/>',
-        link: '<path d="M9 13.5a4 4 0 0 1 4-4h2.5a4 4 0 0 1 0 8H14"/><path d="M15 10.5a4 4 0 0 1-4 4H8.5a4 4 0 0 1 0-8H10"/>',
-        bean: '<path d="M8 3.5C4.5 5 3 8.5 3.5 12.5c.6 5 4.5 8 9 8 5.2 0 9.5-4 9.5-9.5 0-2.3-.9-4.3-2-5.8"/><path d="M6.5 15c2 1.3 5.3 1.3 7.5-1s3-6 .8-8.5"/>',
-        sparkles:
-          '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M19.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"/>',
-        wheat:
-          '<path d="M12 21V8.5"/><path d="M12 8.5c-2.2-1-3.3-3-2.3-5.3 2.2 0 4 1 4.7 3.3"/><path d="M12 13c-2.2-1-3.3-3-2.3-5.3 2.2 0 4 1 4.7 3.3"/><path d="M12 17.5c-2.2-1-3.3-3-2.3-5.3 2.2 0 4 1 4.7 3.3"/>',
-        citrus:
-          '<circle cx="12" cy="12" r="9"/><path d="M12 3.5c3.2 3 3.2 14 0 17"/><path d="M4.8 8c4.3 2 10.1 2 14.4 0"/><path d="M4.8 16c4.3-2 10.1-2 14.4 0"/>',
-        flower:
-          '<circle cx="12" cy="12" r="2.6"/><path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M5.8 5.8l2.5 2.5M15.7 15.7l2.5 2.5M18.2 5.8l-2.5 2.5M8.3 15.7l-2.5 2.5"/>',
-      };
-      function icon(inner) {
-        return (
-          '<svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-          inner +
-          "</svg>"
-        );
-      }
-
       var INGREDIENTS = [
         {
           name: "AHA / BHA",
@@ -399,7 +371,7 @@
           category: "Exfoliating acid",
           what: "Exfoliating acids — AHAs smooth the surface, BHAs unclog pores.",
           used: "Acne, blackheads, rough texture, and dullness.",
-          icon: icon(ICONS.flaskConical),
+          image: "assets/01-aha-bha.png",
         },
         {
           name: "Centella Asiatica",
@@ -407,7 +379,7 @@
           category: "Botanical extract",
           what: "A medicinal herb with healing and anti-inflammatory properties.",
           used: "Wound healing, barrier repair, and stressed skin.",
-          icon: icon(ICONS.leaf),
+          image: "assets/02-centella-asiatica.png",
         },
         {
           name: "Bamboo Extract",
@@ -415,7 +387,7 @@
           category: "Botanical extract",
           what: "A mineral-rich extract from bamboo stalks.",
           used: "Hydrating, calming, and refreshing the skin.",
-          icon: icon(ICONS.sprout),
+          image: "assets/03-bamboo-extract.png",
         },
         {
           name: "Green Tea",
@@ -423,7 +395,7 @@
           category: "Botanical extract",
           what: "A calming antioxidant with antibacterial and oil-controlling properties.",
           used: "Soothing acne-prone skin and preventing oxidative stress.",
-          icon: icon(ICONS.flower),
+          image: "assets/04-green-tea.png",
         },
         {
           name: "Birch Sap",
@@ -431,7 +403,7 @@
           category: "Botanical extract",
           what: "Tree sap used in place of water in skincare formulations.",
           used: "Lightweight hydration, soothing sensitivity, and supporting the barrier.",
-          icon: icon(ICONS.droplet),
+          image: "assets/05-birch-sap.png",
         },
         {
           name: "Ginseng",
@@ -439,7 +411,7 @@
           category: "Root extract",
           what: "A root extract revered in Korean tradition for its rejuvenating effects.",
           used: "Boosting circulation, reducing signs of fatigue, and improving skin tone.",
-          icon: icon(ICONS.sprout),
+          image: "assets/06-ginseng.png",
         },
         {
           name: "Bifida Ferment Lysate",
@@ -447,7 +419,7 @@
           category: "Ferment",
           what: "A fermented probiotic ingredient.",
           used: "Strengthening the skin barrier, elasticity, and reducing sensitivity.",
-          icon: icon(ICONS.hexagon),
+          image: "assets/07-bifida-ferment-lysate.png",
         },
         {
           name: "Hyaluronic Acid",
@@ -455,7 +427,7 @@
           category: "Humectant",
           what: "A moisture-binding molecule that holds 1000x its weight in water.",
           used: "Intense hydration, plumping, and maintaining skin elasticity.",
-          icon: icon(ICONS.droplet),
+          image: "assets/08-hyaluronic-acid.png",
         },
         {
           name: "Ceramides",
@@ -463,7 +435,7 @@
           category: "Barrier lipid",
           what: "Lipid molecules that form the skin's protective barrier.",
           used: "Strengthening the barrier, retaining moisture, and reducing sensitivity.",
-          icon: icon(ICONS.shield),
+          image: "assets/09-ceramides.png",
         },
         {
           name: "Niacinamide",
@@ -471,7 +443,7 @@
           category: "Vitamin B3",
           what: "A multi-tasking vitamin that strengthens the skin barrier.",
           used: "Pore refinement, oil control, and evening out tone.",
-          icon: icon(ICONS.hexagon),
+          image: "assets/10-niacinamide.png",
         },
         {
           name: "Peptides",
@@ -479,7 +451,7 @@
           category: "Peptide",
           what: "Chains of amino acids that support collagen and elastin production.",
           used: "Smoothing wrinkles, firming skin, and improving resilience.",
-          icon: icon(ICONS.link),
+          image: "assets/11-peptides.png",
         },
         {
           name: "Snail Mucin",
@@ -487,7 +459,7 @@
           category: "Secretion filtrate",
           what: "A hydrating and reparative secretion from snails, rich in enzymes and glycoproteins.",
           used: "Healing acne scars, improving texture, and enhancing skin elasticity.",
-          icon: icon(ICONS.droplet),
+          image: "assets/12-snail-mucin.png",
         },
         {
           name: "Panthenol",
@@ -495,7 +467,7 @@
           category: "Vitamin B5",
           what: "A moisturizing and healing vitamin.",
           used: "Soothing, softening, and repairing dry or irritated skin.",
-          icon: icon(ICONS.droplet),
+          image: "assets/13-panthenol.png",
         },
         {
           name: "Soybean Extract",
@@ -503,7 +475,7 @@
           category: "Botanical extract",
           what: "A fermented antioxidant-rich extract.",
           used: "Restoring balance, brightening skin tone, and anti-aging.",
-          icon: icon(ICONS.bean),
+          image: "assets/14-soybean-extract.png",
         },
         {
           name: "Propolis",
@@ -511,7 +483,7 @@
           category: "Bee-derived",
           what: "A resinous, antioxidant-rich compound from bees.",
           used: "Calming acne, soothing inflammation, and promoting glow.",
-          icon: icon(ICONS.hexagon),
+          image: "assets/15-propolis.png",
         },
         {
           name: "Retinol",
@@ -519,7 +491,7 @@
           category: "Vitamin A",
           what: "A gold-standard anti-aging compound that promotes cell turnover.",
           used: "Wrinkles, fine lines, acne, and rough texture.",
-          icon: icon(ICONS.sparkles),
+          image: "assets/16-retinol.png",
         },
         {
           name: "Royal Jelly",
@@ -527,7 +499,7 @@
           category: "Bee-derived",
           what: "A nutrient-rich secretion produced by bees.",
           used: "Revitalizing dry, aging skin and improving skin nourishment.",
-          icon: icon(ICONS.hexagon),
+          image: "assets/17-royal-jelly.png",
         },
         {
           name: "Mugwort",
@@ -535,7 +507,7 @@
           category: "Botanical extract",
           what: "A soothing herb long used in Korean medicine.",
           used: "Calming sensitive skin, reducing redness, and detoxifying.",
-          icon: icon(ICONS.leaf),
+          image: "assets/18-mugwort.png",
         },
         {
           name: "Rice Extract",
@@ -543,7 +515,7 @@
           category: "Botanical extract",
           what: "A gentle brightening and moisturizing ingredient used for centuries in Korea.",
           used: "Dullness, dryness, and restoring luminosity.",
-          icon: icon(ICONS.wheat),
+          image: "assets/19-rice-extract.png",
         },
         {
           name: "Vitamin C",
@@ -551,7 +523,7 @@
           category: "Antioxidant",
           what: "A brightening antioxidant that protects against environmental stressors.",
           used: "Dullness, hyperpigmentation, and uneven tone.",
-          icon: icon(ICONS.citrus),
+          image: "assets/20-vitamin-c.png",
         },
       ];
 
@@ -580,7 +552,7 @@
 
         section.innerHTML =
           '<div class="card-inner" id="inner-' + i + '">' +
-          ing.icon.replace('class="term-icon"', 'class="term-icon" id="icon-' + i + '"') +
+          '<img class="term-image" id="image-' + i + '" src="' + ing.image + '" alt="" />' +
           '<h2 class="term-name" id="name-' + i + '">' + ing.name + "</h2>" +
           krLine +
           '<div class="term-category" id="cat-' + i + '">' + ing.category + "</div>" +
@@ -614,12 +586,14 @@
         { opacity: 0, duration: D_BASE, ease: eInOut },
         2.0
       );
+      tl.set("#scene-title .kicker, #scene-title .display-h1, #scene-title .display-lead", { opacity: 0 }, 2.5);
 
       // ---- Ingredient cards ----
       INGREDIENTS.forEach(function (ing, i) {
         var start = cardStarts[i];
         var t = start;
-        tl.fromTo("#icon-" + i, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, t);
+        var nextBoundary = i === INGREDIENTS.length - 1 ? 72.5 : cardStarts[i + 1];
+        tl.fromTo("#image-" + i, { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, t);
         tl.fromTo("#name-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE);
         if (ing.kr) {
           tl.fromTo("#kr-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 2);
@@ -631,6 +605,7 @@
         tl.fromTo("#used-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 7);
         // Exit: scene cross-fade before this clip's window closes.
         tl.fromTo("#inner-" + i, { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, t + CARD_DUR - 0.55);
+        tl.set("#inner-" + i, { opacity: 0 }, nextBoundary);
       });
 
       // ---- Outro scene (72.5 - 76s) ----

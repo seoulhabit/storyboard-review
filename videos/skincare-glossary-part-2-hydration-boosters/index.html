@@ -197,10 +197,11 @@
         border: 1px solid var(--rule-dark);
         border-radius: var(--r-card);
       }
-      .term-icon {
-        width: 64px;
-        height: 64px;
-        color: var(--on-ink-primary);
+      .term-image {
+        display: block;
+        width: 400px;
+        height: 400px;
+        object-fit: contain;
         will-change: transform, opacity;
       }
       .term-name {
@@ -301,7 +302,7 @@
 
       <section class="clip" id="card-0" data-start="2.50" data-duration="3.50" data-track-index="1">
         <div class="card-inner" id="inner-0">
-          <svg class="term-icon" id="icon-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 8.5 7 13.5a7 7 0 0 1-14 0C5 11.5 12 3 12 3Z"/></svg>
+          <img class="term-image" id="image-0" src="assets/08-hyaluronic-acid.png" alt="" />
           <h2 class="term-name" id="name-0">Hyaluronic Acid</h2>
           <div class="term-kr" id="kr-0">히알루론산</div>
           <div class="term-category" id="cat-0">Humectant</div>
@@ -314,7 +315,7 @@
       </section>
       <section class="clip" id="card-1" data-start="6.00" data-duration="3.50" data-track-index="1">
         <div class="card-inner" id="inner-1">
-          <svg class="term-icon" id="icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 8.5 7 13.5a7 7 0 0 1-14 0C5 11.5 12 3 12 3Z"/></svg>
+          <img class="term-image" id="image-1" src="assets/12-snail-mucin.png" alt="" />
           <h2 class="term-name" id="name-1">Snail Mucin</h2>
           <div class="term-kr" id="kr-1">달팽이 점액</div>
           <div class="term-category" id="cat-1">Secretion filtrate</div>
@@ -327,7 +328,7 @@
       </section>
       <section class="clip" id="card-2" data-start="9.50" data-duration="3.50" data-track-index="1">
         <div class="card-inner" id="inner-2">
-          <svg class="term-icon" id="icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 8.5 7 13.5a7 7 0 0 1-14 0C5 11.5 12 3 12 3Z"/></svg>
+          <img class="term-image" id="image-2" src="assets/05-birch-sap.png" alt="" />
           <h2 class="term-name" id="name-2">Birch Sap</h2>
           <div class="term-kr" id="kr-2">자작나무 수액</div>
           <div class="term-category" id="cat-2">Botanical extract</div>
@@ -340,7 +341,7 @@
       </section>
       <section class="clip" id="card-3" data-start="13.00" data-duration="3.50" data-track-index="1">
         <div class="card-inner" id="inner-3">
-          <svg class="term-icon" id="icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20h9"/><path d="M9.5 20c0-4-1.5-6-5-7.5 2.5-2.5 6-1.5 6.5 2"/><path d="M14.5 20c0-6.5 3-9 7.5-9.5-1 5.5-2.5 9.5-7.5 9.5Z"/></svg>
+          <img class="term-image" id="image-3" src="assets/03-bamboo-extract.png" alt="" />
           <h2 class="term-name" id="name-3">Bamboo Extract</h2>
           <div class="term-kr" id="kr-3">대나무</div>
           <div class="term-category" id="cat-3">Botanical extract</div>
@@ -353,7 +354,7 @@
       </section>
       <section class="clip" id="card-4" data-start="16.50" data-duration="3.50" data-track-index="1">
         <div class="card-inner" id="inner-4">
-          <svg class="term-icon" id="icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l8 4.6v9.8l-8 4.6-8-4.6V7.1Z"/></svg>
+          <img class="term-image" id="image-4" src="assets/07-bifida-ferment-lysate.png" alt="" />
           <h2 class="term-name" id="name-4">Bifida Ferment Lysate</h2>
           
           <div class="term-category" id="cat-4">Ferment</div>
@@ -426,7 +427,7 @@
       tl.set("#scene-title .kicker, #scene-title .display-h1, #scene-title .display-lead", { opacity: 0 }, 2.50);
 
       // ---- Ingredient cards ----
-      tl.fromTo("#icon-0", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 2.50);
+      tl.fromTo("#image-0", { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, 2.50);
       tl.fromTo("#name-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE);
       tl.fromTo("#kr-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 2);
       tl.fromTo("#cat-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 3);
@@ -436,7 +437,7 @@
       tl.fromTo("#used-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 7);
       tl.fromTo("#inner-0", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 2.50 + CARD_DUR - 0.55);
       tl.set("#inner-0", { opacity: 0 }, 6.00);
-      tl.fromTo("#icon-1", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 6.00);
+      tl.fromTo("#image-1", { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, 6.00);
       tl.fromTo("#name-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE);
       tl.fromTo("#kr-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 2);
       tl.fromTo("#cat-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 3);
@@ -446,7 +447,7 @@
       tl.fromTo("#used-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 7);
       tl.fromTo("#inner-1", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 6.00 + CARD_DUR - 0.55);
       tl.set("#inner-1", { opacity: 0 }, 9.50);
-      tl.fromTo("#icon-2", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 9.50);
+      tl.fromTo("#image-2", { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, 9.50);
       tl.fromTo("#name-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE);
       tl.fromTo("#kr-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 2);
       tl.fromTo("#cat-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 3);
@@ -456,7 +457,7 @@
       tl.fromTo("#used-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 7);
       tl.fromTo("#inner-2", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 9.50 + CARD_DUR - 0.55);
       tl.set("#inner-2", { opacity: 0 }, 13.00);
-      tl.fromTo("#icon-3", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 13.00);
+      tl.fromTo("#image-3", { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, 13.00);
       tl.fromTo("#name-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE);
       tl.fromTo("#kr-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 2);
       tl.fromTo("#cat-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 3);
@@ -466,7 +467,7 @@
       tl.fromTo("#used-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 7);
       tl.fromTo("#inner-3", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 13.00 + CARD_DUR - 0.55);
       tl.set("#inner-3", { opacity: 0 }, 16.50);
-      tl.fromTo("#icon-4", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 16.50);
+      tl.fromTo("#image-4", { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, 16.50);
       tl.fromTo("#name-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE);
       tl.fromTo("#cat-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 3);
       tl.fromTo("#what-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 4);

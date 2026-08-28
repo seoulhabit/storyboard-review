@@ -74,7 +74,7 @@
     opacity: 0;
     animation: rise 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   }
-  .term-icon { width: 64px; height: 64px; color: var(--on-ink-primary); }
+  .term-image { display: block; width: 360px; height: 360px; object-fit: contain; }
   .term-name {
     margin-top: 20px;
     font-family: var(--font-display);
@@ -106,7 +106,7 @@
   }
 
   .card-inner > * { opacity: 0; animation: rise 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; }
-  .term-icon { animation-delay: 0.05s !important; }
+  .term-image { animation-delay: 0.05s !important; }
   .term-name { animation-delay: 0.13s !important; }
   .term-kr { animation-delay: 0.21s !important; }
   .term-category { animation-delay: 0.29s !important; }
@@ -125,7 +125,7 @@
     <div class="wordmark">SeoulHabit</div>
     <div class="doc-tag">Component 18 / 20</div>
     <div class="card-inner">
-      <svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5.5 4.5-10 10-11.5C15 6 18 8.5 18 13a7 7 0 0 1-7 7Z"/><path d="M4.5 14.5C9 14.5 13 11 15 5.5"/></svg>
+      <img class="term-image" src="../images/18-mugwort.png" alt="" />
       <h2 class="term-name">Mugwort</h2>
       <div class="term-kr">쑥</div>
       <div class="term-category">Botanical extract</div>

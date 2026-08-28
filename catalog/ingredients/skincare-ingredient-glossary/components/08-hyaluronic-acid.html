@@ -74,7 +74,7 @@
     opacity: 0;
     animation: rise 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   }
-  .term-icon { width: 64px; height: 64px; color: var(--on-ink-primary); }
+  .term-image { display: block; width: 360px; height: 360px; object-fit: contain; }
   .term-name {
     margin-top: 20px;
     font-family: var(--font-display);
@@ -106,7 +106,7 @@
   }
 
   .card-inner > * { opacity: 0; animation: rise 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; }
-  .term-icon { animation-delay: 0.05s !important; }
+  .term-image { animation-delay: 0.05s !important; }
   .term-name { animation-delay: 0.13s !important; }
   .term-kr { animation-delay: 0.21s !important; }
   .term-category { animation-delay: 0.29s !important; }
@@ -125,7 +125,7 @@
     <div class="wordmark">SeoulHabit</div>
     <div class="doc-tag">Component 08 / 20</div>
     <div class="card-inner">
-      <svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 8.5 7 13.5a7 7 0 0 1-14 0C5 11.5 12 3 12 3Z"/></svg>
+      <img class="term-image" src="../images/08-hyaluronic-acid.png" alt="" />
       <h2 class="term-name">Hyaluronic Acid</h2>
       <div class="term-kr">히알루론산</div>
       <div class="term-category">Humectant</div>

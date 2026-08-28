@@ -7,45 +7,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&family=Noto+Sans+KR:wght@500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
-      /* ============ SeoulHabit Video Design System — token layer ============ */
+      /* ============ SeoulHabit Video Design System — tokens, read verbatim from the
+         Claude Design project (claude.ai/design/p/75132ad8-b81c-4151-8a4c-83368df1d949)
+         via the DesignSync MCP: tokens/colors.css, tokens/typography.css, tokens/spacing.css,
+         tokens/motion.css, tokens/layout.css. Values are copied, not re-derived from a
+         screenshot. ============ */
+      @font-face {
+        font-family: "Noto Sans KR Video";
+        src: url("assets/NotoSansKR-500-subset.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: block;
+      }
       :root {
-        /* Core five + supporting surfaces */
+        /* ---- core five + surfaces (tokens/colors.css) ---- */
         --paper: #f7f5f0;
-        --white: #fcfbf9;
         --ink: #131516;
         --aqua: #59b8ae;
-        --leaf: #6f8f72;
-        --coral: #c97a5c;
         --highlighter: #e0a32b;
+        --ink-2-dark: #878b8c; /* on-ink secondary, measured — not an opacity approximation */
+        --ink-3-dark: #7c8082; /* on-ink tertiary, 4.59:1 floor */
+        --rule-dark: #333333;
+        --capsule-dark: rgba(19, 21, 22, 0.8);
 
-        /* Ingredient palette — topic-ingredient anchor */
-        --perilla: #3f6b52;
-        --perilla-deep: #24401f;
-        /* tone-aware adaptation for on-ink text, same pattern the system
-           uses for --icon-data-on-light: preserve the hue, lift the value */
-        --perilla-on-ink: color-mix(in srgb, var(--perilla) 55%, white);
+        /* ---- ingredient topic color: --color-topic-ingredient -> --color-perilla ---- */
+        --color-perilla: #3f6b52;
+        --color-perilla-deep: #24401f;
+        /* tone-aware on-ink step, same pattern the system uses for --icon-data-on-light */
+        --perilla-on-ink: color-mix(in srgb, var(--color-perilla) 55%, white);
 
-        /* Text inks on an ink field (paper-derived, opacity-stepped) */
-        --on-ink-primary: var(--paper);
-        --on-ink-secondary: rgba(247, 245, 240, 0.68);
-        --on-ink-tertiary: rgba(247, 245, 240, 0.62);
-        --rule-dark: rgba(247, 245, 240, 0.16);
-        --card-fill-dark: rgba(247, 245, 240, 0.06);
+        /* ---- type families (tokens/typography.css) ---- */
+        --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+        --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+        --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+        --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
 
-        /* Type families */
-        --font-display: "EB Garamond", Georgia, serif;
-        --font-body: "Inter", system-ui, sans-serif;
-        --font-mono: "JetBrains Mono", ui-monospace, monospace;
-        --font-kr: "Noto Sans KR", sans-serif;
-
-        /* Type scale — fixed px, eleven steps */
-        --t-thumb-2: 112px;
-        --t-title: 96px;
+        /* ---- type scale — fixed px, verbatim ---- */
         --t-chapter: 72px;
         --t-subtitle: 48px;
         --t-lead: 40px;
@@ -54,28 +56,30 @@
         --t-label: 24px;
         --t-chip: 22px;
         --t-floor: 20px;
-
-        /* Tracking / line-height */
+        --lh-tight: 1.05;
+        --lh-snug: 1.2;
+        --lh-body: 1.45;
         --tr-display: -0.02em;
         --tr-body: 0em;
         --tr-mono: 0.04em;
         --tr-mono-wide: 0.1em;
-        --lh-tight: 1.05;
-        --lh-snug: 1.2;
-        --lh-body: 1.45;
 
-        /* Spacing steps — 4px base */
-        --sp-1: 4px;
-        --sp-2: 8px;
-        --sp-3: 12px;
-        --sp-4: 20px;
-        --sp-5: 32px;
-        --sp-6: 60px;
+        /* ---- spacing / radii (tokens/spacing.css) ---- */
+        --s-3: 12px;
+        --s-4: 20px;
+        --s-5: 32px;
+        --s-6: 60px;
+        --r-3: 10px;
+        --rule-w-thin: 1px;
 
-        /* Radii — never a pill on data */
-        --r-node: 2px;
-        --r-chip: 6px;
-        --r-card: 10px;
+        /* ---- 9:16 Shorts-lane safe area (tokens/layout.css --short-safe-*) ---- */
+        --short-safe-top: 120px;
+        --short-safe-right: 162px;
+        --short-safe-bottom: 360px;
+        --short-safe-left: 60px;
+
+        /* ---- elevation (tokens/layout.css) — shadow only, never glow ---- */
+        --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
       }
 
       * {
@@ -102,7 +106,6 @@
         background: var(--ink);
       }
 
-      /* ---------- flat field — no gradient, no glow ---------- */
       .bg {
         position: absolute;
         inset: 0;
@@ -110,16 +113,16 @@
         background: var(--ink);
       }
 
-      /* ---------- progress rail (aqua — the interrogated element) ---------- */
+      /* ---------- progress rail (aqua — the single interrogated-element accent) ---------- */
       .progress-wrap {
         position: absolute;
-        top: var(--sp-6);
-        left: 96px;
-        right: 202px;
+        top: var(--s-6);
+        left: var(--short-safe-left);
+        right: var(--short-safe-right);
         height: 6px;
         z-index: 50;
         background: var(--rule-dark);
-        border-radius: var(--r-node);
+        border-radius: 2px;
         overflow: hidden;
       }
       .progress-fill {
@@ -135,14 +138,14 @@
       .wordmark {
         position: absolute;
         top: 96px;
-        left: 96px;
+        left: var(--short-safe-left);
         z-index: 50;
         font-family: var(--font-mono);
         font-weight: 500;
         font-size: var(--t-chip);
         letter-spacing: var(--tr-mono-wide);
         text-transform: uppercase;
-        color: var(--on-ink-tertiary);
+        color: var(--ink-3-dark);
       }
 
       /* ---------- shared full-frame scene box, safe-area padded ---------- */
@@ -155,7 +158,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 168px 202px 456px 96px;
+        padding: var(--short-safe-top) var(--short-safe-right) var(--short-safe-bottom) var(--short-safe-left);
       }
 
       /* ---------- title / outro ---------- */
@@ -169,24 +172,24 @@
         will-change: transform, opacity;
       }
       .display-h1 {
-        margin-top: var(--sp-4);
+        margin-top: var(--s-4);
         font-family: var(--font-display);
         font-weight: 800;
-        font-size: var(--t-title);
+        font-size: 96px;
         line-height: var(--lh-tight);
         letter-spacing: var(--tr-display);
-        color: var(--on-ink-primary);
+        color: var(--paper);
         will-change: transform, opacity;
       }
       .display-lead {
-        margin-top: var(--sp-5);
+        margin-top: var(--s-5);
         max-width: 760px;
         font-family: var(--font-display);
         font-style: italic;
         font-weight: 500;
         font-size: var(--t-lead);
         line-height: var(--lh-snug);
-        color: var(--on-ink-secondary);
+        color: var(--ink-2-dark);
         will-change: transform, opacity;
       }
       .disclaimer {
@@ -198,102 +201,114 @@
         font-family: var(--font-mono);
         font-size: var(--t-floor);
         letter-spacing: var(--tr-mono);
-        color: var(--on-ink-tertiary);
+        color: var(--ink-3-dark);
         will-change: opacity;
       }
 
-      /* ---------- ingredient card — TermDefinition pattern ---------- */
+      /* ---------- ingredient card — TermDefinition, adapted for a full-frame centered
+         hero use rather than TermDefinition's native lower-third/overlay placement.
+         Fill, border, radius, shadow, and padding are the real component's; the
+         second "commonly used for" line and the centered layout extend past its
+         nominal-fields-only contract, kept because a corner overlay's left-aligned,
+         unbounded-width layout doesn't read as a full-frame card. ---------- */
       .card-inner {
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-width: 822px;
-        padding: var(--sp-6) var(--sp-5);
-        background: var(--card-fill-dark);
-        border: 1px solid var(--rule-dark);
-        border-radius: var(--r-card);
+        gap: var(--s-3);
+        max-width: 820px;
+        padding: var(--s-5);
+        background: var(--capsule-dark);
+        border: var(--rule-w-thin) solid var(--rule-dark);
+        border-radius: var(--r-3);
+        box-shadow: var(--elev-2);
       }
-      .term-image {
-        display: block;
-        width: 400px;
-        height: 400px;
-        object-fit: contain;
+      .term-icon {
+        width: 96px;
+        height: 96px;
+        color: var(--paper);
         will-change: transform, opacity;
       }
+      .term-head {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--s-4);
+        margin-top: var(--s-4);
+      }
       .term-name {
-        margin-top: var(--sp-4);
         font-family: var(--font-display);
         font-weight: 700;
         font-size: var(--t-chapter);
         line-height: var(--lh-tight);
         letter-spacing: var(--tr-display);
-        color: var(--on-ink-primary);
+        color: var(--paper);
         will-change: transform, opacity;
       }
       .term-kr {
-        margin-top: var(--sp-2);
         font-family: var(--font-kr);
         font-weight: 500;
-        font-size: var(--t-subtitle);
-        color: var(--on-ink-secondary);
+        font-size: var(--t-body);
+        line-height: var(--lh-snug);
+        color: var(--aqua);
         will-change: transform, opacity;
       }
       .term-category {
-        margin-top: var(--sp-3);
         font-family: var(--font-mono);
         font-weight: 600;
-        font-size: var(--t-label);
+        font-size: var(--t-chip);
         letter-spacing: var(--tr-mono-wide);
         text-transform: uppercase;
-        color: var(--perilla-on-ink);
+        color: var(--ink-3-dark);
+        will-change: transform, opacity;
+      }
+      .term-rule {
+        margin-top: var(--s-4);
+        width: 56px;
+        height: var(--rule-w-thin);
+        background: var(--rule-dark);
+        transform-origin: 50% 50%;
         will-change: transform, opacity;
       }
       .term-body {
-        margin-top: var(--sp-4);
+        margin-top: var(--s-4);
         max-width: 700px;
         font-family: var(--font-body);
         font-weight: 400;
         font-size: var(--t-body);
         line-height: var(--lh-body);
         letter-spacing: var(--tr-body);
-        color: var(--on-ink-primary);
-        will-change: transform, opacity;
-      }
-      .term-rule {
-        margin-top: var(--sp-5);
-        width: 56px;
-        height: 2px;
-        background: var(--rule-dark);
-        transform-origin: 50% 50%;
+        color: var(--ink-2-dark); /* TermDefinition's own on-dark definition color */
         will-change: transform, opacity;
       }
       .term-label-2 {
-        margin-top: var(--sp-4);
+        margin-top: var(--s-4);
         font-family: var(--font-mono);
         font-weight: 600;
         font-size: var(--t-chip);
         letter-spacing: var(--tr-mono-wide);
         text-transform: uppercase;
-        color: var(--on-ink-tertiary);
+        color: var(--ink-3-dark);
         will-change: transform, opacity;
       }
       .term-body-2 {
-        margin-top: var(--sp-2);
+        margin-top: var(--s-3);
         max-width: 700px;
         font-family: var(--font-body);
         font-weight: 400;
         font-size: var(--t-annot);
         line-height: var(--lh-body);
-        color: var(--on-ink-secondary);
+        color: var(--ink-3-dark);
         will-change: transform, opacity;
       }
       .term-index {
-        margin-top: var(--sp-5);
+        margin-top: var(--s-5);
         font-family: var(--font-mono);
         font-weight: 500;
         font-size: var(--t-chip);
         letter-spacing: var(--tr-mono);
-        color: var(--on-ink-tertiary);
+        color: var(--ink-3-dark);
       }
     </style>
   </head>
@@ -326,8 +341,8 @@
 
     <script>
       // -----------------------------------------------------------------
-      // Cubic-bezier ease matching the design system's --e-out/--e-in/--e-inout
-      // tokens exactly (deterministic, pure math — no Math.random/Date.now).
+      // Cubic-bezier ease matching tokens/motion.css --e-out/--e-in/--e-inout
+      // exactly (deterministic, pure math — no Math.random/Date.now).
       // -----------------------------------------------------------------
       function cubicBezierEase(mX1, mY1, mX2, mY2) {
         function a(x1, x2) { return 1 - 3 * x2 + 3 * x1; }
@@ -353,178 +368,47 @@
       var eIn = cubicBezierEase(0.55, 0.055, 0.675, 0.19);
       var eInOut = cubicBezierEase(0.455, 0.03, 0.515, 0.955);
 
-      // Durations & stagger — every value from tokens/motion.css
+      // Durations & stagger — tokens/motion.css, verbatim.
       var D_SNAP = 0.18;
       var D_FAST = 0.4;
       var D_BASE = 0.5;
-      var STAGGER_LINE = 0.08;
+      var STAGGER_LINE = 0.08; // --stagger-line
+
+      // Real Icon component's "ingredient" role: Lucide "leaf", 24x24 viewBox,
+      // stroke-width a constant 3 viewBox units (the viewBox scales it with size —
+      // never multiplied by size). Path data copied verbatim from assets/icons/leaf.svg
+      // in the design-system project, not hand-drawn.
+      var LEAF_ICON =
+        '<svg class="term-icon" id="ICON_ID" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>' +
+        '<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>' +
+        "</svg>";
 
       // -----------------------------------------------------------------
-      // Content data — transcribed from the reference ingredient chart.
-      // Korean glosses included only where the term is standard, common
-      // K-beauty vocabulary; omitted rather than guessed where uncertain.
+      // Content data — unchanged from the prior pass; only the surrounding
+      // presentation (tokens, icon, card grammar) changes in this one.
       // -----------------------------------------------------------------
       var INGREDIENTS = [
-        {
-          name: "AHA / BHA",
-          kr: "",
-          category: "Exfoliating acid",
-          what: "Exfoliating acids — AHAs smooth the surface, BHAs unclog pores.",
-          used: "Acne, blackheads, rough texture, and dullness.",
-          image: "assets/01-aha-bha.png",
-        },
-        {
-          name: "Centella Asiatica",
-          kr: "병풀",
-          category: "Botanical extract",
-          what: "A medicinal herb with healing and anti-inflammatory properties.",
-          used: "Wound healing, barrier repair, and stressed skin.",
-          image: "assets/02-centella-asiatica.png",
-        },
-        {
-          name: "Bamboo Extract",
-          kr: "대나무",
-          category: "Botanical extract",
-          what: "A mineral-rich extract from bamboo stalks.",
-          used: "Hydrating, calming, and refreshing the skin.",
-          image: "assets/03-bamboo-extract.png",
-        },
-        {
-          name: "Green Tea",
-          kr: "녹차",
-          category: "Botanical extract",
-          what: "A calming antioxidant with antibacterial and oil-controlling properties.",
-          used: "Soothing acne-prone skin and preventing oxidative stress.",
-          image: "assets/04-green-tea.png",
-        },
-        {
-          name: "Birch Sap",
-          kr: "자작나무 수액",
-          category: "Botanical extract",
-          what: "Tree sap used in place of water in skincare formulations.",
-          used: "Lightweight hydration, soothing sensitivity, and supporting the barrier.",
-          image: "assets/05-birch-sap.png",
-        },
-        {
-          name: "Ginseng",
-          kr: "인삼",
-          category: "Root extract",
-          what: "A root extract revered in Korean tradition for its rejuvenating effects.",
-          used: "Boosting circulation, reducing signs of fatigue, and improving skin tone.",
-          image: "assets/06-ginseng.png",
-        },
-        {
-          name: "Bifida Ferment Lysate",
-          kr: "",
-          category: "Ferment",
-          what: "A fermented probiotic ingredient.",
-          used: "Strengthening the skin barrier, elasticity, and reducing sensitivity.",
-          image: "assets/07-bifida-ferment-lysate.png",
-        },
-        {
-          name: "Hyaluronic Acid",
-          kr: "히알루론산",
-          category: "Humectant",
-          what: "A moisture-binding molecule that holds 1000x its weight in water.",
-          used: "Intense hydration, plumping, and maintaining skin elasticity.",
-          image: "assets/08-hyaluronic-acid.png",
-        },
-        {
-          name: "Ceramides",
-          kr: "세라마이드",
-          category: "Barrier lipid",
-          what: "Lipid molecules that form the skin's protective barrier.",
-          used: "Strengthening the barrier, retaining moisture, and reducing sensitivity.",
-          image: "assets/09-ceramides.png",
-        },
-        {
-          name: "Niacinamide",
-          kr: "나이아신아마이드",
-          category: "Vitamin B3",
-          what: "A multi-tasking vitamin that strengthens the skin barrier.",
-          used: "Pore refinement, oil control, and evening out tone.",
-          image: "assets/10-niacinamide.png",
-        },
-        {
-          name: "Peptides",
-          kr: "펩타이드",
-          category: "Peptide",
-          what: "Chains of amino acids that support collagen and elastin production.",
-          used: "Smoothing wrinkles, firming skin, and improving resilience.",
-          image: "assets/11-peptides.png",
-        },
-        {
-          name: "Snail Mucin",
-          kr: "달팽이 점액",
-          category: "Secretion filtrate",
-          what: "A hydrating and reparative secretion from snails, rich in enzymes and glycoproteins.",
-          used: "Healing acne scars, improving texture, and enhancing skin elasticity.",
-          image: "assets/12-snail-mucin.png",
-        },
-        {
-          name: "Panthenol",
-          kr: "판테놀",
-          category: "Vitamin B5",
-          what: "A moisturizing and healing vitamin.",
-          used: "Soothing, softening, and repairing dry or irritated skin.",
-          image: "assets/13-panthenol.png",
-        },
-        {
-          name: "Soybean Extract",
-          kr: "콩 추출물",
-          category: "Botanical extract",
-          what: "A fermented antioxidant-rich extract.",
-          used: "Restoring balance, brightening skin tone, and anti-aging.",
-          image: "assets/14-soybean-extract.png",
-        },
-        {
-          name: "Propolis",
-          kr: "프로폴리스",
-          category: "Bee-derived",
-          what: "A resinous, antioxidant-rich compound from bees.",
-          used: "Calming acne, soothing inflammation, and promoting glow.",
-          image: "assets/15-propolis.png",
-        },
-        {
-          name: "Retinol",
-          kr: "레티놀",
-          category: "Vitamin A",
-          what: "A gold-standard anti-aging compound that promotes cell turnover.",
-          used: "Wrinkles, fine lines, acne, and rough texture.",
-          image: "assets/16-retinol.png",
-        },
-        {
-          name: "Royal Jelly",
-          kr: "로열젤리",
-          category: "Bee-derived",
-          what: "A nutrient-rich secretion produced by bees.",
-          used: "Revitalizing dry, aging skin and improving skin nourishment.",
-          image: "assets/17-royal-jelly.png",
-        },
-        {
-          name: "Mugwort",
-          kr: "쑥",
-          category: "Botanical extract",
-          what: "A soothing herb long used in Korean medicine.",
-          used: "Calming sensitive skin, reducing redness, and detoxifying.",
-          image: "assets/18-mugwort.png",
-        },
-        {
-          name: "Rice Extract",
-          kr: "쌀 추출물",
-          category: "Botanical extract",
-          what: "A gentle brightening and moisturizing ingredient used for centuries in Korea.",
-          used: "Dullness, dryness, and restoring luminosity.",
-          image: "assets/19-rice-extract.png",
-        },
-        {
-          name: "Vitamin C",
-          kr: "비타민C",
-          category: "Antioxidant",
-          what: "A brightening antioxidant that protects against environmental stressors.",
-          used: "Dullness, hyperpigmentation, and uneven tone.",
-          image: "assets/20-vitamin-c.png",
-        },
+        { name: "AHA / BHA", kr: "", category: "Exfoliating acid", what: "Exfoliating acids — AHAs smooth the surface, BHAs unclog pores.", used: "Acne, blackheads, rough texture, and dullness." },
+        { name: "Centella Asiatica", kr: "병풀", category: "Botanical extract", what: "A medicinal herb with healing and anti-inflammatory properties.", used: "Wound healing, barrier repair, and stressed skin." },
+        { name: "Bamboo Extract", kr: "대나무", category: "Botanical extract", what: "A mineral-rich extract from bamboo stalks.", used: "Hydrating, calming, and refreshing the skin." },
+        { name: "Green Tea", kr: "녹차", category: "Botanical extract", what: "A calming antioxidant with antibacterial and oil-controlling properties.", used: "Soothing acne-prone skin and preventing oxidative stress." },
+        { name: "Birch Sap", kr: "자작나무 수액", category: "Botanical extract", what: "Tree sap used in place of water in skincare formulations.", used: "Lightweight hydration, soothing sensitivity, and supporting the barrier." },
+        { name: "Ginseng", kr: "인삼", category: "Root extract", what: "A root extract revered in Korean tradition for its rejuvenating effects.", used: "Boosting circulation, reducing signs of fatigue, and improving skin tone." },
+        { name: "Bifida Ferment Lysate", kr: "", category: "Ferment", what: "A fermented probiotic ingredient.", used: "Strengthening the skin barrier, elasticity, and reducing sensitivity." },
+        { name: "Hyaluronic Acid", kr: "히알루론산", category: "Humectant", what: "A moisture-binding molecule that holds 1000x its weight in water.", used: "Intense hydration, plumping, and maintaining skin elasticity." },
+        { name: "Ceramides", kr: "세라마이드", category: "Barrier lipid", what: "Lipid molecules that form the skin's protective barrier.", used: "Strengthening the barrier, retaining moisture, and reducing sensitivity." },
+        { name: "Niacinamide", kr: "나이아신아마이드", category: "Vitamin B3", what: "A multi-tasking vitamin that strengthens the skin barrier.", used: "Pore refinement, oil control, and evening out tone." },
+        { name: "Peptides", kr: "펩타이드", category: "Peptide", what: "Chains of amino acids that support collagen and elastin production.", used: "Smoothing wrinkles, firming skin, and improving resilience." },
+        { name: "Snail Mucin", kr: "달팽이 점액", category: "Secretion filtrate", what: "A hydrating and reparative secretion from snails, rich in enzymes and glycoproteins.", used: "Healing acne scars, improving texture, and enhancing skin elasticity." },
+        { name: "Panthenol", kr: "판테놀", category: "Vitamin B5", what: "A moisturizing and healing vitamin.", used: "Soothing, softening, and repairing dry or irritated skin." },
+        { name: "Soybean Extract", kr: "콩 추출물", category: "Botanical extract", what: "A fermented antioxidant-rich extract.", used: "Restoring balance, brightening skin tone, and anti-aging." },
+        { name: "Propolis", kr: "프로폴리스", category: "Bee-derived", what: "A resinous, antioxidant-rich compound from bees.", used: "Calming acne, soothing inflammation, and promoting glow." },
+        { name: "Retinol", kr: "레티놀", category: "Vitamin A", what: "A gold-standard anti-aging compound that promotes cell turnover.", used: "Wrinkles, fine lines, acne, and rough texture." },
+        { name: "Royal Jelly", kr: "로열젤리", category: "Bee-derived", what: "A nutrient-rich secretion produced by bees.", used: "Revitalizing dry, aging skin and improving skin nourishment." },
+        { name: "Mugwort", kr: "쑥", category: "Botanical extract", what: "A soothing herb long used in Korean medicine.", used: "Calming sensitive skin, reducing redness, and detoxifying." },
+        { name: "Rice Extract", kr: "쌀 추출물", category: "Botanical extract", what: "A gentle brightening and moisturizing ingredient used for centuries in Korea.", used: "Dullness, dryness, and restoring luminosity." },
+        { name: "Vitamin C", kr: "비타민C", category: "Antioxidant", what: "A brightening antioxidant that protects against environmental stressors.", used: "Dullness, hyperpigmentation, and uneven tone." },
       ];
 
       // -----------------------------------------------------------------
@@ -548,13 +432,15 @@
         section.setAttribute("data-duration", CARD_DUR.toFixed(2));
         section.setAttribute("data-track-index", "1");
 
-        var krLine = ing.kr ? '<div class="term-kr" id="kr-' + i + '">' + ing.kr + "</div>" : "";
+        var krLine = ing.kr ? '<span class="term-kr" id="kr-' + i + '">' + ing.kr + "</span>" : "";
 
         section.innerHTML =
           '<div class="card-inner" id="inner-' + i + '">' +
-          '<img class="term-image" id="image-' + i + '" src="' + ing.image + '" alt="" />' +
+          LEAF_ICON.replace('id="ICON_ID"', 'id="icon-' + i + '"') +
+          '<div class="term-head">' +
           '<h2 class="term-name" id="name-' + i + '">' + ing.name + "</h2>" +
           krLine +
+          "</div>" +
           '<div class="term-category" id="cat-' + i + '">' + ing.category + "</div>" +
           '<p class="term-body" id="what-' + i + '">' + ing.what + "</p>" +
           '<div class="term-rule" id="rule-' + i + '"></div>' +
@@ -576,10 +462,12 @@
       // temporal readout, not an eased entrance — linear by design).
       tl.fromTo("#progress-fill", { scaleX: 0 }, { scaleX: 1, duration: 76, ease: "none" }, 0);
 
-      // ---- Title scene (0 - 2.5s) ----
-      tl.fromTo("#title-kicker", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 0.1);
-      tl.fromTo("#title-h1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 0.1 + STAGGER_LINE);
-      tl.fromTo("#title-lead", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 0.1 + STAGGER_LINE * 2);
+      // ---- Title scene (0 - 2.5s). Type-line grammar: rise 48px + fade, 500ms
+      // e-out, 80ms stagger (motion-grammar.card.html), not the 400ms this used
+      // to run at. ----
+      tl.fromTo("#title-kicker", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, 0.1);
+      tl.fromTo("#title-h1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, 0.1 + STAGGER_LINE);
+      tl.fromTo("#title-lead", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, 0.1 + STAGGER_LINE * 2);
       tl.fromTo(
         "#scene-title .kicker, #scene-title .display-h1, #scene-title .display-lead",
         { opacity: 1 },
@@ -593,25 +481,25 @@
         var start = cardStarts[i];
         var t = start;
         var nextBoundary = i === INGREDIENTS.length - 1 ? 72.5 : cardStarts[i + 1];
-        tl.fromTo("#image-" + i, { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: D_FAST, ease: eOut }, t);
-        tl.fromTo("#name-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE);
+        tl.fromTo("#icon-" + i, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, t);
+        tl.fromTo("#name-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, t + STAGGER_LINE);
         if (ing.kr) {
-          tl.fromTo("#kr-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 2);
+          tl.fromTo("#kr-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, t + STAGGER_LINE * 2);
         }
-        tl.fromTo("#cat-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 3);
-        tl.fromTo("#what-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 4);
+        tl.fromTo("#cat-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, t + STAGGER_LINE * 3);
+        tl.fromTo("#what-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, t + STAGGER_LINE * 4);
         tl.fromTo("#rule-" + i, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: eOut }, t + STAGGER_LINE * 5);
-        tl.fromTo("#label2-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 6);
-        tl.fromTo("#used-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, t + STAGGER_LINE * 7);
+        tl.fromTo("#label2-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, t + STAGGER_LINE * 6);
+        tl.fromTo("#used-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, t + STAGGER_LINE * 7);
         // Exit: scene cross-fade before this clip's window closes.
         tl.fromTo("#inner-" + i, { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, t + CARD_DUR - 0.55);
         tl.set("#inner-" + i, { opacity: 0 }, nextBoundary);
       });
 
       // ---- Outro scene (72.5 - 76s) ----
-      tl.fromTo("#outro-kicker", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 72.62);
-      tl.fromTo("#outro-h1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 72.62 + STAGGER_LINE);
-      tl.fromTo("#outro-lead", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 72.62 + STAGGER_LINE * 2);
+      tl.fromTo("#outro-kicker", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, 72.62);
+      tl.fromTo("#outro-h1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, 72.62 + STAGGER_LINE);
+      tl.fromTo("#outro-lead", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: eOut }, 72.62 + STAGGER_LINE * 2);
       tl.fromTo("#outro-disclaimer", { opacity: 0 }, { opacity: 1, duration: D_FAST, ease: eOut }, 73.4);
 
       window.__timelines["main"] = tl;

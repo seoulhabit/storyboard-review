@@ -6,23 +6,32 @@
 <meta name="viewport" content="width=1080, height=1350" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
+  /* SeoulHabit Video Design System — tokens read verbatim via DesignSync from
+     claude.ai/design/p/75132ad8-b81c-4151-8a4c-83368df1d949 (tokens/*.css) */
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("../assets/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: block;
+  }
   :root {
     --paper: #f7f5f0;
     --ink: #131516;
     --aqua: #59b8ae;
-    --perilla: #3f6b52;
-    --perilla-on-ink: color-mix(in srgb, var(--perilla) 55%, white);
-    --on-ink-primary: var(--paper);
-    --on-ink-secondary: rgba(247, 245, 240, 0.68);
-    --on-ink-tertiary: rgba(247, 245, 240, 0.62);
-    --rule-dark: rgba(247, 245, 240, 0.16);
-    --card-fill-dark: rgba(247, 245, 240, 0.06);
-    --font-display: "EB Garamond", Georgia, serif;
-    --font-body: "Inter", system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
-    --font-kr: "Noto Sans KR", sans-serif;
+    --ink-2-dark: #878b8c;
+    --ink-3-dark: #7c8082;
+    --rule-dark: #333333;
+    --capsule-dark: rgba(19, 21, 22, .8);
+    --color-perilla: #3f6b52;
+    --perilla-on-ink: color-mix(in srgb, var(--color-perilla) 55%, white);
+    --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+    --elev-2: 0 18px 32px -20px rgba(19,21,22,.35);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 1080px; height: 1350px; overflow: hidden; background: var(--ink); }
@@ -48,7 +57,7 @@
     font-size: 20px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--on-ink-tertiary);
+    color: var(--ink-3-dark);
   }
   .doc-tag {
     position: absolute;
@@ -59,37 +68,39 @@
     font-size: 20px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--on-ink-tertiary);
+    color: var(--ink-3-dark);
   }
   .card-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 12px;
     max-width: 780px;
-    padding: 60px 48px;
-    background: var(--card-fill-dark);
+    padding: 32px;
+    background: var(--capsule-dark);
     border: 1px solid var(--rule-dark);
     border-radius: 10px;
+    box-shadow: var(--elev-2);
     opacity: 0;
     animation: rise 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   }
-  .term-image { display: block; width: 360px; height: 360px; object-fit: contain; }
+  .term-icon { width: 84px; height: 84px; color: var(--paper); }
+  .term-head { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; }
   .term-name {
-    margin-top: 20px;
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 72px;
+    font-size: 64px;
     line-height: 1.05;
     letter-spacing: -0.02em;
-    color: var(--on-ink-primary);
+    color: var(--paper);
   }
-  .term-kr { margin-top: 8px; font-family: var(--font-kr); font-weight: 500; font-size: 40px; color: var(--on-ink-secondary); }
-  .term-category { margin-top: 12px; font-family: var(--font-mono); font-weight: 600; font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--perilla-on-ink); }
-  .term-body { margin-top: 20px; max-width: 620px; font-family: var(--font-body); font-size: 32px; line-height: 1.45; color: var(--on-ink-primary); }
-  .term-rule { margin-top: 32px; width: 56px; height: 2px; background: var(--rule-dark); }
-  .term-label-2 { margin-top: 20px; font-family: var(--font-mono); font-weight: 600; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-ink-tertiary); }
-  .term-body-2 { margin-top: 8px; max-width: 620px; font-family: var(--font-body); font-size: 28px; line-height: 1.45; color: var(--on-ink-secondary); }
+  .term-kr { font-family: var(--font-kr); font-weight: 500; font-size: 30px; color: var(--aqua); }
+  .term-category { font-family: var(--font-mono); font-weight: 600; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3-dark); }
+  .term-body { margin-top: 20px; max-width: 620px; font-family: var(--font-body); font-size: 30px; line-height: 1.45; color: var(--ink-2-dark); }
+  .term-rule { margin-top: 32px; width: 56px; height: 1px; background: var(--rule-dark); }
+  .term-label-2 { margin-top: 20px; font-family: var(--font-mono); font-weight: 600; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3-dark); }
+  .term-body-2 { margin-top: 8px; max-width: 620px; font-family: var(--font-body); font-size: 26px; line-height: 1.45; color: var(--ink-3-dark); }
   .term-index {
     position: absolute;
     bottom: 72px;
@@ -100,15 +111,14 @@
     font-weight: 500;
     font-size: 22px;
     letter-spacing: 0.04em;
-    color: var(--on-ink-tertiary);
+    color: var(--ink-3-dark);
     opacity: 0;
     animation: fade 0.4s ease-out 0.5s forwards;
   }
 
   .card-inner > * { opacity: 0; animation: rise 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; }
-  .term-image { animation-delay: 0.05s !important; }
-  .term-name { animation-delay: 0.13s !important; }
-  .term-kr { animation-delay: 0.21s !important; }
+  .term-icon { animation-delay: 0.05s !important; }
+  .term-head { animation-delay: 0.13s !important; }
   .term-category { animation-delay: 0.29s !important; }
   .term-body { animation-delay: 0.37s !important; }
   .term-rule { animation-delay: 0.45s !important; }
@@ -125,9 +135,11 @@
     <div class="wordmark">SeoulHabit</div>
     <div class="doc-tag">Component 06 / 20</div>
     <div class="card-inner">
-      <img class="term-image" src="../images/06-ginseng.png" alt="" />
-      <h2 class="term-name">Ginseng</h2>
-      <div class="term-kr">인삼</div>
+      <svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      <div class="term-head">
+        <h2 class="term-name">Ginseng</h2>
+        <span class="term-kr">인삼</span>
+      </div>
       <div class="term-category">Root extract</div>
       <p class="term-body">A root extract revered in Korean tradition for its rejuvenating effects.</p>
       <div class="term-rule"></div>

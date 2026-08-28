@@ -5,7 +5,7 @@ entries in this folder — catalogued here as one entry rather than split
 across twenty mostly-empty ingredient folders.
 
 **Project:** `../../../videos/skincare-ingredient-glossary/` — rendered
-(`renders/skincare-ingredient-glossary_2026-08-27_23-15-09.mp4`, 76s,
+(`renders/skincare-ingredient-glossary_2026-08-27_23-40-26.mp4`, 76s,
 1080×1920, confirmed via `ffprobe`). Twenty ingredients, in order: AHA/BHA,
 Centella Asiatica, Bamboo Extract, Green Tea, Birch Sap, Ginseng, Bifida
 Ferment Lysate, Hyaluronic Acid, Ceramides, Niacinamide, Peptides, Snail
@@ -15,57 +15,94 @@ it is" / "commonly used for" card.
 
 ## Design system
 
-Restyled against the **SeoulHabit Video Design System** (shared Claude
-Design canvas), replacing the original standalone palette: flat ink
-`#131516` field (no gradients, no glow — the system bans both), the
-`--color-topic-ingredient` → perilla green identity, EB Garamond display /
-Inter body / JetBrains Mono technical / Noto Sans KR for Hangul, the
-system's own type scale, spacing steps, radii, and the exact
-`--e-out`/`--e-in`/`--e-inout` cubic-bezier motion curves at token durations
-(`--d-snap`, `--d-fast`, `--d-base`, `--stagger-line`). Each card's icon has
-since been replaced by a full illustration — see **Images** below.
+Restyled against the **SeoulHabit Video Design System**. Two passes:
 
-**Content caveat, stated plainly:** the design system's core rule is that
-any on-screen claim of efficacy carries a source id or does not render. This
+**Pass 1 (visual, screenshot-derived):** colors, type, spacing, radii, and
+motion curves transcribed by eye from the Claude Design canvas — flat ink
+`#131516` field (no gradients, no glow), `--color-topic-ingredient` →
+perilla green, EB Garamond / Inter / JetBrains Mono / Noto Sans KR, the
+`--e-out`/`--e-in`/`--e-inout` cubic-beziers. Mostly right, but a
+screenshot can't be diffed against a source file.
+
+**Pass 2 (source-verified):** the design project connected via the
+`DesignSync` MCP tool (`claude.ai/design/p/75132ad8-b81c-4151-8a4c-83368df1d949`)
+and read directly — `tokens/*.css`, `_ds_manifest.json`, and the real
+`TermDefinition`/`Icon` component source, not a rendering of them. That
+surfaced real gaps pass 1 missed:
+
+- **The Korean font was loading from Google Fonts at render time.** The
+  system self-hosts a video-specific subset (`assets/fonts/NotoSansKR-500-subset.woff2`)
+  specifically because the CDN face is missing glyphs the video needs, and
+  because a deterministic render pipeline shouldn't fetch fonts over the
+  network. Copied in as `assets/NotoSansKR-500-subset.woff2` in every
+  project that needs it.
+- **The on-ink text hierarchy was fabricated.** `--on-ink-secondary` /
+  `--on-ink-tertiary` were opacity steps on `--paper` I made up because they
+  looked right. The real tokens are solid, measured hex —
+  `--ink-2-dark #878B8C`, `--ink-3-dark #7C8082`, the latter explicitly
+  documented as sitting at the 4.59:1 AA floor. Swapped in verbatim.
+  `TermDefinition`'s own definition text renders in `--ink-2-dark`
+  (secondary), not full paper-white — matched.
+- **The safe-area padding was hand-guessed.** `tokens/layout.css` has an
+  actual `--short-safe-*` set for the 9:16 lane (`120px` / `162px` /
+  `360px` / `60px`, top/right/bottom/left) that doesn't match what was
+  eyeballed before. Swapped in verbatim.
+- **The card's fill, border, and elevation didn't match `TermDefinition.jsx`.**
+  The real component uses `--capsule-dark` (`rgba(19,21,22,.8)`, not a
+  faint paper tint), a solid `--rule-dark` border, and `--elev-2` — no
+  shadow was applied before.
+- **Name and Korean gloss render inline,** baseline-aligned, the Korean
+  gloss in `--aqua` — not stacked in a muted secondary color, which is what
+  this card did before.
+- **Type-line motion ran at 400ms; the real grammar (`motion-grammar.card.html`)
+  specifies 500ms** (rise 48px + fade, e-out, 80ms stagger) for that
+  element class. Fixed across all five compositions.
+- **The icon.** `Icon.jsx`'s actual `ICON_ROLES.ingredient` maps to exactly
+  one glyph — Lucide `leaf`, outline, `currentColor`, a constant 3-viewBox-unit
+  stroke that scales with size. Not a per-ingredient illustration: the
+  component's own comment is explicit that a standard, repeated glyph
+  reads as a label rather than getting mistaken for bespoke channel
+  artwork, "until the finished mark lands." Two earlier passes (an AI photo
+  model, then a hand-built HyperFrames illustration sheet) gave each
+  ingredient its own bottle-and-props scene — neither matches how the real
+  system actually labels "ingredient" content, so both are retired in favor
+  of the one real glyph, verbatim path data, correct stroke ratio, uniform
+  across all twenty terms.
+
+**Where this card knowingly extends past `TermDefinition.jsx`, not just
+approximates it**, because the real component and this use case solve
+different problems — it's a left-aligned lower-third/overlay for footage,
+this is a full-frame hero card in a sequence with nothing behind it:
+
+- **A second body line** ("Commonly used for") that the real component's
+  field list doesn't have — `TermDefinition.prompt.md` is explicit that
+  nominal fields only belong here, and an efficacy/usage sentence needs a
+  `ClaimLockup` with a source chip instead. This glossary's "commonly used
+  for" text isn't cited (see the caveat below), so routing it through
+  `ClaimLockup` would fabricate a sourcing rigor it doesn't have; kept as a
+  visually-subordinate (`--ink-3-dark`, tertiary) extension instead of
+  silently dropping content the user asked for.
+- **Centered, not left-aligned.** `TermDefinition.jsx`'s root has no
+  `items-center` — by design, since it's meant to sit in a corner over
+  moving footage. Twenty sequential full-frame cards read better centered;
+  kept centered.
+- **The category line isn't labeled `INCI ·`.** The real field is
+  literally an INCI/formal name (`inci` in `TermDefinition.d.ts`); this
+  glossary's category values ("Botanical extract," "Vitamin B3") are
+  categorical, not verified INCI nomenclature, so they keep the chip
+  styling without the `INCI ·` prefix — that label would assert something
+  not actually true of this data.
+- **No `Logo` component.** `Logo.jsx`'s own prompt file calls it "a
+  placeholder monogram, not a delivered brand mark" and flags its
+  Montserrat file as unfit for a long render. Not worth building against a
+  spec its own author hasn't signed off on; the plain mono wordmark stands.
+
+**Content caveat, unchanged:** the design system's core rule is that any
+on-screen claim of efficacy carries a source id or does not render. This
 glossary's "commonly used for" lines come from a general ingredient chart,
 not cited studies, so they're kept descriptive rather than phrased as
 sourced claims, and the outro card carries an explicit disclaimer
 ("General ingredient overview — not sourced claims, not medical advice").
-They do not meet the system's sourcing bar the way an `ING-*`-cited claim
-would — this is a breadth-first pass across twenty terms, not twenty
-fact-checked claims.
-
-## Images
-
-`images/` holds twenty flat illustrations, one per ingredient (`01-aha-bha.png`
-through `20-vitamin-c.png`, 1200×1200, transparent background, ~25KB each) —
-the component-image library the cards now draw on in place of the original
-64px line icons. Each is a bottle (or jar/vial/beaker, matched to the
-ingredient's form) styled with 1-3 category-appropriate props — leaves and
-roots for botanicals, a honeycomb and dripping honey for Propolis, a
-ball-and-stick model for Peptides and Retinol, citrus slices for Vitamin C,
-and so on — built entirely from flat SVG shapes in the design system's own
-token colors (perilla, highlighter, coral, aqua, paper), no gradients, no
-photography.
-
-They're generated *by* HyperFrames, not by an image model: authored as SVG
-in a throwaway 20-cell composition, then captured to PNG with
-`hyperframes snapshot --zoom "x,y,w,h"` (one crop per cell). An earlier pass
-tried an actual AI photo model instead — HyperFrames itself has no
-image-generation capability, only a render/capture pipeline, so a photoreal
-look would have had to come from an external model — but the photos were
-dropped in favor of this HyperFrames-native illustration approach per
-explicit direction, keeping the whole pipeline (art + composition + render)
-inside one framework and strictly on the design system's token palette
-rather than naturalistic photo color.
-
-Used via `<img>` in the card's old icon slot, sized 400×400 in the two video
-formats (`object-fit: contain`, no cropping) and 360×360 in the static
-components below. Wired into: this project's `index.html` (own `assets/`),
-each of the four Part 1–4 projects below (own `assets/`, just the five
-images each part uses), and all twenty `components/*.html` files (referenced
-directly via `../images/`, no per-file copies needed since those are static
-reference pages, not renderable projects).
 
 ## Components
 

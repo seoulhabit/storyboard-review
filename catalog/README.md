@@ -1,8 +1,8 @@
 # Component catalog
 
 Everything built today, organized so it can be mixed and matched into videos
-instead of re-found by scrolling through file names. Two kinds of thing live
-here:
+instead of re-found by scrolling through file names. Four kinds of thing
+live here:
 
 - **`ingredients/`** — substance-specific content: posters and explainers
   about one specific active (PDRN, snail mucin). Swap the ingredient, and you
@@ -15,6 +15,10 @@ here:
   (primary pick + alternates), not full posters or explainers. Some are
   ingredient-specific (PDRN, ginseng), one is a generic ingredient study,
   one is a brand-level proposal not tied to any ingredient at all.
+- **[`ingredient-photography/`](ingredient-photography/README.md)** — raw
+  flat-lay product photography, one still per ingredient, for B-roll and
+  thumbnails rather than any single poster or card. Currently the 20-item
+  Skincare Ingredient Glossary list, numbered to match it 1:1.
 
 A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an

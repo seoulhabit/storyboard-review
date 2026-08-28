@@ -1,0 +1,335 @@
+<template data-composition-id="05-how-to-use" data-width="1080" data-height="1920" data-duration="7.762">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style>
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+  :root {
+    --htu-cream: #fbfaf4;
+    --htu-cream-2: #e8efdd;
+    --htu-moss: #2c4a34;
+    --htu-moss-deep: #0f2016;
+    --htu-moss-lite: #cddfb9;
+    --htu-shell: #b9835a;
+    --htu-shell-deep: #8a5a37;
+    --htu-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  }
+
+  #root {
+    position: absolute;
+    inset: 0;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    font-family: var(--htu-mono);
+  }
+
+  .htu-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--htu-cream);
+  }
+
+  .htu-topbar {
+    position: absolute;
+    top: 64px;
+    left: 80px;
+    right: 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .htu-topbar-label {
+    font-family: var(--htu-mono);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--htu-moss-deep);
+  }
+  .htu-dots {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .htu-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--htu-moss);
+    background: var(--htu-cream-2);
+  }
+
+  .htu-card {
+    position: absolute;
+    left: 90px;
+    top: 460px;
+    width: 900px;
+    height: 1000px;
+    background: var(--htu-cream);
+    border: 2.5px solid var(--htu-moss);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .htu-card-rule {
+    position: absolute;
+    top: 134px;
+    left: 64px;
+    right: 64px;
+    height: 2px;
+    background: var(--htu-moss);
+    opacity: 0.35;
+  }
+
+  .htu-step {
+    position: absolute;
+    inset: 0;
+    padding: 56px 64px 64px;
+    display: flex;
+    flex-direction: column;
+  }
+  .htu-badge {
+    flex: 0 0 auto;
+    font-family: var(--htu-mono);
+    font-weight: 700;
+    font-size: 44px;
+    letter-spacing: 0.02em;
+    color: var(--htu-moss-deep);
+  }
+  .htu-glyph {
+    display: block;
+    width: 320px;
+    height: 320px;
+    margin: 28px auto 0;
+  }
+  .htu-label {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.08em 0.34em;
+    text-align: center;
+    font-family: var(--htu-mono);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--htu-moss-deep);
+  }
+  .htu-word {
+    display: inline-block;
+  }
+
+  /* glyph 1 — droplet on damp skin */
+  #htu-droplet1 {
+    fill: none;
+    stroke: var(--htu-moss);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  #htu-skinline1 {
+    fill: none;
+    stroke: var(--htu-moss);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.6;
+  }
+  .htu-fleck {
+    fill: var(--htu-shell);
+  }
+
+  /* glyph 2 — concentric ripple rings */
+  .htu-ripple {
+    fill: none;
+    stroke: var(--htu-shell);
+    stroke-width: 5;
+    transform-origin: 150px 150px;
+  }
+  .htu-ripple-core {
+    fill: var(--htu-shell-deep);
+  }
+
+  /* glyph 3 — absorbed droplet + sealing arc */
+  #htu-droplet3 {
+    fill: var(--htu-moss-lite);
+    stroke: none;
+    opacity: 0.55;
+  }
+  #htu-seal-arc {
+    fill: none;
+    stroke: var(--htu-shell-deep);
+    stroke-width: 7;
+    stroke-linecap: round;
+  }
+</style>
+
+<div data-hf-id="hf-i0h1" id="root" data-composition-id="05-how-to-use" data-width="1080" data-height="1920">
+
+  <div data-hf-id="hf-nwus" class="htu-bg clip" data-start="0" data-duration="7.762" data-track-index="1"></div>
+
+  <div data-hf-id="hf-dc9g" class="htu-topbar clip" data-start="0" data-duration="7.762" data-track-index="2">
+    <div data-hf-id="hf-jb08" class="htu-topbar-label" id="htu-topbar-label">Application</div>
+    <div data-hf-id="hf-cniy" class="htu-dots">
+      <span data-hf-id="hf-jb17" class="htu-dot" id="htu-dot-1"></span>
+      <span data-hf-id="hf-8fjk" class="htu-dot" id="htu-dot-2"></span>
+      <span data-hf-id="hf-977d" class="htu-dot" id="htu-dot-3"></span>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-ilnx" class="htu-card clip" id="htu-card" data-start="0" data-duration="7.762" data-track-index="3">
+    <div data-hf-id="hf-ijur" class="htu-card-rule"></div>
+
+    <!-- Step 01 — damp skin -->
+    <div data-hf-id="hf-qyuo" class="htu-step" id="htu-step-1">
+      <div data-hf-id="hf-bpq9" class="htu-badge" id="htu-badge-1">01</div>
+      <svg data-hf-id="hf-p9oo" class="htu-glyph" id="htu-glyph-1" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path data-hf-id="hf-wx4y" id="htu-droplet1" d="M150 68 C120 118 94 154 94 186 C94 218 119 244 150 244 C181 244 206 218 206 186 C206 154 180 118 150 68 Z" />
+        <path data-hf-id="hf-fbe9" id="htu-skinline1" d="M 28 234 Q 90 214 150 232 T 272 226" />
+        <circle data-hf-id="hf-os0e" class="htu-fleck" id="htu-fleck-a" cx="222" cy="150" r="7" />
+        <circle data-hf-id="hf-f1qn" class="htu-fleck" id="htu-fleck-b" cx="238" cy="182" r="4.5" />
+      </svg>
+      <div data-hf-id="hf-2wr0" class="htu-label" id="htu-label-1">
+        <span data-hf-id="hf-76b1" class="htu-word">DAMP</span><span data-hf-id="hf-nf92" class="htu-word">SKIN,</span><span data-hf-id="hf-m7aw" class="htu-word">NOT</span><span data-hf-id="hf-t02w" class="htu-word">DRY</span>
+      </div>
+    </div>
+
+    <!-- Step 02 — pat, don't rub -->
+    <div data-hf-id="hf-zmqj" class="htu-step" id="htu-step-2">
+      <div data-hf-id="hf-eehl" class="htu-badge">02</div>
+      <svg data-hf-id="hf-yvaq" class="htu-glyph" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <circle data-hf-id="hf-22lb" class="htu-ripple" id="htu-ripple-1" cx="150" cy="150" r="40" />
+        <circle data-hf-id="hf-jm3j" class="htu-ripple" id="htu-ripple-2" cx="150" cy="150" r="70" />
+        <circle data-hf-id="hf-lr2u" class="htu-ripple" id="htu-ripple-3" cx="150" cy="150" r="100" />
+        <circle data-hf-id="hf-1t62" class="htu-ripple-core" cx="150" cy="150" r="14" />
+      </svg>
+      <div data-hf-id="hf-y50g" class="htu-label">PAT, DON'T RUB</div>
+    </div>
+
+    <!-- Step 03 — seal it in -->
+    <div data-hf-id="hf-vomi" class="htu-step" id="htu-step-3">
+      <div data-hf-id="hf-essm" class="htu-badge">03</div>
+      <svg data-hf-id="hf-6som" class="htu-glyph" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path data-hf-id="hf-74e4" id="htu-droplet3" d="M150 90 C126 132 106 160 106 184 C106 210 126 230 150 230 C174 230 194 210 194 184 C194 160 174 132 150 90 Z" />
+        <path data-hf-id="hf-wu4c" id="htu-seal-arc" d="M 58 150 A 92 92 0 0 1 242 150" />
+      </svg>
+      <div data-hf-id="hf-ko8b" class="htu-label" id="htu-label-3">SEAL IT IN</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    // ---- SVG self-draw setup (measured, not guessed) ----
+    var drawIds = ["htu-droplet1", "htu-skinline1", "htu-seal-arc"];
+    drawIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var len = el.getTotalLength();
+      el.style.strokeDasharray = String(len);
+      el.style.strokeDashoffset = String(len);
+    });
+
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+
+    var SHELL = "#b9835a";
+    var CREAM2 = "#e8efdd";
+
+    // ---- t=0 baselines (GSAP-driven hidden states, not CSS-hidden) ----
+    tl.set("#htu-badge-1", { opacity: 0, scale: 0.8, transformOrigin: "0% 50%" }, 0);
+    tl.set(["#htu-fleck-a", "#htu-fleck-b"], { opacity: 0 }, 0);
+    tl.set("#htu-label-1 .htu-word", { opacity: 0, y: 44 }, 0);
+    tl.set("#htu-step-2", { opacity: 0, x: 0 }, 0);
+    tl.set("#htu-step-3", { opacity: 0, x: 0 }, 0);
+    tl.set(".htu-ripple", { opacity: 0, scale: 0.35, transformOrigin: "150px 150px" }, 0);
+    tl.set("#htu-label-3", { opacity: 0 }, 0);
+    tl.set("#htu-topbar-label", { opacity: 0, y: -16 }, 0);
+    tl.set(".htu-dot", { backgroundColor: CREAM2 }, 0);
+
+    // ---- Scene 1 (0.0-0.7262s): stage establishes ----
+    tl.fromTo("#htu-bg", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, 0);
+    tl.fromTo(
+      "#htu-card",
+      { opacity: 0, scale: 0.94 },
+      { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out", transformOrigin: "50% 50%" },
+      0.05
+    );
+    tl.to("#htu-topbar-label", { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.05);
+    tl.fromTo(
+      ".htu-dot",
+      { opacity: 0, scale: 0.6 },
+      { opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.7)", stagger: 0.05, transformOrigin: "50% 50%" },
+      0.2
+    );
+
+    // ---- Scene 2 (0.7262-2.9048s): step 01 populates, per-word label reveal ----
+    var STEP1_START = 0.7262;
+    tl.to("#htu-badge-1", { opacity: 1, scale: 1, duration: 0.25, ease: "power4.out" }, STEP1_START);
+    tl.to("#htu-dot-1", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, STEP1_START);
+
+    var droplet1Start = STEP1_START + 0.12; // 0.8462
+    tl.to("#htu-droplet1", { strokeDashoffset: 0, duration: 0.55, ease: "power2.out" }, droplet1Start);
+    var skinlineStart = droplet1Start + 0.55 * 0.75; // ~1.259
+    tl.to("#htu-skinline1", { strokeDashoffset: 0, duration: 0.4, ease: "power2.out" }, skinlineStart);
+    var fleckStart = skinlineStart + 0.4; // ~1.659
+    tl.to(["#htu-fleck-a", "#htu-fleck-b"], { opacity: 1, duration: 0.2, ease: "power1.out", stagger: 0.08 }, fleckStart);
+
+    // per-word waterfall entry for the label — binary opacity flip (tl.set) at the
+    // instant each word's whip-in begins, then the offset tweens to rest (never fade)
+    var words1 = document.querySelectorAll("#htu-label-1 .htu-word");
+    var w1t = 1.75;
+    var wordGap = 0.133;
+    words1.forEach(function (w, i) {
+      var start = w1t + i * wordGap;
+      tl.set(w, { opacity: 1 }, start);
+      tl.to(w, { y: 0, duration: 0.16, ease: "power4.out" }, start);
+    });
+
+    // ---- Seam 1 (cut-the-curve, leftward) — step 01 clears, step 02 lands ----
+    var SEAM1 = 2.9048;
+    var exit1Start = SEAM1 - 0.34;
+    tl.to("#htu-step-1", { x: -230, duration: 0.34, ease: "power4.in" }, exit1Start);
+    tl.to("#htu-step-1", { opacity: 0, duration: 0.22, ease: "power1.in" }, exit1Start);
+    tl.set("#htu-step-1", { opacity: 0 }, SEAM1);
+    tl.set("#htu-step-2", { x: 230, opacity: 0.35 }, SEAM1);
+    tl.to("#htu-step-2", { x: 0, duration: 0.4, ease: "power4.out" }, SEAM1);
+    tl.to("#htu-step-2", { opacity: 1, duration: 0.3, ease: "power1.out" }, SEAM1);
+    tl.to("#htu-dot-2", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, SEAM1);
+
+    // ---- Scene 3 (2.9048-5.0834s): step 02 — two ripple pulses ("pat, pat") ----
+    var pulse1 = 3.5;
+    var pulse2 = 4.05;
+    [pulse1, pulse2].forEach(function (start) {
+      tl.set(".htu-ripple", { opacity: 0.85, scale: 0.35 }, start);
+      tl.to(".htu-ripple", { opacity: 0, scale: 1.15, duration: 0.55, ease: "power1.out", stagger: 0.06 }, start);
+    });
+
+    // ---- Seam 2 (cut-the-curve, leftward) — step 02 clears, step 03 lands ----
+    var SEAM2 = 5.0834;
+    var exit2Start = SEAM2 - 0.34;
+    tl.to("#htu-step-2", { x: -230, duration: 0.34, ease: "power4.in" }, exit2Start);
+    tl.to("#htu-step-2", { opacity: 0, duration: 0.22, ease: "power1.in" }, exit2Start);
+    tl.set("#htu-step-2", { opacity: 0 }, SEAM2);
+    tl.set("#htu-step-3", { x: 230, opacity: 0.35 }, SEAM2);
+    tl.to("#htu-step-3", { x: 0, duration: 0.4, ease: "power4.out" }, SEAM2);
+    tl.to("#htu-step-3", { opacity: 1, duration: 0.3, ease: "power1.out" }, SEAM2);
+    tl.to("#htu-dot-3", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, SEAM2);
+
+    // ---- Scene 4 (5.0834-7.262s): step 03 — sealing arc draws, label confirms, settles ----
+    var arcStart = SEAM2 + 0.47; // 5.5534
+    tl.to("#htu-seal-arc", { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, arcStart);
+    var label3Start = arcStart + 0.6; // 6.1534
+    tl.to("#htu-label-3", { opacity: 1, duration: 0.3, ease: "power1.out" }, label3Start);
+    // holds settled to the end of the frame — no exit tween (not the final frame in the video)
+
+    window.__timelines["05-how-to-use"] = tl;
+  })();
+</script>
+</template>

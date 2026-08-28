@@ -1,0 +1,1080 @@
+{
+  "bgm": {
+    "path": "assets/bgm/track.mp3",
+    "volume": 0.12,
+    "query": "soft, dewy K-beauty pop-clinical bed — airy synth pads, light percussive pulse, no vocals, thins under narration",
+    "duration_s": 23
+  },
+  "bgm_pending": false,
+  "voices": [
+    {
+      "frame": 1,
+      "path": "assets/voice/01.wav",
+      "duration_s": 11.624,
+      "words": [
+        {
+          "id": "w0",
+          "text": "What",
+          "start": 0.259,
+          "end": 0.399
+        },
+        {
+          "id": "w1",
+          "text": "if",
+          "start": 0.439,
+          "end": 0.62
+        },
+        {
+          "id": "w2",
+          "text": "the",
+          "start": 0.659,
+          "end": 0.799
+        },
+        {
+          "id": "w3",
+          "text": "secret",
+          "start": 0.859,
+          "end": 1.279
+        },
+        {
+          "id": "w4",
+          "text": "to",
+          "start": 1.319,
+          "end": 1.439
+        },
+        {
+          "id": "w5",
+          "text": "glowing,",
+          "start": 1.5,
+          "end": 2.019
+        },
+        {
+          "id": "w6",
+          "text": "glass",
+          "start": 2.519,
+          "end": 2.919
+        },
+        {
+          "id": "w7",
+          "text": "skin...",
+          "start": 2.98,
+          "end": 3.379
+        },
+        {
+          "id": "w8",
+          "text": "is",
+          "start": 4.159,
+          "end": 4.259
+        },
+        {
+          "id": "w9",
+          "text": "rubbing",
+          "start": 4.38,
+          "end": 4.739
+        },
+        {
+          "id": "w10",
+          "text": "snail",
+          "start": 4.88,
+          "end": 5.179
+        },
+        {
+          "id": "w11",
+          "text": "slime",
+          "start": 5.299,
+          "end": 5.599
+        },
+        {
+          "id": "w12",
+          "text": "on",
+          "start": 5.659,
+          "end": 5.739
+        },
+        {
+          "id": "w13",
+          "text": "your",
+          "start": 5.799,
+          "end": 5.96
+        },
+        {
+          "id": "w14",
+          "text": "face?",
+          "start": 5.98,
+          "end": 6.359
+        },
+        {
+          "id": "w15",
+          "text": "It",
+          "start": 6.98,
+          "end": 7.119
+        },
+        {
+          "id": "w16",
+          "text": "sounds",
+          "start": 7.179,
+          "end": 7.5
+        },
+        {
+          "id": "w17",
+          "text": "strange,",
+          "start": 7.559,
+          "end": 8.079
+        },
+        {
+          "id": "w18",
+          "text": "but",
+          "start": 8.479,
+          "end": 8.6
+        },
+        {
+          "id": "w19",
+          "text": "this",
+          "start": 8.639,
+          "end": 8.86
+        },
+        {
+          "id": "w20",
+          "text": "K-beauty",
+          "start": 8.899,
+          "end": 9.479
+        },
+        {
+          "id": "w21",
+          "text": "ingredient",
+          "start": 9.519,
+          "end": 10.179
+        },
+        {
+          "id": "w22",
+          "text": "has",
+          "start": 10.239,
+          "end": 10.36
+        },
+        {
+          "id": "w23",
+          "text": "a",
+          "start": 10.519,
+          "end": 10.539
+        },
+        {
+          "id": "w24",
+          "text": "real",
+          "start": 10.579,
+          "end": 10.859
+        },
+        {
+          "id": "w25",
+          "text": "following.",
+          "start": 10.92,
+          "end": 11.439
+        }
+      ]
+    },
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 9.012,
+      "words": [
+        {
+          "id": "w0",
+          "text": "If",
+          "start": 0.119,
+          "end": 0.239
+        },
+        {
+          "id": "w1",
+          "text": "you've",
+          "start": 0.299,
+          "end": 0.479
+        },
+        {
+          "id": "w2",
+          "text": "scrolled",
+          "start": 0.519,
+          "end": 0.879
+        },
+        {
+          "id": "w3",
+          "text": "skincare",
+          "start": 0.979,
+          "end": 1.399
+        },
+        {
+          "id": "w4",
+          "text": "TikTok,",
+          "start": 1.48,
+          "end": 2.039
+        },
+        {
+          "id": "w5",
+          "text": "you've",
+          "start": 2.579,
+          "end": 2.74
+        },
+        {
+          "id": "w6",
+          "text": "seen",
+          "start": 2.799,
+          "end": 2.939
+        },
+        {
+          "id": "w7",
+          "text": "this",
+          "start": 2.98,
+          "end": 3.179
+        },
+        {
+          "id": "w8",
+          "text": "gooey",
+          "start": 3.22,
+          "end": 3.46
+        },
+        {
+          "id": "w9",
+          "text": "essence.",
+          "start": 3.579,
+          "end": 4.059
+        },
+        {
+          "id": "w10",
+          "text": "Let's",
+          "start": 4.5,
+          "end": 4.719
+        },
+        {
+          "id": "w11",
+          "text": "break",
+          "start": 4.759,
+          "end": 4.96
+        },
+        {
+          "id": "w12",
+          "text": "down",
+          "start": 5.019,
+          "end": 5.199
+        },
+        {
+          "id": "w13",
+          "text": "what",
+          "start": 5.259,
+          "end": 5.339
+        },
+        {
+          "id": "w14",
+          "text": "it",
+          "start": 5.38,
+          "end": 5.48
+        },
+        {
+          "id": "w15",
+          "text": "actually",
+          "start": 5.579,
+          "end": 6
+        },
+        {
+          "id": "w16",
+          "text": "is,",
+          "start": 6.099,
+          "end": 6.319
+        },
+        {
+          "id": "w17",
+          "text": "what",
+          "start": 6.659,
+          "end": 6.739
+        },
+        {
+          "id": "w18",
+          "text": "it",
+          "start": 6.779,
+          "end": 6.899
+        },
+        {
+          "id": "w19",
+          "text": "does,",
+          "start": 6.96,
+          "end": 7.279
+        },
+        {
+          "id": "w20",
+          "text": "and",
+          "start": 7.619,
+          "end": 7.719
+        },
+        {
+          "id": "w21",
+          "text": "how",
+          "start": 7.799,
+          "end": 7.899
+        },
+        {
+          "id": "w22",
+          "text": "to",
+          "start": 7.919,
+          "end": 7.98
+        },
+        {
+          "id": "w23",
+          "text": "use",
+          "start": 8.079,
+          "end": 8.22
+        },
+        {
+          "id": "w24",
+          "text": "it",
+          "start": 8.26,
+          "end": 8.34
+        },
+        {
+          "id": "w25",
+          "text": "right.",
+          "start": 8.42,
+          "end": 8.699
+        }
+      ]
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 12.8,
+      "words": [
+        {
+          "id": "w0",
+          "text": "On",
+          "start": 0.159,
+          "end": 0.28
+        },
+        {
+          "id": "w1",
+          "text": "the",
+          "start": 0.299,
+          "end": 0.399
+        },
+        {
+          "id": "w2",
+          "text": "label",
+          "start": 0.439,
+          "end": 0.759
+        },
+        {
+          "id": "w3",
+          "text": "it's",
+          "start": 0.939,
+          "end": 1.139
+        },
+        {
+          "id": "w4",
+          "text": "called",
+          "start": 1.179,
+          "end": 1.459
+        },
+        {
+          "id": "w5",
+          "text": "snail",
+          "start": 1.599,
+          "end": 1.919
+        },
+        {
+          "id": "w6",
+          "text": "secretion",
+          "start": 2.039,
+          "end": 2.659
+        },
+        {
+          "id": "w7",
+          "text": "filtrate",
+          "start": 2.879,
+          "end": 3.339
+        },
+        {
+          "id": "w8",
+          "text": "—",
+          "start": 3.339,
+          "end": 3.339
+        },
+        {
+          "id": "w9",
+          "text": "the",
+          "start": 3.379,
+          "end": 3.419
+        },
+        {
+          "id": "w10",
+          "text": "mucus",
+          "start": 3.5,
+          "end": 3.819
+        },
+        {
+          "id": "w11",
+          "text": "snails",
+          "start": 3.939,
+          "end": 4.319
+        },
+        {
+          "id": "w12",
+          "text": "produce,",
+          "start": 4.36,
+          "end": 4.779
+        },
+        {
+          "id": "w13",
+          "text": "rich",
+          "start": 5.199,
+          "end": 5.42
+        },
+        {
+          "id": "w14",
+          "text": "in",
+          "start": 5.44,
+          "end": 5.559
+        },
+        {
+          "id": "w15",
+          "text": "glycoproteins",
+          "start": 5.599,
+          "end": 6.5
+        },
+        {
+          "id": "w16",
+          "text": "and",
+          "start": 6.539,
+          "end": 6.699
+        },
+        {
+          "id": "w17",
+          "text": "hydrating",
+          "start": 6.719,
+          "end": 7.279
+        },
+        {
+          "id": "w18",
+          "text": "compounds.",
+          "start": 7.299,
+          "end": 8.399
+        },
+        {
+          "id": "w19",
+          "text": "Producers",
+          "start": 8.439,
+          "end": 8.899
+        },
+        {
+          "id": "w20",
+          "text": "say",
+          "start": 8.939,
+          "end": 9.1
+        },
+        {
+          "id": "w21",
+          "text": "it's",
+          "start": 9.1,
+          "end": 9.28
+        },
+        {
+          "id": "w22",
+          "text": "collected",
+          "start": 9.28,
+          "end": 9.72
+        },
+        {
+          "id": "w23",
+          "text": "without",
+          "start": 9.739,
+          "end": 10.079
+        },
+        {
+          "id": "w24",
+          "text": "harming",
+          "start": 10.099,
+          "end": 10.42
+        },
+        {
+          "id": "w25",
+          "text": "the",
+          "start": 10.439,
+          "end": 10.559
+        },
+        {
+          "id": "w26",
+          "text": "snails",
+          "start": 10.599,
+          "end": 11.079
+        },
+        {
+          "id": "w27",
+          "text": "—",
+          "start": 11.079,
+          "end": 11.079
+        },
+        {
+          "id": "w28",
+          "text": "though",
+          "start": 11.279,
+          "end": 11.44
+        },
+        {
+          "id": "w29",
+          "text": "practices",
+          "start": 11.46,
+          "end": 11.98
+        },
+        {
+          "id": "w30",
+          "text": "vary.",
+          "start": 12.039,
+          "end": 12.38
+        }
+      ]
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 11.964,
+      "words": [
+        {
+          "id": "w0",
+          "text": "It's",
+          "start": 0.119,
+          "end": 0.359
+        },
+        {
+          "id": "w1",
+          "text": "rich",
+          "start": 0.399,
+          "end": 0.62
+        },
+        {
+          "id": "w2",
+          "text": "in",
+          "start": 0.699,
+          "end": 0.779
+        },
+        {
+          "id": "w3",
+          "text": "hyaluronic",
+          "start": 0.859,
+          "end": 1.5
+        },
+        {
+          "id": "w4",
+          "text": "acid",
+          "start": 1.679,
+          "end": 2
+        },
+        {
+          "id": "w5",
+          "text": "and",
+          "start": 2.059,
+          "end": 2.139
+        },
+        {
+          "id": "w6",
+          "text": "glycoproteins",
+          "start": 2.2,
+          "end": 3.059
+        },
+        {
+          "id": "w7",
+          "text": "—",
+          "start": 3.059,
+          "end": 3.059
+        },
+        {
+          "id": "w8",
+          "text": "a",
+          "start": 3.199,
+          "end": 3.22
+        },
+        {
+          "id": "w9",
+          "text": "genuine",
+          "start": 3.379,
+          "end": 3.759
+        },
+        {
+          "id": "w10",
+          "text": "hydration",
+          "start": 3.839,
+          "end": 4.36
+        },
+        {
+          "id": "w11",
+          "text": "boost.",
+          "start": 4.46,
+          "end": 4.759
+        },
+        {
+          "id": "w12",
+          "text": "Studies",
+          "start": 5.359,
+          "end": 5.719
+        },
+        {
+          "id": "w13",
+          "text": "also",
+          "start": 5.839,
+          "end": 6.119
+        },
+        {
+          "id": "w14",
+          "text": "link",
+          "start": 6.179,
+          "end": 6.319
+        },
+        {
+          "id": "w15",
+          "text": "it",
+          "start": 6.359,
+          "end": 6.46
+        },
+        {
+          "id": "w16",
+          "text": "to",
+          "start": 6.5,
+          "end": 6.559
+        },
+        {
+          "id": "w17",
+          "text": "barrier",
+          "start": 6.659,
+          "end": 6.96
+        },
+        {
+          "id": "w18",
+          "text": "repair",
+          "start": 7.039,
+          "end": 7.46
+        },
+        {
+          "id": "w19",
+          "text": "and",
+          "start": 7.5,
+          "end": 7.579
+        },
+        {
+          "id": "w20",
+          "text": "calmer",
+          "start": 7.679,
+          "end": 7.96
+        },
+        {
+          "id": "w21",
+          "text": "skin,",
+          "start": 8.059,
+          "end": 8.38
+        },
+        {
+          "id": "w22",
+          "text": "and",
+          "start": 8.88,
+          "end": 9.079
+        },
+        {
+          "id": "w23",
+          "text": "over",
+          "start": 9.179,
+          "end": 9.42
+        },
+        {
+          "id": "w24",
+          "text": "time,",
+          "start": 9.46,
+          "end": 9.8
+        },
+        {
+          "id": "w25",
+          "text": "fading",
+          "start": 10.219,
+          "end": 10.539
+        },
+        {
+          "id": "w26",
+          "text": "post-acne",
+          "start": 10.679,
+          "end": 11.279
+        },
+        {
+          "id": "w27",
+          "text": "marks.",
+          "start": 11.399,
+          "end": 11.779
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 7.262,
+      "words": [
+        {
+          "id": "w0",
+          "text": "Here's",
+          "start": 0.159,
+          "end": 0.379
+        },
+        {
+          "id": "w1",
+          "text": "the",
+          "start": 0.419,
+          "end": 0.46
+        },
+        {
+          "id": "w2",
+          "text": "part",
+          "start": 0.539,
+          "end": 0.659
+        },
+        {
+          "id": "w3",
+          "text": "people",
+          "start": 0.74,
+          "end": 0.959
+        },
+        {
+          "id": "w4",
+          "text": "skip:",
+          "start": 1.079,
+          "end": 1.399
+        },
+        {
+          "id": "w5",
+          "text": "apply",
+          "start": 1.959,
+          "end": 2.22
+        },
+        {
+          "id": "w6",
+          "text": "it",
+          "start": 2.259,
+          "end": 2.359
+        },
+        {
+          "id": "w7",
+          "text": "to",
+          "start": 2.379,
+          "end": 2.5
+        },
+        {
+          "id": "w8",
+          "text": "damp",
+          "start": 2.539,
+          "end": 2.74
+        },
+        {
+          "id": "w9",
+          "text": "skin,",
+          "start": 2.859,
+          "end": 3.199
+        },
+        {
+          "id": "w10",
+          "text": "pat",
+          "start": 3.539,
+          "end": 3.72
+        },
+        {
+          "id": "w11",
+          "text": "it",
+          "start": 3.759,
+          "end": 3.839
+        },
+        {
+          "id": "w12",
+          "text": "in",
+          "start": 3.919,
+          "end": 4.039
+        },
+        {
+          "id": "w13",
+          "text": "—",
+          "start": 4.039,
+          "end": 4.039
+        },
+        {
+          "id": "w14",
+          "text": "don't",
+          "start": 4.48,
+          "end": 4.759
+        },
+        {
+          "id": "w15",
+          "text": "rub",
+          "start": 4.779,
+          "end": 5.299
+        },
+        {
+          "id": "w16",
+          "text": "—",
+          "start": 5.299,
+          "end": 5.299
+        },
+        {
+          "id": "w17",
+          "text": "then",
+          "start": 5.339,
+          "end": 5.48
+        },
+        {
+          "id": "w18",
+          "text": "seal",
+          "start": 5.659,
+          "end": 5.819
+        },
+        {
+          "id": "w19",
+          "text": "it",
+          "start": 5.859,
+          "end": 5.96
+        },
+        {
+          "id": "w20",
+          "text": "with",
+          "start": 6,
+          "end": 6.119
+        },
+        {
+          "id": "w21",
+          "text": "your",
+          "start": 6.159,
+          "end": 6.219
+        },
+        {
+          "id": "w22",
+          "text": "moisturizer.",
+          "start": 6.299,
+          "end": 7.019
+        }
+      ]
+    },
+    {
+      "frame": 6,
+      "path": "assets/voice/06.wav",
+      "duration_s": 9.456,
+      "words": [
+        {
+          "id": "w0",
+          "text": "So",
+          "start": 0.239,
+          "end": 0.759
+        },
+        {
+          "id": "w1",
+          "text": "—",
+          "start": 0.759,
+          "end": 0.759
+        },
+        {
+          "id": "w2",
+          "text": "worth",
+          "start": 0.839,
+          "end": 1.179
+        },
+        {
+          "id": "w3",
+          "text": "the",
+          "start": 1.22,
+          "end": 1.319
+        },
+        {
+          "id": "w4",
+          "text": "goo?",
+          "start": 1.399,
+          "end": 1.659
+        },
+        {
+          "id": "w5",
+          "text": "The",
+          "start": 2.279,
+          "end": 2.379
+        },
+        {
+          "id": "w6",
+          "text": "evidence",
+          "start": 2.44,
+          "end": 2.859
+        },
+        {
+          "id": "w7",
+          "text": "says",
+          "start": 2.919,
+          "end": 3.279
+        },
+        {
+          "id": "w8",
+          "text": "it's",
+          "start": 3.299,
+          "end": 3.459
+        },
+        {
+          "id": "w9",
+          "text": "a",
+          "start": 3.5,
+          "end": 3.659
+        },
+        {
+          "id": "w10",
+          "text": "solid",
+          "start": 3.699,
+          "end": 4.079
+        },
+        {
+          "id": "w11",
+          "text": "hydrator.",
+          "start": 4.119,
+          "end": 5.039
+        },
+        {
+          "id": "w12",
+          "text": "Give",
+          "start": 5.099,
+          "end": 5.199
+        },
+        {
+          "id": "w13",
+          "text": "it",
+          "start": 5.219,
+          "end": 5.279
+        },
+        {
+          "id": "w14",
+          "text": "a",
+          "start": 5.4,
+          "end": 5.42
+        },
+        {
+          "id": "w15",
+          "text": "try,",
+          "start": 5.44,
+          "end": 5.839
+        },
+        {
+          "id": "w16",
+          "text": "and",
+          "start": 6.199,
+          "end": 6.339
+        },
+        {
+          "id": "w17",
+          "text": "subscribe",
+          "start": 6.359,
+          "end": 6.94
+        },
+        {
+          "id": "w18",
+          "text": "for",
+          "start": 6.98,
+          "end": 7.119
+        },
+        {
+          "id": "w19",
+          "text": "more",
+          "start": 7.159,
+          "end": 7.299
+        },
+        {
+          "id": "w20",
+          "text": "skincare,",
+          "start": 7.399,
+          "end": 7.98
+        },
+        {
+          "id": "w21",
+          "text": "minus",
+          "start": 8.479,
+          "end": 8.84
+        },
+        {
+          "id": "w22",
+          "text": "the",
+          "start": 8.88,
+          "end": 8.96
+        },
+        {
+          "id": "w23",
+          "text": "hype.",
+          "start": 9,
+          "end": 9.26
+        }
+      ]
+    }
+  ],
+  "sfx": [
+    {
+      "frame": 1,
+      "file": "assets/sfx/whoosh-soft-scene-1-2.mp3",
+      "offset_s": 0,
+      "duration_s": 1.423,
+      "volume": 0.35
+    },
+    {
+      "frame": 1,
+      "file": "assets/sfx/sparkle-payoff-spring-pop-on-mucin.mp3",
+      "offset_s": 0,
+      "duration_s": 2.811,
+      "volume": 0.35
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/click-soft-each-signpost-label-lands.mp3",
+      "offset_s": 0,
+      "duration_s": 0.24,
+      "volume": 0.35
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/whoosh-soft-leaf-to-card-wipe.mp3",
+      "offset_s": 0,
+      "duration_s": 1.056,
+      "volume": 0.35
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/click-soft-composition-items-landing.mp3",
+      "offset_s": 0,
+      "duration_s": 0.264,
+      "volume": 0.35
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/click-soft-3-each-item-lands.mp3",
+      "offset_s": 0,
+      "duration_s": 0.264,
+      "volume": 0.35
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/sparkle-final-item-settles.mp3",
+      "offset_s": 0,
+      "duration_s": 3.329,
+      "volume": 0.35
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/click-soft-3-each-step-arrives.mp3",
+      "offset_s": 0,
+      "duration_s": 0.24,
+      "volume": 0.35
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/whoosh-soft-step-to-step-seam.mp3",
+      "offset_s": 0,
+      "duration_s": 3.405,
+      "volume": 0.35
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/whoosh-soft-photo-reveal.mp3",
+      "offset_s": 0,
+      "duration_s": 0.288,
+      "volume": 0.35
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/sparkle-subscribe-chip-settle.mp3",
+      "offset_s": 0,
+      "duration_s": 3.329,
+      "volume": 0.35
+    }
+  ]
+}

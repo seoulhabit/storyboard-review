@@ -1,0 +1,236 @@
+<template>
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    --ink-moss: #2c4a34;
+    --ink-dark: #0f2016;
+    --sage-pale: #cddfb9;
+    --shell: #b9835a;
+    --shell-deep: #8a5a37;
+    --pearl: #fbfaf4;
+    --pearl-2: #e8efdd;
+    --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 200 800;
+    src: url("assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+
+  .fr02-clip { position: absolute; inset: 0; }
+
+  .fr02-bg { background: var(--pearl); }
+
+  .fr02-shot-group { position: absolute; inset: 0; }
+
+  .fr02-title-outer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 520px;
+    display: flex;
+    justify-content: center;
+  }
+  .fr02-title-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .fr02-title-wrap .fr02-word {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 104px;
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    color: var(--ink-moss);
+    filter: blur(var(--dof, 0px));
+    will-change: filter, transform, opacity;
+  }
+  .fr02-chip {
+    position: absolute;
+    top: -58px;
+    right: -40px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: var(--shell);
+    color: var(--pearl);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 32px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform-origin: 50% 50%;
+    will-change: transform, opacity;
+  }
+
+  .fr02-signpost-stack {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 850px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .fr02-signpost-row {
+    width: 820px;
+    will-change: transform, opacity;
+  }
+  .fr02-signpost-rule {
+    height: 2px;
+    width: 100%;
+    background: var(--ink-moss);
+    margin-bottom: 24px;
+  }
+  .fr02-signpost-content {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 26px;
+    padding-bottom: 34px;
+  }
+  .fr02-signpost-ord {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 32px;
+    letter-spacing: 0.16em;
+    color: var(--shell);
+  }
+  .fr02-signpost-label {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 46px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-moss);
+  }
+</style>
+
+<div id="root" data-composition-id="02-intro" data-width="1080" data-height="1920" data-duration="9.512">
+  <div class="fr02-clip fr02-bg" data-start="0" data-duration="9.512" data-track-index="0"></div>
+
+  <div class="fr02-clip" data-start="0" data-duration="9.512" data-track-index="1">
+    <div class="fr02-shot-group" id="fr02ShotGroup">
+      <div class="fr02-title-outer" id="fr02TitleOuter">
+        <div class="fr02-title-wrap">
+          <span class="fr02-word" id="fr02WordSnail" style="--dof:14px;">SNAIL</span>
+          <span class="fr02-word" id="fr02WordMucin" style="--dof:14px;">&nbsp;MUCIN</span>
+          <div class="fr02-chip" id="fr02Chip">101</div>
+        </div>
+      </div>
+
+      <div class="fr02-signpost-stack" id="fr02SignpostStack">
+        <div class="fr02-signpost-row" id="fr02Row1">
+          <div class="fr02-signpost-rule"></div>
+          <div class="fr02-signpost-content">
+            <span class="fr02-signpost-ord">01</span>
+            <span class="fr02-signpost-label">What it is</span>
+          </div>
+        </div>
+        <div class="fr02-signpost-row" id="fr02Row2">
+          <div class="fr02-signpost-rule"></div>
+          <div class="fr02-signpost-content">
+            <span class="fr02-signpost-ord">02</span>
+            <span class="fr02-signpost-label">What it does</span>
+          </div>
+        </div>
+        <div class="fr02-signpost-row" id="fr02Row3">
+          <div class="fr02-signpost-rule"></div>
+          <div class="fr02-signpost-content">
+            <span class="fr02-signpost-ord">03</span>
+            <span class="fr02-signpost-label">How to use</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+
+    // Scene 1 (0.0-2.0s) — namedrop: "SNAIL" then "MUCIN" reveal per-word,
+    // blur (--dof) + opacity + small rise, staggered ~0.22s apart. Hero
+    // legible well before t<=0.5s per the hero-visibility floor.
+    tl.fromTo(
+      "#fr02WordSnail",
+      { opacity: 0, y: 16, "--dof": "14px" },
+      { opacity: 1, y: 0, "--dof": "0px", duration: 0.5, ease: "power3.out" },
+      0.0
+    );
+    tl.fromTo(
+      "#fr02WordMucin",
+      { opacity: 0, y: 16, "--dof": "14px" },
+      { opacity: 1, y: 0, "--dof": "0px", duration: 0.55, ease: "power3.out" },
+      0.22
+    );
+
+    // Scene 2 (2.0-4.0s) — the title settles down slightly toward center
+    // as the "101" mono chip spring-pops beside it (one composed beat).
+    tl.fromTo(
+      "#fr02TitleOuter",
+      { y: 0 },
+      { y: 48, duration: 0.6, ease: "power2.inOut" },
+      2.0
+    );
+    tl.fromTo(
+      "#fr02Chip",
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+      2.0
+    );
+
+    // Scene 3 (4.0-7.0s) — three signpost rows land one per spoken clause,
+    // each a quick, near-instant pop-in (in-place token-cycle register: a
+    // snappy, un-eased-looking arrival, not a slow fade) — a short list
+    // that accumulates rather than replaces.
+    var rows = ["#fr02Row1", "#fr02Row2", "#fr02Row3"];
+    var rowTimes = [4.0, 5.0, 6.0];
+    rows.forEach(function (sel, i) {
+      tl.fromTo(
+        sel,
+        { opacity: 0, scale: 0.94, y: 14 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "power3.out" },
+        rowTimes[i]
+      );
+    });
+
+    // Scene 4 (7.0-9.012s) — the whole shot (title + chip + all three rows)
+    // holds together; subtle jitter only, bounded sine drive, one cycle.
+    var fr02Phase = { p: 0 };
+    var fr02ShotGroupEl = document.getElementById("fr02ShotGroup");
+    var IDLE_START = 7.0;
+    var IDLE_DUR = 9.012 - IDLE_START;
+    tl.to(
+      fr02Phase,
+      {
+        p: Math.PI * 2 * 1,
+        duration: IDLE_DUR,
+        ease: "none",
+        onUpdate: function () {
+          var s = Math.sin(fr02Phase.p);
+          fr02ShotGroupEl.style.transform = "translateY(" + (s * 2.5).toFixed(2) + "px)";
+        },
+      },
+      IDLE_START
+    );
+
+    window.__timelines["02-intro"] = tl;
+  })();
+</script>
+</template>

@@ -1,0 +1,48 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "whoosh-soft (Scene 1→2)",
+        "sparkle (payoff spring-pop on \"MUCIN?\")"
+      ]
+    },
+    {
+      "id": "02",
+      "sfx": [
+        "click-soft (each signpost label lands)"
+      ]
+    },
+    {
+      "id": "03",
+      "sfx": [
+        "whoosh-soft (leaf-to-card wipe)",
+        "click-soft (composition items landing)"
+      ]
+    },
+    {
+      "id": "04",
+      "sfx": [
+        "click-soft ×3 (each item lands)",
+        "sparkle (final item settles)"
+      ]
+    },
+    {
+      "id": "05",
+      "sfx": [
+        "click-soft ×3 (each step arrives)",
+        "whoosh-soft (step-to-step seam)"
+      ]
+    },
+    {
+      "id": "06",
+      "sfx": [
+        "whoosh-soft (photo reveal)",
+        "sparkle (subscribe chip settle)"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

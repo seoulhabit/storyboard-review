@@ -1,0 +1,346 @@
+<template>
+<style>
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: transparent;
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    color: #2c4a34;
+  }
+  .clip { position: absolute; inset: 0; }
+
+  /* ground */
+  .wis-bg-fill { position: absolute; inset: 0; background: #e8efdd; }
+
+  .wis-leaf {
+    position: absolute;
+    opacity: 0.14;
+  }
+  .wis-leaf svg { display: block; }
+
+  /* scene 1-2: snail + label group (wiped away in scene 3) */
+  .wis-echo {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #cddfb9;
+    left: 550px;
+    top: 510px;
+    opacity: 0;
+  }
+
+  .wis-snail-wrap {
+    position: absolute;
+    left: 280px;
+    top: 380px;
+    width: 400px;
+    height: 360px;
+  }
+  .wis-snail-slide { width: 100%; height: 100%; display: block; }
+
+  .wis-label-row {
+    position: absolute;
+    left: 60px;
+    top: 860px;
+    width: 960px;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .wis-label-word {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 46px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #2c4a34;
+    opacity: 0;
+  }
+
+  /* scene 3-4: composition card */
+  .wis-comp-card {
+    position: absolute;
+    left: 110px;
+    top: 460px;
+    width: 860px;
+    padding: 56px;
+    background: #fbfaf4;
+    border: 2.5px solid #2c4a34;
+    border-radius: 8px;
+    opacity: 0;
+  }
+  .wis-card-eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #2c4a34;
+  }
+  .wis-card-rule {
+    margin-top: 22px;
+    height: 2px;
+    width: 100%;
+    background: #2c4a34;
+    transform-origin: left center;
+  }
+  .wis-card-list {
+    margin-top: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .wis-card-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    opacity: 0;
+  }
+  .wis-card-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #b9835a;
+    flex: 0 0 auto;
+  }
+  .wis-card-item-text {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 38px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #0f2016;
+  }
+
+  .wis-chip {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 40px;
+    padding: 14px 22px;
+    background: #2c4a34;
+    border-radius: 6px;
+    opacity: 0;
+  }
+  .wis-chip-text {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fbfaf4;
+  }
+
+  .wis-sub {
+    position: absolute;
+    left: 130px;
+    top: 1120px;
+    width: 820px;
+  }
+  .wis-sub-line1 {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2c4a34;
+    opacity: 0;
+  }
+  .wis-sub-line2 {
+    margin-top: 10px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(100, 120, 104);
+    opacity: 0;
+  }
+  .wis-sub-chip { margin-top: 24px; }
+</style>
+
+<div data-hf-id="hf-axrr" id="root" data-composition-id="03-what-is" data-width="1080" data-height="1920" data-duration="13.3">
+
+  <div data-hf-id="hf-hqzc" class="wis-bg-ground clip" data-start="0" data-duration="13.3" data-track-index="0">
+    <div data-hf-id="hf-0n39" class="wis-bg-fill"></div>
+  </div>
+
+  <div data-hf-id="hf-dfvb" class="wis-leaves clip" data-start="0" data-duration="13.3" data-track-index="4">
+    <svg data-hf-id="hf-8rgt" width="0" height="0" style="position:absolute">
+      <defs data-hf-id="hf-mh0t">
+        <symbol data-hf-id="hf-tmu1" id="wis-leaf-shape" viewBox="0 0 140 90">
+          <path data-hf-id="hf-ndzd" d="M2 45 C 20 10 60 -5 138 8 C 118 40 80 68 40 74 C 20 77 6 65 2 45 Z" fill="#2c4a34" />
+          <path data-hf-id="hf-f36u" d="M10 44 L 120 26" stroke="#e8efdd" stroke-width="2" opacity="0.5" fill="none" />
+        </symbol>
+      </defs>
+    </svg>
+    <div data-hf-id="hf-jea8" class="wis-leaf" style="left:-60px; top:70px; width:260px; transform:rotate(-14deg);">
+      <svg data-hf-id="hf-a2jw" viewBox="0 0 140 90" width="260" height="167"><use data-hf-id="hf-jyz4" href="#wis-leaf-shape" /></svg>
+    </div>
+    <div data-hf-id="hf-prcs" class="wis-leaf" style="left:800px; top:110px; width:300px; transform:rotate(16deg);">
+      <svg data-hf-id="hf-1unk" viewBox="0 0 140 90" width="300" height="193"><use data-hf-id="hf-j5pk" href="#wis-leaf-shape" /></svg>
+    </div>
+    <div data-hf-id="hf-wu3a" class="wis-leaf" style="left:-80px; top:1300px; width:260px; transform:rotate(10deg);">
+      <svg data-hf-id="hf-b478" viewBox="0 0 140 90" width="260" height="167"><use data-hf-id="hf-hysh" href="#wis-leaf-shape" /></svg>
+    </div>
+    <div data-hf-id="hf-xqu7" class="wis-leaf" style="left:860px; top:1320px; width:230px; transform:rotate(-14deg);">
+      <svg data-hf-id="hf-39ww" viewBox="0 0 140 90" width="230" height="148"><use data-hf-id="hf-id3i" href="#wis-leaf-shape" /></svg>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-uz5z" class="wis-scene-a clip" id="wis-scene-a" data-start="0" data-duration="5.7" data-track-index="1">
+    <div data-hf-id="hf-o8jc" class="wis-echo" id="wis-echo-1"></div>
+    <div data-hf-id="hf-wwf7" class="wis-echo" id="wis-echo-2"></div>
+
+    <div data-hf-id="hf-9mli" class="wis-snail-wrap" id="wis-snail-wrap">
+      <svg data-hf-id="hf-t4k0" class="wis-snail-slide" viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- glide trail -->
+        <path data-hf-id="hf-jdeg" d="M20 330 C 140 348 300 348 380 322" stroke="#2c4a34" stroke-width="3" fill="none" opacity="0.3" stroke-dasharray="3 12" stroke-linecap="round" />
+        <!-- shell -->
+        <ellipse data-hf-id="hf-uuu3" cx="280" cy="140" rx="100" ry="92" fill="#b9835a" stroke="#2c4a34" stroke-width="6" />
+        <path data-hf-id="hf-odhu" d="M280 140 C 315 138 335 108 322 78 C 311 52 282 42 258 56 C 238 68 232 92 246 108 C 256 120 274 122 282 111 C 288 103 284 92 274 90" stroke="#2c4a34" stroke-width="5" fill="none" stroke-linecap="round" />
+        <!-- body -->
+        <path data-hf-id="hf-wf0m" d="M170 190 C 128 198 96 228 100 264 C 104 300 146 322 198 320 C 240 318 272 300 282 274 C 290 252 278 230 248 220 C 226 212 204 202 192 188 C 184 178 178 184 170 190 Z" fill="#d9b98d" stroke="#2c4a34" stroke-width="6" stroke-linejoin="round" />
+        <!-- eye stalks -->
+        <path data-hf-id="hf-hga5" d="M104 246 C 88 214 78 182 74 156" stroke="#2c4a34" stroke-width="5" fill="none" stroke-linecap="round" />
+        <circle data-hf-id="hf-i2au" cx="72" cy="150" r="9" fill="#2c4a34" />
+        <path data-hf-id="hf-goao" d="M130 240 C 122 206 118 174 118 148" stroke="#2c4a34" stroke-width="5" fill="none" stroke-linecap="round" />
+        <circle data-hf-id="hf-u97f" cx="117" cy="142" r="9" fill="#2c4a34" />
+        <!-- mouth -->
+        <path data-hf-id="hf-ohb9" d="M156 296 C 166 304 180 304 190 296" stroke="#2c4a34" stroke-width="4" fill="none" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <div data-hf-id="hf-lkks" class="wis-label-row" id="wis-label-row">
+      <span data-hf-id="hf-fnqv" class="wis-label-word" id="wis-word-1">Snail</span>
+      <span data-hf-id="hf-0jfx" class="wis-label-word" id="wis-word-2">Secretion</span>
+      <span data-hf-id="hf-3ngj" class="wis-label-word" id="wis-word-3">Filtrate</span>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-y54f" class="wis-comp-card clip" id="wis-card" data-start="4.9" data-duration="8.4" data-track-index="2">
+    <div data-hf-id="hf-iajm" class="wis-card-eyebrow">Composition</div>
+    <div data-hf-id="hf-h00h" class="wis-card-rule" id="wis-rule"></div>
+    <div data-hf-id="hf-gk9z" class="wis-card-list">
+      <div data-hf-id="hf-pgkz" class="wis-card-item" id="wis-item-1">
+        <span data-hf-id="hf-xpo9" class="wis-card-dot"></span>
+        <span data-hf-id="hf-55t5" class="wis-card-item-text">Glycoproteins</span>
+      </div>
+      <div data-hf-id="hf-el3c" class="wis-card-item" id="wis-item-2">
+        <span data-hf-id="hf-t4i5" class="wis-card-dot"></span>
+        <span data-hf-id="hf-iwb7" class="wis-card-item-text">Hydrating Compounds</span>
+      </div>
+    </div>
+    <div data-hf-id="hf-8nps" class="wis-chip" id="wis-chip-1">
+      <span data-hf-id="hf-zvcr" class="wis-chip-text">Citation ⌞ ING-snail-mucin-S001 ⌟</span>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-pfb4" class="wis-sub clip" id="wis-sub" data-start="8.5" data-duration="4.8" data-track-index="3">
+    <div data-hf-id="hf-8lop" class="wis-sub-line1" id="wis-sub-line1">Collected Without Harm</div>
+    <div data-hf-id="hf-r7f6" class="wis-sub-line2" id="wis-sub-line2">Practices Vary</div>
+    <div data-hf-id="hf-smj6" class="wis-chip wis-sub-chip" id="wis-chip-2">
+      <span data-hf-id="hf-m1gc" class="wis-chip-text">Citation ⌞ ING-snail-mucin-S004 ⌟</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+
+  /* ---- scene 1: leaves settle + snail glides in from the left ---- */
+  tl.fromTo(".wis-leaves", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+
+  tl.fromTo(
+    "#wis-snail-wrap",
+    { x: -820 },
+    { x: 0, duration: 2.25, ease: "power2.out" },
+    0.10
+  );
+
+  // quiet trail echoes, lagging behind and fading before the snail settles
+  tl.fromTo("#wis-echo-1", { x: -900, opacity: 0.32 }, { x: -160, opacity: 0, duration: 1.55, ease: "power2.out" }, 0.28);
+  tl.fromTo("#wis-echo-2", { x: -950, opacity: 0.22 }, { x: -260, opacity: 0, duration: 1.5, ease: "power2.out" }, 0.42);
+
+  /* ---- scene 2: label per-word reveal (waterfall whip-in), synced to VO ---- */
+  tl.set("#wis-word-1", { opacity: 1, y: 40 }, 2.50);
+  tl.to("#wis-word-1", { y: 0, duration: 0.16, ease: "power4.out" }, 2.50);
+
+  tl.set("#wis-word-2", { opacity: 1, y: 45 }, 2.64);
+  tl.to("#wis-word-2", { y: 0, duration: 0.15, ease: "power4.out" }, 2.64);
+
+  tl.set("#wis-word-3", { opacity: 1, y: 42 }, 2.77);
+  tl.to("#wis-word-3", { y: 0, duration: 0.14, ease: "power4.out" }, 2.77);
+
+  /* ---- scene 3: ONE diagonal clip-path wipe clears the snail+label group ---- */
+  const wipeEl = document.getElementById("wis-scene-a");
+  const wipeDriver = { p: 0 };
+  function wisWipePolygon(p) {
+    const start = -60;
+    const end = 140;
+    const linePos = start + p * (end - start);
+    const slant = 35;
+    const topX = linePos;
+    const bottomX = linePos - slant;
+    return "polygon(" + topX + "% -20%, 140% -20%, 140% 120%, " + bottomX + "% 120%)";
+  }
+  wipeEl.style.clipPath = wisWipePolygon(0);
+  tl.to(
+    wipeDriver,
+    {
+      p: 1,
+      duration: 0.6,
+      ease: "power2.in",
+      onUpdate: () => { wipeEl.style.clipPath = wisWipePolygon(wipeDriver.p); },
+    },
+    5.0
+  );
+
+  /* composition card revealed as the wipe clears */
+  tl.fromTo("#wis-card", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 5.15);
+  tl.fromTo("#wis-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.25, ease: "power2.out" }, 5.45);
+
+  // items land as the VO names each, citation chip lands last after the claim
+  tl.fromTo("#wis-item-1", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 6.5);
+  tl.fromTo("#wis-item-2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 7.3);
+  tl.fromTo("#wis-chip-1", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, 8.0);
+
+  /* ---- scene 4: subordinate reassurance line, lower third, its own citation ---- */
+  tl.fromTo("#wis-sub-line1", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 8.6);
+  tl.fromTo("#wis-sub-line2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 9.0);
+  tl.fromTo("#wis-chip-2", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.5)" }, 9.35);
+
+  /* subtle breathing on the settled card through the final hold (sine-wave-loop, low end) */
+  const cardEl = document.getElementById("wis-card");
+  const breathPhase = { p: 0 };
+  const BREATH_CYCLES = 1.5;
+  tl.to(
+    breathPhase,
+    {
+      p: Math.PI * 2 * BREATH_CYCLES,
+      duration: 3.0,
+      ease: "none",
+      onUpdate: () => {
+        const s = Math.sin(breathPhase.p);
+        cardEl.style.transform = "translateY(" + (s * 2) + "px) scale(" + (1 + s * 0.01) + ")";
+      },
+    },
+    9.7
+  );
+
+  window.__timelines["03-what-is"] = tl;
+</script>
+</template>

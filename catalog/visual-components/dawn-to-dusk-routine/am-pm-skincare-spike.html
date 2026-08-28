@@ -1,512 +1,302 @@
-<title>Dawn to Dusk Skincare</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Dawn to Dusk Skincare — Routine Checklist</title>
+<meta name="viewport" content="width=1080, height=1920" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
-  :root{
-    --page-bg:#FBF6EF;
-    --panel-am:#FDF0DE;
-    --panel-pm:#EDE7F4;
-    --ink:#2B2420;
-    --ink-soft:#6B5F55;
-    --ink-faint:#9C8F82;
-    --am:#C96A2C;
-    --am-soft:#E08A3C;
-    --pm:#4A3D6B;
-    --pm-soft:#6B5B95;
-    --sky-dawn:#FFDFAE;
-    --sky-mid:#F3D9C9;
-    --sky-dusk:#362C55;
-    --line:rgba(43,36,32,0.14);
-    --line-strong:rgba(43,36,32,0.24);
-    --shadow:0 1px 2px rgba(43,36,32,0.06);
-    --shadow-lift:0 18px 32px -20px rgba(43,36,32,0.35);
+  /* SeoulHabit Video Design System — tokens read verbatim via DesignSync from
+     claude.ai/design/p/75132ad8-b81c-4151-8a4c-83368df1d949 (tokens/*.css).
+     See README.md for what was dropped and why. */
+  :root {
+    --paper: #f7f5f0;
+    --mist: #f0ebe1;
+    --ink: #131516;
+    --ink-2: #6b6b6b;
+    --ink-3: #9c978d;
+    --ink-2-dark: #878b8c;
+    --ink-3-dark: #7c8082;
+    --rule: #e3e3e3;
+    --rule-strong: #d9d3c6;
+    --rule-dark: #333333;
+    --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
 
-    /* one unique, harmonious hue per step icon — still reads as one warm/cool family */
-    --am-1:#D9A441; --am-2:#D6853C; --am-3:#C96A2C; --am-4:#BC5A35; --am-5:#A8472E;
-    --pm-1:#7A6BA8; --pm-2:#6B5B95; --pm-3:#4A3D6B; --pm-4:#5C4A8A; --pm-5:#3D3160;
+    --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
 
-    /* am-1 / am-2 are too light to clear 3:1 as leader-line text on the panel — ink instead */
-    --am-1-num:var(--ink); --am-2-num:var(--ink);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --page-bg:#1C1720;
-      --panel-am:#2E2620;
-      --panel-pm:#221C33;
-      --ink:#F3ECE4;
-      --ink-soft:#B9AEA3;
-      --ink-faint:#7C7268;
-      --am:#F0A857;
-      --am-soft:#F6BE7C;
-      --pm:#9587C4;
-      --pm-soft:#B0A4D9;
-      --sky-dawn:#4A3826;
-      --sky-mid:#3A3040;
-      --sky-dusk:#14101F;
-      --line:rgba(243,236,228,0.14);
-      --line-strong:rgba(243,236,228,0.26);
-      --shadow:0 1px 2px rgba(0,0,0,0.3);
-      --shadow-lift:0 18px 36px -18px rgba(0,0,0,0.6);
+    --t-chapter: 72px;
+    --t-subtitle: 46px;
+    --t-body: 32px;
+    --t-annot: 27px;
+    --t-label: 24px;
+    --t-chip: 21px;
 
-      --am-1:color-mix(in srgb, #D9A441 65%, white);
-      --am-2:color-mix(in srgb, #D6853C 65%, white);
-      --am-3:#F0A857;
-      --am-4:color-mix(in srgb, #BC5A35 65%, white);
-      --am-5:color-mix(in srgb, #A8472E 65%, white);
-      --pm-1:color-mix(in srgb, #7A6BA8 65%, white);
-      --pm-2:#B0A4D9;
-      --pm-3:#9587C4;
-      --pm-4:color-mix(in srgb, #5C4A8A 65%, white);
-      --pm-5:color-mix(in srgb, #3D3160 65%, white);
+    --lh-tight: 1.05;
+    --lh-snug: 1.2;
+    --lh-body: 1.45;
 
-      /* dark-mode am-1/am-2 pastels pass 3:1 as leader-line text on the dark panel directly */
-      --am-1-num:var(--am-1); --am-2-num:var(--am-2);
-    }
-  }
-  :root[data-theme="dark"]{
-    --page-bg:#1C1720;
-    --panel-am:#2E2620;
-    --panel-pm:#221C33;
-    --ink:#F3ECE4;
-    --ink-soft:#B9AEA3;
-    --ink-faint:#7C7268;
-    --am:#F0A857;
-    --am-soft:#F6BE7C;
-    --pm:#9587C4;
-    --pm-soft:#B0A4D9;
-    --sky-dawn:#4A3826;
-    --sky-mid:#3A3040;
-    --sky-dusk:#14101F;
-    --line:rgba(243,236,228,0.14);
-    --line-strong:rgba(243,236,228,0.26);
-    --shadow:0 1px 2px rgba(0,0,0,0.3);
-    --shadow-lift:0 18px 36px -18px rgba(0,0,0,0.6);
+    --tr-display: -0.02em;
+    --tr-mono: 0.04em;
+    --tr-mono-wide: 0.1em;
 
-    --am-1:color-mix(in srgb, #D9A441 65%, white);
-    --am-2:color-mix(in srgb, #D6853C 65%, white);
-    --am-3:#F0A857;
-    --am-4:color-mix(in srgb, #BC5A35 65%, white);
-    --am-5:color-mix(in srgb, #A8472E 65%, white);
-    --pm-1:color-mix(in srgb, #7A6BA8 65%, white);
-    --pm-2:#B0A4D9;
-    --pm-3:#9587C4;
-    --pm-4:color-mix(in srgb, #5C4A8A 65%, white);
-    --pm-5:color-mix(in srgb, #3D3160 65%, white);
+    --w-display: 700;
+    --w-body: 400;
+    --w-body-mid: 500;
+    --w-body-strong: 600;
+    --w-mono: 500;
+    --w-mono-strong: 600;
 
-    --am-1-num:var(--am-1); --am-2-num:var(--am-2);
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 20px;
+    --s-5: 32px;
+    --s-6: 60px;
+    --s-7: 96px;
+    --r-3: 10px;
+    --r-4: 16px;
+
+    --e-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --d-base: 500ms;
+    --stagger-step: 90ms;
+    --travel-in: 32px;
   }
 
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    background:var(--page-bg);
-    color:var(--ink);
-    font-family:'Karla',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-  }
-  h1,h2,h3{ margin:0; font-family:'Instrument Serif',Georgia,'Times New Roman',serif; font-weight:400; }
-  p{ margin:0; }
-  em{ font-style:italic; }
-  ::selection{ background:var(--am-soft); color:#2B2420; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+  body { font-family: var(--font-body); color: var(--ink); }
 
-  .wrap{
-    max-width:1120px;
-    margin:0 auto;
-    padding-inline:clamp(20px,5vw,64px);
+  .stage {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    background: var(--paper);
   }
 
-  /* ---------- hero ---------- */
-  .hero{
-    padding-top:clamp(56px,9vw,104px);
-    padding-bottom:clamp(28px,5vw,48px);
+  .wordmark, .doc-tag {
+    position: absolute;
+    top: 72px;
+    font-family: var(--font-mono);
+    font-weight: var(--w-mono-strong);
+    font-size: var(--t-label);
+    letter-spacing: var(--tr-mono-wide);
+    text-transform: uppercase;
+    color: var(--ink-3);
   }
-  h1.title{
-    font-size:clamp(2.6rem,6vw,4.4rem);
-    line-height:0.98;
-    letter-spacing:-0.01em;
-    text-wrap:balance;
-    opacity:0;
-    transform:translateY(10px);
-    animation:rise 0.8s ease 0.08s forwards;
-  }
-  h1.title em{ color:var(--ink-soft); font-size:0.85em; padding-inline:0.06em; }
-  .tt-am{ color:var(--am); }
-  .tt-pm{ color:var(--pm); }
-  .hero-sub{
-    margin-top:20px;
-    max-width:46ch;
-    font-size:clamp(1.02rem,1.6vw,1.18rem);
-    line-height:1.55;
-    color:var(--ink-soft);
-    opacity:0;
-    transform:translateY(10px);
-    animation:rise 0.8s ease 0.16s forwards;
-  }
-  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  .wordmark { left: var(--s-7); }
+  .doc-tag { right: var(--s-7); }
 
-  /* ---------- arc strip ---------- */
-  .arc-strip{
-    position:relative;
-    height:clamp(120px,16vw,180px);
-    margin-top:clamp(8px,2vw,20px);
+  .hero {
+    position: absolute;
+    top: 176px;
+    left: var(--s-7);
+    right: var(--s-7);
+    text-align: center;
   }
-  .arc-strip svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
-  .arc-strip .arc-path{
-    fill:none;
-    stroke:url(#arcGradient);
-    stroke-width:1.5;
-    stroke-linecap:round;
-    stroke-dasharray:4 8;
-    opacity:0.55;
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: var(--w-display);
+    font-size: var(--t-chapter);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--tr-display);
+    color: var(--ink);
   }
-  .arc-dot{ filter:drop-shadow(0 0 6px currentColor); }
-
-  .celestial{
-    position:absolute;
-    top:8%;
-    width:clamp(46px,7vw,64px);
-    height:clamp(46px,7vw,64px);
-    border-radius:50%;
-  }
-  .sun{
-    left:6%;
-    background:radial-gradient(circle at 35% 30%, var(--sky-dawn), var(--am-soft) 70%);
-    box-shadow:0 0 0 6px color-mix(in srgb, var(--am-soft) 14%, transparent),
-               0 0 34px 4px color-mix(in srgb, var(--am-soft) 45%, transparent);
-    animation:glow-pulse 5s ease-in-out infinite;
-  }
-  .sun::before{
-    content:"";
-    position:absolute; inset:-34%;
-    background:
-      repeating-conic-gradient(from 0deg, currentColor 0deg 2.2deg, transparent 2.2deg 45deg);
-    color:var(--am-soft);
-    opacity:0.35;
-    border-radius:50%;
-    mask:radial-gradient(circle, transparent 58%, black 62%, black 74%, transparent 78%);
-    animation:spin-slow 50s linear infinite;
-  }
-  .moon{
-    right:6%;
-    background:var(--sky-dusk);
-    box-shadow:
-      inset 9px -4px 0 0 var(--pm-soft),
-      0 0 26px 2px color-mix(in srgb, var(--pm-soft) 35%, transparent);
-  }
-  .stars{ position:absolute; inset:0; pointer-events:none; }
-  .stars span{
-    position:absolute;
-    width:3px; height:3px;
-    background:var(--pm-soft);
-    border-radius:50%;
-    animation:twinkle 3.2s ease-in-out infinite;
+  .hero p {
+    margin-top: var(--s-4);
+    max-width: 760px;
+    margin-inline: auto;
+    font-size: var(--t-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
   }
 
-  @keyframes glow-pulse{
-    0%,100%{ box-shadow:0 0 0 6px color-mix(in srgb, var(--am-soft) 14%, transparent), 0 0 34px 4px color-mix(in srgb, var(--am-soft) 45%, transparent); }
-    50%{ box-shadow:0 0 0 9px color-mix(in srgb, var(--am-soft) 10%, transparent), 0 0 44px 10px color-mix(in srgb, var(--am-soft) 55%, transparent); }
-  }
-  @keyframes spin-slow{ to{ transform:rotate(360deg); } }
-  @keyframes twinkle{ 0%,100%{ opacity:0.25; transform:scale(0.8); } 50%{ opacity:1; transform:scale(1.15); } }
+  .routine { position: absolute; left: var(--s-7); right: var(--s-7); }
+  .routine--am { top: 464px; }
 
-  /* ---------- routines ---------- */
-  .routines{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:20px;
-    margin-top:clamp(8px,2vw,16px);
-    padding-bottom:clamp(48px,8vw,88px);
+  .routine-head { display: flex; align-items: center; justify-content: center; gap: var(--s-3); }
+  .routine-head svg { width: 40px; height: 40px; flex: none; }
+  .routine-head h2 {
+    font-family: var(--font-display);
+    font-weight: var(--w-display);
+    font-size: var(--t-subtitle);
+    line-height: var(--lh-tight);
   }
-  @media (min-width:760px){
-    .routines{ grid-template-columns:1fr 1fr; gap:28px; }
-  }
+  .routine--am .routine-head, .routine--am .routine-head h2 { color: var(--ink); }
+  .routine--pm .routine-head, .routine--pm .routine-head h2 { color: var(--paper); }
 
-  .routine{
-    border-radius:30px;
-    padding:clamp(28px,4vw,40px) clamp(24px,4vw,36px) clamp(32px,4vw,40px);
-    box-shadow:var(--shadow);
+  .tagline {
+    margin-top: var(--s-3);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-weight: var(--w-mono-strong);
+    font-size: var(--t-chip);
+    letter-spacing: var(--tr-mono-wide);
+    text-transform: uppercase;
   }
-  .routine--am{ background:linear-gradient(175deg, var(--panel-am), color-mix(in srgb, var(--panel-am) 82%, var(--page-bg))); }
-  .routine--pm{ background:linear-gradient(175deg, var(--panel-pm), color-mix(in srgb, var(--panel-pm) 82%, var(--page-bg))); }
+  .routine--am .tagline { color: var(--ink-3); }
+  .routine--pm .tagline { color: var(--ink-3-dark); }
 
-  .routine-head{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
-  .routine-head .badge{
-    width:34px; height:34px;
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0;
-  }
-  .routine--am .badge{ background:color-mix(in srgb, var(--am) 16%, transparent); color:var(--am); }
-  .routine--pm .badge{ background:color-mix(in srgb, var(--pm) 18%, transparent); color:var(--pm); }
-  .routine-head .badge svg{ width:18px; height:18px; }
+  .steps { margin-top: var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); }
+  .step { display: flex; align-items: center; gap: var(--s-4); }
 
-  .routine h2{ font-size:clamp(1.5rem,3vw,1.85rem); }
-  .tagline{
-    font-size:0.78rem;
-    font-weight:700;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    margin:6px 0 clamp(24px,3vw,32px) 46px;
+  .step-ord {
+    flex: none;
+    width: 40px;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-weight: var(--w-mono);
+    font-size: var(--t-label);
+    font-variant-numeric: tabular-nums;
   }
-  .routine--am .tagline{ color:var(--am); }
-  .routine--pm .tagline{ color:var(--pm); }
+  .routine--am .step-ord { color: var(--ink-3); }
+  .routine--pm .step-ord { color: var(--ink-3-dark); }
 
-  .steps{
-    list-style:none;
-    margin:0; padding:0;
-    position:relative;
+  .step-node {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .step{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    position:relative;
-    padding-block:16px;
-    opacity:0;
-    transform:translateY(14px);
-    transition:opacity 0.6s ease, transform 0.6s ease, background-color .25s ease;
-    border-radius:14px;
-  }
-  .routine.in-view .step{ opacity:1; transform:translateY(0); transition-delay:calc(var(--i) * 90ms); }
-  .step:hover{ background:color-mix(in srgb, var(--ink) 4%, transparent); }
+  .step-node svg { width: 30px; height: 30px; }
+  .routine--am .step-node { border: 1px solid var(--rule-strong); color: var(--ink); }
+  .routine--pm .step-node { border: 1px solid var(--rule-dark); color: var(--paper); }
 
-  .step-node{
-    width:48px; height:48px;
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    position:relative;
-    background:var(--page-bg);
-    box-shadow:0 0 0 1px var(--line);
-    transition:transform .3s ease, box-shadow .3s ease;
+  .step-copy h3 {
+    font-family: var(--font-body);
+    font-weight: var(--w-body-strong);
+    font-size: var(--t-body);
+    line-height: var(--lh-snug);
   }
-  .step:hover .step-node{ transform:scale(1.07); }
-  .step-node svg{ width:22px; height:22px; }
-  .routine--am .step-node{ color:var(--am); }
-  .routine--pm .step-node{ color:var(--pm); }
-  .step:hover .step-node{ box-shadow:0 0 0 1px var(--line), 0 6px 16px -6px currentColor; }
+  .step-copy p { margin-top: 2px; font-size: var(--t-annot); line-height: var(--lh-body); }
+  .routine--am .step-copy h3 { color: var(--ink); }
+  .routine--am .step-copy p { color: var(--ink-2); }
+  .routine--pm .step-copy h3 { color: var(--paper); }
+  .routine--pm .step-copy p { color: var(--ink-2-dark); }
 
-  .step-tick{
-    position:absolute;
-    left:100%; bottom:6px;
-    margin-left:6px;
-    display:flex; align-items:center; gap:5px;
-    white-space:nowrap;
+  .routine--pm {
+    top: 1160px;
+    background: var(--ink);
+    border-radius: var(--r-4);
+    box-shadow: var(--elev-2);
+    padding: var(--s-5) var(--s-5);
   }
-  .step-tick-line{ width:12px; height:1.5px; background:var(--line-strong); }
-  .step-ordinal{
-    font-size:1.2rem;
-    font-weight:700;
-    line-height:1;
-    font-variant-numeric:tabular-nums;
-  }
+  .routine--pm .routine-head,
+  .routine--pm .tagline,
+  .routine--pm .steps { position: static; }
 
-  /* each step gets its own hue within the routine's warm/cool family — the
-     register still reads at a glance, but no two icons repeat the same color */
-  .routine--am .step:nth-of-type(1) .step-node{ color:var(--am-1); }
-  .routine--am .step:nth-of-type(1) .step-ordinal{ color:var(--am-1-num); }
-  .routine--am .step:nth-of-type(2) .step-node{ color:var(--am-2); }
-  .routine--am .step:nth-of-type(2) .step-ordinal{ color:var(--am-2-num); }
-  .routine--am .step:nth-of-type(3) .step-node{ color:var(--am-3); }
-  .routine--am .step:nth-of-type(3) .step-ordinal{ color:var(--am-3); }
-  .routine--am .step:nth-of-type(4) .step-node{ color:var(--am-4); }
-  .routine--am .step:nth-of-type(4) .step-ordinal{ color:var(--am-4); }
-  .routine--am .step:nth-of-type(5) .step-node{ color:var(--am-5); }
-  .routine--am .step:nth-of-type(5) .step-ordinal{ color:var(--am-5); }
+  /* one-time rise-in on load — no infinite loops, no scroll trigger */
+  .wordmark, .doc-tag, .hero h1, .hero p,
+  .routine--am .routine-head, .routine--am .tagline, .routine--am .step,
+  .routine--pm { opacity: 0; transform: translateY(var(--travel-in)); animation: rise var(--d-base) var(--e-out) forwards; }
+  .wordmark { animation-delay: 0ms; }
+  .doc-tag { animation-delay: 0ms; }
+  .hero h1 { animation-delay: 60ms; }
+  .hero p { animation-delay: 120ms; }
+  .routine--am .routine-head { animation-delay: 220ms; }
+  .routine--am .tagline { animation-delay: 260ms; }
+  .routine--am .step:nth-of-type(1) { animation-delay: calc(320ms + var(--stagger-step) * 0); }
+  .routine--am .step:nth-of-type(2) { animation-delay: calc(320ms + var(--stagger-step) * 1); }
+  .routine--am .step:nth-of-type(3) { animation-delay: calc(320ms + var(--stagger-step) * 2); }
+  .routine--am .step:nth-of-type(4) { animation-delay: calc(320ms + var(--stagger-step) * 3); }
+  .routine--am .step:nth-of-type(5) { animation-delay: calc(320ms + var(--stagger-step) * 4); }
+  .routine--pm { animation-delay: 420ms; }
 
-  .routine--pm .step:nth-of-type(1) .step-node{ color:var(--pm-1); }
-  .routine--pm .step:nth-of-type(1) .step-ordinal{ color:var(--pm-1); }
-  .routine--pm .step:nth-of-type(2) .step-node{ color:var(--pm-2); }
-  .routine--pm .step:nth-of-type(2) .step-ordinal{ color:var(--pm-2); }
-  .routine--pm .step:nth-of-type(3) .step-node{ color:var(--pm-3); }
-  .routine--pm .step:nth-of-type(3) .step-ordinal{ color:var(--pm-3); }
-  .routine--pm .step:nth-of-type(4) .step-node{ color:var(--pm-4); }
-  .routine--pm .step:nth-of-type(4) .step-ordinal{ color:var(--pm-4); }
-  .routine--pm .step:nth-of-type(5) .step-node{ color:var(--pm-5); }
-  .routine--pm .step:nth-of-type(5) .step-ordinal{ color:var(--pm-5); }
+  @keyframes rise { from { opacity: 0; transform: translateY(var(--travel-in)); } to { opacity: 1; transform: translateY(0); } }
 
-  .step-copy{ margin-top:10px; }
-  .step-copy h3{
-    font-family:'Karla',sans-serif;
-    font-size:1.02rem;
-    font-weight:700;
-    letter-spacing:-0.01em;
-  }
-  .step-copy p{
-    margin-top:3px;
-    font-size:0.9rem;
-    line-height:1.4;
-    color:var(--ink-soft);
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    h1.title,.hero-sub{ animation:none; opacity:1; transform:none; }
-    .sun::before,.moon,.stars span,.arc-dot,.sun{ animation:none !important; }
-    .step{ transition:none; opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark, .doc-tag, .hero h1, .hero p,
+    .routine--am .routine-head, .routine--am .tagline, .routine--am .step,
+    .routine--pm { animation: none; opacity: 1; transform: none; }
   }
 </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="wordmark">SeoulHabit</div>
+    <div class="doc-tag">Routine Checklist</div>
 
-<div class="wrap">
-
-  <header class="hero">
-    <h1 class="title"><span class="tt-am">AM</span> <em>vs</em> <span class="tt-pm">PM</span><br>Skincare</h1>
-    <p class="hero-sub">What actually changes between sunrise and sundown &mdash; and why the order you apply things in still matters.</p>
-  </header>
-
-  <div class="arc-strip" aria-hidden="true">
-    <svg viewBox="0 0 1000 200" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="arcGradient" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="var(--am-soft)"/>
-          <stop offset="100%" stop-color="var(--pm-soft)"/>
-        </linearGradient>
-      </defs>
-      <path id="arcPath" class="arc-path" d="M 70 150 Q 500 -30 930 150"/>
-      <circle class="arc-dot" r="4" fill="var(--am-soft)">
-        <animateMotion dur="9s" repeatCount="indefinite" path="M 70 150 Q 500 -30 930 150"/>
-        <animate attributeName="fill" values="var(--am-soft);var(--pm-soft);var(--am-soft)" dur="9s" repeatCount="indefinite"/>
-      </circle>
-    </svg>
-    <div class="celestial sun"></div>
-    <div class="celestial moon">
-      <div class="stars">
-        <span style="top:-14px;left:6px;animation-delay:0s;"></span>
-        <span style="top:8px;left:-16px;animation-delay:.6s;"></span>
-        <span style="top:44px;left:-8px;animation-delay:1.2s;"></span>
-        <span style="top:-6px;left:52px;animation-delay:1.8s;"></span>
-        <span style="top:40px;left:56px;animation-delay:.9s;"></span>
-      </div>
-    </div>
-  </div>
-
-  <main class="routines">
+    <header class="hero">
+      <h1>AM vs PM Skincare</h1>
+      <p>What actually changes between sunrise and sundown — and why the order you apply things in still matters.</p>
+    </header>
 
     <section class="routine routine--am">
       <div class="routine-head">
-        <span class="badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2.2M19.1 4.9l-1.55 1.55M21 12h-2.2M19.1 19.1l-1.55-1.55M12 18.8V21M4.9 19.1l1.55-1.55M3 12h2.2M4.9 4.9l1.55 1.55"/></svg>
-        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg>
         <h2>Morning Routine</h2>
       </div>
       <p class="tagline">Morning = Protect</p>
 
       <ol class="steps">
-
-        <li class="step" style="--i:0">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 1 1-12 0c0-3.5 3-7 6-11z"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">1</span></span>
-          </span>
-          <div class="step-copy"><h3>Cleanser</h3><p>Remove sweat &amp; oil from overnight</p></div>
+        <li class="step">
+          <span class="step-ord">01</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" /></svg></span>
+          <span class="step-copy"><h3>Cleanser</h3><p>Remove sweat &amp; oil from overnight</p></span>
         </li>
-
-        <li class="step" style="--i:1">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.3" y="4.4" width="11.4" height="16.4" rx="3.2"/><rect x="9.3" y="1.4" width="5.4" height="3" rx="1.2"/><rect x="8.8" y="8.6" width="6.4" height="4.4" rx="0.6"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">2</span></span>
-          </span>
-          <div class="step-copy"><h3>Toner</h3><p>Refresh &amp; prep the skin</p></div>
+        <li class="step">
+          <span class="step-ord">02</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></span>
+          <span class="step-copy"><h3>Toner</h3><p>Refresh &amp; prep the skin</p></span>
         </li>
-
-        <li class="step" style="--i:2">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6l-1.1 4.3h-3.8z"/><path d="M9.5 7.5 8.2 15a3.9 3.9 0 0 0 7.6 0l-1.3-7.5"/><circle cx="12" cy="19.4" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">3</span></span>
-          </span>
-          <div class="step-copy"><h3>Antioxidant Serum</h3><p>Brighten &amp; fight free radicals</p></div>
+        <li class="step">
+          <span class="step-ord">03</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></span>
+          <span class="step-copy"><h3>Antioxidant Serum</h3><p>Brighten &amp; fight free radicals</p></span>
         </li>
-
-        <li class="step" style="--i:3">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9.5" width="12" height="10.5" rx="3"/><path d="M8.2 9.5V7.3a2 2 0 0 1 2-2h3.6a2 2 0 0 1 2 2v2.2"/><line x1="6" y1="13.3" x2="18" y2="13.3"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">4</span></span>
-          </span>
-          <div class="step-copy"><h3>Moisturizer</h3><p>Hydrate &amp; soften skin</p></div>
+        <li class="step">
+          <span class="step-ord">04</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" /></svg></span>
+          <span class="step-copy"><h3>Moisturizer</h3><p>Hydrate &amp; soften skin</p></span>
         </li>
-
-        <li class="step" style="--i:4">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3.4"/><path d="M12 3.2v1.3M17.2 5.4l-1 1M19.6 10.2h-1.3M6.4 5.4l1 1M4.4 10.2h1.3"/><path d="M6.2 14.6c1.4 2.8 3.8 4.2 5.8 4.2s4.4-1.4 5.8-4.2"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">5</span></span>
-          </span>
-          <div class="step-copy"><h3>Sunscreen</h3><p>Protect from UV rays</p></div>
+        <li class="step">
+          <span class="step-ord">05</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg></span>
+          <span class="step-copy"><h3>Sunscreen</h3><p>Protect from UV rays</p></span>
         </li>
       </ol>
     </section>
 
     <section class="routine routine--pm">
       <div class="routine-head">
-        <span class="badge">
-          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
-        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg>
         <h2>Night Routine</h2>
       </div>
       <p class="tagline">Night = Treat + Replenish</p>
 
       <ol class="steps">
-
-        <li class="step" style="--i:0">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.5 6 11a6 6 0 1 1-12 0c0-3.5 3-7 6-11z"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">1</span></span>
-          </span>
-          <div class="step-copy"><h3>Cleanser</h3><p>Remove makeup &amp; buildup</p></div>
+        <li class="step">
+          <span class="step-ord">01</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" /></svg></span>
+          <span class="step-copy"><h3>Cleanser</h3><p>Remove makeup &amp; buildup</p></span>
         </li>
-
-        <li class="step" style="--i:1">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.3" y="4.4" width="11.4" height="16.4" rx="3.2"/><rect x="9.3" y="1.4" width="5.4" height="3" rx="1.2"/><rect x="8.8" y="8.6" width="6.4" height="4.4" rx="0.6"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">2</span></span>
-          </span>
-          <div class="step-copy"><h3>Toner</h3><p>Rebalance after cleansing</p></div>
+        <li class="step">
+          <span class="step-ord">02</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></span>
+          <span class="step-copy"><h3>Toner</h3><p>Rebalance after cleansing</p></span>
         </li>
-
-        <li class="step" style="--i:2">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">3</span></span>
-          </span>
-          <div class="step-copy"><h3>Treatment</h3><p>Target acne, aging, or pigmentation</p></div>
+        <li class="step">
+          <span class="step-ord">03</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span>
+          <span class="step-copy"><h3>Treatment</h3><p>Target acne, aging, or pigmentation</p></span>
         </li>
-
-        <li class="step" style="--i:3">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6l-1.1 4.3h-3.8z"/><path d="M9.5 7.5 8.2 15a3.9 3.9 0 0 0 7.6 0l-1.3-7.5"/><circle cx="12" cy="19.4" r="1" fill="currentColor" stroke="none"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">4</span></span>
-          </span>
-          <div class="step-copy"><h3>Serum or Booster</h3><p>Deep hydration &amp; nourishment</p></div>
+        <li class="step">
+          <span class="step-ord">04</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></span>
+          <span class="step-copy"><h3>Serum or Booster</h3><p>Deep hydration &amp; nourishment</p></span>
         </li>
-
-        <li class="step" style="--i:4">
-          <span class="step-node">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="10.2" width="12" height="9.8" rx="3"/><line x1="6" y1="14" x2="18" y2="14"/><path d="M10 6.6a2.6 2.6 0 1 0 3 3 2 2 0 0 1-3-3z" fill="currentColor" stroke="none"/></svg>
-            <span class="step-tick"><span class="step-tick-line"></span><span class="step-ordinal">5</span></span>
-          </span>
-          <div class="step-copy"><h3>Night Cream</h3><p>Lock in moisture overnight</p></div>
+        <li class="step">
+          <span class="step-ord">05</span>
+          <span class="step-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg></span>
+          <span class="step-copy"><h3>Night Cream</h3><p>Lock in moisture overnight</p></span>
         </li>
       </ol>
     </section>
-
-  </main>
-
-</div>
-
-<script>
-  var routines = document.querySelectorAll('.routine');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    routines.forEach(function(r){ io.observe(r); });
-  } else {
-    routines.forEach(function(r){ r.classList.add('in-view'); });
-  }
-</script>
+  </div>
+</body>
+</html>

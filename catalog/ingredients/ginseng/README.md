@@ -1,12 +1,4 @@
-# Ginseng
 
-Unlike PDRN and snail mucin, there's no homeless design spike to rescue here
-— red ginseng's design work already has a proper home in a real, in-progress
-HyperFrames project. This entry just points at it rather than duplicating
-anything, so there's one copy instead of two that can drift apart (see the
-Dawn to Dusk / "Cape Family Medical" mess in
-[../../visual-components/dawn-to-dusk-routine/](../../visual-components/dawn-to-dusk-routine/)
-for why that matters).
 
 **Project:** `../../../videos/red-ginseng-two-routes/` — "Red Ginseng: Two
 Routes." Six-scene, 1080x1920 concept-explainer. Hook: *"The strongest

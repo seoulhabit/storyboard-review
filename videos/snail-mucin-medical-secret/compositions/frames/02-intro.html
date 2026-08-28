@@ -1,0 +1,393 @@
+<template>
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #0f2016;
+    --ink-moss: #2c4a34;
+    --ink-dark: #0f2016;
+    --sage-pale: #cddfb9;
+    --shell: #b9835a;
+    --shell-deep: #8a5a37;
+    --pearl: #fbfaf4;
+    --pearl-2: #e8efdd;
+    --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    font-family: var(--font-display);
+  }
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 200 800;
+    src: url("assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+
+  .clip { position: absolute; inset: 0; }
+
+  /* ── Scene 1..end: full-bleed real photo, dimmed ~40%, slow Ken Burns drift ── */
+  .sm2-photo-layer { overflow: hidden; }
+  .sm2-photo-wrap {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .sm2-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* dim wash ~40% + top/bottom legibility scrims (design-system legibility floor) */
+  .sm2-scrim-flat { background: rgba(15, 32, 22, 0.42); }
+  .sm2-scrim-top {
+    top: 0; left: 0; right: 0; height: 900px; bottom: auto;
+    background: linear-gradient(to bottom, rgba(15, 32, 22, 0.55) 0%, rgba(15, 32, 22, 0.18) 62%, rgba(15, 32, 22, 0) 100%);
+  }
+  .sm2-scrim-bottom {
+    bottom: 0; left: 0; right: 0; height: 900px; top: auto;
+    background: linear-gradient(to top, rgba(15, 32, 22, 0.62) 0%, rgba(15, 32, 22, 0.22) 55%, rgba(15, 32, 22, 0) 100%);
+  }
+
+  /* ── kicker: "THE YUCK FACTOR" per-word reveal ── */
+  .sm2-kicker-row {
+    top: 588px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .sm2-kicker-word {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 34px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--shell);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* ── title: "SNAIL MUCIN" spring-pop → settle smaller upper-third ── */
+  .sm2-title-outer {
+    top: 686px;
+    left: 0;
+    right: 0;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sm2-title-wrap {
+    display: inline-block;
+    transform-origin: 50% 50%;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .sm2-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 112px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--pearl);
+    white-space: nowrap;
+  }
+
+  /* ── label callout: "SNAIL SECRETION FILTRATE" — lower-third ingredient-label beat ── */
+  .sm2-label-zone {
+    top: 1160px;
+    left: 90px;
+    right: 90px;
+    bottom: auto;
+    height: auto;
+  }
+  .sm2-label-eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--shell);
+    margin-bottom: 14px;
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+  .sm2-label-box {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink-moss);
+    border-radius: 8px;
+    padding: 30px 36px;
+    opacity: 0;
+    clip-path: inset(0% 100% 0% 0%);
+    will-change: clip-path, opacity;
+  }
+  .sm2-label-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 42px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pearl);
+    line-height: 1.2;
+  }
+
+  /* ── "COMING UP: THE MISTAKE" mono tag, beneath the label ── */
+  .sm2-tag-zone {
+    top: 1380px;
+    left: 90px;
+    right: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+  }
+  /* spring-pop badge markup, adapted from components/spring-pop.html */
+  .f02i-sp-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: var(--shell);
+    opacity: 0;
+    transform-origin: 0% 50%;
+    will-change: transform, opacity;
+  }
+  .f02i-sp-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pearl);
+  }
+</style>
+
+<div id="root" data-composition-id="02-intro" data-width="1080" data-height="1920" data-duration="14.345">
+
+  <!-- Track 0: full-bleed real photo w/ Ken Burns drift, spans the whole frame -->
+  <div class="clip sm2-photo-layer" data-start="0" data-duration="14.345" data-track-index="0">
+    <div class="sm2-photo-wrap" id="sm2PhotoWrap">
+      <img class="sm2-photo" src="public/02-routine-montage.png" alt="" />
+    </div>
+  </div>
+
+  <!-- Track 1: flat ~40% dim wash over the photo -->
+  <div class="clip sm2-scrim-flat" data-start="0" data-duration="14.345" data-track-index="1"></div>
+
+  <!-- Track 2/3: top + bottom legibility scrims for the type zones -->
+  <div class="clip sm2-scrim-top" data-start="0" data-duration="14.345" data-track-index="2"></div>
+  <div class="clip sm2-scrim-bottom" data-start="0" data-duration="14.345" data-track-index="3"></div>
+
+  <!-- Track 4 (Scene 1, 0.0-2.7s): "THE YUCK FACTOR" mono kicker, per-word reveal -->
+  <div class="clip sm2-kicker-row" data-start="0" data-duration="2.7" data-track-index="4" id="sm2KickerRow"></div>
+
+  <!-- Track 5 (Scene 1 onward): "SNAIL MUCIN" title — spring-pops center, then settles smaller upper-third -->
+  <div class="clip sm2-title-outer" data-start="0" data-duration="14.345" data-track-index="5">
+    <div class="sm2-title-wrap" id="sm2TitleWrap">
+      <span class="sm2-title">SNAIL MUCIN</span>
+    </div>
+  </div>
+
+  <!-- Track 6 (Scene 3 onward, 5.5s-): "SNAIL SECRETION FILTRATE" ingredient-label callout, wipes in -->
+  <div class="clip sm2-label-zone" data-start="5.5" data-duration="8.845" data-track-index="6">
+    <div class="sm2-label-eyebrow" id="sm2LabelEyebrow">As Listed On The Bottle</div>
+    <div class="sm2-label-box" id="sm2LabelBox">
+      <span class="sm2-label-text">Snail Secretion Filtrate</span>
+    </div>
+  </div>
+
+  <!-- Track 7 (Scene 4, 10.7s-end): "COMING UP: THE MISTAKE" mono tag -->
+  <div class="clip sm2-tag-zone" data-start="10.7" data-duration="3.645" data-track-index="7">
+    <div class="f02i-sp-badge" id="sm2Tag">
+      <span class="f02i-sp-label">Coming Up: The Mistake</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+
+    // ── copied verbatim from components/yt-camera-move.html ──
+    window.ytCameraMove = function (tl, target, at, opts) {
+      opts = opts || {};
+      var dur = opts.dur === undefined ? 1.2 : opts.dur;
+      gsap.set(target, {
+        transformPerspective: 1200,
+        transformOrigin: opts.origin || "50% 50%",
+      });
+      tl.to(
+        target,
+        {
+          scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+          x: opts.slideX || 0,
+          y: opts.slideY || 0,
+          rotationX: opts.tilt || 0,
+          rotationY: opts.pan || 0,
+          rotation: opts.roll || 0,
+          duration: dur,
+          ease: opts.ease || "power2.inOut",
+        },
+        at,
+      );
+    };
+    window.ytCameraReset = function (tl, target, at, opts) {
+      opts = opts || {};
+      tl.to(
+        target,
+        {
+          scale: 1,
+          x: 0,
+          y: 0,
+          rotationX: 0,
+          rotationY: 0,
+          rotation: 0,
+          duration: opts.dur === undefined ? 1.2 : opts.dur,
+          ease: opts.ease || "power2.inOut",
+        },
+        at,
+      );
+    };
+    window.ytDefocusPulse = function (tl, target, at, dur) {
+      dur = dur === undefined ? 1.2 : dur;
+      tl.to(target, { opacity: 1, duration: dur * 0.45, ease: "power2.out" }, at);
+      tl.to(target, { opacity: 0, duration: dur * 0.55, ease: "power2.in" }, at + dur * 0.45);
+    };
+
+    var tl = gsap.timeline({ paused: true });
+    var TOTAL_DURATION = 13.845;
+
+    // full-span anchor so the timeline duration always matches the frame
+    tl.to({}, { duration: TOTAL_DURATION }, 0);
+
+    // ───────────────────────── background: slow continuous Ken Burns drift, full duration ─────────────────────────
+    // driven by the shared yt-camera-move helper (components/yt-camera-move.html)
+    window.ytCameraMove(tl, "#sm2PhotoWrap", 0, {
+      zoom: 0.14,
+      slideX: -18,
+      slideY: -26,
+      dur: TOTAL_DURATION,
+      ease: "sine.inOut",
+    });
+
+    // ───────────────────────── Scene 1 (0.0-2.7s) — kicker per-word reveal + title spring-pop ─────────────────────────
+    // Mount kicker words dynamically so the per-word reveal is content-driven, not hardcoded markup.
+    var KICKER_WORDS = ["THE", "YUCK", "FACTOR"];
+    var kickerRow = document.getElementById("sm2KickerRow");
+    var kickerEls = KICKER_WORDS.map(function (w) {
+      var span = document.createElement("span");
+      span.className = "sm2-kicker-word";
+      span.textContent = w;
+      kickerRow.appendChild(span);
+      return span;
+    });
+    var KICKER_START = 0.05;
+    var KICKER_STAGGER = 0.14;
+    kickerEls.forEach(function (el, i) {
+      tl.fromTo(
+        el,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" },
+        KICKER_START + i * KICKER_STAGGER
+      );
+    });
+    // kicker clears just before Scene 2 takes over (still inside its own 0-2.7s window)
+    tl.to(kickerEls, { opacity: 0, y: -10, duration: 0.3, ease: "power2.inOut" }, 2.35);
+
+    // Title "SNAIL MUCIN" — hero must read clearly by t<=0.5s: opacity resolves at 0.45s,
+    // the spring overshoot on scale keeps settling shortly after (still fully legible).
+    // spring-pop mechanic (components/spring-pop.html), bare-headline variant:
+    // reuse the tween at its declared defaults (fromScale 0.9, overshoot 1.7),
+    // skip the pill chrome since this is a headline, not a badge.
+    tl.fromTo(
+      "#sm2TitleWrap",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.3, ease: "power2.out" },
+      0.15
+    );
+    tl.fromTo(
+      "#sm2TitleWrap",
+      { scale: 0.9 },
+      { scale: 1, duration: 0.5, ease: "back.out(1.7)" },
+      0.15
+    );
+
+    // ───────────────────────── Scene 2 (2.7-5.5s) — title settles smaller, upper-third, making room below ─────────────────────────
+    tl.to(
+      "#sm2TitleWrap",
+      { scale: 0.6, y: -300, duration: 0.65, ease: "power2.inOut" },
+      2.7
+    );
+
+    // ───────────────────────── Scene 3 (5.5-10.7s) — ingredient-label callout wipes in, lower-third ─────────────────────────
+    tl.fromTo(
+      "#sm2LabelEyebrow",
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
+      5.6
+    );
+    tl.fromTo(
+      "#sm2LabelBox",
+      { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" },
+      { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" },
+      5.7
+    );
+
+    // ───────────────────────── Scene 4 (10.7-13.845s) — "COMING UP: THE MISTAKE" tag lands, holds to real end ─────────────────────────
+    // spring-pop mechanic (components/spring-pop.html) at its declared defaults
+    // (fromScale 0.9, overshoot 1.7); the x slide-in is preserved alongside the
+    // scale arc since the badge's transform-origin is left-anchored (0% 50%).
+    tl.fromTo(
+      "#sm2Tag",
+      { scale: 0.9, x: -14 },
+      { scale: 1, x: 0, duration: 0.5, ease: "back.out(1.7)" },
+      10.9
+    );
+    tl.fromTo(
+      "#sm2Tag",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.3, ease: "power2.out" },
+      10.9
+    );
+
+    // bounded settle jitter on the held title through the back half of the shot —
+    // finite phase tween (never a yoyo/repeat:-1 loop), keeps the resolved frame from reading dead
+    var titlePhase = { p: 0 };
+    var titleEl = document.getElementById("sm2TitleWrap");
+    var JITTER_START = 6.0;
+    var JITTER_DUR = TOTAL_DURATION - JITTER_START;
+    tl.to(
+      titlePhase,
+      {
+        p: Math.PI * 2 * 2.4,
+        duration: JITTER_DUR,
+        ease: "none",
+        onUpdate: function () {
+          var s = Math.sin(titlePhase.p);
+          gsap.set(titleEl, { y: -300 + s * 2.5 });
+        },
+      },
+      JITTER_START
+    );
+
+    window.__timelines["02-intro"] = tl;
+  })();
+</script>
+</template>

@@ -1,0 +1,50 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "bass-drop-cinematic (Scene 1→2 hard cut)",
+        "squish-stretch-asmr (over the macro slime hold)",
+        "sparkle (payoff word)"
+      ]
+    },
+    {
+      "id": "02",
+      "sfx": [
+        "click-soft (title lands)",
+        "whoosh-soft (label callout arrives)"
+      ]
+    },
+    {
+      "id": "03",
+      "sfx": [
+        "click-soft ×3 (each ingredient lands)",
+        "sparkle (final payoff line)"
+      ]
+    },
+    {
+      "id": "04",
+      "sfx": [
+        "whoosh-soft (myth-bust cut)",
+        "click-soft (closing line lands)"
+      ]
+    },
+    {
+      "id": "05",
+      "sfx": [
+        "whoosh-soft (split reveal)",
+        "click-soft ×3 (mist / pat / seal captions land)"
+      ]
+    },
+    {
+      "id": "06",
+      "sfx": [
+        "whoosh-soft (photo reveal)",
+        "sparkle (subscribe text lands)"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

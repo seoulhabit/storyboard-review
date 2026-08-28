@@ -1,0 +1,417 @@
+<template data-composition-id="05-sponge-rule" data-width="1080" data-height="1920" data-duration="22.103">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style>
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 200 800;
+    src: url("assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    container-type: size;
+    overflow: hidden;
+    font-family: "Bricolage Grotesque", Georgia, serif;
+    --f05sr-moss: #2c4a34;
+    --f05sr-moss-deep: #0f2016;
+    --f05sr-moss-lite: #cddfb9;
+    --f05sr-shell: #b9835a;
+    --f05sr-shell-deep: #8a5a37;
+    --f05sr-pearl: #fbfaf4;
+    --f05sr-pearl-2: #e8efdd;
+    --f05sr-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  /* ---------- background ---------- */
+  .f05sr-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--f05sr-moss-deep);
+    overflow: hidden;
+  }
+  .f05sr-glow {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    filter: blur(10px);
+  }
+  .f05sr-glow-a {
+    left: -260px;
+    top: 260px;
+    background: radial-gradient(circle, var(--f05sr-moss) 0%, rgba(44, 74, 52, 0) 70%);
+  }
+  .f05sr-glow-b {
+    right: -260px;
+    top: 940px;
+    background: radial-gradient(circle, var(--f05sr-shell) 0%, rgba(185, 131, 90, 0) 70%);
+  }
+
+  /* ---------- topbar ---------- */
+  .f05sr-topbar {
+    position: absolute;
+    top: 64px;
+    left: 80px;
+    right: 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .f05sr-topbar-label {
+    font-family: var(--f05sr-mono);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--f05sr-pearl);
+  }
+  .f05sr-dots {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .f05sr-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--f05sr-moss-lite);
+    background: transparent;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  /* ---------- stage (all scene content) ---------- */
+  .f05sr-stage {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Scene 1 — THE MISTAKE */
+  .f05sr-scrim {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 34%, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 62%);
+    opacity: 0;
+  }
+  .f05sr-mistake {
+    position: absolute;
+    top: 660px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--f05sr-mono);
+    font-weight: 500;
+    font-size: 42px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--f05sr-shell);
+    transform-origin: 50% 50%;
+    will-change: transform;
+    opacity: 0;
+  }
+
+  /* Scene 2 — MOISTURE MAGNET */
+  .f05sr-headline {
+    position: absolute;
+    top: 520px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: "Bricolage Grotesque", Georgia, serif;
+    font-weight: 500;
+    font-size: 122px;
+    line-height: 0.96;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--f05sr-shell);
+    transform-origin: 50% 50%;
+    will-change: transform;
+    opacity: 0;
+  }
+
+  /* Scenes 3-5 — split sponge test (cards mounted via split-tilt-cards; captions stay host-owned) */
+  .f05sr-split-perspective {
+    position: absolute;
+    top: 520px;
+    left: 0;
+    right: 0;
+    height: 900px;
+    transform-origin: 50% 50%;
+    will-change: transform, filter, opacity;
+  }
+  .f05sr-caption {
+    position: absolute;
+    top: 780px;
+    width: 460px;
+    text-align: center;
+    font-family: "Bricolage Grotesque", Georgia, serif;
+    font-weight: 500;
+    font-size: 62px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--f05sr-pearl);
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .f05sr-caption-left {
+    left: 54px;
+  }
+  .f05sr-caption-right {
+    right: 54px;
+    opacity: 0;
+  }
+  .f05sr-caption-swap {
+    position: relative;
+    height: 66px;
+  }
+  .f05sr-caption-word {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    opacity: 0;
+  }
+
+  /* Scenes 6-7 — step stack */
+  .f05sr-steps {
+    position: absolute;
+    top: 680px;
+    left: 54px;
+    right: 54px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+  .f05sr-step {
+    position: relative;
+    transform-origin: 50% 50%;
+    will-change: transform, filter, opacity;
+    opacity: 0;
+  }
+  .f05sr-step-ord {
+    font-family: var(--f05sr-mono);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.12em;
+    color: var(--f05sr-shell);
+    margin-bottom: 8px;
+  }
+  .f05sr-step-word {
+    font-family: "Bricolage Grotesque", Georgia, serif;
+    font-weight: 500;
+    font-size: 80px;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--f05sr-pearl);
+  }
+  .f05sr-step-rule {
+    margin-top: 22px;
+    height: 2px;
+    background: var(--f05sr-moss-lite);
+    opacity: 0.35;
+  }
+</style>
+
+<div id="root" data-composition-id="05-sponge-rule" data-width="1080" data-height="1920">
+
+  <div class="f05sr-bg clip" data-start="0" data-duration="22.103" data-track-index="0">
+    <div class="f05sr-glow f05sr-glow-a" id="f05sr-glow-a"></div>
+    <div class="f05sr-glow f05sr-glow-b" id="f05sr-glow-b"></div>
+  </div>
+
+  <div class="f05sr-topbar clip" data-start="0" data-duration="22.103" data-track-index="1">
+    <div class="f05sr-topbar-label" id="f05sr-topbar-label">HUMECTANT TEST</div>
+    <div class="f05sr-dots">
+      <span class="f05sr-dot" id="f05sr-dot-1"></span>
+      <span class="f05sr-dot" id="f05sr-dot-2"></span>
+      <span class="f05sr-dot" id="f05sr-dot-3"></span>
+    </div>
+  </div>
+
+  <div class="f05sr-stage clip" data-start="0" data-duration="22.103" data-track-index="2">
+
+    <!-- Scene 1 -->
+    <div class="f05sr-scrim" id="f05sr-scrim"></div>
+    <div class="f05sr-mistake" id="f05sr-mistake">THE MISTAKE</div>
+
+    <!-- Scene 2 -->
+    <div class="f05sr-headline" id="f05sr-headline">MOISTURE<br>MAGNET</div>
+
+    <!-- Scenes 3-5: mounted split-tilt-cards reveal + host-owned captions -->
+    <div class="f05sr-split-perspective" id="f05sr-split-wrap">
+      <div
+        data-composition-id="split-tilt-cards"
+        data-composition-src="compositions/components/split-tilt-cards.html"
+        data-start="7.85"
+        data-duration="8.35"
+        data-track-index="3"
+        data-variable-values='{"label_a":"Dry Sponge","label_b":"Misted Sponge","badge_a":"","badge_b":"","accent":"green","exit":"none"}'
+        style="position:absolute; top:0; left:54px; right:54px; height:740px; --bg:#0f2016; --surface:#2c4a34; --border:#8a5a37; --fg:#fbfaf4; --muted:#cddfb9; --brand:#b9835a; --stc-accent:#b9835a; --font-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; --font-display:'Bricolage Grotesque', Georgia, serif;"
+      ></div>
+
+      <div class="f05sr-caption f05sr-caption-left" id="f05sr-caption-left">
+        <div class="f05sr-caption-swap">
+          <span class="f05sr-caption-word" id="f05sr-caption-left-word1">INERT</span>
+          <span class="f05sr-caption-word" id="f05sr-caption-left-word2">PANICS</span>
+        </div>
+      </div>
+      <div class="f05sr-caption f05sr-caption-right" id="f05sr-caption-right">ABSORBS</div>
+    </div>
+
+    <!-- Scenes 6-7 -->
+    <div class="f05sr-steps" id="f05sr-steps">
+      <div class="f05sr-step" id="f05sr-step-1">
+        <div class="f05sr-step-ord">01</div>
+        <div class="f05sr-step-word">MIST</div>
+        <div class="f05sr-step-rule"></div>
+      </div>
+      <div class="f05sr-step" id="f05sr-step-2">
+        <div class="f05sr-step-ord">02</div>
+        <div class="f05sr-step-word">PAT — NEVER RUB</div>
+        <div class="f05sr-step-rule"></div>
+      </div>
+      <div class="f05sr-step" id="f05sr-step-3">
+        <div class="f05sr-step-ord">03</div>
+        <div class="f05sr-step-word">SEAL IT IN</div>
+        <div class="f05sr-step-rule"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    var SHELL = "#b9835a";
+
+    // spring-pop mechanic (reused pattern from components/spring-pop.html):
+    // one scale fromTo riding back.out(overshoot), plus a matching opacity
+    // fromTo capped at 0.3s, both anchored at the same start time.
+    var SPRING_FROM_SCALE = 0.9;
+    var SPRING_OVERSHOOT = 1.7;
+
+    // ---- t=0 safety net: force the actual rendered state hidden before any tween claims it ----
+    gsap.set(["#f05sr-scrim", "#f05sr-mistake"], { opacity: 0 });
+    gsap.set("#f05sr-mistake", { scale: SPRING_FROM_SCALE });
+    gsap.set("#f05sr-headline", { opacity: 0, scale: SPRING_FROM_SCALE });
+    gsap.set(["#f05sr-glow-a", "#f05sr-glow-b"], { opacity: 0 });
+    gsap.set("#f05sr-caption-left-word1", { opacity: 0, scale: 0.85 });
+    gsap.set("#f05sr-caption-left-word2", { opacity: 0 });
+    gsap.set("#f05sr-caption-right", { opacity: 0, scale: 0.85 });
+    gsap.set(["#f05sr-step-1", "#f05sr-step-2", "#f05sr-step-3"], { opacity: 0 });
+    gsap.set(["#f05sr-step-2", "#f05sr-step-3"], { y: 24, scale: SPRING_FROM_SCALE });
+    gsap.set("#f05sr-topbar-label", { opacity: 0, y: -16 });
+    gsap.set(".f05sr-dot", { opacity: 0, scale: 0.6 });
+
+    var tl = gsap.timeline({ paused: true });
+
+    // reused spring-pop tween mechanic: tl.fromTo(target, {scale: fromScale},
+    // {scale: 1, duration, ease: back.out(overshoot)}, at) + matching opacity
+    // fromTo (capped at 0.3s so it never outlasts a short pop-in).
+    function springPop(target, at, dur) {
+      var opacityDur = Math.min(0.3, dur);
+      tl.fromTo(
+        target,
+        { scale: SPRING_FROM_SCALE },
+        { scale: 1, duration: dur, ease: "back.out(" + SPRING_OVERSHOOT + ")" },
+        at
+      );
+      tl.fromTo(target, { opacity: 0 }, { opacity: 1, duration: opacityDur, ease: "power2.out" }, at);
+    }
+
+    // ---- ambient + chrome establish (0.0-0.7s) ----
+    tl.fromTo("#f05sr-glow-a", { opacity: 0 }, { opacity: 0.22, duration: 0.6, ease: "power1.out" }, 0);
+    tl.fromTo("#f05sr-glow-b", { opacity: 0 }, { opacity: 0.2, duration: 0.6, ease: "power1.out" }, 0.1);
+    tl.fromTo("#f05sr-topbar-label", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.05);
+    tl.fromTo(".f05sr-dot", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power3.out", stagger: 0.05 }, 0.2);
+
+    // ================= Scene 1 (0.0-4.7s) — "THE MISTAKE" =================
+    tl.fromTo("#f05sr-scrim", { opacity: 0 }, { opacity: 0.35, duration: 0.4, ease: "power1.out" }, 0.0);
+    tl.fromTo("#f05sr-mistake", { y: 20 }, { y: 0, duration: 0.45, ease: "power3.out" }, 0.05);
+    springPop("#f05sr-mistake", 0.05, 0.45);
+    // exit — cut-the-curve up, clears before the headline lands
+    tl.to("#f05sr-mistake", { y: -40, duration: 0.3, ease: "power4.in" }, 4.3);
+    tl.to("#f05sr-mistake", { opacity: 0, duration: 0.2, ease: "power1.in" }, 4.3);
+    tl.to("#f05sr-scrim", { opacity: 0, duration: 0.3, ease: "power1.in" }, 4.3);
+
+    // ================= Scene 2 (4.7-7.8s) — "MOISTURE MAGNET" =================
+    springPop("#f05sr-headline", 4.92, 0.55);
+    tl.to("#f05sr-headline", { y: -40, duration: 0.3, ease: "power4.in" }, 7.45);
+    tl.to("#f05sr-headline", { opacity: 0, duration: 0.2, ease: "power1.in" }, 7.45);
+
+    // ================= Scene 3 (7.8-10.3s) — split-tilt sponge entry =================
+    // Card tilt-in/settle is owned by the mounted split-tilt-cards
+    // sub-composition (data-start 7.85, data-duration 8.35 — see the
+    // #f05sr-split-wrap markup above). Only the host-owned "INERT" caption
+    // pop remains here.
+    tl.fromTo(
+      "#f05sr-caption-left-word1",
+      { scale: 0.85, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
+      8.75
+    );
+
+    // ================= Scene 4 (10.3-14.0s) — dry side panics =================
+    // "INERT" -> "PANICS" — zoom-through word swap (Z-axis, text-scale blur 10px)
+    tl.to("#f05sr-caption-left-word1", { scale: 1.2, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 10.35);
+    tl.to("#f05sr-caption-left-word1", { opacity: 0, duration: 0.2, ease: "none" }, 10.35);
+    tl.set("#f05sr-caption-left-word1", { opacity: 0 }, 10.55);
+    tl.set("#f05sr-caption-left-word2", { opacity: 0.15, scale: 0.75, filter: "blur(10px)" }, 10.55);
+    tl.to(
+      "#f05sr-caption-left-word2",
+      { scale: 1, filter: "blur(0px)", opacity: 1, duration: 0.5, ease: "expo.out" },
+      10.55
+    );
+
+    // ================= Scene 5 (14.0-16.4s) — damp side absorbs =================
+    tl.fromTo(
+      "#f05sr-caption-right",
+      { scale: 0.85, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
+      14.5
+    );
+
+    // ================= Scene 6 (16.4-19.3s) — inverse zoom into the 3-step fix =================
+    tl.to(["#f05sr-glow-a", "#f05sr-glow-b"], { opacity: 0.05, duration: 0.5, ease: "power1.out" }, 15.9);
+
+    // exit — split stage (mounted cards + captions) recedes (full-frame surface, 18px blur)
+    tl.to("#f05sr-split-wrap", { scale: 0.8, filter: "blur(18px)", duration: 0.2, ease: "power3.in" }, 16.0);
+    tl.to("#f05sr-split-wrap", { opacity: 0.15, duration: 0.2, ease: "none" }, 16.0);
+    // hard cut
+    tl.set("#f05sr-split-wrap", { opacity: 0 }, 16.2);
+    tl.set("#f05sr-step-1", { opacity: 0.15, scale: 1.25, filter: "blur(18px)" }, 16.2);
+    // entry — step 01 "MIST" arrives oversized, retracts to rest
+    tl.to("#f05sr-step-1", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 16.2);
+    tl.to("#f05sr-dot-1", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, 16.2);
+
+    // step 02 "PAT — NEVER RUB"
+    tl.fromTo("#f05sr-step-2", { y: 24 }, { y: 0, duration: 0.5, ease: "power3.out" }, 17.85);
+    springPop("#f05sr-step-2", 17.85, 0.5);
+    tl.to("#f05sr-dot-2", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, 17.85);
+
+    // ================= Scene 7 (19.3-21.603s) — step 03 "SEAL IT IN", settle =================
+    tl.fromTo("#f05sr-step-3", { y: 24 }, { y: 0, duration: 0.5, ease: "power3.out" }, 19.3);
+    springPop("#f05sr-step-3", 19.3, 0.5);
+    tl.to("#f05sr-dot-3", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, 19.3);
+
+    // settled collective breath — bounded, single cycle, low amplitude
+    tl.to("#f05sr-steps", { y: -3, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 1 }, 20.0);
+
+    window.__timelines = window.__timelines || {};
+    window.__timelines["05-sponge-rule"] = tl;
+  })();
+</script>
+</template>

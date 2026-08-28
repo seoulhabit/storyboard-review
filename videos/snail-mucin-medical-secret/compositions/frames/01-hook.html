@@ -1,0 +1,427 @@
+<template data-composition-id="01-hook" data-duration="15.625">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style data-brand-tokens>
+  @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  :root {
+    --green: #2c4a34;
+    --green-deep: #0f2016;
+    --green-lite: #cddfb9;
+    --pink: #b9835a;
+    --pink-deep: #8a5a37;
+    --cream: #fbfaf4;
+    --cream-2: #e8efdd;
+    --ink: #0f2016;
+    --trail-seafoam: #bdf0d4;
+    --trail-gold: #f2e3b4;
+    --trail-lilac: #e4c8ec;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+</style>
+
+<style>
+  #root {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--green-deep);
+    font-family: var(--font-display);
+  }
+
+  .clip {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* the zoom-through cut wrapper — scale/blur/opacity land here at the hard cut */
+  .cut-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%;
+    will-change: transform, filter, opacity;
+  }
+
+  /* the Ken Burns wrapper — nested so it never fights the cut-wrap's transform */
+  .kb-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  .bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bg-img.archival {
+    filter: grayscale(1) contrast(1.22) brightness(0.92);
+  }
+
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    opacity: 0.16;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .scrim-dim-35 {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 32, 22, 0.38);
+    pointer-events: none;
+  }
+
+  .scrim-top-fade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 58%;
+    background: linear-gradient(180deg, rgba(15, 32, 22, 0.6) 0%, rgba(15, 32, 22, 0) 100%);
+    pointer-events: none;
+  }
+
+  /* spring-pop mechanic: badge wrapper carries position/chrome, label carries type */
+  .hk01-sp-badge {
+    position: absolute;
+    left: 80px;
+    top: 116px;
+    padding: 12px 24px;
+    background: rgba(15, 32, 22, 0.4);
+    border: 2px solid var(--pink);
+    border-radius: 6px;
+    opacity: 0;
+    transform-origin: 50% 50%;
+  }
+
+  .hk01-sp-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .phrase-lower {
+    position: absolute;
+    left: 80px;
+    right: 80px;
+    top: 1120px;
+  }
+
+  .phrase-lower .phrase-line {
+    font-size: 50px;
+  }
+
+  .phrase-upper {
+    position: absolute;
+    left: 72px;
+    right: 72px;
+    top: 300px;
+    text-align: center;
+  }
+
+  .phrase-upper .phrase-line {
+    justify-content: center;
+  }
+
+  .phrase-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.14em 0.32em;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 58px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+  }
+
+  .phrase-word {
+    display: inline-block;
+    opacity: 0;
+  }
+
+  .payoff-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 32, 22, 0.6);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .payoff-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 64px;
+  }
+
+  .payoff-word {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(84px, 13vw, 138px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-align: center;
+    text-transform: uppercase;
+    transform-origin: 50% 50%;
+    background: linear-gradient(90deg, var(--trail-seafoam), var(--trail-gold), var(--trail-lilac));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    opacity: 0;
+  }
+</style>
+
+<div id="root" data-composition-id="01-hook" data-start="0" data-duration="15.625" data-width="1080" data-height="1920">
+
+  <!-- Scene 1 (0.0-5.4s): vintage B&W archival lab photo -->
+  <div class="clip" data-start="0" data-duration="5.4" data-track-index="0">
+    <div class="cut-wrap" id="scene1-cut">
+      <div class="kb-wrap" id="scene1-kb">
+        <img class="bg-img archival" src="public/01a-archival-lab.png" alt="" />
+        <div class="grain-overlay"></div>
+      </div>
+      <div class="scrim-dim-35"></div>
+      <div class="hk01-sp-badge" id="s1-label"><span class="hk01-sp-label">1960s &middot; Spain</span></div>
+      <div class="phrase-lower">
+        <div class="phrase-line" id="s1-phrase"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenes 2-4 (5.4-15.125s): macro slime/spatula photo, continuous Ken Burns push -->
+  <div class="clip" data-start="5.4" data-duration="10.225" data-track-index="0">
+    <div class="cut-wrap" id="scene234-cut">
+      <div class="kb-wrap" id="scene234-kb">
+        <img class="bg-img macro" src="public/01b-macro-slime-spatula.png" alt="" />
+      </div>
+      <div class="scrim-top-fade"></div>
+
+      <div class="phrase-upper">
+        <div class="phrase-line" id="s2-phrase" style="display: none;"></div>
+      </div>
+      <div class="phrase-upper">
+        <div class="phrase-line" id="s3-phrase" style="display: none;"></div>
+      </div>
+      <div class="phrase-upper">
+        <div class="phrase-line" id="s4-phrase" style="display: none;"></div>
+      </div>
+
+      <div class="payoff-scrim" id="payoff-scrim"></div>
+      <div class="payoff-stage">
+        <div class="payoff-word" id="payoff">Obsession.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var DURATION = 15.125;
+
+  function buildWords(containerId, words) {
+    var el = document.getElementById(containerId);
+    var spans = [];
+    words.forEach(function (w) {
+      var span = document.createElement("span");
+      span.className = "phrase-word";
+      span.textContent = w;
+      el.appendChild(span);
+      spans.push(span);
+    });
+    return spans;
+  }
+
+  // Scene 1 — "In the 1960s, a Spanish doctor trying to heal severe radiation burns"
+  var s1Words = buildWords("s1-phrase", [
+    "In", "the", "1960s,", "a", "Spanish", "doctor", "trying", "to", "heal", "severe", "radiation", "burns"
+  ]);
+  // Scene 2 — "stumbled onto a bizarre, miraculous cure"
+  var s2Words = buildWords("s2-phrase", [
+    "stumbled", "onto", "a", "bizarre,", "miraculous", "cure"
+  ]);
+  // Scene 3 — "Fast forward to today,"
+  var s3Words = buildWords("s3-phrase", [
+    "Fast", "forward", "to", "today,"
+  ]);
+  // Scene 4 — "and that exact same goo is the beauty industry's biggest, weirdest" (obsession = payoff word)
+  var s4Words = buildWords("s4-phrase", [
+    "and", "that", "exact", "same", "goo", "is", "the", "beauty", "industry's", "biggest,", "weirdest"
+  ]);
+
+  // ---- yt-camera-move helpers (copied verbatim from compositions/components/yt-camera-move.html) ----
+  window.ytCameraMove = function (tl, target, at, opts) {
+    opts = opts || {};
+    var dur = opts.dur === undefined ? 1.2 : opts.dur;
+    gsap.set(target, {
+      transformPerspective: 1200,
+      transformOrigin: opts.origin || "50% 50%",
+    });
+    tl.to(
+      target,
+      {
+        scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+        x: opts.slideX || 0,
+        y: opts.slideY || 0,
+        rotationX: opts.tilt || 0,
+        rotationY: opts.pan || 0,
+        rotation: opts.roll || 0,
+        duration: dur,
+        ease: opts.ease || "power2.inOut",
+      },
+      at,
+    );
+  };
+  window.ytCameraReset = function (tl, target, at, opts) {
+    opts = opts || {};
+    tl.to(
+      target,
+      {
+        scale: 1,
+        x: 0,
+        y: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotation: 0,
+        duration: opts.dur === undefined ? 1.2 : opts.dur,
+        ease: opts.ease || "power2.inOut",
+      },
+      at,
+    );
+  };
+  window.ytDefocusPulse = function (tl, target, at, dur) {
+    dur = dur === undefined ? 1.2 : dur;
+    tl.to(target, { opacity: 1, duration: dur * 0.45, ease: "power2.out" }, at);
+    tl.to(target, { opacity: 0, duration: dur * 0.55, ease: "power2.in" }, at + dur * 0.45);
+  };
+
+  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({ paused: true });
+
+  // full-span anchor
+  tl.to({}, { duration: DURATION }, 0);
+
+  // ---------- Scene 1 (0.0-5.4s) ----------
+  // spring-pop mechanic (fromScale 0.9, overshoot 1.7) driving the archival label badge
+  (function () {
+    var badgeIn = 0.4, fromScale = 0.9, overshoot = 1.7, opacityIn = Math.min(0.3, badgeIn);
+    tl.fromTo("#s1-label", { scale: fromScale }, { scale: 1, duration: badgeIn, ease: "back.out(" + overshoot + ")" }, 0.15);
+    tl.fromTo("#s1-label", { opacity: 0 }, { opacity: 1, duration: opacityIn, ease: "power2.out" }, 0.15);
+  })();
+
+  // per-word reveal, evenly paced across the VO window 0.10-5.20s
+  (function () {
+    var start = 0.10, end = 5.20, n = s1Words.length;
+    var step = (end - start) / n;
+    s1Words.forEach(function (el, i) {
+      var at = start + i * step;
+      tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, at);
+    });
+  })();
+
+  // Ken Burns — subtle drift on the archival still, via the shared yt-camera-move helper
+  window.ytCameraMove(tl, "#scene1-kb", 0, { zoom: 0.05, dur: 5.4, ease: "sine.inOut" });
+
+  // Zoom-Through cut, Scene 1 -> Scene 2/3/4 (state change: history -> the macro slime hero shot)
+  // Phase 1: exit (5.10-5.40) — accelerate toward viewer, full-frame blur peak 20px
+  tl.fromTo("#scene1-cut", { scale: 1.0 }, { scale: 1.2, duration: 0.3, ease: "power3.in" }, 5.10);
+  tl.fromTo("#scene1-cut", { filter: "blur(0px)" }, { filter: "blur(20px)", duration: 0.3, ease: "power3.in" }, 5.10);
+  tl.to("#scene1-cut", { opacity: 0.15, duration: 0.3, ease: "none" }, 5.10);
+  // Phase 2: hard cut at t=5.4 — outgoing gone, incoming pre-set oversized/blurred
+  tl.set("#scene1-cut", { opacity: 0 }, 5.4);
+  tl.set("#scene234-cut", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, 5.4);
+  // Phase 3: entry (5.4-5.9) — continue forward, resolve sharp
+  tl.to("#scene234-cut", { scale: 1.0, filter: "blur(0px)", opacity: 1.0, duration: 0.5, ease: "expo.out" }, 5.4);
+
+  // ---------- Scenes 2-4 (5.4-15.125s) ----------
+  // Continuous Ken Burns push-in across the whole macro-slime hold, settling to a stop
+  window.ytCameraMove(tl, "#scene234-kb", 5.4, { zoom: 0.16, dur: 9.725, ease: "power2.out" });
+
+  // Scene 2 — "stumbled onto a bizarre, miraculous cure" (5.64-8.52s), upper third
+  (function () {
+    tl.set("#s2-phrase", { display: "flex" }, 5.4);
+    var start = 5.64, end = 8.52, n = s2Words.length;
+    var step = (end - start) / n;
+    s2Words.forEach(function (el, i) {
+      var at = start + i * step;
+      tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, at);
+    });
+    // whole-line exit — cut-the-curve, leftward, fading before the 8.70s cut
+    tl.to("#s2-phrase", { x: -230, duration: 0.3, ease: "power4.in" }, 8.40);
+    tl.to("#s2-phrase", { opacity: 0, duration: 0.26, ease: "power1.in" }, 8.40);
+    tl.set("#s2-phrase", { display: "none" }, 8.66);
+  })();
+
+  // Scene 3 — "Fast forward to today," (8.7-10.3s), cut-the-curve entry continuing leftward
+  (function () {
+    var cutAt = 8.70;
+    tl.set("#s3-phrase", { display: "flex", x: 230, opacity: 0 }, cutAt);
+    tl.to("#s3-phrase", { x: 0, duration: 0.3, ease: "power4.out" }, cutAt);
+    tl.to("#s3-phrase", { opacity: 1, duration: 0.24, ease: "power1.out" }, cutAt);
+    // waterfall per-word cascade, shrinking gaps, synced to 8.96-10.14s VO window
+    var gaps = [0, 0.05, 0.092, 0.127];
+    s3Words.forEach(function (el, i) {
+      var at = cutAt + gaps[i];
+      tl.fromTo(el, { opacity: 0.3, y: 10 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, at);
+    });
+    // whole-line exit before the 10.30s cut
+    tl.to("#s3-phrase", { x: -230, duration: 0.3, ease: "power4.in" }, 9.98);
+    tl.to("#s3-phrase", { opacity: 0, duration: 0.28, ease: "power1.in" }, 9.98);
+    tl.set("#s3-phrase", { display: "none" }, 10.28);
+  })();
+
+  // Scene 4 — "and that exact same goo is the beauty industry's biggest, weirdest" (10.3-15.125s)
+  (function () {
+    var cutAt = 10.30;
+    tl.set("#s4-phrase", { display: "flex", x: 230, opacity: 0 }, cutAt);
+    tl.to("#s4-phrase", { x: 0, duration: 0.3, ease: "power4.out" }, cutAt);
+    tl.to("#s4-phrase", { opacity: 1, duration: 0.24, ease: "power1.out" }, cutAt);
+
+    var start = 10.46, end = 14.28, n = s4Words.length;
+    var step = (end - start) / n;
+    s4Words.forEach(function (el, i) {
+      var at = start + i * step;
+      tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, at);
+    });
+
+    // dim the running line slightly as the payoff scrim/word take over
+    tl.to("#s4-phrase", { opacity: 0.55, duration: 0.3, ease: "power1.out" }, 14.0);
+  })();
+
+  // Payoff — "Obsession." spring-pops dead-center on a translucent scrim (14.28-14.86s), holds to the end
+  tl.to("#payoff-scrim", { opacity: 1, duration: 0.28, ease: "power1.out" }, 14.0);
+  // spring-pop mechanic (fromScale 0.9, overshoot 1.7) — bare word, no badge chrome, since this isn't a pill
+  (function () {
+    var wordIn = 0.58, fromScale = 0.9, overshoot = 1.7, opacityIn = Math.min(0.3, wordIn);
+    tl.fromTo("#payoff", { scale: fromScale }, { scale: 1, duration: wordIn, ease: "back.out(" + overshoot + ")" }, 14.28);
+    tl.fromTo("#payoff", { opacity: 0 }, { opacity: 1, duration: opacityIn, ease: "power2.out" }, 14.28);
+  })();
+
+  window.__timelines["01-hook"] = tl;
+})();
+</script>
+</template>

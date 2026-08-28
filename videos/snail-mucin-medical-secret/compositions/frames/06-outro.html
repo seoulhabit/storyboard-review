@@ -1,0 +1,271 @@
+<template>
+<style>
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+    font-display: block;
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+    font-display: block;
+  }
+
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #0f2016;
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  }
+  .clip {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Full-bleed real photo — the outro's single card, Ken Burns push runs the whole frame */
+  .outro-photo-clip {
+    z-index: 0;
+    overflow: hidden;
+    background: #0f2016;
+  }
+  .outro-photo-wrap {
+    position: absolute;
+    inset: -6%; /* overscan so the Ken Burns push never exposes an edge */
+    transform-origin: 50% 42%;
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .outro-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* "WOULD YOU TRY IT?" — Bricolage display, ink_moss plate, upper-third.
+     Centering lives on the (unanimated) positioning wrapper; the inner plate
+     carries ONLY the GSAP-driven scale/opacity so there is no CSS-transform
+     vs. GSAP-transform conflict. */
+  .outro-question-clip {
+    z-index: 2;
+  }
+  .outro-question-pos {
+    position: absolute;
+    left: 50%;
+    top: 272px;
+    transform: translateX(-50%);
+  }
+  .outro-question {
+    transform: scale(0);
+    opacity: 0;
+    transform-origin: 50% 50%;
+    will-change: transform, opacity;
+    max-width: 900px;
+    padding: 34px 56px;
+    background: #2c4a34;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .outro-question span {
+    display: block;
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #fbfaf4;
+  }
+
+  /* "SUBSCRIBE!" — mono chrome, shell-deep plate, larger, dead-center-lower, lands last */
+  .outro-subscribe-clip {
+    z-index: 3;
+  }
+  .outro-subscribe-pos {
+    position: absolute;
+    left: 50%;
+    top: 1214px;
+    transform: translateX(-50%);
+  }
+  .outro-subscribe {
+    transform: scale(0);
+    opacity: 0;
+    transform-origin: 50% 50%;
+    will-change: transform, opacity;
+    max-width: 940px;
+    padding: 42px 68px;
+    background: #8a5a37;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .outro-subscribe span {
+    display: block;
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-weight: 700;
+    font-size: 88px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fbfaf4;
+  }
+</style>
+
+<div id="root" data-composition-id="06-outro" data-width="1080" data-height="1920">
+  <div class="clip outro-photo-clip" data-start="0" data-duration="18.181" data-track-index="0">
+    <div class="outro-photo-wrap" id="outro-photo-wrap">
+      <img src="public/06-cheekbone-glow.png" alt="" />
+    </div>
+  </div>
+
+  <div class="clip outro-question-clip" data-start="0" data-duration="18.181" data-track-index="1">
+    <div class="outro-question-pos">
+      <div class="outro-question" id="outro-question">
+        <span>Would you try it?</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="clip outro-subscribe-clip" data-start="0" data-duration="18.181" data-track-index="2">
+    <div class="outro-subscribe-pos">
+      <div class="outro-subscribe" id="outro-subscribe">
+        <span>Subscribe!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+  // ---- copied verbatim from compositions/components/yt-camera-move.html ----
+  // Punch-in / camera move on any wrapper. A talking-head base:
+  // zoom 0.11, cubic ease. tilt/pan are degrees (rotationX/rotationY,
+  // perspective is set for you); slideX/slideY in px; roll in degrees.
+  window.ytCameraMove = function (tl, target, at, opts) {
+    opts = opts || {};
+    var dur = opts.dur === undefined ? 1.2 : opts.dur;
+    gsap.set(target, {
+      transformPerspective: 1200,
+      transformOrigin: opts.origin || "50% 50%",
+    });
+    tl.to(
+      target,
+      {
+        scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+        x: opts.slideX || 0,
+        y: opts.slideY || 0,
+        rotationX: opts.tilt || 0,
+        rotationY: opts.pan || 0,
+        rotation: opts.roll || 0,
+        duration: dur,
+        ease: opts.ease || "power2.inOut",
+      },
+      at,
+    );
+  };
+  // Return to rest (same easing family).
+  window.ytCameraReset = function (tl, target, at, opts) {
+    opts = opts || {};
+    tl.to(
+      target,
+      {
+        scale: 1,
+        x: 0,
+        y: 0,
+        rotationX: 0,
+        rotationY: 0,
+        rotation: 0,
+        duration: opts.dur === undefined ? 1.2 : opts.dur,
+        ease: opts.ease || "power2.inOut",
+      },
+      at,
+    );
+  };
+  // Edge-defocus pulse synced to a move (overlay fades in then out).
+  window.ytDefocusPulse = function (tl, target, at, dur) {
+    dur = dur === undefined ? 1.2 : dur;
+    tl.to(target, { opacity: 1, duration: dur * 0.45, ease: "power2.out" }, at);
+    tl.to(target, { opacity: 0, duration: dur * 0.55, ease: "power2.in" }, at + dur * 0.45);
+  };
+
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+
+  // Scene 1 (0.0–4.5s) — "From healing radiation burns to unlocking flawless
+  // glass skin..." The titlecard-reveal signature move: the real cheekbone
+  // photo fades in and scales ~95%→100%, smooth ease-out, the one restrained
+  // reveal. Fast enough that the hero subject reads by t<=0.5s.
+  tl.fromTo(
+    "#outro-photo-wrap",
+    { opacity: 0, scale: 0.95 },
+    { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" },
+    0
+  );
+
+  // Slow Ken Burns push — continuous, runs the rest of the frame under
+  // everything else. Linear drift so it never feels like a second "beat".
+  // Component: yt-camera-move.html's ytCameraMove helper, driving the same
+  // wrapper/start/duration/end-scale as before (zoom 0.16 == scale 1.16,
+  // origin pinned to the wrapper's own 50%/42% transform-origin so the push
+  // still favors the cheekbone).
+  window.ytCameraMove(tl, "#outro-photo-wrap", 0.7, {
+    zoom: 0.16,
+    slideY: -26,
+    dur: 17.48,
+    ease: "none",
+    origin: "50% 42%",
+  });
+
+  // Scene 3 (6.4–9.3s) — "So, are you brave enough to try it," — the first
+  // named text overlay spring-pops in, upper-third. Component: spring-pop.html's
+  // tween mechanic (a back.out scale arc plus an independent opacity fade),
+  // default overshoot 1.7, default fromScale 0.9.
+  tl.fromTo(
+    "#outro-question",
+    { scale: 0.9 },
+    { scale: 1, duration: 0.55, ease: "back.out(1.7)" },
+    6.84
+  );
+  tl.fromTo(
+    "#outro-question",
+    { opacity: 0 },
+    { opacity: 1, duration: 0.3, ease: "power2.out" },
+    6.84
+  );
+
+  // Scene 4 (9.3–11.4s) — "or is the yuck-factor too high?" — a small
+  // emphasis pulse on the settled question card, landing mid-cue.
+  tl.to(
+    "#outro-question",
+    { scale: 1.06, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 },
+    10.2
+  );
+
+  // Scene 6 (13.7–18.181s) — "Subscribe for more skincare science, and I'll
+  // see you in the next one." The second named overlay spring-pops in last,
+  // larger, dead-center-lower, as the video's true, final CTA. Component:
+  // spring-pop.html's tween mechanic again, with a higher overshoot (1.9,
+  // within the component's declared 1.1–2.0 range) for the one deliberately
+  // playful beat. Both cards and the photo hold to the frame's real end; no
+  // exit follows.
+  tl.fromTo(
+    "#outro-subscribe",
+    { scale: 0.9 },
+    { scale: 1, duration: 0.6, ease: "back.out(1.9)" },
+    13.84
+  );
+  tl.fromTo(
+    "#outro-subscribe",
+    { opacity: 0 },
+    { opacity: 1, duration: 0.3, ease: "power2.out" },
+    13.84
+  );
+
+  window.__timelines["06-outro"] = tl;
+</script>
+</template>

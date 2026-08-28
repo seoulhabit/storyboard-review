@@ -1,0 +1,2932 @@
+{
+  "total_duration_s": 117.421,
+  "width": 1080,
+  "height": 1920,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 0.099,
+      "end": 1.539,
+      "text": "In the 1960s,",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "In",
+          "start": 0.099,
+          "end": 0.199
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "the",
+          "start": 0.239,
+          "end": 0.319
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "1960s,",
+          "start": 0.359,
+          "end": 1.419
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 1.799,
+      "end": 2.86,
+      "text": "a Spanish doctor",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "a",
+          "start": 1.799,
+          "end": 1.86
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "Spanish",
+          "start": 1.899,
+          "end": 2.299
+        },
+        {
+          "id": "caption-word-1-2",
+          "text": "doctor",
+          "start": 2.399,
+          "end": 2.74
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 2.879,
+      "end": 3.399,
+      "text": "trying to",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "trying",
+          "start": 2.879,
+          "end": 3.199
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "to",
+          "start": 3.22,
+          "end": 3.339
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 1,
+      "start": 3.399,
+      "end": 4.859,
+      "text": "heal severe radiation",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "heal",
+          "start": 3.399,
+          "end": 3.599
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "severe",
+          "start": 3.74,
+          "end": 4.099
+        },
+        {
+          "id": "caption-word-3-2",
+          "text": "radiation",
+          "start": 4.139,
+          "end": 4.759
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 1,
+      "start": 4.859,
+      "end": 5.319,
+      "text": "burns",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "burns",
+          "start": 4.859,
+          "end": 5.199
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 1,
+      "start": 5.639,
+      "end": 6.42,
+      "text": "stumbled onto",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "stumbled",
+          "start": 5.639,
+          "end": 6.099
+        },
+        {
+          "id": "caption-word-5-1",
+          "text": "onto",
+          "start": 6.139,
+          "end": 6.379
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 1,
+      "start": 6.42,
+      "end": 7.159,
+      "text": "a bizarre,",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "a",
+          "start": 6.42,
+          "end": 6.48
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "bizarre,",
+          "start": 6.519,
+          "end": 7.039
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 1,
+      "start": 7.399,
+      "end": 8.639,
+      "text": "miraculous cure.",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "miraculous",
+          "start": 7.399,
+          "end": 8.059
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "cure.",
+          "start": 8.199,
+          "end": 8.519
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 1,
+      "start": 8.96,
+      "end": 9.639,
+      "text": "Fast forward",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "Fast",
+          "start": 8.96,
+          "end": 9.239
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "forward",
+          "start": 9.34,
+          "end": 9.599
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 1,
+      "start": 9.639,
+      "end": 10.259,
+      "text": "to today,",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "to",
+          "start": 9.639,
+          "end": 9.739
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "today,",
+          "start": 9.779,
+          "end": 10.139
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 1,
+      "start": 10.46,
+      "end": 10.76,
+      "text": "and that",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "and",
+          "start": 10.46,
+          "end": 10.539
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "that",
+          "start": 10.559,
+          "end": 10.659
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 1,
+      "start": 10.76,
+      "end": 11.899,
+      "text": "exact same goo",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "exact",
+          "start": 10.76,
+          "end": 11.139
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "same",
+          "start": 11.259,
+          "end": 11.46
+        },
+        {
+          "id": "caption-word-11-2",
+          "text": "goo",
+          "start": 11.559,
+          "end": 11.839
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 1,
+      "start": 11.899,
+      "end": 12.179,
+      "text": "is the",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "is",
+          "start": 11.899,
+          "end": 12
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "the",
+          "start": 12.039,
+          "end": 12.119
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 1,
+      "start": 12.179,
+      "end": 13.56,
+      "text": "beauty industry's biggest,",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "beauty",
+          "start": 12.179,
+          "end": 12.439
+        },
+        {
+          "id": "caption-word-13-1",
+          "text": "industry's",
+          "start": 12.479,
+          "end": 13.039
+        },
+        {
+          "id": "caption-word-13-2",
+          "text": "biggest,",
+          "start": 13.079,
+          "end": 13.44
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 1,
+      "start": 13.779,
+      "end": 14.979,
+      "text": "weirdest obsession.",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "weirdest",
+          "start": 13.779,
+          "end": 14.199
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "obsession.",
+          "start": 14.279,
+          "end": 14.859
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 2,
+      "start": 15.384,
+      "end": 15.884,
+      "text": "Welcome to",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "Welcome",
+          "start": 15.384,
+          "end": 15.685
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "to",
+          "start": 15.784,
+          "end": 15.844
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 2,
+      "start": 15.884,
+      "end": 16.404,
+      "text": "the weird",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "the",
+          "start": 15.884,
+          "end": 15.944
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "weird",
+          "start": 16.064,
+          "end": 16.365
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 2,
+      "start": 16.404,
+      "end": 16.824,
+      "text": "world of",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "world",
+          "start": 16.404,
+          "end": 16.625
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "of",
+          "start": 16.664,
+          "end": 16.724
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 2,
+      "start": 16.824,
+      "end": 17.764,
+      "text": "Snail Mucin.",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "Snail",
+          "start": 16.824,
+          "end": 17.084
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "Mucin.",
+          "start": 17.164,
+          "end": 17.644
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 2,
+      "start": 18.024,
+      "end": 18.504,
+      "text": "Today,",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "Today,",
+          "start": 18.024,
+          "end": 18.384
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 2,
+      "start": 18.865,
+      "end": 19.505,
+      "text": "we're stripping",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "we're",
+          "start": 18.865,
+          "end": 19.044
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "stripping",
+          "start": 19.084,
+          "end": 19.424
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 2,
+      "start": 19.505,
+      "end": 19.804,
+      "text": "away the",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "away",
+          "start": 19.505,
+          "end": 19.605
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "the",
+          "start": 19.664,
+          "end": 19.724
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 2,
+      "start": 19.804,
+      "end": 20.625,
+      "text": "TikTok hype",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "TikTok",
+          "start": 19.804,
+          "end": 20.224
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "hype",
+          "start": 20.264,
+          "end": 20.505
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 2,
+      "start": 20.804,
+      "end": 21.364,
+      "text": "and diving",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "and",
+          "start": 20.804,
+          "end": 20.944
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "diving",
+          "start": 21.025,
+          "end": 21.324
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 2,
+      "start": 21.364,
+      "end": 22.324,
+      "text": "into the actual,",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "into",
+          "start": 21.364,
+          "end": 21.545
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "the",
+          "start": 21.585,
+          "end": 21.704
+        },
+        {
+          "id": "caption-word-24-2",
+          "text": "actual,",
+          "start": 21.804,
+          "end": 22.204
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 2,
+      "start": 22.704,
+      "end": 24.264,
+      "text": "microscopic science of what",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "microscopic",
+          "start": 22.704,
+          "end": 23.385
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "science",
+          "start": 23.505,
+          "end": 23.885
+        },
+        {
+          "id": "caption-word-25-2",
+          "text": "of",
+          "start": 23.925,
+          "end": 24.005
+        },
+        {
+          "id": "caption-word-25-3",
+          "text": "what",
+          "start": 24.064,
+          "end": 24.225
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 2,
+      "start": 24.264,
+      "end": 24.885,
+      "text": "this slime",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "this",
+          "start": 24.264,
+          "end": 24.405
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "slime",
+          "start": 24.505,
+          "end": 24.824
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 2,
+      "start": 24.885,
+      "end": 25.204,
+      "text": "does to",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "does",
+          "start": 24.885,
+          "end": 25.045
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "to",
+          "start": 25.104,
+          "end": 25.144
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 2,
+      "start": 25.204,
+      "end": 25.804,
+      "text": "your face",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "your",
+          "start": 25.204,
+          "end": 25.344
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "face",
+          "start": 25.385,
+          "end": 25.684
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 2,
+      "start": 25.965,
+      "end": 26.244,
+      "text": "and the",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "and",
+          "start": 25.965,
+          "end": 26.025
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "the",
+          "start": 26.064,
+          "end": 26.125
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 2,
+      "start": 26.244,
+      "end": 26.984,
+      "text": "huge mistake",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "huge",
+          "start": 26.244,
+          "end": 26.484
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "mistake",
+          "start": 26.545,
+          "end": 26.925
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 2,
+      "start": 26.984,
+      "end": 28.005,
+      "text": "you're probably making",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "you're",
+          "start": 26.984,
+          "end": 27.145
+        },
+        {
+          "id": "caption-word-31-1",
+          "text": "probably",
+          "start": 27.184,
+          "end": 27.604
+        },
+        {
+          "id": "caption-word-31-2",
+          "text": "making",
+          "start": 27.664,
+          "end": 27.985
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 2,
+      "start": 28.005,
+      "end": 28.364,
+      "text": "when you",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "when",
+          "start": 28.005,
+          "end": 28.145
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "you",
+          "start": 28.164,
+          "end": 28.284
+        }
+      ]
+    },
+    {
+      "id": "caption-group-33",
+      "frame": 2,
+      "start": 28.364,
+      "end": 28.844,
+      "text": "use it.",
+      "words": [
+        {
+          "id": "caption-word-33-0",
+          "text": "use",
+          "start": 28.364,
+          "end": 28.505
+        },
+        {
+          "id": "caption-word-33-1",
+          "text": "it.",
+          "start": 28.585,
+          "end": 28.724
+        }
+      ]
+    },
+    {
+      "id": "caption-group-34",
+      "frame": 3,
+      "start": 29.149,
+      "end": 30.229,
+      "text": "This isn't just",
+      "words": [
+        {
+          "id": "caption-word-34-0",
+          "text": "This",
+          "start": 29.149,
+          "end": 29.329
+        },
+        {
+          "id": "caption-word-34-1",
+          "text": "isn't",
+          "start": 29.449,
+          "end": 29.689
+        },
+        {
+          "id": "caption-word-34-2",
+          "text": "just",
+          "start": 29.869,
+          "end": 30.109
+        }
+      ]
+    },
+    {
+      "id": "caption-group-35",
+      "frame": 3,
+      "start": 30.249,
+      "end": 31.109,
+      "text": "water and goo.",
+      "words": [
+        {
+          "id": "caption-word-35-0",
+          "text": "water",
+          "start": 30.249,
+          "end": 30.509
+        },
+        {
+          "id": "caption-word-35-1",
+          "text": "and",
+          "start": 30.549,
+          "end": 30.669
+        },
+        {
+          "id": "caption-word-35-2",
+          "text": "goo.",
+          "start": 30.71,
+          "end": 30.989
+        }
+      ]
+    },
+    {
+      "id": "caption-group-36",
+      "frame": 3,
+      "start": 31.489,
+      "end": 32.269,
+      "text": "Snails secrete",
+      "words": [
+        {
+          "id": "caption-word-36-0",
+          "text": "Snails",
+          "start": 31.489,
+          "end": 31.829
+        },
+        {
+          "id": "caption-word-36-1",
+          "text": "secrete",
+          "start": 31.869,
+          "end": 32.21
+        }
+      ]
+    },
+    {
+      "id": "caption-group-37",
+      "frame": 3,
+      "start": 32.269,
+      "end": 33.489,
+      "text": "this specific mucin",
+      "words": [
+        {
+          "id": "caption-word-37-0",
+          "text": "this",
+          "start": 32.269,
+          "end": 32.389
+        },
+        {
+          "id": "caption-word-37-1",
+          "text": "specific",
+          "start": 32.45,
+          "end": 32.95
+        },
+        {
+          "id": "caption-word-37-2",
+          "text": "mucin",
+          "start": 33.049,
+          "end": 33.41
+        }
+      ]
+    },
+    {
+      "id": "caption-group-38",
+      "frame": 3,
+      "start": 33.489,
+      "end": 34.209,
+      "text": "to instantly",
+      "words": [
+        {
+          "id": "caption-word-38-0",
+          "text": "to",
+          "start": 33.489,
+          "end": 33.609
+        },
+        {
+          "id": "caption-word-38-1",
+          "text": "instantly",
+          "start": 33.669,
+          "end": 34.149
+        }
+      ]
+    },
+    {
+      "id": "caption-group-39",
+      "frame": 3,
+      "start": 34.209,
+      "end": 34.689,
+      "text": "heal their",
+      "words": [
+        {
+          "id": "caption-word-39-0",
+          "text": "heal",
+          "start": 34.209,
+          "end": 34.41
+        },
+        {
+          "id": "caption-word-39-1",
+          "text": "their",
+          "start": 34.45,
+          "end": 34.609
+        }
+      ]
+    },
+    {
+      "id": "caption-group-40",
+      "frame": 3,
+      "start": 34.689,
+      "end": 35.289,
+      "text": "own bodies",
+      "words": [
+        {
+          "id": "caption-word-40-0",
+          "text": "own",
+          "start": 34.689,
+          "end": 34.849
+        },
+        {
+          "id": "caption-word-40-1",
+          "text": "bodies",
+          "start": 34.91,
+          "end": 35.229
+        }
+      ]
+    },
+    {
+      "id": "caption-group-41",
+      "frame": 3,
+      "start": 35.289,
+      "end": 35.569,
+      "text": "when they",
+      "words": [
+        {
+          "id": "caption-word-41-0",
+          "text": "when",
+          "start": 35.289,
+          "end": 35.389
+        },
+        {
+          "id": "caption-word-41-1",
+          "text": "they",
+          "start": 35.41,
+          "end": 35.529
+        }
+      ]
+    },
+    {
+      "id": "caption-group-42",
+      "frame": 3,
+      "start": 35.569,
+      "end": 36.149,
+      "text": "get cut",
+      "words": [
+        {
+          "id": "caption-word-42-0",
+          "text": "get",
+          "start": 35.569,
+          "end": 35.709
+        },
+        {
+          "id": "caption-word-42-1",
+          "text": "cut",
+          "start": 35.789,
+          "end": 36.029
+        }
+      ]
+    },
+    {
+      "id": "caption-group-43",
+      "frame": 3,
+      "start": 36.489,
+      "end": 37.569,
+      "text": "sliding over sharp",
+      "words": [
+        {
+          "id": "caption-word-43-0",
+          "text": "sliding",
+          "start": 36.489,
+          "end": 36.909
+        },
+        {
+          "id": "caption-word-43-1",
+          "text": "over",
+          "start": 36.95,
+          "end": 37.19
+        },
+        {
+          "id": "caption-word-43-2",
+          "text": "sharp",
+          "start": 37.249,
+          "end": 37.47
+        }
+      ]
+    },
+    {
+      "id": "caption-group-44",
+      "frame": 3,
+      "start": 37.569,
+      "end": 38.109,
+      "text": "rocks.",
+      "words": [
+        {
+          "id": "caption-word-44-0",
+          "text": "rocks.",
+          "start": 37.569,
+          "end": 37.989
+        }
+      ]
+    },
+    {
+      "id": "caption-group-45",
+      "frame": 3,
+      "start": 38.39,
+      "end": 39.39,
+      "text": "It is naturally",
+      "words": [
+        {
+          "id": "caption-word-45-0",
+          "text": "It",
+          "start": 38.39,
+          "end": 38.449
+        },
+        {
+          "id": "caption-word-45-1",
+          "text": "is",
+          "start": 38.509,
+          "end": 38.709
+        },
+        {
+          "id": "caption-word-45-2",
+          "text": "naturally",
+          "start": 38.749,
+          "end": 39.27
+        }
+      ]
+    },
+    {
+      "id": "caption-group-46",
+      "frame": 3,
+      "start": 39.39,
+      "end": 40.749,
+      "text": "loaded with Glycolic",
+      "words": [
+        {
+          "id": "caption-word-46-0",
+          "text": "loaded",
+          "start": 39.39,
+          "end": 39.749
+        },
+        {
+          "id": "caption-word-46-1",
+          "text": "with",
+          "start": 39.81,
+          "end": 39.93
+        },
+        {
+          "id": "caption-word-46-2",
+          "text": "Glycolic",
+          "start": 40.029,
+          "end": 40.629
+        }
+      ]
+    },
+    {
+      "id": "caption-group-47",
+      "frame": 3,
+      "start": 40.85,
+      "end": 41.869,
+      "text": "Acid to eat",
+      "words": [
+        {
+          "id": "caption-word-47-0",
+          "text": "Acid",
+          "start": 40.85,
+          "end": 41.369
+        },
+        {
+          "id": "caption-word-47-1",
+          "text": "to",
+          "start": 41.43,
+          "end": 41.61
+        },
+        {
+          "id": "caption-word-47-2",
+          "text": "eat",
+          "start": 41.669,
+          "end": 41.769
+        }
+      ]
+    },
+    {
+      "id": "caption-group-48",
+      "frame": 3,
+      "start": 41.869,
+      "end": 42.949,
+      "text": "away dead skin,",
+      "words": [
+        {
+          "id": "caption-word-48-0",
+          "text": "away",
+          "start": 41.869,
+          "end": 42.03
+        },
+        {
+          "id": "caption-word-48-1",
+          "text": "dead",
+          "start": 42.169,
+          "end": 42.39
+        },
+        {
+          "id": "caption-word-48-2",
+          "text": "skin,",
+          "start": 42.449,
+          "end": 42.829
+        }
+      ]
+    },
+    {
+      "id": "caption-group-49",
+      "frame": 3,
+      "start": 43.229,
+      "end": 44.429,
+      "text": "Allantoin to heal",
+      "words": [
+        {
+          "id": "caption-word-49-0",
+          "text": "Allantoin",
+          "start": 43.229,
+          "end": 43.909
+        },
+        {
+          "id": "caption-word-49-1",
+          "text": "to",
+          "start": 43.949,
+          "end": 44.049
+        },
+        {
+          "id": "caption-word-49-2",
+          "text": "heal",
+          "start": 44.109,
+          "end": 44.309
+        }
+      ]
+    },
+    {
+      "id": "caption-group-50",
+      "frame": 3,
+      "start": 44.449,
+      "end": 45.01,
+      "text": "wounds,",
+      "words": [
+        {
+          "id": "caption-word-50-0",
+          "text": "wounds,",
+          "start": 44.449,
+          "end": 44.89
+        }
+      ]
+    },
+    {
+      "id": "caption-group-51",
+      "frame": 3,
+      "start": 45.289,
+      "end": 46.429,
+      "text": "and massive doses",
+      "words": [
+        {
+          "id": "caption-word-51-0",
+          "text": "and",
+          "start": 45.289,
+          "end": 45.49
+        },
+        {
+          "id": "caption-word-51-1",
+          "text": "massive",
+          "start": 45.509,
+          "end": 45.929
+        },
+        {
+          "id": "caption-word-51-2",
+          "text": "doses",
+          "start": 45.99,
+          "end": 46.41
+        }
+      ]
+    },
+    {
+      "id": "caption-group-52",
+      "frame": 3,
+      "start": 46.429,
+      "end": 47.93,
+      "text": "of Hyaluronic Acid.",
+      "words": [
+        {
+          "id": "caption-word-52-0",
+          "text": "of",
+          "start": 46.429,
+          "end": 46.57
+        },
+        {
+          "id": "caption-word-52-1",
+          "text": "Hyaluronic",
+          "start": 46.609,
+          "end": 47.249
+        },
+        {
+          "id": "caption-word-52-2",
+          "text": "Acid.",
+          "start": 47.41,
+          "end": 47.81
+        }
+      ]
+    },
+    {
+      "id": "caption-group-53",
+      "frame": 3,
+      "start": 48.249,
+      "end": 48.929,
+      "text": "It's basically",
+      "words": [
+        {
+          "id": "caption-word-53-0",
+          "text": "It's",
+          "start": 48.249,
+          "end": 48.429
+        },
+        {
+          "id": "caption-word-53-1",
+          "text": "basically",
+          "start": 48.47,
+          "end": 48.91
+        }
+      ]
+    },
+    {
+      "id": "caption-group-54",
+      "frame": 3,
+      "start": 48.929,
+      "end": 50.09,
+      "text": "an anti-aging,",
+      "words": [
+        {
+          "id": "caption-word-54-0",
+          "text": "an",
+          "start": 48.929,
+          "end": 49.049
+        },
+        {
+          "id": "caption-word-54-1",
+          "text": "anti-aging,",
+          "start": 49.15,
+          "end": 49.97
+        }
+      ]
+    },
+    {
+      "id": "caption-group-55",
+      "frame": 3,
+      "start": 50.31,
+      "end": 53.629,
+      "text": "barrier-repairing super-serum perfectly engineered",
+      "words": [
+        {
+          "id": "caption-word-55-0",
+          "text": "barrier-repairing",
+          "start": 50.31,
+          "end": 51.389
+        },
+        {
+          "id": "caption-word-55-1",
+          "text": "super-serum",
+          "start": 51.449,
+          "end": 52.489
+        },
+        {
+          "id": "caption-word-55-2",
+          "text": "perfectly",
+          "start": 52.549,
+          "end": 53.029
+        },
+        {
+          "id": "caption-word-55-3",
+          "text": "engineered",
+          "start": 53.089,
+          "end": 53.589
+        }
+      ]
+    },
+    {
+      "id": "caption-group-56",
+      "frame": 3,
+      "start": 53.629,
+      "end": 54.369,
+      "text": "by nature.",
+      "words": [
+        {
+          "id": "caption-word-56-0",
+          "text": "by",
+          "start": 53.629,
+          "end": 53.709
+        },
+        {
+          "id": "caption-word-56-1",
+          "text": "nature.",
+          "start": 53.81,
+          "end": 54.249
+        }
+      ]
+    },
+    {
+      "id": "caption-group-57",
+      "frame": 4,
+      "start": 54.645,
+      "end": 54.966,
+      "text": "And if",
+      "words": [
+        {
+          "id": "caption-word-57-0",
+          "text": "And",
+          "start": 54.645,
+          "end": 54.765
+        },
+        {
+          "id": "caption-word-57-1",
+          "text": "if",
+          "start": 54.806,
+          "end": 54.905
+        }
+      ]
+    },
+    {
+      "id": "caption-group-58",
+      "frame": 4,
+      "start": 54.966,
+      "end": 55.645,
+      "text": "you're picturing",
+      "words": [
+        {
+          "id": "caption-word-58-0",
+          "text": "you're",
+          "start": 54.966,
+          "end": 55.105
+        },
+        {
+          "id": "caption-word-58-1",
+          "text": "picturing",
+          "start": 55.146,
+          "end": 55.586
+        }
+      ]
+    },
+    {
+      "id": "caption-group-59",
+      "frame": 4,
+      "start": 55.645,
+      "end": 56.125,
+      "text": "a snail",
+      "words": [
+        {
+          "id": "caption-word-59-0",
+          "text": "a",
+          "start": 55.645,
+          "end": 55.665
+        },
+        {
+          "id": "caption-word-59-1",
+          "text": "snail",
+          "start": 55.765,
+          "end": 56.025
+        }
+      ]
+    },
+    {
+      "id": "caption-group-60",
+      "frame": 4,
+      "start": 56.125,
+      "end": 57.026,
+      "text": "torture chamber,",
+      "words": [
+        {
+          "id": "caption-word-60-0",
+          "text": "torture",
+          "start": 56.125,
+          "end": 56.425
+        },
+        {
+          "id": "caption-word-60-1",
+          "text": "chamber,",
+          "start": 56.525,
+          "end": 56.906
+        }
+      ]
+    },
+    {
+      "id": "caption-group-61",
+      "frame": 4,
+      "start": 57.645,
+      "end": 58.165,
+      "text": "stop.",
+      "words": [
+        {
+          "id": "caption-word-61-0",
+          "text": "stop.",
+          "start": 57.645,
+          "end": 58.045
+        }
+      ]
+    },
+    {
+      "id": "caption-group-62",
+      "frame": 4,
+      "start": 58.846,
+      "end": 60.045,
+      "text": "The modern extraction",
+      "words": [
+        {
+          "id": "caption-word-62-0",
+          "text": "The",
+          "start": 58.846,
+          "end": 58.966
+        },
+        {
+          "id": "caption-word-62-1",
+          "text": "modern",
+          "start": 59.005,
+          "end": 59.325
+        },
+        {
+          "id": "caption-word-62-2",
+          "text": "extraction",
+          "start": 59.426,
+          "end": 59.926
+        }
+      ]
+    },
+    {
+      "id": "caption-group-63",
+      "frame": 4,
+      "start": 60.045,
+      "end": 61.426,
+      "text": "process is basically",
+      "words": [
+        {
+          "id": "caption-word-63-0",
+          "text": "process",
+          "start": 60.045,
+          "end": 60.565
+        },
+        {
+          "id": "caption-word-63-1",
+          "text": "is",
+          "start": 60.605,
+          "end": 60.765
+        },
+        {
+          "id": "caption-word-63-2",
+          "text": "basically",
+          "start": 60.825,
+          "end": 61.365
+        }
+      ]
+    },
+    {
+      "id": "caption-group-64",
+      "frame": 4,
+      "start": 61.426,
+      "end": 62.466,
+      "text": "a luxury spa",
+      "words": [
+        {
+          "id": "caption-word-64-0",
+          "text": "a",
+          "start": 61.426,
+          "end": 61.525
+        },
+        {
+          "id": "caption-word-64-1",
+          "text": "luxury",
+          "start": 61.585,
+          "end": 62.005
+        },
+        {
+          "id": "caption-word-64-2",
+          "text": "spa",
+          "start": 62.125,
+          "end": 62.405
+        }
+      ]
+    },
+    {
+      "id": "caption-group-65",
+      "frame": 4,
+      "start": 62.466,
+      "end": 63.405,
+      "text": "for mollusks.",
+      "words": [
+        {
+          "id": "caption-word-65-0",
+          "text": "for",
+          "start": 62.466,
+          "end": 62.565
+        },
+        {
+          "id": "caption-word-65-1",
+          "text": "mollusks.",
+          "start": 62.625,
+          "end": 63.285
+        }
+      ]
+    },
+    {
+      "id": "caption-group-66",
+      "frame": 4,
+      "start": 63.766,
+      "end": 64.865,
+      "text": "They naturally prefer",
+      "words": [
+        {
+          "id": "caption-word-66-0",
+          "text": "They",
+          "start": 63.766,
+          "end": 63.905
+        },
+        {
+          "id": "caption-word-66-1",
+          "text": "naturally",
+          "start": 63.945,
+          "end": 64.445
+        },
+        {
+          "id": "caption-word-66-2",
+          "text": "prefer",
+          "start": 64.485,
+          "end": 64.825
+        }
+      ]
+    },
+    {
+      "id": "caption-group-67",
+      "frame": 4,
+      "start": 64.865,
+      "end": 65.466,
+      "text": "the dark,",
+      "words": [
+        {
+          "id": "caption-word-67-0",
+          "text": "the",
+          "start": 64.865,
+          "end": 64.945
+        },
+        {
+          "id": "caption-word-67-1",
+          "text": "dark,",
+          "start": 65.025,
+          "end": 65.346
+        }
+      ]
+    },
+    {
+      "id": "caption-group-68",
+      "frame": 4,
+      "start": 65.745,
+      "end": 65.966,
+      "text": "so they",
+      "words": [
+        {
+          "id": "caption-word-68-0",
+          "text": "so",
+          "start": 65.745,
+          "end": 65.825
+        },
+        {
+          "id": "caption-word-68-1",
+          "text": "they",
+          "start": 65.865,
+          "end": 65.926
+        }
+      ]
+    },
+    {
+      "id": "caption-group-69",
+      "frame": 4,
+      "start": 65.966,
+      "end": 66.505,
+      "text": "are placed",
+      "words": [
+        {
+          "id": "caption-word-69-0",
+          "text": "are",
+          "start": 65.966,
+          "end": 66.065
+        },
+        {
+          "id": "caption-word-69-1",
+          "text": "placed",
+          "start": 66.145,
+          "end": 66.466
+        }
+      ]
+    },
+    {
+      "id": "caption-group-70",
+      "frame": 4,
+      "start": 66.505,
+      "end": 67.285,
+      "text": "in quiet,",
+      "words": [
+        {
+          "id": "caption-word-70-0",
+          "text": "in",
+          "start": 66.505,
+          "end": 66.665
+        },
+        {
+          "id": "caption-word-70-1",
+          "text": "quiet,",
+          "start": 66.745,
+          "end": 67.165
+        }
+      ]
+    },
+    {
+      "id": "caption-group-71",
+      "frame": 4,
+      "start": 67.325,
+      "end": 68.085,
+      "text": "dark rooms",
+      "words": [
+        {
+          "id": "caption-word-71-0",
+          "text": "dark",
+          "start": 67.325,
+          "end": 67.545
+        },
+        {
+          "id": "caption-word-71-1",
+          "text": "rooms",
+          "start": 67.645,
+          "end": 68.045
+        }
+      ]
+    },
+    {
+      "id": "caption-group-72",
+      "frame": 4,
+      "start": 68.085,
+      "end": 69.085,
+      "text": "to roam freely",
+      "words": [
+        {
+          "id": "caption-word-72-0",
+          "text": "to",
+          "start": 68.085,
+          "end": 68.205
+        },
+        {
+          "id": "caption-word-72-1",
+          "text": "roam",
+          "start": 68.265,
+          "end": 68.565
+        },
+        {
+          "id": "caption-word-72-2",
+          "text": "freely",
+          "start": 68.645,
+          "end": 68.966
+        }
+      ]
+    },
+    {
+      "id": "caption-group-73",
+      "frame": 4,
+      "start": 69.085,
+      "end": 70.185,
+      "text": "over mesh nets.",
+      "words": [
+        {
+          "id": "caption-word-73-0",
+          "text": "over",
+          "start": 69.085,
+          "end": 69.245
+        },
+        {
+          "id": "caption-word-73-1",
+          "text": "mesh",
+          "start": 69.365,
+          "end": 69.585
+        },
+        {
+          "id": "caption-word-73-2",
+          "text": "nets.",
+          "start": 69.645,
+          "end": 70.065
+        }
+      ]
+    },
+    {
+      "id": "caption-group-74",
+      "frame": 4,
+      "start": 70.665,
+      "end": 71.205,
+      "text": "The mucin",
+      "words": [
+        {
+          "id": "caption-word-74-0",
+          "text": "The",
+          "start": 70.665,
+          "end": 70.705
+        },
+        {
+          "id": "caption-word-74-1",
+          "text": "mucin",
+          "start": 70.806,
+          "end": 71.165
+        }
+      ]
+    },
+    {
+      "id": "caption-group-75",
+      "frame": 4,
+      "start": 71.205,
+      "end": 71.625,
+      "text": "they leave",
+      "words": [
+        {
+          "id": "caption-word-75-0",
+          "text": "they",
+          "start": 71.205,
+          "end": 71.306
+        },
+        {
+          "id": "caption-word-75-1",
+          "text": "leave",
+          "start": 71.386,
+          "end": 71.566
+        }
+      ]
+    },
+    {
+      "id": "caption-group-76",
+      "frame": 4,
+      "start": 71.625,
+      "end": 72.985,
+      "text": "behind is collected,",
+      "words": [
+        {
+          "id": "caption-word-76-0",
+          "text": "behind",
+          "start": 71.625,
+          "end": 72.066
+        },
+        {
+          "id": "caption-word-76-1",
+          "text": "is",
+          "start": 72.105,
+          "end": 72.265
+        },
+        {
+          "id": "caption-word-76-2",
+          "text": "collected,",
+          "start": 72.306,
+          "end": 72.865
+        }
+      ]
+    },
+    {
+      "id": "caption-group-77",
+      "frame": 4,
+      "start": 73.146,
+      "end": 73.905,
+      "text": "purified,",
+      "words": [
+        {
+          "id": "caption-word-77-0",
+          "text": "purified,",
+          "start": 73.146,
+          "end": 73.785
+        }
+      ]
+    },
+    {
+      "id": "caption-group-78",
+      "frame": 4,
+      "start": 74.005,
+      "end": 74.745,
+      "text": "and bottled.",
+      "words": [
+        {
+          "id": "caption-word-78-0",
+          "text": "and",
+          "start": 74.005,
+          "end": 74.165
+        },
+        {
+          "id": "caption-word-78-1",
+          "text": "bottled.",
+          "start": 74.226,
+          "end": 74.625
+        }
+      ]
+    },
+    {
+      "id": "caption-group-79",
+      "frame": 4,
+      "start": 75.325,
+      "end": 76.205,
+      "text": "Zero harm,",
+      "words": [
+        {
+          "id": "caption-word-79-0",
+          "text": "Zero",
+          "start": 75.325,
+          "end": 75.605
+        },
+        {
+          "id": "caption-word-79-1",
+          "text": "harm,",
+          "start": 75.726,
+          "end": 76.085
+        }
+      ]
+    },
+    {
+      "id": "caption-group-80",
+      "frame": 4,
+      "start": 76.425,
+      "end": 77.445,
+      "text": "zero stress.",
+      "words": [
+        {
+          "id": "caption-word-80-0",
+          "text": "zero",
+          "start": 76.425,
+          "end": 76.785
+        },
+        {
+          "id": "caption-word-80-1",
+          "text": "stress.",
+          "start": 76.825,
+          "end": 77.325
+        }
+      ]
+    },
+    {
+      "id": "caption-group-81",
+      "frame": 5,
+      "start": 77.756,
+      "end": 78.236,
+      "text": "But here",
+      "words": [
+        {
+          "id": "caption-word-81-0",
+          "text": "But",
+          "start": 77.756,
+          "end": 77.876
+        },
+        {
+          "id": "caption-word-81-1",
+          "text": "here",
+          "start": 77.977,
+          "end": 78.156
+        }
+      ]
+    },
+    {
+      "id": "caption-group-82",
+      "frame": 5,
+      "start": 78.236,
+      "end": 78.656,
+      "text": "is why",
+      "words": [
+        {
+          "id": "caption-word-82-0",
+          "text": "is",
+          "start": 78.236,
+          "end": 78.336
+        },
+        {
+          "id": "caption-word-82-1",
+          "text": "why",
+          "start": 78.396,
+          "end": 78.556
+        }
+      ]
+    },
+    {
+      "id": "caption-group-83",
+      "frame": 5,
+      "start": 78.656,
+      "end": 79.817,
+      "text": "people claim snail",
+      "words": [
+        {
+          "id": "caption-word-83-0",
+          "text": "people",
+          "start": 78.656,
+          "end": 78.956
+        },
+        {
+          "id": "caption-word-83-1",
+          "text": "claim",
+          "start": 79.036,
+          "end": 79.257
+        },
+        {
+          "id": "caption-word-83-2",
+          "text": "snail",
+          "start": 79.416,
+          "end": 79.716
+        }
+      ]
+    },
+    {
+      "id": "caption-group-84",
+      "frame": 5,
+      "start": 79.817,
+      "end": 81.696,
+      "text": "mucin \"dried out\" their",
+      "words": [
+        {
+          "id": "caption-word-84-0",
+          "text": "mucin",
+          "start": 79.817,
+          "end": 80.276
+        },
+        {
+          "id": "caption-word-84-1",
+          "text": "\"dried",
+          "start": 80.276,
+          "end": 81.137
+        },
+        {
+          "id": "caption-word-84-2",
+          "text": "out\"",
+          "start": 81.216,
+          "end": 81.377
+        },
+        {
+          "id": "caption-word-84-3",
+          "text": "their",
+          "start": 81.436,
+          "end": 81.576
+        }
+      ]
+    },
+    {
+      "id": "caption-group-85",
+      "frame": 5,
+      "start": 81.716,
+      "end": 82.197,
+      "text": "skin.",
+      "words": [
+        {
+          "id": "caption-word-85-0",
+          "text": "skin.",
+          "start": 81.716,
+          "end": 82.077
+        }
+      ]
+    },
+    {
+      "id": "caption-group-86",
+      "frame": 5,
+      "start": 82.557,
+      "end": 82.896,
+      "text": "It's a",
+      "words": [
+        {
+          "id": "caption-word-86-0",
+          "text": "It's",
+          "start": 82.557,
+          "end": 82.696
+        },
+        {
+          "id": "caption-word-86-1",
+          "text": "a",
+          "start": 82.736,
+          "end": 82.836
+        }
+      ]
+    },
+    {
+      "id": "caption-group-87",
+      "frame": 5,
+      "start": 82.896,
+      "end": 84.076,
+      "text": "master humectant",
+      "words": [
+        {
+          "id": "caption-word-87-0",
+          "text": "master",
+          "start": 82.896,
+          "end": 83.256
+        },
+        {
+          "id": "caption-word-87-1",
+          "text": "humectant",
+          "start": 83.356,
+          "end": 83.956
+        }
+      ]
+    },
+    {
+      "id": "caption-group-88",
+      "frame": 5,
+      "start": 84.137,
+      "end": 85.257,
+      "text": "a moisture magnet.",
+      "words": [
+        {
+          "id": "caption-word-88-0",
+          "text": "a",
+          "start": 84.137,
+          "end": 84.156
+        },
+        {
+          "id": "caption-word-88-1",
+          "text": "moisture",
+          "start": 84.296,
+          "end": 84.656
+        },
+        {
+          "id": "caption-word-88-2",
+          "text": "magnet.",
+          "start": 84.756,
+          "end": 85.137
+        }
+      ]
+    },
+    {
+      "id": "caption-group-89",
+      "frame": 5,
+      "start": 85.556,
+      "end": 85.876,
+      "text": "If you",
+      "words": [
+        {
+          "id": "caption-word-89-0",
+          "text": "If",
+          "start": 85.556,
+          "end": 85.676
+        },
+        {
+          "id": "caption-word-89-1",
+          "text": "you",
+          "start": 85.716,
+          "end": 85.816
+        }
+      ]
+    },
+    {
+      "id": "caption-group-90",
+      "frame": 5,
+      "start": 85.876,
+      "end": 86.137,
+      "text": "put it",
+      "words": [
+        {
+          "id": "caption-word-90-0",
+          "text": "put",
+          "start": 85.876,
+          "end": 85.977
+        },
+        {
+          "id": "caption-word-90-1",
+          "text": "it",
+          "start": 86.017,
+          "end": 86.076
+        }
+      ]
+    },
+    {
+      "id": "caption-group-91",
+      "frame": 5,
+      "start": 86.137,
+      "end": 86.397,
+      "text": "on a",
+      "words": [
+        {
+          "id": "caption-word-91-0",
+          "text": "on",
+          "start": 86.137,
+          "end": 86.216
+        },
+        {
+          "id": "caption-word-91-1",
+          "text": "a",
+          "start": 86.256,
+          "end": 86.336
+        }
+      ]
+    },
+    {
+      "id": "caption-group-92",
+      "frame": 5,
+      "start": 86.397,
+      "end": 87.456,
+      "text": "bone-dry face,",
+      "words": [
+        {
+          "id": "caption-word-92-0",
+          "text": "bone-dry",
+          "start": 86.397,
+          "end": 86.936
+        },
+        {
+          "id": "caption-word-92-1",
+          "text": "face,",
+          "start": 86.996,
+          "end": 87.336
+        }
+      ]
+    },
+    {
+      "id": "caption-group-93",
+      "frame": 5,
+      "start": 87.736,
+      "end": 88.736,
+      "text": "it panics and",
+      "words": [
+        {
+          "id": "caption-word-93-0",
+          "text": "it",
+          "start": 87.736,
+          "end": 87.876
+        },
+        {
+          "id": "caption-word-93-1",
+          "text": "panics",
+          "start": 87.977,
+          "end": 88.477
+        },
+        {
+          "id": "caption-word-93-2",
+          "text": "and",
+          "start": 88.536,
+          "end": 88.676
+        }
+      ]
+    },
+    {
+      "id": "caption-group-94",
+      "frame": 5,
+      "start": 88.736,
+      "end": 89.796,
+      "text": "pulls hydration out",
+      "words": [
+        {
+          "id": "caption-word-94-0",
+          "text": "pulls",
+          "start": 88.736,
+          "end": 88.956
+        },
+        {
+          "id": "caption-word-94-1",
+          "text": "hydration",
+          "start": 89.017,
+          "end": 89.616
+        },
+        {
+          "id": "caption-word-94-2",
+          "text": "out",
+          "start": 89.656,
+          "end": 89.756
+        }
+      ]
+    },
+    {
+      "id": "caption-group-95",
+      "frame": 5,
+      "start": 89.796,
+      "end": 90.097,
+      "text": "of the",
+      "words": [
+        {
+          "id": "caption-word-95-0",
+          "text": "of",
+          "start": 89.796,
+          "end": 89.897
+        },
+        {
+          "id": "caption-word-95-1",
+          "text": "the",
+          "start": 89.937,
+          "end": 90.057
+        }
+      ]
+    },
+    {
+      "id": "caption-group-96",
+      "frame": 5,
+      "start": 90.097,
+      "end": 90.696,
+      "text": "deep layers",
+      "words": [
+        {
+          "id": "caption-word-96-0",
+          "text": "deep",
+          "start": 90.097,
+          "end": 90.296
+        },
+        {
+          "id": "caption-word-96-1",
+          "text": "layers",
+          "start": 90.376,
+          "end": 90.676
+        }
+      ]
+    },
+    {
+      "id": "caption-group-97",
+      "frame": 5,
+      "start": 90.696,
+      "end": 91.556,
+      "text": "of your skin.",
+      "words": [
+        {
+          "id": "caption-word-97-0",
+          "text": "of",
+          "start": 90.696,
+          "end": 90.776
+        },
+        {
+          "id": "caption-word-97-1",
+          "text": "your",
+          "start": 90.836,
+          "end": 90.977
+        },
+        {
+          "id": "caption-word-97-2",
+          "text": "skin.",
+          "start": 91.017,
+          "end": 91.436
+        }
+      ]
+    },
+    {
+      "id": "caption-group-98",
+      "frame": 5,
+      "start": 91.916,
+      "end": 92.256,
+      "text": "You have",
+      "words": [
+        {
+          "id": "caption-word-98-0",
+          "text": "You",
+          "start": 91.916,
+          "end": 92.017
+        },
+        {
+          "id": "caption-word-98-1",
+          "text": "have",
+          "start": 92.076,
+          "end": 92.237
+        }
+      ]
+    },
+    {
+      "id": "caption-group-99",
+      "frame": 5,
+      "start": 92.256,
+      "end": 92.676,
+      "text": "to apply",
+      "words": [
+        {
+          "id": "caption-word-99-0",
+          "text": "to",
+          "start": 92.256,
+          "end": 92.336
+        },
+        {
+          "id": "caption-word-99-1",
+          "text": "apply",
+          "start": 92.436,
+          "end": 92.637
+        }
+      ]
+    },
+    {
+      "id": "caption-group-100",
+      "frame": 5,
+      "start": 92.676,
+      "end": 92.956,
+      "text": "it to",
+      "words": [
+        {
+          "id": "caption-word-100-0",
+          "text": "it",
+          "start": 92.676,
+          "end": 92.796
+        },
+        {
+          "id": "caption-word-100-1",
+          "text": "to",
+          "start": 92.816,
+          "end": 92.916
+        }
+      ]
+    },
+    {
+      "id": "caption-group-101",
+      "frame": 5,
+      "start": 92.956,
+      "end": 93.956,
+      "text": "a damp face.",
+      "words": [
+        {
+          "id": "caption-word-101-0",
+          "text": "a",
+          "start": 92.956,
+          "end": 93.036
+        },
+        {
+          "id": "caption-word-101-1",
+          "text": "damp",
+          "start": 93.097,
+          "end": 93.296
+        },
+        {
+          "id": "caption-word-101-2",
+          "text": "face.",
+          "start": 93.436,
+          "end": 93.836
+        }
+      ]
+    },
+    {
+      "id": "caption-group-102",
+      "frame": 5,
+      "start": 94.276,
+      "end": 94.796,
+      "text": "Mist,",
+      "words": [
+        {
+          "id": "caption-word-102-0",
+          "text": "Mist,",
+          "start": 94.276,
+          "end": 94.676
+        }
+      ]
+    },
+    {
+      "id": "caption-group-103",
+      "frame": 5,
+      "start": 95.077,
+      "end": 95.516,
+      "text": "pat the",
+      "words": [
+        {
+          "id": "caption-word-103-0",
+          "text": "pat",
+          "start": 95.077,
+          "end": 95.296
+        },
+        {
+          "id": "caption-word-103-1",
+          "text": "the",
+          "start": 95.356,
+          "end": 95.397
+        }
+      ]
+    },
+    {
+      "id": "caption-group-104",
+      "frame": 5,
+      "start": 95.516,
+      "end": 96.097,
+      "text": "slime in",
+      "words": [
+        {
+          "id": "caption-word-104-0",
+          "text": "slime",
+          "start": 95.516,
+          "end": 95.836
+        },
+        {
+          "id": "caption-word-104-1",
+          "text": "in",
+          "start": 95.876,
+          "end": 95.977
+        }
+      ]
+    },
+    {
+      "id": "caption-group-105",
+      "frame": 5,
+      "start": 96.137,
+      "end": 96.776,
+      "text": "never rub",
+      "words": [
+        {
+          "id": "caption-word-105-0",
+          "text": "never",
+          "start": 96.137,
+          "end": 96.397
+        },
+        {
+          "id": "caption-word-105-1",
+          "text": "rub",
+          "start": 96.456,
+          "end": 96.696
+        }
+      ]
+    },
+    {
+      "id": "caption-group-106",
+      "frame": 5,
+      "start": 96.776,
+      "end": 97.876,
+      "text": "and immediately trap",
+      "words": [
+        {
+          "id": "caption-word-106-0",
+          "text": "and",
+          "start": 96.776,
+          "end": 96.856
+        },
+        {
+          "id": "caption-word-106-1",
+          "text": "immediately",
+          "start": 96.876,
+          "end": 97.577
+        },
+        {
+          "id": "caption-word-106-2",
+          "text": "trap",
+          "start": 97.616,
+          "end": 97.836
+        }
+      ]
+    },
+    {
+      "id": "caption-group-107",
+      "frame": 5,
+      "start": 97.876,
+      "end": 98.137,
+      "text": "it with",
+      "words": [
+        {
+          "id": "caption-word-107-0",
+          "text": "it",
+          "start": 97.876,
+          "end": 97.956
+        },
+        {
+          "id": "caption-word-107-1",
+          "text": "with",
+          "start": 97.996,
+          "end": 98.096
+        }
+      ]
+    },
+    {
+      "id": "caption-group-108",
+      "frame": 5,
+      "start": 98.137,
+      "end": 99.136,
+      "text": "a moisturizer.",
+      "words": [
+        {
+          "id": "caption-word-108-0",
+          "text": "a",
+          "start": 98.137,
+          "end": 98.176
+        },
+        {
+          "id": "caption-word-108-1",
+          "text": "moisturizer.",
+          "start": 98.237,
+          "end": 99.016
+        }
+      ]
+    },
+    {
+      "id": "caption-group-109",
+      "frame": 6,
+      "start": 99.38,
+      "end": 100.679,
+      "text": "From healing radiation",
+      "words": [
+        {
+          "id": "caption-word-109-0",
+          "text": "From",
+          "start": 99.38,
+          "end": 99.539
+        },
+        {
+          "id": "caption-word-109-1",
+          "text": "healing",
+          "start": 99.559,
+          "end": 99.98
+        },
+        {
+          "id": "caption-word-109-2",
+          "text": "radiation",
+          "start": 100.059,
+          "end": 100.559
+        }
+      ]
+    },
+    {
+      "id": "caption-group-110",
+      "frame": 6,
+      "start": 100.679,
+      "end": 102.039,
+      "text": "burns to unlocking",
+      "words": [
+        {
+          "id": "caption-word-110-0",
+          "text": "burns",
+          "start": 100.679,
+          "end": 101.059
+        },
+        {
+          "id": "caption-word-110-1",
+          "text": "to",
+          "start": 101.119,
+          "end": 101.199
+        },
+        {
+          "id": "caption-word-110-2",
+          "text": "unlocking",
+          "start": 101.359,
+          "end": 101.919
+        }
+      ]
+    },
+    {
+      "id": "caption-group-111",
+      "frame": 6,
+      "start": 102.119,
+      "end": 103.539,
+      "text": "flawless glass skin...",
+      "words": [
+        {
+          "id": "caption-word-111-0",
+          "text": "flawless",
+          "start": 102.119,
+          "end": 102.639
+        },
+        {
+          "id": "caption-word-111-1",
+          "text": "glass",
+          "start": 102.7,
+          "end": 102.919
+        },
+        {
+          "id": "caption-word-111-2",
+          "text": "skin...",
+          "start": 103.059,
+          "end": 103.419
+        }
+      ]
+    },
+    {
+      "id": "caption-group-112",
+      "frame": 6,
+      "start": 104.18,
+      "end": 105.479,
+      "text": "nature is wild.",
+      "words": [
+        {
+          "id": "caption-word-112-0",
+          "text": "nature",
+          "start": 104.18,
+          "end": 104.62
+        },
+        {
+          "id": "caption-word-112-1",
+          "text": "is",
+          "start": 104.68,
+          "end": 104.859
+        },
+        {
+          "id": "caption-word-112-2",
+          "text": "wild.",
+          "start": 104.919,
+          "end": 105.359
+        }
+      ]
+    },
+    {
+      "id": "caption-group-113",
+      "frame": 6,
+      "start": 106.079,
+      "end": 106.36,
+      "text": "So,",
+      "words": [
+        {
+          "id": "caption-word-113-0",
+          "text": "So,",
+          "start": 106.079,
+          "end": 106.24
+        }
+      ]
+    },
+    {
+      "id": "caption-group-114",
+      "frame": 6,
+      "start": 106.779,
+      "end": 107.099,
+      "text": "are you",
+      "words": [
+        {
+          "id": "caption-word-114-0",
+          "text": "are",
+          "start": 106.779,
+          "end": 106.879
+        },
+        {
+          "id": "caption-word-114-1",
+          "text": "you",
+          "start": 106.919,
+          "end": 107.059
+        }
+      ]
+    },
+    {
+      "id": "caption-group-115",
+      "frame": 6,
+      "start": 107.099,
+      "end": 107.599,
+      "text": "brave enough",
+      "words": [
+        {
+          "id": "caption-word-115-0",
+          "text": "brave",
+          "start": 107.099,
+          "end": 107.319
+        },
+        {
+          "id": "caption-word-115-1",
+          "text": "enough",
+          "start": 107.399,
+          "end": 107.58
+        }
+      ]
+    },
+    {
+      "id": "caption-group-116",
+      "frame": 6,
+      "start": 107.599,
+      "end": 108.34,
+      "text": "to try it,",
+      "words": [
+        {
+          "id": "caption-word-116-0",
+          "text": "to",
+          "start": 107.599,
+          "end": 107.74
+        },
+        {
+          "id": "caption-word-116-1",
+          "text": "try",
+          "start": 107.779,
+          "end": 108.02
+        },
+        {
+          "id": "caption-word-116-2",
+          "text": "it,",
+          "start": 108.059,
+          "end": 108.22
+        }
+      ]
+    },
+    {
+      "id": "caption-group-117",
+      "frame": 6,
+      "start": 108.66,
+      "end": 108.959,
+      "text": "or is",
+      "words": [
+        {
+          "id": "caption-word-117-0",
+          "text": "or",
+          "start": 108.66,
+          "end": 108.719
+        },
+        {
+          "id": "caption-word-117-1",
+          "text": "is",
+          "start": 108.779,
+          "end": 108.919
+        }
+      ]
+    },
+    {
+      "id": "caption-group-118",
+      "frame": 6,
+      "start": 108.959,
+      "end": 110.04,
+      "text": "the yuck-factor too",
+      "words": [
+        {
+          "id": "caption-word-118-0",
+          "text": "the",
+          "start": 108.959,
+          "end": 109
+        },
+        {
+          "id": "caption-word-118-1",
+          "text": "yuck-factor",
+          "start": 109.08,
+          "end": 109.759
+        },
+        {
+          "id": "caption-word-118-2",
+          "text": "too",
+          "start": 109.819,
+          "end": 109.939
+        }
+      ]
+    },
+    {
+      "id": "caption-group-119",
+      "frame": 6,
+      "start": 110.04,
+      "end": 110.439,
+      "text": "high?",
+      "words": [
+        {
+          "id": "caption-word-119-0",
+          "text": "high?",
+          "start": 110.04,
+          "end": 110.319
+        }
+      ]
+    },
+    {
+      "id": "caption-group-120",
+      "frame": 6,
+      "start": 110.899,
+      "end": 111.2,
+      "text": "Let the",
+      "words": [
+        {
+          "id": "caption-word-120-0",
+          "text": "Let",
+          "start": 110.899,
+          "end": 111.019
+        },
+        {
+          "id": "caption-word-120-1",
+          "text": "the",
+          "start": 111.08,
+          "end": 111.139
+        }
+      ]
+    },
+    {
+      "id": "caption-group-121",
+      "frame": 6,
+      "start": 111.2,
+      "end": 111.879,
+      "text": "debate begin",
+      "words": [
+        {
+          "id": "caption-word-121-0",
+          "text": "debate",
+          "start": 111.2,
+          "end": 111.519
+        },
+        {
+          "id": "caption-word-121-1",
+          "text": "begin",
+          "start": 111.559,
+          "end": 111.839
+        }
+      ]
+    },
+    {
+      "id": "caption-group-122",
+      "frame": 6,
+      "start": 111.879,
+      "end": 112.78,
+      "text": "in the comments.",
+      "words": [
+        {
+          "id": "caption-word-122-0",
+          "text": "in",
+          "start": 111.879,
+          "end": 111.96
+        },
+        {
+          "id": "caption-word-122-1",
+          "text": "the",
+          "start": 111.979,
+          "end": 112.059
+        },
+        {
+          "id": "caption-word-122-2",
+          "text": "comments.",
+          "start": 112.12,
+          "end": 112.66
+        }
+      ]
+    },
+    {
+      "id": "caption-group-123",
+      "frame": 6,
+      "start": 113.08,
+      "end": 114.199,
+      "text": "Subscribe for more",
+      "words": [
+        {
+          "id": "caption-word-123-0",
+          "text": "Subscribe",
+          "start": 113.08,
+          "end": 113.66
+        },
+        {
+          "id": "caption-word-123-1",
+          "text": "for",
+          "start": 113.74,
+          "end": 113.879
+        },
+        {
+          "id": "caption-word-123-2",
+          "text": "more",
+          "start": 113.939,
+          "end": 114.079
+        }
+      ]
+    },
+    {
+      "id": "caption-group-124",
+      "frame": 6,
+      "start": 114.2,
+      "end": 115.419,
+      "text": "skincare science,",
+      "words": [
+        {
+          "id": "caption-word-124-0",
+          "text": "skincare",
+          "start": 114.2,
+          "end": 114.719
+        },
+        {
+          "id": "caption-word-124-1",
+          "text": "science,",
+          "start": 114.759,
+          "end": 115.299
+        }
+      ]
+    },
+    {
+      "id": "caption-group-125",
+      "frame": 6,
+      "start": 115.76,
+      "end": 116.119,
+      "text": "and I'll",
+      "words": [
+        {
+          "id": "caption-word-125-0",
+          "text": "and",
+          "start": 115.76,
+          "end": 115.86
+        },
+        {
+          "id": "caption-word-125-1",
+          "text": "I'll",
+          "start": 115.899,
+          "end": 116.08
+        }
+      ]
+    },
+    {
+      "id": "caption-group-126",
+      "frame": 6,
+      "start": 116.119,
+      "end": 116.42,
+      "text": "see you",
+      "words": [
+        {
+          "id": "caption-word-126-0",
+          "text": "see",
+          "start": 116.119,
+          "end": 116.26
+        },
+        {
+          "id": "caption-word-126-1",
+          "text": "you",
+          "start": 116.299,
+          "end": 116.379
+        }
+      ]
+    },
+    {
+      "id": "caption-group-127",
+      "frame": 6,
+      "start": 116.42,
+      "end": 116.68,
+      "text": "in the",
+      "words": [
+        {
+          "id": "caption-word-127-0",
+          "text": "in",
+          "start": 116.42,
+          "end": 116.5
+        },
+        {
+          "id": "caption-word-127-1",
+          "text": "the",
+          "start": 116.539,
+          "end": 116.58
+        }
+      ]
+    },
+    {
+      "id": "caption-group-128",
+      "frame": 6,
+      "start": 116.68,
+      "end": 117.38,
+      "text": "next one.",
+      "words": [
+        {
+          "id": "caption-word-128-0",
+          "text": "next",
+          "start": 116.68,
+          "end": 116.959
+        },
+        {
+          "id": "caption-word-128-1",
+          "text": "one.",
+          "start": 117.039,
+          "end": 117.26
+        }
+      ]
+    }
+  ]
+}

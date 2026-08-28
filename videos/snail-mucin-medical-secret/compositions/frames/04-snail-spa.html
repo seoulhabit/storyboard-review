@@ -1,0 +1,496 @@
+<template>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style data-brand-tokens>
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    src: url("assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: block;
+  }
+  :root {
+    --green: #2c4a34;
+    --green-deep: #0f2016;
+    --green-lite: #cddfb9;
+    --pink: #b9835a;
+    --pink-deep: #8a5a37;
+    --cream: #fbfaf4;
+    --cream-2: #e8efdd;
+    --ink: #0f2016;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+</style>
+
+<style>
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    font-family: var(--font-display);
+  }
+  .clip {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* ---------- topbar (chrome spine, whole frame) ---------- */
+  #spa-topbar {
+    z-index: 30;
+    pointer-events: none;
+  }
+  .topbar-row {
+    position: absolute;
+    top: 4.4cqh;
+    left: 5cqw;
+    right: 5cqw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5em 0.9em;
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 2.04cqw;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .topbar-counter {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.9cqw;
+    letter-spacing: 0.14em;
+    color: color-mix(in srgb, var(--cream) 55%, transparent);
+  }
+
+  /* ---------- Scene 1 — dark scrim, myth line ---------- */
+  #spa-scrim {
+    z-index: 5;
+    background: var(--green-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scrim-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1cqw;
+  }
+  .scrim-word {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 4.26cqw;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--cream);
+    transform-origin: 50% 50%;
+    opacity: 0;
+  }
+
+  /* ---------- Scene 2+ — full-bleed photo w/ Ken Burns ---------- */
+  #spa-photo-clip {
+    z-index: 1;
+    background: var(--green-deep);
+  }
+  .photo-mask {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  #spa-kb {
+    position: absolute;
+    inset: -6%;
+    transform-origin: 55% 40%;
+    will-change: transform;
+  }
+  #spa-kb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 55% 45%,
+      transparent 45%,
+      color-mix(in srgb, var(--ink) 42%, transparent) 100%
+    );
+    pointer-events: none;
+  }
+  .photo-scrim-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 42%;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ink) 62%, transparent) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  .photo-scrim-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--ink) 68%, transparent) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* ---------- Headline: LUXURY SPA FOR MOLLUSKS ---------- */
+  #spa-headline {
+    z-index: 10;
+    pointer-events: none;
+  }
+  .headline-mask {
+    position: absolute;
+    top: 15.6cqh;
+    left: 5cqw;
+    right: 5cqw;
+    clip-path: inset(0 100% 0 0);
+  }
+  .headline-text {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 6.85cqw;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    color: var(--cream);
+    text-align: left;
+  }
+  .headline-text .accent {
+    color: var(--pink);
+  }
+
+  /* ---------- Lower supporting caption line (swap) ---------- */
+  #spa-caption-wrap {
+    z-index: 10;
+    pointer-events: none;
+  }
+  .cap-slot {
+    position: absolute;
+    left: 5cqw;
+    right: 5cqw;
+    bottom: 25.5cqh;
+    height: 6.5cqh;
+  }
+  .cap-line {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+  }
+  .cap-line .cap-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.5em 0.85em;
+    background: color-mix(in srgb, var(--ink) 58%, transparent);
+    border-left: 2px solid var(--pink);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 2.78cqw;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0;
+    transform-origin: 0% 50%;
+  }
+
+  /* ---------- Closing headline: ZERO HARM, ZERO STRESS ---------- */
+  #spa-closing {
+    z-index: 20;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .closing-card {
+    max-width: 88cqw;
+    padding: 1.1em 1.3em;
+    background: color-mix(in srgb, var(--green-deep) 82%, transparent);
+    border: 2px solid var(--pink);
+    border-radius: 8px;
+    opacity: 0;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+  .closing-text {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 8.4cqw;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    text-align: center;
+  }
+  .closing-text .accent {
+    color: var(--pink);
+  }
+</style>
+
+<div id="root" data-composition-id="04-snail-spa" data-width="1080" data-height="1920" data-duration="23.671">
+  <!-- topbar spine — whole frame -->
+  <div id="spa-topbar" class="clip" data-start="0" data-duration="23.671" data-track-index="3">
+    <div class="topbar-row">
+      <span class="topbar-chip">The Extraction</span>
+      <span class="topbar-counter">04 / 06</span>
+    </div>
+  </div>
+
+  <!-- Scene 1 (0.0-3.9s): dark scrim, myth-bust teaser -->
+  <div id="spa-scrim" class="clip" data-start="0" data-duration="3.9" data-track-index="0">
+    <div class="scrim-stack">
+      <div class="scrim-word" id="scrim-w1">TORTURE</div>
+      <div class="scrim-word" id="scrim-w2">CHAMBER?</div>
+    </div>
+  </div>
+
+  <!-- Scene 2-5 (3.9-23.171s): full-bleed real photo, Ken Burns drift the rest of the frame -->
+  <div
+    id="spa-photo-clip"
+    class="clip"
+    data-start="3.9"
+    data-duration="19.771"
+    data-track-index="0"
+  >
+    <div class="photo-mask">
+      <div id="spa-kb">
+        <img src="public/04-snail-mesh.png" alt="" />
+      </div>
+    </div>
+    <div class="photo-scrim-top"></div>
+    <div class="photo-scrim-bottom"></div>
+    <div class="photo-vignette"></div>
+  </div>
+
+  <!-- Scene 2: headline wipe-reveal, upper third -->
+  <div id="spa-headline" class="clip" data-start="3.9" data-duration="19.771" data-track-index="1">
+    <div class="headline-mask" id="headline-mask">
+      <div class="headline-text">LUXURY <span class="accent">SPA</span> FOR MOLLUSKS</div>
+    </div>
+  </div>
+
+  <!-- Scene 3-4: lower supporting caption line, swaps once -->
+  <div
+    id="spa-caption-wrap"
+    class="clip"
+    data-start="8.9"
+    data-duration="11.9"
+    data-track-index="4"
+  >
+    <div class="cap-slot">
+      <div class="cap-line">
+        <span class="cap-chip" id="cap-a">THEY PREFER THE DARK</span>
+      </div>
+      <div class="cap-line">
+        <span class="cap-chip" id="cap-b">COLLECTED · PURIFIED · BOTTLED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 5: closing headline, spring-pop settle, holds to real end -->
+  <div id="spa-closing" class="clip" data-start="20.1" data-duration="3.571" data-track-index="2">
+    <div class="closing-card" id="closing-card">
+      <div class="closing-text">
+        <span class="accent">ZERO</span> HARM,
+        <span class="accent">ZERO</span> STRESS
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    window.__timelines = window.__timelines || {};
+
+    /* ---------- yt-camera-move helpers (copied verbatim from components/yt-camera-move.html) ---------- */
+    window.ytCameraMove = function (tl, target, at, opts) {
+      opts = opts || {};
+      var dur = opts.dur === undefined ? 1.2 : opts.dur;
+      gsap.set(target, {
+        transformPerspective: 1200,
+        transformOrigin: opts.origin || "50% 50%",
+      });
+      tl.to(
+        target,
+        {
+          scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+          x: opts.slideX || 0,
+          y: opts.slideY || 0,
+          rotationX: opts.tilt || 0,
+          rotationY: opts.pan || 0,
+          rotation: opts.roll || 0,
+          duration: dur,
+          ease: opts.ease || "power2.inOut",
+        },
+        at,
+      );
+    };
+    // Return to rest (same easing family).
+    window.ytCameraReset = function (tl, target, at, opts) {
+      opts = opts || {};
+      tl.to(
+        target,
+        {
+          scale: 1,
+          x: 0,
+          y: 0,
+          rotationX: 0,
+          rotationY: 0,
+          rotation: 0,
+          duration: opts.dur === undefined ? 1.2 : opts.dur,
+          ease: opts.ease || "power2.inOut",
+        },
+        at,
+      );
+    };
+    // Edge-defocus pulse synced to a move (overlay fades in then out).
+    window.ytDefocusPulse = function (tl, target, at, dur) {
+      dur = dur === undefined ? 1.2 : dur;
+      tl.to(target, { opacity: 1, duration: dur * 0.45, ease: "power2.out" }, at);
+      tl.to(target, { opacity: 0, duration: dur * 0.55, ease: "power2.in" }, at + dur * 0.45);
+    };
+
+    var tl = gsap.timeline({ paused: true });
+
+    /* ---------- Scene 1: myth-bust word pops ---------- */
+    tl.fromTo(
+      "#scrim-w1",
+      { scale: 0.85, opacity: 0, y: 10 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+      2.4,
+    );
+    tl.fromTo(
+      "#scrim-w2",
+      { scale: 0.85, opacity: 0, y: 10 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+      2.85,
+    );
+
+    /* ---------- Scene 2+: Ken Burns drift on the real photo (one continuous move) ---------- */
+    // yt-camera-move mechanic: same start time (3.9) and duration (19.271) as the
+    // original hand-rolled drift. zoom matches the prior end-scale (1.18) minus 1;
+    // slideX/slideY match the prior x/y drift; origin matches #spa-kb's existing
+    // 55% 40% transform-origin so the pivot point of the move is unchanged.
+    window.ytCameraMove(tl, "#spa-kb", 3.9, {
+      zoom: 0.18,
+      slideX: -26,
+      slideY: -34,
+      dur: 19.271,
+      ease: "sine.inOut",
+      origin: "55% 40%",
+    });
+
+    /* ---------- Scene 2: headline wipe-reveal, upper third ---------- */
+    tl.fromTo(
+      "#headline-mask",
+      { clipPath: "inset(0% 100% 0% 0%)" },
+      { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.out" },
+      4.38,
+    );
+    // headline recedes (dims, does not exit) as the closing card takes over
+    tl.to("#spa-headline", { opacity: 0.32, duration: 0.5, ease: "power2.out" }, 20.3);
+
+    /* ---------- Scene 3: first supporting caption line ---------- */
+    tl.fromTo(
+      "#cap-a",
+      { opacity: 0, y: 22 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+      9.3,
+    );
+
+    /* ---------- Scene 4: same-slot swap to the second caption line ---------- */
+    tl.to("#cap-a", { scale: 0.85, opacity: 0, duration: 0.35, ease: "power2.in" }, 15.9);
+    tl.fromTo(
+      "#cap-b",
+      { scale: 0.82, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.4)" },
+      16.13,
+    );
+    // clear the lower caption as the closing statement lands
+    tl.to("#cap-b", { opacity: 0, duration: 0.45, ease: "power2.out" }, 20.15);
+
+    /* ---------- Scene 5: closing headline, spring-pop settle + hold-breathing ---------- */
+    // Single writer for #closing-card's transform (entrance pop + later idle breathing
+    // compose here) so no GSAP-managed transform tween ever fights a manual style write.
+    var closingCardEl = document.getElementById("closing-card");
+    // spring-pop mechanic (components/spring-pop.html): fromScale 0.9, overshoot 1.7,
+    // back.out entrance ease + a separate non-overshooting opacity fade-in. The scale
+    // is still driven through a plain-object tween (not GSAP's own transform property)
+    // so the later breathing idle can compose into the same #closing-card transform
+    // write without ever fighting a GSAP-managed transform tween.
+    var SP_FROM_SCALE = 0.9;
+    var SP_OVERSHOOT = 1.7;
+    var SP_IN = 0.6;
+    var cardScale = { entrance: SP_FROM_SCALE, breathe: 0 };
+    function writeCardScale() {
+      var s = cardScale.entrance * (1 + cardScale.breathe);
+      closingCardEl.style.transform = "scale(" + s + ")";
+    }
+    writeCardScale(); // t=0 correctness under seek — starts at spring-pop's fromScale
+
+    tl.fromTo(
+      cardScale,
+      { entrance: SP_FROM_SCALE },
+      {
+        entrance: 1,
+        duration: SP_IN,
+        ease: "back.out(" + SP_OVERSHOOT + ")",
+        onUpdate: writeCardScale,
+      },
+      20.86,
+    );
+    tl.fromTo(
+      "#closing-card",
+      { opacity: 0 },
+      { opacity: 1, duration: Math.min(0.3, SP_IN), ease: "power2.out" },
+      20.86,
+    );
+
+    // subtle breathing pulse across the hold — deterministic sine driver, no CSS animation
+    var breathe = { p: 0 };
+    tl.to(
+      breathe,
+      {
+        p: Math.PI * 2 * 1.2,
+        duration: 23.171 - 21.46,
+        ease: "none",
+        onUpdate: function () {
+          cardScale.breathe = Math.sin(breathe.p) * 0.012;
+          writeCardScale();
+        },
+      },
+      21.46,
+    );
+
+    window.__timelines["04-snail-spa"] = tl;
+  })();
+</script>
+</template>

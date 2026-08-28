@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root {
+          --paper: #F7F5F0;
+          --ink: #131516;
+          --ink-2: #6B6B6B;
+          --aqua: #59B8AE;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --t-frame: 50px;
+          --t-body: 32px;
+          --t-label: 24px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          font-family: var(--font-mono);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .loop-title {
+          top: 130px; left: 0; width: 100%;
+          text-align: center;
+          font-family: var(--font-display);
+          font-size: 56px;
+          color: var(--ink);
+        }
+
+        .loop-split { top: 300px; left: 0; width: 100%; height: 760px; display: flex; }
+        .loop-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 60px; gap: 28px; }
+        .loop-col-west { background: var(--paper); color: var(--ink); }
+        .loop-col-kr { background: var(--ink); color: var(--paper); }
+        .loop-rule { position: absolute; top: 300px; left: 540px; width: 3px; height: 760px; background: var(--ink); opacity: 0; }
+        .loop-kicker { font-family: var(--font-mono); font-size: var(--t-label); letter-spacing: 0.08em; opacity: 0.7; }
+        .loop-chip {
+          font-family: var(--font-mono);
+          font-size: 30px;
+          font-weight: 500;
+          padding: 18px 28px;
+          border-radius: 10px;
+          opacity: 0;
+          transform: translateY(14px) scale(0.94);
+        }
+        .loop-chip-west { background: rgba(19,21,22,0.08); color: var(--ink); }
+        .loop-chip-kr { background: rgba(89,184,174,0.22); color: var(--aqua); border: 2px solid var(--aqua); }
+
+        .loop-equation {
+          top: 1180px; left: 0; width: 100%; height: 500px;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+        }
+        .loop-eq-word {
+          font-family: var(--font-body);
+          font-weight: 800;
+          font-size: 76px;
+          color: var(--ink);
+          opacity: 0;
+        }
+        .loop-eq-split { display: flex; align-items: center; gap: 28px; }
+        .loop-eq-part {
+          font-family: var(--font-mono);
+          font-size: 34px;
+          font-weight: 500;
+          color: var(--ink);
+          background: rgba(19,21,22,0.06);
+          padding: 16px 24px;
+          border-radius: 10px;
+          opacity: 0;
+        }
+        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 44px; color: var(--ink-2); opacity: 0; }
+      </style>
+
+      <div data-hf-id="hf-loop-root" id="root" data-composition-id="03-extract-loophole" data-width="1080" data-height="1920" data-duration="15.26">
+        <div data-hf-id="hf-loop-title" id="loop-title" class="clip loop-title" data-start="0" data-duration="15.26">THE EXTRACT LOOPHOLE</div>
+        <div data-hf-id="hf-loop-split" id="loop-split" class="clip loop-split" data-start="0" data-duration="15.26">
+          <div data-hf-id="hf-loop-west" class="loop-col loop-col-west" id="loop-col-west">
+            <div data-hf-id="hf-loop-wk" class="loop-kicker" id="loop-kicker-west">WESTERN</div>
+            <div data-hf-id="hf-loop-wc" class="loop-chip loop-chip-west" id="loop-chip-west">WATER — 1st ingredient</div>
+          </div>
+          <div data-hf-id="hf-loop-kr" class="loop-col loop-col-kr" id="loop-col-kr">
+            <div data-hf-id="hf-loop-kk" class="loop-kicker" id="loop-kicker-kr">K-BEAUTY</div>
+            <div data-hf-id="hf-loop-kc" class="loop-chip loop-chip-kr" id="loop-chip-kr">CENTELLA EXTRACT — 70%</div>
+          </div>
+        </div>
+        <div data-hf-id="hf-loop-rule" id="loop-rule" class="clip loop-rule" data-start="0" data-duration="15.26"></div>
+
+        <div data-hf-id="hf-loop-eq" id="loop-equation" class="clip loop-equation" data-start="0" data-duration="15.26">
+          <div data-hf-id="hf-loop-eqword" class="loop-eq-word" id="loop-eq-word">"EXTRACT"</div>
+          <div data-hf-id="hf-loop-eqsplit" class="loop-eq-split" id="loop-eq-split">
+            <div data-hf-id="hf-loop-eqp1" class="loop-eq-part" id="loop-eq-water">WATER</div>
+            <div data-hf-id="hf-loop-eqplus" class="loop-eq-plus" id="loop-eq-plus">+</div>
+            <div data-hf-id="hf-loop-eqp2" class="loop-eq-part" id="loop-eq-tiny">TINY BIT OF PLANT</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#loop-title", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.1);
+        tl.fromTo("#loop-rule", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power3.out" }, 0.4);
+        tl.fromTo(["#loop-kicker-west", "#loop-kicker-kr"], { opacity: 0 }, { opacity: 0.7, duration: 0.3, ease: "power3.out" }, 0.6);
+
+        // chip pops (SFX pop.mp3 fires alongside each, see index.html)
+        tl.fromTo("#loop-chip-west", { opacity: 0, y: 14, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 1.6);
+        tl.fromTo("#loop-chip-kr", { opacity: 0, y: 14, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 2.4);
+        // the frame's one aqua highlight lives on the K-beauty chip — settle with a brief pulse
+        tl.to("#loop-chip-kr", { scale: 1.04, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, 2.8);
+
+        // fade the split away before the fracture beat
+        tl.to(["#loop-split", "#loop-rule", "#loop-title"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 6.6);
+
+        // "EXTRACT" breaks into the equation (SFX glitch-shatter.mp3 on the break)
+        tl.fromTo("#loop-eq-word", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 7.2);
+        tl.to("#loop-eq-word", { opacity: 0, y: -18, duration: 0.22, ease: "power2.in" }, 8.7);
+        tl.fromTo("#loop-eq-water", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 8.95);
+        tl.fromTo("#loop-eq-plus", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power3.out" }, 9.15);
+        tl.fromTo("#loop-eq-tiny", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 9.3);
+
+        tl.to("#loop-equation", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 14.4);
+
+        tl.to({}, { duration: 15.26 }, 0);
+        window.__timelines["03-extract-loophole"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

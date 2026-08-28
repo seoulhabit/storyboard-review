@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root {
+          --paper: #F7F5F0;
+          --ink: #131516;
+          --aqua: #59B8AE;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, sans-serif;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          color: var(--ink);
+          font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .magic-video {
+          object-fit: cover;
+        }
+        /* Paper wash — an inverse of the design system's --scrim-bottom (tokens/legibility.css),
+           built from --paper instead of --ink for dark-ink-on-paper copy; not a source token,
+           same gradient shape/floor logic. The headline sits directly on paper (no opaque card
+           here, unlike 04-value's plates), so this carries the real legibility requirement:
+           footage reads clearly in the top band, wash reaches full strength before the text zone. */
+        .magic-wash {
+          top: 480px; left: 0; right: 0; bottom: 0; height: auto;
+          background: linear-gradient(to bottom, rgba(247, 245, 240, 0) 0%, rgba(247, 245, 240, 0.55) 10%, rgba(247, 245, 240, 0.92) 30%, rgba(247, 245, 240, 0.92) 100%);
+        }
+
+        .magic-grain {
+          top: 0; left: 0; width: 100%; height: 100%;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          opacity: 0.045;
+          mix-blend-mode: multiply;
+        }
+
+        .magic-textzone {
+          top: 700px;
+          left: 88px;
+          width: 900px;
+          display: flex;
+          flex-direction: column;
+          gap: 26px;
+        }
+        .magic-line {
+          font-family: var(--font-display);
+          font-weight: 400;
+          font-size: 58px;
+          line-height: 1.16;
+          letter-spacing: -0.018em;
+          color: var(--ink);
+        }
+        .magic-word { display: inline-block; margin-right: 0.24em; }
+        .magic-word.accent { color: var(--aqua); }
+
+        .magic-checklist {
+          top: 1020px;
+          left: 88px;
+          width: 760px;
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+        }
+        .magic-check-row {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          opacity: 0;
+        }
+        .magic-check-mark {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: var(--ink);
+          color: var(--paper);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: var(--font-body);
+          font-size: 18px;
+          font-weight: 700;
+          flex-shrink: 0;
+          transform: scale(0);
+        }
+        .magic-check-label {
+          font-family: var(--font-body);
+          font-size: 28px;
+          color: var(--ink);
+          letter-spacing: -0.005em;
+        }
+      </style>
+
+      <div data-hf-id="hf-m65h" id="root" data-composition-id="05-magic" data-width="1080" data-height="1920" data-duration="10">
+        <video data-hf-id="hf-b05v" id="magic-video" class="clip magic-video" data-start="0" data-duration="10" data-track-index="0" src="assets/broll/05-magic.mp4" muted></video>
+        <div data-hf-id="hf-b05w" id="magic-wash" class="clip magic-wash" data-start="0" data-duration="10" data-track-index="0"></div>
+        <div data-hf-id="hf-cxw9" id="magic-grain" class="clip magic-grain" data-start="0" data-duration="10" data-track-index="0"></div>
+
+        <div data-hf-id="hf-4kqg" id="magic-textzone" class="clip magic-textzone" data-start="0" data-duration="10" data-track-index="1">
+          <div data-hf-id="hf-0n6g" class="magic-line" id="magic-line-1"></div>
+          <div data-hf-id="hf-9b2b" class="magic-line" id="magic-line-2"></div>
+        </div>
+
+        <div data-hf-id="hf-b05c" id="magic-checklist" class="clip magic-checklist" data-start="0" data-duration="10" data-track-index="2">
+          <div data-hf-id="hf-b05c0" class="magic-check-row" id="check-row-0"><div data-hf-id="hf-b05m0" class="magic-check-mark">✓</div><div data-hf-id="hf-b05l0" class="magic-check-label">Researched</div></div>
+          <div data-hf-id="hf-b05c1" class="magic-check-row" id="check-row-1"><div data-hf-id="hf-b05m1" class="magic-check-mark">✓</div><div data-hf-id="hf-b05l1" class="magic-check-label">Verified</div></div>
+          <div data-hf-id="hf-b05c2" class="magic-check-row" id="check-row-2"><div data-hf-id="hf-b05m2" class="magic-check-mark">✓</div><div data-hf-id="hf-b05l2" class="magic-check-label">Simplified</div></div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Two-clause kinetic headline. "science" is the frame's single aqua accent —
+        // the one interrogated/evidence-adjacent word, per house rule.
+        const CLAUSE_1 = [
+          { w: "We", accent: false }, { w: "bust", accent: false }, { w: "the", accent: false },
+          { w: "myths", accent: false }, { w: "and", accent: false }, { w: "uncover", accent: false },
+          { w: "the", accent: false }, { w: "science.", accent: true },
+        ];
+        const CLAUSE_2 = [
+          { w: "Skincare,", accent: false }, { w: "made", accent: false }, { w: "effortless.", accent: false },
+        ];
+        const WORD_BASE = 0.17;
+        const WORD_PER_CHAR = 0.013;
+
+        function schedule(words, startTime) {
+          let t = startTime;
+          return words.map((entry) => {
+            const dur = WORD_BASE + entry.w.length * WORD_PER_CHAR;
+            const start = t;
+            t += dur;
+            return { ...entry, start };
+          });
+        }
+        const clause1Schedule = schedule(CLAUSE_1, 0.5);
+        const clause2Schedule = schedule(CLAUSE_2, 4.4);
+
+        function mount(lineEl, entries) {
+          entries.forEach((entry) => {
+            const span = document.createElement("span");
+            span.className = "magic-word" + (entry.accent ? " accent" : "");
+            span.textContent = entry.w;
+            lineEl.appendChild(span);
+            entry.el = span;
+          });
+        }
+        mount(document.getElementById("magic-line-1"), clause1Schedule);
+        mount(document.getElementById("magic-line-2"), clause2Schedule);
+
+        clause1Schedule.forEach((entry) => {
+          tl.fromTo(entry.el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, entry.start);
+        });
+        clause2Schedule.forEach((entry) => {
+          tl.fromTo(entry.el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, entry.start);
+        });
+
+        // ---- minimalist checklist, ticking off one item at a time after the headline settles ----
+        const CHECK_ROWS = ["#check-row-0", "#check-row-1", "#check-row-2"];
+        CHECK_ROWS.forEach((rowSel, i) => {
+          const rowStart = 5.6 + i * 0.7;
+          tl.fromTo(rowSel, { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, rowStart);
+          tl.fromTo(`${rowSel} .magic-check-mark`, { scale: 0 }, { scale: 1, duration: 0.25, ease: "power3.out" }, rowStart + 0.22);
+        });
+
+        tl.to({}, { duration: 10 }, 0); // full-span anchor
+
+        window.__timelines["05-magic"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

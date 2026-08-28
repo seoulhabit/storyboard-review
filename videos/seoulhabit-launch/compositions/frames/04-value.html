@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        #root {
+          --paper: #F7F5F0;
+          --mist: #F0EBE1;
+          --ink: #131516;
+          --ink-2: #6B6B6B;
+          --aqua: #59B8AE;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --t-frame: 50px;
+          --t-body: 32px;
+          --t-label: 24px; /* was 20 — matches the real design system's --t-label exactly (mono, "data label, kicker") */
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,.35);
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          color: var(--ink);
+          font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .val-video {
+          object-fit: cover;
+        }
+        /* Paper wash — an inverse of the design system's --scrim-bottom (tokens/legibility.css),
+           built from --paper instead of --ink for dark-ink-on-paper copy; not a source token,
+           same gradient shape/stops. Val-plate copy already sits on an opaque --mist card, so
+           this only keeps the visible margins on-brand rather than a bare stock-footage tone. */
+        .val-wash {
+          background: rgba(247, 245, 240, 0.62);
+        }
+        .val-plate {
+          left: 80px;
+          top: 780px;
+          width: 920px;
+          padding: 64px 56px;
+          background: var(--mist);
+          border-radius: 10px;
+          box-shadow: var(--elev-2);
+          opacity: 0;
+        }
+        .val-eyebrow {
+          font-family: var(--font-mono);
+          font-size: var(--t-label);
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #595959;
+          margin-bottom: 20px;
+        }
+        .val-title {
+          font-family: var(--font-display);
+          font-size: var(--t-frame);
+          line-height: 1.1;
+          letter-spacing: -0.018em;
+          margin-bottom: 26px;
+        }
+        .val-highlight {
+          background: linear-gradient(to top, rgba(89,184,174,0.35) 0%, rgba(89,184,174,0.35) 32%, transparent 32%);
+          padding: 0 4px;
+        }
+        .val-body {
+          font-family: var(--font-body);
+          font-size: var(--t-body);
+          color: #595959;
+        }
+        /* Stamp treatment for the "Myth Busted!" plate only — an ink-bordered rotated
+           badge standing in for the goal script's "red stamp graphic" without introducing
+           a second accent color into a frame whose one accent is already --aqua. */
+        .val-eyebrow--stamp {
+          display: inline-block;
+          padding: 6px 16px;
+          border: 2px solid var(--ink);
+          border-radius: 6px;
+          color: var(--ink);
+          transform: rotate(-6deg);
+        }
+      </style>
+
+      <div data-hf-id="hf-qwbq" id="root" data-composition-id="04-value" data-width="1080" data-height="1920" data-duration="13.5">
+        <video data-hf-id="hf-b04v" id="val-video" class="clip val-video" data-start="0" data-duration="13.5" data-track-index="0" src="assets/broll/04-value.mp4" muted></video>
+        <div data-hf-id="hf-b04w" id="val-wash" class="clip val-wash" data-start="0" data-duration="13.5" data-track-index="0"></div>
+        <div data-hf-id="hf-dy20" id="val-plate-0" class="clip val-plate" data-start="0" data-duration="4.3" data-track-index="0">
+          <div data-hf-id="hf-xzek" class="val-eyebrow">How to use?</div>
+          <div data-hf-id="hf-zijk" class="val-title"><span data-hf-id="hf-ou84" class="val-highlight">Mugwort</span></div>
+          <div data-hf-id="hf-2t5w" class="val-body">Barrier support, explained simply.</div>
+        </div>
+
+        <div data-hf-id="hf-jkqj" id="val-plate-1" class="clip val-plate" data-start="4.3" data-duration="4.3" data-track-index="1">
+          <div data-hf-id="hf-105g" class="val-eyebrow">When to use?</div>
+          <div data-hf-id="hf-fqfs" class="val-title"><span data-hf-id="hf-1uw3" class="val-highlight">Niacinamide</span></div>
+          <div data-hf-id="hf-8em7" class="val-body">AM or PM? We settle it.</div>
+        </div>
+
+        <div data-hf-id="hf-b9mk" id="val-plate-2" class="clip val-plate" data-start="8.6" data-duration="4.9" data-track-index="0">
+          <div data-hf-id="hf-6zgn" id="val-eyebrow-2" class="val-eyebrow val-eyebrow--stamp">Myth Busted!</div>
+          <div data-hf-id="hf-ejip" class="val-title"><span data-hf-id="hf-jkap" class="val-highlight">Viral trends</span></div>
+          <div data-hf-id="hf-nccl" class="val-body">Checked against the science.</div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Three sequential plates, one on screen at a time (dynamic-content-sequencing,
+        // fixed 5s beats since all three phrases are short — content length doesn't
+        // meaningfully vary the read time here).
+        const PLATES = ["#val-plate-0", "#val-plate-1", "#val-plate-2"];
+        const STARTS = [0, 4.3, 8.6];
+        const ENDS = [3.9, 8.2, 13.5]; // last plate holds to frame end (frame-zero-safe on cut)
+
+        PLATES.forEach((id, i) => {
+          tl.fromTo(
+            id,
+            { opacity: 0, y: 24, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" },
+            STARTS[i],
+          );
+          if (i < PLATES.length - 1) {
+            tl.to(id, { opacity: 0, y: -12, duration: 0.4, ease: "power2.inOut" }, ENDS[i]);
+          }
+        });
+
+        // Stamp thump on the "Myth Busted!" badge — no bounce/elastic easing per house rule,
+        // so the "stamped down" feel comes from an oversized start settling on power3.out.
+        tl.fromTo(
+          "#val-eyebrow-2",
+          { scale: 1.3, rotate: -14 },
+          { scale: 1, rotate: -6, duration: 0.22, ease: "power3.out" },
+          8.85,
+        );
+
+        tl.to({}, { duration: 13.5 }, 0); // full-span anchor
+
+        window.__timelines["04-value"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

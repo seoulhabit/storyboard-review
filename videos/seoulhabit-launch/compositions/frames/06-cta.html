@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "Noto Sans KR Video";
+          font-weight: 500;
+          font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+        }
+        @font-face {
+          font-family: "Noto Sans KR";
+          font-weight: 500;
+          font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+        }
+        #root {
+          --paper: #F7F5F0;
+          --ink: #131516;
+          --ink-2: #6B6B6B;
+          /* real system name: --color-brand-accent (video-editor semantic layer, colors.css) —
+             resolves to gochujang #C97A5C, "primary marks, active states, limit callouts".
+             Note: the core five-color palette (readme.md) defines coral's role more narrowly as
+             "a limitation or a refusal" — kept here via the broader semantic-layer reading since
+             this is a CTA active-state, not a limitation; flagged in frame.md, not silently decided. */
+          --color-brand-accent: #C97A5C;
+          --white: #FCFBF9;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, sans-serif;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          --t-frame: 50px;
+          --t-caption: 24px;
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          color: var(--ink);
+          font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .cta-grain {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          opacity: 0.05;
+          mix-blend-mode: multiply;
+        }
+
+        .cta-lockup {
+          left: 80px;
+          top: 680px;
+          width: 920px;
+          text-align: center;
+          opacity: 0;
+        }
+        .cta-title {
+          font-family: var(--font-display);
+          font-weight: 400;
+          font-size: var(--t-frame);
+          line-height: 1.08;
+          letter-spacing: -0.018em;
+          color: var(--ink);
+        }
+        .cta-pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin: 44px auto 0;
+          padding: 22px 64px;
+          background: var(--color-brand-accent);
+          color: var(--white);
+          font-family: var(--font-body);
+          font-weight: 600;
+          font-size: var(--t-caption);
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          border-radius: 999px;
+          transform: scale(0.92);
+        }
+        .cta-brand {
+          margin-top: 46px;
+          font-family: var(--font-kr);
+          font-size: 30px;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          color: #BB7156;
+        }
+        .cta-cursor {
+          left: 0;
+          top: 0;
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: var(--ink);
+          opacity: 0;
+        }
+      </style>
+
+      <div data-hf-id="hf-lhqg" id="root" data-composition-id="06-cta" data-width="1080" data-height="1920" data-duration="7.5">
+        <div data-hf-id="hf-79ro" id="cta-grain" class="clip cta-grain" data-start="0" data-duration="7.5" data-track-index="0"></div>
+
+        <div data-hf-id="hf-yqpd" id="cta-lockup" class="clip cta-lockup" data-start="0" data-duration="7.5" data-track-index="1">
+          <div data-hf-id="hf-9oig" class="cta-title">Build Your SeoulHabit.</div>
+          <div data-hf-id="hf-93tj" style="display:flex; justify-content:center;">
+            <div data-hf-id="hf-9kun" class="cta-pill" id="cta-pill">Follow</div>
+          </div>
+          <div data-hf-id="hf-21xp" class="cta-brand">습 SeoulHabit</div>
+        </div>
+
+        <div data-hf-id="hf-b06c" id="cta-cursor" class="clip cta-cursor" data-start="0" data-duration="7.5" data-track-index="2"></div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Lockup: slide-up crossfade (endcard pattern) — settled before the pill beat.
+        tl.fromTo(
+          "#cta-lockup",
+          { opacity: 0, y: 28 },
+          { opacity: 1, y: 0, duration: 1.0, ease: "power2.out" },
+          0.3,
+        );
+
+        // Follow pill: the frame's one voltage moment — a --d-snap (180ms) emphasis
+        // scale beat, 0.92 -> 1, settling and holding (frame-zero-safe final state).
+        tl.to(
+          "#cta-pill",
+          { scale: 1, duration: 0.18, ease: "power3.out" },
+          1.5,
+        );
+
+        // Cursor taps the pill: arrives just as the pill's own emphasis beat fires at 1.5s,
+        // then clears so the frame's final held state stays frame-zero-safe (no cursor left on screen).
+        tl.set("#cta-cursor", { x: 680, y: 1000 }, 1.0);
+        tl.to("#cta-cursor", { opacity: 1, duration: 0.15 }, 1.05);
+        tl.to("#cta-cursor", { x: 527, y: 801, duration: 0.35, ease: "power2.inOut" }, 1.05);
+        tl.to("#cta-cursor", { scale: 0.7, duration: 0.12, ease: "power2.out" }, 1.5);
+        tl.to("#cta-cursor", { scale: 1, duration: 0.15, ease: "power2.out" }, 1.62);
+        tl.to("#cta-cursor", { opacity: 0, duration: 0.25, ease: "power2.inOut" }, 1.9);
+
+        tl.to({}, { duration: 7.5 }, 0); // full-span anchor
+
+        window.__timelines["06-cta"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

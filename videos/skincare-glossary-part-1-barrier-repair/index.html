@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>The Barrier Repair Heroes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&family=Noto+Sans+KR:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* ============ SeoulHabit Video Design System — token layer ============ */
+      :root {
+        --paper: #f7f5f0;
+        --white: #fcfbf9;
+        --ink: #131516;
+        --aqua: #59b8ae;
+        --leaf: #6f8f72;
+        --coral: #c97a5c;
+        --highlighter: #e0a32b;
+
+        --perilla: #3f6b52;
+        --perilla-deep: #24401f;
+        --perilla-on-ink: color-mix(in srgb, var(--perilla) 55%, white);
+
+        --on-ink-primary: var(--paper);
+        --on-ink-secondary: rgba(247, 245, 240, 0.68);
+        --on-ink-tertiary: rgba(247, 245, 240, 0.62);
+        --rule-dark: rgba(247, 245, 240, 0.16);
+        --card-fill-dark: rgba(247, 245, 240, 0.06);
+
+        --font-display: "EB Garamond", Georgia, serif;
+        --font-body: "Inter", system-ui, sans-serif;
+        --font-mono: "JetBrains Mono", ui-monospace, monospace;
+        --font-kr: "Noto Sans KR", sans-serif;
+
+        --t-thumb-2: 112px;
+        --t-title: 96px;
+        --t-chapter: 72px;
+        --t-subtitle: 48px;
+        --t-lead: 40px;
+        --t-body: 32px;
+        --t-annot: 28px;
+        --t-label: 24px;
+        --t-chip: 22px;
+        --t-floor: 20px;
+
+        --tr-display: -0.02em;
+        --tr-body: 0em;
+        --tr-mono: 0.04em;
+        --tr-mono-wide: 0.1em;
+        --lh-tight: 1.05;
+        --lh-snug: 1.2;
+        --lh-body: 1.45;
+
+        --sp-1: 4px;
+        --sp-2: 8px;
+        --sp-3: 12px;
+        --sp-4: 20px;
+        --sp-5: 32px;
+        --sp-6: 60px;
+
+        --r-node: 2px;
+        --r-chip: 6px;
+        --r-card: 10px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--ink);
+      }
+      body {
+        font-family: var(--font-body);
+      }
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--ink);
+      }
+
+      .bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: var(--ink);
+      }
+
+      .progress-wrap {
+        position: absolute;
+        top: var(--sp-6);
+        left: 96px;
+        right: 202px;
+        height: 6px;
+        z-index: 50;
+        background: var(--rule-dark);
+        border-radius: var(--r-node);
+        overflow: hidden;
+      }
+      .progress-fill {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: var(--aqua);
+        transform-origin: 0% 50%;
+        will-change: transform;
+      }
+
+      .wordmark {
+        position: absolute;
+        top: 96px;
+        left: 96px;
+        z-index: 50;
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: var(--t-chip);
+        letter-spacing: var(--tr-mono-wide);
+        text-transform: uppercase;
+        color: var(--on-ink-tertiary);
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 168px 202px 456px 96px;
+      }
+
+      .kicker {
+        font-family: var(--font-mono);
+        font-weight: 600;
+        font-size: var(--t-label);
+        letter-spacing: var(--tr-mono-wide);
+        text-transform: uppercase;
+        color: var(--perilla-on-ink);
+        will-change: transform, opacity;
+      }
+      .display-h1 {
+        margin-top: var(--sp-4);
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: var(--t-title);
+        line-height: var(--lh-tight);
+        letter-spacing: var(--tr-display);
+        color: var(--on-ink-primary);
+        will-change: transform, opacity;
+      }
+      .display-lead {
+        margin-top: var(--sp-5);
+        max-width: 760px;
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: var(--t-lead);
+        line-height: var(--lh-snug);
+        color: var(--on-ink-secondary);
+        will-change: transform, opacity;
+      }
+      .disclaimer {
+        position: absolute;
+        bottom: 420px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: var(--t-floor);
+        letter-spacing: var(--tr-mono);
+        color: var(--on-ink-tertiary);
+        will-change: opacity;
+      }
+
+      .card-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 822px;
+        padding: var(--sp-6) var(--sp-5);
+        background: var(--card-fill-dark);
+        border: 1px solid var(--rule-dark);
+        border-radius: var(--r-card);
+      }
+      .term-icon {
+        width: 64px;
+        height: 64px;
+        color: var(--on-ink-primary);
+        will-change: transform, opacity;
+      }
+      .term-name {
+        margin-top: var(--sp-4);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: var(--t-chapter);
+        line-height: var(--lh-tight);
+        letter-spacing: var(--tr-display);
+        color: var(--on-ink-primary);
+        will-change: transform, opacity;
+      }
+      .term-kr {
+        margin-top: var(--sp-2);
+        font-family: var(--font-kr);
+        font-weight: 500;
+        font-size: var(--t-subtitle);
+        color: var(--on-ink-secondary);
+        will-change: transform, opacity;
+      }
+      .term-category {
+        margin-top: var(--sp-3);
+        font-family: var(--font-mono);
+        font-weight: 600;
+        font-size: var(--t-label);
+        letter-spacing: var(--tr-mono-wide);
+        text-transform: uppercase;
+        color: var(--perilla-on-ink);
+        will-change: transform, opacity;
+      }
+      .term-body {
+        margin-top: var(--sp-4);
+        max-width: 700px;
+        font-family: var(--font-body);
+        font-weight: 400;
+        font-size: var(--t-body);
+        line-height: var(--lh-body);
+        letter-spacing: var(--tr-body);
+        color: var(--on-ink-primary);
+        will-change: transform, opacity;
+      }
+      .term-rule {
+        margin-top: var(--sp-5);
+        width: 56px;
+        height: 2px;
+        background: var(--rule-dark);
+        transform-origin: 50% 50%;
+        will-change: transform, opacity;
+      }
+      .term-label-2 {
+        margin-top: var(--sp-4);
+        font-family: var(--font-mono);
+        font-weight: 600;
+        font-size: var(--t-chip);
+        letter-spacing: var(--tr-mono-wide);
+        text-transform: uppercase;
+        color: var(--on-ink-tertiary);
+        will-change: transform, opacity;
+      }
+      .term-body-2 {
+        margin-top: var(--sp-2);
+        max-width: 700px;
+        font-family: var(--font-body);
+        font-weight: 400;
+        font-size: var(--t-annot);
+        line-height: var(--lh-body);
+        color: var(--on-ink-secondary);
+        will-change: transform, opacity;
+      }
+      .term-index {
+        margin-top: var(--sp-5);
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: var(--t-chip);
+        letter-spacing: var(--tr-mono);
+        color: var(--on-ink-tertiary);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="23.50"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div class="bg"></div>
+      <div class="wordmark">SeoulHabit</div>
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+
+      <section id="scene-title" class="clip" data-start="0" data-duration="2.50" data-track-index="1">
+        <div class="kicker" id="title-kicker">Part 1 of 4</div>
+        <h1 class="display-h1" id="title-h1" style="font-size: var(--t-chapter);">5 Skincare Ingredients You Need if Your Skin Barrier Is Damaged.</h1>
+        <p class="display-lead" id="title-lead">The Barrier Repair Heroes — for redness and sensitivity.</p>
+      </section>
+
+      <section class="clip" id="card-0" data-start="2.50" data-duration="3.50" data-track-index="1">
+        <div class="card-inner" id="inner-0">
+          <svg class="term-icon" id="icon-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5.5 4.5-10 10-11.5C15 6 18 8.5 18 13a7 7 0 0 1-7 7Z"/><path d="M4.5 14.5C9 14.5 13 11 15 5.5"/></svg>
+          <h2 class="term-name" id="name-0">Centella Asiatica</h2>
+          <div class="term-kr" id="kr-0">병풀</div>
+          <div class="term-category" id="cat-0">Botanical extract</div>
+          <p class="term-body" id="what-0">A medicinal herb with healing and anti-inflammatory properties.</p>
+          <div class="term-rule" id="rule-0"></div>
+          <div class="term-label-2" id="label2-0">Commonly used for</div>
+          <p class="term-body-2" id="used-0">Wound healing and stressed skin.</p>
+        </div>
+        <div class="term-index">01 · 5</div>
+      </section>
+      <section class="clip" id="card-1" data-start="6.00" data-duration="3.50" data-track-index="1">
+        <div class="card-inner" id="inner-1">
+          <svg class="term-icon" id="icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l7.5 3.4v6c0 5-3.2 8.3-7.5 9.6-4.3-1.3-7.5-4.6-7.5-9.6v-6Z"/></svg>
+          <h2 class="term-name" id="name-1">Ceramides</h2>
+          <div class="term-kr" id="kr-1">세라마이드</div>
+          <div class="term-category" id="cat-1">Barrier lipid</div>
+          <p class="term-body" id="what-1">Lipid molecules that form the skin's protective barrier.</p>
+          <div class="term-rule" id="rule-1"></div>
+          <div class="term-label-2" id="label2-1">Commonly used for</div>
+          <p class="term-body-2" id="used-1">Retaining moisture and reducing sensitivity.</p>
+        </div>
+        <div class="term-index">02 · 5</div>
+      </section>
+      <section class="clip" id="card-2" data-start="9.50" data-duration="3.50" data-track-index="1">
+        <div class="card-inner" id="inner-2">
+          <svg class="term-icon" id="icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 8.5 7 13.5a7 7 0 0 1-14 0C5 11.5 12 3 12 3Z"/></svg>
+          <h2 class="term-name" id="name-2">Panthenol (B5)</h2>
+          <div class="term-kr" id="kr-2">판테놀</div>
+          <div class="term-category" id="cat-2">Vitamin B5</div>
+          <p class="term-body" id="what-2">A moisturizing and healing vitamin.</p>
+          <div class="term-rule" id="rule-2"></div>
+          <div class="term-label-2" id="label2-2">Commonly used for</div>
+          <p class="term-body-2" id="used-2">Soothing and repairing irritated skin.</p>
+        </div>
+        <div class="term-index">03 · 5</div>
+      </section>
+      <section class="clip" id="card-3" data-start="13.00" data-duration="3.50" data-track-index="1">
+        <div class="card-inner" id="inner-3">
+          <svg class="term-icon" id="icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5.5 4.5-10 10-11.5C15 6 18 8.5 18 13a7 7 0 0 1-7 7Z"/><path d="M4.5 14.5C9 14.5 13 11 15 5.5"/></svg>
+          <h2 class="term-name" id="name-3">Mugwort</h2>
+          <div class="term-kr" id="kr-3">쑥</div>
+          <div class="term-category" id="cat-3">Botanical extract</div>
+          <p class="term-body" id="what-3">A soothing herb long used in Korean medicine.</p>
+          <div class="term-rule" id="rule-3"></div>
+          <div class="term-label-2" id="label2-3">Commonly used for</div>
+          <p class="term-body-2" id="used-3">Reducing redness and detoxifying.</p>
+        </div>
+        <div class="term-index">04 · 5</div>
+      </section>
+      <section class="clip" id="card-4" data-start="16.50" data-duration="3.50" data-track-index="1">
+        <div class="card-inner" id="inner-4">
+          <svg class="term-icon" id="icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.6"/><path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M5.8 5.8l2.5 2.5M15.7 15.7l2.5 2.5M18.2 5.8l-2.5 2.5M8.3 15.7l-2.5 2.5"/></svg>
+          <h2 class="term-name" id="name-4">Green Tea</h2>
+          <div class="term-kr" id="kr-4">녹차</div>
+          <div class="term-category" id="cat-4">Botanical extract</div>
+          <p class="term-body" id="what-4">A calming antioxidant with antibacterial and oil-controlling properties.</p>
+          <div class="term-rule" id="rule-4"></div>
+          <div class="term-label-2" id="label2-4">Commonly used for</div>
+          <p class="term-body-2" id="used-4">Soothing acne-prone skin and fighting oxidative stress.</p>
+        </div>
+        <div class="term-index">05 · 5</div>
+      </section>
+
+      <section id="scene-outro" class="clip" data-start="20.00" data-duration="3.50" data-track-index="1">
+        <div class="kicker" id="outro-kicker">Part 1 of 4</div>
+        <h1 class="display-h1" id="outro-h1" style="font-size: var(--t-chapter);">Protect the<br />barrier</h1>
+        <p class="display-lead" id="outro-lead">Five actives, one focus: barrier repair.</p>
+        <div class="disclaimer" id="outro-disclaimer">General ingredient overview — not sourced claims, not medical advice.</div>
+      </section>
+    </div>
+
+    <script>
+      // -----------------------------------------------------------------
+      // Cubic-bezier ease matching the design system's --e-out/--e-in/--e-inout
+      // tokens exactly (deterministic, pure math — no Math.random/Date.now).
+      // -----------------------------------------------------------------
+      function cubicBezierEase(mX1, mY1, mX2, mY2) {
+        function a(x1, x2) { return 1 - 3 * x2 + 3 * x1; }
+        function b(x1, x2) { return 3 * x2 - 6 * x1; }
+        function c(x1) { return 3 * x1; }
+        function calc(t, x1, x2) { return ((a(x1, x2) * t + b(x1, x2)) * t + c(x1)) * t; }
+        function slope(t, x1, x2) { return 3 * a(x1, x2) * t * t + 2 * b(x1, x2) * t + c(x1); }
+        function tForX(x) {
+          var t = x;
+          for (var i = 0; i < 8; i++) {
+            var s = slope(t, mX1, mX2);
+            if (s === 0) return t;
+            t -= (calc(t, mX1, mX2) - x) / s;
+          }
+          return t;
+        }
+        return function (x) {
+          if (mX1 === mY1 && mX2 === mY2) return x;
+          return calc(tForX(x), mY1, mY2);
+        };
+      }
+      var eOut = cubicBezierEase(0.215, 0.61, 0.355, 1);
+      var eIn = cubicBezierEase(0.55, 0.055, 0.675, 0.19);
+      var eInOut = cubicBezierEase(0.455, 0.03, 0.515, 0.955);
+
+      var D_SNAP = 0.18;
+      var D_FAST = 0.4;
+      var D_BASE = 0.5;
+      var STAGGER_LINE = 0.08;
+      var CARD_DUR = 3.50;
+
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#progress-fill", { scaleX: 0 }, { scaleX: 1, duration: 23.50, ease: "none" }, 0);
+
+      // ---- Title / hook scene ----
+      tl.fromTo("#title-kicker", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 0.1);
+      tl.fromTo("#title-h1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 0.1 + STAGGER_LINE);
+      tl.fromTo("#title-lead", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 0.1 + STAGGER_LINE * 2);
+      tl.fromTo(
+        "#scene-title .kicker, #scene-title .display-h1, #scene-title .display-lead",
+        { opacity: 1 },
+        { opacity: 0, duration: D_BASE, ease: eInOut },
+        2.00
+      );
+      tl.set("#scene-title .kicker, #scene-title .display-h1, #scene-title .display-lead", { opacity: 0 }, 2.50);
+
+      // ---- Ingredient cards ----
+      tl.fromTo("#icon-0", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 2.50);
+      tl.fromTo("#name-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE);
+      tl.fromTo("#kr-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 2);
+      tl.fromTo("#cat-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 3);
+      tl.fromTo("#what-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 4);
+      tl.fromTo("#rule-0", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 2.50 + STAGGER_LINE * 5);
+      tl.fromTo("#label2-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 6);
+      tl.fromTo("#used-0", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 2.50 + STAGGER_LINE * 7);
+      tl.fromTo("#inner-0", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 2.50 + CARD_DUR - 0.55);
+      tl.set("#inner-0", { opacity: 0 }, 6.00);
+      tl.fromTo("#icon-1", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 6.00);
+      tl.fromTo("#name-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE);
+      tl.fromTo("#kr-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 2);
+      tl.fromTo("#cat-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 3);
+      tl.fromTo("#what-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 4);
+      tl.fromTo("#rule-1", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 6.00 + STAGGER_LINE * 5);
+      tl.fromTo("#label2-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 6);
+      tl.fromTo("#used-1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 6.00 + STAGGER_LINE * 7);
+      tl.fromTo("#inner-1", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 6.00 + CARD_DUR - 0.55);
+      tl.set("#inner-1", { opacity: 0 }, 9.50);
+      tl.fromTo("#icon-2", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 9.50);
+      tl.fromTo("#name-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE);
+      tl.fromTo("#kr-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 2);
+      tl.fromTo("#cat-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 3);
+      tl.fromTo("#what-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 4);
+      tl.fromTo("#rule-2", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 9.50 + STAGGER_LINE * 5);
+      tl.fromTo("#label2-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 6);
+      tl.fromTo("#used-2", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 9.50 + STAGGER_LINE * 7);
+      tl.fromTo("#inner-2", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 9.50 + CARD_DUR - 0.55);
+      tl.set("#inner-2", { opacity: 0 }, 13.00);
+      tl.fromTo("#icon-3", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 13.00);
+      tl.fromTo("#name-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE);
+      tl.fromTo("#kr-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 2);
+      tl.fromTo("#cat-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 3);
+      tl.fromTo("#what-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 4);
+      tl.fromTo("#rule-3", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 13.00 + STAGGER_LINE * 5);
+      tl.fromTo("#label2-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 6);
+      tl.fromTo("#used-3", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 13.00 + STAGGER_LINE * 7);
+      tl.fromTo("#inner-3", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 13.00 + CARD_DUR - 0.55);
+      tl.set("#inner-3", { opacity: 0 }, 16.50);
+      tl.fromTo("#icon-4", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 16.50);
+      tl.fromTo("#name-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE);
+      tl.fromTo("#kr-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 2);
+      tl.fromTo("#cat-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 3);
+      tl.fromTo("#what-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 4);
+      tl.fromTo("#rule-4", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: eOut }, 16.50 + STAGGER_LINE * 5);
+      tl.fromTo("#label2-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 6);
+      tl.fromTo("#used-4", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 16.50 + STAGGER_LINE * 7);
+      tl.fromTo("#inner-4", { opacity: 1 }, { opacity: 0, duration: D_BASE, ease: eInOut }, 16.50 + CARD_DUR - 0.55);
+      tl.set("#inner-4", { opacity: 0 }, 20.00);
+
+      // ---- Outro scene ----
+      tl.fromTo("#outro-kicker", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 20.12);
+      tl.fromTo("#outro-h1", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 20.12 + STAGGER_LINE);
+      tl.fromTo("#outro-lead", { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_FAST, ease: eOut }, 20.12 + STAGGER_LINE * 2);
+      tl.fromTo("#outro-disclaimer", { opacity: 0 }, { opacity: 1, duration: D_FAST, ease: eOut }, 20.90);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

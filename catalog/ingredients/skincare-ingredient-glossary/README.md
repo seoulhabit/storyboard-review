@@ -69,6 +69,39 @@ existing `-spike.html` convention of self-contained reference files):
 | 19 | `components/19-rice-extract.html` | Rice Extract |
 | 20 | `components/20-vitamin-c.html` | Vitamin C |
 
+## Short-form cuts (Parts 1–4)
+
+Four standalone short-form videos, each a themed 5-ingredient cut of the
+glossary above, grouped by skin concern per a supplied content brief (a
+hook, five ingredients with punchier one-line descriptions, and a
+caption/CTA). Same design-system tokens, TermDefinition card, and easing as
+the full glossary — just five cards instead of twenty, ~24s instead of 76s.
+Each is its own HyperFrames project (own `index.html` / `renders/` /
+`meta.json`), not nested under this one, matching how every other video in
+this repo is its own top-level `videos/` folder.
+
+| Part | Folder | Theme | Ingredients |
+|---|---|---|---|
+| 1 | [`videos/skincare-glossary-part-1-barrier-repair/`](../../../videos/skincare-glossary-part-1-barrier-repair/) | The Barrier Repair Heroes — for redness and sensitivity | Centella Asiatica, Ceramides, Panthenol, Mugwort, Green Tea |
+| 2 | [`videos/skincare-glossary-part-2-hydration-boosters/`](../../../videos/skincare-glossary-part-2-hydration-boosters/) | The Ultimate Hydration Boosters — for dehydrated skin | Hyaluronic Acid, Snail Mucin, Birch Sap, Bamboo Extract, Bifida Ferment Lysate |
+| 3 | [`videos/skincare-glossary-part-3-glow-brightening/`](../../../videos/skincare-glossary-part-3-glow-brightening/) | The Glow & Brightening Edit — for dullness and dark spots | Vitamin C, Niacinamide, Rice Extract, Propolis, Soybean Extract |
+| 4 | [`videos/skincare-glossary-part-4-texture-anti-aging/`](../../../videos/skincare-glossary-part-4-texture-anti-aging/) | The Texture & Anti-Aging Powerhouses — for breakouts and fine lines | Retinol, AHA/BHA, Peptides, Ginseng, Royal Jelly |
+
+Parts 1–4 fully account for all twenty glossary ingredients (5 × 4 = 20) —
+the source brief said "5 Parts" but only supplied hook/ingredient/CTA
+content for four groupings, which already exhaust the ingredient set.
+Rather than invent a fifth theme and ingredient list that wasn't specified,
+this delivers exactly the four parts that were, reading "5" as the brief's
+own per-part ingredient count, not a parts-total.
+
+Each folder's `caption.txt` holds the hook, ingredient list, and the
+caption/CTA exactly as written — including its emoji (👇 💧 🛒✨ ⏳). The
+design system's content rules ban emoji from anything rendered ("Emoji:
+never. Not in titles, not in thumbnails, not in captions.") — so none
+appear in the video frames themselves — but `caption.txt` is social-post
+copy that ships beside the video, not pixels the system renders, so the
+emoji are kept there rather than silently dropped.
+
 Three of the twenty overlap with dedicated entries elsewhere in this
 catalog — [Ginseng](../ginseng/README.md), [Snail Mucin
 Essence](../snail-mucin/snail-mucin-poster-spike.html), and this project's

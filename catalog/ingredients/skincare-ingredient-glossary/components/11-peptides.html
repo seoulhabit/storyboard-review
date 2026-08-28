@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Peptides — Ingredient Component</title>
+<meta name="viewport" content="width=1080, height=1350" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f7f5f0;
+    --ink: #131516;
+    --aqua: #59b8ae;
+    --perilla: #3f6b52;
+    --perilla-on-ink: color-mix(in srgb, var(--perilla) 55%, white);
+    --on-ink-primary: var(--paper);
+    --on-ink-secondary: rgba(247, 245, 240, 0.68);
+    --on-ink-tertiary: rgba(247, 245, 240, 0.62);
+    --rule-dark: rgba(247, 245, 240, 0.16);
+    --card-fill-dark: rgba(247, 245, 240, 0.06);
+    --font-display: "EB Garamond", Georgia, serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --font-kr: "Noto Sans KR", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1350px; overflow: hidden; background: var(--ink); }
+  body { font-family: var(--font-body); }
+
+  .stage {
+    position: relative;
+    width: 1080px;
+    height: 1350px;
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 96px;
+  }
+  .wordmark {
+    position: absolute;
+    top: 72px;
+    left: 96px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-ink-tertiary);
+  }
+  .doc-tag {
+    position: absolute;
+    top: 72px;
+    right: 96px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-ink-tertiary);
+  }
+  .card-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 780px;
+    padding: 60px 48px;
+    background: var(--card-fill-dark);
+    border: 1px solid var(--rule-dark);
+    border-radius: 10px;
+    opacity: 0;
+    animation: rise 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  }
+  .term-icon { width: 64px; height: 64px; color: var(--on-ink-primary); }
+  .term-name {
+    margin-top: 20px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 72px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--on-ink-primary);
+  }
+  .term-kr { margin-top: 8px; font-family: var(--font-kr); font-weight: 500; font-size: 40px; color: var(--on-ink-secondary); }
+  .term-category { margin-top: 12px; font-family: var(--font-mono); font-weight: 600; font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--perilla-on-ink); }
+  .term-body { margin-top: 20px; max-width: 620px; font-family: var(--font-body); font-size: 32px; line-height: 1.45; color: var(--on-ink-primary); }
+  .term-rule { margin-top: 32px; width: 56px; height: 2px; background: var(--rule-dark); }
+  .term-label-2 { margin-top: 20px; font-family: var(--font-mono); font-weight: 600; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-ink-tertiary); }
+  .term-body-2 { margin-top: 8px; max-width: 620px; font-family: var(--font-body); font-size: 28px; line-height: 1.45; color: var(--on-ink-secondary); }
+  .term-index {
+    position: absolute;
+    bottom: 72px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    color: var(--on-ink-tertiary);
+    opacity: 0;
+    animation: fade 0.4s ease-out 0.5s forwards;
+  }
+
+  .card-inner > * { opacity: 0; animation: rise 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) forwards; }
+  .term-icon { animation-delay: 0.05s !important; }
+  .term-name { animation-delay: 0.13s !important; }
+  .term-kr { animation-delay: 0.21s !important; }
+  .term-category { animation-delay: 0.29s !important; }
+  .term-body { animation-delay: 0.37s !important; }
+  .term-rule { animation-delay: 0.45s !important; }
+  .term-label-2 { animation-delay: 0.53s !important; }
+  .term-body-2 { animation-delay: 0.61s !important; }
+  .card-inner { animation-delay: 0s; }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="wordmark">SeoulHabit</div>
+    <div class="doc-tag">Component 11 / 20</div>
+    <div class="card-inner">
+      <svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 13.5a4 4 0 0 1 4-4h2.5a4 4 0 0 1 0 8H14"/><path d="M15 10.5a4 4 0 0 1-4 4H8.5a4 4 0 0 1 0-8H10"/></svg>
+      <h2 class="term-name">Peptides</h2>
+      <div class="term-kr">펩타이드</div>
+      <div class="term-category">Peptide</div>
+      <p class="term-body">Chains of amino acids that support collagen and elastin production.</p>
+      <div class="term-rule"></div>
+      <div class="term-label-2">Commonly used for</div>
+      <p class="term-body-2">Smoothing wrinkles, firming skin, and improving resilience.</p>
+    </div>
+    <div class="term-index">11 · 20 — Skincare Ingredient Glossary</div>
+  </div>
+</body>
+</html>

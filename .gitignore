@@ -19,11 +19,16 @@ build/
 
 # HyperFrames per-project local state/caches (regenerable; absent from every
 # video/*/ project committed so far — preview server state, media-resolution
-# ledger, thumbnail cache, waveform cache).
+# ledger, thumbnail cache, waveform cache, transcode cache).
 .hyperframes/
 .media/
 .thumbnails/
 .waveform-cache/
+.transcode-cache/
+
+# npm dependencies inside each video/*/ project — never committed so far,
+# reinstalled from package.json/package-lock.json instead.
+node_modules/
 
 # macOS
 .DS_Store

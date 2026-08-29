@@ -78,7 +78,19 @@
           gap: 28px;
           overflow: hidden;
         }
+        /* display:flex + align-items:center added — CSS grid rows stretch every cell to
+           match the row's tallest chip (a 2-line chip next to a 1-line one), and without
+           vertical centering the shorter chip's text stayed top-aligned in the extra
+           height, reading as cramped/misaligned relative to its row partner.
+           IMPORTANT: a chip whose content mixes raw text with a child element (the
+           "=" chips below) MUST wrap all of it in one inner <span> — a flex container
+           splits mixed inline content into separate anonymous flex items at each element
+           boundary and collapses the whitespace between them ("Root " + "=" + " Ginseng"
+           ran together as "Root=Ginseng" the first time this was tried without the
+           wrapper). The inner span keeps it one flex item with normal text flow inside. */
         .cta-chip {
+          display: flex;
+          align-items: center;
           font-family: var(--font-mono);
           font-size: 26px;
           line-height: 1.3;
@@ -127,9 +139,9 @@
           <div data-hf-id="hf-cta-g1" class="cta-chip cta-chip-dark" id="cta-chip-1">Water-first = mostly water</div>
           <div data-hf-id="hf-cta-g2" class="cta-chip cta-chip-dark" id="cta-chip-2">Watch for the 1% line</div>
           <div data-hf-id="hf-cta-kh" class="cta-kicker cta-kicker-hanbang" id="cta-kicker-hanbang">HANBANG, TRANSLATED</div>
-          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3">Snail Secretion Filtrate <span data-hf-id="hf-onba" class="cta-chip-eq">=</span> Snail Mucin</div>
-          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4">Panax Root <span data-hf-id="hf-3y16" class="cta-chip-eq">=</span> Ginseng</div>
-          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5">Artemisia Princeps <span data-hf-id="hf-4cc7" class="cta-chip-eq">=</span> Mugwort</div>
+          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3"><span>Snail Secretion Filtrate <span data-hf-id="hf-onba" class="cta-chip-eq">=</span> Snail Mucin</span></div>
+          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4"><span>Panax Root <span data-hf-id="hf-3y16" class="cta-chip-eq">=</span> Ginseng</span></div>
+          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5"><span>Artemisia Princeps <span data-hf-id="hf-4cc7" class="cta-chip-eq">=</span> Mugwort</span></div>
         </div>
 
         <div data-hf-id="hf-cta-headline" id="cta-headline" class="clip cta-headline" data-start="0" data-duration="9.8">

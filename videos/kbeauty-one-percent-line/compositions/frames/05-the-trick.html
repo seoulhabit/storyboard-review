@@ -80,7 +80,12 @@
         .trick-arrow { top: 900px; left: 0; width: 100%; display: flex; justify-content: center; }
         .trick-arrow-glyph { font-size: 90px; color: var(--aqua); opacity: 0; transform: scaleY(0.6); transform-origin: top center; }
 
-        .trick-fan { top: 1140px; left: 0; width: 100%; padding: 0 162px 0 60px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        /* bottom: auto overrides .clip's inset:0 (which left bottom:0 in effect here,
+           since this rule only redeclared top/left/width) — without it the flex-wrap
+           container was ~780px tall and align-items:stretch blew each chip up to fill
+           its wrapped row, turning label pills into huge ovals with the text pinned to
+           the top edge. align-items/content keep it tight now that height is intrinsic. */
+        .trick-fan { top: 1140px; bottom: auto; left: 0; width: 100%; padding: 0 162px 0 60px; display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; justify-content: center; gap: 20px; }
         .trick-fan-chip {
           font-family: var(--font-mono);
           font-size: 26px;

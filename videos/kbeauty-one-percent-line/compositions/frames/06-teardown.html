@@ -68,12 +68,36 @@
           border-radius: 999px;
           opacity: 0;
         }
+        /* width set per-word by JS (measured off #tear-r10-word, deterministic since the
+           text never changes) instead of 100% of the row — the row div is full card
+           width, so a percentage-based strike shot straight past the end of the actual
+           word into empty space, reading as a stray glitch line rather than a redaction.
+           Animated via scaleX (transform) instead of width, matching the project's own
+           lint guidance to prefer transforms over layout properties. */
         .tear-mark-strike {
           position: absolute;
-          left: 0; top: 50%; width: 0%; height: 4px;
+          left: 0; top: 50%; height: 4px;
           background: var(--ink);
+          transform: scaleX(0);
+          transform-origin: left center;
         }
         .tear-row-wrap { position: relative; }
+
+        .tear-line-tag {
+          display: inline-block;
+          margin-left: 14px;
+          font-family: var(--font-mono);
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          color: var(--ink);
+          border: 2px solid var(--ink);
+          border-radius: 999px;
+          padding: 3px 10px;
+          vertical-align: middle;
+          opacity: 0;
+          transform: scale(0.85);
+        }
 
         /* reading-progress scan bar: a real render (postrender/check-blank-frames.py)
            showed delaying every row's reveal to its VO onset reintroduced the exact
@@ -116,7 +140,7 @@
           <div data-hf-id="hf-tear-r8" class="tear-row" id="tear-row-8">Centella Asiatica Extract</div>
           <div data-hf-id="hf-tear-r9" class="tear-row" id="tear-row-9">Calophyllum Inophyllum Seed Oil</div>
           <div data-hf-id="hf-tear-r10wrap" class="tear-row-wrap">
-            <div data-hf-id="hf-tear-r10" class="tear-row tear-hero" id="tear-row-10">Ethylhexylglycerin</div>
+            <div data-hf-id="hf-tear-r10" class="tear-row tear-hero" id="tear-row-10"><span data-hf-id="hf-tear-r10word" id="tear-r10-word">Ethylhexylglycerin</span><span data-hf-id="hf-tear-linetag" class="tear-line-tag" id="tear-line-tag">1% LINE</span></div>
             <div data-hf-id="hf-tear-strike" class="tear-mark-strike" id="tear-mark-strike" data-layout-allow-occlusion></div>
           </div>
           <div data-hf-id="hf-tear-r11" class="tear-row tear-below" id="tear-row-11">Dextrin</div>
@@ -163,7 +187,14 @@
 
         // ink strike under Ethylhexylglycerin — kept ink-weight, not coral (coral's one voltage
         // moment is spent in Frame 4). Local 12.9 matches "Everything below it." (11.94-13.33).
-        tl.to("#tear-mark-strike", { width: "100%", duration: 0.2, ease: "power2.in" }, 12.9);
+        // Width measured off the word itself (deterministic — same text every render) so the
+        // strike stops exactly at the word's edge instead of running the full row width.
+        const strikeWordWidth = document.getElementById("tear-r10-word").offsetWidth;
+        gsap.set("#tear-mark-strike", { width: strikeWordWidth });
+        tl.to("#tear-mark-strike", { scaleX: 1, duration: 0.2, ease: "power2.in" }, 12.9);
+        // "1% LINE" callout — the strike alone didn't visually name what it was marking;
+        // this anchors the eye on the actual cutoff the VO is describing.
+        tl.fromTo("#tear-line-tag", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 13.05);
 
         // trailing rows fade/blur in AFTER the pull-back (13.8, see push-in below) so they're
         // actually inside frame when revealed, timed to "Dextrin, xanthan gum, tocopherol"

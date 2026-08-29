@@ -848,3 +848,37 @@ the current `index.html`, not hand-maintained.)
     115.5s, 1080x1920. Loudness mastering pass not yet re-applied to this
     render — do that after round 1 feedback locks the picture, to avoid
     re-mastering on every iteration.
+- 2026-08-29 (round 1 feedback applied): Creator watched the round-1 cut and
+  flagged four concrete visual defects, all fixed:
+  - **Frame 5's fan chips** (Camellia/Panax/Artemisia/Tocopherol) were
+    rendering as huge circle-like outlines with text pinned to the top edge
+    instead of small label pills. Root cause: `.trick-fan` only redeclared
+    `top`/`left`/`width` from `.clip`'s `inset:0`, leaving `bottom:0` in
+    effect — the flex-wrap container was ~780px tall and `align-items:
+    stretch` blew each wrapped chip up to fill it. Fixed with `bottom: auto`
+    plus explicit `align-items`/`align-content`. Audited every other frame
+    for the same `.clip`-derived-height pattern on a `flex-wrap` container —
+    this was the only instance in the project.
+  - **Frame 6 had no explicit "1% Line" callout** near the Ethylhexylglycerin
+    strike, and **the strike itself ran the full row width** (900px) instead
+    of stopping at the actual word, reading as a stray glitch line rather
+    than a redaction. Fixed by measuring the word's real rendered width at
+    init (`#tear-r10-word.offsetWidth`, deterministic — same text every
+    render) and animating the strike via `scaleX` instead of `width`; added
+    an ink-bordered "1% LINE" tag inline after the struck word.
+  - **Frame 8's recap chips** (2-col grid) had shorter single-line chips
+    sitting top-aligned with a lot of dead space below, next to their
+    2-line row partners — CSS grid stretches every cell in a row to the
+    tallest one, and `.cta-chip` had no vertical centering. Fixed with
+    `display:flex; align-items:center`. First attempt at this broke word
+    spacing around the "=" in the three Hanbang chips ("Root=Ginseng", no
+    space) — a flex container splits mixed text+element content into
+    separate anonymous flex items at each element boundary and collapses
+    the whitespace between them. Fixed by wrapping each affected chip's
+    full content in one inner `<span>` so it stays a single flex item with
+    normal (non-flex) text flow inside — worth remembering for any future
+    flex-centered element that mixes raw text with a child element.
+  - `npm run check`: 0 issues across all 9 layout samples (was flagging the
+    strike/text occlusion as an info-level finding before the width fix).
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_16-20-21.mp4`,
+    115.5s, 1080x1920.

@@ -414,7 +414,7 @@ still well inside the faceless-explainer workflow's ~3-minute hard cap.
     — the goal's own example placement ("like the 1% line breakdown"). Three
     slides (snail mucin, ginseng, mugwort, in Frame 7/8's own Hanbang order
     — a deliberate callback that primes that later reveal), each a quick
-    snap-in from 1.14x scale (the "hyperlapse" cut), a slow held Ken-Burns
+    snap-in from 1.14x scale (the "hyperlapse" cut), a brief held Ken-Burns
     push to ~1.07-1.09x with a small directional drift (2 layers of motion
     at once — push-in and parallax together per the goal's own menu, not a
     plain crossfade sequence), then a quick whip-out except the final slide,
@@ -429,33 +429,45 @@ still well inside the faceless-explainer workflow's ~3-minute hard cap.
     SFX, used five times elsewhere) mark each slide's settle point. One
     aqua highlight per `frame.md`'s hard rule, spent on a 3-dot progress
     indicator rather than a second on-image accent.
-  - **Retime**: 5.8s visible span (6.3s comp duration incl. the standard
-    0.5s crossfade tail) inserted at the existing Frame 4→5 boundary
-    (43.84s), cascading a uniform +5.8s to every element from Frame 5
-    onward — comp/VO/SFX starts, the main timeline's crossfade pairs, the
-    root and BGM `data-duration`, and the final-anchor tween. Root duration:
-    113.04s to 118.84s.
+  - **First pass ran long, cut after review**: the initial cut dwelled
+    ~1.9s per image (5.8s visible span) — technically correct, but the one
+    wordless, slow-push beat in an otherwise ~2s-per-kinetic-element video
+    read as a drag once actually watched, and undershot the goal's own
+    "rapid hyper-lapse" language. Compressed each slide to ~0.8s
+    (0.12s snap-in, ~0.6s push, 0.12s whip-out) for a 2.5s visible span
+    (3.0s comp duration) — a true rapid-fire pass rather than a showcase,
+    while keeping all three ingredients and the Frame 7/8 ordering callback
+    intact.
+  - **Retime**: the interlude's visible span (2.5s, 3.0s comp duration incl.
+    the standard 0.5s crossfade tail) is inserted at the existing Frame 4→5
+    boundary (43.84s), cascading a uniform +2.5s to every element from
+    Frame 5 onward — comp/VO/SFX starts, the main timeline's crossfade
+    pairs, the root and BGM `data-duration`, and the final-anchor tween.
+    Root duration: 113.04s to 115.54s.
   - **BGM caught by the runtime audit, not by ear**: extending `el-bgm`'s
-    slot to 117.5s (preserving the original's ~1.3s fade-before-end ratio)
-    triggered `clip_media_fit` — the underlying `track.mp3` is only 111.70s
-    of real audio, so hyperframes silently truncates an oversized slot back
-    to the media's actual length at render time. Left as just a longer slot
-    number, the fix would have silently reverted itself, cutting music
-    under most of the (now-later) Frame 8 endcard instead of extending it.
-    Real fix: crossfade-looped the track with ffmpeg (`acrossfade`, `d=2`,
-    triangular curves) blending its own tail back into its own opening,
-    trimmed to exactly 117.5s, saved as `assets/bgm/track-extended.mp3`
-    (levels at the seam checked with `volumedetect`: -16.9dB mean / -0.6dB
-    max, in line with the rest of the track — no clipping, no dead spot).
-  - Verified in two passes: `npx hyperframes check` (0 lint/runtime/motion
-    errors or warnings; contrast 57/57; the four pre-existing info-level
-    layout notes are unrelated, on Frames 4/6, from the prior entry's zoom
-    work) and Studio snapshots at each internal beat — then re-verified
-    against the actual rendered MP4 (not just Studio) by extracting frames
-    at the new interlude and at every downstream frame boundary, confirming
-    the retime landed correctly frame-for-frame.
-  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_12-05-26.mp4`,
-    118.87s, h264 1080x1920 30fps, 438kbps video bitrate (up from 258kbps —
+    slot triggered `clip_media_fit` — the underlying `track.mp3` is only
+    111.70s of real audio, so hyperframes silently truncates an oversized
+    slot back to the media's actual length at render time. Left as just a
+    longer slot number, the fix would have silently reverted itself,
+    cutting music under most of the (now-later) Frame 8 endcard instead of
+    extending it. Real fix: crossfade-looped the track with ffmpeg
+    (`acrossfade`, `d=2`, triangular curves) blending its own tail back
+    into its own opening, saved as `assets/bgm/track-extended.mp3` (levels
+    at the seam checked with `volumedetect`: -16.9dB mean / -0.6dB max, in
+    line with the rest of the track — no clipping, no dead spot) and its
+    slot set to 114.2s, preserving the original's ~1.3s fade-before-end
+    ratio against the new root duration. The extended file itself runs to
+    117.5s — more than the 114.2s the second (shortened) pass actually
+    needs — so it was reused as-is rather than re-cut a second time.
+  - Verified in two passes, once per cut: `npx hyperframes check` (0
+    lint/runtime/motion errors or warnings both times; contrast 57/59 pass;
+    remaining info-level layout notes are unrelated, on Frames 4/6, from
+    the prior entry's zoom work) and Studio snapshots at each internal beat
+    — then re-verified against the actual rendered MP4 (not just Studio) by
+    extracting frames at the new interlude and at every downstream frame
+    boundary, confirming the retime landed correctly frame-for-frame.
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_12-26-27.mp4`,
+    115.57s, h264 1080x1920 30fps, 353kbps video bitrate (up from 258kbps —
     expected: photographic PNG content compresses heavier than this
     project's otherwise-flat typography, the same relationship noted
     against the reference project earlier in this log).

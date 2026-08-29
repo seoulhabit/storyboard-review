@@ -78,11 +78,13 @@ reversal of the house style, a controlled exception to it.
 
 None captured (no product/site to film, per the faceless-explainer contract).
 Frame 04b ("BEYOND THE LABEL") is the one photographic beat in the video: a
-5.8s interlude between Frame 4 (the 1%-line breakdown) and Frame 5, showing
-three `catalog/ingredient-photography/` stills — snail mucin, ginseng,
-mugwort — each with a quick snap-in, a slow Ken-Burns push+drift while held,
-and a whip-out into the next (the same three ingredients Frame 7 later
-Hanbang-translates, in the same order, so the beat also primes that reveal).
+2.5s rapid-fire interlude between Frame 4 (the 1%-line breakdown) and Frame
+5, showing three `catalog/ingredient-photography/` stills — snail mucin,
+ginseng, mugwort — each with a quick snap-in, a brief Ken-Burns push+drift
+while held, and a whip-out into the next (the same three ingredients Frame 7
+later Hanbang-translates, in the same order, so the beat also primes that
+reveal). Cut down from an initial 5.8s pass after review flagged it as
+dragging against the rest of the video's pacing.
 Paper background, not ink, so it reads as a breather rather than another
 data frame — the two adjacent ink frames (04, 05) make the paper pop land on
 both sides. No VO: this is the one wordless beat in an otherwise wall-to-wall

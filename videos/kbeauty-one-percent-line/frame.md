@@ -67,15 +67,30 @@ translated to elevation + scale instead.
 
 ## Faceless
 
-No talking-head footage, no stock photo people. Ingredient stills from
-`catalog/ingredient-photography/` (flat-lay PNGs) considered for texture but
-not required — typographic/vector treatment carries every frame, consistent
-with the JS-generated-card precedent in `skincare-ingredient-glossary`.
+No talking-head footage, no stock photo people. Typographic/vector treatment
+still carries every INCI/data frame, consistent with the JS-generated-card
+precedent in `skincare-ingredient-glossary`. One exception: Frame 04b (see
+B-roll) uses three flat-lay PNGs from `catalog/ingredient-photography/` as a
+deliberate sensory counterweight to the text-heavy frames around it — not a
+reversal of the house style, a controlled exception to it.
 
 ## B-roll
 
-None captured; this is a pure kinetic-typography/data-viz piece (per the
-faceless-explainer contract — no product/site to film).
+None captured (no product/site to film, per the faceless-explainer contract).
+Frame 04b ("BEYOND THE LABEL") is the one photographic beat in the video: a
+5.8s interlude between Frame 4 (the 1%-line breakdown) and Frame 5, showing
+three `catalog/ingredient-photography/` stills — snail mucin, ginseng,
+mugwort — each with a quick snap-in, a slow Ken-Burns push+drift while held,
+and a whip-out into the next (the same three ingredients Frame 7 later
+Hanbang-translates, in the same order, so the beat also primes that reveal).
+Paper background, not ink, so it reads as a breather rather than another
+data frame — the two adjacent ink frames (04, 05) make the paper pop land on
+both sides. No VO: this is the one wordless beat in an otherwise wall-to-wall
+narrated video, letting BGM alone carry it. Source images are 2048x2048
+Higgsfield stills shot on cream seamless paper (see the catalog's own
+README); downsampled to 1400px and copied into `assets/images/` rather than
+referenced from the shared catalog path, matching how fonts/audio are always
+project-local.
 
 ## Brand anchor
 

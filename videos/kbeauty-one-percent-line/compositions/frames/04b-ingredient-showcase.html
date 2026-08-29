@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face {
+          font-family: "EB Garamond";
+          font-weight: 400;
+          font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2");
+          font-display: block;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          font-weight: 100 900;
+          font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+          font-display: block;
+        }
+        #root {
+          --paper: #F7F5F0;
+          --ink: #131516;
+          --ink-3: #9C978D;
+          --aqua: #59B8AE;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --t-label: 24px;
+          --t-figure: 60px;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+
+          position: relative;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          background: var(--paper);
+          font-family: var(--font-mono);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .macro-kicker {
+          top: 170px; left: 0; width: 100%;
+          text-align: center;
+          font-family: var(--font-mono);
+          font-size: var(--t-label);
+          letter-spacing: 0.1em;
+          color: var(--ink-3);
+          opacity: 0;
+        }
+
+        .macro-stage {
+          top: 310px; left: 80px; width: 920px; height: 920px;
+        }
+        .macro-slide {
+          position: absolute; inset: 0;
+          opacity: 0;
+        }
+        .macro-photo-frame {
+          width: 100%; height: 100%;
+          border-radius: 16px;
+          overflow: hidden;
+          background: var(--paper);
+          box-shadow: var(--elev-2);
+          transform-origin: 50% 50%;
+        }
+        .macro-photo {
+          width: 100%; height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .macro-name {
+          top: 1270px; left: 0; width: 100%;
+          text-align: center;
+          font-family: var(--font-display);
+          font-size: var(--t-figure);
+          color: var(--ink);
+        }
+
+        .macro-dots { top: 1372px; left: 0; width: 100%; height: 20px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+        .macro-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ink-3); }
+      </style>
+
+      <div data-hf-id="hf-macro-root" id="root" data-composition-id="04b-ingredient-showcase" data-width="1080" data-height="1920" data-duration="6.3">
+        <div data-hf-id="hf-macro-kicker" id="macro-kicker" class="clip macro-kicker" data-start="0" data-duration="6.3">BEYOND THE LABEL</div>
+
+        <div data-hf-id="hf-macro-stage" id="macro-stage" class="clip macro-stage" data-start="0" data-duration="6.3">
+          <div data-hf-id="hf-macro-slide1" class="macro-slide" id="macro-slide-1">
+            <div class="macro-photo-frame" id="macro-frame-1">
+              <img class="macro-photo" src="assets/images/ingredient-snail-mucin.png" alt="Glossy snail mucin gel in a glass dish">
+            </div>
+          </div>
+          <div data-hf-id="hf-macro-slide2" class="macro-slide" id="macro-slide-2">
+            <div class="macro-photo-frame" id="macro-frame-2">
+              <img class="macro-photo" src="assets/images/ingredient-ginseng.png" alt="Whole forked ginseng root">
+            </div>
+          </div>
+          <div data-hf-id="hf-macro-slide3" class="macro-slide" id="macro-slide-3">
+            <div class="macro-photo-frame" id="macro-frame-3">
+              <img class="macro-photo" src="assets/images/ingredient-mugwort.png" alt="Fresh silvery-green mugwort leaf sprig">
+            </div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-macro-name1" id="macro-name-1" class="clip macro-name" data-start="0" data-duration="2.0">SNAIL MUCIN</div>
+        <div data-hf-id="hf-macro-name2" id="macro-name-2" class="clip macro-name" data-start="2.0" data-duration="1.9">GINSENG</div>
+        <div data-hf-id="hf-macro-name3" id="macro-name-3" class="clip macro-name" data-start="3.9" data-duration="1.9">MUGWORT</div>
+
+        <div data-hf-id="hf-macro-dots" id="macro-dots" class="clip macro-dots" data-start="0" data-duration="6.3">
+          <span data-hf-id="hf-macro-dot1" class="macro-dot" id="macro-dot-1"></span>
+          <span data-hf-id="hf-macro-dot2" class="macro-dot" id="macro-dot-2"></span>
+          <span data-hf-id="hf-macro-dot3" class="macro-dot" id="macro-dot-3"></span>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // stage dressing: kicker + progress dots fade in once, hold for the whole beat
+        tl.fromTo("#macro-kicker", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power3.out" }, 0);
+        tl.fromTo("#macro-dots", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power3.out" }, 0.05);
+        tl.set("#macro-dot-1", { backgroundColor: "#59B8AE" }, 0);
+
+        // three ingredient slides, one visible at a time: quick snap-in (the "hyperlapse" cut),
+        // a slow continuous Ken-Burns push+drift while held, then a quick whip-out — except the
+        // final slide, which just holds its push through to the frame's own crossfade-out.
+        tl.set("#macro-slide-1", { opacity: 1 }, 0.1);
+        tl.fromTo("#macro-frame-1", { scale: 1.14, x: 0, y: 0 }, { scale: 1, x: 0, y: 0, duration: 0.15, ease: "power2.out" }, 0.1);
+        tl.to("#macro-frame-1", { scale: 1.09, x: -14, y: -10, duration: 1.6, ease: "none" }, 0.25);
+        tl.to("#macro-slide-1", { opacity: 0, duration: 0.15, ease: "power2.in" }, 1.85);
+        tl.to("#macro-frame-1", { scale: 1.12, duration: 0.15, ease: "power2.in" }, 1.85);
+        tl.set("#macro-slide-1", { opacity: 0 }, 2.0);
+
+        tl.set("#macro-dot-1", { backgroundColor: "#9C978D" }, 2.0);
+        tl.set("#macro-dot-2", { backgroundColor: "#59B8AE" }, 2.0);
+        tl.set("#macro-slide-2", { opacity: 1 }, 2.0);
+        tl.fromTo("#macro-frame-2", { scale: 1.14, x: 0, y: 0 }, { scale: 1, x: 0, y: 0, duration: 0.15, ease: "power2.out" }, 2.0);
+        tl.to("#macro-frame-2", { scale: 1.07, x: 16, y: 12, duration: 1.6, ease: "none" }, 2.15);
+        tl.to("#macro-slide-2", { opacity: 0, duration: 0.15, ease: "power2.in" }, 3.75);
+        tl.to("#macro-frame-2", { scale: 1.1, duration: 0.15, ease: "power2.in" }, 3.75);
+        tl.set("#macro-slide-2", { opacity: 0 }, 3.9);
+
+        tl.set("#macro-dot-2", { backgroundColor: "#9C978D" }, 3.9);
+        tl.set("#macro-dot-3", { backgroundColor: "#59B8AE" }, 3.9);
+        tl.set("#macro-slide-3", { opacity: 1 }, 3.9);
+        tl.fromTo("#macro-frame-3", { scale: 1.14, x: 0, y: 0 }, { scale: 1, x: 0, y: 0, duration: 0.15, ease: "power2.out" }, 3.9);
+        tl.to("#macro-frame-3", { scale: 1.09, x: -12, y: 14, duration: 1.75, ease: "none" }, 4.05);
+
+        // ingredient name labels track their slide 1:1 (own clip windows handle visibility)
+        tl.fromTo("#macro-name-1", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.15);
+        tl.fromTo("#macro-name-2", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 2.05);
+        tl.fromTo("#macro-name-3", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 3.95);
+
+        tl.to({}, { duration: 6.3 }, 0);
+        window.__timelines["04b-ingredient-showcase"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

@@ -375,3 +375,87 @@ still well inside the faceless-explainer workflow's ~3-minute hard cap.
     bitrate — the small increase from ~188kbps is consistent with the new
     zoom/pan motion and beaker graphic adding real per-frame delta rather
     than a settings change).
+- 2026-08-29: `/goal` directive to integrate "hyper-framed" sensory visuals —
+  macro ingredient shots with dynamic keyframing, used as a visual breaker
+  after a dense technical explanation — while using existing components
+  first. Checked two places before authoring anything new:
+  - **Assets**: `catalog/ingredient-photography/` (a shared, project-external
+    library, not this project's own) turned out to hold 2048x2048 Higgsfield
+    stills for every ingredient this video actually discusses, including the
+    exact three Frame 7 later Hanbang-translates — `12-snail-mucin.png`
+    ("glossy stretching gel"), `06-ginseng.png` ("whole forked root"), and
+    `18-mugwort.png` ("fresh silvery-green leaf sprig"), per the catalog's
+    own README — a near-verbatim match to the goal's own example language
+    ("glistening snail mucin," "vibrant mugwort leaves," "highly textured
+    ginseng roots"). Downsampled 2048px to 1400px (`sips -Z`, still >1.5x
+    the 920px display size for headroom under the push-in) and copied into
+    this project's own `assets/images/`, matching how fonts/audio are
+    always project-local rather than referenced from the shared path.
+  - **Registry**: `npx hyperframes catalog --query` surfaced `push-in`
+    (single-subject camera push, holdable) and `scroll-camera-story`
+    (multi-section forced-scroll pass with depth-rate parallax and
+    decelerating arrival cues) as the closest existing components. Installed
+    and read both. `push-in` hardcodes its timeline key to the literal id
+    `"push-in"`, so three instances in one frame would collide — a
+    single-subject primitive, not a sequence one. `scroll-camera-story`'s
+    visual skin (dashboard chips, rings, skeleton bars) is built for a
+    product-feature-tour, not ingredient photography, but its underlying
+    *mechanism* — one `cam.t` progress value driving a percent-based world
+    translate, non-overlapping arrival-cue tweens, per-layer parallax rates
+    — is exactly the disciplined "hyperlapse through sections" engine this
+    beat needed. Adapted that mechanism (a simplified two-layer version:
+    photo + label, not four depth layers) into a bespoke frame rather than
+    wiring the block in verbatim; removed the two installed component files
+    and the `hyperframes.json` registry bookkeeping afterward since nothing
+    ended up literally wired in, to avoid leaving unreferenced files in the
+    project.
+  - **New frame**: `compositions/frames/04b-ingredient-showcase.html`,
+    inserted between Frame 4 (`one-percent-line`) and Frame 5 (`the-trick`)
+    — the goal's own example placement ("like the 1% line breakdown"). Three
+    slides (snail mucin, ginseng, mugwort, in Frame 7/8's own Hanbang order
+    — a deliberate callback that primes that later reveal), each a quick
+    snap-in from 1.14x scale (the "hyperlapse" cut), a slow held Ken-Burns
+    push to ~1.07-1.09x with a small directional drift (2 layers of motion
+    at once — push-in and parallax together per the goal's own menu, not a
+    plain crossfade sequence), then a quick whip-out except the final slide,
+    which just holds into the frame's own crossfade. Paper background,
+    against ink on both neighboring frames (04, 05 are already back-to-back
+    ink per `frame.md`'s table) — a deliberate second contrast pop so the
+    beat reads as a breather, not another data frame. No new VO: the one
+    wordless beat in an otherwise wall-to-wall-narrated video, letting BGM
+    carry it alone — in scope per the goal (a visual/motion addition, not a
+    script change) and consistent with the user's earlier decision to leave
+    narration alone. Three `pop.mp3` hits (already this project's "reveal"
+    SFX, used five times elsewhere) mark each slide's settle point. One
+    aqua highlight per `frame.md`'s hard rule, spent on a 3-dot progress
+    indicator rather than a second on-image accent.
+  - **Retime**: 5.8s visible span (6.3s comp duration incl. the standard
+    0.5s crossfade tail) inserted at the existing Frame 4→5 boundary
+    (43.84s), cascading a uniform +5.8s to every element from Frame 5
+    onward — comp/VO/SFX starts, the main timeline's crossfade pairs, the
+    root and BGM `data-duration`, and the final-anchor tween. Root duration:
+    113.04s to 118.84s.
+  - **BGM caught by the runtime audit, not by ear**: extending `el-bgm`'s
+    slot to 117.5s (preserving the original's ~1.3s fade-before-end ratio)
+    triggered `clip_media_fit` — the underlying `track.mp3` is only 111.70s
+    of real audio, so hyperframes silently truncates an oversized slot back
+    to the media's actual length at render time. Left as just a longer slot
+    number, the fix would have silently reverted itself, cutting music
+    under most of the (now-later) Frame 8 endcard instead of extending it.
+    Real fix: crossfade-looped the track with ffmpeg (`acrossfade`, `d=2`,
+    triangular curves) blending its own tail back into its own opening,
+    trimmed to exactly 117.5s, saved as `assets/bgm/track-extended.mp3`
+    (levels at the seam checked with `volumedetect`: -16.9dB mean / -0.6dB
+    max, in line with the rest of the track — no clipping, no dead spot).
+  - Verified in two passes: `npx hyperframes check` (0 lint/runtime/motion
+    errors or warnings; contrast 57/57; the four pre-existing info-level
+    layout notes are unrelated, on Frames 4/6, from the prior entry's zoom
+    work) and Studio snapshots at each internal beat — then re-verified
+    against the actual rendered MP4 (not just Studio) by extracting frames
+    at the new interlude and at every downstream frame boundary, confirming
+    the retime landed correctly frame-for-frame.
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_12-05-26.mp4`,
+    118.87s, h264 1080x1920 30fps, 438kbps video bitrate (up from 258kbps —
+    expected: photographic PNG content compresses heavier than this
+    project's otherwise-flat typography, the same relationship noted
+    against the reference project earlier in this log).

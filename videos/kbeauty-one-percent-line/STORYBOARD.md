@@ -212,9 +212,99 @@ after generation. Design source: `frame.md`.
 | 04 one-percent-line | 31.24 | 13.10 |
 | 05 the-trick | 43.84 | 20.54 |
 | 06 teardown | 63.88 | 19.02 |
-| 07 hanbang-rapidfire | 82.40 | 20.46 |
-| 08 cta-endcard | 102.36 | 9.80 (no tail — final frame) |
+| 07 hanbang-rapidfire | 82.40 | 21.34 |
+| 08 cta-endcard | 103.24 | 9.80 (no tail — final frame) |
 
-Total composition length: 112.16s (~1:52) — the script's own 105s estimate
+Total composition length: 113.04s (~1:53) — the script's own 105s estimate
 was pre-VO; real spoken pacing plus the CTA's frozen-grid hold lands here,
 still well inside the faceless-explainer workflow's ~3-minute hard cap.
+
+- 2026-08-29: Reviewer feedback — narrator mispronounced "INCI" as "inky"
+  in Frame 7's VO (confirmed by transcribing `assets/voice/07.wav` with
+  both whisper `small.en` and `large-v3`, which independently produced
+  "inky names" both times; every other technical term in the script —
+  Phenoxyethanol, Ethylhexylglycerin, Niacinamide, etc. — transcribed
+  correctly, isolating the defect to this one acronym). Regenerated line 07
+  with the same locked "Kimberly" element voice
+  (`674b71b8-1d2e-4087-8567-d1f53c0b9f3c`), respelling the TTS input as
+  "I-N-C-I" to force letter-by-letter pronunciation (the on-screen script
+  text/captions keep the normal "INCI" spelling — only the TTS prompt was
+  respelled). Re-transcription confirms correct pronunciation. New take
+  measured 19.84s (+0.88s vs the old 18.96s); retimed Frame 7's internal
+  fade-out/hold and the root timeline's Frame 7 duration, Frame 8 start,
+  and total duration to absorb the delta. `CARD_STARTS` (the three
+  flashcard pop-in beats) were deliberately left at their even 6.4s
+  "rapidfire" cadence — that spacing was never word-synced (it's exactly
+  1.8/8.2/14.6, a fixed rhythm under the narration, not per original
+  design), so it doesn't need to track the new word timings.
+- 2026-08-29: Reviewer feedback — "extreme small fonts." Visually confirmed
+  by extracting and inspecting render frames (not just reading CSS
+  numbers): Frame 7's three Hanbang cards and Frame 8's recap-chip grid
+  were both top-anchored with `justify-content`/`align-content` defaulting
+  to the start edge, leaving 40-60% of the 1920px-tall canvas empty below
+  the content — which read as "small" even though the raw font-size values
+  weren't wildly out of line with the rest of the design system. Fixed by
+  centering/distributing each block's content across its full allotted
+  height (`justify-content: space-evenly` on Frame 7's card stack,
+  `align-content: center` + a taller box on Frame 8's chip grid) and
+  bumping the smallest sizes in those two scenes (Frame 7: `--t-label`
+  24→28px, `.hb-inci` 26→30px, `.hb-common` 46→56px; Frame 8: `.cta-chip`
+  22→26px). Also added the 3rd Hanbang pair ("Artemisia Princeps =
+  Mugwort") to Frame 8's recap grid — the STORYBOARD called for all 3 pairs
+  there but only 2 existed in the shipped HTML. Other scenes (01, 02, 04,
+  05, 06) were screenshotted and checked too; their text was legible at
+  actual render resolution, so left unchanged rather than relayout the
+  whole video beyond what the reviewer actually flagged.
+- 2026-08-29: Parity pass against `snail-mucin-medical-secret` (rendered
+  video / fonts / design lessons). Two fixes, both confirmed against actual
+  rendered frames, not just source values:
+  - **Safe-zone violations.** `06-teardown.html`'s `.tear-disclaimer` sat at
+    `top: 1720px` — 160px inside the reserved bottom-360px Shorts safe zone
+    (boundary is y:1560 on the 1920px canvas) — and `08-cta-endcard.html`'s
+    `.cta-disclaimer` sat exactly on that boundary (`top: 1560px`) with no
+    margin. The teardown card's actual ingredient-row content only needs
+    ~975px of its declared 1440px height, so `.tear-card` height was cut to
+    1200px and `.tear-disclaimer` moved to `top: 1480px`, clearing the
+    boundary with ~50px to spare. On the endcard, `.cta-lockup` moved
+    1350→1240px and `.cta-disclaimer` moved 1560→1440px, giving both
+    elements room well inside the safe area. Re-rendered and confirmed both
+    disclaimers now sit clear of the bottom band with visible margin.
+  - **Fonts not self-hosted.** Of the four typefaces this project names
+    (`--font-display` EB Garamond, `--font-body` Inter, `--font-mono`
+    JetBrains Mono, `--font-kr` Noto Sans KR), only Noto Sans KR had a real
+    `@font-face` backing it — the other three were pure CSS fallback chains
+    with no committed font file, unlike `snail-mucin-medical-secret`'s
+    fully self-hosted Bricolage Grotesque + JetBrains Mono. Fixed by adding
+    real woff2 files to `assets/fonts/` and matching `@font-face` blocks
+    (`font-display: block`, mirroring the existing Noto Sans KR pattern) to
+    every frame that names each family: `eb-garamond-400.woff2` (the only
+    weight ever used — every `--font-display` element is weight 400,
+    explicit or default), `inter-800.woff2` (the only weight ever used —
+    every `--font-body` element is weight 800), and `jetbrains-mono-500.woff2`
+    (copied directly from `snail-mucin-medical-secret/assets/fonts/`, the
+    exact same asset already verified there). Because JetBrains Mono is
+    requested at three different weights against this one physical file
+    (400 default, 500 on a few chips/parts, 700 on `.tear-row.tear-hero`),
+    its `@font-face` declares `font-weight: 100 900` — a range spanning all
+    three — rather than an exact `500`, so the browser treats the single
+    file as covering that whole span instead of synthesizing fake-bold on
+    the 700 request (the same technique `snail-mucin-medical-secret` uses,
+    applied consistently here rather than per-frame). Note: hyperframes'
+    own compiler already auto-fetches and injects deterministic
+    `@font-face` rules for named Google Fonts at `check`/`render` time (seen
+    in the `check` log: "Injected deterministic @font-face rules for 6
+    requested font families") — a byte-for-byte comparison of the old and
+    new renders at the same timestamp (t=2s, Frame 1's headline + VO line)
+    showed identical output, confirming the fonts were already resolving
+    correctly via that live-fetch path even before this fix. Self-hosting
+    them explicitly matches the reference project's convention and removes
+    the render's dependency on a live Google Fonts fetch at render time,
+    consistent with this project's own pinned-CLI goal of rendering
+    identically over time — it is a determinism/fidelity improvement, not a
+    correction of a visibly wrong render.
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_10-29-59.mp4`,
+    113.07s, h264 1080x1920 30fps (unchanged from before), ~188kbps video
+    bitrate (unchanged from the prior render's ~185kbps — confirming the
+    video's small file size is a function of its flat typographic content,
+    not a render-settings gap versus the reference project's photographic,
+    Ken-Burns-heavy footage).

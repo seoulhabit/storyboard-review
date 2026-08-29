@@ -18,6 +18,20 @@
           src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
           font-display: block;
         }
+        @font-face {
+          font-family: "EB Garamond";
+          font-weight: 400;
+          font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2");
+          font-display: block;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          font-weight: 100 900;
+          font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+          font-display: block;
+        }
         #root {
           --ink: #131516;
           --paper: #F7F5F0;
@@ -29,7 +43,7 @@
           --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
           --t-frame: 50px;
           --t-body: 32px;
-          --t-label: 24px;
+          --t-label: 28px;
           --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
 
           position: relative;
@@ -43,26 +57,26 @@
 
         .hb-kicker { top: 160px; left: 0; width: 100%; text-align: center; font-family: var(--font-display); font-size: 52px; color: var(--paper); opacity: 0; }
 
-        .hb-cards { top: 320px; left: 0; width: 100%; height: 1500px; display: flex; flex-direction: column; gap: 44px; padding: 0 90px; }
+        .hb-cards { top: 320px; left: 0; width: 100%; height: 1500px; display: flex; flex-direction: column; justify-content: space-evenly; gap: 24px; padding: 0 90px; }
         .hb-card {
           background: var(--white);
           border-radius: 16px;
           box-shadow: var(--elev-2);
-          padding: 36px 40px;
+          padding: 44px 48px;
           opacity: 0;
           transform: scale(0.92) translateY(18px);
         }
-        .hb-inci { font-family: var(--font-mono); font-size: 26px; color: var(--ink-2); }
-        .hb-common { font-family: var(--font-display); font-size: 46px; color: var(--ink); margin: 8px 0 6px; position: relative; display: inline-block; }
+        .hb-inci { font-family: var(--font-mono); font-size: 30px; color: var(--ink-2); }
+        .hb-common { font-family: var(--font-display); font-size: 56px; color: var(--ink); margin: 8px 0 6px; position: relative; display: inline-block; }
         .hb-common-underline { position: absolute; left: 0; right: 0; bottom: -4px; height: 4px; background: var(--aqua); transform: scaleX(0); transform-origin: left center; }
         .hb-kr { font-family: var(--font-kr); font-size: var(--t-label); color: var(--ink-2); margin-right: 10px; }
         .hb-func { font-family: var(--font-mono); font-size: var(--t-label); color: var(--ink-2); }
       </style>
 
-      <div data-hf-id="hf-hb-root" id="root" data-composition-id="07-hanbang-rapidfire" data-width="1080" data-height="1920" data-duration="20.46">
-        <div data-hf-id="hf-hb-kicker" id="hb-kicker" class="clip hb-kicker" data-start="0" data-duration="20.46">THE HANBANG CHEAT SHEET</div>
+      <div data-hf-id="hf-hb-root" id="root" data-composition-id="07-hanbang-rapidfire" data-width="1080" data-height="1920" data-duration="21.34">
+        <div data-hf-id="hf-hb-kicker" id="hb-kicker" class="clip hb-kicker" data-start="0" data-duration="21.34">THE HANBANG CHEAT SHEET</div>
 
-        <div data-hf-id="hf-hb-cards" id="hb-cards" class="clip hb-cards" data-start="0" data-duration="20.46">
+        <div data-hf-id="hf-hb-cards" id="hb-cards" class="clip hb-cards" data-start="0" data-duration="21.34">
           <div data-hf-id="hf-hb-c1" class="hb-card" id="hb-card-1">
             <div data-hf-id="hf-hb-c1inci" class="hb-inci">Snail Secretion Filtrate</div>
             <div data-hf-id="hf-hb-c1common" class="hb-common" id="hb-common-1">Snail Mucin<div data-hf-id="hf-hb-c1u" class="hb-common-underline" id="hb-underline-1"></div></div>
@@ -98,9 +112,9 @@
           tl.to(UNDERLINE_IDS[i], { scaleX: 1, duration: 0.3, ease: "power3.out" }, CARD_STARTS[i] + 0.25);
         });
 
-        tl.to(["#hb-cards"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 19.6);
+        tl.to(["#hb-cards"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 20.48);
 
-        tl.to({}, { duration: 20.46 }, 0);
+        tl.to({}, { duration: 21.34 }, 0);
         window.__timelines["07-hanbang-rapidfire"] = tl;
       </script>
     </template>

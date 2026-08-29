@@ -196,3 +196,24 @@
   src: url("../fonts/NotoSansKR-500-subset.woff2") format("woff2");
   font-display: block;
 }
+@font-face {
+  font-family: "EB Garamond";
+  font-weight: 400;
+  font-style: normal;
+  src: url("../fonts/eb-garamond-400.woff2") format("woff2");
+  font-display: block;
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 800;
+  font-style: normal;
+  src: url("../fonts/inter-800.woff2") format("woff2");
+  font-display: block;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: 100 900;
+  font-style: normal;
+  src: url("../fonts/jetbrains-mono-500.woff2") format("woff2");
+  font-display: block;
+}

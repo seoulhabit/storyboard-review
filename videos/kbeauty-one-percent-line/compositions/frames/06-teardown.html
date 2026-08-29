@@ -4,6 +4,20 @@
   <body>
     <template>
       <style>
+        @font-face {
+          font-family: "EB Garamond";
+          font-weight: 400;
+          font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2");
+          font-display: block;
+        }
+        @font-face {
+          font-family: "JetBrains Mono";
+          font-weight: 100 900;
+          font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+          font-display: block;
+        }
         #root {
           --paper: #F7F5F0;
           --white: #FCFBF9;
@@ -26,7 +40,7 @@
         .clip { position: absolute; inset: 0; }
 
         .tear-card {
-          top: 240px; left: 90px; width: 900px; height: 1440px;
+          top: 240px; left: 90px; width: 900px; height: 1200px;
           background: var(--white);
           border-radius: 16px;
           box-shadow: var(--elev-2);
@@ -61,7 +75,7 @@
         .tear-row-wrap { position: relative; }
 
         .tear-disclaimer {
-          top: 1720px; left: 90px; width: 900px;
+          top: 1480px; left: 90px; width: 900px;
           text-align: center;
           font-family: var(--font-mono);
           font-size: var(--t-label);

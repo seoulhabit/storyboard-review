@@ -14,7 +14,7 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_16-20-21.mp4` —
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_16-47-01.mp4` —
 115.5s, 1080x1920 (confirmed via `ffprobe`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
@@ -46,3 +46,20 @@ to the source catalog files (accounting for the resize) during the
 project got it right the first time.
 
 No new imagery was generated for this project.
+
+## Visual components — checked, none applicable
+
+Prompted by creator feedback asking whether the catalog's `visual-components/`
+library was checked before building each scene's mechanism (it hadn't been —
+the skill's reuse rule only covered plates until this pass, now fixed in
+`faceless-video-craft` production-loop step 4). Checked each of the five
+existing components against this video's actual content, not just their
+category label: `SplitFaceProtocol` reads like a fit for Frame 3's
+split-screen but is a literal clinical bilateral-face SVG (control-arm/
+active-arm treatment zones), not a generic two-column layout; `EvidenceMeter`
+requires an `ING-*` source citation, which this topic explicitly has none of
+(general label-reading literacy, not a single ingredient's evidence record —
+see the project's own `frame.md`); `GradedScale`, `RoutineLadder`, and
+`Dawn-to-Dusk`/`CelestialArc` are confidence-scale, routine-sequence, and
+AM/PM-specific. None apply — a real finding from checking, not an assumption
+from skipping the check.

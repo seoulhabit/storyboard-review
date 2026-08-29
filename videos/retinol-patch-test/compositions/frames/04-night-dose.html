@@ -24,12 +24,12 @@
         .clip { position: absolute; inset: 0; }
 
         .night-zone {
-          top: var(--short-safe-top); bottom: auto; left: 0; width: 100%; height: 260px;
+          top: var(--short-safe-top); bottom: auto; left: var(--short-safe-left); width: calc(100% - var(--short-safe-left) - var(--short-safe-right)); height: 260px;
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
         }
         .arc-svg { width: 860px; height: 172px; display: block; }
         .night-pm {
-          font-size: 24px; letter-spacing: 0.12em; color: var(--ink-3-dark);
+          font-size: 28px; letter-spacing: 0.12em; color: var(--ink-3-dark);
           opacity: 0;
         }
 
@@ -45,10 +45,11 @@
           opacity: 0; transform: scale(0);
         }
         .dose-label {
-          font-size: 32px; font-weight: 700; letter-spacing: 0.03em; color: var(--paper);
+          font-size: 34px; font-weight: 700; letter-spacing: 0.03em; color: var(--paper);
           text-align: center;
           opacity: 0;
         }
+        .dose-label-em { color: var(--aqua); }
 
         .rules-zone {
           top: 1180px; left: 0; width: 100%;
@@ -58,7 +59,7 @@
           display: flex; align-items: center; gap: 16px;
           width: 700px; padding: 20px 32px;
           border: 2px solid #333333; border-radius: 10px;
-          font-size: 28px; color: var(--paper); letter-spacing: 0.02em;
+          font-size: 32px; color: var(--paper); letter-spacing: 0.02em;
           opacity: 0; transform: translateY(16px);
         }
         .rule-glyphs { display: inline-flex; gap: 10px; margin-left: auto; }
@@ -75,19 +76,23 @@
       </style>
 
       <!--
-        Day-to-night arc reused verbatim from the catalog's own checked-in
-        component: catalog/visual-components/celestial-arc/celestial-arc-spike.html
-        -- same "M 70 150 Q 500 -30 930 150" arc path in the same 1000x200
-        viewBox, and the same overlapping-circle crescent-moon technique
-        (here via an SVG mask, a more reliable port of the source's own
-        inset-box-shadow "subtract an offset shape" trick). The source runs
-        on plain CSS `infinite` keyframes and a blurred glow box-shadow --
-        neither is allowed here (seek-safe paused timeline; no glow), so
-        this is a deterministic, glow-free port: a dim static sun (day
-        already done) and a bright static moon+stars (now).
+        Day-to-night arc PORTED (not embedded) from the catalog's own
+        checked-in component: catalog/visual-components/celestial-arc/
+        celestial-arc-spike.html -- same "M 70 150 Q 500 -30 930 150" arc
+        path in the same 1000x200 viewBox, and the same overlapping-circle
+        crescent-moon technique (here via an SVG mask, a more reliable port
+        of the source's own inset-box-shadow "subtract an offset shape"
+        trick). The source is a documented SPIKE, explicitly marked "not
+        wired to build.mjs" and "not seek-safe yet" by its own README: it
+        runs the sun/rays/stars/arc-dot on wall-clock CSS `infinite`
+        keyframes and SMIL <animateMotion repeatCount="indefinite">, plus a
+        blurred glow box-shadow. Neither is compatible with this render
+        (paused, seek-scrubbed GSAP timeline; no glow per this project's
+        elevation rule), so this is a deterministic, glow-free port: a dim
+        static sun (day already done) and a bright static moon+stars (now).
       -->
-      <div id="root" data-composition-id="04-night-dose" data-width="1080" data-height="1920" data-duration="10.662">
-        <div id="night-zone" class="clip night-zone" data-start="0" data-duration="10.662">
+      <div id="root" data-composition-id="04-night-dose" data-width="1080" data-height="1920" data-duration="9.931">
+        <div id="night-zone" class="clip night-zone" data-start="0" data-duration="9.931">
           <svg viewBox="0 0 1000 200" class="arc-svg" id="arc-svg">
             <defs>
               <mask id="moon-mask" maskUnits="userSpaceOnUse" x="895" y="115" width="70" height="70">
@@ -108,14 +113,14 @@
           <div class="night-pm" id="night-pm">NIGHT ROUTINE</div>
         </div>
 
-        <div id="dose-zone" class="clip dose-zone" data-start="0" data-duration="10.662">
+        <div id="dose-zone" class="clip dose-zone" data-start="0" data-duration="9.931">
           <div class="dose-ruler" id="dose-ruler">
             <div class="dose-dot" id="dose-dot"></div>
           </div>
-          <div class="dose-label" id="dose-label">PEA-SIZED. THAT'S IT.</div>
+          <div class="dose-label" id="dose-label"><span class="dose-label-em">PEA-SIZED.</span> THAT'S IT.</div>
         </div>
 
-        <div id="rules-zone" class="clip rules-zone" data-start="0" data-duration="10.662">
+        <div id="rules-zone" class="clip rules-zone" data-start="0" data-duration="9.931">
           <div class="rule-chip" id="rule-1">
             <span>CLEAN, DRY SKIN</span>
           </div>
@@ -142,18 +147,21 @@
         tl.fromTo("#moon-group", { opacity: 0, scale: 0.8, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 0.5);
         tl.fromTo("#night-pm", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out" }, 0.8);
 
-        tl.fromTo("#dose-ruler", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.2);
-        tl.fromTo("#dose-dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 3.0);
-        tl.fromTo("#dose-label", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 3.15);
+        // Retimed to the Kimberly take's real word starts (measured, see
+        // frame.md § Re-voice): "pea"@1.71/"sized"@2.04, "clean"@3.19,
+        // "Rub"@4.64, "No"@7.14. Chip-to-strike gap (0.3s) kept as original.
+        tl.fromTo("#dose-ruler", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 1.35);
+        tl.fromTo("#dose-dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 1.75);
+        tl.fromTo("#dose-label", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.5);
 
-        tl.fromTo("#rule-1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 5.0);
-        tl.fromTo("#rule-2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 6.0);
-        tl.fromTo("#rule-3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 7.0);
-        tl.to(["#strike-1", "#strike-2"], { scaleX: 1, duration: 0.3, ease: "power2.in" }, 7.3);
+        tl.fromTo("#rule-1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 3.2);
+        tl.fromTo("#rule-2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.65);
+        tl.fromTo("#rule-3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 7.15);
+        tl.to(["#strike-1", "#strike-2"], { scaleX: 1, duration: 0.3, ease: "power2.in" }, 7.45);
 
-        tl.to(["#night-zone", "#dose-zone", "#rules-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 9.8);
+        tl.to(["#night-zone", "#dose-zone", "#rules-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 9.071);
 
-        tl.to({}, { duration: 10.662 }, 0);
+        tl.to({}, { duration: 9.931 }, 0);
         window.__timelines["04-night-dose"] = tl;
       </script>
     </template>

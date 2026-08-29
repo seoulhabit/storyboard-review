@@ -27,9 +27,13 @@ scene, timed from measured TTS.
 ## Assets
 
 None supplied by the user. Scene 2's original photo hero
-(`catalog/ingredient-photography/16-retinol.png`) was dropped — that asset
-isn't checked into git — in favor of the checked-in glossary's own generic
-ingredient icon (see `frame.md` § Provenance validation).
+(`catalog/ingredient-photography/16-retinol.png`) was initially dropped — that
+asset wasn't checked into git at the time — in favor of the checked-in
+glossary's own generic ingredient icon (see `frame.md` § Provenance
+validation). It's since been committed as part of a proper 20-item
+ingredient-photography set and was reinstated as Scene 2's hero image in a
+later pass (see `frame.md` § Re-voice) once that provenance concern no longer
+applied.
 
 ## Customizations
 
@@ -40,8 +44,13 @@ ingredient icon (see `frame.md` § Provenance validation).
   `<audio data-volume>` wiring, matching the tracked
   `videos/red-ginseng-two-routes/index.html` — no voiceover-bus/fx-chain
   machinery (that only ever existed in uncommitted sibling projects).
-- Voice continuity: reuse HeyGen voice id `05f19352e8f74b0392a8f411eba40de1`,
-  confirmed in the tracked `videos/red-ginseng-two-routes/audio_engine_meta.json`.
+- Voice continuity: originally reused HeyGen voice id
+  `05f19352e8f74b0392a8f411eba40de1`, confirmed in the tracked
+  `videos/red-ginseng-two-routes/audio_engine_meta.json`. Deliberately
+  overridden in a later pass per explicit user request for the Higgsfield
+  voice element "Kimberly" — see `frame.md` § Re-voice and `SCRIPT.md`. This
+  video no longer shares a voice with the rest of the SeoulHabit run; that's
+  the intended outcome of the request, not a continuity slip.
 - Coral discipline: exactly one "voltage moment" — the Scene 5 "STOP — wash it
   off" symptom branch. The hook's "Stop!" is carried by ink strikethrough +
   highlighter instead, so coral isn't spent twice.

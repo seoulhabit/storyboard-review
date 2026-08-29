@@ -1,7 +1,7 @@
 # SCRIPT — retinol-patch-test
 
-**Voice:** HeyGen voice id `05f19352e8f74b0392a8f411eba40de1` (reused from `videos/snail-mucin-medical-secret/audio_engine_meta.json` for continuity across the SeoulHabit run)
-**Voice settings:** default
+**Voice:** Higgsfield voice element `Kimberly` (`voice_id: 674b71b8-1d2e-4087-8567-d1f53c0b9f3c`, `voice_type: element`), per explicit user request (see `frame.md` § Re-voice). Replaces the original HeyGen voice id `05f19352e8f74b0392a8f411eba40de1` ("Marcia", reused from `videos/snail-mucin-medical-secret/audio_engine_meta.json` for SeoulHabit-run continuity) — that continuity convention is broken deliberately here, not by oversight.
+**Voice settings:** default (seed_audio model). Note: this generative voice has real run-to-run pacing variance — see frame.md § Re-voice for how that was handled.
 **Voice direction:** Cautious but encouraging — urgent and a little sharp on the hook's "Stop!", calm and instructional through the three how-to steps, warm and reassuring on the outro. Never alarmist, even on the "wash it off" warning — it's a clear boundary, not a scare.
 
 ---

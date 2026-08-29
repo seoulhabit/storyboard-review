@@ -1,6 +1,8 @@
 {
-  "tts_provider": null,
-  "voice_id": null,
+  "tts_provider": "higgsfield",
+  "voice_id": "674b71b8-1d2e-4087-8567-d1f53c0b9f3c",
+  "voice_name": "Kimberly",
+  "voice_type": "element",
   "bgm": {
     "path": "assets/bgm/track.mp3",
     "volume": 0.9,
@@ -107,6 +109,33 @@
       "offset_s": 0,
       "duration_s": 0.72,
       "volume": 0.35
+    },
+    {
+      "id": "03",
+      "name": "soft whoosh (transition-in anchor, post-ship)",
+      "file": "assets/sfx/soft-whoosh.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.834,
+      "volume": 0.25
+    },
+    {
+      "id": "04",
+      "name": "soft whoosh (transition-in anchor, post-ship)",
+      "file": "assets/sfx/soft-whoosh.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.834,
+      "volume": 0.25
+    },
+    {
+      "id": "05",
+      "name": "soft whoosh (transition-in anchor, post-ship)",
+      "file": "assets/sfx/soft-whoosh.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.834,
+      "volume": 0.25
     }
   ],
   "total_duration_s": 0

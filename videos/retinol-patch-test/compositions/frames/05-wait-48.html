@@ -35,6 +35,7 @@
           font-family: var(--font-display); font-weight: 400; font-size: 76px; color: var(--ink);
           opacity: 0;
         }
+        .headline-em { font-weight: 700; }
 
         .ladder-zone { top: 380px; left: 0; width: 100%; display: flex; justify-content: center; }
         .ladder { position: relative; width: 400px; height: 420px; }
@@ -47,28 +48,28 @@
         .rung-2 { top: 190px; }
         .rung-3 { top: 380px; }
         .rung-dot { width: 44px; height: 44px; border-radius: 50%; background: var(--paper); border: 4px solid var(--ink); }
-        .rung-label { font-family: var(--font-mono); font-weight: 700; font-size: 36px; color: var(--ink); }
+        .rung-label { font-family: var(--font-mono); font-weight: 700; font-size: 38px; color: var(--ink); }
 
-        .split-zone { top: 1160px; left: var(--short-safe-left); width: 960px; display: flex; align-items: center; gap: 32px; }
+        .split-zone { top: 1160px; bottom: auto; left: var(--short-safe-left); width: calc(100% - var(--short-safe-left) - var(--short-safe-right)); display: flex; align-items: center; gap: 32px; }
         .split-col { flex: 1; padding: 32px; border-radius: 12px; opacity: 0; }
         .split-normal { border: 2px solid var(--rule); background: transparent; }
         .split-stop { border: 2px solid var(--coral); background: rgba(201, 122, 92, 0.08); }
         .split-kicker {
-          font-family: var(--font-mono); font-weight: 700; font-size: 24px; letter-spacing: 0.06em;
+          font-family: var(--font-mono); font-weight: 700; font-size: 32px; letter-spacing: 0.06em;
           margin-bottom: 12px;
         }
         .split-normal .split-kicker { color: var(--ink-3-dark); }
         .split-stop .split-kicker { color: var(--coral); }
-        .split-body { font-family: var(--font-mono); font-size: 26px; line-height: 1.4; color: var(--ink-2-dark); }
+        .split-body { font-family: var(--font-mono); font-size: 30px; line-height: 1.4; color: var(--ink-2-dark); }
         .split-stop .split-body { color: var(--ink); }
       </style>
 
-      <div id="root" data-composition-id="05-wait-48" data-width="1080" data-height="1920" data-duration="13.404">
-        <div id="headline-zone" class="clip headline-zone" data-start="0" data-duration="13.404">
-          <div class="headline" id="headline">Wait 48 Hours</div>
+      <div id="root" data-composition-id="05-wait-48" data-width="1080" data-height="1920" data-duration="13.497">
+        <div id="headline-zone" class="clip headline-zone" data-start="0" data-duration="13.497">
+          <div class="headline" id="headline">Wait <span class="headline-em">48 Hours</span></div>
         </div>
 
-        <div id="ladder-zone" class="clip ladder-zone" data-start="0" data-duration="13.404">
+        <div id="ladder-zone" class="clip ladder-zone" data-start="0" data-duration="13.497">
           <div class="ladder" id="ladder">
             <div class="ladder-track" id="ladder-track"></div>
             <div class="rung rung-1" id="rung-1"><div class="rung-dot"></div><div class="rung-label">0H</div></div>
@@ -77,7 +78,7 @@
           </div>
         </div>
 
-        <div id="split-zone" class="clip split-zone" data-start="0" data-duration="13.404">
+        <div id="split-zone" class="clip split-zone" data-start="0" data-duration="13.497">
           <div class="split-col split-normal" id="split-normal">
             <div class="split-kicker">NORMAL</div>
             <div class="split-body">Slight dryness at the test site is expected.</div>
@@ -96,18 +97,25 @@
 
         tl.fromTo("#headline", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.2);
 
-        tl.to("#ladder-track", { scaleY: 1, duration: 8.0, ease: "none" }, 1.0);
-        tl.fromTo("#rung-1", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 1.3);
-        tl.fromTo("#rung-2", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.6);
-        tl.fromTo("#rung-3", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 9.0);
+        // Ladder compressed to a 1.0-7.75 draw window so 48H lands as a
+        // suspense beat right before the STOP reveal, not tied to when "48
+        // hours" is literally spoken (~2.8s) -- same non-literal pacing as
+        // the original, fit to this Kimberly take's longer runway.
+        tl.to("#ladder-track", { scaleY: 1, duration: 6.75, ease: "none" }, 1.0);
+        tl.fromTo("#rung-1", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 1.25);
+        tl.fromTo("#rung-2", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.04);
+        tl.fromTo("#rung-3", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 7.75);
 
-        tl.fromTo("#split-normal", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 9.4);
+        tl.fromTo("#split-normal", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 8.15);
 
-        tl.fromTo("#split-stop", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out" }, 10.5);
+        // Coral reveal retimed to "wash"[9.27-9.55] in the Kimberly take
+        // (measured, see frame.md § Re-voice) -- lands on the actual
+        // trigger word, not a generic late-scene offset.
+        tl.fromTo("#split-stop", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power2.out" }, 9.25);
 
-        tl.to(["#headline-zone", "#ladder-zone", "#split-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 12.55);
+        tl.to(["#headline-zone", "#ladder-zone", "#split-zone"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 12.637);
 
-        tl.to({}, { duration: 13.404 }, 0);
+        tl.to({}, { duration: 13.497 }, 0);
         window.__timelines["05-wait-48"] = tl;
       </script>
     </template>

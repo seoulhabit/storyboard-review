@@ -4,11 +4,6 @@
   <body>
     <template>
       <style>
-        /* Tokens + icon copied verbatim from the checked-in SeoulHabit glossary:
-           videos/skincare-glossary-part-4-texture-anti-aging/index.html — same
-           :root tokens and the same generic term-icon path/category/body copy
-           used for its own "Retinol" card (line ~317), reused rather than
-           replaced with product photography (none is checked into this repo). */
         #root {
           --ink: #131516;
           --paper: #f7f5f0;
@@ -29,12 +24,14 @@
         .clip { position: absolute; inset: 0; }
 
         .power-icon-zone {
-          top: 320px; left: 0; width: 100%;
+          top: 260px; left: 0; width: 100%;
           display: flex; justify-content: center;
         }
-        .power-icon {
-          width: 280px; height: 280px;
-          color: var(--aqua);
+        .power-photo {
+          width: 360px; height: 360px;
+          object-fit: cover;
+          border-radius: 28px;
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
           opacity: 0;
         }
 
@@ -49,7 +46,7 @@
           opacity: 0;
         }
         .power-category {
-          font-family: var(--font-mono); font-weight: 600; font-size: 24px;
+          font-family: var(--font-mono); font-weight: 600; font-size: 28px;
           letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2-dark);
           opacity: 0;
         }
@@ -59,12 +56,12 @@
         }
         .power-body {
           max-width: 760px;
-          font-size: 30px; line-height: 1.5; color: var(--ink-2-dark);
+          font-size: 34px; line-height: 1.5; color: var(--ink-2-dark);
           opacity: 0;
         }
         .power-chip {
           display: inline-flex;
-          font-family: var(--font-mono); font-weight: 700; font-size: 26px;
+          font-family: var(--font-mono); font-weight: 700; font-size: 30px;
           letter-spacing: 0.04em; color: var(--ink);
           background: var(--aqua);
           padding: 10px 28px; border-radius: 6px;
@@ -72,15 +69,12 @@
         }
       </style>
 
-      <div id="root" data-composition-id="02-power" data-width="1080" data-height="1920" data-duration="12.647">
-        <div id="power-icon-zone" class="clip power-icon-zone" data-start="0" data-duration="12.647">
-          <svg class="power-icon" id="power-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
-            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-          </svg>
+      <div id="root" data-composition-id="02-power" data-width="1080" data-height="1920" data-duration="10.518">
+        <div id="power-icon-zone" class="clip power-icon-zone" data-start="0" data-duration="10.518">
+          <img class="power-photo" id="power-icon" src="assets/images/16-retinol.png" alt="" />
         </div>
 
-        <div id="power-text-zone" class="clip power-text-zone" data-start="0" data-duration="12.647">
+        <div id="power-text-zone" class="clip power-text-zone" data-start="0" data-duration="10.518">
           <div class="power-headline" id="power-headline">Retinol</div>
           <div class="power-category" id="power-category">Vitamin A</div>
           <div class="power-rule" id="power-rule"></div>
@@ -100,12 +94,14 @@
         tl.to("#power-rule", { scaleX: 1, duration: 0.4, ease: "power2.out" }, 2.4);
         tl.fromTo("#power-body", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.7);
 
-        tl.fromTo("#power-chip", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 5.0);
+        // Chip tied to "strong."[4.88-5.36] in the Kimberly take (measured,
+        // see frame.md § Re-voice) -- lands just after the word finishes.
+        tl.fromTo("#power-chip", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 5.4);
 
-        tl.to("#power-text-zone", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 11.8);
-        tl.to("#power-icon", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 11.8);
+        tl.to("#power-text-zone", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 9.658);
+        tl.to("#power-icon", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 9.658);
 
-        tl.to({}, { duration: 12.647 }, 0);
+        tl.to({}, { duration: 10.518 }, 0);
         window.__timelines["02-power"] = tl;
       </script>
     </template>

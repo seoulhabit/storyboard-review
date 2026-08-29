@@ -18,48 +18,63 @@
       data-volume only -- no voiceover bus, fx-chain, or carve automation.
       That elaborate machinery lived only in uncommitted sibling projects
       (kbeauty-one-percent-line, seoulhabit-launch) and isn't reused here.
+
+      Retimed for the Kimberly voice re-voice (see frame.md § Re-voice).
+      Every data-start below is scene_start + the frame's own internal cue
+      offset, both recomputed from THIS take's measured durations/word
+      timestamps -- not scaled from the old Marcia timing, and not reused
+      from an earlier Kimberly generation attempt (this generative TTS
+      voice has real run-to-run pacing variance -- see frame.md; the audio
+      actually shipped in assets/voice/ is what these numbers are keyed to).
     -->
-    <div id="root" data-composition-id="patch-test" data-start="0" data-duration="60.682" data-width="1080" data-height="1920">
-      <!-- Frame 1 -- hook (0.000-6.296, tail to 6.796) -->
-      <div id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0" data-duration="6.796" data-track-index="0"></div>
-      <audio id="el-01-hook-voice" src="assets/voice/01.wav" data-start="0" data-duration="6.296" data-track-index="10" data-volume="1"></audio>
+    <div id="root" data-composition-id="patch-test" data-start="0" data-duration="60.668" data-width="1080" data-height="1920">
+      <!-- Frame 1 -- hook (0.000-9.500, tail to 10.000) -->
+      <div id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0" data-duration="10.000" data-track-index="0"></div>
+      <audio id="el-01-hook-voice" src="assets/voice/01.wav" data-start="0" data-duration="9.500" data-track-index="10" data-volume="1"></audio>
       <audio id="el-sfx-1" src="assets/sfx/hook-hit.mp3" data-start="0" data-duration="2.755" data-track-index="20" data-volume="0.35"></audio>
-      <audio id="el-sfx-2" src="assets/sfx/buzzer.mp3" data-start="5.5" data-duration="1.729" data-track-index="21" data-volume="0.35"></audio>
+      <audio id="el-sfx-2" src="assets/sfx/buzzer.mp3" data-start="8.96" data-duration="1.729" data-track-index="21" data-volume="0.35"></audio>
 
-      <!-- Frame 2 -- power (6.296-18.443, tail to 18.943... capped at next start 18.443) -->
-      <div id="el-02-power" class="scene" data-composition-id="02-power" data-composition-src="compositions/frames/02-power.html" data-start="6.296" data-duration="12.647" data-track-index="1"></div>
-      <audio id="el-02-power-voice" src="assets/voice/02.wav" data-start="6.296" data-duration="12.147" data-track-index="10" data-volume="1"></audio>
-      <audio id="el-sfx-3" src="assets/sfx/soft-whoosh.mp3" data-start="6.396" data-duration="1.834" data-track-index="22" data-volume="0.35"></audio>
-      <audio id="el-sfx-4" src="assets/sfx/soft-click.mp3" data-start="11.296" data-duration="0.264" data-track-index="23" data-volume="0.35"></audio>
+      <!-- Frame 2 -- power (9.500-19.518, tail to 20.018... capped at next start 19.518) -->
+      <div id="el-02-power" class="scene" data-composition-id="02-power" data-composition-src="compositions/frames/02-power.html" data-start="9.500" data-duration="10.518" data-track-index="1"></div>
+      <audio id="el-02-power-voice" src="assets/voice/02.wav" data-start="9.500" data-duration="10.018" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-sfx-3" src="assets/sfx/soft-whoosh.mp3" data-start="9.6" data-duration="1.834" data-track-index="22" data-volume="0.35"></audio>
+      <audio id="el-sfx-4" src="assets/sfx/soft-click.mp3" data-start="14.9" data-duration="0.264" data-track-index="23" data-volume="0.35"></audio>
 
-      <!-- Frame 3 -- test-site (18.443-27.063, tail to 27.563... capped at next start 27.063) -->
-      <div id="el-03-test-site" class="scene" data-composition-id="03-test-site" data-composition-src="compositions/frames/03-test-site.html" data-start="18.443" data-duration="9.120" data-track-index="0"></div>
-      <audio id="el-03-test-site-voice" src="assets/voice/03.wav" data-start="18.443" data-duration="8.620" data-track-index="10" data-volume="1"></audio>
-      <audio id="el-sfx-5" src="assets/sfx/soft-click.mp3" data-start="20.943" data-duration="0.264" data-track-index="24" data-volume="0.35"></audio>
-      <audio id="el-sfx-6" src="assets/sfx/soft-click.mp3" data-start="23.443" data-duration="0.264" data-track-index="25" data-volume="0.35"></audio>
+      <!-- Frame 3 -- test-site (19.518-27.894, tail to 28.394... capped at next start 27.894) -->
+      <div id="el-03-test-site" class="scene" data-composition-id="03-test-site" data-composition-src="compositions/frames/03-test-site.html" data-start="19.518" data-duration="8.876" data-track-index="0"></div>
+      <audio id="el-03-test-site-voice" src="assets/voice/03.wav" data-start="19.518" data-duration="8.376" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-sfx-14" src="assets/sfx/soft-whoosh.mp3" data-start="19.518" data-duration="1.834" data-track-index="34" data-volume="0.25"></audio>
+      <audio id="el-sfx-5" src="assets/sfx/soft-click.mp3" data-start="22.768" data-duration="0.264" data-track-index="24" data-volume="0.35"></audio>
+      <audio id="el-sfx-6" src="assets/sfx/soft-click.mp3" data-start="23.668" data-duration="0.264" data-track-index="25" data-volume="0.35"></audio>
 
-      <!-- Frame 4 -- night-dose (27.063-37.225, tail to 37.725... capped at next start 37.225) -->
-      <div id="el-04-night-dose" class="scene" data-composition-id="04-night-dose" data-composition-src="compositions/frames/04-night-dose.html" data-start="27.063" data-duration="10.662" data-track-index="1"></div>
-      <audio id="el-04-night-dose-voice" src="assets/voice/04.wav" data-start="27.063" data-duration="10.162" data-track-index="10" data-volume="1"></audio>
-      <audio id="el-sfx-7" src="assets/sfx/pop.mp3" data-start="30.063" data-duration="0.312" data-track-index="26" data-volume="0.35"></audio>
-      <audio id="el-sfx-8" src="assets/sfx/soft-click.mp3" data-start="32.063" data-duration="0.264" data-track-index="27" data-volume="0.35"></audio>
-      <audio id="el-sfx-9" src="assets/sfx/soft-click.mp3" data-start="33.063" data-duration="0.264" data-track-index="28" data-volume="0.35"></audio>
-      <audio id="el-sfx-10" src="assets/sfx/soft-click.mp3" data-start="34.063" data-duration="0.264" data-track-index="29" data-volume="0.35"></audio>
+      <!-- Frame 4 -- night-dose (27.894-37.325, tail to 37.825... capped at next start 37.325) -->
+      <div id="el-04-night-dose" class="scene" data-composition-id="04-night-dose" data-composition-src="compositions/frames/04-night-dose.html" data-start="27.894" data-duration="9.931" data-track-index="1"></div>
+      <audio id="el-04-night-dose-voice" src="assets/voice/04.wav" data-start="27.894" data-duration="9.431" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-sfx-15" src="assets/sfx/soft-whoosh.mp3" data-start="27.894" data-duration="1.834" data-track-index="35" data-volume="0.25"></audio>
+      <audio id="el-sfx-7" src="assets/sfx/pop.mp3" data-start="29.644" data-duration="0.312" data-track-index="26" data-volume="0.35"></audio>
+      <audio id="el-sfx-8" src="assets/sfx/soft-click.mp3" data-start="31.094" data-duration="0.264" data-track-index="27" data-volume="0.35"></audio>
+      <audio id="el-sfx-9" src="assets/sfx/soft-click.mp3" data-start="32.544" data-duration="0.264" data-track-index="28" data-volume="0.35"></audio>
+      <audio id="el-sfx-10" src="assets/sfx/soft-click.mp3" data-start="35.044" data-duration="0.264" data-track-index="29" data-volume="0.35"></audio>
 
-      <!-- Frame 5 -- wait-48 (37.225-50.129, tail to 50.629... capped at next start 50.129) -->
-      <div id="el-05-wait-48" class="scene" data-composition-id="05-wait-48" data-composition-src="compositions/frames/05-wait-48.html" data-start="37.225" data-duration="13.404" data-track-index="0"></div>
-      <audio id="el-05-wait-48-voice" src="assets/voice/05.wav" data-start="37.225" data-duration="12.904" data-track-index="10" data-volume="1"></audio>
-      <audio id="el-sfx-11" src="assets/sfx/tick.mp3" data-start="37.525" data-duration="7.778" data-track-index="30" data-volume="0.35"></audio>
-      <audio id="el-sfx-12" src="assets/sfx/alert-ping.mp3" data-start="47.725" data-duration="1.3" data-track-index="31" data-volume="0.35"></audio>
+      <!-- Frame 5 -- wait-48 (37.325-50.322, tail to 50.822... capped at next start 50.322) -->
+      <div id="el-05-wait-48" class="scene" data-composition-id="05-wait-48" data-composition-src="compositions/frames/05-wait-48.html" data-start="37.325" data-duration="13.497" data-track-index="0"></div>
+      <audio id="el-05-wait-48-voice" src="assets/voice/05.wav" data-start="37.325" data-duration="12.997" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-sfx-16" src="assets/sfx/soft-whoosh.mp3" data-start="37.325" data-duration="1.834" data-track-index="36" data-volume="0.25"></audio>
+      <audio id="el-sfx-11" src="assets/sfx/tick.mp3" data-start="37.625" data-duration="7.78" data-track-index="30" data-volume="0.35"></audio>
+      <audio id="el-sfx-12" src="assets/sfx/alert-ping.mp3" data-start="46.575" data-duration="1.3" data-track-index="31" data-volume="0.35"></audio>
 
-      <!-- Frame 6 -- outro (50.129-60.682, no tail -- final frame) -->
-      <div id="el-06-outro" class="scene" data-composition-id="06-outro" data-composition-src="compositions/frames/06-outro.html" data-start="50.129" data-duration="10.553" data-track-index="1"></div>
-      <audio id="el-06-outro-voice" src="assets/voice/06.wav" data-start="50.129" data-duration="10.553" data-track-index="10" data-volume="1"></audio>
-      <audio id="el-sfx-13" src="assets/sfx/chime.mp3" data-start="51.129" data-duration="0.72" data-track-index="32" data-volume="0.35"></audio>
+      <!-- Frame 6 -- outro (50.322-60.668, no tail -- final frame) -->
+      <div id="el-06-outro" class="scene" data-composition-id="06-outro" data-composition-src="compositions/frames/06-outro.html" data-start="50.322" data-duration="10.346" data-track-index="1"></div>
+      <audio id="el-06-outro-voice" src="assets/voice/06.wav" data-start="50.322" data-duration="10.346" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-sfx-13" src="assets/sfx/chime.mp3" data-start="51.322" data-duration="0.72" data-track-index="32" data-volume="0.35"></audio>
 
       <!-- BGM bed -- plain volume, no ducking automation (matches the tracked
            red-ginseng-two-routes/index.html pattern; no hf-audio-group/carve
-           precedent exists in any checked-in project). -->
+           precedent exists in any checked-in project). Track's own native
+           length is 57s (measured) -- shorter than this take's 60.668s
+           total, so capped at 57 rather than requesting audio past the
+           source's end; the last ~3.7s plays with no bed, same as this
+           project's original tolerance for bgm ending before video end. -->
       <audio id="el-bgm" src="assets/bgm/track.mp3" data-start="0" data-duration="57" data-track-index="11" data-volume="0.12"></audio>
     </div>
 
@@ -68,22 +83,22 @@
       window.__timelines["patch-test"] = gsap.timeline({ paused: true });
       // -- frame transitions: slide-up + cross-fade entrance, 0.5s, power2.inOut --
       (function () { var tl = window.__timelines["patch-test"];
-        tl.to("#el-01-hook", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 6.296);
-        tl.fromTo("#el-02-power", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 6.296);
+        tl.to("#el-01-hook", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 9.500);
+        tl.fromTo("#el-02-power", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 9.500);
 
-        tl.to("#el-02-power", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 18.443);
-        tl.fromTo("#el-03-test-site", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 18.443);
+        tl.to("#el-02-power", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 19.518);
+        tl.fromTo("#el-03-test-site", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 19.518);
 
-        tl.to("#el-03-test-site", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 27.063);
-        tl.fromTo("#el-04-night-dose", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 27.063);
+        tl.to("#el-03-test-site", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 27.894);
+        tl.fromTo("#el-04-night-dose", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 27.894);
 
-        tl.to("#el-04-night-dose", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 37.225);
-        tl.fromTo("#el-05-wait-48", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 37.225);
+        tl.to("#el-04-night-dose", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 37.325);
+        tl.fromTo("#el-05-wait-48", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 37.325);
 
-        tl.to("#el-05-wait-48", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 50.129);
-        tl.fromTo("#el-06-outro", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 50.129);
+        tl.to("#el-05-wait-48", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 50.322);
+        tl.fromTo("#el-06-outro", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.inOut" }, 50.322);
 
-        tl.to({}, { duration: 60.682 }, 0); // full-span anchor -- main.duration() == composition total
+        tl.to({}, { duration: 60.668 }, 0); // full-span anchor -- main.duration() == composition total
       })();
     </script>
   </body>

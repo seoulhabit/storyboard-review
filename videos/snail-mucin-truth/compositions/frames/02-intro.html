@@ -118,16 +118,15 @@
   }
 </style>
 
-<div id="root" data-composition-id="02-intro" data-width="1080" data-height="1920" data-duration="9.512">
-  <div class="fr02-clip fr02-bg" data-start="0" data-duration="9.512" data-track-index="0"></div>
+<div id="root" data-composition-id="02-intro" data-width="1080" data-height="1920" data-duration="9.071">
+  <div class="fr02-clip fr02-bg" data-start="0" data-duration="9.071" data-track-index="0"></div>
 
-  <div class="fr02-clip" data-start="0" data-duration="9.512" data-track-index="1">
+  <div class="fr02-clip" data-start="0" data-duration="9.071" data-track-index="1">
     <div class="fr02-shot-group" id="fr02ShotGroup">
       <div class="fr02-title-outer" id="fr02TitleOuter">
         <div class="fr02-title-wrap">
           <span class="fr02-word" id="fr02WordSnail" style="--dof:14px;">SNAIL</span>
           <span class="fr02-word" id="fr02WordMucin" style="--dof:14px;">&nbsp;MUCIN</span>
-          <div class="fr02-chip" id="fr02Chip">101</div>
         </div>
       </div>
 
@@ -180,18 +179,11 @@
       0.22
     );
 
-    // Scene 2 (2.0-4.0s) — the title settles down slightly toward center
-    // as the "101" mono chip spring-pops beside it (one composed beat).
+    // Scene 2 (2.0-4.0s) — the title settles down slightly toward center.
     tl.fromTo(
       "#fr02TitleOuter",
       { y: 0 },
       { y: 48, duration: 0.6, ease: "power2.inOut" },
-      2.0
-    );
-    tl.fromTo(
-      "#fr02Chip",
-      { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
       2.0
     );
 
@@ -210,12 +202,12 @@
       );
     });
 
-    // Scene 4 (7.0-9.012s) — the whole shot (title + chip + all three rows)
+    // Scene 4 (7.0-8.571s) — the whole shot (title + chip + all three rows)
     // holds together; subtle jitter only, bounded sine drive, one cycle.
     var fr02Phase = { p: 0 };
     var fr02ShotGroupEl = document.getElementById("fr02ShotGroup");
     var IDLE_START = 7.0;
-    var IDLE_DUR = 9.012 - IDLE_START;
+    var IDLE_DUR = 8.571 - IDLE_START;
     tl.to(
       fr02Phase,
       {

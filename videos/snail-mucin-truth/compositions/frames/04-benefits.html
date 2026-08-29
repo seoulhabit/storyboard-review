@@ -1,4 +1,4 @@
-<template data-composition-id="04-benefits" data-width="1080" data-height="1920" data-duration="12.464">
+<template data-composition-id="04-benefits" data-width="1080" data-height="1920" data-duration="10.776">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
 <style>
@@ -135,9 +135,9 @@
 </style>
 
 <div id="root" data-composition-id="04-benefits" data-width="1080" data-height="1920">
-  <div class="f04-benefits-bg clip" data-start="0" data-duration="12.464" data-track-index="0"></div>
+  <div class="f04-benefits-bg clip" data-start="0" data-duration="10.776" data-track-index="0"></div>
 
-  <div class="f04-benefits-content clip" data-start="0" data-duration="12.464" data-track-index="1">
+  <div class="f04-benefits-content clip" data-start="0" data-duration="10.776" data-track-index="1">
     <svg class="f04-benefits-spine" viewBox="0 0 1080 1920">
       <line class="f04-benefits-spine-line" id="f04-benefits-spine-path" x1="108" y1="496" x2="108" y2="1356" />
     </svg>
@@ -155,9 +155,6 @@
       <div class="f04-benefits-support-mask" id="f04-benefits-support-mask-1" style="margin-left: 100px;">
         <span class="f04-benefits-support">Hyaluronic acid &amp; glycoproteins</span>
       </div>
-      <div class="f04-benefits-chip" id="f04-benefits-chip-1">
-        <span class="f04-benefits-chip-text">[ ING-snail-mucin-S002 ]</span>
-      </div>
     </div>
 
     <div class="f04-benefits-item" id="f04-benefits-item-2" style="top: 890px;">
@@ -173,9 +170,6 @@
       <div class="f04-benefits-support-mask" id="f04-benefits-support-mask-2" style="margin-left: 100px;">
         <span class="f04-benefits-support">Barrier repair, calmer skin</span>
       </div>
-      <div class="f04-benefits-chip" id="f04-benefits-chip-2">
-        <span class="f04-benefits-chip-text">[ ING-snail-mucin-S002 ]</span>
-      </div>
     </div>
 
     <div class="f04-benefits-item" id="f04-benefits-item-3" style="top: 1320px;">
@@ -190,9 +184,6 @@
       </div>
       <div class="f04-benefits-support-mask" id="f04-benefits-support-mask-3" style="margin-left: 100px;">
         <span class="f04-benefits-support">Visible fading, over time</span>
-      </div>
-      <div class="f04-benefits-chip" id="f04-benefits-chip-3">
-        <span class="f04-benefits-chip-text">[ ING-snail-mucin-S003 ]</span>
       </div>
     </div>
   </div>
@@ -213,8 +204,7 @@
 
     // --- prime pop/mask starting states (fromTo-safe: seek to any frame is correct) ---
     gsap.set(
-      ["#f04-benefits-marker-1", "#f04-benefits-marker-2", "#f04-benefits-marker-3",
-       "#f04-benefits-chip-1", "#f04-benefits-chip-2", "#f04-benefits-chip-3"],
+      ["#f04-benefits-marker-1", "#f04-benefits-marker-2", "#f04-benefits-marker-3"],
       { scale: 0, opacity: 0 }
     );
 
@@ -223,7 +213,6 @@
     var POP_DUR = 0.5;
     var CHECK_DUR = 0.35;
     var WIPE_DUR = 0.5;
-    var CHIP_POP_DUR = 0.4;
     var HEADS = [0.35, 4.5, 8.0]; // item 1 lands early (hero visible well before t=0.5s); items 2/3 on their Scene 3 / 4 VO cues
 
     HEADS.forEach(function (t, i) {
@@ -253,14 +242,6 @@
         { clipPath: "inset(0 0% 0 0)", duration: WIPE_DUR, ease: "power2.out" },
         t + 0.15
       );
-      // citation chip: lands ~0.3s after the text finishes — claim, then its source
-      var textEnd = t + 0.15 + WIPE_DUR;
-      tl.fromTo(
-        "#f04-benefits-chip-" + n,
-        { scale: 0.85, opacity: 0 },
-        { scale: 1, opacity: 1, duration: CHIP_POP_DUR, ease: "power3.out" },
-        textEnd + 0.3
-      );
     });
 
     // connecting spine: grows to meet each new marker as it arrives
@@ -275,7 +256,7 @@
     var idleStart = 9.5;
     tl.to(
       "#root[data-composition-id='04-benefits'] .f04-benefits-content",
-      { y: -3, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 1 },
+      { y: -3, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 },
       idleStart
     );
 

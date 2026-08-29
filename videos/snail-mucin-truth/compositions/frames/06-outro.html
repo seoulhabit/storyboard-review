@@ -56,7 +56,7 @@
   .outro-chip {
     z-index: 3;
     left: 380px;
-    top: 1460px;
+    top: 1400px;
     right: auto;
     bottom: auto;
     width: 320px;
@@ -64,6 +64,7 @@
     background: #b9835a;
     border-radius: 999px;
     box-shadow: none;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,6 +73,8 @@
     will-change: transform, opacity;
   }
   .outro-chip-label {
+    position: relative;
+    z-index: 1;
     font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     font-weight: 600;
     font-size: 34px;
@@ -79,12 +82,21 @@
     text-transform: uppercase;
     color: #fbfaf4;
   }
+  .outro-chip-glint {
+    position: absolute;
+    top: -20px;
+    bottom: -20px;
+    left: -60px;
+    width: 60px;
+    background: linear-gradient(100deg, transparent, rgba(251, 250, 244, 0.55), transparent);
+    transform: translateX(0) skewX(-18deg);
+  }
 </style>
 
 <div id="root" data-composition-id="06-outro" data-width="1080" data-height="1920">
-  <div class="clip outro-bg" data-start="0" data-duration="9.456" data-track-index="0"></div>
+  <div class="clip outro-bg" data-start="0" data-duration="12.8" data-track-index="0"></div>
 
-  <div class="clip outro-trail" data-start="0" data-duration="9.456" data-track-index="1">
+  <div class="clip outro-trail" data-start="0" data-duration="12.8" data-track-index="1">
     <svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="outroTrailGrad" x1="0" y1="0" x2="1" y2="1">
@@ -105,11 +117,12 @@
     </svg>
   </div>
 
-  <div class="clip outro-card" data-start="0" data-duration="9.456" data-track-index="2">
+  <div class="clip outro-card" data-start="0" data-duration="12.8" data-track-index="2">
     <img class="outro-photo" src="assets/images/bottle.jpg" alt="" />
   </div>
 
-  <div class="clip outro-chip" data-start="0" data-duration="9.456" data-track-index="3">
+  <div class="clip outro-chip" data-start="0" data-duration="12.8" data-track-index="3">
+    <span class="outro-chip-glint" id="outro-chip-glint" data-layout-allow-overflow></span>
     <span class="outro-chip-label">Subscribe</span>
   </div>
 </div>
@@ -148,6 +161,20 @@
     { opacity: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.4)" },
     5.0
   );
+
+  // a single light sweep crosses the pill right after it settles — the
+  // reviewer-requested "draw the eye" cue, paired with the sparkle SFX
+  tl.fromTo(
+    "#outro-chip-glint",
+    { x: 0 },
+    { x: 440, duration: 0.55, ease: "power2.inOut" },
+    5.62
+  );
+
+  // one deliberate emphasis pulse partway through the hold — a single beat,
+  // not a loop, so it reads as a nudge rather than idle breathing
+  tl.to("#root .outro-chip", { scale: 1.07, duration: 0.22, ease: "power2.out" }, 7.2);
+  tl.to("#root .outro-chip", { scale: 1, duration: 0.3, ease: "power2.inOut" }, 7.42);
 
   // Scene 4 (8.0s–end) — "minus the hype" — everything holds: bottle, chip,
   // faint trail reprise, settled to the final frame. The video's true exit;

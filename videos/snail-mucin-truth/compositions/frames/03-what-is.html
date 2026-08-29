@@ -169,13 +169,13 @@
   .wis-sub-chip { margin-top: 24px; }
 </style>
 
-<div data-hf-id="hf-axrr" id="root" data-composition-id="03-what-is" data-width="1080" data-height="1920" data-duration="13.3">
+<div data-hf-id="hf-axrr" id="root" data-composition-id="03-what-is" data-width="1080" data-height="1920" data-duration="12.127">
 
-  <div data-hf-id="hf-hqzc" class="wis-bg-ground clip" data-start="0" data-duration="13.3" data-track-index="0">
+  <div data-hf-id="hf-hqzc" class="wis-bg-ground clip" data-start="0" data-duration="12.127" data-track-index="0">
     <div data-hf-id="hf-0n39" class="wis-bg-fill"></div>
   </div>
 
-  <div data-hf-id="hf-dfvb" class="wis-leaves clip" data-start="0" data-duration="13.3" data-track-index="4">
+  <div data-hf-id="hf-dfvb" class="wis-leaves clip" data-start="0" data-duration="12.127" data-track-index="4">
     <svg data-hf-id="hf-8rgt" width="0" height="0" style="position:absolute">
       <defs data-hf-id="hf-mh0t">
         <symbol data-hf-id="hf-tmu1" id="wis-leaf-shape" viewBox="0 0 140 90">
@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <div data-hf-id="hf-y54f" class="wis-comp-card clip" id="wis-card" data-start="4.9" data-duration="8.4" data-track-index="2">
+  <div data-hf-id="hf-y54f" class="wis-comp-card clip" id="wis-card" data-start="4.9" data-duration="7.227" data-track-index="2">
     <div data-hf-id="hf-iajm" class="wis-card-eyebrow">Composition</div>
     <div data-hf-id="hf-h00h" class="wis-card-rule" id="wis-rule"></div>
     <div data-hf-id="hf-gk9z" class="wis-card-list">
@@ -241,17 +241,11 @@
         <span data-hf-id="hf-iwb7" class="wis-card-item-text">Hydrating Compounds</span>
       </div>
     </div>
-    <div data-hf-id="hf-8nps" class="wis-chip" id="wis-chip-1">
-      <span data-hf-id="hf-zvcr" class="wis-chip-text">Citation ⌞ ING-snail-mucin-S001 ⌟</span>
-    </div>
   </div>
 
-  <div data-hf-id="hf-pfb4" class="wis-sub clip" id="wis-sub" data-start="8.5" data-duration="4.8" data-track-index="3">
+  <div data-hf-id="hf-pfb4" class="wis-sub clip" id="wis-sub" data-start="8.5" data-duration="3.627" data-track-index="3">
     <div data-hf-id="hf-8lop" class="wis-sub-line1" id="wis-sub-line1">Collected Without Harm</div>
     <div data-hf-id="hf-r7f6" class="wis-sub-line2" id="wis-sub-line2">Practices Vary</div>
-    <div data-hf-id="hf-smj6" class="wis-chip wis-sub-chip" id="wis-chip-2">
-      <span data-hf-id="hf-m1gc" class="wis-chip-text">Citation ⌞ ING-snail-mucin-S004 ⌟</span>
-    </div>
   </div>
 
 </div>
@@ -316,12 +310,10 @@
   // items land as the VO names each, citation chip lands last after the claim
   tl.fromTo("#wis-item-1", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 6.5);
   tl.fromTo("#wis-item-2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 7.3);
-  tl.fromTo("#wis-chip-1", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, 8.0);
 
   /* ---- scene 4: subordinate reassurance line, lower third, its own citation ---- */
   tl.fromTo("#wis-sub-line1", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 8.6);
   tl.fromTo("#wis-sub-line2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 9.0);
-  tl.fromTo("#wis-chip-2", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.5)" }, 9.35);
 
   /* subtle breathing on the settled card through the final hold (sine-wave-loop, low end) */
   const cardEl = document.getElementById("wis-card");
@@ -331,7 +323,7 @@
     breathPhase,
     {
       p: Math.PI * 2 * BREATH_CYCLES,
-      duration: 3.0,
+      duration: 2.4,
       ease: "none",
       onUpdate: () => {
         const s = Math.sin(breathPhase.p);

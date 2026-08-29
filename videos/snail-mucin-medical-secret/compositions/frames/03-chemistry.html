@@ -180,24 +180,24 @@
   }
 </style>
 
-<div id="root" data-composition-id="03-chemistry" data-width="1080" data-height="1920" data-duration="25.996">
+<div id="root" data-composition-id="03-chemistry" data-width="1080" data-height="1920" data-duration="25.62">
 
   <!-- Track 0: full-bleed macro droplet photo, Ken Burns push, spans the whole frame -->
-  <div class="clip sm3-photo-layer" data-start="0" data-duration="25.996" data-track-index="0">
+  <div class="clip sm3-photo-layer" data-start="0" data-duration="25.62" data-track-index="0">
     <div class="sm3-photo-wrap" id="sm3PhotoWrap">
       <img class="sm3-photo" src="public/03-macro-droplet.png" alt="" />
     </div>
   </div>
 
   <!-- Track 1: flat ~50% dim wash over the photo -->
-  <div class="clip sm3-scrim-flat" data-start="0" data-duration="25.996" data-track-index="1"></div>
+  <div class="clip sm3-scrim-flat" data-start="0" data-duration="25.62" data-track-index="1"></div>
 
   <!-- Track 2/3: top + bottom legibility scrims -->
-  <div class="clip sm3-scrim-top" data-start="0" data-duration="25.996" data-track-index="2"></div>
-  <div class="clip sm3-scrim-bottom" data-start="0" data-duration="25.996" data-track-index="3"></div>
+  <div class="clip sm3-scrim-top" data-start="0" data-duration="25.62" data-track-index="2"></div>
+  <div class="clip sm3-scrim-bottom" data-start="0" data-duration="25.62" data-track-index="3"></div>
 
   <!-- Track 4 (Scenes 1-5, 0.0-19.22s): lead-in line + PROTECT+REPAIR tag + ingredient list -->
-  <div class="clip sm3-stack" id="sm3Stack" data-start="0" data-duration="19.22" data-track-index="4">
+  <div class="clip sm3-stack" id="sm3Stack" data-start="0" data-duration="19.6" data-track-index="4">
 
     <div class="sm3-leadin-row" id="sm3LeadinRow"></div>
 
@@ -221,8 +221,8 @@
     <div
       data-composition-id="grid-card-assemble"
       data-composition-src="compositions/components/grid-card-assemble.html"
-      data-start="9.45"
-      data-duration="9.55"
+      data-start="10.19"
+      data-duration="9.21"
       data-track-index="40"
       data-variable-values='{"items":"Glycolic Acid: Eats away dead skin.","layout":"list","accent":"green"}'
       style="position: absolute; left: 90px; right: 90px; top: 560px; height: 210px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
@@ -230,8 +230,8 @@
     <div
       data-composition-id="grid-card-assemble"
       data-composition-src="compositions/components/grid-card-assemble.html"
-      data-start="14.3"
-      data-duration="4.7"
+      data-start="14.56"
+      data-duration="4.84"
       data-track-index="41"
       data-variable-values='{"items":"Allantoin: Heals wounds.","layout":"list","accent":"green"}'
       style="position: absolute; left: 90px; right: 90px; top: 810px; height: 210px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
@@ -239,8 +239,8 @@
     <div
       data-composition-id="grid-card-assemble"
       data-composition-src="compositions/components/grid-card-assemble.html"
-      data-start="16.35"
-      data-duration="2.65"
+      data-start="16.67"
+      data-duration="2.73"
       data-track-index="42"
       data-variable-values='{"items":"Hyaluronic Acid: Massive doses.","layout":"list","accent":"green"}'
       style="position: absolute; left: 90px; right: 90px; top: 1060px; height: 230px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
@@ -249,14 +249,14 @@
   </div>
 
   <!-- Track 5 (19.3-23.35s): bridging mono ticker — words lifted straight from the VO cue -->
-  <div class="clip sm3-ticker-zone" data-start="19.3" data-duration="4.05" data-track-index="5">
+  <div class="clip sm3-ticker-zone" data-start="19.7" data-duration="3.44" data-track-index="5">
     <div class="sm3-ticker" id="sm3Ticker">
       <span class="sm3-ticker-text" id="sm3TickerText"></span>
     </div>
   </div>
 
   <!-- Track 6 (23.58-25.496s): closing payoff line, holds through the frame's real end -->
-  <div class="clip sm3-payoff-zone" data-start="23.58" data-duration="2.416" data-track-index="6">
+  <div class="clip sm3-payoff-zone" data-start="23.37" data-duration="2.25" data-track-index="6">
     <div class="sm3-payoff" id="sm3Payoff">Perfectly Engineered<br />By Nature</div>
   </div>
 
@@ -315,7 +315,7 @@
     // ---- end copied helpers ----
 
     var tl = gsap.timeline({ paused: true });
-    var TOTAL_DURATION = 25.496;
+    var TOTAL_DURATION = 25.12;
 
     // full-span anchor so the timeline duration always matches the frame
     tl.to({}, { duration: TOTAL_DURATION }, 0);
@@ -342,7 +342,7 @@
       leadinRow.appendChild(span);
       return span;
     });
-    var LEADIN_START = 0.18;
+    var LEADIN_START = 0.1;
     var LEADIN_STAGGER = 0.4;
     leadinEls.forEach(function (el, i) {
       tl.fromTo(
@@ -353,36 +353,36 @@
       );
     });
 
-    // ───────────────────────── Scene 2 (2.2-9.2s) — PROTECT+REPAIR tag settles + list region establishes ─────────────────────────
+    // ───────────────────────── Scene 2 (2.74-9.94s) — PROTECT+REPAIR tag settles + list region establishes ─────────────────────────
     tl.fromTo(
       "#sm3Tag",
       { opacity: 0, scale: 0.85 },
       { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" },
-      2.55
+      3.09
     );
 
-    // ───────────────────────── Scenes 3-5 (9.2-19.0s) — ingredient items assemble one at a time ─────────────────────────
+    // ───────────────────────── Scenes 3-5 (9.94-19.4s) — ingredient items assemble one at a time ─────────────────────────
     // Each item is its own grid-card-assemble mount (see the HTML above), timed via
-    // that mount's own data-start so the card lands exactly on its original VO cue:
-    // GLYCOLIC ACID @ 9.45s, ALLANTOIN @ 14.3s, HYALURONIC ACID @ 16.35s. Those
+    // that mount's own data-start so the card lands exactly on its Kimberly VO cue:
+    // GLYCOLIC ACID @ 10.19s, ALLANTOIN @ 14.56s, HYALURONIC ACID @ 16.67s. Those
     // mounts run their own independently-registered timelines — nothing to add here.
 
-    // ───────────────────────── Scene 6 (19.0-25.496s) — inverse zoom-through: list clears → ticker → payoff ─────────────────────────
+    // ───────────────────────── Scene 6 (19.4-25.12s) — inverse zoom-through: list clears → ticker → payoff ─────────────────────────
 
     // (a) the whole chem-stack recedes away from the viewer (exit phase of inverse zoom-through)
-    tl.to("#sm3Stack", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 19.0);
-    tl.to("#sm3Stack", { opacity: 0.15, duration: 0.2, ease: "none" }, 19.0);
-    tl.set("#sm3Stack", { opacity: 0 }, 19.2);
+    tl.to("#sm3Stack", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 19.4);
+    tl.to("#sm3Stack", { opacity: 0.15, duration: 0.2, ease: "none" }, 19.4);
+    tl.set("#sm3Stack", { opacity: 0 }, 19.6);
 
     // (b) bridging ticker arrives oversized and retracts into place (entry phase of inverse zoom-through)
-    tl.set("#sm3Ticker", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 19.3);
-    tl.to("#sm3Ticker", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 19.3);
+    tl.set("#sm3Ticker", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 19.7);
+    tl.to("#sm3Ticker", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 19.7);
 
     // ticker text — discrete state swap, words lifted from the VO cue itself
     var TICKER_SEQUENCE = [
       { t: 0.0, text: "ANTI-AGING" },
-      { t: 1.55, text: "BARRIER-REPAIRING" },
-      { t: 3.05, text: "SUPER-SERUM" },
+      { t: 1.64, text: "BARRIER-REPAIRING" },
+      { t: 2.73, text: "SUPER-SERUM" },
     ];
     function tickerTextAt(t) {
       for (var i = TICKER_SEQUENCE.length - 1; i >= 0; i--) {
@@ -395,25 +395,25 @@
     tl.to(
       tickerDriver,
       {
-        t: 3.85,
-        duration: 3.85,
+        t: 3.24,
+        duration: 3.24,
         ease: "none",
         onUpdate: function () {
           tickerTextEl.textContent = tickerTextAt(tickerDriver.t);
         },
       },
-      19.3
+      19.7
     );
 
     // (c) ticker recedes away (exit phase of inverse zoom-through) just ahead of the payoff cue
-    tl.to("#sm3Ticker", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 23.15);
-    tl.to("#sm3Ticker", { opacity: 0.15, duration: 0.2, ease: "none" }, 23.15);
-    tl.set("#sm3Ticker", { opacity: 0 }, 23.35);
+    tl.to("#sm3Ticker", { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" }, 22.94);
+    tl.to("#sm3Ticker", { opacity: 0.15, duration: 0.2, ease: "none" }, 22.94);
+    tl.set("#sm3Ticker", { opacity: 0 }, 23.14);
 
     // (d) payoff line arrives oversized and retracts into place, landing on "perfectly engineered by nature"
-    tl.set("#sm3Payoff", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 23.58);
-    tl.to("#sm3Payoff", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, 23.58);
-    // holds static through the frame's real end at 25.496 — no exit tween (non-final scene)
+    tl.set("#sm3Payoff", { opacity: 0.15, scale: 1.25, filter: "blur(10px)" }, 23.37);
+    tl.to("#sm3Payoff", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, 23.37);
+    // holds static through the frame's real end at 25.12 — no exit tween (non-final scene)
 
     window.__timelines["03-chemistry"] = tl;
   })();

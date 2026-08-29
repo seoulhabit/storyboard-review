@@ -1,6 +1,6 @@
 # SCRIPT — snail-mucin-medical-secret
 
-**Voice:** HeyGen voice id `05f19352e8f74b0392a8f411eba40de1` — reused from `../snail-mucin-truth/audio_engine_meta.json` for narration continuity across the two snail-mucin videos.
+**Voice (2026-08-29, explicit user request):** Kimberly — creative-platform MCP `text2speech_v2`/elevenlabs, `voice_type: element`, `voice_id: 674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (the same workspace reference voice already used in `../kbeauty-one-percent-line/` and `../seoulhabit-launch/`). Replaces the original HeyGen voice `05f19352e8f74b0392a8f411eba40de1` ("Marcia") reused from `../snail-mucin-truth/audio_engine_meta.json`. Kimberly's raw takes measured -18.2 to -18.8 LUFS (vs. this project's established -16.4 to -16.8 LUFS band) — two-pass loudness-matched (`ffmpeg loudnorm`, measure→apply, linear mode) to -16.6 LUFS / -1.0 dBTP before placing, same technique this pipeline used the prior time Kimberly was brought in. Raw pre-normalize takes kept alongside for provenance: `assets/voice/{01..06}-raw.mp3`.
 **Voice settings:** default
 **Voice direction:** Confident TikTok-explainer energy — a little cheeky, playful on "bizarre, miraculous cure" and "yuck-factor," matter-of-fact and quick through the ingredient list, reassuring on the snail-spa beat, brisk and instructional on the sponge fix, warm and inviting on the outro CTA.
 

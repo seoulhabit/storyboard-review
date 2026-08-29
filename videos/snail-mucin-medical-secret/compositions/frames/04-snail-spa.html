@@ -253,11 +253,40 @@
   .closing-text .accent {
     color: var(--pink);
   }
+
+  /* ---------- Supporting tag: CRUELTY-FREE — small confirming beat under the closing card ---------- */
+  #spa-cruelty-tag {
+    z-index: 20;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+  }
+  .cruelty-chip {
+    position: absolute;
+    top: 64cqh;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5em 0.9em;
+    border-radius: 999px;
+    background: var(--pink);
+    box-shadow: 0 0 22px color-mix(in srgb, var(--pink) 45%, transparent);
+    opacity: 0;
+    transform-origin: 50% 50%;
+    will-change: transform, opacity;
+  }
+  .cruelty-chip-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.9cqw;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
 </style>
 
-<div id="root" data-composition-id="04-snail-spa" data-width="1080" data-height="1920" data-duration="23.671">
+<div id="root" data-composition-id="04-snail-spa" data-width="1080" data-height="1920" data-duration="21.54">
   <!-- topbar spine — whole frame -->
-  <div id="spa-topbar" class="clip" data-start="0" data-duration="23.671" data-track-index="3">
+  <div id="spa-topbar" class="clip" data-start="0" data-duration="21.54" data-track-index="3">
     <div class="topbar-row">
       <span class="topbar-chip">The Extraction</span>
       <span class="topbar-counter">04 / 06</span>
@@ -265,7 +294,7 @@
   </div>
 
   <!-- Scene 1 (0.0-3.9s): dark scrim, myth-bust teaser -->
-  <div id="spa-scrim" class="clip" data-start="0" data-duration="3.9" data-track-index="0">
+  <div id="spa-scrim" class="clip" data-start="0" data-duration="3.74" data-track-index="0">
     <div class="scrim-stack">
       <div class="scrim-word" id="scrim-w1">TORTURE</div>
       <div class="scrim-word" id="scrim-w2">CHAMBER?</div>
@@ -276,8 +305,8 @@
   <div
     id="spa-photo-clip"
     class="clip"
-    data-start="3.9"
-    data-duration="19.771"
+    data-start="3.74"
+    data-duration="17.8"
     data-track-index="0"
   >
     <div class="photo-mask">
@@ -291,7 +320,7 @@
   </div>
 
   <!-- Scene 2: headline wipe-reveal, upper third -->
-  <div id="spa-headline" class="clip" data-start="3.9" data-duration="19.771" data-track-index="1">
+  <div id="spa-headline" class="clip" data-start="3.74" data-duration="17.8" data-track-index="1">
     <div class="headline-mask" id="headline-mask">
       <div class="headline-text">LUXURY <span class="accent">SPA</span> FOR MOLLUSKS</div>
     </div>
@@ -301,8 +330,8 @@
   <div
     id="spa-caption-wrap"
     class="clip"
-    data-start="8.9"
-    data-duration="11.9"
+    data-start="8.09"
+    data-duration="10.87"
     data-track-index="4"
   >
     <div class="cap-slot">
@@ -316,12 +345,20 @@
   </div>
 
   <!-- Scene 5: closing headline, spring-pop settle, holds to real end -->
-  <div id="spa-closing" class="clip" data-start="20.1" data-duration="3.571" data-track-index="2">
+  <div id="spa-closing" class="clip" data-start="18.31" data-duration="3.23" data-track-index="2">
     <div class="closing-card" id="closing-card">
       <div class="closing-text">
         <span class="accent">ZERO</span> HARM,
         <span class="accent">ZERO</span> STRESS
       </div>
+    </div>
+  </div>
+
+  <!-- Supporting tag: CRUELTY-FREE — on-screen only, lands a beat after the
+       closing card; the spoken line stays exactly as scripted (verbatim VO). -->
+  <div id="spa-cruelty-tag" class="clip" data-start="19.36" data-duration="2.18" data-track-index="5">
+    <div class="cruelty-chip" id="cruelty-chip">
+      <span class="cruelty-chip-text">Cruelty-Free</span>
     </div>
   </div>
 </div>
@@ -385,13 +422,13 @@
       "#scrim-w1",
       { scale: 0.85, opacity: 0, y: 10 },
       { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
-      2.4,
+      1.44,
     );
     tl.fromTo(
       "#scrim-w2",
       { scale: 0.85, opacity: 0, y: 10 },
       { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
-      2.85,
+      1.78,
     );
 
     /* ---------- Scene 2+: Ken Burns drift on the real photo (one continuous move) ---------- */
@@ -399,11 +436,11 @@
     // original hand-rolled drift. zoom matches the prior end-scale (1.18) minus 1;
     // slideX/slideY match the prior x/y drift; origin matches #spa-kb's existing
     // 55% 40% transform-origin so the pivot point of the move is unchanged.
-    window.ytCameraMove(tl, "#spa-kb", 3.9, {
+    window.ytCameraMove(tl, "#spa-kb", 3.74, {
       zoom: 0.18,
       slideX: -26,
       slideY: -34,
-      dur: 19.271,
+      dur: 17.3,
       ease: "sine.inOut",
       origin: "55% 40%",
     });
@@ -413,29 +450,29 @@
       "#headline-mask",
       { clipPath: "inset(0% 100% 0% 0%)" },
       { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.out" },
-      4.38,
+      4.22,
     );
     // headline recedes (dims, does not exit) as the closing card takes over
-    tl.to("#spa-headline", { opacity: 0.32, duration: 0.5, ease: "power2.out" }, 20.3);
+    tl.to("#spa-headline", { opacity: 0.32, duration: 0.5, ease: "power2.out" }, 18.46);
 
     /* ---------- Scene 3: first supporting caption line ---------- */
     tl.fromTo(
       "#cap-a",
       { opacity: 0, y: 22 },
       { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-      9.3,
+      8.34,
     );
 
     /* ---------- Scene 4: same-slot swap to the second caption line ---------- */
-    tl.to("#cap-a", { scale: 0.85, opacity: 0, duration: 0.35, ease: "power2.in" }, 15.9);
+    tl.to("#cap-a", { scale: 0.85, opacity: 0, duration: 0.35, ease: "power2.in" }, 14.6);
     tl.fromTo(
       "#cap-b",
       { scale: 0.82, opacity: 0 },
       { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.4)" },
-      16.13,
+      14.83,
     );
     // clear the lower caption as the closing statement lands
-    tl.to("#cap-b", { opacity: 0, duration: 0.45, ease: "power2.out" }, 20.15);
+    tl.to("#cap-b", { opacity: 0, duration: 0.45, ease: "power2.out" }, 18.31);
 
     /* ---------- Scene 5: closing headline, spring-pop settle + hold-breathing ---------- */
     // Single writer for #closing-card's transform (entrance pop + later idle breathing
@@ -465,13 +502,13 @@
         ease: "back.out(" + SP_OVERSHOOT + ")",
         onUpdate: writeCardScale,
       },
-      20.86,
+      19.02,
     );
     tl.fromTo(
       "#closing-card",
       { opacity: 0 },
       { opacity: 1, duration: Math.min(0.3, SP_IN), ease: "power2.out" },
-      20.86,
+      19.02,
     );
 
     // subtle breathing pulse across the hold — deterministic sine driver, no CSS animation
@@ -480,14 +517,28 @@
       breathe,
       {
         p: Math.PI * 2 * 1.2,
-        duration: 23.171 - 21.46,
+        duration: 21.04 - 19.62,
         ease: "none",
         onUpdate: function () {
           cardScale.breathe = Math.sin(breathe.p) * 0.012;
           writeCardScale();
         },
       },
-      21.46,
+      19.62,
+    );
+
+    /* ---------- Supporting tag: CRUELTY-FREE — spring-pop in a beat after the closing card lands ---------- */
+    tl.fromTo(
+      "#cruelty-chip",
+      { scale: 0.9 },
+      { scale: 1, duration: 0.45, ease: "back.out(1.6)" },
+      19.36,
+    );
+    tl.fromTo(
+      "#cruelty-chip",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.3, ease: "power2.out" },
+      19.36,
     );
 
     window.__timelines["04-snail-spa"] = tl;

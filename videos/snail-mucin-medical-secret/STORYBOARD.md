@@ -1,6 +1,6 @@
 ---
 format: 1080x1920
-duration: 117.4s
+duration: 113.84s
 message: "Snail mucin has a wild medical origin story, a genuine biological reason it works, and one easy-to-miss application step — not TikTok magic"
 arc: story-explainer with process
 audience: "TikTok/shorts skincare audience who've seen the snail-mucin trend and want the real story behind it"
@@ -35,6 +35,24 @@ directly and this build shows it that way.
   script describes as real (that was the prior build's mismatch); no
   citation chips; no hedging language layered onto the spoken lines.
 
+## Voice change + full retime — 2026-08-29
+
+**Voice switched to Kimberly** (explicit user request); full rationale,
+duration/loudness comparison, and decision trail are in `BRIEF.md`'s
+"Voice change + full retime" Notes bullet — not duplicated here. New global
+frame structure: starts at 0 / 13.52 / 27.84 / 52.96 / 74.0 / 98.64s, total
+**113.84s** (was 117.421s).
+
+**Every per-scene timestamp in the Frame sections below predates this
+retime** and reflects the *original* HeyGen voice's pacing — kept as the
+historical authoring record of the shot design (which beat follows which
+clause, why a cut lands where it does), not as current timing. The actual
+current timing lives in the composition files themselves
+(`compositions/frames/*.html`, `index.html`), each retimed line-by-line
+against Kimberly's real per-word transcript. The shot design itself (what
+happens, in what order, on which clause) is unchanged by the retime — only
+the numbers moved.
+
 ## Frame 1 — Hook: The Bizarre History
 
 - scene: A vintage black-and-white 1960s lab-footage still, then a hard cut to a hyper-crisp macro photo of clear slime being pulled apart by a metal spatula.
@@ -49,14 +67,14 @@ directly and this build shows it that way.
 - blueprint: kinetic-type-beats (Hook-escalation, Adapt)
 - focal: Scene 1 the real B&W archival lab photo (`public/01a-archival-lab.png`); Scenes 2-4 the real macro slime/spatula photo (`public/01b-macro-slime-spatula.png`)
 - roles: archival photo = foreground subject, full-bleed (Scene 1) · macro slime photo = foreground subject, full-bleed (Scenes 2-4) · VO captions/lead-in text = supporting overlay
-- sfx: bass-drop-cinematic (Scene 1→2 hard cut), squish-stretch-asmr (over the macro slime hold), sparkle (payoff word)
+- sfx: vintage-film-projector-click (Scene 1 open, under the "1960s · Spain" label pop; retriggers at the 2.40s snap-cut as a film-reel-skip accent), bass-drop-cinematic (Scene 1→2 hard cut), squish-stretch-asmr (over the macro slime hold), sparkle (payoff word)
 
 narrativeRole: Opens on the real, strange 1960s origin story before the hard cut to the visceral macro slime shot that IS the video's hook image.
 keyMessage: Snail mucin's TikTok fame traces back to a specific, bizarre medical origin story.
 
 Adapt: keep kinetic-type-beats' hard-cut escalation signature, but the "beats" are real photographs full-bleed under text overlays rather than invented type cards — this frame is photo-led, not type-led.
 
-Scene 1 (0.0–5.4s): `public/01a-archival-lab.png` fills the frame full-bleed (a subtle grayscale/high-contrast filter + light grain overlay reinforces "vintage footage"), dimmed ~35% under a mono "1960s · SPAIN" label. As the VO says "In the 1960s, a Spanish doctor trying to heal severe radiation burns" (0.10–5.20s), a caption line per-word-reveals lower-third (clear of the caption band).
+Scene 1 (0.0–5.4s): `public/01a-archival-lab.png` fills the frame full-bleed (a subtle grayscale/high-contrast filter + light grain overlay reinforces "vintage footage"), dimmed ~35% under a mono "1960s · SPAIN" label. As the VO says "In the 1960s, a Spanish doctor trying to heal severe radiation burns" (0.10–5.20s), a caption line per-word-reveals lower-third (clear of the caption band). A fast whip-blur snap-cut at 2.40–2.64s (same photo, punched in and reframed — no second angle exists for this beat) breaks the hold into two sub-3s visual beats, so the 1960s-to-modern transition reads as rapid cuts rather than one long static hold; text/label overlays sit outside the punched layer and stay crisp through it.
 
 Scene 2 (5.4–8.7s): hard cut — `public/01b-macro-slime-spatula.png` fills the frame full-bleed, slow Ken Burns push-in begins (runs through Scene 4). On "stumbled onto a bizarre, miraculous cure" (5.64–8.52s), the phrase per-word-reveals over the image, upper-third.
 
@@ -140,7 +158,7 @@ Scene 6 (19.0–25.496s): on "It's basically an anti-aging, barrier-repairing su
 - blueprint: titlecard-reveal (Adapt)
 - focal: the real cinematic snail-on-mesh photo (`public/04-snail-mesh.png`) as full-bleed hero
 - roles: snail-on-mesh photo = foreground subject, full-bleed · "LUXURY SPA FOR MOLLUSKS" headline = supporting overlay · "ZERO HARM, ZERO STRESS" closing line = supporting overlay, landing last
-- sfx: whoosh-soft (myth-bust cut), click-soft (closing line lands)
+- sfx: record-scratch (on the "TORTURE CHAMBER?" pop, 2.40s — resets attention on the myth callout itself), whoosh-soft (myth-bust cut), click-soft (closing line lands), click-soft (CRUELTY-FREE tag lands, 21.2s)
 
 narrativeRole: Directly answers and dismisses the "torture chamber" worry using the real moody B-roll photo as proof-of-mood.
 keyMessage: Snail mucin is collected in a quiet, dark, spa-like setting — zero harm, zero stress.
@@ -155,7 +173,7 @@ Scene 3 (9.1–15.9s): on "They naturally prefer the dark, so they are placed in
 
 Scene 4 (15.9–20.4s): on "The mucin they leave behind is collected, purified, and bottled." (16.20–20.16s), a second supporting caption line reveals beneath the first, replacing it.
 
-Scene 5 (20.4–23.171s): on "Zero harm, zero stress." (20.86–22.86s), "ZERO HARM, ZERO STRESS" lands as the closing headline, spring-pop settle, holding through the frame's real end at 23.171s.
+Scene 5 (20.4–23.171s): on "Zero harm, zero stress." (20.86–22.86s), "ZERO HARM, ZERO STRESS" lands as the closing headline, spring-pop settle, holding through the frame's real end at 23.171s. A small "CRUELTY-FREE" chip spring-pops in beneath it at 21.2s — on-screen only, added per reviewer feedback; the spoken line stays exactly as scripted (verbatim VO), since "cruelty-free" is a more specific claim (normally about animal testing, not sourcing) than "zero harm, zero stress" itself asserts.
 
 ## Frame 5 — The Sponge Metaphor (How to Not Ruin Your Skin)
 

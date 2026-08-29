@@ -40,8 +40,14 @@ the pipeline's evidentiary bar rather than TikTok hype language.
   JetBrains Mono) for on-screen title cards and section labels only — the
   scene content itself is now photographic, not the palette-driven invented
   graphics used in `videos/snail-mucin-truth/`.
-- Reuse the HeyGen voice id `05f19352e8f74b0392a8f411eba40de1` from
-  `videos/snail-mucin-truth/audio_engine_meta.json` for narration continuity.
+- **Voice changed 2026-08-29** (explicit user request) to **Kimberly**
+  (creative-platform MCP `text2speech_v2`/elevenlabs, `voice_type: element`,
+  `voice_id: 674b71b8-1d2e-4087-8567-d1f53c0b9f3c`) — the same workspace
+  reference voice already used in `videos/kbeauty-one-percent-line/` and
+  `videos/seoulhabit-launch/`. Replaces the originally-reused HeyGen voice id
+  `05f19352e8f74b0392a8f411eba40de1` from
+  `videos/snail-mucin-truth/audio_engine_meta.json`. See Notes for the full
+  retime this triggered.
 
 ## Notes
 
@@ -66,3 +72,24 @@ the pipeline's evidentiary bar rather than TikTok hype language.
 - `length` follows the verbatim script's own real spoken duration (measured
   from TTS, not estimated) — inside the faceless-explainer hard cap
   (~3 min).
+- **Voice change + full retime (2026-08-29, explicit user request):** "change
+  this to Kimberly voice." Kimberly's pacing differs from the original
+  HeyGen voice per line, and not uniformly in one direction (line 1 -10.6%,
+  line 2 +3.4%, line 3 -1.5%, line 4 -9.2%, line 5 +14.1%, line 6 -16.4%) —
+  two lines came in *slower*, which would have truncated their audio against
+  the old frame boundaries, so "leave timing as-is" was never a safe option.
+  Flagged the full duration/loudness comparison before proceeding; user chose
+  **full retime** (re-author every frame's internal choreography) over
+  "recut boundaries only." All 6 VO lines re-recorded verbatim (text
+  unchanged), loudness-matched (see SCRIPT.md), transcribed word-by-word
+  (Parakeet/whisper fallback via the media-use audio engine) to get real per-word
+  timestamps for Kimberly's actual delivery — every frame's word reveals, cut
+  points, and SFX cues were re-anchored to those real timestamps rather than
+  the prior evenly-spaced approximation, which is a net accuracy improvement
+  independent of the voice change. Global structure moved from
+  (0/15.125/28.97/54.466/77.637/99.24, total 117.421s) to
+  (0/13.52/27.84/52.96/74.0/98.64, total 113.84s). Whole-video captions
+  regenerated from the same per-word data (2-3 word groups breaking on
+  clause punctuation or ≥0.12s pauses, matching this pipeline's established
+  caption-pacing convention). Re-rendered and re-verified via snapshot at
+  every new scene boundary; `npm run check` clean.

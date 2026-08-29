@@ -156,6 +156,15 @@
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true });
 
+        // Explicit baseline for the ripples — five separate fromTo() calls on these
+        // same two elements, one per ripple burst. A bare gsap.set() call outside the
+        // timeline was tried first and did NOT fix the equivalent bleed-through bug in
+        // Frame 8's countdown ring — the render engine seeks this timeline to arbitrary
+        // times without necessarily passing through t=0 first, and a set() made outside
+        // the timeline isn't part of what the timeline itself evaluates on a seek.
+        // tl.set(...) registers the baseline as an actual timeline tween at position 0.
+        tl.set(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 0.4 }, 0);
+
         tl.fromTo("#loop-title", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.1);
         tl.fromTo("#loop-rule", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power3.out" }, 0.4);
         tl.fromTo(["#loop-kicker-west", "#loop-kicker-kr"], { opacity: 0 }, { opacity: 0.7, duration: 0.3, ease: "power3.out" }, 0.6);

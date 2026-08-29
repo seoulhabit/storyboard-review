@@ -51,6 +51,20 @@
         }
         .tear-brand { font-family: var(--font-display); font-size: 40px; color: var(--ink); margin-bottom: 6px; }
         .tear-sub { font-family: var(--font-mono); font-size: var(--t-label); color: var(--ink-2); margin-bottom: 32px; }
+        /* Reuses the same catalog product photo from Frame 1 (not a new asset) —
+           round-3 feedback wanted the catalog's photography felt through more of the
+           video, and a live bottle teardown is a natural place for it: reinforces
+           "this is a real physical product" during the one scene that's literally
+           about reading a bottle's own label. Unbranded, matching this card's own
+           "no brand trade dress" convention. */
+        .tear-brand-photo {
+          position: absolute; top: 40px; right: 40px;
+          width: 108px; height: 108px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: var(--elev-2);
+          opacity: 0;
+        }
         .tear-row {
           font-family: var(--font-mono);
           font-size: 27px;
@@ -141,6 +155,7 @@
 
       <div data-hf-id="hf-tear-root" id="root" data-composition-id="06-teardown" data-width="1080" data-height="1920" data-duration="19.02">
         <div data-hf-id="hf-tear-card" id="tear-card" class="clip tear-card" data-start="0" data-duration="19.02">
+          <img data-hf-id="hf-tear-brandphoto" class="tear-brand-photo" id="tear-brand-photo" src="assets/images/hook-bottle-photo.png" alt="" width="1080" height="1935" loading="eager" decoding="sync">
           <div data-hf-id="hf-tear-brand" class="tear-brand" id="tear-brand">GLOW SERUM</div>
           <div data-hf-id="hf-tear-sub" class="tear-sub" id="tear-sub">PROPOLIS + NIACINAMIDE — INCI ORDER</div>
 
@@ -178,6 +193,7 @@
 
         // card drop-in (SFX whoosh-thud.mp3)
         tl.fromTo("#tear-card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.15);
+        tl.fromTo("#tear-brand-photo", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 0.35);
 
         // Fast fill for contrast (rows 1-10 populate the near-white card by ~1.14s, same
         // pacing as the original build — delaying this to match each VO onset reintroduced
@@ -219,8 +235,14 @@
         // (overshoot then settle) for a punchier "anchor" landing — no back/elastic ease
         // (banned by this project's motion rules), so the overshoot is hand-built from
         // two power-eased tweens instead.
-        tl.fromTo("#tear-line-tag", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1.15, duration: 0.22, ease: "power3.out" }, 13.05);
-        tl.to("#tear-line-tag", { scale: 1, duration: 0.15, ease: "power2.inOut" }, 13.28);
+        // Retimed 13.05->12.95 and shortened 0.22->0.15s: the strike itself finishes
+        // drawing at 13.1 (started 12.9, 0.2s duration), and the tag was only ~68%
+        // opaque at that point — a viewer pausing right as the strike completes (a
+        // real report) caught a fully-drawn strike next to a still-fading, easy-to-miss
+        // tag. Now both land together: tag reaches full opacity at 13.1, same moment
+        // the strike finishes.
+        tl.fromTo("#tear-line-tag", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1.15, duration: 0.15, ease: "power3.out" }, 12.95);
+        tl.to("#tear-line-tag", { scale: 1, duration: 0.15, ease: "power2.inOut" }, 13.12);
 
         // trailing rows fade in, then DISSOLVE away (was a static blur fade) — round-2
         // feedback asked for the "fairy dust" ingredients to physically fall off rather

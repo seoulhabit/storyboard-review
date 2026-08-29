@@ -168,7 +168,7 @@
 
       <div data-hf-id="hf-hook-root" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="8.7">
         <div data-hf-id="hf-hook-photowrap" id="hook-bottle-photo-wrap" class="clip hook-bottle-photo-wrap" data-start="0" data-duration="8.7">
-          <img data-hf-id="hf-hook-photo" id="hook-bottle-photo" class="hook-bottle-photo" src="assets/images/hook-bottle-photo.png" alt="" width="1080" height="1935" loading="eager" decoding="sync">
+          <img data-hf-id="hf-hook-photo" id="hook-bottle-photo" class="hook-bottle-photo" src="assets/images/hook-bottle-photo.png" alt="" width="1080" height="1935" loading="eager" decoding="sync" data-layout-allow-overflow>
           <div data-hf-id="hf-hook-photoscrim" class="hook-bottle-photo-scrim"></div>
         </div>
         <div data-hf-id="hf-hook-silo" id="hook-silhouettes" class="clip hook-silhouettes" data-start="0" data-duration="8.7">
@@ -223,8 +223,12 @@
         // 4) as a soft background texture, then recedes by local 3.0s — "for the first
         // three seconds" per the round-2 feedback that asked for a recognizable product
         // shot to open on. Scrim stays fixed; only the photo itself fades.
+        // Recedes to a subtle backdrop rather than disappearing entirely — round-3
+        // feedback wanted more sustained use of the catalog photo, not just a flash.
+        // Full detail dims out of the way for the VO text, but the product stays
+        // felt as texture through the rest of the scene instead of vanishing.
         gsap.set("#hook-bottle-photo", { opacity: 0.85 });
-        tl.to("#hook-bottle-photo-wrap", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 2.6);
+        tl.to("#hook-bottle-photo-wrap", { opacity: 0.3, duration: 0.6, ease: "power2.inOut" }, 2.6);
 
         // silhouettes: soft fade-in, subtle finite drift, out before crossfade
         const BOTTLES = ["#hook-bottle-1", "#hook-bottle-2", "#hook-bottle-3"];

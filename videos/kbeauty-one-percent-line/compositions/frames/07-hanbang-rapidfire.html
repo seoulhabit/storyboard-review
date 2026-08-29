@@ -45,6 +45,10 @@
           --t-body: 32px;
           --t-label: 28px;
           --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 120px;
+          --safe-bottom: 360px;
+          --safe-left: 60px;
+          --safe-right: 162px;
 
           position: relative;
           width: 1080px;
@@ -55,9 +59,26 @@
         }
         .clip { position: absolute; inset: 0; }
 
-        .hb-kicker { top: 160px; left: 0; width: 100%; text-align: center; font-family: var(--font-display); font-size: 52px; color: var(--paper); opacity: 0; }
+        .hb-kicker { top: 150px; left: 0; width: 100%; text-align: center; font-family: var(--font-display); font-size: 52px; color: var(--paper); opacity: 0; }
 
-        .hb-cards { top: 320px; left: 0; width: 100%; height: 1500px; display: flex; flex-direction: column; justify-content: space-evenly; gap: 24px; padding: 0 90px; }
+        /* VO-synced subtitle fills what was a literal blank canvas from 1.0-7.2 (the old
+           kicker faded at 1.0, cards didn't pop until a fixed 6.4s grid starting at 0.8 —
+           meaning frame 1's content was already gone 6+s before the VO even named it). */
+        .hb-subtitle { top: 220px; left: var(--safe-left); width: 858px; }
+        .hb-subtitle-line {
+          font-family: var(--font-mono);
+          font-size: 54px;
+          font-weight: 500;
+          line-height: 1.3;
+          color: var(--paper);
+          text-align: center;
+        }
+        .hb-subtitle-word { display: inline-block; margin-right: 0.24em; opacity: 0; }
+
+        /* height reduced 1500->1180 and padding widened so card 3's bottom clears
+           safe-bottom (1920-360=1560) — it was landing at ~1608-1820, under the Shorts
+           title/channel/audio strip. */
+        .hb-cards { top: 320px; left: 0; width: 100%; height: 1180px; display: flex; flex-direction: column; justify-content: space-evenly; gap: 24px; padding: 0 190px 0 80px; }
         .hb-card {
           background: var(--white);
           border-radius: 16px;
@@ -75,6 +96,10 @@
 
       <div data-hf-id="hf-hb-root" id="root" data-composition-id="07-hanbang-rapidfire" data-width="1080" data-height="1920" data-duration="21.34">
         <div data-hf-id="hf-hb-kicker" id="hb-kicker" class="clip hb-kicker" data-start="0" data-duration="21.34">THE HANBANG CHEAT SHEET</div>
+
+        <div data-hf-id="hf-hb-subtitle" id="hb-subtitle" class="clip hb-subtitle" data-start="0" data-duration="21.34">
+          <div data-hf-id="hf-hb-subtitle-line" class="hb-subtitle-line" id="hb-subtitle-line"></div>
+        </div>
 
         <div data-hf-id="hf-hb-cards" id="hb-cards" class="clip hb-cards" data-start="0" data-duration="21.34">
           <div data-hf-id="hf-hb-c1" class="hb-card" id="hb-card-1">
@@ -101,10 +126,38 @@
         const tl = gsap.timeline({ paused: true });
 
         tl.fromTo("#hb-kicker", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.15);
-        tl.to("#hb-kicker", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 1.4);
+        tl.to("#hb-kicker", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 3.2);
 
-        // three flashcards snap in sequence, one per script beat (SFX shutter-click.mp3 x3)
-        const CARD_STARTS = [1.8, 8.2, 14.6];
+        // Subtitle word-reveal on REAL onsets (renders/transcript.json, local = absolute -
+        // 84.9) for "Korean skincare uses traditional herbs with wildly confusing INCI
+        // names." This is what used to be dead canvas: the old kicker faded at 1.0s and
+        // nothing else was on screen until card 1 popped at a flat 0.8s (before this VO
+        // line had even started) — a literal blank frame for over a second, and a static
+        // hold everywhere else in the scene besides.
+        const SUBTITLE_WORDS = [
+          { word: "Korean", start: 1.77 }, { word: "skincare", start: 2.07 }, { word: "uses", start: 2.54 },
+          { word: "traditional", start: 2.77 }, { word: "herbs", start: 3.41 }, { word: "with", start: 3.72 },
+          { word: "wildly", start: 4.29 }, { word: "confusing", start: 5.14 }, { word: "INCI", start: 6.50 },
+          { word: "names.", start: 6.98 },
+        ];
+        const subtitleEl = document.getElementById("hb-subtitle-line");
+        SUBTITLE_WORDS.forEach((entry) => {
+          const span = document.createElement("span");
+          span.className = "hb-subtitle-word";
+          span.textContent = entry.word;
+          subtitleEl.appendChild(span);
+          entry.el = span;
+        });
+        SUBTITLE_WORDS.forEach((entry) => {
+          tl.fromTo(entry.el, { opacity: 0, y: 10, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "power3.out" }, entry.start);
+        });
+        tl.to("#hb-subtitle", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 7.3);
+
+        // Three flashcards, retimed from a flat 6.4s grid ([0.8, 7.2, 13.6], which popped
+        // card 1 six-plus seconds before the VO named it, per the audit) to the REAL onset
+        // of each Hanbang term (local: "Snail" 7.77, "Panax" 11.76, "Artemisia" 15.77),
+        // landing just ahead of the word so the reveal reads as anticipation, not lag.
+        const CARD_STARTS = [7.6, 11.6, 15.6];
         const CARD_IDS = ["#hb-card-1", "#hb-card-2", "#hb-card-3"];
         const UNDERLINE_IDS = ["#hb-underline-1", "#hb-underline-2", "#hb-underline-3"];
         CARD_IDS.forEach((id, i) => {

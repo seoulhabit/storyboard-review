@@ -48,8 +48,10 @@
           opacity: 0;
         }
 
+        /* left/width recentered from 80/920 (edges 80..1000, past safe-right's reserved
+           918) to sit inside safe-left..safe-right (60..918). */
         .macro-stage {
-          top: 310px; left: 80px; width: 920px; height: 920px;
+          top: 310px; left: 111px; width: 858px; height: 858px;
         }
         .macro-slide {
           position: absolute; inset: 0;
@@ -86,18 +88,18 @@
 
         <div data-hf-id="hf-macro-stage" id="macro-stage" class="clip macro-stage" data-start="0" data-duration="3.0">
           <div data-hf-id="hf-macro-slide1" class="macro-slide" id="macro-slide-1">
-            <div class="macro-photo-frame" id="macro-frame-1">
-              <img class="macro-photo" src="assets/images/ingredient-snail-mucin.png" alt="Glossy snail mucin gel in a glass dish">
+            <div data-hf-id="hf-m0al" class="macro-photo-frame" id="macro-frame-1">
+              <img data-hf-id="hf-r28c" class="macro-photo" src="assets/images/ingredient-snail-mucin.png" alt="Glossy snail mucin gel in a glass dish" width="1400" height="1400" loading="eager" decoding="sync">
             </div>
           </div>
           <div data-hf-id="hf-macro-slide2" class="macro-slide" id="macro-slide-2">
-            <div class="macro-photo-frame" id="macro-frame-2">
-              <img class="macro-photo" src="assets/images/ingredient-ginseng.png" alt="Whole forked ginseng root">
+            <div data-hf-id="hf-pyem" class="macro-photo-frame" id="macro-frame-2">
+              <img data-hf-id="hf-tspe" class="macro-photo" src="assets/images/ingredient-ginseng.png" alt="Whole forked ginseng root" width="1400" height="1400" loading="eager" decoding="sync">
             </div>
           </div>
           <div data-hf-id="hf-macro-slide3" class="macro-slide" id="macro-slide-3">
-            <div class="macro-photo-frame" id="macro-frame-3">
-              <img class="macro-photo" src="assets/images/ingredient-mugwort.png" alt="Fresh silvery-green mugwort leaf sprig">
+            <div data-hf-id="hf-twin" class="macro-photo-frame" id="macro-frame-3">
+              <img data-hf-id="hf-7yn1" class="macro-photo" src="assets/images/ingredient-mugwort.png" alt="Fresh silvery-green mugwort leaf sprig" width="1400" height="1400" loading="eager" decoding="sync">
             </div>
           </div>
         </div>

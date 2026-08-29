@@ -36,6 +36,10 @@
           --t-frame: 50px;
           --t-body: 32px;
           --t-label: 24px;
+          --safe-top: 120px;
+          --safe-bottom: 360px;
+          --safe-left: 60px;
+          --safe-right: 162px;
 
           position: relative;
           width: 1080px;
@@ -72,31 +76,36 @@
         .loop-chip-west { background: rgba(19,21,22,0.08); color: var(--ink); }
         .loop-chip-kr { background: rgba(89,184,174,0.22); color: var(--aqua); border: 2px solid var(--aqua); }
 
+        /* top raised further (1180 -> 1050) to compensate for the larger beaker/type below
+           (~477px content) and still clear safe-bottom (1920-360=1560) with margin. */
         .loop-equation {
-          top: 1180px; left: 0; width: 100%; height: 500px;
+          top: 1050px; left: 0; width: 100%; height: 500px;
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
         }
         .loop-eq-word {
           font-family: var(--font-body);
           font-weight: 800;
-          font-size: 76px;
+          font-size: 96px;
           color: var(--ink);
           opacity: 0;
         }
         .loop-eq-split { display: flex; align-items: center; gap: 28px; }
         .loop-eq-part {
           font-family: var(--font-mono);
-          font-size: 34px;
+          font-size: 42px;
           font-weight: 500;
           color: var(--ink);
           background: rgba(19,21,22,0.06);
-          padding: 16px 24px;
+          padding: 20px 30px;
           border-radius: 10px;
           opacity: 0;
         }
-        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 44px; color: var(--ink-2); opacity: 0; }
+        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 52px; color: var(--ink-2); opacity: 0; }
 
-        .loop-beaker-wrap { display: flex; align-items: flex-end; justify-content: center; height: 140px; }
+        /* beaker scaled ~1.7x (was a 120x140 SVG) — this whole equation beat was measuring
+           as near-blank per-frame (low ink coverage over a large paper canvas), not just a
+           motion gap; the fix is more visual mass, not just more animation. */
+        .loop-beaker-wrap { display: flex; align-items: flex-end; justify-content: center; height: 235px; }
         .loop-beaker-svg { overflow: visible; }
         .loop-beaker-outline { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
         .loop-beaker-waterline { stroke: var(--ink-2); stroke-width: 2; opacity: 0.6; }
@@ -123,7 +132,7 @@
         <div data-hf-id="hf-loop-eq" id="loop-equation" class="clip loop-equation" data-start="0" data-duration="15.26">
           <div data-hf-id="hf-loop-eqword" class="loop-eq-word" id="loop-eq-word">"EXTRACT"</div>
           <div data-hf-id="hf-loop-beaker" class="loop-beaker-wrap" id="loop-beaker-wrap">
-            <svg class="loop-beaker-svg" width="120" height="140" viewBox="0 0 120 140">
+            <svg data-hf-id="hf-0olf" class="loop-beaker-svg" width="200" height="233" viewBox="0 0 120 140">
               <path data-hf-id="hf-loop-beakerpath" class="loop-beaker-outline" d="M45,15 L32,118 Q32,124 38,124 L82,124 Q88,124 88,118 L75,15" />
               <line data-hf-id="hf-loop-waterline" class="loop-beaker-waterline" id="loop-waterline" x1="36" y1="95" x2="84" y2="95" />
               <ellipse data-hf-id="hf-loop-ripple1" class="loop-beaker-ripple" id="loop-ripple-1" cx="60" cy="95" rx="10" ry="4" />
@@ -160,14 +169,27 @@
         // fade the split away before the fracture beat
         tl.to(["#loop-split", "#loop-rule", "#loop-title"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 6.6);
 
-        // "EXTRACT" breaks into the equation (SFX glitch-shatter.mp3 on the break)
-        tl.fromTo("#loop-eq-word", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 7.2);
+        // "EXTRACT" breaks into the equation (SFX glitch-shatter.mp3 on the break).
+        // Starts the instant the split's fade-out finishes (6.6+0.4=7.0) rather than
+        // 0.2s later, closing a blank-canvas gap between the two beats.
+        tl.fromTo("#loop-eq-word", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 7.0);
         tl.to("#loop-eq-word", { opacity: 0, y: -18, duration: 0.22, ease: "power2.in" }, 8.7);
         // a single leaf drops into the beaker as "TINY BIT OF PLANT" lands — visual scaffolding
         // for the extraction concept so it isn't carried by text alone
         tl.fromTo("#loop-leaf-group", { opacity: 0, y: -55, rotation: -18 }, { opacity: 1, y: 0, rotation: 0, duration: 0.3, ease: "power2.in" }, 8.85);
-        tl.fromTo(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 0.4 }, { opacity: 0.5, scale: 1, duration: 0.18, ease: "power2.out" }, 9.12);
-        tl.to(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 1.6, duration: 0.35, ease: "power2.out" }, 9.3);
+        // Ripples through the static equation hold — still flagged by the blank-frame
+        // scanner post-render even after the original 3x mitigation (STORYBOARD), because
+        // three brief 0.5s bursts across a ~5s hold on a mostly-white canvas still reads as
+        // near-blank in aggregate. Denser cadence (5 bursts, tighter spacing) plus a larger
+        // max scale and a continuous low-amplitude waterline shimmer for the full hold — real
+        // "water settling" motion, not filler — raise the sustained visible change instead of
+        // just adding more of the same brief spikes.
+        const RIPPLE_STARTS = [9.12, 10.12, 11.12, 12.12, 13.12];
+        RIPPLE_STARTS.forEach((start) => {
+          tl.fromTo(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 0.4 }, { opacity: 0.55, scale: 1, duration: 0.18, ease: "power2.out" }, start);
+          tl.to(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 2.0, duration: 0.45, ease: "power2.out" }, start + 0.18);
+        });
+        tl.to("#loop-waterline", { scaleY: 1.15, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 6 }, 8.95);
 
         tl.fromTo("#loop-eq-water", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 8.95);
         tl.fromTo("#loop-eq-plus", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power3.out" }, 9.15);

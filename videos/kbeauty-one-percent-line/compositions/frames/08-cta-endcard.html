@@ -52,6 +52,10 @@
           --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
           --t-label: 24px;
           --t-caption: 24px;
+          --safe-top: 120px;
+          --safe-bottom: 360px;
+          --safe-left: 60px;
+          --safe-right: 162px;
 
           position: relative;
           width: 1080px;
@@ -62,9 +66,11 @@
         }
         .clip { position: absolute; inset: 0; }
 
+        /* padding widened from 0 90px (edges 90..990, past safe-right's reserved 918)
+           to clear both safe-left (60) and safe-right (162) with margin. */
         .cta-grid {
           top: 200px; left: 0; width: 100%; height: 600px;
-          padding: 0 90px;
+          padding: 0 172px 0 80px;
           display: grid;
           grid-template-columns: 1fr 1fr;
           grid-auto-rows: min-content;
@@ -121,9 +127,9 @@
           <div data-hf-id="hf-cta-g1" class="cta-chip cta-chip-dark" id="cta-chip-1">Water-first = mostly water</div>
           <div data-hf-id="hf-cta-g2" class="cta-chip cta-chip-dark" id="cta-chip-2">Watch for the 1% line</div>
           <div data-hf-id="hf-cta-kh" class="cta-kicker cta-kicker-hanbang" id="cta-kicker-hanbang">HANBANG, TRANSLATED</div>
-          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3">Snail Secretion Filtrate <span class="cta-chip-eq">=</span> Snail Mucin</div>
-          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4">Panax Root <span class="cta-chip-eq">=</span> Ginseng</div>
-          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5">Artemisia Princeps <span class="cta-chip-eq">=</span> Mugwort</div>
+          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3">Snail Secretion Filtrate <span data-hf-id="hf-onba" class="cta-chip-eq">=</span> Snail Mucin</div>
+          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4">Panax Root <span data-hf-id="hf-3y16" class="cta-chip-eq">=</span> Ginseng</div>
+          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5">Artemisia Princeps <span data-hf-id="hf-4cc7" class="cta-chip-eq">=</span> Mugwort</div>
         </div>
 
         <div data-hf-id="hf-cta-headline" id="cta-headline" class="clip cta-headline" data-start="0" data-duration="9.8">
@@ -159,6 +165,17 @@
 
         tl.fromTo("#cta-lockup", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.2);
         tl.fromTo("#cta-disclaimer-text", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" }, 4.7);
+
+        // VO ends locally at ~6.88 ("...in the comments."); everything after that was a
+        // flat 4.75s freeze to the scene's end (5.05->9.8). A highlight sweep across the
+        // recap chips plus a second headline pulse gives that tail real beats instead of a
+        // static hold, and the final settled frame — bold centered headline on paper,
+        // bottles/hero-stat-shaped negative space above it — is composed to hand back
+        // toward Frame 1's own frame zero for a clean loop on replay.
+        CHIPS.forEach((id, i) => {
+          tl.to(id, { scale: 1.04, duration: 0.22, ease: "power2.out", yoyo: true, repeat: 1 }, 5.6 + i * 0.35);
+        });
+        tl.to("#cta-headline-text", { scale: 1.06, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 3 }, 7.6);
 
         tl.to({}, { duration: 9.8 }, 0);
         window.__timelines["08-cta-endcard"] = tl;

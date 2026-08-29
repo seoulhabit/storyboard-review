@@ -42,6 +42,7 @@
           --e-out: cubic-bezier(0.215, 0.61, 0.355, 1);
           --e-inout: cubic-bezier(0.455, 0.03, 0.515, 0.955);
           --safe-top: 120px;
+          --safe-bottom: 360px;
           --safe-left: 60px;
           --safe-right: 162px;
 
@@ -91,12 +92,11 @@
           position: relative;
           font-family: var(--font-body);
           font-weight: 800;
-          font-size: 108px;
+          font-size: 128px;
           line-height: 1;
           letter-spacing: -0.01em;
           color: var(--ink);
           text-align: center;
-          opacity: 0;
         }
         .hook-strike {
           position: absolute;
@@ -123,22 +123,25 @@
           position: relative;
           font-family: var(--font-body);
           font-weight: 800;
-          font-size: 88px;
+          font-size: 104px;
           line-height: 1;
           color: var(--ink);
           text-align: center;
         }
 
+        /* Width kept inside safe-left/safe-right (60..918) so the box itself
+           can't drift into the engagement rail; top raised from 1320 so up to
+           4 wrapped lines at this size still clear safe-bottom (1920-360=1560). */
         .hook-vo-zone {
-          top: 1320px;
+          top: 1260px;
           left: var(--safe-left);
-          width: 960px;
+          width: 858px;
         }
         .hook-vo-line {
           font-family: var(--font-display);
           font-weight: 400;
-          font-size: 44px;
-          line-height: 1.22;
+          font-size: 40px;
+          line-height: 1.2;
           color: var(--ink-2);
           text-align: center;
         }
@@ -185,36 +188,44 @@
           tl.to(id, { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 6.8);
         });
 
-        // "80% GINSENG?" pops in
-        tl.fromTo("#hook-stat-80", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, 0.35);
+        // "80% GINSENG?" is on screen from frame zero (never blank — it's the scroll-stop),
+        // settling in on scale only rather than fading up from nothing.
+        tl.fromTo("#hook-stat-80", { scale: 0.9 }, { scale: 1, duration: 0.35, ease: "power3.out" }, 0);
 
-        // buzzer strike (ink-weight, not coral — coral is Frame 4's sole voltage moment)
-        tl.to("#hook-strike", { scaleX: 1, duration: 0.18, ease: "power2.in" }, 3.0);
-        tl.to("#hook-stat-80", { opacity: 0.45, duration: 0.3, ease: "power2.out" }, 3.05);
+        // buzzer strike (ink-weight, not coral — coral is Frame 4's sole voltage moment).
+        // Moved up from 3.0 to 1.6 — the shorts retention window is the first ~2s and the
+        // payoff has to land inside it, not just the setup. The graphic states the number
+        // as a bold assertion (VO is still mid-question at this point); VO's own "what if
+        // the actual amount..." clause catches up and confirms it through ~6.99s.
+        tl.to("#hook-strike", { scaleX: 1, duration: 0.18, ease: "power2.in" }, 1.6);
+        tl.to("#hook-stat-80", { opacity: 0.45, duration: 0.3, ease: "power2.out" }, 1.65);
 
-        // "0.5% GINSENG." reveal with the frame's one aqua mark
-        tl.fromTo("#hook-stat-05-wrap", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 3.3);
-        tl.to("#hook-stat-05-mark", { scaleX: 1, duration: 0.4, ease: "power3.out" }, 3.35);
+        // "0.5% GINSENG." reveal with the frame's one aqua mark — the payoff itself
+        tl.fromTo("#hook-stat-05-wrap", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 1.9);
+        tl.to("#hook-stat-05-mark", { scaleX: 1, duration: 0.4, ease: "power3.out" }, 1.95);
 
-        // VO line, two-clause word reveal (estimated per-word schedule, dynamic-content-sequencing)
-        const CLAUSE_1 = ["Does", "your", "favorite", "Korean", "serum", "claim", "to", "be", "packed", "with", "80%", "Ginseng?"];
-        const CLAUSE_2 = ["What", "if", "the", "actual", "amount", "is", "less", "than", "a", "single", "drop?"];
-        const WORD_BASE = 0.15, WORD_PER_CHAR = 0.012;
-        function schedule(words, startTime) {
-          let t = startTime;
-          return words.map((w) => { const dur = WORD_BASE + w.length * WORD_PER_CHAR; const start = t; t += dur; return { word: w, start }; });
-        }
-        const sched1 = schedule(CLAUSE_1, 0.0);
-        const sched2 = schedule(CLAUSE_2, 3.3);
+        // VO line, word reveal on REAL onsets from renders/transcript.json (scene-local =
+        // absolute - 0.0), not an estimated per-char schedule — the words now land exactly
+        // as they're spoken instead of drifting from the actual VO over 23 words.
+        const WORDS = [
+          { word: "Does", start: 0.05 }, { word: "your", start: 0.24 }, { word: "favorite", start: 0.48 },
+          { word: "Korean", start: 0.95 }, { word: "serum", start: 1.30 }, { word: "claim", start: 1.62 },
+          { word: "to", start: 1.92 }, { word: "be", start: 2.00 }, { word: "packed", start: 2.12 },
+          { word: "with", start: 2.51 }, { word: "80%", start: 2.75 }, { word: "Ginseng?", start: 3.19 },
+          { word: "What", start: 3.86 }, { word: "if", start: 4.13 }, { word: "the", start: 4.40 },
+          { word: "actual", start: 4.49 }, { word: "amount", start: 4.91 }, { word: "is", start: 5.33 },
+          { word: "less", start: 5.47 }, { word: "than", start: 5.75 }, { word: "a", start: 6.03 },
+          { word: "single", start: 6.10 }, { word: "drop?", start: 6.53 },
+        ];
         const lineEl = document.getElementById("hook-vo-line");
-        [...sched1, ...sched2].forEach((entry) => {
+        WORDS.forEach((entry) => {
           const span = document.createElement("span");
           span.className = "hook-word";
           span.textContent = entry.word;
           lineEl.appendChild(span);
           entry.el = span;
         });
-        [...sched1, ...sched2].forEach((entry) => {
+        WORDS.forEach((entry) => {
           tl.fromTo(entry.el, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, entry.start);
         });
 

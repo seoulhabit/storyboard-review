@@ -28,6 +28,8 @@
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
           --t-frame: 50px;
           --t-label: 24px;
+          --safe-top: 120px;
+          --safe-bottom: 360px;
           --safe-left: 60px;
           --safe-right: 162px;
 
@@ -41,34 +43,34 @@
         .clip { position: absolute; inset: 0; }
 
         .promise-kicker {
-          top: 720px;
+          top: 640px;
           left: 0; width: 100%;
           text-align: center;
           font-family: var(--font-body);
           font-weight: 800;
-          font-size: 72px;
+          font-size: 88px;
           letter-spacing: 0.01em;
           color: var(--paper);
         }
         .promise-char { display: inline-block; opacity: 0; }
 
         .promise-diagram {
-          top: 980px;
-          left: 0; width: 100%; height: 300px;
+          top: 940px;
+          left: 0; width: 100%; height: 320px;
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: 56px;
+          gap: 64px;
         }
         .promise-icon {
-          width: 220px; height: 220px;
+          width: 260px; height: 260px;
           border: 3px solid var(--aqua);
           border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: var(--font-mono);
-          font-size: var(--t-label);
+          font-size: 26px;
           color: var(--aqua);
           text-align: center;
           padding: 24px;
@@ -80,6 +82,31 @@
           background: var(--ink-3);
           opacity: 0;
         }
+
+        /* VO-synced follow-up — fills what was a 5s freeze after the icon snap with the
+           actual next two clauses of the line, timed to real onsets, and gives the frame
+           real content in the lower half instead of leaving it empty. */
+        .promise-follow {
+          top: 1360px;
+          left: var(--safe-left); width: 858px;
+          display: flex; flex-direction: column; align-items: center; gap: 20px;
+        }
+        .promise-follow-line {
+          font-family: var(--font-mono);
+          font-size: 30px;
+          letter-spacing: 0.04em;
+          color: var(--ink-3);
+          text-align: center;
+          opacity: 0;
+        }
+        .promise-follow-next {
+          font-family: var(--font-mono);
+          font-size: 32px;
+          font-weight: 500;
+          color: var(--aqua);
+          text-align: center;
+          opacity: 0;
+        }
       </style>
 
       <div data-hf-id="hf-promise-root" id="root" data-composition-id="02-promise" data-width="1080" data-height="1920" data-duration="8.78">
@@ -88,6 +115,11 @@
           <div data-hf-id="hf-pi1" class="promise-icon" id="promise-icon-chemist">BEAKER<br data-hf-id="hf-x5px">+ TEST</div>
           <div data-hf-id="hf-pa1" class="promise-arrow" id="promise-arrow"></div>
           <div data-hf-id="hf-pi2" class="promise-icon" id="promise-icon-label">INGREDIENT<br data-hf-id="hf-rsrt">LABEL</div>
+        </div>
+
+        <div data-hf-id="hf-promise-follow" id="promise-follow" class="clip promise-follow" data-start="0" data-duration="8.78">
+          <div data-hf-id="hf-promise-followline" class="promise-follow-line" id="promise-follow-line">SPOT THE MARKETING FLUFF</div>
+          <div data-hf-id="hf-promise-follownext" class="promise-follow-next" id="promise-follow-next">NEXT &#8594; THE EXTRACT LOOPHOLE</div>
         </div>
       </div>
 
@@ -115,7 +147,15 @@
         // snap-together beat on the "trick" reveal
         tl.to(["#promise-icon-chemist", "#promise-icon-label"], { scale: 1.05, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1 }, 2.5);
 
-        tl.to(["#promise-kicker", "#promise-diagram"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 7.9);
+        // VO (local, from renders/transcript.json): "...cosmetic chemists use to spot the
+        // marketing fluff" ends ~6.70; "First, the extract loophole." runs 6.70-8.67. This
+        // replaces what was a flat 5s freeze (2.86->7.90) with two real content beats tied
+        // to the actual line, the second of which also sets up Frame 3's title.
+        tl.fromTo("#promise-arrow", { scaleX: 1 }, { scaleX: 1.15, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 4.6);
+        tl.fromTo("#promise-follow-line", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 3.5);
+        tl.fromTo("#promise-follow-next", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 6.9);
+
+        tl.to(["#promise-kicker", "#promise-diagram", "#promise-follow"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 7.9);
 
         tl.to({}, { duration: 8.78 }, 0);
         window.__timelines["02-promise"] = tl;

@@ -1,0 +1,89 @@
+{
+  "$comment": "Final prompt per scene = style-core.md + this scene's body + negatives.md. labels[] are the ONLY text that should render on packaging — Korean category word + volume/count, nothing else. label: null scenes must render with no visible text at all.",
+  "scenes": [
+    {
+      "scene_id": "A01",
+      "title": "Frosted glass dropper",
+      "aspect_ratio": "9:16",
+      "labels": ["세럼 · 30mL"],
+      "body": "A single frosted-glass dropper bottle standing upright, centered, on a paper-white seamless surface. Cylindrical mono-material body in soft frosted celadon glass, matte aluminium dropper cap. A minimal printed label near the base reads only '세럼 · 30mL' in small ink-colored sans-serif Hangul type. Skinimalist silhouette, no other objects in frame."
+    },
+    {
+      "scene_id": "A02",
+      "title": "Aluminium airless pump with refill cartridge lifted out",
+      "aspect_ratio": "9:16",
+      "labels": ["로션 · 50mL"],
+      "body": "An aluminium airless pump bottle standing on a paper-white seamless surface, its inner plastic refill cartridge partially lifted out and hovering just above the open bottle mouth to show the refill mechanism. Brushed matte aluminium shell, celadon-tinted translucent refill cartridge. A small label on the bottle shoulder reads only '로션 · 50mL'. High-key even lighting, soft mist-grey shadow beneath both pieces."
+    },
+    {
+      "scene_id": "A03",
+      "title": "Hinged toner pad jar with integrated tweezers",
+      "aspect_ratio": "9:16",
+      "labels": ["토너패드 · 70매"],
+      "body": "A wide cylindrical toner-pad jar, lid hinged open at the back to reveal a stack of pads inside, with a slim matte-aluminium tweezer clipped into an integrated holder on the inner lid. Mono-material matte celadon jar body, frosted glass lid window. A small label on the jar face reads only '토너패드 · 70매'. Paper-white backdrop, high-key lighting, no reflections."
+    },
+    {
+      "scene_id": "A04",
+      "title": "Clear tube showing gel through the wall",
+      "aspect_ratio": "9:16",
+      "labels": ["젤 · 80mL"],
+      "body": "A soft clear tube standing on its cap, translucent wall revealing pale celadon gel texture inside with a visible fill line. Matte finish on the printed shoulder band only; the tube body itself stays clear and translucent. A small label band reads only '젤 · 80mL'. Paper-white seamless background, centered, high-key studio lighting."
+    },
+    {
+      "scene_id": "A05",
+      "title": "Paperboard refill sachet + glass vessel",
+      "aspect_ratio": "9:16",
+      "labels": ["에센스 · 100mL"],
+      "body": "A refillable glass vessel beside its matching paperboard refill sachet, both standing upright side by side on a paper-white surface. Glass vessel in frosted celadon glass with a matte aluminium cap; sachet in uncoated mist-grey paperboard with a resealable top, standing upright like a small carton. A small label on the glass vessel reads only '에센스 · 100mL'; the sachet carries no separate label. Skinimalist, generous negative space between the two objects."
+    },
+    {
+      "scene_id": "A06",
+      "title": "Open cushion compact",
+      "aspect_ratio": "9:16",
+      "labels": ["쿠션 · 15g"],
+      "body": "An open cushion compact viewed at a three-quarter angle, lid raised to show the puff and sponge-cushion insert, mirror visible on the inner lid. Mono-material matte celadon compact shell with a thin ink-colored rim line. A small label on the base underside edge, barely visible, reads only '쿠션 · 15g'. Paper-white background, high-key lighting, soft mist-grey contact shadow."
+    },
+    {
+      "scene_id": "B01",
+      "title": "Droplet on glass (texture macro)",
+      "aspect_ratio": "9:16",
+      "labels": null,
+      "body": "Extreme macro texture study: a single clear serum droplet suspended mid-fall against a flat paper-white background, just above a matte celadon glass plate. No bottle, no packaging, no text anywhere in frame — pure texture and form. Flat, unlit, matte lighting with no specular sparkle on the droplet itself; softly diffused so the droplet reads as volume and surface tension rather than a glossy highlight."
+    },
+    {
+      "scene_id": "B02",
+      "title": "Gel-cream swirl in dish (texture macro)",
+      "aspect_ratio": "9:16",
+      "labels": null,
+      "body": "Extreme macro texture study: a swirl of thick, opaque, whipped moisturizer cream — dense like stiff whipped clay or matte mousse, NOT a translucent gel — captured mid-fold, filling the frame against a flat matte-white ceramic dish with no other objects and no utensil visible anywhere. Uniform single solid pale celadon color throughout the entire cream — no marbling, no veining, no color variegation, no dual-tone streaks of any kind. No packaging, no bottle, no text anywhere in frame. Flat, completely matte, unlit lighting like dry unglazed clay — no specular highlight, no shine, no wet sheen anywhere on the cream's surface. The ridges and folds of the swirl must read entirely through soft shadow and edge contrast, never through bright reflection or highlight."
+    },
+    {
+      "scene_id": "B03",
+      "title": "Balm mid-melt (texture macro)",
+      "aspect_ratio": "9:16",
+      "labels": null,
+      "body": "Extreme macro texture study: a small block of matte ivory-celadon balm caught mid-melt, one corner softened into a slow-moving pool on a flat mist-grey surface. No packaging, no bottle, no text anywhere in frame. Flat, matte, unlit lighting; the melted pool reads through subtle surface ripple and shadow, not gloss."
+    },
+    {
+      "scene_id": "C01",
+      "title": "Six-product shelf lineup",
+      "aspect_ratio": "16:9",
+      "labels": ["토너 · 150mL", "세럼 · 30mL", "토너패드 · 70매", "크림 · 80mL", "에센스 · 100mL", "로션 · 50mL"],
+      "body": "A horizontal studio shelf lineup of six distinct unbranded skincare containers evenly spaced left to right on a single paper-white shelf against a paper-white backdrop: a frosted-glass dropper bottle, a matte aluminium airless pump, a hinged toner-pad jar, a clear gel tube, a small glass essence vessel, and a cushion compact. Each mono-material, celadon-and-aluminium palette; one shared muted aqua accent appears on only one of the six items (a single cap ring) — the rest stay accent-free. Each container carries its own small label, left to right: '토너 · 150mL', '세럼 · 30mL', '토너패드 · 70매', '크림 · 80mL', '에센스 · 100mL', '로션 · 50mL'. Wide even high-key lighting, soft mist-grey contact shadows, generous negative space above the shelf."
+    },
+    {
+      "scene_id": "C02",
+      "title": "Hand dispensing, framed below the wrist",
+      "aspect_ratio": "9:16",
+      "labels": ["세럼 · 30mL"],
+      "body": "A single hand, cropped at the wrist with no face or body in frame, tipping a small frosted-glass dropper bottle to dispense a bead of clear serum onto an open palm. Paper-white backdrop, high-key lighting, matte unlit rendering with no glossy skin highlight. The bottle carries a small label reading only '세럼 · 30mL'. Vertical composition, product and hand centered, generous negative space above."
+    },
+    {
+      "scene_id": "C03",
+      "title": "Overhead flat-lay",
+      "aspect_ratio": "16:9",
+      "labels": ["로션 · 50mL", "토너패드 · 70매", "에센스 리필 · 100mL", "쿠션 · 15g"],
+      "body": "An overhead flat-lay on a paper-white seamless surface: four unbranded skincare containers arranged in a loose asymmetric grid with generous negative space between them — a matte aluminium airless pump, a hinged toner-pad jar with lid open and pads visible, a paperboard refill sachet, and a closed cushion compact. Shot from directly above, flat and even high-key lighting with soft mist-grey contact shadows directly beneath each object, no cast shadow drama. One muted aqua accent appears on a single item only, the pump's dispenser button. Each labeled container carries exactly one small label, spelled exactly: '로션 · 50mL' (로-션, NOT 로-선), '토너패드 · 70매', '에센스 리필 · 100mL', '쿠션 · 15g'. Each label must appear once only, attached directly to its own object — no duplicated or floating copies."
+    }
+  ]
+}

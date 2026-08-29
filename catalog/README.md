@@ -19,6 +19,11 @@ live here:
   flat-lay product photography, one still per ingredient, for B-roll and
   thumbnails rather than any single poster or card. Currently the 20-item
   Skincare Ingredient Glossary list, numbered to match it 1:1.
+- **[`product-photography/`](product-photography/README.md)** — fictional,
+  unbranded K-beauty *packaging* photography (bottles, jars, tubes,
+  texture macros) rather than ingredients — 12 scenes for thumbnails,
+  channel art, B-roll, and Shorts Studio inputs. Per-asset provenance and
+  verification results live in [`manifest.json`](manifest.json).
 
 A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an

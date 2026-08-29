@@ -14,11 +14,11 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_16-47-01.mp4` —
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_17-13-53.mp4` —
 115.5s, 1080x1920 (confirmed via `ffprobe`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
-**Status:** in review — round 1 of a planned 3 feedback passes with the
+**Status:** in review — round 2 of a planned 3 feedback passes with the
 creator, following a skill-review pass (2026-08-29) that fixed the video's
 own craft gaps (all-crossfade transitions producing muddy near-blank
 midpoints, ~60s of the runtime with no authored visual change, several
@@ -46,6 +46,24 @@ to the source catalog files (accounting for the resize) during the
 project got it right the first time.
 
 No new imagery was generated for this project.
+
+## Product photography — one authorized exception, filed here
+
+Frame 1's hook uses [`product-photography/A01-01.png`](../../product-photography/assets/A01-01.png)
+(unbranded frosted celadon dropper bottle, manifest-verified) as a blurred,
+scrim-tinted background layer, per round-2 creator feedback asking for a
+recognizable physical product to open the hook on. This is a real
+exception to two standing rules, both checked before acting rather than
+assumed past: `product-photography/README.md` states these assets are
+"not HyperFrames assets... needs its own filed decision record first,"
+and the `seoulhabit-video-3d` skill states "Browser-drawn only... No
+generative imagery, ever." The creator explicitly authorized full catalog
+use for this project in-session, which is what unlocked this — logged
+here as that authorization's filed record, since the chat lane that
+granted it can't write to `docs/decisions/` directly. Copied
+project-local to `assets/images/hook-bottle-photo.png` (1080px, downsampled
+from the catalog's 1536x2752 original), matching how every other asset in
+this project is referenced locally rather than from the shared path.
 
 ## Visual components — checked, none applicable
 

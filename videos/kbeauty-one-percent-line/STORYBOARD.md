@@ -1093,3 +1093,49 @@ the current `index.html`, not hand-maintained.)
     (no new stretches beyond the two pre-existing, previously-verified
     intentional scene-opening beats at t=31.0s and t=84.8s). Superseded
     intermediate renders from this pass removed.
+
+- **2026-08-29 (round 5 — remove shatter SFX outright, seed the 1% line
+  concept earlier, verify the tag isn't actually missing)**:
+  - **"1% is still missing" — investigated, not a bug.** Creator's
+    screenshot was paused at 1:11 on the Niacinamide (2%) row (the aqua
+    marker-circle beat); the "1% LINE" tag itself lives 8s later at 1:19,
+    on Ethylhexylglycerin — the actual concentration cutoff in the real
+    published INCI list (Niacinamide at 2% is still above the line).
+    Re-extracted the 1:19 frame and confirmed the tag renders correctly
+    there, unchanged from round 3's fix. Real gap identified instead: the
+    reading-scan bar that sweeps rows 1-9 (local 1.3-5.85s) never named
+    what it was building toward, so the 1:19 reveal landed as a first
+    mention rather than a payoff.
+  - **1% concept now seeded during the scan sweep.** Added a small
+    right-aligned label riding inside `#tear-scan` itself (no new
+    standalone element) reading "LOOKING FOR THE 1% LINE..." — visible
+    for the whole 1.3-5.85s sweep, including right at the Niacinamide row
+    the creator's screenshot caught. First pass positioned it via
+    `right: 0` on the label, which doesn't respect `.tear-card`'s own
+    padding the way in-flow row text does (`.tear-scan`'s `left:0;right:0`
+    spans the card's full padding box, flush with the visible edges by
+    design) — the label overflowed past the card's right edge into the
+    paper background. Fixed by matching the row text's own 48px inset
+    (`right: 48px`) instead of the scan bar's own edge; confirmed via
+    re-render.
+  - **`el-sfx-6` (glitch-shatter.mp3) removed entirely**, not just
+    quieted further. Creator still heard "a shatter sound" after round
+    4's 0.35->0.15 gain cut. Global `loudnorm` pass-1 measurement on
+    this render vs. the prior one confirms it was the single loudest
+    moment in the whole video (`input_tp` 1.29dBTP -> -3.67dBTP after
+    removal) — consistent with the round-4 note that this was a
+    full-spectrum, near-maximum-loudness burst no further gain trim was
+    going to make unnoticeable next to the calm VO around it. The
+    "EXTRACT" text break in `03-extract-loophole.html` (the visual beat
+    the SFX punctuated) plays silent now; the scale/fade tween itself
+    carries the moment. 21-24s window re-verified post-removal: peak
+    dropped from ~0dB to -4.2dB pre-master (no longer reads as an
+    isolated transient at all).
+  - `npm run check`: 0 issues. Blank-frame scan re-run clean (same 10
+    stretches as the prior pass, no new ones).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_19-20-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP confirmed via `ffmpeg ebur128`
+    (fresh loudnorm pass: measured -20.64 LUFS / -3.67dBTP in, targeted
+    -14/-1.5/11 out). Superseded intermediate renders from this pass
+    removed.

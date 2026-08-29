@@ -142,6 +142,24 @@
           border-left: 3px solid var(--aqua);
           opacity: 0;
         }
+        /* Round-4 feedback: the "1% LINE" callout only ever named the cutoff once,
+           at the very end (local 12.95) — the scan bar's own downward sweep had
+           nothing telling a viewer what it was sweeping toward. Riding the label on
+           the bar itself (not a new standalone element) so the concept is seeded
+           during the reading pass and the tag at 12.95 reads as a payoff, not a
+           first mention. */
+        .tear-scan-label {
+          position: absolute; right: 48px; top: 50%;
+          transform: translateY(-50%);
+          font-family: var(--font-mono);
+          font-size: 20px;
+          font-weight: 500;
+          letter-spacing: 0.05em;
+          color: var(--ink-2);
+          background: var(--white);
+          padding-left: 20px;
+          white-space: nowrap;
+        }
 
         .tear-disclaimer {
           top: 1480px; left: 90px; width: 900px;
@@ -164,7 +182,9 @@
           <div data-hf-id="hf-tear-r3" class="tear-row" id="tear-row-3">Glycerin</div>
           <div data-hf-id="hf-tear-r4" class="tear-row" id="tear-row-4">Butylene Glycol</div>
           <div data-hf-id="hf-tear-r5" class="tear-row" id="tear-row-5">Water</div>
-          <div data-hf-id="hf-tear-scan" class="tear-scan" id="tear-scan"></div>
+          <div data-hf-id="hf-tear-scan" class="tear-scan" id="tear-scan">
+            <div data-hf-id="hf-tear-scanlabel" class="tear-scan-label" id="tear-scan-label">LOOKING FOR THE 1% LINE...</div>
+          </div>
           <div data-hf-id="hf-tear-r6wrap" class="tear-row-wrap">
             <div data-hf-id="hf-tear-r6" class="tear-row tear-hero" id="tear-row-6">Niacinamide (2%)</div>
             <svg data-hf-id="hf-tear-mark" class="tear-mark-circle-svg" id="tear-mark-circle" viewBox="0 0 240 52" xmlns="http://www.w3.org/2000/svg">

@@ -14,25 +14,32 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_18-45-00.mp4` —
-115.5s, 1080x1920, mastered -14.35 LUFS / -0.51dBTP (confirmed via
-`ffprobe`/`ffmpeg volumedetect`). Passed `npm run check`
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_19-20-00.mp4` —
+115.5s, 1080x1920, mastered -15.0 LUFS / -1.3dBTP (confirmed via
+`ffmpeg ebur128`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
 **Status:** in review — the creator has continued past the originally
-planned 3 rounds with further feedback. Round 4 addressed a real audio
-level complaint (21-24s "harsh blast," `el-sfx-6` gain cut 0.35->0.15,
-mastering re-applied) and replaced Frame 3's hand-drawn SVG beaker/leaf
-illustration with real catalog photography (see below). Earlier rounds
-fixed the video's own craft gaps (all-crossfade transitions producing
-muddy near-blank midpoints, ~60s of the runtime with no authored visual
-change, several elements landing past the Shorts safe-bottom line)
-alongside a companion fix to the `faceless-video-craft` skill itself,
-which had drifted from the real HyperFrames API; round 3 fixed a genuine
-audio-clipping bug and a GSAP bleed-through bug (a reused element
-rendering at its "from" state seconds before its first scheduled
-appearance — `tl.set()` inside the timeline fixed it; a bare `gsap.set()`
-outside it did not). Full change log: `STORYBOARD.md`'s "Build history"
+planned 3 rounds with further feedback. Round 5 removed the `el-sfx-6`
+glitch-shatter cue entirely (round 4's gain cut wasn't enough — it was
+confirmed as the single loudest moment in the whole video) and seeded the
+"1% LINE" concept earlier in Frame 6's reading-scan sweep, after the
+creator's screenshot at the concept's mid-sweep point looked like the tag
+was missing (it wasn't — the actual reveal is 8s later, on the correct
+row; the real gap was that nothing signalled the concept before then).
+Round 4 addressed a real audio level complaint (21-24s "harsh blast,"
+first attempt was a gain cut, not a full removal) and replaced Frame 3's
+hand-drawn SVG beaker/leaf illustration with real catalog photography
+(see below). Earlier rounds fixed the video's own craft gaps (all-
+crossfade transitions producing muddy near-blank midpoints, ~60s of the
+runtime with no authored visual change, several elements landing past
+the Shorts safe-bottom line) alongside a companion fix to the
+`faceless-video-craft` skill itself, which had drifted from the real
+HyperFrames API; round 3 fixed a genuine audio-clipping bug and a GSAP
+bleed-through bug (a reused element rendering at its "from" state
+seconds before its first scheduled appearance — `tl.set()` inside the
+timeline fixed it; a bare `gsap.set()` outside it did not). Full change
+log: `STORYBOARD.md`'s "Build history"
 section in the project folder.
 
 ## Ingredient photography — reused, not duplicated

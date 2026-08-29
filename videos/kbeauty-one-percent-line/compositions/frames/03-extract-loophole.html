@@ -102,17 +102,35 @@
         }
         .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 52px; color: var(--ink-2); opacity: 0; }
 
-        /* beaker scaled ~1.7x (was a 120x140 SVG) — this whole equation beat was measuring
-           as near-blank per-frame (low ink coverage over a large paper canvas), not just a
-           motion gap; the fix is more visual mass, not just more animation. */
-        .loop-beaker-wrap { display: flex; align-items: flex-end; justify-content: center; height: 235px; }
-        .loop-beaker-svg { overflow: visible; }
-        .loop-beaker-outline { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
-        .loop-beaker-waterline { stroke: var(--ink-2); stroke-width: 2; opacity: 0.6; }
-        .loop-beaker-ripple { fill: none; stroke: var(--ink-2); stroke-width: 2; opacity: 0; transform-origin: 60px 95px; }
-        .loop-leaf-group { opacity: 0; transform-origin: 60px 87px; }
-        .loop-leaf-shape { fill: var(--ink-2); }
-        .loop-leaf-vein { stroke: var(--paper); stroke-width: 1.5; opacity: 0.6; }
+        /* Round-4 feedback: swap the hand-drawn beaker/leaf SVG for real catalog photos —
+           water/plant is a literal, on-topic pairing (this frame's own K-BEAUTY chip
+           already says "CENTELLA EXTRACT — 70%"), not a decorative photo. Sourced from
+           ingredient-photography/02-centella-asiatica.png (the actual named ingredient)
+           and product-photography/B01-01.png (droplet macro, cropped to the droplet).
+           Downsampled/cropped to project-local assets/images/, matching every other
+           asset in this project. */
+        .loop-eq-photos { display: flex; align-items: center; justify-content: center; gap: 32px; }
+        .loop-eq-term { display: flex; flex-direction: column; align-items: center; gap: 16px; opacity: 0; transform: scale(0.85); }
+        /* border added (was shadow-only): both source photos are shot on near-white
+           backgrounds (this catalog's own house style), so against the paper canvas
+           they measured as near-blank on a real render — the blank-frame scanner
+           regressed this scene back to its pre-round-1 flagged state. A solid ink
+           border gives the card real edge contrast without needing a busier photo. */
+        .loop-eq-photo {
+          width: 220px; height: 220px;
+          border-radius: 20px;
+          border: 3px solid var(--ink);
+          object-fit: cover;
+          box-shadow: 0 18px 32px -20px rgba(19,21,22,0.35);
+          background: var(--paper);
+        }
+        .loop-eq-term-label {
+          font-family: var(--font-mono);
+          font-size: 28px;
+          font-weight: 500;
+          color: var(--ink);
+          text-align: center;
+        }
       </style>
 
       <div data-hf-id="hf-loop-root" id="root" data-composition-id="03-extract-loophole" data-width="1080" data-height="1920" data-duration="15.26">
@@ -131,22 +149,16 @@
 
         <div data-hf-id="hf-loop-eq" id="loop-equation" class="clip loop-equation" data-start="0" data-duration="15.26">
           <div data-hf-id="hf-loop-eqword" class="loop-eq-word" id="loop-eq-word">"EXTRACT"</div>
-          <div data-hf-id="hf-loop-beaker" class="loop-beaker-wrap" id="loop-beaker-wrap">
-            <svg data-hf-id="hf-0olf" class="loop-beaker-svg" width="200" height="233" viewBox="0 0 120 140">
-              <path data-hf-id="hf-loop-beakerpath" class="loop-beaker-outline" d="M45,15 L32,118 Q32,124 38,124 L82,124 Q88,124 88,118 L75,15" />
-              <line data-hf-id="hf-loop-waterline" class="loop-beaker-waterline" id="loop-waterline" x1="36" y1="95" x2="84" y2="95" />
-              <ellipse data-hf-id="hf-loop-ripple1" class="loop-beaker-ripple" id="loop-ripple-1" cx="60" cy="95" rx="10" ry="4" />
-              <ellipse data-hf-id="hf-loop-ripple2" class="loop-beaker-ripple" id="loop-ripple-2" cx="60" cy="95" rx="10" ry="4" />
-              <g data-hf-id="hf-loop-leafgroup" class="loop-leaf-group" id="loop-leaf-group">
-                <path data-hf-id="hf-loop-leafshape" class="loop-leaf-shape" d="M60,72 Q75,82 60,102 Q45,82 60,72 Z" />
-                <line data-hf-id="hf-loop-leafvein" class="loop-leaf-vein" x1="60" y1="75" x2="60" y2="99" />
-              </g>
-            </svg>
-          </div>
-          <div data-hf-id="hf-loop-eqsplit" class="loop-eq-split" id="loop-eq-split">
-            <div data-hf-id="hf-loop-eqp1" class="loop-eq-part" id="loop-eq-water">WATER</div>
+          <div data-hf-id="hf-loop-eqphotos" class="loop-eq-photos" id="loop-eq-photos">
+            <div data-hf-id="hf-loop-termwater" class="loop-eq-term" id="loop-term-water">
+              <img data-hf-id="hf-loop-photowater" class="loop-eq-photo" id="loop-eq-photo-water-img" src="assets/images/loop-water-droplet.png" alt="" width="700" height="700" loading="eager" decoding="sync">
+              <div data-hf-id="hf-loop-labelwater" class="loop-eq-term-label">WATER</div>
+            </div>
             <div data-hf-id="hf-loop-eqplus" class="loop-eq-plus" id="loop-eq-plus">+</div>
-            <div data-hf-id="hf-loop-eqp2" class="loop-eq-part" id="loop-eq-tiny">TINY BIT OF PLANT</div>
+            <div data-hf-id="hf-loop-termplant" class="loop-eq-term" id="loop-term-plant">
+              <img data-hf-id="hf-loop-photoplant" class="loop-eq-photo" id="loop-eq-photo-plant-img" src="assets/images/loop-centella-leaf.png" alt="" width="700" height="700" loading="eager" decoding="sync">
+              <div data-hf-id="hf-loop-labelplant" class="loop-eq-term-label">TINY BIT OF PLANT</div>
+            </div>
           </div>
         </div>
       </div>
@@ -155,15 +167,6 @@
       <script>
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true });
-
-        // Explicit baseline for the ripples — five separate fromTo() calls on these
-        // same two elements, one per ripple burst. A bare gsap.set() call outside the
-        // timeline was tried first and did NOT fix the equivalent bleed-through bug in
-        // Frame 8's countdown ring — the render engine seeks this timeline to arbitrary
-        // times without necessarily passing through t=0 first, and a set() made outside
-        // the timeline isn't part of what the timeline itself evaluates on a seek.
-        // tl.set(...) registers the baseline as an actual timeline tween at position 0.
-        tl.set(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 0.4 }, 0);
 
         tl.fromTo("#loop-title", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.1);
         tl.fromTo("#loop-rule", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power3.out" }, 0.4);
@@ -183,26 +186,18 @@
         // 0.2s later, closing a blank-canvas gap between the two beats.
         tl.fromTo("#loop-eq-word", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 7.0);
         tl.to("#loop-eq-word", { opacity: 0, y: -18, duration: 0.22, ease: "power2.in" }, 8.7);
-        // a single leaf drops into the beaker as "TINY BIT OF PLANT" lands — visual scaffolding
-        // for the extraction concept so it isn't carried by text alone
-        tl.fromTo("#loop-leaf-group", { opacity: 0, y: -55, rotation: -18 }, { opacity: 1, y: 0, rotation: 0, duration: 0.3, ease: "power2.in" }, 8.85);
-        // Ripples through the static equation hold — still flagged by the blank-frame
-        // scanner post-render even after the original 3x mitigation (STORYBOARD), because
-        // three brief 0.5s bursts across a ~5s hold on a mostly-white canvas still reads as
-        // near-blank in aggregate. Denser cadence (5 bursts, tighter spacing) plus a larger
-        // max scale and a continuous low-amplitude waterline shimmer for the full hold — real
-        // "water settling" motion, not filler — raise the sustained visible change instead of
-        // just adding more of the same brief spikes.
-        const RIPPLE_STARTS = [9.12, 10.12, 11.12, 12.12, 13.12];
-        RIPPLE_STARTS.forEach((start) => {
-          tl.fromTo(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 0.4 }, { opacity: 0.55, scale: 1, duration: 0.18, ease: "power2.out" }, start);
-          tl.to(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 2.0, duration: 0.45, ease: "power2.out" }, start + 0.18);
-        });
-        tl.to("#loop-waterline", { scaleY: 1.15, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 6 }, 8.95);
-
-        tl.fromTo("#loop-eq-water", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 8.95);
+        // Real photo terms pop in (was: a leaf dropping into an SVG beaker + ripples).
+        // WATER lands first, then the plus, then the actual Centella leaf for "TINY BIT
+        // OF PLANT" — the ingredient this frame's own K-BEAUTY chip already names.
+        tl.fromTo("#loop-term-water", { opacity: 0, x: -24, scale: 0.85 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 8.85);
         tl.fromTo("#loop-eq-plus", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power3.out" }, 9.15);
-        tl.fromTo("#loop-eq-tiny", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 9.3);
+        tl.fromTo("#loop-term-plant", { opacity: 0, x: 24, scale: 0.85 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 9.3);
+
+        // Sustained motion through the hold (was the ripple bursts + waterline shimmer) —
+        // a slow, bounded breathing scale on each photo so the ~5s hold before fade-out
+        // isn't just two static images sitting still on a mostly-white canvas.
+        tl.to("#loop-eq-photo-water-img", { scale: 1.05, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 3 }, 9.6);
+        tl.to("#loop-eq-photo-plant-img", { scale: 1.05, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 3 }, 10.0);
 
         tl.to("#loop-equation", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 14.4);
 

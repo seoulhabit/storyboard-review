@@ -1048,3 +1048,48 @@ the current `index.html`, not hand-maintained.)
     `renders/kbeauty-one-percent-line_2026-08-29_18-08-00.mp4`, 115.5s,
     1080x1920, -14.29 LUFS / -1.50dBTP. Superseded renders (six
     intermediate files from this pass alone) removed.
+
+- **2026-08-29 (round 4 — audio fix + Frame 3 catalog-photo swap)**:
+  - **SFX-6 "harsh blast" at 21-24s, investigated and fixed.** Creator
+    flagged a problem in the sound between 21s and 24s (overlaps the
+    `glitch-shatter.mp3` cue at 23.48-24.58s on `el-sfx-6`).
+    `data-volume` dropped 0.35->0.15. First verification pass compared
+    raw `volumedetect` peaks before/after and found the window's
+    `max_volume` unchanged (~0dB both times) — looked like the fix had no
+    effect. Root cause of *that* confusion: the render being checked was
+    still unmastered, and an unmastered render's peak sits near 0dBFS
+    regardless of any single clip's gain until the two-pass `loudnorm`
+    master runs — `max_volume` on a raw render was never the right signal
+    to read. Comparing *mean* energy in the window instead confirmed the
+    real effect: -16.4dB -> -19.9dB (~3.5dB quieter), matching the
+    0.35->0.15 gain cut. Ran the actual two-pass `loudnorm` master this
+    render was still owed (pass 1 measured `I=-19.38:TP=1.29:LRA=4.00`,
+    pass 2 applied `linear=true` against those stats): final file
+    -14.35 LUFS / -0.51dBTP overall, -18.4dB mean / -0.5dB max in the
+    21-24s window specifically — quieter than the pre-fix reading and no
+    clipping. Lesson: always master before judging a render's peak/level;
+    an unmastered file's absolute peak is not diagnostic.
+  - **Frame 3's hand-drawn SVG beaker/leaf replaced with real catalog
+    photos.** Creator flagged the beaker illustration in
+    `03-extract-loophole.html` directly ("notice this svg rather use a
+    available pic") after already pushing on catalog underuse this round.
+    Removed the `.loop-beaker-*`/`.loop-leaf-*` SVG markup and the old
+    text-only `WATER + Centella` equation row entirely. Replaced with two
+    bordered photo cards (`loop-water-droplet.png`, cropped from
+    `product-photography/B01-01.png`'s droplet macro; `loop-centella-leaf.png`,
+    from `ingredient-photography/02-centella-asiatica.png`) under the
+    labels WATER / TINY BIT OF PLANT — a literal, on-topic pairing, not
+    decoration: this frame's own K-BEAUTY chip already names "CENTELLA
+    EXTRACT — 70%". First render regressed the blank-frame scanner for
+    this scene from 467ms back to 7533ms: both source photos are shot on
+    this catalog's own near-white house background, reading as low-contrast
+    against the paper canvas. Fixed with a solid `3px solid var(--ink)`
+    border and a 200px->220px size bump on `.loop-eq-photo` — re-render
+    confirmed the window back down to 533ms.
+  - `npm run check`: 0 issues.
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_18-45-00.mp4`, 115.5s,
+    1080x1920, -14.35 LUFS / -0.51dBTP. Blank-frame scan re-run clean
+    (no new stretches beyond the two pre-existing, previously-verified
+    intentional scene-opening beats at t=31.0s and t=84.8s). Superseded
+    intermediate renders from this pass removed.

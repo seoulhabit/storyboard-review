@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "npx --yes hyperframes@0.8.17 preview",
-    "check": "npx --yes hyperframes@0.8.17 check",
+    "check": "npx --yes hyperframes@0.8.17 check && python3 scripts/check-sfx-durations.py .",
     "render": "npx --yes hyperframes@0.8.17 render",
+    "postrender": "python3 scripts/check-blank-frames.py .",
     "publish": "npx --yes hyperframes@0.8.17 publish"
   },
   "devDependencies": {

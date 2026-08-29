@@ -83,6 +83,19 @@
           opacity: 0;
         }
         .cta-chip-wide { grid-column: 1 / -1; }
+        .cta-kicker {
+          grid-column: 1 / -1;
+          font-family: var(--font-mono);
+          font-size: var(--t-label);
+          letter-spacing: 0.1em;
+          color: rgb(146, 142, 132);
+          text-align: center;
+          opacity: 0;
+        }
+        .cta-kicker-hanbang { margin-top: 4px; }
+        .cta-chip-dark { background: var(--ink); color: var(--paper); font-weight: 500; border-radius: 12px; }
+        .cta-chip-hb { background: rgba(89,184,174,0.08); border-left: 4px solid var(--aqua); border-radius: 4px 10px 10px 4px; padding-left: 18px; }
+        .cta-chip-eq { font-weight: 700; }
 
         .cta-headline { top: 1020px; left: 0; width: 100%; text-align: center; }
         .cta-headline-text {
@@ -104,11 +117,13 @@
 
       <div data-hf-id="hf-cta-root" id="root" data-composition-id="08-cta-endcard" data-width="1080" data-height="1920" data-duration="9.8">
         <div data-hf-id="hf-cta-grid" id="cta-grid" class="clip cta-grid" data-start="0" data-duration="9.8">
-          <div data-hf-id="hf-cta-g1" class="cta-chip" id="cta-chip-1">Water-first = mostly water</div>
-          <div data-hf-id="hf-cta-g2" class="cta-chip" id="cta-chip-2">Watch for the 1% line</div>
-          <div data-hf-id="hf-cta-g3" class="cta-chip" id="cta-chip-3">Snail Secretion Filtrate = Snail Mucin</div>
-          <div data-hf-id="hf-cta-g4" class="cta-chip" id="cta-chip-4">Panax Root = Ginseng</div>
-          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-wide" id="cta-chip-5">Artemisia Princeps = Mugwort</div>
+          <div data-hf-id="hf-cta-kt" class="cta-kicker" id="cta-kicker-truths">THE RECAP</div>
+          <div data-hf-id="hf-cta-g1" class="cta-chip cta-chip-dark" id="cta-chip-1">Water-first = mostly water</div>
+          <div data-hf-id="hf-cta-g2" class="cta-chip cta-chip-dark" id="cta-chip-2">Watch for the 1% line</div>
+          <div data-hf-id="hf-cta-kh" class="cta-kicker cta-kicker-hanbang" id="cta-kicker-hanbang">HANBANG, TRANSLATED</div>
+          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3">Snail Secretion Filtrate <span class="cta-chip-eq">=</span> Snail Mucin</div>
+          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4">Panax Root <span class="cta-chip-eq">=</span> Ginseng</div>
+          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5">Artemisia Princeps <span class="cta-chip-eq">=</span> Mugwort</div>
         </div>
 
         <div data-hf-id="hf-cta-headline" id="cta-headline" class="clip cta-headline" data-start="0" data-duration="9.8">
@@ -129,6 +144,9 @@
       <script>
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true });
+
+        tl.fromTo("#cta-kicker-truths", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power3.out" }, 0.05);
+        tl.fromTo("#cta-kicker-hanbang", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power3.out" }, 0.32);
 
         const CHIPS = ["#cta-chip-1", "#cta-chip-2", "#cta-chip-3", "#cta-chip-4", "#cta-chip-5"];
         CHIPS.forEach((id, i) => {

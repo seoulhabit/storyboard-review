@@ -41,6 +41,7 @@
 
         .tear-card {
           top: 240px; left: 90px; width: 900px; height: 1200px;
+          transform-origin: 0 0;
           background: var(--white);
           border-radius: 16px;
           box-shadow: var(--elev-2);
@@ -140,6 +141,15 @@
         // without dropping opacity far enough to break WCAG contrast (SFX whip-slash.mp3)
         tl.to("#tear-mark-strike", { width: "100%", duration: 0.2, ease: "power2.in" }, 12.9);
         tl.to(TAIL, { filter: "blur(1.5px)", duration: 0.4, ease: "power2.inOut" }, 13.1);
+
+        // dynamic zoom: push in on Niacinamide, then pan down to land on Ethylhexylglycerin,
+        // exactly as the VO names each word (transcribed via `hyperframes transcribe` —
+        // "Niacinamide" 6.28-6.94s, "Boom, ethylhexylglycerin" 10.34-12.30s). Full 14-row
+        // list is unreadable at native size on mobile; #tear-card's transform-origin is 0 0
+        // and these constants are pre-computed from its layout, not measured at tween time.
+        tl.fromTo("#tear-card", { scale: 1, x: 0, y: 0 }, { scale: 1.8, x: -26.4, y: -376.1, duration: 0.4, ease: "power2.inOut" }, 6.05);
+        tl.to("#tear-card", { y: -760.58, duration: 0.5, ease: "power2.inOut" }, 9.75);
+        tl.to("#tear-card", { scale: 1, x: 0, y: 0, duration: 0.5, ease: "power2.inOut" }, 13.3);
 
         tl.fromTo("#tear-disclaimer", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" }, 15.2);
 

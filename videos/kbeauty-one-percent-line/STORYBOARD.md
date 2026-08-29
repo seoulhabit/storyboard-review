@@ -308,3 +308,70 @@ still well inside the faceless-explainer workflow's ~3-minute hard cap.
     video's small file size is a function of its flat typographic content,
     not a render-settings gap versus the reference project's photographic,
     Ken-Burns-heavy footage).
+- 2026-08-29: External reviewer feedback (5 items) after watching the
+  rendered video. Voice/VO left unchanged by explicit user decision — real
+  human narration and further TTS-voice changes are both out of scope here
+  (Kimberly is the locked, consistent narrator across the whole SeoulHabit
+  series; swapping her for just this video would break that consistency,
+  and recording real human VO is outside what this pipeline can do). Four
+  items were implemented, each verified against the actual re-rendered
+  frames:
+  - **Mobile legibility.** Frame 4's 7-row INCI list and Frame 6's 14-row
+    teardown card were unreadable at native size on a phone screen.
+    Transcribed both VO lines word-by-word (`hyperframes transcribe`) to
+    sync a digital push-in to the actual narration rather than guessing:
+    Frame 6 now pushes in on "Niacinamide (2%)" at the exact word onset
+    (6.28s local), holds through its aqua-circle mark, then pans down to
+    land on "Ethylhexylglycerin" right as "Boom," is spoken (10.34s),
+    holding through its ink-strike, before pulling back out. Frame 4's VO
+    never names individual ingredients, so its zoom instead follows
+    narration *structure*: push in on the above-the-line cluster during
+    "legally listed by concentration," then pan down to land on
+    `PHENOXYETHANOL` exactly as the coral rule slams (6.4s). Both use a
+    `transform-origin: 0 0` wrapper (`#tear-card`, `#opl-list`) with
+    pre-computed `scale`/`x`/`y` constants derived from each element's real
+    layout (row heights, card padding) — not measured at tween time, and
+    verified against actual rendered pixels afterward rather than trusted
+    from the arithmetic alone (an initial Frame 4 anchor choice would have
+    clipped the left edge of "CENTELLA ASIATICA EXTRACT" off-screen; caught
+    by re-deriving the anchor at the text's left edge instead of the
+    padded-column center before rendering).
+  - **Sound design.** Added two SFX. Checked whether the bundled 19-file
+    SFX library actually offered a distinct "highlighter" texture before
+    picking one — its "whoosh/impact" and "quick pop" candidates turned out
+    to be byte-identical (verified by hash) to `whip-slash.mp3` and
+    `pop.mp3` already in this project, so resolving them fresh would have
+    been a no-op or a needless duplicate. Instead: swapped Frame 4's
+    1%-line rule-slam SFX from `whip-slash.mp3` to `marker-squeak.mp3` (a
+    literal felt-tip sound, closer to "highlighter" than a generic
+    whoosh, and already established in Frame 6 for the Niacinamide circle
+    — now a deliberate marker/emphasis motif across both frames). Added
+    `pop.mp3` (already used in Frame 3) to Frame 7 at each of the three
+    Hanbang common-name underline reveals (84.45s / 90.85s / 97.25s).
+  - **Visual scaffolding.** Frame 3's "EXTRACT = WATER + TINY BIT OF PLANT"
+    equation relied on text alone. Added a small inline-SVG beaker + a
+    single leaf that drops in and settles with a brief ripple, landing
+    right as "TINY BIT OF PLANT" appears (8.85-9.3s) — ink-stroke outline,
+    `--ink-2` leaf fill, no fill color that would compete with the frame's
+    one aqua highlight (already spent on the K-beauty chip).
+  - **Cheat-sheet redesign.** Frame 8's 5-chip recap grid was restyled from
+    uniform gray chips into two color-blocked, kicker-labeled sections:
+    "THE RECAP" over two solid `--ink` blocks (paper text) for the core
+    truths, "HANBANG, TRANSLATED" over three `--aqua`-left-accented
+    paper chips for the ingredient translations — a callback to Frame 7's
+    aqua-underline treatment. First pass put the kickers at 0.7 opacity and
+    the "=" signs in raw `--aqua`; `hyperframes check`'s contrast audit
+    caught both as sub-3:1 failures (aqua reads fine as a large underline
+    but fails as small text against a light background) — fixed by using
+    full opacity with the checker's suggested darker kicker color and
+    dropping the "=" tint back to plain ink, letting the border/background
+    tint alone carry the color-blocking.
+  - **Scope note:** the "highlighter swoosh" and generic bundled "pop"
+    candidates being literal duplicates of existing project assets was
+    confirmed by SHA-1 hash comparison, not by filename or description
+    alone.
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_11-33-47.mp4`,
+    113.07s, same specs as before (h264 1080x1920 30fps, ~258kbps video
+    bitrate — the small increase from ~188kbps is consistent with the new
+    zoom/pan motion and beaker graphic adding real per-frame delta rather
+    than a settings change).

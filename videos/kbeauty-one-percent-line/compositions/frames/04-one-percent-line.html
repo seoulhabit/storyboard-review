@@ -46,7 +46,7 @@
         }
         .opl-underline { width: 320px; height: 4px; background: var(--aqua); margin: 18px auto 0; transform: scaleX(0); }
 
-        .opl-list { top: 480px; left: 0; width: 100%; padding: 0 120px; }
+        .opl-list { top: 480px; left: 0; width: 100%; padding: 0 120px; transform-origin: 0 0; }
         .opl-row {
           font-family: var(--font-mono);
           font-size: 34px;
@@ -103,6 +103,15 @@
         // It sits in normal document flow directly above PHENOXYETHANOL,
         // so no runtime offset math is needed.
         tl.fromTo("#opl-rule-line", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.16, ease: "power2.in" }, 6.4);
+
+        // dynamic zoom: the full 7-row list reads too small on mobile, so push in on the
+        // above-the-line cluster while VO explains ordering, then pan down to land on the
+        // rule slam, then pull back out for the close. transform-origin is 0 0 on #opl-list;
+        // constants below are pre-computed from its layout (see STORYBOARD.md build history),
+        // not measured at tween time.
+        tl.fromTo("#opl-list", { scale: 1, x: 0, y: 0 }, { scale: 1.55, x: -36, y: 141.22, duration: 0.45, ease: "power2.inOut" }, 1.5);
+        tl.to("#opl-list", { y: -274.65, duration: 0.5, ease: "power2.inOut" }, 5.95);
+        tl.to("#opl-list", { scale: 1, x: 0, y: 0, duration: 0.5, ease: "power2.inOut" }, 11.5);
 
         const BELOW = ["#opl-row-5", "#opl-row-6", "#opl-row-7"];
         BELOW.forEach((id, i) => {

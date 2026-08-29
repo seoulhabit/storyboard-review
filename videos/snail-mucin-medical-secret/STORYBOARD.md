@@ -53,6 +53,19 @@ against Kimberly's real per-word transcript. The shot design itself (what
 happens, in what order, on which clause) is unchanged by the retime — only
 the numbers moved.
 
+**Frame 3 ingredient cards redesigned same day (legibility fix, user-flagged):**
+the three `grid-card-assemble` mounts were stacked at 210px tall each so all
+three stayed visible as a growing checklist — confirmed via a live
+`getComputedStyle` probe that this rendered ingredient text at 7.2px/6px
+(label/body), unreadable, since the component sizes text as a percentage of
+its own mount height. Redesigned to swap-in-place: all three now share one
+750px-tall region and appear one at a time (cards 1-2 exit via the
+component's own `exit:"fade"`, card 3 holds), which resolves to a
+width-capped ~23px/~20px — see the inline comment in
+`compositions/frames/03-chemistry.html` for the full before/after math. This
+changes the frame's visual metaphor from an accumulating list to a cycling
+spotlight; the VO-cue timing each card lands on is unchanged.
+
 ## Frame 1 — Hook: The Bizarre History
 
 - scene: A vintage black-and-white 1960s lab-footage still, then a hard cut to a hyper-crisp macro photo of clear slime being pulled apart by a metal spatula.

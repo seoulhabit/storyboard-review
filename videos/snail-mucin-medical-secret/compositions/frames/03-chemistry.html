@@ -215,26 +215,38 @@
          host duration only bounds the mount's visible window, not the
          sub-composition's own internal timeline length), which cannot
          express cues spread almost 7s apart. Each mount here holds through
-         to 19.0s, just before the stack recedes for the ticker. Palette
-         vars on each host match this project's moss/shell/pearl system
-         (frame.md) instead of the component's own default dark-slate/green. -->
+         to 19.4s, just before the stack recedes for the ticker.
+         **Swap-in-place (2026-08-29 legibility fix):** all three mounts now
+         share the SAME region (top 560px, height 750px — up from three
+         stacked 210px-tall slots) and occupy it one at a time instead of
+         accumulating. The component's font-fitting formula sizes text as a
+         percentage of the mount's own height; at 210px that computed
+         7.2px/6px (label/body) — confirmed unreadable via a live
+         getComputedStyle probe, not just a snapshot-preview artifact. At
+         750px tall the same formula resolves to ~23px/~20px (width-capped,
+         the ceiling for this card's 900px width). Cards 1-2 exit via the
+         component's own supported `exit:"fade"` timed to their mount's own
+         duration (ends exactly as the next card's data-start begins); card 3
+         has no exit and simply holds. Palette vars on each host match this
+         project's moss/shell/pearl system (frame.md) instead of the
+         component's own default dark-slate/green. -->
     <div
       data-composition-id="grid-card-assemble"
       data-composition-src="compositions/components/grid-card-assemble.html"
       data-start="10.19"
-      data-duration="9.21"
+      data-duration="4.37"
       data-track-index="40"
-      data-variable-values='{"items":"Glycolic Acid: Eats away dead skin.","layout":"list","accent":"green"}'
-      style="position: absolute; left: 90px; right: 90px; top: 560px; height: 210px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
+      data-variable-values='{"items":"Glycolic Acid: Eats away dead skin.","layout":"list","accent":"green","exit":"fade"}'
+      style="position: absolute; left: 90px; right: 90px; top: 560px; height: 750px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
     ></div>
     <div
       data-composition-id="grid-card-assemble"
       data-composition-src="compositions/components/grid-card-assemble.html"
       data-start="14.56"
-      data-duration="4.84"
+      data-duration="2.11"
       data-track-index="41"
-      data-variable-values='{"items":"Allantoin: Heals wounds.","layout":"list","accent":"green"}'
-      style="position: absolute; left: 90px; right: 90px; top: 810px; height: 210px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
+      data-variable-values='{"items":"Allantoin: Heals wounds.","layout":"list","accent":"green","exit":"fade"}'
+      style="position: absolute; left: 90px; right: 90px; top: 560px; height: 750px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
     ></div>
     <div
       data-composition-id="grid-card-assemble"
@@ -243,7 +255,7 @@
       data-duration="2.73"
       data-track-index="42"
       data-variable-values='{"items":"Hyaluronic Acid: Massive doses.","layout":"list","accent":"green"}'
-      style="position: absolute; left: 90px; right: 90px; top: 1060px; height: 230px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
+      style="position: absolute; left: 90px; right: 90px; top: 560px; height: 750px; --bg: #0f2016; --surface: #2c4a34; --border: #8a5a37; --fg: #fbfaf4; --muted: #cddfb9; --brand: #2c4a34;"
     ></div>
 
   </div>

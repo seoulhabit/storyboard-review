@@ -124,6 +124,20 @@
           color: var(--ink);
           opacity: 0;
         }
+        /* Countdown digits share the headline's exact slot (absolute over it) rather
+           than mutating its text via a timeline callback — every other content swap in
+           this project (word reveals, card flips) uses separate opacity-toggled
+           elements, not imperative DOM mutation from a GSAP .call(), so this stays
+           consistent with the established, proven pattern rather than depending on
+           .call()-during-seek behavior nothing else here relies on. */
+        .cta-countdown-digit {
+          position: absolute; top: 0; left: 0; width: 100%;
+          font-family: var(--font-body);
+          font-weight: 800;
+          font-size: 96px;
+          color: var(--ink);
+          opacity: 0;
+        }
 
         .cta-lockup { top: 1240px; left: 0; width: 100%; text-align: center; opacity: 0; }
         .cta-kr { font-family: var(--font-kr); font-size: 64px; color: var(--ink); }
@@ -146,6 +160,9 @@
 
         <div data-hf-id="hf-cta-headline" id="cta-headline" class="clip cta-headline" data-start="0" data-duration="9.8">
           <div data-hf-id="hf-cta-headtext" class="cta-headline-text" id="cta-headline-text">SCREENSHOT THIS</div>
+          <div data-hf-id="hf-cta-count3" class="cta-countdown-digit" id="cta-count-3">3</div>
+          <div data-hf-id="hf-cta-count2" class="cta-countdown-digit" id="cta-count-2">2</div>
+          <div data-hf-id="hf-cta-count1" class="cta-countdown-digit" id="cta-count-1">1</div>
         </div>
 
         <div data-hf-id="hf-cta-lockup" id="cta-lockup" class="clip cta-lockup" data-start="0" data-duration="9.8">
@@ -187,7 +204,28 @@
         CHIPS.forEach((id, i) => {
           tl.to(id, { scale: 1.04, duration: 0.22, ease: "power2.out", yoyo: true, repeat: 1 }, 5.6 + i * 0.35);
         });
-        tl.to("#cta-headline-text", { scale: 1.06, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 3 }, 7.6);
+
+        // "Screenshot in 3... 2... 1..." countdown — round-2 feedback: a visible/audible
+        // countdown forces a pause or rewind, both strong retention signals. Digits
+        // share the headline's slot as separate opacity-toggled elements (see CSS
+        // comment) rather than mutating its text. SFX ticks are separate <audio>
+        // elements scheduled in index.html (shutter-click.mp3 x3 — "screenshot" pun
+        // intended). "SCREENSHOT THIS" fades out once the countdown starts and does
+        // not return — the video ends on "1", which is the point, not a rough edge.
+        tl.to("#cta-headline-text", { opacity: 0, duration: 0.25, ease: "power2.inOut" }, 7.3);
+        const COUNTDOWN = [
+          { id: "#cta-count-3", start: 7.5 },
+          { id: "#cta-count-2", start: 8.1 },
+          { id: "#cta-count-1", start: 8.7 },
+        ];
+        COUNTDOWN.forEach((step, i) => {
+          tl.fromTo(step.id, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power3.out" }, step.start);
+          if (i < COUNTDOWN.length - 1) {
+            tl.to(step.id, { opacity: 0, duration: 0.15, ease: "power2.in" }, step.start + 0.45);
+          }
+        });
+        // "1" gets an extra landing punch and holds to the scene's own end.
+        tl.to("#cta-count-1", { scale: 1.08, duration: 0.3, ease: "power2.out" }, 8.85);
 
         tl.to({}, { duration: 9.8 }, 0);
         window.__timelines["08-cta-endcard"] = tl;

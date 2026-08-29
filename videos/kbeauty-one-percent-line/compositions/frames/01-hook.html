@@ -55,6 +55,29 @@
         }
         .clip { position: absolute; inset: 0; }
 
+        /* Physical-product photo as a soft background texture, not a sharp foreground
+           shot — round-2 feedback asked for a recognizable bottle to trigger viewer
+           recognition. Sourced from the shared catalog's product-photography set
+           (A01: unbranded frosted celadon dropper bottle) with the creator's explicit
+           go-ahead to use it here; kept blurred + scrim-tinted so it reads as mood
+           texture behind the type rather than competing with it, and so it never
+           becomes the frame's sharpest, most legible surface. */
+        /* No z-index needed: this is the first .clip in DOM order, and every later
+           sibling paints on top of it in normal stacking order. */
+        .hook-bottle-photo-wrap { overflow: hidden; }
+        .hook-bottle-photo {
+          position: absolute; top: -40px; left: -40px; right: -40px; bottom: -40px;
+          width: calc(100% + 80px); height: calc(100% + 80px);
+          object-fit: cover;
+          filter: blur(11px);
+          opacity: 0;
+        }
+        .hook-bottle-photo-scrim {
+          position: absolute; inset: 0;
+          background: var(--paper);
+          opacity: 0.6;
+        }
+
         .hook-silhouettes {
           top: var(--safe-top);
           left: 0; width: 100%; height: 420px;
@@ -63,21 +86,16 @@
           align-items: center;
           gap: 64px;
         }
-        .hook-bottle {
-          width: 120px; height: 280px;
-          border: 3px solid var(--ink-3);
-          border-radius: 12px 12px 28px 28px;
-          opacity: 0;
-        }
-        .hook-bottle::before {
-          content: "";
-          display: block;
-          width: 44px; height: 40px;
-          margin: -3px auto 0;
-          border: 3px solid var(--ink-3);
-          border-bottom: none;
-          border-radius: 6px 6px 0 0;
-        }
+        /* Recognizable browser-drawn dropper-bottle silhouette (SVG), replacing the
+           previous abstract capsule outline — feedback wanted the hook to trigger
+           product recognition. Kept as vector, not a photo: the video lane is
+           browser-drawn only (SVG/CSS/canvas/WebGL), no generative imagery, per this
+           project's own design-system rule. Unbranded — silhouette + fill line +
+           empty nameplate only, no wordmark. */
+        .hook-bottle-svg { width: 108px; height: 268px; opacity: 0; }
+        .hook-bottle-line { fill: none; stroke: var(--ink-3); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+        .hook-bottle-fill { stroke: var(--ink-3); stroke-width: 2; opacity: 0.5; }
+        .hook-bottle-label { fill: none; stroke: var(--ink-3); stroke-width: 2; opacity: 0.6; }
 
         .hook-stat-zone {
           top: 760px;
@@ -149,10 +167,35 @@
       </style>
 
       <div data-hf-id="hf-hook-root" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="8.7">
+        <div data-hf-id="hf-hook-photowrap" id="hook-bottle-photo-wrap" class="clip hook-bottle-photo-wrap" data-start="0" data-duration="8.7">
+          <img data-hf-id="hf-hook-photo" id="hook-bottle-photo" class="hook-bottle-photo" src="assets/images/hook-bottle-photo.png" alt="" width="1080" height="1935" loading="eager" decoding="sync">
+          <div data-hf-id="hf-hook-photoscrim" class="hook-bottle-photo-scrim"></div>
+        </div>
         <div data-hf-id="hf-hook-silo" id="hook-silhouettes" class="clip hook-silhouettes" data-start="0" data-duration="8.7">
-          <div data-hf-id="hf-hb1" class="hook-bottle" id="hook-bottle-1"></div>
-          <div data-hf-id="hf-hb2" class="hook-bottle" id="hook-bottle-2"></div>
-          <div data-hf-id="hf-hb3" class="hook-bottle" id="hook-bottle-3"></div>
+          <svg data-hf-id="hf-hb1" class="hook-bottle-svg" id="hook-bottle-1" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
+            <rect class="hook-bottle-line" x="34" y="8" width="32" height="34" rx="14"/>
+            <rect class="hook-bottle-line" x="44" y="40" width="12" height="24"/>
+            <path class="hook-bottle-line" d="M44,64 L44,72 Q44,90 20,96 L20,214 Q20,228 34,228 L66,228 Q80,228 80,214 L80,96 Q56,90 56,72 L56,64 Z"/>
+            <line class="hook-bottle-fill" x1="50" y1="42" x2="50" y2="150" stroke-dasharray="2 3"/>
+            <line class="hook-bottle-fill" x1="24" y1="180" x2="76" y2="180"/>
+            <rect class="hook-bottle-label" x="30" y="150" width="40" height="26" rx="4"/>
+          </svg>
+          <svg data-hf-id="hf-hb2" class="hook-bottle-svg" id="hook-bottle-2" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
+            <rect class="hook-bottle-line" x="34" y="8" width="32" height="34" rx="14"/>
+            <rect class="hook-bottle-line" x="44" y="40" width="12" height="24"/>
+            <path class="hook-bottle-line" d="M44,64 L44,72 Q44,90 20,96 L20,214 Q20,228 34,228 L66,228 Q80,228 80,214 L80,96 Q56,90 56,72 L56,64 Z"/>
+            <line class="hook-bottle-fill" x1="50" y1="42" x2="50" y2="150" stroke-dasharray="2 3"/>
+            <line class="hook-bottle-fill" x1="24" y1="180" x2="76" y2="180"/>
+            <rect class="hook-bottle-label" x="30" y="150" width="40" height="26" rx="4"/>
+          </svg>
+          <svg data-hf-id="hf-hb3" class="hook-bottle-svg" id="hook-bottle-3" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
+            <rect class="hook-bottle-line" x="34" y="8" width="32" height="34" rx="14"/>
+            <rect class="hook-bottle-line" x="44" y="40" width="12" height="24"/>
+            <path class="hook-bottle-line" d="M44,64 L44,72 Q44,90 20,96 L20,214 Q20,228 34,228 L66,228 Q80,228 80,214 L80,96 Q56,90 56,72 L56,64 Z"/>
+            <line class="hook-bottle-fill" x1="50" y1="42" x2="50" y2="150" stroke-dasharray="2 3"/>
+            <line class="hook-bottle-fill" x1="24" y1="180" x2="76" y2="180"/>
+            <rect class="hook-bottle-label" x="30" y="150" width="40" height="26" rx="4"/>
+          </svg>
         </div>
 
         <div data-hf-id="hf-hook-stats" id="hook-stat-zone" class="clip hook-stat-zone" data-start="0" data-duration="8.7">
@@ -176,10 +219,17 @@
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true });
 
+        // Bottle photo: present at frame zero (composed, not mid-fade — mandatory rule
+        // 4) as a soft background texture, then recedes by local 3.0s — "for the first
+        // three seconds" per the round-2 feedback that asked for a recognizable product
+        // shot to open on. Scrim stays fixed; only the photo itself fades.
+        gsap.set("#hook-bottle-photo", { opacity: 0.85 });
+        tl.to("#hook-bottle-photo-wrap", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 2.6);
+
         // silhouettes: soft fade-in, subtle finite drift, out before crossfade
         const BOTTLES = ["#hook-bottle-1", "#hook-bottle-2", "#hook-bottle-3"];
         BOTTLES.forEach((id, i) => {
-          tl.fromTo(id, { opacity: 0, y: 10 }, { opacity: 0.35, y: 0, duration: 0.5, ease: "power3.out" }, 0.1 + i * 0.08);
+          tl.fromTo(id, { opacity: 0, y: 10 }, { opacity: 0.55, y: 0, duration: 0.5, ease: "power3.out" }, 0.1 + i * 0.08);
         });
         BOTTLES.forEach((id) => {
           tl.to(id, { y: -6, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 3 }, 0.6);

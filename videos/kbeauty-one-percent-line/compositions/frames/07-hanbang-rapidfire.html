@@ -80,6 +80,9 @@
            title/channel/audio strip. */
         .hb-cards { top: 320px; left: 0; width: 100%; height: 1180px; display: flex; flex-direction: column; justify-content: space-evenly; gap: 24px; padding: 0 190px 0 80px; }
         .hb-card {
+          display: flex;
+          align-items: center;
+          gap: 28px;
           background: var(--white);
           border-radius: 16px;
           box-shadow: var(--elev-2);
@@ -87,6 +90,18 @@
           opacity: 0;
           transform: scale(0.92) translateY(18px);
         }
+        /* Reuses the same ingredient-photography stills already approved and used in
+           Frame 4b (no new generation) — round-2 feedback asked for more visual
+           texture variety across the text-heavy learning phase; this is that, at zero
+           new-asset cost. flex-shrink:0 keeps it square even as the text stack wraps. */
+        .hb-thumb {
+          width: 104px; height: 104px;
+          border-radius: 12px;
+          object-fit: cover;
+          flex-shrink: 0;
+          background: var(--paper);
+        }
+        .hb-card-text { flex: 1; min-width: 0; }
         .hb-inci { font-family: var(--font-mono); font-size: 30px; color: var(--ink-2); }
         .hb-common { font-family: var(--font-display); font-size: 56px; color: var(--ink); margin: 8px 0 6px; position: relative; display: inline-block; }
         .hb-common-underline { position: absolute; left: 0; right: 0; bottom: -4px; height: 4px; background: var(--aqua); transform: scaleX(0); transform-origin: left center; }
@@ -103,19 +118,28 @@
 
         <div data-hf-id="hf-hb-cards" id="hb-cards" class="clip hb-cards" data-start="0" data-duration="21.34">
           <div data-hf-id="hf-hb-c1" class="hb-card" id="hb-card-1">
-            <div data-hf-id="hf-hb-c1inci" class="hb-inci">Snail Secretion Filtrate</div>
-            <div data-hf-id="hf-hb-c1common" class="hb-common" id="hb-common-1">Snail Mucin<div data-hf-id="hf-hb-c1u" class="hb-common-underline" id="hb-underline-1"></div></div>
-            <div data-hf-id="hf-hb-c1func" class="hb-func">barrier repair</div>
+            <img data-hf-id="hf-hb-c1thumb" class="hb-thumb" src="assets/images/ingredient-snail-mucin.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+            <div data-hf-id="hf-hb-c1text" class="hb-card-text">
+              <div data-hf-id="hf-hb-c1inci" class="hb-inci">Snail Secretion Filtrate</div>
+              <div data-hf-id="hf-hb-c1common" class="hb-common" id="hb-common-1">Snail Mucin<div data-hf-id="hf-hb-c1u" class="hb-common-underline" id="hb-underline-1"></div></div>
+              <div data-hf-id="hf-hb-c1func" class="hb-func">barrier repair</div>
+            </div>
           </div>
           <div data-hf-id="hf-hb-c2" class="hb-card" id="hb-card-2">
-            <div data-hf-id="hf-hb-c2inci" class="hb-inci">Panax Root</div>
-            <div data-hf-id="hf-hb-c2common" class="hb-common" id="hb-common-2">Ginseng<div data-hf-id="hf-hb-c2u" class="hb-common-underline" id="hb-underline-2"></div></div>
-            <div data-hf-id="hf-hb-c2func" class="hb-func">firming</div>
+            <img data-hf-id="hf-hb-c2thumb" class="hb-thumb" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+            <div data-hf-id="hf-hb-c2text" class="hb-card-text">
+              <div data-hf-id="hf-hb-c2inci" class="hb-inci">Panax Root</div>
+              <div data-hf-id="hf-hb-c2common" class="hb-common" id="hb-common-2">Ginseng<div data-hf-id="hf-hb-c2u" class="hb-common-underline" id="hb-underline-2"></div></div>
+              <div data-hf-id="hf-hb-c2func" class="hb-func">firming</div>
+            </div>
           </div>
           <div data-hf-id="hf-hb-c3" class="hb-card" id="hb-card-3">
-            <div data-hf-id="hf-hb-c3inci" class="hb-inci">Artemisia Princeps</div>
-            <div data-hf-id="hf-hb-c3common" class="hb-common" id="hb-common-3"><span data-hf-id="hf-hb-c3kr" class="hb-kr">쑥</span>Mugwort<div data-hf-id="hf-hb-c3u" class="hb-common-underline" id="hb-underline-3"></div></div>
-            <div data-hf-id="hf-hb-c3func" class="hb-func">calming, anti-acne</div>
+            <img data-hf-id="hf-hb-c3thumb" class="hb-thumb" src="assets/images/ingredient-mugwort.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+            <div data-hf-id="hf-hb-c3text" class="hb-card-text">
+              <div data-hf-id="hf-hb-c3inci" class="hb-inci">Artemisia Princeps</div>
+              <div data-hf-id="hf-hb-c3common" class="hb-common" id="hb-common-3"><span data-hf-id="hf-hb-c3kr" class="hb-kr">쑥</span>Mugwort<div data-hf-id="hf-hb-c3u" class="hb-common-underline" id="hb-underline-3"></div></div>
+              <div data-hf-id="hf-hb-c3func" class="hb-func">calming, anti-acne</div>
+            </div>
           </div>
         </div>
       </div>

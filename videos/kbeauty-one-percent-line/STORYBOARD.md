@@ -906,3 +906,68 @@ the current `index.html`, not hand-maintained.)
   - Superseded renders removed; only
     `renders/kbeauty-one-percent-line_2026-08-29_16-47-01.mp4` (115.5s,
     1080x1920) remains.
+- 2026-08-29 (round 2/3 feedback — hook energy, learning-phase texture,
+  1%-line anchor, CTA countdown): Creator asked for a physical hook shot,
+  more B-roll texture through the learning phase, a "dissolve" teardown, a
+  glowing anchor line, a full VO re-voice for urgency, and a screenshot
+  countdown. Checked the governing rules before touching anything —
+  `catalog/product-photography/README.md` states product photography is
+  "not HyperFrames assets... needs its own filed decision record first,"
+  and the `seoulhabit-video-3d` skill states "Browser-drawn only... No
+  generative imagery, ever" and "No glow anywhere. Elevation shadows
+  only." Creator then explicitly authorized full catalog use for this
+  project, which lifted the imagery gate; the no-glow rule was not
+  addressed by that authorization and was treated as still standing, with
+  intent translated into elevation instead (matching how this project
+  already translated the original "neon glow" brief).
+  - **Frame 1 hook**: the three abstract capsule-outline "bottles" replaced
+    with a proper browser-drawn SVG dropper-bottle silhouette (cap, neck,
+    dropper tube, fill line, empty nameplate — still unbranded, still
+    vector). Layered behind them: the catalog's `product-photography/A01`
+    (unbranded frosted celadon dropper bottle, verified/approved asset,
+    manifest-checked) as a blurred, scrim-tinted full-bleed background
+    texture — present from frame zero, recedes by local 3.0s per the "first
+    three seconds" ask. Downsampled and copied to the project's own
+    `assets/images/hook-bottle-photo.png` (project-local, matching every
+    other asset convention here).
+  - **VO energy**: creator chose the mix-only fix over a full re-voice
+    (which would cascade into re-timing every scene). Voiceover bus
+    fx-chain retuned — faster/tighter compression (attack 10ms->5ms, ratio
+    3:1->4:1, makeup +2->+3), less low-mid "weight" (150Hz +1.5->+0.8dB),
+    more 3kHz presence (+1.5->+2.5dB). Diverges from the seoulhabit-launch
+    shared chain intentionally (kept verbatim there); noted in an
+    index.html comment. Final loudness is still set by the existing
+    post-render loudnorm pass regardless of this chain's own limiter, so
+    the audible change is dynamics/tone, not volume.
+  - **Frame 6 teardown, three changes**: (1) the Niacinamide aqua highlight
+    is now an SVG stroke-dashoffset draw-on (a real "marker circling the
+    word" reveal) instead of a shape fading in. (2) The "1% LINE" tag gets
+    a hard elevation shadow (`box-shadow: 6px 6px 0 var(--ink)`, no blur —
+    the no-glow-compliant translation of "make it glow") and a two-step
+    overshoot-then-settle scale (hand-built from two power-eased tweens,
+    since back/elastic eases are banned here) for a punchier landing. (3)
+    The trailing "fairy dust" ingredients now hold readable for ~1.2s then
+    genuinely dissolve away (blur 1.5px->3px, plus y+14/scale0.94/opacity
+    0.3 together) instead of just gaining a static blur.
+  - **Frame 7 cards**: each Hanbang flashcard gets a 104px thumbnail reusing
+    the *already-approved* ingredient-photography stills from Frame 4b
+    (snail mucin, ginseng, mugwort) — no new generation, zero new asset
+    cost, directly answers both "vary visual texture" and "raw ginseng
+    root" from the feedback. `.hb-card` restructured to flex row
+    (thumbnail + a wrapped text-stack child, learning from the Frame 8
+    flex/whitespace lesson two rounds ago — never let mixed content
+    fragment into separate flex items unintentionally).
+  - **Frame 8 CTA**: a "Screenshot in 3... 2... 1..." countdown replaces
+    the second generic headline pulse in the dead post-VO tail. Digits are
+    separate opacity-toggled elements sharing the headline's slot (this
+    project's established content-swap idiom everywhere else) rather than
+    a `.call()`-driven text mutation, which nothing else here uses and
+    whose seek-time firing behavior wasn't worth depending on unverified.
+    Three `shutter-click.mp3` ticks added (one per digit) — the video now
+    deliberately ends on "1," not mid-motion.
+  - `npm run check`: caught one real timing-boundary warning (two
+    sequential tweens on `#tear-line-tag` touching at the exact same
+    frame) during this pass, fixed by nudging the second tween 0.01s later.
+    0 errors/warnings after; 27/27 SFX pass duration audit.
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_17-13-53.mp4`,
+    115.5s, 1080x1920. Superseded renders removed.

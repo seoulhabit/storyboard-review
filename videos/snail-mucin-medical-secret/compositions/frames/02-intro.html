@@ -177,42 +177,42 @@
   }
 </style>
 
-<div id="root" data-composition-id="02-intro" data-width="1080" data-height="1920" data-duration="14.345">
+<div id="root" data-composition-id="02-intro" data-width="1080" data-height="1920" data-duration="14.82">
 
   <!-- Track 0: full-bleed real photo w/ Ken Burns drift, spans the whole frame -->
-  <div class="clip sm2-photo-layer" data-start="0" data-duration="14.345" data-track-index="0">
+  <div class="clip sm2-photo-layer" data-start="0" data-duration="14.82" data-track-index="0">
     <div class="sm2-photo-wrap" id="sm2PhotoWrap">
       <img class="sm2-photo" src="public/02-routine-montage.png" alt="" />
     </div>
   </div>
 
   <!-- Track 1: flat ~40% dim wash over the photo -->
-  <div class="clip sm2-scrim-flat" data-start="0" data-duration="14.345" data-track-index="1"></div>
+  <div class="clip sm2-scrim-flat" data-start="0" data-duration="14.82" data-track-index="1"></div>
 
   <!-- Track 2/3: top + bottom legibility scrims for the type zones -->
-  <div class="clip sm2-scrim-top" data-start="0" data-duration="14.345" data-track-index="2"></div>
-  <div class="clip sm2-scrim-bottom" data-start="0" data-duration="14.345" data-track-index="3"></div>
+  <div class="clip sm2-scrim-top" data-start="0" data-duration="14.82" data-track-index="2"></div>
+  <div class="clip sm2-scrim-bottom" data-start="0" data-duration="14.82" data-track-index="3"></div>
 
-  <!-- Track 4 (Scene 1, 0.0-2.7s): "THE YUCK FACTOR" mono kicker, per-word reveal -->
-  <div class="clip sm2-kicker-row" data-start="0" data-duration="2.7" data-track-index="4" id="sm2KickerRow"></div>
+  <!-- Track 4 (Scene 1, 0.0-3.3s): "THE YUCK FACTOR" mono kicker, per-word reveal -->
+  <div class="clip sm2-kicker-row" data-start="0" data-duration="3.3" data-track-index="4" id="sm2KickerRow"></div>
 
   <!-- Track 5 (Scene 1 onward): "SNAIL MUCIN" title — spring-pops center, then settles smaller upper-third -->
-  <div class="clip sm2-title-outer" data-start="0" data-duration="14.345" data-track-index="5">
+  <div class="clip sm2-title-outer" data-start="0" data-duration="14.82" data-track-index="5">
     <div class="sm2-title-wrap" id="sm2TitleWrap">
       <span class="sm2-title">SNAIL MUCIN</span>
     </div>
   </div>
 
-  <!-- Track 6 (Scene 3 onward, 5.5s-): "SNAIL SECRETION FILTRATE" ingredient-label callout, wipes in -->
-  <div class="clip sm2-label-zone" data-start="5.5" data-duration="8.845" data-track-index="6">
+  <!-- Track 6 (Scene 3 onward, 5.73s-): "SNAIL SECRETION FILTRATE" ingredient-label callout, wipes in -->
+  <div class="clip sm2-label-zone" data-start="5.73" data-duration="9.09" data-track-index="6">
     <div class="sm2-label-eyebrow" id="sm2LabelEyebrow">As Listed On The Bottle</div>
     <div class="sm2-label-box" id="sm2LabelBox">
       <span class="sm2-label-text">Snail Secretion Filtrate</span>
     </div>
   </div>
 
-  <!-- Track 7 (Scene 4, 10.7s-end): "COMING UP: THE MISTAKE" mono tag -->
-  <div class="clip sm2-tag-zone" data-start="10.7" data-duration="3.645" data-track-index="7">
+  <!-- Track 7 (Scene 4, 11.29s-end): "COMING UP: THE MISTAKE" mono tag -->
+  <div class="clip sm2-tag-zone" data-start="11.29" data-duration="3.53" data-track-index="7">
     <div class="f02i-sp-badge" id="sm2Tag">
       <span class="f02i-sp-label">Coming Up: The Mistake</span>
     </div>
@@ -272,7 +272,7 @@
     };
 
     var tl = gsap.timeline({ paused: true });
-    var TOTAL_DURATION = 13.845;
+    var TOTAL_DURATION = 14.32;
 
     // full-span anchor so the timeline duration always matches the frame
     tl.to({}, { duration: TOTAL_DURATION }, 0);
@@ -308,8 +308,8 @@
         KICKER_START + i * KICKER_STAGGER
       );
     });
-    // kicker clears just before Scene 2 takes over (still inside its own 0-2.7s window)
-    tl.to(kickerEls, { opacity: 0, y: -10, duration: 0.3, ease: "power2.inOut" }, 2.35);
+    // kicker clears just before Scene 2 takes over (still inside its own 0-3.3s window)
+    tl.to(kickerEls, { opacity: 0, y: -10, duration: 0.3, ease: "power2.inOut" }, 2.95);
 
     // Title "SNAIL MUCIN" — hero must read clearly by t<=0.5s: opacity resolves at 0.45s,
     // the spring overshoot on scale keeps settling shortly after (still fully legible).
@@ -329,28 +329,28 @@
       0.15
     );
 
-    // ───────────────────────── Scene 2 (2.7-5.5s) — title settles smaller, upper-third, making room below ─────────────────────────
+    // ───────────────────────── Scene 2 (3.3-5.73s) — title settles smaller, upper-third, making room below ─────────────────────────
     tl.to(
       "#sm2TitleWrap",
       { scale: 0.6, y: -300, duration: 0.65, ease: "power2.inOut" },
-      2.7
+      3.3
     );
 
-    // ───────────────────────── Scene 3 (5.5-10.7s) — ingredient-label callout wipes in, lower-third ─────────────────────────
+    // ───────────────────────── Scene 3 (5.73-11.29s) — ingredient-label callout wipes in, lower-third ─────────────────────────
     tl.fromTo(
       "#sm2LabelEyebrow",
       { opacity: 0, y: 10 },
       { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
-      5.6
+      5.83
     );
     tl.fromTo(
       "#sm2LabelBox",
       { opacity: 0, clipPath: "inset(0% 100% 0% 0%)" },
       { opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" },
-      5.7
+      5.93
     );
 
-    // ───────────────────────── Scene 4 (10.7-13.845s) — "COMING UP: THE MISTAKE" tag lands, holds to real end ─────────────────────────
+    // ───────────────────────── Scene 4 (11.29-14.32s) — "COMING UP: THE MISTAKE" tag lands, holds to real end ─────────────────────────
     // spring-pop mechanic (components/spring-pop.html) at its declared defaults
     // (fromScale 0.9, overshoot 1.7); the x slide-in is preserved alongside the
     // scale arc since the badge's transform-origin is left-anchored (0% 50%).
@@ -358,20 +358,20 @@
       "#sm2Tag",
       { scale: 0.9, x: -14 },
       { scale: 1, x: 0, duration: 0.5, ease: "back.out(1.7)" },
-      10.9
+      11.49
     );
     tl.fromTo(
       "#sm2Tag",
       { opacity: 0 },
       { opacity: 1, duration: 0.3, ease: "power2.out" },
-      10.9
+      11.49
     );
 
     // bounded settle jitter on the held title through the back half of the shot —
     // finite phase tween (never a yoyo/repeat:-1 loop), keeps the resolved frame from reading dead
     var titlePhase = { p: 0 };
     var titleEl = document.getElementById("sm2TitleWrap");
-    var JITTER_START = 6.0;
+    var JITTER_START = 6.2;
     var JITTER_DUR = TOTAL_DURATION - JITTER_START;
     tl.to(
       titlePhase,

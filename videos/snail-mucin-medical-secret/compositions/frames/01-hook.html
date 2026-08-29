@@ -1,7 +1,7 @@
-<template data-composition-id="01-hook" data-duration="15.625">
+<template data-composition-id="01-hook" data-duration="14.02">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
-<style data-brand-tokens>
+<style data-brand-tokens="">
   @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
   @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
   :root {
@@ -58,6 +58,18 @@
     height: 100%;
     transform-origin: 50% 50%;
     will-change: transform;
+  }
+
+  /* the snap-punch wrapper — nested between cut-wrap and kb-wrap so a fast
+     in-scene whip-reframe composes with (never fights) the slow Ken Burns
+     drift on kb-wrap; text/label siblings under cut-wrap stay unblurred */
+  .punch-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%;
+    will-change: transform, filter;
   }
 
   .bg-img {
@@ -195,44 +207,52 @@
   }
 </style>
 
-<div id="root" data-composition-id="01-hook" data-start="0" data-duration="15.625" data-width="1080" data-height="1920">
+<div data-hf-id="hf-ek6z" id="root" data-composition-id="01-hook" data-start="0" data-duration="15.625" data-width="1080" data-height="1920">
 
   <!-- Scene 1 (0.0-5.4s): vintage B&W archival lab photo -->
-  <div class="clip" data-start="0" data-duration="5.4" data-track-index="0">
-    <div class="cut-wrap" id="scene1-cut">
-      <div class="kb-wrap" id="scene1-kb">
+  <div data-hf-id="hf-tbql" class="clip" data-start="0" data-duration="4.4" data-track-index="0">
+    <div data-hf-id="hf-v49x" class="cut-wrap" id="scene1-cut">
+      <div data-hf-id="hf-hcrz" class="kb-wrap" id="scene1-kb">
+        <img data-hf-id="hf-igp8" class="bg-img archival" src="public/01a-archival-lab.png" alt="">
+        <div data-hf-id="hf-k01a" class="grain-overlay"></div>
+      </div>
+      <!-- snap-punch layer: same photo, pre-framed tighter/shifted (baked static
+           transform, not animated), cross-fades over #scene1-kb at the 2.40s
+           snap-cut via opacity+filter only -- kb's own scale/x/y stay solely
+           owned by its continuous Ken Burns tween, so nothing fights it. -->
+      <div class="kb-wrap" id="scene1-punch" style="opacity: 0;">
         <img class="bg-img archival" src="public/01a-archival-lab.png" alt="" />
         <div class="grain-overlay"></div>
       </div>
-      <div class="scrim-dim-35"></div>
-      <div class="hk01-sp-badge" id="s1-label"><span class="hk01-sp-label">1960s &middot; Spain</span></div>
-      <div class="phrase-lower">
-        <div class="phrase-line" id="s1-phrase"></div>
+      <div data-hf-id="hf-wr30" class="scrim-dim-35"></div>
+      <div data-hf-id="hf-4rub" class="hk01-sp-badge" id="s1-label"><span data-hf-id="hf-qaq5" class="hk01-sp-label">1960s · Spain</span></div>
+      <div data-hf-id="hf-8ohz" class="phrase-lower">
+        <div data-hf-id="hf-mahm" class="phrase-line" id="s1-phrase"></div>
       </div>
     </div>
   </div>
 
   <!-- Scenes 2-4 (5.4-15.125s): macro slime/spatula photo, continuous Ken Burns push -->
-  <div class="clip" data-start="5.4" data-duration="10.225" data-track-index="0">
-    <div class="cut-wrap" id="scene234-cut">
-      <div class="kb-wrap" id="scene234-kb">
-        <img class="bg-img macro" src="public/01b-macro-slime-spatula.png" alt="" />
+  <div data-hf-id="hf-08hr" class="clip" data-start="4.4" data-duration="9.12" data-track-index="0">
+    <div data-hf-id="hf-70tv" class="cut-wrap" id="scene234-cut">
+      <div data-hf-id="hf-wia5" class="kb-wrap" id="scene234-kb">
+        <img data-hf-id="hf-ujyv" class="bg-img macro" src="public/01b-macro-slime-spatula.png" alt="">
       </div>
-      <div class="scrim-top-fade"></div>
+      <div data-hf-id="hf-jik3" class="scrim-top-fade"></div>
 
-      <div class="phrase-upper">
-        <div class="phrase-line" id="s2-phrase" style="display: none;"></div>
+      <div data-hf-id="hf-1kvw" class="phrase-upper">
+        <div data-hf-id="hf-ic1o" class="phrase-line" id="s2-phrase" style="display: none;"></div>
       </div>
-      <div class="phrase-upper">
-        <div class="phrase-line" id="s3-phrase" style="display: none;"></div>
+      <div data-hf-id="hf-rjas" class="phrase-upper">
+        <div data-hf-id="hf-0nbl" class="phrase-line" id="s3-phrase" style="display: none;"></div>
       </div>
-      <div class="phrase-upper">
-        <div class="phrase-line" id="s4-phrase" style="display: none;"></div>
+      <div data-hf-id="hf-qcdp" class="phrase-upper">
+        <div data-hf-id="hf-90o2" class="phrase-line" id="s4-phrase" style="display: none;"></div>
       </div>
 
-      <div class="payoff-scrim" id="payoff-scrim"></div>
-      <div class="payoff-stage">
-        <div class="payoff-word" id="payoff">Obsession.</div>
+      <div data-hf-id="hf-wx0u" class="payoff-scrim" id="payoff-scrim"></div>
+      <div data-hf-id="hf-kqas" class="payoff-stage">
+        <div data-hf-id="hf-kgqm" class="payoff-word" id="payoff">Obsession.</div>
       </div>
     </div>
   </div>
@@ -241,7 +261,7 @@
 
 <script>
 (function () {
-  var DURATION = 15.125;
+  var DURATION = 13.52;
 
   function buildWords(containerId, words) {
     var el = document.getElementById(containerId);
@@ -256,22 +276,40 @@
     return spans;
   }
 
-  // Scene 1 — "In the 1960s, a Spanish doctor trying to heal severe radiation burns"
+  // Word-reveal helper driven by REAL per-word timestamps (Kimberly voice,
+  // transcribed) rather than an evenly-spaced approximation.
+  function revealWords(spans, timings, opts) {
+    opts = opts || {};
+    spans.forEach(function (el, i) {
+      tl.fromTo(
+        el,
+        { opacity: 0, y: opts.y === undefined ? 14 : opts.y, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: opts.dur || 0.3, ease: "power2.out" },
+        timings[i][0],
+      );
+    });
+  }
+
+  // Scene 1 — "In the 1960s, a Spanish doctor trying to heal severe radiation burns" (real word times)
   var s1Words = buildWords("s1-phrase", [
     "In", "the", "1960s,", "a", "Spanish", "doctor", "trying", "to", "heal", "severe", "radiation", "burns"
   ]);
-  // Scene 2 — "stumbled onto a bizarre, miraculous cure"
+  var s1Times = [[0.070,0.120],[0.120,0.310],[0.310,1.250],[1.300,1.310],[1.310,1.750],[1.750,2.160],[2.160,2.460],[2.460,2.530],[2.640,2.800],[2.940,3.240],[3.240,3.900],[3.900,4.220]];
+  // Scene 2 — "stumbled onto a bizarre, miraculous cure."
   var s2Words = buildWords("s2-phrase", [
-    "stumbled", "onto", "a", "bizarre,", "miraculous", "cure"
+    "stumbled", "onto", "a", "bizarre,", "miraculous", "cure."
   ]);
+  var s2Times = [[4.530,4.780],[4.800,4.960],[5.050,5.120],[5.120,5.760],[5.830,6.840],[7.060,7.640]];
   // Scene 3 — "Fast forward to today,"
   var s3Words = buildWords("s3-phrase", [
     "Fast", "forward", "to", "today,"
   ]);
+  var s3Times = [[7.720,7.900],[7.900,8.360],[8.360,8.410],[8.530,8.950]];
   // Scene 4 — "and that exact same goo is the beauty industry's biggest, weirdest" (obsession = payoff word)
   var s4Words = buildWords("s4-phrase", [
     "and", "that", "exact", "same", "goo", "is", "the", "beauty", "industry's", "biggest,", "weirdest"
   ]);
+  var s4Times = [[8.950,9.140],[9.140,9.390],[9.470,9.610],[9.730,9.990],[9.990,10.180],[10.180,10.310],[10.310,10.440],[10.580,10.890],[10.890,11.540],[11.540,12.200],[12.200,12.720]];
 
   // ---- yt-camera-move helpers (copied verbatim from compositions/components/yt-camera-move.html) ----
   window.ytCameraMove = function (tl, target, at, opts) {
@@ -325,7 +363,7 @@
   // full-span anchor
   tl.to({}, { duration: DURATION }, 0);
 
-  // ---------- Scene 1 (0.0-5.4s) ----------
+  // ---------- Scene 1 (0.0-4.4s) — retimed to Kimberly's real word timestamps ----------
   // spring-pop mechanic (fromScale 0.9, overshoot 1.7) driving the archival label badge
   (function () {
     var badgeIn = 0.4, fromScale = 0.9, overshoot = 1.7, opacityIn = Math.min(0.3, badgeIn);
@@ -333,92 +371,92 @@
     tl.fromTo("#s1-label", { opacity: 0 }, { opacity: 1, duration: opacityIn, ease: "power2.out" }, 0.15);
   })();
 
-  // per-word reveal, evenly paced across the VO window 0.10-5.20s
-  (function () {
-    var start = 0.10, end = 5.20, n = s1Words.length;
-    var step = (end - start) / n;
-    s1Words.forEach(function (el, i) {
-      var at = start + i * step;
-      tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, at);
-    });
-  })();
+  // per-word reveal, synced to real word onsets
+  revealWords(s1Words, s1Times);
 
   // Ken Burns — subtle drift on the archival still, via the shared yt-camera-move helper
-  window.ytCameraMove(tl, "#scene1-kb", 0, { zoom: 0.05, dur: 5.4, ease: "sine.inOut" });
+  window.ytCameraMove(tl, "#scene1-kb", 0, { zoom: 0.05, dur: 4.4, ease: "sine.inOut" });
+
+  // Snap-cut punch (2.53-2.77s) — a fast whip-blur cross-fade to a second,
+  // pre-framed copy of the SAME archival still (no second angle exists for
+  // this beat), tighter and shifted toward the machine's dial. Lands in the
+  // natural speech pause between "to" (ends 2.53) and "heal" (starts 2.64).
+  // Breaks Scene 1's hold into two <3s visual beats — rapid-cut pacing for
+  // the 1960s-to-modern transition. Mirrors the exit/hard-cut/entry shape of
+  // the Scene 1->2/3/4 zoom-through cut below at a smaller, faster scale, and
+  // (like it) cross-fades two SIBLING layers via opacity+filter rather than
+  // transforming a wrapper around #scene1-kb — #scene1-kb's own scale/x/y
+  // stay solely owned by its continuous Ken Burns tween the whole scene, so
+  // no other tween ever shares those properties on that element.
+  gsap.set("#scene1-punch", { transformPerspective: 1200, transformOrigin: "50% 50%", scale: 1.16, x: -26, y: 10 });
+  // Phase 1: exit (2.53-2.61) — #scene1-kb accelerates toward viewer, blurs
+  tl.to("#scene1-kb", { filter: "blur(16px)", duration: 0.08, ease: "power3.in" }, 2.53);
+  tl.to("#scene1-kb", { opacity: 0.15, duration: 0.08, ease: "none" }, 2.53);
+  // Phase 2: hard cut at t=2.61 — outgoing gone, incoming pre-set oversized/blurred (scale/x/y already baked in above)
+  tl.set("#scene1-kb", { opacity: 0 }, 2.61);
+  tl.set("#scene1-punch", { opacity: 0.15, filter: "blur(14px)" }, 2.61);
+  // Phase 3: entry (2.61-2.77) — continue forward, resolve sharp at the new punched-in framing
+  tl.to("#scene1-punch", { filter: "blur(0px)", opacity: 1.0, duration: 0.16, ease: "expo.out" }, 2.61);
 
   // Zoom-Through cut, Scene 1 -> Scene 2/3/4 (state change: history -> the macro slime hero shot)
-  // Phase 1: exit (5.10-5.40) — accelerate toward viewer, full-frame blur peak 20px
-  tl.fromTo("#scene1-cut", { scale: 1.0 }, { scale: 1.2, duration: 0.3, ease: "power3.in" }, 5.10);
-  tl.fromTo("#scene1-cut", { filter: "blur(0px)" }, { filter: "blur(20px)", duration: 0.3, ease: "power3.in" }, 5.10);
-  tl.to("#scene1-cut", { opacity: 0.15, duration: 0.3, ease: "none" }, 5.10);
-  // Phase 2: hard cut at t=5.4 — outgoing gone, incoming pre-set oversized/blurred
-  tl.set("#scene1-cut", { opacity: 0 }, 5.4);
-  tl.set("#scene234-cut", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, 5.4);
-  // Phase 3: entry (5.4-5.9) — continue forward, resolve sharp
-  tl.to("#scene234-cut", { scale: 1.0, filter: "blur(0px)", opacity: 1.0, duration: 0.5, ease: "expo.out" }, 5.4);
+  // "burns" ends 4.22; "stumbled" starts 4.53 — cut sits in that pause.
+  // Phase 1: exit (4.22-4.40) — accelerate toward viewer, full-frame blur peak 20px
+  tl.fromTo("#scene1-cut", { scale: 1.0 }, { scale: 1.2, duration: 0.18, ease: "power3.in" }, 4.22);
+  tl.fromTo("#scene1-cut", { filter: "blur(0px)" }, { filter: "blur(20px)", duration: 0.18, ease: "power3.in" }, 4.22);
+  tl.to("#scene1-cut", { opacity: 0.15, duration: 0.18, ease: "none" }, 4.22);
+  // Phase 2: hard cut at t=4.40 — outgoing gone, incoming pre-set oversized/blurred
+  tl.set("#scene1-cut", { opacity: 0 }, 4.4);
+  tl.set("#scene234-cut", { opacity: 0.15, scale: 0.75, filter: "blur(20px)" }, 4.4);
+  // Phase 3: entry (4.40-4.90) — continue forward, resolve sharp
+  tl.to("#scene234-cut", { scale: 1.0, filter: "blur(0px)", opacity: 1.0, duration: 0.5, ease: "expo.out" }, 4.4);
 
-  // ---------- Scenes 2-4 (5.4-15.125s) ----------
+  // ---------- Scenes 2-4 (4.4-13.52s) ----------
   // Continuous Ken Burns push-in across the whole macro-slime hold, settling to a stop
-  window.ytCameraMove(tl, "#scene234-kb", 5.4, { zoom: 0.16, dur: 9.725, ease: "power2.out" });
+  window.ytCameraMove(tl, "#scene234-kb", 4.4, { zoom: 0.16, dur: 9.12, ease: "power2.out" });
 
-  // Scene 2 — "stumbled onto a bizarre, miraculous cure" (5.64-8.52s), upper third
+  // Scene 2 — "stumbled onto a bizarre, miraculous cure." (4.53-7.64s), upper third
   (function () {
-    tl.set("#s2-phrase", { display: "flex" }, 5.4);
-    var start = 5.64, end = 8.52, n = s2Words.length;
-    var step = (end - start) / n;
-    s2Words.forEach(function (el, i) {
-      var at = start + i * step;
-      tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, at);
-    });
-    // whole-line exit — cut-the-curve, leftward, fading before the 8.70s cut
-    tl.to("#s2-phrase", { x: -230, duration: 0.3, ease: "power4.in" }, 8.40);
-    tl.to("#s2-phrase", { opacity: 0, duration: 0.26, ease: "power1.in" }, 8.40);
-    tl.set("#s2-phrase", { display: "none" }, 8.66);
+    tl.set("#s2-phrase", { display: "flex" }, 4.4);
+    revealWords(s2Words, s2Times);
+    // whole-line exit — cut-the-curve, leftward, fading before the 7.68s cut
+    tl.to("#s2-phrase", { x: -230, duration: 0.2, ease: "power4.in" }, 7.44);
+    tl.to("#s2-phrase", { opacity: 0, duration: 0.18, ease: "power1.in" }, 7.44);
+    tl.set("#s2-phrase", { display: "none" }, 7.66);
   })();
 
-  // Scene 3 — "Fast forward to today," (8.7-10.3s), cut-the-curve entry continuing leftward
+  // Scene 3 — "Fast forward to today," (7.68-8.95s), cut-the-curve entry continuing leftward
   (function () {
-    var cutAt = 8.70;
+    var cutAt = 7.68;
     tl.set("#s3-phrase", { display: "flex", x: 230, opacity: 0 }, cutAt);
-    tl.to("#s3-phrase", { x: 0, duration: 0.3, ease: "power4.out" }, cutAt);
-    tl.to("#s3-phrase", { opacity: 1, duration: 0.24, ease: "power1.out" }, cutAt);
-    // waterfall per-word cascade, shrinking gaps, synced to 8.96-10.14s VO window
-    var gaps = [0, 0.05, 0.092, 0.127];
-    s3Words.forEach(function (el, i) {
-      var at = cutAt + gaps[i];
-      tl.fromTo(el, { opacity: 0.3, y: 10 }, { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" }, at);
-    });
-    // whole-line exit before the 10.30s cut
-    tl.to("#s3-phrase", { x: -230, duration: 0.3, ease: "power4.in" }, 9.98);
-    tl.to("#s3-phrase", { opacity: 0, duration: 0.28, ease: "power1.in" }, 9.98);
-    tl.set("#s3-phrase", { display: "none" }, 10.28);
+    tl.to("#s3-phrase", { x: 0, duration: 0.2, ease: "power4.out" }, cutAt);
+    tl.to("#s3-phrase", { opacity: 1, duration: 0.18, ease: "power1.out" }, cutAt);
+    revealWords(s3Words, s3Times, { dur: 0.22, y: 8 });
+    // whole-line exit before the 8.95s cut
+    tl.to("#s3-phrase", { x: -230, duration: 0.16, ease: "power4.in" }, 8.79);
+    tl.to("#s3-phrase", { opacity: 0, duration: 0.15, ease: "power1.in" }, 8.79);
+    tl.set("#s3-phrase", { display: "none" }, 8.94);
   })();
 
-  // Scene 4 — "and that exact same goo is the beauty industry's biggest, weirdest" (10.3-15.125s)
+  // Scene 4 — "and that exact same goo is the beauty industry's biggest, weirdest" (8.95-13.52s)
   (function () {
-    var cutAt = 10.30;
+    var cutAt = 8.95;
     tl.set("#s4-phrase", { display: "flex", x: 230, opacity: 0 }, cutAt);
-    tl.to("#s4-phrase", { x: 0, duration: 0.3, ease: "power4.out" }, cutAt);
-    tl.to("#s4-phrase", { opacity: 1, duration: 0.24, ease: "power1.out" }, cutAt);
+    tl.to("#s4-phrase", { x: 0, duration: 0.2, ease: "power4.out" }, cutAt);
+    tl.to("#s4-phrase", { opacity: 1, duration: 0.18, ease: "power1.out" }, cutAt);
 
-    var start = 10.46, end = 14.28, n = s4Words.length;
-    var step = (end - start) / n;
-    s4Words.forEach(function (el, i) {
-      var at = start + i * step;
-      tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, at);
-    });
+    revealWords(s4Words, s4Times);
 
     // dim the running line slightly as the payoff scrim/word take over
-    tl.to("#s4-phrase", { opacity: 0.55, duration: 0.3, ease: "power1.out" }, 14.0);
+    tl.to("#s4-phrase", { opacity: 0.55, duration: 0.3, ease: "power1.out" }, 12.49);
   })();
 
-  // Payoff — "Obsession." spring-pops dead-center on a translucent scrim (14.28-14.86s), holds to the end
-  tl.to("#payoff-scrim", { opacity: 1, duration: 0.28, ease: "power1.out" }, 14.0);
+  // Payoff — "Obsession." spring-pops dead-center on a translucent scrim (12.79-13.37s), holds to the end
+  tl.to("#payoff-scrim", { opacity: 1, duration: 0.28, ease: "power1.out" }, 12.49);
   // spring-pop mechanic (fromScale 0.9, overshoot 1.7) — bare word, no badge chrome, since this isn't a pill
   (function () {
-    var wordIn = 0.58, fromScale = 0.9, overshoot = 1.7, opacityIn = Math.min(0.3, wordIn);
-    tl.fromTo("#payoff", { scale: fromScale }, { scale: 1, duration: wordIn, ease: "back.out(" + overshoot + ")" }, 14.28);
-    tl.fromTo("#payoff", { opacity: 0 }, { opacity: 1, duration: opacityIn, ease: "power2.out" }, 14.28);
+    var wordIn = 0.52, fromScale = 0.9, overshoot = 1.7, opacityIn = Math.min(0.3, wordIn);
+    tl.fromTo("#payoff", { scale: fromScale }, { scale: 1, duration: wordIn, ease: "back.out(" + overshoot + ")" }, 12.79);
+    tl.fromTo("#payoff", { opacity: 0 }, { opacity: 1, duration: opacityIn, ease: "power2.out" }, 12.79);
   })();
 
   window.__timelines["01-hook"] = tl;

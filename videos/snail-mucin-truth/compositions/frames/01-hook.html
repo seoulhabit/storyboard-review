@@ -24,7 +24,7 @@
     /* ── ambient glow (Scene 2) ── */
     .mh01-glow {
       left: 540px;
-      top: 770px;
+      top: 710px;
       width: 900px;
       height: 900px;
       transform: translate(-50%, -50%);
@@ -37,13 +37,15 @@
     /* ── goo-drip glyph stage ── */
     .mh01-glyph-stage {
       left: 50%;
-      top: 620px;
+      top: 560px;
       width: 486px;
       height: 700px;
       transform: translateX(-50%);
     }
     .mh01-glyph-svg { display: block; width: 100%; height: 100%; overflow: visible; }
     #mh01-blob { fill-opacity: 0; }
+    #mh01-sheen { opacity: 0; }
+    #mh01-bead { opacity: 0; }
 
     /* ── kinetic clause text (Scenes 2-3) ── */
     .mh01-clauseA {
@@ -57,7 +59,7 @@
     }
     .mh01-clauseB {
       left: 90px;
-      top: 1420px;
+      top: 1300px;
       width: 900px;
       height: auto;
       display: flex;
@@ -94,13 +96,13 @@
     }
   </style>
 
-  <div data-hf-id="hf-gni2" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="12.124">
-    <div data-hf-id="hf-cc5y" id="mh01-bg-moss" class="clip mh01-bg-moss" data-start="0" data-duration="12.124" data-track-index="0"></div>
-    <div data-hf-id="hf-qpib" id="mh01-bg-cream" class="clip mh01-bg-cream" data-start="6.8" data-duration="5.324" data-track-index="1"></div>
+  <div data-hf-id="hf-gni2" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="10.561">
+    <div data-hf-id="hf-cc5y" id="mh01-bg-moss" class="clip mh01-bg-moss" data-start="0" data-duration="10.561" data-track-index="0"></div>
+    <div data-hf-id="hf-qpib" id="mh01-bg-cream" class="clip mh01-bg-cream" data-start="6.8" data-duration="3.761" data-track-index="1"></div>
 
     <div data-hf-id="hf-syq0" id="mh01-glow" class="clip mh01-glow" data-start="2.2" data-duration="4.6" data-track-index="2"></div>
 
-    <div data-hf-id="hf-os0f" id="mh01-glyph-stage" class="clip mh01-glyph-stage" data-start="0" data-duration="12.124" data-track-index="3">
+    <div data-hf-id="hf-os0f" id="mh01-glyph-stage" class="clip mh01-glyph-stage" data-start="0" data-duration="10.561" data-track-index="3">
       <svg data-hf-id="hf-s28d" class="mh01-glyph-svg" viewBox="0 0 486 700" xmlns="http://www.w3.org/2000/svg">
         <defs data-hf-id="hf-mh0t">
           <lineargradient data-hf-id="hf-8j1o" id="mh01-trail-grad" x1="50%" y1="0%" x2="50%" y2="100%">
@@ -108,16 +110,22 @@
             <stop data-hf-id="hf-dk27" offset="55%" stop-color="#f2e3b4" />
             <stop data-hf-id="hf-x9xw" offset="100%" stop-color="#e4c8ec" />
           </lineargradient>
+          <radialGradient data-hf-id="hf-sh2n" id="mh01-sheen-grad" cx="35%" cy="30%" r="65%">
+            <stop data-hf-id="hf-shs1" offset="0%" stop-color="#fbfaf4" stop-opacity="0.85" />
+            <stop data-hf-id="hf-shs2" offset="100%" stop-color="#fbfaf4" stop-opacity="0" />
+          </radialGradient>
         </defs>
         <path data-hf-id="hf-ogzd" id="mh01-tendril" d="M270,322 C290,380 250,420 268,480 C285,530 245,570 260,620 C270,655 250,670 255,690" fill="none" stroke="url(#mh01-trail-grad)" stroke-width="14" stroke-linecap="round" />
         <path data-hf-id="hf-ppch" id="mh01-blob" d="M243,40 C300,35 350,80 350,140 C350,195 320,230 290,250 C320,270 325,305 300,325 C270,350 220,345 195,320 C150,335 105,305 105,260 C90,220 105,175 140,145 C125,105 160,65 210,45 C220,41 232,40 243,40 Z" fill="url(#mh01-trail-grad)" stroke="url(#mh01-trail-grad)" stroke-width="4" stroke-linejoin="round" />
+        <ellipse data-hf-id="hf-shel1" id="mh01-sheen" cx="235" cy="110" rx="68" ry="42" transform="rotate(-18 235 110)" fill="url(#mh01-sheen-grad)" />
+        <ellipse data-hf-id="hf-bdel1" id="mh01-bead" cx="256" cy="692" rx="13" ry="17" fill="url(#mh01-trail-grad)" />
       </svg>
     </div>
 
     <div data-hf-id="hf-kct2" id="mh01-clauseA" class="clip mh01-clauseA" data-start="2.2" data-duration="4.6" data-track-index="4"></div>
     <div data-hf-id="hf-suyf" id="mh01-clauseB" class="clip mh01-clauseB" data-start="4.5" data-duration="2.3" data-track-index="5"></div>
 
-    <div data-hf-id="hf-vvd4" id="mh01-hero-stage" class="clip mh01-hero-stage" data-start="6.8" data-duration="5.324" data-track-index="6">
+    <div data-hf-id="hf-vvd4" id="mh01-hero-stage" class="clip mh01-hero-stage" data-start="6.8" data-duration="3.761" data-track-index="6">
       <div data-hf-id="hf-nl1t" id="mh01-hero" class="mh01-hero">MUCIN?</div>
     </div>
   </div>
@@ -126,7 +134,7 @@
   <script>
     window.__timelines = window.__timelines || {};
     const tl = gsap.timeline({ paused: true });
-    const TOTAL_DURATION = 11.624;
+    const TOTAL_DURATION = 10.061;
 
     // full-span anchor so the timeline's own duration always matches the frame
     tl.to({}, { duration: TOTAL_DURATION }, 0);
@@ -146,6 +154,13 @@
     tl.to(blobPath, { strokeDashoffset: 0, duration: 1.2, ease: "power1.inOut" }, 0.0);
     // blob fill catches up behind the completing outline
     tl.fromTo(blobPath, { fillOpacity: 0 }, { fillOpacity: 0.92, duration: 0.8, ease: "power2.out" }, 0.8);
+    // glossy sheen catches the fill — sells the blob as wet/viscous, not flat
+    tl.fromTo(
+      "#mh01-sheen",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 0.55, scale: 1, duration: 0.5, ease: "power2.out", transformOrigin: "235px 110px" },
+      1.3,
+    );
     // tendril first drip — reveals to ~52% of its length
     tl.to(tendrilPath, { strokeDashoffset: tendrilLen * 0.48, duration: 1.0, ease: "power1.inOut" }, 1.0);
 
@@ -192,6 +207,11 @@
 
     // ───────────────────────── Scene 3 (4.5–6.8s) — tendril extends further, clause B reveals beneath ─────────────────────────
     tl.to(tendrilPath, { strokeDashoffset: tendrilLen * 0.06, duration: 1.0, ease: "power1.inOut" }, 4.6);
+
+    // a bead separates from the tendril tip and drips — a concrete, legible "viscous liquid" cue
+    tl.fromTo("#mh01-bead", { opacity: 0, y: 0, scale: 0.6 }, { opacity: 0.95, scale: 1, duration: 0.25, ease: "power2.out" }, 5.6);
+    tl.to("#mh01-bead", { y: 22, duration: 0.5, ease: "power1.in" }, 5.85);
+    tl.to("#mh01-bead", { opacity: 0, duration: 0.3, ease: "power1.in" }, 6.35);
 
     clauseBSchedule.forEach((entry) => {
       tl.fromTo(entry.el, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, entry.start);

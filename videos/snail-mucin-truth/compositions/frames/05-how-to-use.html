@@ -1,4 +1,4 @@
-<template data-composition-id="05-how-to-use" data-width="1080" data-height="1920" data-duration="7.762">
+<template data-composition-id="05-how-to-use" data-width="1080" data-height="1920" data-duration="9.129">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
 <style>
@@ -31,8 +31,14 @@
   .htu-bg {
     position: absolute;
     inset: 0;
-    background: var(--htu-cream);
+    background: var(--htu-cream-2);
   }
+
+  .htu-leaf {
+    position: absolute;
+    opacity: 0.14;
+  }
+  .htu-leaf svg { display: block; }
 
   .htu-topbar {
     position: absolute;
@@ -103,9 +109,22 @@
   }
   .htu-glyph {
     display: block;
-    width: 320px;
-    height: 320px;
+    width: 440px;
+    height: 440px;
     margin: 28px auto 0;
+    position: relative;
+    z-index: 1;
+  }
+  .htu-glyph-wash {
+    position: absolute;
+    left: 450px;
+    top: 357px;
+    width: 580px;
+    height: 580px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--htu-cream-2) 0%, transparent 68%);
+    pointer-events: none;
   }
   .htu-label {
     margin-top: auto;
@@ -127,13 +146,13 @@
 
   /* glyph 1 — droplet on damp skin */
   #htu-droplet1 {
-    fill: none;
+    fill: var(--htu-moss-lite);
     stroke: var(--htu-moss);
     stroke-width: 6;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  #htu-skinline1 {
+  .htu-skinline {
     fill: none;
     stroke: var(--htu-moss);
     stroke-width: 4;
@@ -145,12 +164,16 @@
     fill: var(--htu-shell);
   }
 
-  /* glyph 2 — concentric ripple rings */
+  /* glyph 2 — fingertip patting onto the skin line */
+  #htu-fingertip {
+    fill: var(--htu-moss);
+    opacity: 0.92;
+  }
   .htu-ripple {
     fill: none;
     stroke: var(--htu-shell);
     stroke-width: 5;
-    transform-origin: 150px 150px;
+    transform-origin: 150px 220px;
   }
   .htu-ripple-core {
     fill: var(--htu-shell-deep);
@@ -172,9 +195,22 @@
 
 <div data-hf-id="hf-i0h1" id="root" data-composition-id="05-how-to-use" data-width="1080" data-height="1920">
 
-  <div data-hf-id="hf-nwus" class="htu-bg clip" data-start="0" data-duration="7.762" data-track-index="1"></div>
+  <div data-hf-id="hf-nwus" class="htu-bg clip" data-start="0" data-duration="9.129" data-track-index="1"></div>
 
-  <div data-hf-id="hf-dc9g" class="htu-topbar clip" data-start="0" data-duration="7.762" data-track-index="2">
+  <div data-hf-id="hf-lf01" class="htu-leaf clip" data-start="0" data-duration="9.129" data-track-index="0" style="left:-70px; top:1560px; width:280px; transform:rotate(12deg);">
+    <svg data-hf-id="hf-lf01s" viewBox="0 0 140 90" width="280" height="180" xmlns="http://www.w3.org/2000/svg">
+      <path data-hf-id="hf-lf01p" d="M2 45 C 20 10 60 -5 138 8 C 118 40 80 68 40 74 C 20 77 6 65 2 45 Z" fill="#2c4a34" />
+      <path data-hf-id="hf-lf01l" d="M10 44 L 120 26" stroke="#e8efdd" stroke-width="2" opacity="0.5" fill="none" />
+    </svg>
+  </div>
+  <div data-hf-id="hf-lf02" class="htu-leaf clip" data-start="0" data-duration="9.129" data-track-index="0" style="left:870px; top:100px; width:250px; transform:rotate(-18deg);">
+    <svg data-hf-id="hf-lf02s" viewBox="0 0 140 90" width="250" height="161" xmlns="http://www.w3.org/2000/svg">
+      <path data-hf-id="hf-lf02p" d="M2 45 C 20 10 60 -5 138 8 C 118 40 80 68 40 74 C 20 77 6 65 2 45 Z" fill="#2c4a34" />
+      <path data-hf-id="hf-lf02l" d="M10 44 L 120 26" stroke="#e8efdd" stroke-width="2" opacity="0.5" fill="none" />
+    </svg>
+  </div>
+
+  <div data-hf-id="hf-dc9g" class="htu-topbar clip" data-start="0" data-duration="9.129" data-track-index="2">
     <div data-hf-id="hf-jb08" class="htu-topbar-label" id="htu-topbar-label">Application</div>
     <div data-hf-id="hf-cniy" class="htu-dots">
       <span data-hf-id="hf-jb17" class="htu-dot" id="htu-dot-1"></span>
@@ -183,17 +219,19 @@
     </div>
   </div>
 
-  <div data-hf-id="hf-ilnx" class="htu-card clip" id="htu-card" data-start="0" data-duration="7.762" data-track-index="3">
+  <div data-hf-id="hf-ilnx" class="htu-card clip" id="htu-card" data-start="0" data-duration="9.129" data-track-index="3">
     <div data-hf-id="hf-ijur" class="htu-card-rule"></div>
 
     <!-- Step 01 — damp skin -->
     <div data-hf-id="hf-qyuo" class="htu-step" id="htu-step-1">
       <div data-hf-id="hf-bpq9" class="htu-badge" id="htu-badge-1">01</div>
+      <div data-hf-id="hf-wsh1" class="htu-glyph-wash" id="htu-wash-1"></div>
       <svg data-hf-id="hf-p9oo" class="htu-glyph" id="htu-glyph-1" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
         <path data-hf-id="hf-wx4y" id="htu-droplet1" d="M150 68 C120 118 94 154 94 186 C94 218 119 244 150 244 C181 244 206 218 206 186 C206 154 180 118 150 68 Z" />
-        <path data-hf-id="hf-fbe9" id="htu-skinline1" d="M 28 234 Q 90 214 150 232 T 272 226" />
-        <circle data-hf-id="hf-os0e" class="htu-fleck" id="htu-fleck-a" cx="222" cy="150" r="7" />
-        <circle data-hf-id="hf-f1qn" class="htu-fleck" id="htu-fleck-b" cx="238" cy="182" r="4.5" />
+        <path data-hf-id="hf-fbe9" class="htu-skinline" id="htu-skinline1" d="M 28 234 Q 90 214 150 232 T 272 226" />
+        <circle data-hf-id="hf-os0e" class="htu-fleck" id="htu-fleck-a" cx="96" cy="224" r="6" />
+        <circle data-hf-id="hf-f1qn" class="htu-fleck" id="htu-fleck-b" cx="150" cy="233" r="7" />
+        <circle data-hf-id="hf-fkc1" class="htu-fleck" id="htu-fleck-c" cx="204" cy="223" r="5" />
       </svg>
       <div data-hf-id="hf-2wr0" class="htu-label" id="htu-label-1">
         <span data-hf-id="hf-76b1" class="htu-word">DAMP</span><span data-hf-id="hf-nf92" class="htu-word">SKIN,</span><span data-hf-id="hf-m7aw" class="htu-word">NOT</span><span data-hf-id="hf-t02w" class="htu-word">DRY</span>
@@ -203,11 +241,14 @@
     <!-- Step 02 — pat, don't rub -->
     <div data-hf-id="hf-zmqj" class="htu-step" id="htu-step-2">
       <div data-hf-id="hf-eehl" class="htu-badge">02</div>
+      <div data-hf-id="hf-wsh2" class="htu-glyph-wash" id="htu-wash-2"></div>
       <svg data-hf-id="hf-yvaq" class="htu-glyph" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-        <circle data-hf-id="hf-22lb" class="htu-ripple" id="htu-ripple-1" cx="150" cy="150" r="40" />
-        <circle data-hf-id="hf-jm3j" class="htu-ripple" id="htu-ripple-2" cx="150" cy="150" r="70" />
-        <circle data-hf-id="hf-lr2u" class="htu-ripple" id="htu-ripple-3" cx="150" cy="150" r="100" />
-        <circle data-hf-id="hf-1t62" class="htu-ripple-core" cx="150" cy="150" r="14" />
+        <path data-hf-id="hf-sl2a" class="htu-skinline" id="htu-skinline2" d="M 28 234 Q 90 214 150 232 T 272 226" />
+        <circle data-hf-id="hf-22lb" class="htu-ripple" id="htu-ripple-1" cx="150" cy="220" r="25" />
+        <circle data-hf-id="hf-jm3j" class="htu-ripple" id="htu-ripple-2" cx="150" cy="220" r="44" />
+        <circle data-hf-id="hf-lr2u" class="htu-ripple" id="htu-ripple-3" cx="150" cy="220" r="63" />
+        <circle data-hf-id="hf-1t62" class="htu-ripple-core" cx="150" cy="220" r="9" />
+        <ellipse data-hf-id="hf-fgtp" id="htu-fingertip" cx="150" cy="178" rx="23" ry="31" />
       </svg>
       <div data-hf-id="hf-y50g" class="htu-label">PAT, DON'T RUB</div>
     </div>
@@ -215,7 +256,9 @@
     <!-- Step 03 — seal it in -->
     <div data-hf-id="hf-vomi" class="htu-step" id="htu-step-3">
       <div data-hf-id="hf-essm" class="htu-badge">03</div>
+      <div data-hf-id="hf-wsh3" class="htu-glyph-wash" id="htu-wash-3"></div>
       <svg data-hf-id="hf-6som" class="htu-glyph" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <path data-hf-id="hf-sl3a" class="htu-skinline" id="htu-skinline3" d="M 28 234 Q 90 214 150 232 T 272 226" />
         <path data-hf-id="hf-74e4" id="htu-droplet3" d="M150 90 C126 132 106 160 106 184 C106 210 126 230 150 230 C174 230 194 210 194 184 C194 160 174 132 150 90 Z" />
         <path data-hf-id="hf-wu4c" id="htu-seal-arc" d="M 58 150 A 92 92 0 0 1 242 150" />
       </svg>
@@ -227,7 +270,7 @@
 <script>
   (function () {
     // ---- SVG self-draw setup (measured, not guessed) ----
-    var drawIds = ["htu-droplet1", "htu-skinline1", "htu-seal-arc"];
+    var drawIds = ["htu-droplet1", "htu-skinline1", "htu-skinline2", "htu-skinline3", "htu-seal-arc"];
     drawIds.forEach(function (id) {
       var el = document.getElementById(id);
       if (!el) return;
@@ -244,11 +287,14 @@
 
     // ---- t=0 baselines (GSAP-driven hidden states, not CSS-hidden) ----
     tl.set("#htu-badge-1", { opacity: 0, scale: 0.8, transformOrigin: "0% 50%" }, 0);
-    tl.set(["#htu-fleck-a", "#htu-fleck-b"], { opacity: 0 }, 0);
+    tl.set(".htu-glyph-wash", { opacity: 0, scale: 0.85, transformOrigin: "50% 50%" }, 0);
+    tl.set("#htu-droplet1", { fillOpacity: 0 }, 0);
+    tl.set(".htu-fleck", { opacity: 0 }, 0);
     tl.set("#htu-label-1 .htu-word", { opacity: 0, y: 44 }, 0);
     tl.set("#htu-step-2", { opacity: 0, x: 0 }, 0);
     tl.set("#htu-step-3", { opacity: 0, x: 0 }, 0);
-    tl.set(".htu-ripple", { opacity: 0, scale: 0.35, transformOrigin: "150px 150px" }, 0);
+    tl.set("#htu-fingertip", { opacity: 0, y: -10, transformOrigin: "150px 178px" }, 0);
+    tl.set(".htu-ripple", { opacity: 0, scale: 0.35, transformOrigin: "150px 220px" }, 0);
     tl.set("#htu-label-3", { opacity: 0 }, 0);
     tl.set("#htu-topbar-label", { opacity: 0, y: -16 }, 0);
     tl.set(".htu-dot", { backgroundColor: CREAM2 }, 0);
@@ -274,12 +320,25 @@
     tl.to("#htu-badge-1", { opacity: 1, scale: 1, duration: 0.25, ease: "power4.out" }, STEP1_START);
     tl.to("#htu-dot-1", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, STEP1_START);
 
+    tl.fromTo(
+      "#htu-wash-1",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" },
+      STEP1_START
+    );
+
     var droplet1Start = STEP1_START + 0.12; // 0.8462
     tl.to("#htu-droplet1", { strokeDashoffset: 0, duration: 0.55, ease: "power2.out" }, droplet1Start);
+    tl.fromTo(
+      "#htu-droplet1",
+      { fillOpacity: 0 },
+      { fillOpacity: 0.6, duration: 0.3, ease: "power2.out" },
+      droplet1Start + 0.55
+    );
     var skinlineStart = droplet1Start + 0.55 * 0.75; // ~1.259
     tl.to("#htu-skinline1", { strokeDashoffset: 0, duration: 0.4, ease: "power2.out" }, skinlineStart);
     var fleckStart = skinlineStart + 0.4; // ~1.659
-    tl.to(["#htu-fleck-a", "#htu-fleck-b"], { opacity: 1, duration: 0.2, ease: "power1.out", stagger: 0.08 }, fleckStart);
+    tl.to(".htu-fleck", { opacity: 1, duration: 0.2, ease: "power1.out", stagger: 0.08 }, fleckStart);
 
     // per-word waterfall entry for the label — binary opacity flip (tl.set) at the
     // instant each word's whip-in begins, then the offset tweens to rest (never fade)
@@ -303,12 +362,26 @@
     tl.to("#htu-step-2", { opacity: 1, duration: 0.3, ease: "power1.out" }, SEAM1);
     tl.to("#htu-dot-2", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, SEAM1);
 
-    // ---- Scene 3 (2.9048-5.0834s): step 02 — two ripple pulses ("pat, pat") ----
+    tl.fromTo(
+      "#htu-wash-2",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" },
+      SEAM1 + 0.1
+    );
+
+    var skinline2Start = SEAM1 + 0.08;
+    tl.to("#htu-skinline2", { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, skinline2Start);
+    var fingertipStart = skinline2Start + 0.2;
+    tl.to("#htu-fingertip", { opacity: 0.92, y: 0, duration: 0.3, ease: "power2.out" }, fingertipStart);
+
+    // ---- Scene 3 (2.9048-5.0834s): step 02 — two ripple pulses ("pat, pat"), fingertip pats in sync ----
     var pulse1 = 3.5;
     var pulse2 = 4.05;
     [pulse1, pulse2].forEach(function (start) {
       tl.set(".htu-ripple", { opacity: 0.85, scale: 0.35 }, start);
       tl.to(".htu-ripple", { opacity: 0, scale: 1.15, duration: 0.55, ease: "power1.out", stagger: 0.06 }, start);
+      tl.to("#htu-fingertip", { y: 14, duration: 0.14, ease: "power2.in" }, start);
+      tl.to("#htu-fingertip", { y: 0, duration: 0.22, ease: "power2.out" }, start + 0.14);
     });
 
     // ---- Seam 2 (cut-the-curve, leftward) — step 02 clears, step 03 lands ----
@@ -321,6 +394,13 @@
     tl.to("#htu-step-3", { x: 0, duration: 0.4, ease: "power4.out" }, SEAM2);
     tl.to("#htu-step-3", { opacity: 1, duration: 0.3, ease: "power1.out" }, SEAM2);
     tl.to("#htu-dot-3", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, SEAM2);
+    tl.to("#htu-skinline3", { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, SEAM2 + 0.08);
+    tl.fromTo(
+      "#htu-wash-3",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" },
+      SEAM2 + 0.1
+    );
 
     // ---- Scene 4 (5.0834-7.262s): step 03 — sealing arc draws, label confirms, settles ----
     var arcStart = SEAM2 + 0.47; // 5.5534

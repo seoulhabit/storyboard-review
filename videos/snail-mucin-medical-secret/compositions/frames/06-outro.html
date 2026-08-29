@@ -117,13 +117,13 @@
 </style>
 
 <div id="root" data-composition-id="06-outro" data-width="1080" data-height="1920">
-  <div class="clip outro-photo-clip" data-start="0" data-duration="18.181" data-track-index="0">
+  <div class="clip outro-photo-clip" data-start="0" data-duration="15.2" data-track-index="0">
     <div class="outro-photo-wrap" id="outro-photo-wrap">
       <img src="public/06-cheekbone-glow.png" alt="" />
     </div>
   </div>
 
-  <div class="clip outro-question-clip" data-start="0" data-duration="18.181" data-track-index="1">
+  <div class="clip outro-question-clip" data-start="0" data-duration="15.2" data-track-index="1">
     <div class="outro-question-pos">
       <div class="outro-question" id="outro-question">
         <span>Would you try it?</span>
@@ -131,7 +131,7 @@
     </div>
   </div>
 
-  <div class="clip outro-subscribe-clip" data-start="0" data-duration="18.181" data-track-index="2">
+  <div class="clip outro-subscribe-clip" data-start="0" data-duration="15.2" data-track-index="2">
     <div class="outro-subscribe-pos">
       <div class="outro-subscribe" id="outro-subscribe">
         <span>Subscribe!</span>
@@ -216,54 +216,54 @@
   window.ytCameraMove(tl, "#outro-photo-wrap", 0.7, {
     zoom: 0.16,
     slideY: -26,
-    dur: 17.48,
+    dur: 14.5,
     ease: "none",
     origin: "50% 42%",
   });
 
-  // Scene 3 (6.4–9.3s) — "So, are you brave enough to try it," — the first
-  // named text overlay spring-pops in, upper-third. Component: spring-pop.html's
-  // tween mechanic (a back.out scale arc plus an independent opacity fade),
-  // default overshoot 1.7, default fromScale 0.9.
+  // Scene 3 — "So, are you brave enough to try it," — the first named text
+  // overlay spring-pops in, upper-third, landing on "So," (Kimberly retime).
+  // Component: spring-pop.html's tween mechanic (a back.out scale arc plus
+  // an independent opacity fade), default overshoot 1.7, default fromScale 0.9.
   tl.fromTo(
     "#outro-question",
     { scale: 0.9 },
     { scale: 1, duration: 0.55, ease: "back.out(1.7)" },
-    6.84
+    5.77
   );
   tl.fromTo(
     "#outro-question",
     { opacity: 0 },
     { opacity: 1, duration: 0.3, ease: "power2.out" },
-    6.84
+    5.77
   );
 
-  // Scene 4 (9.3–11.4s) — "or is the yuck-factor too high?" — a small
-  // emphasis pulse on the settled question card, landing mid-cue.
+  // Scene 4 — "or is the yuck-factor too high?" — a small emphasis pulse on
+  // the settled question card, landing mid-cue.
   tl.to(
     "#outro-question",
     { scale: 1.06, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 },
-    10.2
+    8.62
   );
 
-  // Scene 6 (13.7–18.181s) — "Subscribe for more skincare science, and I'll
-  // see you in the next one." The second named overlay spring-pops in last,
-  // larger, dead-center-lower, as the video's true, final CTA. Component:
-  // spring-pop.html's tween mechanic again, with a higher overshoot (1.9,
-  // within the component's declared 1.1–2.0 range) for the one deliberately
-  // playful beat. Both cards and the photo hold to the frame's real end; no
-  // exit follows.
+  // Scene 6 — "Subscribe for more skincare science, and I'll see you in the
+  // next one." The second named overlay spring-pops in last, larger,
+  // dead-center-lower, as the video's true, final CTA, landing on "Subscribe".
+  // Component: spring-pop.html's tween mechanic again, with a higher
+  // overshoot (1.9, within the component's declared 1.1–2.0 range) for the
+  // one deliberately playful beat. Both cards and the photo hold to the
+  // frame's real end; no exit follows.
   tl.fromTo(
     "#outro-subscribe",
     { scale: 0.9 },
     { scale: 1, duration: 0.6, ease: "back.out(1.9)" },
-    13.84
+    12.02
   );
   tl.fromTo(
     "#outro-subscribe",
     { opacity: 0 },
     { opacity: 1, duration: 0.3, ease: "power2.out" },
-    13.84
+    12.02
   );
 
   window.__timelines["06-outro"] = tl;

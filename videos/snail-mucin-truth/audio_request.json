@@ -2,6 +2,7 @@
   "lines": [
     {
       "id": "01",
+      "text": "What if the secret to glowing, glass skin... is rubbing snail slime on your face? It sounds strange, but this K-beauty ingredient has a real following.",
       "sfx": [
         "whoosh-soft (Scene 1→2)",
         "sparkle (payoff spring-pop on \"MUCIN?\")"
@@ -9,12 +10,14 @@
     },
     {
       "id": "02",
+      "text": "If you've scrolled skincare TikTok, you've seen this gooey essence. Let's break down what it actually is, what it does, and how to use it right.",
       "sfx": [
         "click-soft (each signpost label lands)"
       ]
     },
     {
       "id": "03",
+      "text": "On the label it's called snail secretion filtrate — the mucus snails produce, rich in glycoproteins and hydrating compounds. Producers say it's collected without harming the snails — though practices vary.",
       "sfx": [
         "whoosh-soft (leaf-to-card wipe)",
         "click-soft (composition items landing)"
@@ -22,6 +25,7 @@
     },
     {
       "id": "04",
+      "text": "It's rich in hyaluronic acid and glycoproteins — a genuine hydration boost. Studies also link it to barrier repair and calmer skin, and over time, fading post-acne marks.",
       "sfx": [
         "click-soft ×3 (each item lands)",
         "sparkle (final item settles)"
@@ -29,6 +33,7 @@
     },
     {
       "id": "05",
+      "text": "Here's the part people skip: apply it to damp skin, pat it in — don't rub — then seal it with your moisturizer.",
       "sfx": [
         "click-soft ×3 (each step arrives)",
         "whoosh-soft (step-to-step seam)"
@@ -36,6 +41,7 @@
     },
     {
       "id": "06",
+      "text": "So — worth the goo? The evidence says it's a solid hydrator. Give it a try, and subscribe for more skincare, minus the hype.",
       "sfx": [
         "whoosh-soft (photo reveal)",
         "sparkle (subscribe chip settle)"

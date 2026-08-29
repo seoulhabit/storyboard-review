@@ -23,7 +23,7 @@
           --ink-soft: #211F1B;
           --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-          --t-chip: 22px; /* was 18 — real design system's --t-chip floor is 22px */
+          --t-chip: 33px; /* was 22 (real design system floor) — +50% per mobile-legibility feedback on this hook frame specifically; not a design-system change */
           --aqua: #59B8AE;
           --safe-top: 120px;
           /* legibility (design system tokens/legibility.css) — text over unpredictable
@@ -79,7 +79,7 @@
         .hook-chip {
           display: inline-flex;
           align-items: center;
-          padding: 10px 18px;
+          padding: 15px 27px;
           border-radius: 999px;
           background: rgba(240,235,225,0.92);
           color: var(--ink);
@@ -126,25 +126,25 @@
         }
       </style>
 
-      <div data-hf-id="hf-r39z" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="10">
-        <video data-hf-id="hf-b01v" id="hook-video" class="clip hook-video" data-start="0" data-duration="10" data-track-index="3" src="assets/broll/01-hook.mp4" muted></video>
-        <div data-hf-id="hf-io8p" id="hook-ground" class="clip hook-ground" data-start="0" data-duration="10" data-track-index="4"></div>
-        <div data-hf-id="hf-b01t" id="hook-scrim-top" class="clip hook-scrim-top" data-start="0" data-duration="10" data-track-index="5"></div>
-        <div data-hf-id="hf-b01b" id="hook-scrim-bottom" class="clip hook-scrim-bottom" data-start="0" data-duration="10" data-track-index="6"></div>
-        <div data-hf-id="hf-0nc9" id="hook-grain" class="clip hook-grain" data-start="0" data-duration="10" data-track-index="0"></div>
+      <div data-hf-id="hf-r39z" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="8">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0.15,&quot;contrast&quot;:0.06,&quot;highlights&quot;:0,&quot;shadows&quot;:0.3,&quot;whites&quot;:0,&quot;blacks&quot;:0.05,&quot;temperature&quot;:-0.02,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-b01v" id="hook-video" class="clip hook-video" data-start="0" data-duration="8" data-track-index="3" src="assets/broll/01-hook.mp4" muted></video>
+        <div data-hf-id="hf-io8p" id="hook-ground" class="clip hook-ground" data-start="0" data-duration="8" data-track-index="4"></div>
+        <div data-hf-id="hf-b01t" id="hook-scrim-top" class="clip hook-scrim-top" data-start="0" data-duration="8" data-track-index="5"></div>
+        <div data-hf-id="hf-b01b" id="hook-scrim-bottom" class="clip hook-scrim-bottom" data-start="0" data-duration="8" data-track-index="6"></div>
+        <div data-hf-id="hf-0nc9" id="hook-grain" class="clip hook-grain" data-start="0" data-duration="8" data-track-index="0"></div>
 
-        <div data-hf-id="hf-0xo8" id="hook-chips" class="clip hook-chips" data-start="0" data-duration="10" data-track-index="1">
+        <div data-hf-id="hf-0xo8" id="hook-chips" class="clip hook-chips" data-start="0" data-duration="8" data-track-index="1">
           <div data-hf-id="hf-iohe" class="hook-chip" id="hook-chip-0">Snail Mucin</div>
           <div data-hf-id="hf-6x0p" class="hook-chip" id="hook-chip-1">Centella Asiatica</div>
           <div data-hf-id="hf-1o8x" class="hook-chip" id="hook-chip-2">Heartleaf</div>
         </div>
 
-        <div data-hf-id="hf-294z" id="hook-textzone" class="clip hook-textzone" data-start="0" data-duration="10" data-track-index="2">
+        <div data-hf-id="hf-294z" id="hook-textzone" class="clip hook-textzone" data-start="0" data-duration="8" data-track-index="2">
           <div data-hf-id="hf-wins" class="hook-line" id="hook-line-1"></div>
           <div data-hf-id="hf-7e5f" class="hook-line" id="hook-line-2"></div>
         </div>
 
-        <div data-hf-id="hf-b01r" id="hook-reaction" class="clip hook-reaction" data-start="0" data-duration="10" data-track-index="7">Wait, what is this?!</div>
+        <div data-hf-id="hf-b01r" id="hook-reaction" class="clip hook-reaction" data-start="0" data-duration="8" data-track-index="7">Wait, what is this?!</div>
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
@@ -157,7 +157,7 @@
         const CHIP_ENTER_START = 0.25;
         const CHIP_STAGGER = 0.3;
         const CHIP_ENTER_DUR = 0.4;
-        const CHIP_HOLD_END = 8.2;
+        const CHIP_HOLD_END = 7.0; // retimed for the shorter Kimberly VO (2026-08-29) — was 8.2
         const CHIP_EXIT_DUR = 0.6;
 
         CHIP_IDS.forEach((id, i) => {
@@ -218,7 +218,7 @@
         tl.fromTo("#hook-reaction", { opacity: 0, y: 10, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "power3.out" }, 1.95);
         tl.to("#hook-reaction", { opacity: 0, y: -8, duration: 0.35, ease: "power2.inOut" }, 2.6);
 
-        tl.to({}, { duration: 10 }, 0); // full-span anchor
+        tl.to({}, { duration: 8 }, 0); // full-span anchor
 
         window.__timelines["01-hook"] = tl;
       </script>

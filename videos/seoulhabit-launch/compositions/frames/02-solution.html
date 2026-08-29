@@ -67,10 +67,10 @@
         }
       </style>
 
-      <div data-hf-id="hf-9lu6" id="root" data-composition-id="02-solution" data-width="1080" data-height="1920" data-duration="9">
-        <div data-hf-id="hf-phxd" id="sol-paper-grain" class="clip sol-paper-grain" data-start="0" data-duration="9" data-track-index="0"></div>
+      <div data-hf-id="hf-9lu6" id="root" data-composition-id="02-solution" data-width="1080" data-height="1920" data-duration="7">
+        <div data-hf-id="hf-phxd" id="sol-paper-grain" class="clip sol-paper-grain" data-start="0" data-duration="7" data-track-index="0"></div>
 
-        <div data-hf-id="hf-9ml4" id="sol-lockup" class="clip sol-lockup" data-start="0" data-duration="9" data-track-index="1">
+        <div data-hf-id="hf-9ml4" id="sol-lockup" class="clip sol-lockup" data-start="0" data-duration="7" data-track-index="1">
           <div data-hf-id="hf-ru31" class="sol-brand">습 SeoulHabit</div>
           <div data-hf-id="hf-vwtb" class="sol-tagline">Your Korean skincare ingredient research platform.</div>
         </div>
@@ -90,11 +90,11 @@
         );
         tl.to(
           "#sol-lockup",
-          { y: -2, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 5 },
+          { y: -2, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 3 }, // was repeat:5 — trimmed for the shorter Kimberly VO (2026-08-29)
           1.5,
         );
 
-        tl.to({}, { duration: 9 }, 0); // full-span anchor
+        tl.to({}, { duration: 7 }, 0); // full-span anchor
 
         window.__timelines["02-solution"] = tl;
       </script>

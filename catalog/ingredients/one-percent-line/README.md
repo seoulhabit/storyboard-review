@@ -14,18 +14,23 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_17-13-53.mp4` —
-115.5s, 1080x1920 (confirmed via `ffprobe`). Passed `npm run check`
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_18-08-00.mp4` —
+115.5s, 1080x1920, mastered -14.29 LUFS / -1.50dBTP (confirmed via
+`ffprobe`/`ffmpeg volumedetect`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
-**Status:** in review — round 2 of a planned 3 feedback passes with the
+**Status:** in review — round 3 (final planned round) of feedback with the
 creator, following a skill-review pass (2026-08-29) that fixed the video's
 own craft gaps (all-crossfade transitions producing muddy near-blank
 midpoints, ~60s of the runtime with no authored visual change, several
 elements landing past the Shorts safe-bottom line) alongside a companion fix
 to the `faceless-video-craft` skill itself, which had drifted from the real
-HyperFrames API. Full change log: `STORYBOARD.md`'s "Build history" section
-in the project folder.
+HyperFrames API. Round 3 fixed a genuine audio-clipping bug (deferred
+mastering pass finally applied) and a GSAP bleed-through bug (a reused
+element rendering at its "from" state seconds before its first scheduled
+appearance — `tl.set()` inside the timeline fixed it; a bare `gsap.set()`
+outside it did not). Full change log: `STORYBOARD.md`'s "Build history"
+section in the project folder.
 
 ## Ingredient photography — reused, not duplicated
 
@@ -64,6 +69,15 @@ granted it can't write to `docs/decisions/` directly. Copied
 project-local to `assets/images/hook-bottle-photo.png` (1080px, downsampled
 from the catalog's 1536x2752 original), matching how every other asset in
 this project is referenced locally rather than from the shared path.
+Round-3 feedback asked for the catalog's imagery to be felt through more of
+the runtime, not just Frame 1's opening flash — extended to Frame 6's
+teardown card (a circular accent near the "GLOW SERUM" header, same
+`hook-bottle-photo.png`, reinforcing "this is a real physical product"
+during the one scene that's literally about reading a bottle's own label)
+and to the CTA endcard's three Hanbang recap chips (reusing the same
+already-approved ingredient-photography stills from Frame 7 — zero new
+assets). Frame 1's own photo also now recedes to a persistent 0.3-opacity
+backdrop by 3s instead of disappearing entirely.
 
 ## Visual components — checked, none applicable
 

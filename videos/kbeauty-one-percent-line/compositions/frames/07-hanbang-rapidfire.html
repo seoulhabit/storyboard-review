@@ -101,10 +101,16 @@
         const tl = gsap.timeline({ paused: true });
 
         tl.fromTo("#hb-kicker", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.15);
-        tl.to("#hb-kicker", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 1.4);
+        tl.to("#hb-kicker", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 1.0);
 
-        // three flashcards snap in sequence, one per script beat (SFX shutter-click.mp3 x3)
-        const CARD_STARTS = [1.8, 8.2, 14.6];
+        // three flashcards snap in sequence, one per script beat (SFX shutter-click.mp3 x3).
+        // Shifted 1.0s earlier as a block (was [1.8, 8.2, 14.6]) — the kicker held alone on an
+        // otherwise-empty canvas for 1.65s before card 1 landed, a slow open for a scene named
+        // "rapidfire." Kicker and cards don't spatially collide (top:160px vs top:320px+), so
+        // card 1 now arrives while the kicker is still visible instead of waiting for it to
+        // fully clear. The even 6.4s cadence between cards (a deliberate fixed rhythm, not
+        // VO-word-synced — see STORYBOARD.md) is preserved, just started sooner.
+        const CARD_STARTS = [0.8, 7.2, 13.6];
         const CARD_IDS = ["#hb-card-1", "#hb-card-2", "#hb-card-3"];
         const UNDERLINE_IDS = ["#hb-underline-1", "#hb-underline-2", "#hb-underline-3"];
         CARD_IDS.forEach((id, i) => {

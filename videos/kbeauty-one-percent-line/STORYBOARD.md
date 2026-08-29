@@ -471,3 +471,282 @@ still well inside the faceless-explainer workflow's ~3-minute hard cap.
     expected: photographic PNG content compresses heavier than this
     project's otherwise-flat typography, the same relationship noted
     against the reference project earlier in this log).
+- 2026-08-29: `/goal` directive — review the 12:26 render against
+  `faceless-video-craft` and finish it as a YouTube Short. Extracted 20+
+  frames from the actual rendered MP4 at scene boundaries and internal
+  beats (not just read from source) per that skill's "verify by pixels"
+  rule, plus `hyperframes check`, `silencedetect`, and `loudnorm` audio
+  analysis. Two suspected defects were checked and ruled out rather than
+  "fixed": Frame 4's coral rule-slam (this video's one hard-law voltage
+  moment) looked absent at t=37.70s, but that lands mid-way through its own
+  160ms `power2.in` tween — frames at 37.80s/38.50s confirm it renders solid
+  and holds. Frame 5's arrow + fan-of-chips beat looked missing at t=53s,
+  but that beat is scheduled at local 9.2s+ (abs 55.5s+), after the point
+  sampled — present and correct in source. Two real defects found and
+  fixed:
+  - **Frame zero was blank.** `01-hook.html`'s headline ("80% GINSENG?" —
+    the hook's entire payload) was wrapped in `opacity: 0` with its reveal
+    tween starting at local t=0.35s, so the literal first rendered frame
+    (confirmed by extracting it from the actual MP4, not assumed from the
+    code) was empty paper with at most faint, barely-opacity silhouette
+    ghosts — a direct violation of frame-zero-is-a-design-object for a
+    Short whose load/poster frame this is. Fixed by removing the base
+    `opacity: 0` from `.hook-stat-80` and changing its entrance tween to
+    animate scale only (0.9→1, starting at t=0 instead of t=0.35), so the
+    headline is fully legible from the true first instant instead of fading
+    up from nothing. Nothing else in the frame's choreography (bottles,
+    buzzer strike at the SFX-locked t=3.0, VO word-reveal schedule) was
+    touched. Re-rendered and confirmed against the new MP4's actual t=0.00
+    frame.
+  - **Audio measured -19.01 LUFS integrated** (`ffmpeg loudnorm`
+    two-pass analysis; true peak -3.14dBTP, LRA 4.30) against YouTube's
+    ~-14 LUFS normalization reference — since YouTube only ever turns loud
+    audio down, never turns quiet audio up, this render would have played
+    roughly 5dB quieter than platform-normalized content in a Shorts feed.
+    No native loudness-normalization option exists in `hyperframes render`
+    (checked `hyperframes docs rendering`), so this is a mastering pass on
+    the exported audio, applied after the frame-zero re-render: two-pass
+    `loudnorm` (pass 1 measures, pass 2 applies using the measured stats
+    for precision) targeting I=-14:TP=-1.5:LRA=11, video stream copied
+    through untouched (verified identical bitrate pre/post — zero
+    re-encode loss), audio re-encoded AAC 192kbps. Final file measures
+    -14.10 LUFS / -1.29dBTP — on target, no clipping, dynamic range
+    preserved (output LRA 4.30, unchanged from input). This intentionally
+    lives as a post-render delivery step rather than a composition change:
+    the per-track mix (VO bus EQ/compression chain, BGM carve, SFX levels)
+    took multiple prior review rounds to balance and wasn't worth
+    re-touching for a master-bus loudness target external to the creative
+    mix itself.
+  - **No caption sidecar existed** despite the script's dense INCI/chemical
+    vocabulary (Phenoxyethanol, Ethylhexylglycerin, Centella Asiatica,
+    Panax Root, Artemisia Princeps) — exactly the kind of terms YouTube's
+    auto-captions mishandle, and this pipeline's own earlier build-history
+    entry already proved out that risk once (the "INCI" → "inky"
+    mispronunciation). Generated one from the real mixed VO audio via
+    `hyperframes transcribe` (whisper large-v3 + DTW word alignment, the
+    same engine/model already proven accurate on this project's technical
+    vocabulary in the Frame 7 pronunciation fix above) rather than writing
+    captions from the script text, so the sidecar matches what's actually
+    spoken. Every technical term transcribed correctly unassisted
+    (Phenoxyethanol, Ethylhexylglycerin ×2, Centella, Niacinamide,
+    Propolis, INCI, Panax, Artemisia — validating the "ship an accurate
+    transcript instead of trusting platform auto-captions" call). Reading
+    the exported SRT caught two whisper artifacts a manifest check would
+    have missed: the niche retailer name "Stylevana" was misheard as
+    nonsense ("Stalvonahol") — corrected by hand against the known script
+    (`caption.txt`); and a hallucinated trailing "Thank you." cue spanned
+    00:01:54–02:24, nearly 29s past the video's actual 1:55 end (a known
+    whisper failure mode on trailing silence/music-only audio) — deleted.
+    Shipped as `renders/kbeauty-one-percent-line.srt`, a sidecar for
+    YouTube upload; not burned into the composition (this video's visual
+    language is already load-bearing kinetic typography carrying the key
+    data points on-screen — a second, generic caption layer over it would
+    compete with, not support, the one-signature-component design system).
+  - Re-rendered (frame-zero fix): `kbeauty-one-percent-line_2026-08-29_13-14-47.mp4`,
+    then mastered (loudness pass) to the final deliverable:
+    `renders/kbeauty-one-percent-line_2026-08-29_13-30-00.mp4` — 115.57s,
+    h264 1080x1920 30fps, video bitrate unchanged (~353kbps, confirming
+    true stream-copy), audio AAC 192kbps @ -14.10 LUFS. The two superseded
+    renders (the original 12:26 file and the pre-mastering 13:14
+    intermediate) were removed from `renders/`, matching this repo's
+    established one-current-render convention rather than accumulating
+    every intermediate pass.
+  - Verified: `npx hyperframes check` clean (0/0/0, same single
+    pre-existing info-level note) after the frame-zero edit; frame-zero fix
+    confirmed both in Studio preview and by extracting the actual t=0.00
+    frame from the final MP4; loudness confirmed by direct `loudnorm`
+    measurement of the final file, not assumed from the applied filter
+    graph; SRT spot-checked line-by-line against the known script text in
+    `caption.txt` and `STORYBOARD.md`'s own quoted VO lines.
+- 2026-08-29: User spot-check at t=23s surfaced two more issues in Frame 3
+  (`03-extract-loophole`) — one visual, one audio — both fixed, and a
+  reusable validation pass was built so this class of bug gets caught
+  automatically on future videos in this pipeline, not just this one.
+  - **Blank gap between beats.** The split-screen comparison fades out at
+    local 6.6s (0.4s) but the "EXTRACT" word's entrance didn't start until
+    local 7.2s — a 200ms stretch of bare paper between them, confirmed by
+    extracting frames at 23.00/23.50/24.00s. Fixed by starting the word's
+    entrance at local 7.0s instead, the instant the split's fade-out
+    finishes, closing the hard gap (`03-extract-loophole.html`). The SFX
+    tied to that same moment (`glitch-shatter.mp3`) moved with it —
+    `data-start` 23.68→23.48 in `index.html` — to stay synced.
+  - **SFX outlasting its beat.** `glitch-shatter.mp3` was wired at its full
+    3.504s native length (confirmed via `ffprobe`), but the "EXTRACT"
+    word it's meant to punctuate is only on screen ~1.7s — the SFX then
+    droned on another ~1.8s under the following calm equation reveal
+    ("WATER + TINY BIT OF PLANT") and VO ("Here's the secret..."). Spectral
+    analysis (`ffmpeg showspectrumpic`) of the isolated SFX file showed why
+    it read as an odd granular/"sticking" texture rather than a clean hit:
+    a sustained noise-bed with periodic ticking bands for its whole length,
+    not a crash-and-decay foley sound, with a flat RMS envelope (~-10dB
+    throughout, no decay curve) confirming it's not naturally self-limiting.
+    Fixed by trimming `data-duration` 3.5→1.1s and adding a
+    `data-automation` volume fade (10ms declick-in, hold, 150ms fade-out)
+    — the same automation-lane pattern already used on every VO clip in
+    this project, applied to an SFX for the first time here. Verified with
+    a before/after spectrogram of the actual mixed render: the broadband
+    noise wall now spans ~23.48-24.5s instead of 23.68-27.18s, with normal
+    speech spectrum resuming well before the equation beat settles.
+  - **New: `scripts/check-sfx-durations.py` and `scripts/check-blank-frames.py`**,
+    wired into `package.json` (`npm run check` now also runs the SFX audit;
+    `npm run render` now triggers a `postrender` hook running the blank-frame
+    scan on the fresh output — npm's own post-script convention, no change
+    to how either command is invoked). Both are self-contained and
+    project-root-relative — no `kbeauty-one-percent-line`-specific paths —
+    so they're copyable into other video projects in this pipeline as-is.
+    - SFX check: flags any SFX element whose *source file* runs ≥3.0s with
+      no fade-out automation. Deliberately not "matches its own declared
+      duration" — that flagged 21 of this project's 22 legitimate one-shot
+      SFX (pops, dings, clicks are supposed to play in full) on the first
+      pass; recalibrated after seeing that false-positive rate. Regression-
+      tested against a scratch copy of the original broken glitch-shatter
+      config to confirm it actually fires on the known bug, not just stays
+      quiet on the fixed state.
+    - Blank-frame check: samples the latest render at 15fps and flags any
+      run where luma stddev stays below a cutoff calibrated against this
+      project's own two confirmed bugs (original blank frame-zero measured
+      stddev=0.0; this Frame 3 gap measured stddev=4.2; ordinary content
+      frames measured 25-90+) for longer than 150ms.
+    - Both are advisory (exit 0), matching hyperframes check's own
+      info-level severity — a long SFX or a held frame can be intentional;
+      the tools surface candidates, they don't gate the pipeline on a
+      guess about design intent.
+  - **Scan surfaced 6 more candidates beyond the one already fixed**,
+    reported to the user rather than acted on unprompted (outside what was
+    asked this round): a residual ~200ms soft dip at the Frame 3 gap itself
+    (down from a hard 200ms blank — ease-curve softness on both sides of
+    the transition, likely acceptable, not chased further); a 7.7s
+    stretch (25.3-33.0s) covering Frame 3's equation hold and bleeding into
+    Frame 4's opening, where "WATER + TINY BIT OF PLANT" sits fairly small
+    against a mostly-empty canvas — the same *class* of issue the
+    "extreme small fonts" reviewer round fixed on Frames 7/8, but Frame 3
+    was never itself screenshotted in that pass; four crossfade-adjacent
+    dips at other scene boundaries (Frame1→2 533ms, Frame2→3 333ms,
+    Frame4→4b 467ms, Frame7→8 333ms) that look like ordinary transition
+    softness; and two longer ones worth a closer look — Frame5→6 (1.4s)
+    and especially Frame6→7 (1.93s, meaning the first Hanbang flashcard
+    doesn't visually land until nearly 2s into a scene whose own name is
+    "rapidfire").
+  - Re-rendered and mastered: `renders/kbeauty-one-percent-line_2026-08-29_13-52-00.mp4`,
+    115.57s, h264 1080x1920 30fps (video stream copied through unchanged),
+    audio AAC 192kbps. Note on the pre-master audio: retiming the SFX 200ms
+    earlier happened to land its transient on a louder moment of the
+    underlying VO than before, pushing the raw render's true peak from
+    -3.14dBTP (previous entry) to +0.81dBTP (sample-level peak measured at
+    exactly 0.0dBFS via `volumedetect` — right at the digital ceiling, not
+    confirmed hard-clipped) — not chased further since the mastering pass
+    already enforces a real true-peak limiter regardless of input hotness.
+    Final mastered file measures -14.15 LUFS / -1.25dBTP, on target, safe.
+    Superseded intermediate renders removed per this project's one-current-
+    render convention.
+  - Verified: `npm run check` (hyperframes check + new SFX audit) clean;
+    `npm run postrender` (new blank-frame scan) run standalone to confirm
+    the npm post-hook wiring actually fires, not just that the script works
+    in isolation; final loudness/peak measured directly on the mastered
+    file, not assumed from the filter graph.
+- 2026-08-29: Followed up on the blank-frame scanner's Frame6→7 finding
+  (1933ms, the largest of the 6 candidates surfaced but not yet acted on).
+  Frames extracted at the flagged window's peak (t=85.80s) showed why:
+  `07-hanbang-rapidfire.html`'s kicker ("THE HANBANG CHEAT SHEET") fades in
+  alone, holds, and fades out *before* card 1's entrance even starts
+  (`CARD_STARTS[0] = 1.8` local) — 1.65s of a single small serif title on an
+  otherwise-empty 1920px-tall ink canvas, then a genuine ~100ms hard gap
+  (confirmed stddev=0.00, i.e. perfectly flat) before card 1 lands. Same
+  *class* of defect as the earlier "extreme small fonts" reviewer round
+  (small content, mostly-empty canvas) — just never applied to this kicker
+  beat, and doubly notable for opening a scene named "rapidfire" with a
+  slow, empty 1.65s hold.
+  - Fix was retiming, not redesign: kicker and cards don't spatially
+    collide (`top:160px` vs `top:320px`+), so card 1 doesn't need to wait
+    for the kicker to fully clear. Shifted `CARD_STARTS` from
+    `[1.8, 8.2, 14.6]` to `[0.8, 7.2, 13.6]` — the whole block 1.0s earlier,
+    preserving the even 6.4s cadence between cards that a prior build-history
+    entry deliberately locked in as a fixed rhythm independent of VO word
+    timing (so nothing to resync there). Kicker's own fade-out trigger moved
+    1.4→1.0 to clear out sooner, well before card 2. The six SFX tied to
+    card entrances/underlines (`el-sfx-13/14/15` shutter-click,
+    `el-sfx-17/18/19` pop) all moved 1.0s earlier in `index.html` to stay
+    synced with the retimed cards.
+  - Re-rendered; `postrender`'s blank-frame scan (fired automatically via
+    the npm hook, not invoked by hand — first real confirmation the wiring
+    works end-to-end in the actual pipeline, not just standalone) measured
+    the Frame6→7 stretch at 933ms, down from 1933ms. Visually confirmed at
+    t=85.80s: the kicker and card 1 ("Snail Secretion Filtrate → Snail
+    Mucin → barrier repair") now appear together instead of the kicker
+    sitting alone. Remaining ~933ms is now in the same range as this video's
+    other, unremarkable crossfade-adjacent dips (333-1400ms elsewhere) rather
+    than a standout outlier — judged an acceptable stopping point without
+    also resizing the kicker itself, which would be a design change beyond
+    this pass's scope.
+  - Re-mastered: `renders/kbeauty-one-percent-line_2026-08-29_14-13-00.mp4`,
+    115.57s, h264 1080x1920 30fps (video copied through unchanged), audio
+    AAC 192kbps at -14.15 LUFS / -1.34dBTP. Superseded renders removed.
+  - Still open, not yet acted on (reported to the user, awaiting direction):
+    a 7.7s stretch (25.3-33.0s) spanning Frame 3's equation hold into Frame
+    4's opening, where "WATER + TINY BIT OF PLANT" reads small against a
+    mostly-empty canvas — same class of issue as this entry's fix, on a
+    different frame; four crossfade-adjacent dips (Frame1→2 533ms, 2→3
+    333ms, 4→4b 467ms, 7→8 333ms) that look like ordinary transition
+    softness; and Frame5→6 (1400ms), not yet individually inspected.
+- 2026-08-29: Followed up on the remaining candidates: Frame 3's 7.7s hold
+  and the Frame5→6 transition (1400ms). Left the four minor crossfade dips
+  alone after checking their source — in all four (`02-promise`,
+  `04b-ingredient-showcase`, `08-cta-endcard`, and the Frame7→8 boundary),
+  the first element already starts fading in within 0-0.15s of the
+  crossfade at short (0.16-0.25s) durations; that's the natural blend of
+  any crossfade transition, not an authored gap, and chasing it to zero
+  would mean abandoning crossfades for hard cuts project-wide — a bigger,
+  unrequested design-language change.
+  - **Frame 3's static hold.** Frames pulled at 26/27.5/29/30.5s were
+    pixel-identical — the "WATER + TINY BIT OF PLANT" equation (beaker,
+    leaf, text) lands and then sits completely frozen for ~5s while VO
+    finishes its sentence (per the whisper transcript, narration continues
+    to ~30s even though the visual is fully formed by ~25.8s). Not fixable
+    by retiming alone — unlike the Frame6→7 fix, there's no later beat to
+    pull earlier; this is the frame's *last* beat, and shortening the whole
+    scene would cascade a retime through the rest of the video (VO/SFX/BGM
+    sync for everything downstream), which is a much bigger, riskier change
+    than this pass's scope. Fixed instead by giving the beaker's existing
+    ripple effect (previously a single one-shot pulse) 3 bounded repeats
+    spaced through the hold (9.12/10.62/12.12s local) — finite, not an
+    infinite loop, matching frame.md's motion rules; thematically apt
+    (rippling water reinforces the "water" concept) and self-contained, no
+    retime cascade.
+    - **Known and expected: the blank-frame scanner's reading for this
+      window did not change** (still 7667ms after the fix) — the ripple is
+      brief (0.53s) and visually subtle (opacity caps at 0.5, small
+      ellipses), so most of the ~5s window is still low-stddev between
+      pulses. Verified the fix actually works the way "verify by pixels"
+      demands: extracted frames at each ripple's peak-opacity moment
+      (25.78/27.28/28.78s, i.e. tween-start + 0.18s, not the start itself —
+      an earlier sample at the raw start times missed the ripple entirely
+      since it's barely-visible for its first ~50ms) and confirmed the
+      ring is visibly present at all three, including the two new repeats.
+      The scanner is a useful pointer to candidates, not a pass/fail
+      oracle — it flagged a real problem (a video built around constant
+      visual change going fully static for 5s) and this fix addresses that
+      real problem even though the metric it measures can't see something
+      this subtle.
+  - **Frame5→6 transition (1400ms).** `06-teardown.html`'s ingredient list
+    starts its row-by-row reveal at local 0.8s — a full 0.65s after the
+    card itself finishes appearing (local 0.15-0.6) — compounded by the
+    card's own low contrast against the page (`--white` #FCFBF9 card on
+    `--paper` #F7F5F0 background, nearly the same luminance), so there's
+    little to register until several rows of dark text accumulate. Fixed
+    by starting the row reveal at local 0.6 (right as the card lands, no
+    gap) and tightening the per-row stagger from 0.09s to 0.06s, so text
+    density builds up faster. Verified: at t=67.00s (previously showing
+    only the card + brand/subtitle), row 1 ("Propolis Extract") is now
+    already visible. Zoom-sync timings (local 6.05+) are untouched — they
+    start well after all rows have appeared under either timing, no
+    conflict.
+  - Re-rendered; `postrender`'s blank-frame scan (fired automatically)
+    measured Frame5→6 at 1067ms, down from 1400ms — a partial, expected
+    improvement (same "scanner sees the aggregate, not the intent" caveat
+    as Frame 3, though this one did move the number since it's about
+    *when* dense content starts, which the metric tracks directly, not a
+    subtle repeating detail).
+  - Re-mastered: `renders/kbeauty-one-percent-line_2026-08-29_14-42-00.mp4`,
+    115.57s, h264 1080x1920 30fps (video copied through unchanged), audio
+    AAC 192kbps at -14.15 LUFS / -1.34dBTP. Superseded renders removed;
+    `npm run check` (hyperframes check + SFX audit) clean.

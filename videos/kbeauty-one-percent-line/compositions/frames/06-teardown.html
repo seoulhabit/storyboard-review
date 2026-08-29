@@ -122,9 +122,13 @@
         // card drop-in (SFX whoosh-thud.mp3)
         tl.fromTo("#tear-card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.15);
 
+        // Starts the instant the card finishes appearing (was 0.8, a 0.65s empty-card wait
+        // after the 0.15-0.6 entrance) and fills in faster (0.09s->0.06s stagger) — the
+        // near-white card on paper background reads as low-contrast until enough row text
+        // populates it, which the blank-frame scanner caught as a slow build at 66.27-67.67s.
         const ROWS = ["#tear-row-1", "#tear-row-2", "#tear-row-3", "#tear-row-4", "#tear-row-5", "#tear-row-6", "#tear-row-7", "#tear-row-8", "#tear-row-9", "#tear-row-10"];
         ROWS.forEach((id, i) => {
-          tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power3.out" }, 0.8 + i * 0.09);
+          tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power3.out" }, 0.6 + i * 0.06);
         });
 
         // aqua circle on Niacinamide (2%) — this frame's one aqua highlight (SFX marker-squeak.mp3)

@@ -47,6 +47,29 @@ as a small glass dish holding the liquid/gel/balm form skincare
 formulations actually use — matched to each one's "what it is" text in the
 glossary source, not invented freehand.
 
+## Superseded concept alternates
+
+Four earlier Higgsfield renders explored a different visual concept for
+snail mucin before the team settled on the dish-of-gel + live-snail-on-leaf
+pair above (`12-snail-mucin.png` / `12b-snail-mucin-source.png`). Kept here
+for provenance, not part of the numbered 20-item set matched to the
+glossary — don't drop these into a slot expecting the 2048×2048 square spec
+the rest of this directory uses.
+
+| File | Concept | Generated |
+|---|---|---|
+| `12c-snail-mucin-alt-dropper-moss-1.png` | Dropper bottle, one snail on the shoulder near the cap, mossy stone slab, sage-green bokeh, golden-hour side light | 2026-08-26 |
+| `12d-snail-mucin-alt-dropper-moss-2.png` | Same concept, second generation | 2026-08-26 |
+| `12e-snail-mucin-alt-dropper-studio-1.png` | Dropper bottle, two snails crawling on the glass, plain light-gray seamless studio background | 2026-08-26 |
+| `12f-snail-mucin-alt-dropper-studio-2.png` | Same concept, second generation | 2026-08-26 |
+
+All four are 896×1200 (3:4) — a different aspect ratio from the 2048×2048
+square used everywhere else in this set — generated two days before `12` /
+`12b` at the correct spec. Neither dropper-bottle concept was chosen;
+documented here rather than silently dropped, following this repo's usual
+practice for superseded work (see the PDRN Renewal Codex note in the parent
+[catalog README](../README.md)).
+
 ## What this is for
 
 Raw B-roll / thumbnail stock for future video projects. Not wired into any

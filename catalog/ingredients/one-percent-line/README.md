@@ -14,7 +14,7 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_15-41-16.mp4` —
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_16-20-21.mp4` —
 115.5s, 1080x1920 (confirmed via `ffprobe`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 

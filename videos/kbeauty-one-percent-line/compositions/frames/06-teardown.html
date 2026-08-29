@@ -83,17 +83,20 @@
         }
         .tear-row-wrap { position: relative; }
 
+        /* Sized up from the round-1-feedback pass (18px/2px border/3px 10px padding) —
+           the creator wanted it reading as a clearer focal point, not just present. */
         .tear-line-tag {
           display: inline-block;
-          margin-left: 14px;
+          margin-left: 18px;
           font-family: var(--font-mono);
-          font-size: 18px;
+          font-size: 27px;
           font-weight: 700;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.05em;
           color: var(--ink);
-          border: 2px solid var(--ink);
+          background: var(--paper);
+          border: 3px solid var(--ink);
           border-radius: 999px;
-          padding: 3px 10px;
+          padding: 6px 16px;
           vertical-align: middle;
           opacity: 0;
           transform: scale(0.85);

@@ -882,3 +882,27 @@ the current `index.html`, not hand-maintained.)
     strike/text occlusion as an info-level finding before the width fix).
   - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_16-20-21.mp4`,
     115.5s, 1080x1920.
+- 2026-08-29 (round 1 feedback, second pass): Creator re-reviewed and
+  reported all four fixes above as still present/unchanged — re-verified
+  against the single render file that actually exists on disk (md5-checked,
+  fresh frame extraction at the exact timestamps cited) and every fix was
+  confirmed correctly rendered. Most likely explanation: a cached copy of
+  an earlier delivery. Two genuine new refinements came with the report and
+  were applied regardless:
+  - The "1% LINE" tag sized up (18px/2px border -> 27px/3px border, matching
+    the hero row's own type scale) so it reads as an actual focal point
+    instead of a small aside.
+  - Frame 5's fan chips (Camellia/Panax/Artemisia/Tocopherol) bumped to
+    font-weight 600 — flagged as reading smaller/thinner than surrounding
+    type on mobile despite being the same font-size.
+  - Two `pop.mp3` SFX cues added: one on Frame 5's "<1% EACH" capstone
+    (local 16.8 / abs 63.14), one on Frame 6's "1% LINE" tag reveal (local
+    13.05 / abs 79.43, layered ~150ms after the existing whip-slash on the
+    strike itself) — both confirmed audible via `ffmpeg volumedetect`
+    (-11.3dB and -7.4dB peaks respectively, well above the surrounding
+    -25/-23dB ambient floor).
+  - `npm run check`: 0 issues, 24 SFX elements (was 22) all pass duration
+    audit.
+  - Superseded renders removed; only
+    `renders/kbeauty-one-percent-line_2026-08-29_16-47-01.mp4` (115.5s,
+    1080x1920) remains.

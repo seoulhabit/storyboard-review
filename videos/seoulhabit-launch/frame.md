@@ -18,7 +18,8 @@ easing curve that has a token.
 raised surface · `--aqua` (#59B8AE) the single interrogated-element accent —
 **exactly one aqua-family highlight per frame** · `--coral`/`--color-brand-accent`
 (gochujang, #C97A5C) the "one voltage moment" — reserved for the Frame 6
-Follow pill, never doubled up with aqua in the same frame · `--electric-blue`/
+Subscribe pill (renamed from Follow 2026-08-29, see Notes below — same
+component, same color role), never doubled up with aqua in the same frame · `--electric-blue`/
 `--brand-mark` reserved for brand-mark moments only, not used as a generic
 accent · `--leaf`/`--moss`/`--celadon` the confirmed-state ramp (not used in
 this video — no evidence-meter content) · **no success color** rule carries
@@ -165,8 +166,9 @@ the other frames:
   (after the headline settles), rows staggered 0.7s apart, holds to the
   frame's end.
 - **Frame 6** — `#cta-cursor`, a small ink dot that travels in and taps the
-  Follow pill exactly at 1.5s (matching the pill's own existing emphasis
-  beat), then clears by 2.15s so the frame's final held state stays
+  Subscribe pill (named Follow at the time this beat was authored; renamed
+  2026-08-29, see Notes) exactly at 1.5s (matching the pill's own existing
+  emphasis beat), then clears by 2.15s so the frame's final held state stays
   frame-zero-safe with no cursor on screen.
 
 ## Design-system reconciliation (2026-08-28)
@@ -260,5 +262,69 @@ transcribed from — not from memory of the earlier transcription. Findings:
 ## Frame zero
 
 Frame 6 (the final frame) is the dense pause-and-study state: EndCard
-lockup + Follow pill fully settled, no motion in progress. Never blank,
+lockup + Subscribe pill fully settled, no motion in progress. Never blank,
 never mid-fade.
+
+## YouTube-optimization feedback pass (2026-08-29)
+
+Five client notes, actioned:
+
+- **CTA copy.** "Hit follow" read as TikTok/Instagram-native; YouTube viewers
+  are primed for "Subscribe." Renamed the Frame 6 pill (`#cta-pill`, was
+  "Follow") and re-recorded its VO line to match — see BRIEF.md's Assets
+  section for the voiceover-swap details (this pass put only the Frame 6
+  line in a different voice, "Kimberly"; a same-day follow-up request
+  extended that to all six lines for narrator consistency, which also
+  forced a full retime — see the "Voice change + full retime" note below
+  and STORYBOARD.md's matching section for the mechanics).
+- **Publishing format.** Already 1080×1920 (9:16) — correct for YouTube
+  Shorts as delivered. No composition change; this must be uploaded via
+  YouTube's Shorts surface specifically, not as a standard 16:9 video (which
+  would letterbox).
+- **BGM.** The `red-ginseng-two-routes` track this video inherited (see
+  Assets, original build) was never genre-matched to this video and read as
+  near-silent at 0.12 volume. Replaced with a freshly sourced "modern lo-fi
+  chill R&B instrumental" bed (`/media-use`, HeyGen catalog retrieval) —
+  full detail in BRIEF.md's Assets section. `data-volume` unchanged at 0.12
+  (the "low-volume" ask, and the audio engine's own bed-under-narration
+  default) — the fix was the track itself, not its level. Voiceover carve
+  re-run against the new bed.
+- **Frame 3 typing pace.** `CHAR_DUR` 0.045 → 0.037 (≈18% faster per-character
+  reveal) in `compositions/frames/03-process.html`. `TYPE_START` and the
+  result-label/SFX cue timings were left untouched — the feedback named the
+  typing animation specifically, and touching the query-start beats would
+  have meant re-syncing the `click-soft` SFX cues in `index.html` for a
+  scope the feedback didn't ask for.
+- **Frame 1 hook.** Two independent fixes:
+  - Ingredient chips: `--t-chip` 22px → 33px (+50%) and `.hook-chip` padding
+    10px/18px → 15px/27px, scaled proportionally. This is a **local override
+    inside `01-hook.html` only** — the shared design-system floor recorded in
+    `assets/tokens/tokens.css` (22px, from the 2026-08-28 reconciliation
+    pass) is untouched. Chips now wrap to two rows at this frame's content
+    width; verified via snapshot, still holds inside the `--safe-top`
+    chip band and `npm run check`'s 18/18 WCAG AA contrast pass.
+  - Brightness: measured `#hook-video` via
+    `hyperframes media-treatment --analyze` (yAvg 70/255, no clipping risk,
+    yMax already at 238 — a highlight near the dropper glass close to
+    ceiling). The tool's own bounded auto-suggestion (exposure +0.054) was
+    visually imperceptible once composited under the existing dark
+    `.hook-ground` gradient and the two Scrim layers, so escalated within
+    the same correction lane to a shadows-focused lift — `exposure 0.15,
+    shadows 0.3, blacks 0.05, contrast 0.06, temperature -0.02` — applied via
+    `hyperframes media-treatment --apply` (not a hand-rolled CSS filter).
+    Confirmed clearly brighter via before/after snapshots without blowing
+    the existing near-ceiling highlight or touching the Scrim primitives'
+    own legibility contrast.
+
+## Voice change + full retime (2026-08-29)
+
+Same-day follow-up to the pass above: all six VO lines re-recorded in
+**Kimberly** (was Isla for lines 1-5, Kimberly for line 6 only). Kimberly
+reads faster than Isla, so every scene's duration — originally cut from
+Isla's measured pacing — needed recomputing. This was a mechanical retime,
+not a design change: no palette, type-scale, motion-token, or layout rule
+above was touched. Full mechanics (per-frame before/after numbers, which
+constants moved vs. stayed, why Frame 4 didn't shrink) are in
+`STORYBOARD.md`'s matching section — this note exists so a reader of
+*this* file isn't left thinking the design spec and the built composition
+disagree on total duration (55.7s now, not 60.0s).

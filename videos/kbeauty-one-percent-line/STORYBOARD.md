@@ -1260,3 +1260,65 @@ the current `index.html`, not hand-maintained.)
     1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged — visual-only
     round). Superseded intermediate renders (three from this pass alone,
     two from the Frame 1/6 overflow fixes) removed.
+
+- **2026-08-29 (thumbnail) — `assets/thumbnail/`, following the same
+  extract-grade-finalize convention already established in
+  `seoulhabit-launch`**: pulled the hook's own resolved payoff frame
+  (t=2.7s — struck "80% GINSENG?", "0.5% GINSENG." with its aqua mark,
+  and the round-7 ginseng photo, all settled) from the current render as
+  `hook-frame-source.png`, rather than building a separate thumbnail
+  composition. First grading pass copied `seoulhabit-launch`'s exact
+  filter chain (contrast/saturation boost + vignette) without adjusting
+  for this video's own light paper background — the vignette read as a
+  muddy gray cast instead of a natural darkening, since it was tuned for
+  a dark-ink-background video. Redone with a lighter touch appropriate
+  to this project's own palette (contrast 1.06, saturation 1.05, mild
+  unsharp, no vignette) as `hook-frame-graded.png`. No title text was
+  added on top: unlike the `seoulhabit-launch` source frame (a plain
+  product shot with only small ingredient-chip labels, needing an added
+  headline for thumbnail legibility), this frame's own in-video
+  typography already carries a full, high-contrast hook claim — adding
+  another headline would compete with it, not help it. Saved directly as
+  `thumbnail-final.png`, 1080x1920, matching the Shorts thumbnail format
+  used elsewhere in this project. Three additional thumbnail candidates
+  were pulled the same way from creator-supplied timestamps/descriptions
+  ("The Curiosity Gap," "The High-Value Promise," "The Visual Equation")
+  and saved as `candidate-<name>-source.png` / `-final.png`; not yet
+  chosen as the final. Note: the "Visual Equation" candidate (t=26s) now
+  reflects the pre-round-8 version of Frame 3 and should be re-pulled if
+  it's a live candidate — the frame it was extracted from changed
+  materially in round 8 below.
+
+- **2026-08-29 (round 8 — fill the canvas, don't shrink the photos)**:
+  Creator flagged that the ingredient photos across a few frames looked
+  like they "take majority of the space." Measured it precisely rather
+  than eyeballing: at their actual authored CSS sizes, the photos never
+  exceed ~9% of the 1080x1920 canvas in any frame (Frame 3's water/leaf
+  pair, the largest case, at 300x300 each = 8.7%). The real issue was
+  perceptual, concentrated in Frame 3 (`03-extract-loophole.html`):
+  once the split-comparison content fades out at local 6.6s, the entire
+  top ~1050px of the canvas goes fully blank for the rest of the scene —
+  the two small photo cards become the frame's *only* content by
+  default, not because they're large. Creator confirmed the fix should
+  add content to fill that space, not shrink the photos further (which
+  would have fought the round-4 and round-7 size increases directly).
+  Added a recap callback — "70%" (128px, matching the hook's own
+  big-stat/small-qualifier two-tier pattern from Frame 1's "80%"/"0.5%")
+  over "CENTELLA EXTRACT" — closing the loop between the split's own
+  K-BEAUTY chip ("CENTELLA EXTRACT — 70%", shown earlier in the same
+  scene) and the water+plant equation: without it, nothing on screen
+  told a viewer what the equation was actually proving. `.loop-equation`
+  grew from a 500px zone (1050-1550) to 900px (550-1450), using most of
+  the safe vertical band the split vacated — vertical occupancy roughly
+  35%->62.5% of the safe column, much closer to this skill's own
+  65-80% target. Verified via re-render: the recap correctly stays
+  hidden until its 9.75s reveal (checked a frame at local 8.0s, mid-way
+  through the "EXTRACT" word beat, well before the recap's own reveal —
+  no bleed-through), and the settled hold frame now uses most of the
+  vertical canvas instead of two small cards floating in empty space.
+  `npm run check`: 0 issues. Blank-frame scan re-run clean (same 10
+  stretches, no new ones).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_21-40-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged — visual-only
+    round). Superseded render removed.

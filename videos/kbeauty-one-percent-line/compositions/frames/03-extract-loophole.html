@@ -76,12 +76,26 @@
         .loop-chip-west { background: rgba(19,21,22,0.08); color: var(--ink); }
         .loop-chip-kr { background: rgba(89,184,174,0.22); color: var(--aqua); border: 2px solid var(--aqua); }
 
-        /* top raised further (1180 -> 1050) to compensate for the larger beaker/type below
-           (~477px content) and still clear safe-bottom (1920-360=1560) with margin. */
+        /* Round-8 feedback: once the split comparison fades at 6.6s, everything above
+           this zone (title, both columns) goes fully blank — only the equation's own
+           small content was left, reading as if the photos "dominate" a frame that's
+           mostly empty canvas. Fix isn't smaller photos, it's more real content: grew
+           this zone from a 500px island (1050-1550) to 900px (550-1450), using most of
+           the safe vertical band the split vacated, still clear of safe-bottom
+           (1920-360=1560). */
         .loop-equation {
-          top: 1050px; left: 0; width: 100%; height: 500px;
+          top: 550px; left: 0; width: 100%; height: 900px;
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
         }
+        /* Recap callback: closes the loop between the split's own K-BEAUTY chip
+           ("CENTELLA EXTRACT — 70%") and the water+plant equation below — without it,
+           a viewer who's forgotten the chip by the time the equation lands has no text
+           telling them what the equation is actually proving. Reuses the hook's own
+           big-stat/small-qualifier two-tier pattern (compare Frame 1's "80%"/"0.5%")
+           for visual consistency across the video, not a new type treatment. */
+        .loop-eq-recap { display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; }
+        .loop-eq-recap-pct { font-family: var(--font-body); font-weight: 800; font-size: 128px; line-height: 1; color: var(--ink); }
+        .loop-eq-recap-label { font-family: var(--font-mono); font-size: 34px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink-2); }
         .loop-eq-word {
           font-family: var(--font-body);
           font-weight: 800;
@@ -152,6 +166,10 @@
         <div data-hf-id="hf-loop-rule" id="loop-rule" class="clip loop-rule" data-start="0" data-duration="15.26"></div>
 
         <div data-hf-id="hf-loop-eq" id="loop-equation" class="clip loop-equation" data-start="0" data-duration="15.26">
+          <div data-hf-id="hf-loop-eqrecap" class="loop-eq-recap" id="loop-eq-recap">
+            <div data-hf-id="hf-loop-eqrecappct" class="loop-eq-recap-pct">70%</div>
+            <div data-hf-id="hf-loop-eqrecaplabel" class="loop-eq-recap-label">CENTELLA EXTRACT</div>
+          </div>
           <div data-hf-id="hf-loop-eqword" class="loop-eq-word" id="loop-eq-word">"EXTRACT"</div>
           <div data-hf-id="hf-loop-eqphotos" class="loop-eq-photos" id="loop-eq-photos">
             <div data-hf-id="hf-loop-termwater" class="loop-eq-term" id="loop-term-water">
@@ -196,6 +214,9 @@
         tl.fromTo("#loop-term-water", { opacity: 0, x: -24, scale: 0.85 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 8.85);
         tl.fromTo("#loop-eq-plus", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power3.out" }, 9.15);
         tl.fromTo("#loop-term-plant", { opacity: 0, x: 24, scale: 0.85 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 9.3);
+        // Recap callback lands right after both terms have — "EXTRACT" flew apart into
+        // this equation, so this closes the loop it opened: the 70% claim IS this.
+        tl.fromTo("#loop-eq-recap", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 9.75);
 
         // Sustained motion through the hold (was the ripple bursts + waterline shimmer) —
         // a slow, bounded breathing scale on each photo so the ~5s hold before fade-out

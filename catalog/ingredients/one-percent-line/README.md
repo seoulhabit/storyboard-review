@@ -14,13 +14,28 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_21-05-00.mp4` —
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_21-40-00.mp4` —
 115.5s, 1080x1920, mastered -15.0 LUFS / -1.3dBTP (confirmed via
 `ffmpeg ebur128`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
 **Status:** in review — the creator has continued past the originally
-planned 3 rounds with further feedback. Round 7, another Studio comments
+planned 3 rounds with further feedback. Round 8: creator flagged that the
+ingredient photos across a few frames "take majority of the space" —
+measured it precisely rather than assuming (photos never exceed ~9% of
+the actual canvas area in any frame) and found the real issue was
+perceptual: Frame 3's water/leaf equation becomes the *only* content on
+screen once the split-comparison content above it fades out, not because
+the photos themselves are large. Fixed by adding content, not shrinking
+photos (creator's explicit direction) — a "70% CENTELLA EXTRACT" recap
+callback now fills the vacated space, closing the loop with the K-BEAUTY
+chip shown earlier in the same scene, and the equation zone grew from a
+500px island to 900px, using ~62.5% of the safe vertical column instead
+of ~35%. Also built the channel's first YouTube thumbnails for this
+video (`assets/thumbnail/`), following the same extract-grade-finalize
+convention already established in `seoulhabit-launch` — pulled real
+frames from the render rather than authoring a separate composition; see
+that section below. Round 7, another Studio comments
 pass: real ginseng photography added to Frames 1 and 2 (the hook's
 "0.5% GINSENG." payoff and the promise diagram's "BEAKER + TEST" icon,
 both reusing the already-approved still), Frame 3's water/leaf photos
@@ -133,6 +148,35 @@ source photos are shot on this catalog's own near-white house background,
 which read as low-contrast against the composition's paper canvas. Fixed
 with a solid ink border and a size bump on the photo cards, not by
 swapping the source images — confirmed via re-render back to 533ms.
+
+## Thumbnails — extracted from the render, not a separate composition
+
+`assets/thumbnail/` follows the same extract-grade-finalize convention
+`seoulhabit-launch` established: pull a real frame from the rendered video
+(never a fresh composition built just for the thumbnail), apply a light
+grading pass, and save as `<name>-source.png` / `<name>-final.png`.
+`thumbnail-final.png` is the currently-selected primary, pulled from the
+hook's own resolved payoff (t=2.7s — struck "80% GINSENG?", the
+"0.5% GINSENG." reveal, and the round-7 ginseng photo). Unlike
+`seoulhabit-launch`'s source frame (a plain product shot needing an added
+headline), no title text was layered on top — this frame's own in-video
+typography already carries the full hook claim, and stacking another
+headline on it would compete rather than help.
+
+First grading attempt copied `seoulhabit-launch`'s exact filter chain
+(contrast/saturation boost + vignette) without adjusting for this video's
+light paper background — the vignette read as a muddy gray cast instead of
+a natural darken, since it was tuned for a dark-ink-background video.
+Redone with a lighter touch (contrast 1.06, saturation 1.05, mild unsharp,
+no vignette) suited to this project's own palette.
+
+Three additional candidates (`candidate-curiosity-gap`,
+`candidate-high-value-promise`, `candidate-visual-equation`) were pulled
+from creator-supplied timestamps/descriptions and graded the same way —
+not yet chosen as the final. Note: `candidate-visual-equation` (t=26s) was
+pulled before round 8's Frame 3 change below and should be re-extracted if
+it's still a live candidate — the frame at that timestamp now includes
+the "70% CENTELLA EXTRACT" recap headline.
 
 ## Visual components — checked, none applicable
 

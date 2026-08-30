@@ -342,22 +342,24 @@ later review pass is exactly where these attributes get silently dropped.
 
 **Before generating or licensing a single new plate, check whether the
 project already has one.** Many projects maintain (or point to) a shared
-catalog of previously sourced/generated imagery and reusable components —
-the project's own `CLAUDE.md` or project skill names where it lives, if one
-exists. Search it first: a plate that's already sourced, licensed, and
-proven in a prior render is strictly better than a fresh generation —
-faster, avoids a second unlicensed near-duplicate of the same subject
-sitting in two places, and lets a visual motif recur across a channel's
-videos on purpose instead of by luck. Generate a new plate only when the
-catalog has nothing usable for the beat; note in the project's own asset
-manifest which plates were reused vs. newly made so the next project can
-find them too. This check belongs at production-loop step 3 (asset
-manifest), before any generation call — not as an afterthought once a new
-image already exists. A catalog with reusable *visual components* (not just
-plates) gets the same treatment, one step later — see production-loop step
-4. The two are easy to do only half of: checking for reusable imagery while
-never looking at whether a scene's actual *mechanism* — its layout pattern,
-its motion structure — already exists somewhere reusable too.
+catalog of previously sourced/generated imagery and reusable components. Find
+it via the *Catalog lifecycle* section above — don't stop at a `CLAUDE.md`
+that never names the location and conclude one doesn't exist; that specific
+silent failure is documented there because it already happened for real.
+Search it first: a plate that's already sourced, licensed, and proven in a
+prior render is strictly better than a fresh generation — faster, avoids a
+second unlicensed near-duplicate of the same subject sitting in two places,
+and lets a visual motif recur across a channel's videos on purpose instead of
+by luck. Generate a new plate only when the catalog has nothing usable for
+the beat; note in the project's own asset manifest which plates were reused
+vs. newly made so the next project can find them too. This check belongs at
+production-loop step 4 (asset manifest), before any generation call — not as
+an afterthought once a new image already exists. A catalog with reusable
+*visual components* (not just plates) gets the same treatment, one step
+later — see production-loop step 5. The two are easy to do only half of:
+checking for reusable imagery while never looking at whether a scene's actual
+*mechanism* — its layout pattern, its motion structure — already exists
+somewhere reusable too.
 
 Images are the single largest source of renders that "succeed" while looking
 broken. Four rules, all mandatory.
@@ -563,58 +565,147 @@ operator inspecting one scene in isolation will actually see). Confirm the
 class is off before the real render by checking frame zero — a debug-tinted
 export is a shipped bug, not a style choice.
 
+## Catalog lifecycle: discover, reuse, build, contribute
+
+A shared catalog only compounds in value if the loop actually closes. Three
+failure points break it, and each has already happened in a real project
+this skill was built against — not hypotheticals, confirmed cases:
+
+1. **Discovery silently fails.** "Check the project's `CLAUDE.md` for where
+   the catalog lives" (see *Asset protocol* below) is a real, useful
+   instruction — but it's a dead end if `CLAUDE.md` never names the
+   location. Confirmed across an entire real repo: the root `CLAUDE.md`
+   gestured at "check for existing sourced imagery" without naming a path,
+   and not one of ten per-project `CLAUDE.md` files named the catalog
+   either. An agent following the instruction literally would reasonably
+   conclude no catalog existed. One did — nineteen documented entries.
+   **Don't stop at `CLAUDE.md`.** If it doesn't name a location, still check
+   for a conventional one — a top-level `catalog/`, `component-library/`, or
+   similarly-named directory sibling to the video projects — before
+   concluding there isn't one. Its own `README.md`, or a browsable
+   `index.html` if it has one, settles the question in one read.
+2. **Reuse gets skipped even after discovery succeeds**, when the catalog is
+   checked for images but not for *mechanisms*. Confirmed in the same real
+   project: a full-frame term/definition card was independently
+   reimplemented from scratch five separate times across five different
+   videos — identical class names, identical tokens, identical
+   choreography — because each build checked for reusable imagery and never
+   asked whether the scene's actual *structure* already existed somewhere
+   reusable too. Component check (production-loop step 5) exists
+   specifically to close this gap; give it the same weight as the image
+   check, not treat it as optional.
+3. **Nothing closes the loop at the end.** A video can discover the catalog,
+   reuse what's there, and build cleanly, and still leave the catalog
+   exactly as impoverished as it started if whatever new, genuinely reusable
+   mechanism it built never gets harvested back. Catalog contribution
+   (production-loop step 12) exists to make this a required closing step,
+   not a someday-maybe: the same real project had a second component (a
+   ranked list split by a cutoff line) that was built once, never
+   generalized, and sat undiscoverable in one video's own folder until a
+   dedicated review found it by grepping every composition's class
+   names — which should never be the mechanism by which a catalog grows.
+
+**What's worth harvesting.** A mechanism — real choreography, a real data
+contract, or both — not every reusable-looking `<div>`. A three-line CSS
+chip isn't a catalog entry; a card that cycles through a data array with a
+shared animation contract is. A component doesn't need to have been reused
+more than once to qualify — a single well-built, genuinely topic-agnostic
+mechanism is worth extracting on its own merit.
+
+**How to harvest, if the project doesn't already have its own convention.**
+One self-contained entry: the component's markup/CSS/timeline, kept
+render-safe per the mandatory rules above (a paused, seekable clock — never
+autoplaying CSS, which defeats the entire point of cataloging something
+meant for a deterministic render). Document, briefly: why it's here (what
+called for extracting it, not a justification invented after the fact), its
+field/data contract if it takes one ("swap this array" is worth one line),
+and its status (validated reference vs. wired into a real render pipeline).
+Use generalized sample content, not the source video's real content
+duplicated into the catalog — the point of a shared component is that the
+content is exactly the part that changes per use.
+
+**A browsable catalog is worth more than a folder listing**, once a
+project's catalog is large enough to need one. Group entries by what kind of
+thing they fundamentally are (a data-driven component vs. a static graphic
+vs. raw photography vs. a pointer to a project that already has a proper
+home) before grouping by topic or status — status alone
+("draft"/"final") doesn't tell a reader whether something has a time axis at
+all, and that distinction is what actually determines whether it can be
+reused or only looked at. For anything with a time axis, surface its
+duration and field contract *before* anyone has to open the file, and if
+it's gated behind a debug flag to reveal its own scrubber, don't make a
+future reader discover that flag by accident — load it pre-applied.
+
 ## Production loop
 
 Follow this order; skipping ahead is what produces expensive rework.
 
-1. **Beat sheet before markup.** Duration, aspect, fps, and a numbered list of
+1. **Catalog discovery.** Before writing a single beat, inventory what the
+   project's shared catalog already has — components (with duration, control
+   type, and field contract if it documents them), reusable imagery, marks.
+   See *Catalog lifecycle* above for how to find it even when `CLAUDE.md`
+   doesn't say where it is, and read the catalog's own index/README directly
+   rather than re-deriving what exists from memory or a partial grep. This
+   pass is what turns steps 4 and 5 below into decisions instead of blind
+   searches, and it can genuinely shape the beat sheet itself — a beat built
+   from an existing, proven component is a different creative decision than
+   one built from nothing.
+2. **Beat sheet before markup.** Duration, aspect, fps, and a numbered list of
    beats with a one-line intent each. A beat is a visual state, not a sentence.
    Read the YouTube delivery section first — hook, chapters, end-screen scene,
    cadence targets, and caption timing are beat-sheet inputs.
-2. **Choose the presenter.** With no face and (often) live narration, something
+3. **Choose the presenter.** With no face and (often) live narration, something
    has to carry attention: type, a moving diagram, a photographic plate, or a
    data object. Pick one per video. Videos that switch presenter mid-way read
    as compilations.
-3. **Asset manifest.** Check the project's shared catalog (if it has one —
-   see *Asset protocol* below) for reusable plates before generating anything
-   new. Every image, font, audio file, and generated plate listed with its
-   source and its licence status, resolved to project-local paths.
-4. **Component check.** Before designing a scene's mechanism from scratch,
-   check the same shared catalog for reusable *visual components* — not
-   just imagery. A catalog that organizes reusable presentation patterns
-   separately from raw plates (a confidence meter, a graded badge, a
-   split-comparison diagram, a routine ladder) is telling you those
-   mechanisms are meant to recur across a channel's videos, the same way a
-   plate is. Check each candidate against the actual beat's content, not
-   just its category label — a component built for one specific comparison
-   (e.g. a clinical bilateral diagram) is not a generic "split screen" just
-   because it visually resembles one; read its own code/spec before
-   adapting it, and skip it honestly if the content doesn't actually match
-   rather than forcing a fit. When nothing fits, that's a legitimate
-   outcome — but it has to be the result of checking, not of never having
-   looked. Where a real match exists, adapt the component's *mechanism*
-   (its structure, its `t`-driven timeline pattern) rather than wiring in
-   its literal skin, and note in the manifest which components were
-   reused/adapted vs. built new, mirroring the plate-reuse log.
-5. **Spatial plan.** Three bullets per scene naming the Grid/Flex strategy
+4. **Asset manifest.** Cross-check the beat sheet against step 1's discovery
+   pass and reuse what already exists before generating anything new (see
+   *Asset protocol* below). Every image, font, audio file, and generated
+   plate listed with its source and licence status, resolved to
+   project-local paths, noting which were reused vs. newly made.
+5. **Component check.** Cross-check each scene's planned mechanism against
+   step 1's discovery pass, not a fresh search — a catalog that organizes
+   reusable presentation patterns separately from raw plates (a confidence
+   meter, a graded badge, a split-comparison diagram) is telling you those
+   mechanisms are meant to recur, the same way a plate is. Check each
+   candidate against the actual beat's content, not just its category
+   label — a component built for one specific comparison is not a generic
+   "split screen" just because it visually resembles one; read its own
+   code/spec before adapting it, and skip it honestly if the content doesn't
+   actually match rather than forcing a fit. When nothing fits, that's a
+   legitimate outcome — but it has to be the result of checking step 1's
+   inventory, not of never having looked. Where a real match exists, adapt
+   the component's *mechanism* rather than wiring in its literal skin, and
+   note in the manifest which components were reused/adapted vs. built new —
+   what gets built new here is exactly what step 12 later asks you to look
+   back at.
+6. **Spatial plan.** Three bullets per scene naming the Grid/Flex strategy
    before any markup exists. See the layout section.
-6. **Composition skeleton.** Scenes and timing wired with the engine's real
+7. **Composition skeleton.** Scenes and timing wired with the engine's real
    timing attributes. Get the structure seeking correctly before any styling.
-7. **Layout check with the debug overlay on.** Verify bounding boxes and safe
+8. **Layout check with the debug overlay on.** Verify bounding boxes and safe
    areas, then turn it off.
-8. **Motion pass.** Add easing, stagger, and camera. One idea at a time. Budget
+9. **Motion pass.** Add easing, stagger, and camera. One idea at a time. Budget
    beats across the *whole* scene, not just its opening two seconds — a scene
    that lands three beats immediately and then holds for the rest of its
    narration duration fails the cadence target just as hard as a scene with no
    beats at all. See *Cadence* below.
-9. **Lint and preview.** Use the project's real preview/check tooling (e.g.
-   `npx hyperframes preview --background`, `npm run check`) and scrub by
-   dragging the seek position, not by playing — dragging is what exposes
-   non-seekable animation.
-10. **Render, then extract frames and inspect.** Check frame zero, every
+10. **Lint and preview.** Use the project's real preview/check tooling (e.g.
+    `npx hyperframes preview --background`, `npm run check`) and scrub by
+    dragging the seek position, not by playing — dragging is what exposes
+    non-seekable animation.
+11. **Render, then extract frames and inspect.** Check frame zero, every
     scene's settle frame, every transition midpoint, and the last frame. See
     *Verification loop* for the two checks a passing lint cannot substitute for.
-11. **Publish envelope.** Title, thumbnail, captions, chapters, end screen
+12. **Catalog contribution.** Look back at what step 5 built new and ask: is
+    any of it reusable beyond this video — a mechanism, not just a one-off
+    scene? If yes, harvest it into the shared catalog now, following
+    *Catalog lifecycle* above, not "eventually" — a component left in one
+    video's own folder is invisible to the next video the exact same way an
+    uncataloged one already was. Not everything qualifies; harvest a real
+    mechanism, not every reusable-looking div. A component reused verbatim
+    from the catalog needs no new entry here.
+13. **Publish envelope.** Title, thumbnail, captions, chapters, end screen
     targets, pinned comment — see the YouTube delivery section (*The
     thumbnail* and *The captions*). All of these are part of the video, not
     afterthoughts, and none is optional: a finished render with no captions or
@@ -623,11 +714,12 @@ Follow this order; skipping ahead is what produces expensive rework.
 
 ## Verification loop
 
-A lint/check pass and a rendered file are necessary, not sufficient. Three
+A lint/check pass and a rendered file are necessary, not sufficient. Four
 specific failure classes survive a clean check and a manifest that says
 "success" — the first two require actually looking at extracted frames, the
-third requires checking the publish envelope, which nothing in the render
-pipeline verifies on its own:
+other two require checking things nothing in the render pipeline verifies on
+its own: the publish envelope, and whether anything genuinely new got fed
+back into the shared catalog.
 
 **Static-hold detection.** A frozen-but-fully-populated frame looks identical
 to a healthy one on any brightness/contrast/luma-variance metric — a scanner
@@ -658,6 +750,14 @@ unrelated file — see *The captions*' naming note), and a finalized thumbnail
 (not just candidates — see *The thumbnail*'s file convention). This is the
 check that catches a project with a complete word-level transcript and zero
 caption output built from it.
+
+**Catalog-contribution check.** Re-read production-loop step 5's own notes on
+what got built new, not reused — if anything on that list is a genuine
+mechanism (not a one-off scene), confirm it actually landed in the shared
+catalog per step 12, not just that the step was considered. This is the check
+that catches a component built cleanly, used correctly in this one video, and
+then left invisible to the next one — the same failure mode that produced
+five independent rebuilds of the same card before anyone thought to check.
 
 ## Cuts vs crossfades
 
@@ -1158,3 +1258,13 @@ either pattern as "the" approach, and the majority of projects had neither.
 - Reinventing a channel's palette, audio-mastering chain, or caption skin from
   scratch per video instead of pulling the channel's own established one — see
   *Consistency across a channel's videos*.
+- Concluding a project has no shared catalog because `CLAUDE.md` doesn't name
+  one, without checking for a conventional `catalog/`-style directory first —
+  see *Catalog lifecycle*.
+- Checking the catalog for reusable imagery but never for a reusable
+  mechanism, which is exactly how the same component gets independently
+  rebuilt across several videos without anyone noticing.
+- Building a genuinely reusable component and never harvesting it back into
+  the shared catalog — treating catalog contribution as optional cleanup
+  instead of a required closing step, the same way a finished render with no
+  captions isn't actually a finished project.

@@ -75,38 +75,48 @@
         }
         .hb-subtitle-word { display: inline-block; margin-right: 0.24em; opacity: 0; }
 
-        /* height reduced 1500->1180 and padding widened so card 3's bottom clears
+        /* height reduced 1500->1180 and padding widened so the stack clears
            safe-bottom (1920-360=1560) — it was landing at ~1608-1820, under the Shorts
            title/channel/audio strip. */
-        .hb-cards { top: 320px; left: 0; width: 100%; height: 1180px; display: flex; flex-direction: column; justify-content: space-evenly; gap: 24px; padding: 0 190px 0 80px; }
+        .hb-cards { top: 320px; left: 0; width: 100%; height: 1180px; display: flex; align-items: center; justify-content: center; }
+        /* Round-6 feedback: three small (104px thumb) cards stacked and accumulating
+           on screen at once read as cramped — replaced with one big flashcard reveal
+           at a time. All three `.hb-card`s now occupy this same fixed-size stack
+           (position:absolute; inset:0), so they land in the exact same spot instead of
+           three separate slots; only one is opaque at any moment (see timeline). */
+        .hb-card-stack { position: relative; width: 740px; height: 760px; }
         .hb-card {
+          position: absolute; inset: 0;
           display: flex;
+          flex-direction: column;
           align-items: center;
-          gap: 28px;
+          justify-content: center;
+          gap: 32px;
           background: var(--white);
-          border-radius: 16px;
+          border-radius: 24px;
           box-shadow: var(--elev-2);
-          padding: 44px 48px;
+          padding: 64px 48px;
           opacity: 0;
-          transform: scale(0.92) translateY(18px);
+          transform: scale(0.92) translateY(14px);
         }
         /* Reuses the same ingredient-photography stills already approved and used in
            Frame 4b (no new generation) — round-2 feedback asked for more visual
            texture variety across the text-heavy learning phase; this is that, at zero
-           new-asset cost. flex-shrink:0 keeps it square even as the text stack wraps. */
+           new-asset cost. Sized up 104->300px as the frame's only content now (was one
+           of three competing for a small slot each). */
         .hb-thumb {
-          width: 104px; height: 104px;
-          border-radius: 12px;
+          width: 300px; height: 300px;
+          border-radius: 20px;
           object-fit: cover;
           flex-shrink: 0;
           background: var(--paper);
         }
-        .hb-card-text { flex: 1; min-width: 0; }
-        .hb-inci { font-family: var(--font-mono); font-size: 30px; color: var(--ink-2); }
-        .hb-common { font-family: var(--font-display); font-size: 56px; color: var(--ink); margin: 8px 0 6px; position: relative; display: inline-block; }
-        .hb-common-underline { position: absolute; left: 0; right: 0; bottom: -4px; height: 4px; background: var(--aqua); transform: scaleX(0); transform-origin: left center; }
-        .hb-kr { font-family: var(--font-kr); font-size: var(--t-label); color: var(--ink-2); margin-right: 10px; }
-        .hb-func { font-family: var(--font-mono); font-size: var(--t-label); color: var(--ink-2); }
+        .hb-card-text { text-align: center; }
+        .hb-inci { font-family: var(--font-mono); font-size: 34px; color: var(--ink-2); }
+        .hb-common { font-family: var(--font-display); font-size: 96px; color: var(--ink); margin: 18px 0 12px; position: relative; display: inline-block; }
+        .hb-common-underline { position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; background: var(--aqua); transform: scaleX(0); transform-origin: left center; }
+        .hb-kr { font-family: var(--font-kr); font-size: 46px; color: var(--ink-2); margin-right: 14px; }
+        .hb-func { font-family: var(--font-mono); font-size: 34px; color: var(--ink-2); }
       </style>
 
       <div data-hf-id="hf-hb-root" id="root" data-composition-id="07-hanbang-rapidfire" data-width="1080" data-height="1920" data-duration="21.34">
@@ -117,28 +127,30 @@
         </div>
 
         <div data-hf-id="hf-hb-cards" id="hb-cards" class="clip hb-cards" data-start="0" data-duration="21.34">
-          <div data-hf-id="hf-hb-c1" class="hb-card" id="hb-card-1">
-            <img data-hf-id="hf-hb-c1thumb" class="hb-thumb" src="assets/images/ingredient-snail-mucin.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
-            <div data-hf-id="hf-hb-c1text" class="hb-card-text">
-              <div data-hf-id="hf-hb-c1inci" class="hb-inci">Snail Secretion Filtrate</div>
-              <div data-hf-id="hf-hb-c1common" class="hb-common" id="hb-common-1">Snail Mucin<div data-hf-id="hf-hb-c1u" class="hb-common-underline" id="hb-underline-1"></div></div>
-              <div data-hf-id="hf-hb-c1func" class="hb-func">barrier repair</div>
+          <div data-hf-id="hf-hb-cardstack" class="hb-card-stack" id="hb-card-stack">
+            <div data-hf-id="hf-hb-c1" class="hb-card" id="hb-card-1">
+              <img data-hf-id="hf-hb-c1thumb" class="hb-thumb" src="assets/images/ingredient-snail-mucin.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+              <div data-hf-id="hf-hb-c1text" class="hb-card-text">
+                <div data-hf-id="hf-hb-c1inci" class="hb-inci">Snail Secretion Filtrate</div>
+                <div data-hf-id="hf-hb-c1common" class="hb-common" id="hb-common-1">Snail Mucin<div data-hf-id="hf-hb-c1u" class="hb-common-underline" id="hb-underline-1"></div></div>
+                <div data-hf-id="hf-hb-c1func" class="hb-func">barrier repair</div>
+              </div>
             </div>
-          </div>
-          <div data-hf-id="hf-hb-c2" class="hb-card" id="hb-card-2">
-            <img data-hf-id="hf-hb-c2thumb" class="hb-thumb" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
-            <div data-hf-id="hf-hb-c2text" class="hb-card-text">
-              <div data-hf-id="hf-hb-c2inci" class="hb-inci">Panax Root</div>
-              <div data-hf-id="hf-hb-c2common" class="hb-common" id="hb-common-2">Ginseng<div data-hf-id="hf-hb-c2u" class="hb-common-underline" id="hb-underline-2"></div></div>
-              <div data-hf-id="hf-hb-c2func" class="hb-func">firming</div>
+            <div data-hf-id="hf-hb-c2" class="hb-card" id="hb-card-2">
+              <img data-hf-id="hf-hb-c2thumb" class="hb-thumb" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+              <div data-hf-id="hf-hb-c2text" class="hb-card-text">
+                <div data-hf-id="hf-hb-c2inci" class="hb-inci">Panax Root</div>
+                <div data-hf-id="hf-hb-c2common" class="hb-common" id="hb-common-2">Ginseng<div data-hf-id="hf-hb-c2u" class="hb-common-underline" id="hb-underline-2"></div></div>
+                <div data-hf-id="hf-hb-c2func" class="hb-func">firming</div>
+              </div>
             </div>
-          </div>
-          <div data-hf-id="hf-hb-c3" class="hb-card" id="hb-card-3">
-            <img data-hf-id="hf-hb-c3thumb" class="hb-thumb" src="assets/images/ingredient-mugwort.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
-            <div data-hf-id="hf-hb-c3text" class="hb-card-text">
-              <div data-hf-id="hf-hb-c3inci" class="hb-inci">Artemisia Princeps</div>
-              <div data-hf-id="hf-hb-c3common" class="hb-common" id="hb-common-3"><span data-hf-id="hf-hb-c3kr" class="hb-kr">쑥</span>Mugwort<div data-hf-id="hf-hb-c3u" class="hb-common-underline" id="hb-underline-3"></div></div>
-              <div data-hf-id="hf-hb-c3func" class="hb-func">calming, anti-acne</div>
+            <div data-hf-id="hf-hb-c3" class="hb-card" id="hb-card-3">
+              <img data-hf-id="hf-hb-c3thumb" class="hb-thumb" src="assets/images/ingredient-mugwort.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+              <div data-hf-id="hf-hb-c3text" class="hb-card-text">
+                <div data-hf-id="hf-hb-c3inci" class="hb-inci">Artemisia Princeps</div>
+                <div data-hf-id="hf-hb-c3common" class="hb-common" id="hb-common-3"><span data-hf-id="hf-hb-c3kr" class="hb-kr">쑥</span>Mugwort<div data-hf-id="hf-hb-c3u" class="hb-common-underline" id="hb-underline-3"></div></div>
+                <div data-hf-id="hf-hb-c3func" class="hb-func">calming, anti-acne</div>
+              </div>
             </div>
           </div>
         </div>
@@ -177,16 +189,22 @@
         });
         tl.to("#hb-subtitle", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 7.3);
 
-        // Three flashcards, retimed from a flat 6.4s grid ([0.8, 7.2, 13.6], which popped
-        // card 1 six-plus seconds before the VO named it, per the audit) to the REAL onset
-        // of each Hanbang term (local: "Snail" 7.77, "Panax" 11.76, "Artemisia" 15.77),
-        // landing just ahead of the word so the reveal reads as anticipation, not lag.
+        // One flashcard at a time, retimed from a flat 6.4s grid ([0.8, 7.2, 13.6], which
+        // popped card 1 six-plus seconds before the VO named it, per the audit) to the
+        // REAL onset of each Hanbang term (local: "Snail" 7.77, "Panax" 11.76, "Artemisia"
+        // 15.77), landing just ahead of the word so the reveal reads as anticipation, not
+        // lag. Round-6 feedback: was three small cards accumulating in a stack — now each
+        // one fills the same big slot and fades out right as the next fades in, so only
+        // one is ever on screen, sized to be the frame's whole focus.
         const CARD_STARTS = [7.6, 11.6, 15.6];
         const CARD_IDS = ["#hb-card-1", "#hb-card-2", "#hb-card-3"];
         const UNDERLINE_IDS = ["#hb-underline-1", "#hb-underline-2", "#hb-underline-3"];
         CARD_IDS.forEach((id, i) => {
-          tl.fromTo(id, { opacity: 0, scale: 0.92, y: 18 }, { opacity: 1, scale: 1, y: 0, duration: 0.18, ease: "power2.out" }, CARD_STARTS[i]);
+          tl.fromTo(id, { opacity: 0, scale: 0.92, y: 14 }, { opacity: 1, scale: 1, y: 0, duration: 0.22, ease: "power2.out" }, CARD_STARTS[i]);
           tl.to(UNDERLINE_IDS[i], { scaleX: 1, duration: 0.3, ease: "power3.out" }, CARD_STARTS[i] + 0.25);
+          if (i < CARD_IDS.length - 1) {
+            tl.to(id, { opacity: 0, scale: 0.96, duration: 0.2, ease: "power2.in" }, CARD_STARTS[i + 1] - 0.2);
+          }
         });
 
         tl.to(["#hb-cards"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 20.48);

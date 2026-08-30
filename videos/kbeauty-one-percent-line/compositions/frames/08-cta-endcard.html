@@ -115,13 +115,17 @@
         .cta-chip-hb { background: rgba(89,184,174,0.08); border-left: 4px solid var(--aqua); border-radius: 4px 10px 10px 4px; padding-left: 18px; }
         /* Same already-approved ingredient-photography stills used in Frame 4b/7 —
            reused again here, not regenerated. Round-3 feedback specifically pointed at
-           this recap section as still reading text-only despite the assets existing. */
+           this recap section as still reading text-only despite the assets existing.
+           Sized up 64->88px (round-6 feedback: still read as an afterthought at 64px
+           next to the chip's own text) — the chip's own height is already text-driven
+           (3-4 wrapped lines at 26px comfortably exceeds 88px), so this doesn't grow
+           the grid's total footprint, just the image's presence within it. */
         .cta-chip-thumb {
-          width: 64px; height: 64px;
-          border-radius: 8px;
+          width: 88px; height: 88px;
+          border-radius: 10px;
           object-fit: cover;
           flex-shrink: 0;
-          margin-right: 16px;
+          margin-right: 18px;
           background: var(--paper);
         }
         .cta-chip-eq { font-weight: 700; }
@@ -178,9 +182,9 @@
           <div data-hf-id="hf-cta-g1" class="cta-chip cta-chip-dark" id="cta-chip-1">Water-first = mostly water</div>
           <div data-hf-id="hf-cta-g2" class="cta-chip cta-chip-dark" id="cta-chip-2">Watch for the 1% line</div>
           <div data-hf-id="hf-cta-kh" class="cta-kicker cta-kicker-hanbang" id="cta-kicker-hanbang">HANBANG, TRANSLATED</div>
-          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3"><img data-hf-id="hf-cta-g3thumb" class="cta-chip-thumb" src="assets/images/ingredient-snail-mucin.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"><span>Snail Secretion Filtrate <span data-hf-id="hf-onba" class="cta-chip-eq">=</span> Snail Mucin</span></div>
-          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4"><img data-hf-id="hf-cta-g4thumb" class="cta-chip-thumb" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"><span>Panax Root <span data-hf-id="hf-3y16" class="cta-chip-eq">=</span> Ginseng</span></div>
-          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5"><img data-hf-id="hf-cta-g5thumb" class="cta-chip-thumb" src="assets/images/ingredient-mugwort.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"><span>Artemisia Princeps <span data-hf-id="hf-4cc7" class="cta-chip-eq">=</span> Mugwort</span></div>
+          <div data-hf-id="hf-cta-g3" class="cta-chip cta-chip-hb" id="cta-chip-3"><img data-hf-id="hf-cta-g3thumb" class="cta-chip-thumb" src="assets/images/ingredient-snail-mucin.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"><span data-hf-id="hf-668c">Snail Secretion Filtrate <span data-hf-id="hf-onba" class="cta-chip-eq">=</span> Snail Mucin</span></div>
+          <div data-hf-id="hf-cta-g4" class="cta-chip cta-chip-hb" id="cta-chip-4"><img data-hf-id="hf-cta-g4thumb" class="cta-chip-thumb" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"><span data-hf-id="hf-vz54">Panax Root <span data-hf-id="hf-3y16" class="cta-chip-eq">=</span> Ginseng</span></div>
+          <div data-hf-id="hf-cta-g5" class="cta-chip cta-chip-hb cta-chip-wide" id="cta-chip-5"><img data-hf-id="hf-cta-g5thumb" class="cta-chip-thumb" src="assets/images/ingredient-mugwort.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"><span data-hf-id="hf-87k9">Artemisia Princeps <span data-hf-id="hf-4cc7" class="cta-chip-eq">=</span> Mugwort</span></div>
         </div>
 
         <div data-hf-id="hf-cta-headline" id="cta-headline" class="clip cta-headline" data-start="0" data-duration="9.8">

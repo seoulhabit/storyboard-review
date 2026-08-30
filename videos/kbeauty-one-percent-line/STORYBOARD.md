@@ -17,7 +17,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 1 — hook
 
-- status: rendered
+- status: animated
 - src: compositions/frames/01-hook.html
 - type: hook
 - start: 0.0
@@ -34,7 +34,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 2 — promise
 
-- status: rendered
+- status: animated
 - src: compositions/frames/02-promise.html
 - type: branding
 - start: 8.20
@@ -50,7 +50,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 3 — the extract loophole
 
-- status: rendered
+- status: animated
 - src: compositions/frames/03-extract-loophole.html
 - type: concept
 - start: 16.48
@@ -70,7 +70,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 4 — the 1% line
 
-- status: rendered
+- status: animated
 - src: compositions/frames/04-one-percent-line.html
 - type: concept (this video's coral "voltage moment")
 - start: 31.24
@@ -88,7 +88,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 4b — ingredient macro showcase
 
-- status: rendered
+- status: animated
 - src: compositions/frames/04b-ingredient-showcase.html
 - type: B-roll interlude
 - start: 43.84
@@ -107,7 +107,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 5 — the trick
 
-- status: rendered
+- status: animated
 - src: compositions/frames/05-the-trick.html
 - type: concept
 - start: 46.34
@@ -126,7 +126,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 6 — live teardown
 
-- status: rendered
+- status: animated
 - src: compositions/frames/06-teardown.html
 - type: proof / worked-example
 - start: 66.38
@@ -154,7 +154,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 7 — Hanbang rapid fire
 
-- status: rendered
+- status: animated
 - src: compositions/frames/07-hanbang-rapidfire.html
 - type: listicle
 - start: 84.90
@@ -174,7 +174,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 8 — CTA / endcard
 
-- status: rendered
+- status: animated
 - src: compositions/frames/08-cta-endcard.html
 - type: cta
 - start: 105.74
@@ -1139,3 +1139,51 @@ the current `index.html`, not hand-maintained.)
     (fresh loudnorm pass: measured -20.64 LUFS / -3.67dBTP in, targeted
     -14/-1.5/11 out). Superseded intermediate renders from this pass
     removed.
+
+- **2026-08-29 (round 6 — Studio storyboard fixes: status schema warning,
+  Frame 7 sequential flashcards, Frame 8 chip thumbnails)**:
+  - **9 "unknown status" storyboard warnings, fixed.** Studio's storyboard
+    view (`http://localhost:3003`) flagged all 9 frames with `Frame N:
+    unknown status "rendered"; defaulting to "outline"` — a schema
+    mismatch, not a content bug. `STORYBOARD.md`'s per-frame frontmatter
+    used `status: rendered`, but Studio's plan schema only recognizes
+    `outline` / `built` / `animated` (confirmed by reading the actual
+    validation logic in the installed `hyperframes` package, not
+    guessing); "rendered" isn't a per-frame status at all — video export
+    happens at the whole-project level via `npm run render`, separate
+    from the plan doc. Changed all 9 frames to `status: animated` (the
+    correct terminal state — every frame's `window.__timelines` entry is
+    fully authored). Studio dashboard now correctly reads "9 of 9
+    animations ready" instead of "0 Built / 0 Animated."
+  - **Frame 7 (Hanbang cheat sheet) — three small stacked cards replaced
+    with one big sequential flashcard.** Studio comment: "Rather than
+    showing 3 images stacked show bigger each as the name of ingredient
+    comes." The 3 `.hb-card`s previously lived in a `flex-direction:
+    column` stack (104px thumbnails, all 3 slots reserving layout space
+    from scene start) and accumulated on screen as each one's onset hit.
+    Restructured to a single `.hb-card-stack` (740x760px, centered) with
+    all 3 cards `position:absolute; inset:0` on top of each other — only
+    one opaque at a time. Thumbnail sized up 104->300px, common-name text
+    56->96px. Timeline unchanged in *when* each card enters (still tied
+    to the real VO onset for each Hanbang term — "Snail" 7.77s local,
+    "Panax" 11.76s, "Artemisia" 15.77s — not touched), but each card now
+    fades out 0.2s before the next fades in instead of staying on screen
+    permanently. Verified via frame extraction at all 3 onsets: each
+    ingredient fills the same slot alone, safe-area clear.
+  - **Frame 8 (CTA endcard) — recap-chip thumbnails enlarged.** Studio
+    comment: "Impove the use of image for screen shot beeter image."
+    Ambiguous on its own (no image currently sits near the "SCREENSHOT
+    THIS" headline at all) — asked the creator directly rather than
+    guessing between "add a bottle photo near the headline" and "enlarge
+    the existing recap-chip thumbnails"; confirmed the latter. `.cta-chip-thumb`
+    64px -> 88px. The chips' own height is text-driven (3-4 wrapped
+    lines at 26px already exceeds 64px, let alone 88px), so this doesn't
+    grow the grid's footprint — confirmed via `npm run check`'s layout
+    pass and a direct frame extraction, no clipping.
+  - `npm run check`: 0 issues. Blank-frame scan re-run clean (same 10
+    stretches as prior passes, no new ones in either changed frame's own
+    window).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_20-25-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged from round 5 — this
+    round was visual-only). Superseded intermediate renders removed.

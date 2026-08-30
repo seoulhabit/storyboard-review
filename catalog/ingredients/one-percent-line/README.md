@@ -14,13 +14,23 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_19-20-00.mp4` —
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_20-25-00.mp4` —
 115.5s, 1080x1920, mastered -15.0 LUFS / -1.3dBTP (confirmed via
 `ffmpeg ebur128`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
 **Status:** in review — the creator has continued past the originally
-planned 3 rounds with further feedback. Round 5 removed the `el-sfx-6`
+planned 3 rounds with further feedback. Round 6 was driven by comments
+left directly in HyperFrames Studio (`.hyperframes/frame-comments.json`)
+rather than chat: Frame 7's three small stacked ingredient cards became
+one big flashcard shown one at a time (still timed to each term's real VO
+onset), and Frame 8's recap-chip thumbnails were enlarged 64->88px after
+confirming with the creator which "better image" reading they meant. Also
+fixed a Studio-only display bug — all 9 frames' plan status was
+`rendered`, a value outside Studio's actual schema (`outline` / `built` /
+`animated`), so the dashboard showed "0 Built / 0 Animated" despite the
+project being fully built; corrected to `animated`. Round 5 removed the
+`el-sfx-6`
 glitch-shatter cue entirely (round 4's gain cut wasn't enough — it was
 confirmed as the single loudest moment in the whole video) and seeded the
 "1% LINE" concept earlier in Frame 6's reading-scan sweep, after the

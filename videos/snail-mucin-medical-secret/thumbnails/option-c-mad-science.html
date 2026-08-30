@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 500;
+    src: url("../assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("../assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    font-family: "Bricolage Grotesque", sans-serif;
+    background: #000;
+    --shell: #b9835a;
+    --pearl: #fbfaf4;
+    --gold: #f2e3b4;
+  }
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 38%;
+  }
+  .scrim-top {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 760px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.75) 55%, rgba(0,0,0,0) 100%);
+  }
+  .scrim-bottom {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 460px;
+    background: linear-gradient(to top, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0) 100%);
+  }
+  .top-content {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    top: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: var(--shell);
+    box-shadow: 0 0 30px rgba(185, 131, 90, 0.5);
+    margin-bottom: 40px;
+  }
+  .kicker span {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--pearl);
+  }
+  .headline {
+    font-weight: 500;
+    font-size: 124px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--pearl);
+    text-shadow: 0 0 40px rgba(251, 250, 244, 0.35), 0 8px 30px rgba(0,0,0,0.8);
+  }
+  .bottom-content {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 100px;
+    text-align: center;
+  }
+  .subline {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+</style>
+</head>
+<body>
+  <div id="root">
+    <img class="photo" src="../public/01b-macro-slime-spatula.png" alt="">
+    <div class="scrim-top"></div>
+    <div class="scrim-bottom"></div>
+    <div class="top-content">
+      <div class="kicker"><span>The Science, Explained</span></div>
+      <div class="headline">Inside<br>Snail<br>Slime</div>
+    </div>
+    <div class="bottom-content">
+      <div class="subline">glycolic &middot; allantoin &middot; hyaluronic acid</div>
+    </div>
+  </div>
+</body>
+</html>

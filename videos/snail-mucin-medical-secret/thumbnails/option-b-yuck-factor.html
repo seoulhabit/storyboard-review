@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 500;
+    src: url("../assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 100 800;
+    src: url("../assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0f2016; }
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    font-family: "Bricolage Grotesque", sans-serif;
+    --ink-dark: #0f2016;
+    --shell: #b9835a;
+    --pearl: #fbfaf4;
+    --seafoam: #bdf0d4;
+  }
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 45%;
+    filter: saturate(1.05) contrast(1.05);
+  }
+  .scrim-flat { position: absolute; inset: 0; background: rgba(15,32,22,0.22); }
+  .scrim-top {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 900px;
+    background: linear-gradient(to bottom, rgba(15,32,22,0.92) 0%, rgba(15,32,22,0.55) 55%, rgba(15,32,22,0) 100%);
+  }
+  .scrim-bottom {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 560px;
+    background: linear-gradient(to top, rgba(15,32,22,0.9) 0%, rgba(15,32,22,0) 100%);
+  }
+  .top-content {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    top: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: var(--shell);
+    box-shadow: 0 0 30px rgba(185, 131, 90, 0.5);
+    margin-bottom: 40px;
+  }
+  .kicker span {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 27px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pearl);
+  }
+  .headline {
+    font-weight: 500;
+    font-size: 122px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--pearl);
+    text-shadow: 0 0 40px rgba(251, 250, 244, 0.4), 0 8px 30px rgba(0,0,0,0.7);
+  }
+  .bottom-content {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 96px;
+    text-align: center;
+  }
+  .subline {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 38px;
+    letter-spacing: 0.04em;
+    color: var(--seafoam);
+  }
+</style>
+</head>
+<body>
+  <div id="root">
+    <img class="photo" src="../public/04-snail-mesh.png" alt="">
+    <div class="scrim-flat"></div>
+    <div class="scrim-top"></div>
+    <div class="scrim-bottom"></div>
+    <div class="top-content">
+      <div class="kicker"><span>K-Beauty's Weirdest Ingredient</span></div>
+      <div class="headline">Real<br>Snail<br>Slime</div>
+    </div>
+    <div class="bottom-content">
+      <div class="subline">yes, really.</div>
+    </div>
+  </div>
+</body>
+</html>

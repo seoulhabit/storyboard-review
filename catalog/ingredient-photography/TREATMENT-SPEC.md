@@ -92,3 +92,22 @@ attempt a from-scratch text-only prompt against this spec's written description 
 
 Cost, preflighted via `get_cost: true` (no charge): **2 credits per generation at 2k
 resolution**, 1:1 aspect ratio.
+
+## Amendment 2026-08-30 — bottle/dropper-format subjects carry SeoulHabit branding
+
+**Founder ruling, live in chat, seoulhabit-learn session:** bottle/dropper-format subjects
+(essential oils, tinctures — anything shown in an upright glass dropper bottle, per this spec's
+own Subject Treatment section) are branded with SeoulHabit marketing going forward. This is a
+**deliberate departure** from the "no text, no logo, no brand mark" rule stated earlier in this
+document — that rule is unchanged for every other format (dish, powder, mound) and for the
+original 20 entries, none of which carry any mark.
+
+**Scope, precisely:** applies to *future* generations of bottle/dropper-format subjects only.
+The two bottle-format entries generated the same day this ruling landed (`sh-tea-tree-oil.png`,
+`sh-retinal.png`) were made under the prior no-branding rule and were explicitly kept as
+generated, not regenerated — see `seoulhabit-learn`'s own decision record for this cycle.
+
+**Open, not resolved here:** whether a *branded* bottle image may be adopted into
+`seoulhabit-learn`'s passport identity slot once one exists — that site's own `CLAUDE.md`
+carries a standing "no commerce" constraint for ingredient content. This spec governs the
+catalog's own generation convention; it does not itself authorize what a consuming site adopts.

@@ -1322,3 +1322,30 @@ the current `index.html`, not hand-maintained.)
     `renders/kbeauty-one-percent-line_2026-08-29_21-40-00.mp4`, 115.5s,
     1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged — visual-only
     round). Superseded render removed.
+
+- **2026-08-29 (thumbnail refresh) — re-pulled every `assets/thumbnail/`
+  candidate from the current render** (`_21-40-00.mp4`), closing the
+  staleness the previous thumbnail entry itself flagged: the "Visual
+  Equation" candidate predated round 8's Frame 3 rework. All three
+  candidates + `thumbnail-final.png` now come from the current render:
+  - `candidate-visual-equation` re-pulled at t=28.5s (was t=26s) — now
+    shows the round-8 state: "70% CENTELLA EXTRACT" recap over the
+    water+plant equation in the enlarged 900px zone, instead of the two
+    small cards floating under ~1050px of blank canvas.
+  - `candidate-high-value-promise` re-pulled at t=113.0s — the endcard's
+    fully settled state (recap chips + all 3 Hanbang rows + "SCREENSHOT
+    THIS" + 습 SeoulHabit lockup + disclaimer). Checked t=114.5s too and
+    rejected it: the CTA countdown ("1") has replaced the headline by
+    then. The old candidate was an earlier, pre-lockup beat.
+  - `candidate-curiosity-gap` / `hook-frame-*` / `thumbnail-final.png`
+    re-pulled at the same t=2.7s payoff moment; PSNR vs the old source
+    measured 52.8dB (codec noise only — Frame 1 unchanged since), so
+    these are visually identical, refreshed for provenance consistency.
+  - Grading chain verified before reuse rather than assumed: applying
+    `eq=contrast=1.06:saturation=1.05,unsharp=5:5:0.5` to the prior
+    source byte-identically reproduced the prior `hook-frame-graded.png`
+    (PSNR = inf), confirming that as the exact established per-video
+    grade; same chain applied to all refreshed finals (still no vignette,
+    per the earlier light-background lesson). `thumbnail-final.png`
+    remains the hook payoff frame pending the creator's pick among the
+    three candidates.

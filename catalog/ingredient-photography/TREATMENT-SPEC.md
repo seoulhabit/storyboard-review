@@ -111,3 +111,32 @@ generated, not regenerated — see `seoulhabit-learn`'s own decision record for 
 `seoulhabit-learn`'s passport identity slot once one exists — that site's own `CLAUDE.md`
 carries a standing "no commerce" constraint for ingredient content. This spec governs the
 catalog's own generation convention; it does not itself authorize what a consuming site adopts.
+
+## Amendment 2026-08-30 (second) — the open question above is now resolved: two variants required
+
+**Founder ruling, live in chat, `seoulhabit-learn` session, resolving the "open, not resolved
+here" paragraph directly above:** a branded bottle image is **never** adopted into a consuming
+site's own identity slot — not `seoulhabit-learn`'s, not any future one. The identity slot
+answers "what is this material"; a branded bottle answers "which product to buy," a claim the
+record can't source and most consuming sites have no commerce to back. It also dates instantly
+against a real label or formula change.
+
+**The split is by destination, not by subject.** Bottle/dropper-format subjects still carry
+SeoulHabit branding in this catalog, per the amendment above — that's for this catalog's own
+video/marketing use, unchanged. But **from this ruling forward, a bottle/dropper-format
+generation produces two variants**, not one:
+
+1. **Branded** — this catalog's own convention (the amendment above), filed under this folder's
+   normal `sh-<handle>.png` naming, for video and marketing use.
+2. **Unbranded** — the only variant any consuming site's identity slot may ever adopt. Suggested
+   naming: `sh-<handle>-unbranded.png`, so the pair is unambiguous at a glance and neither file
+   can be mistaken for the other by a script matching on the bare handle.
+
+If only a branded variant exists for a bottle-format handle, it does not get adopted anywhere
+outside this catalog — the consuming site's identity slot keeps whatever unbranded asset it
+already has (which may be nothing, rendering as text) rather than showing a branded image.
+
+Recorded in full, with rendered evidence and the founder's ruling text verbatim, in
+`seoulhabit-learn`'s own decision record for this cycle (`DEC-075`) — this amendment mirrors
+that record's ruling into the catalog's own generation convention, since a future generation
+cycle may run from this folder without seeing `seoulhabit-learn`'s decision log at all.

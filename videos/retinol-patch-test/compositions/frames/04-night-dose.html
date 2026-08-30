@@ -152,9 +152,12 @@
         // "Rub"@4.64, "No"@7.14. Chip-to-strike gap (0.3s) kept as original.
         tl.fromTo("#dose-ruler", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 1.35);
         tl.fromTo("#dose-dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 1.75);
-        tl.fromTo("#dose-label", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.5);
+        // Pop (not a plain fade) on the two callouts feedback singled out as
+        // hard to catch on a small screen -- "PEA-SIZED" and "CLEAN, DRY
+        // SKIN" -- so the emphasis reads as a beat, not just a reveal.
+        tl.fromTo("#dose-label", { opacity: 0, y: 10, scale: 0.82 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.7)" }, 2.5);
 
-        tl.fromTo("#rule-1", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 3.2);
+        tl.fromTo("#rule-1", { opacity: 0, y: 16, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 3.2);
         tl.fromTo("#rule-2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.65);
         tl.fromTo("#rule-3", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 7.15);
         tl.to(["#strike-1", "#strike-2"], { scaleX: 1, duration: 0.3, ease: "power2.in" }, 7.45);

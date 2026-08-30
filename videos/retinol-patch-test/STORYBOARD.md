@@ -59,6 +59,22 @@ Revision (post-ship, re-voice): word reveal and the strike/WAIT payoff now
 key off real measured word timestamps from the shipped Kimberly take
 instead of an estimated per-character formula — see frame.md § Re-voice.
 
+Revision (post-ship, YouTube feedback round 2): the open was flagged as too
+static for the first 3-5s of a Shorts scroll. The bottle now drops in with a
+physical bounce instead of a plain fade, and "Stop!" (8.96s) now triggers a
+quick camera-punch on the whole frame (scale 1 -> 1.07 -> 1) layered with
+the existing strikethrough/dim/buzzer — see frame.md § Second Shorts-
+optimization pass.
+
+Revision (post-ship, faceless-video-craft skill audit): the bounce-in
+started from `opacity: 0` at `t=0.1`, so the literal frame-zero export was
+blank paper for the first 0.1s and near-blank after — a direct hit on the
+skill's frame-zero rule (composed, not blank, at t=0). Fixed by starting the
+tween at `t=0` from `opacity: 0.18` instead of `0` (and a nearer `y: -90`
+instead of `-200`) — the bottle is already faintly present at frame zero and
+still visibly bounces into its resting position, so the "reads as motion"
+fix from round 2 is preserved. See frame.md § Skill-compliance audit fixes.
+
 ## Frame 2 — Retinol is powerful
 
 scene: 02-power
@@ -93,6 +109,15 @@ the card copy. Category/body/chip sized up in the same and a later pass —
 see frame.md § Re-voice and § Font-size validation.
 
 Revision (post-ship): the original build used `catalog/ingredient-photography/16-retinol.png` as a full-bleed photo hero. That file is not checked into git (`git ls-files` returns 0 matches for the whole `ingredient-photography/` directory), so per a git-provenance audit it was replaced with the checked-in glossary's icon+card treatment above — see `frame.md` § Provenance validation.
+
+Revision (post-ship, faceless-video-craft skill audit): the reinstated
+`<img>` (see the re-voice revision above) shipped without
+`loading="eager"`/`decoding="sync"`/`width`/`height` attributes and its
+wrapper had no fallback background — the skill's own named most-common
+defect. Added `width="360" height="360" loading="eager" decoding="sync"` to
+the tag and `background: var(--ink)` to `.power-icon-zone`. No visible
+change (CSS already sized the box and the ground already matched), but
+closes a latent risk the skill treats as unconditional.
 
 ## Frame 3 — Step 1: choose a test site
 
@@ -164,6 +189,13 @@ word timestamps from the shipped Kimberly take — see frame.md § Re-voice.
 
 Revision (post-ship): the original build hand-drew its own simple moon + 3 dots instead of actually reusing celestial-arc's geometry — same issue as Frame 3. Replaced with the source's real arc path (`M 70 150 Q 500 -30 930 150`, same 1000x200 viewBox) and its own sun/moon positions, ported deterministically. First attempt at the crescent used a hand-tuned two-arc SVG path that silently failed to render (verified via `hyperframes snapshot`, not the Studio preview — see Notes); replaced with an SVG mask (a circle cut by an offset circle), which is a more faithful port of the source's own inset-box-shadow "subtract an offset shape" technique anyway.
 
+Revision (post-ship, YouTube feedback round 2): "PEA-SIZED." and "CLEAN, DRY
+SKIN" — the two callouts most likely to get missed on a small screen — now
+pop in on a spring overshoot instead of a plain fade+rise, matching the
+existing dose-dot spring. Sizes unchanged (already bumped and pixel-
+validated in the font-size-validation round) — see frame.md § Second
+Shorts-optimization pass.
+
 ## Frame 5 — Step 3: wait 48 hours
 
 scene: 05-wait-48
@@ -203,6 +235,17 @@ reveal's trigger point are recomputed per-take from real measured word
 timestamps — see frame.md § Re-voice. The "48H" rung stays a suspense beat,
 not literally synced to when "48 hours" is spoken.
 
+Revision (post-ship, YouTube feedback round 2): the ladder's draw was
+flagged as dragging right before the CTA. Compressed the draw window
+6.75s -> 3.6s and moved `split-normal` up to close the dead air that opened
+once the ladder resolves faster; `split-stop` stays pinned to the real word
+"wash" (unchanged — this video's one safety-sync point). Separately, the
+STOP card's symptom list ("Severe redness, stinging, or raised bumps") is
+now coral+bold rather than the same ink-grey as the rest of its body copy,
+and the card's border/tint were strengthened — spending this frame's one
+coral accent more assertively rather than adding a second warning color.
+See frame.md § Second Shorts-optimization pass.
+
 ## Frame 6 — Outro
 
 scene: 06-outro
@@ -238,6 +281,13 @@ genuinely hard to read at realistic scale, unlike the other labels. Bumped
 20 -> 24 -> 26px across two rounds (now wraps to 2 lines; plenty of
 clearance above it). Brand/pill/subline also bumped in round 2
 (32/30/24 -> 34/32/28).
+
+Revision (post-ship, YouTube feedback round 2): feedback asked for a visual
+nudge toward the description box. Added a small downward chevron between
+the subline and the disclaimer (muted grey, matching the disclaimer — aqua
+stays this frame's one accent, already spent on the pill underline), with a
+bounded two-cycle nudge-down bounce finishing inside this final scene's
+runtime. See frame.md § Second Shorts-optimization pass.
 
 Revision (post-ship, re-voice): pill-underline and subline timing now key
 off real measured word timestamps from the shipped Kimberly take, landing

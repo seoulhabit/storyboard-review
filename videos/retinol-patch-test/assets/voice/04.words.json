@@ -2,163 +2,169 @@
   {
     "id": "w0",
     "text": "At",
-    "start": 0.119,
-    "end": 0.259
+    "start": 0.18,
+    "end": 0.26
   },
   {
     "id": "w1",
     "text": "night,",
-    "start": 0.34,
-    "end": 0.659
+    "start": 0.26,
+    "end": 0.65
   },
   {
     "id": "w2",
     "text": "apply",
-    "start": 1.1,
-    "end": 1.399
+    "start": 0.92,
+    "end": 1.26
   },
   {
     "id": "w3",
     "text": "a",
-    "start": 1.459,
-    "end": 1.539
+    "start": 1.26,
+    "end": 1.32
   },
   {
     "id": "w4",
-    "text": "tiny,",
-    "start": 1.579,
-    "end": 2
+    "text": "tiny",
+    "start": 1.45,
+    "end": 1.71
   },
   {
     "id": "w5",
-    "text": "pea-sized",
-    "start": 2.44,
-    "end": 3.019
+    "text": "pea",
+    "start": 1.71,
+    "end": 1.98
   },
   {
     "id": "w6",
-    "text": "amount",
-    "start": 3.119,
-    "end": 3.359
+    "text": "sized",
+    "start": 2.04,
+    "end": 2.43
   },
   {
     "id": "w7",
-    "text": "to",
-    "start": 3.399,
-    "end": 3.5
+    "text": "amount",
+    "start": 2.43,
+    "end": 2.86
   },
   {
     "id": "w8",
-    "text": "clean,",
-    "start": 3.559,
-    "end": 3.879
+    "text": "to",
+    "start": 3.02,
+    "end": 3.15
   },
   {
     "id": "w9",
-    "text": "dry",
-    "start": 4.279,
-    "end": 4.46
+    "text": "clean",
+    "start": 3.19,
+    "end": 3.61
   },
   {
     "id": "w10",
-    "text": "skin.",
-    "start": 4.559,
-    "end": 4.879
+    "text": "dry",
+    "start": 3.61,
+    "end": 3.79
   },
   {
     "id": "w11",
-    "text": "Rub",
-    "start": 5.4,
-    "end": 5.519
+    "text": "skin.",
+    "start": 3.94,
+    "end": 4.64
   },
   {
     "id": "w12",
-    "text": "it",
-    "start": 5.559,
-    "end": 5.599
+    "text": "Rub",
+    "start": 4.64,
+    "end": 4.9
   },
   {
     "id": "w13",
-    "text": "in",
-    "start": 5.659,
-    "end": 5.719
+    "text": "it",
+    "start": 4.9,
+    "end": 4.99
   },
   {
     "id": "w14",
-    "text": "gently,",
-    "start": 5.839,
-    "end": 6.199
+    "text": "in",
+    "start": 4.99,
+    "end": 5.13
   },
   {
     "id": "w15",
-    "text": "and",
-    "start": 6.619,
-    "end": 6.719
+    "text": "gently",
+    "start": 5.13,
+    "end": 5.29
   },
   {
     "id": "w16",
-    "text": "then",
-    "start": 6.759,
-    "end": 6.859
+    "text": "and",
+    "start": 5.56,
+    "end": 5.77
   },
   {
     "id": "w17",
-    "text": "leave",
-    "start": 6.94,
-    "end": 7.039
+    "text": "then",
+    "start": 5.77,
+    "end": 5.96
   },
   {
     "id": "w18",
-    "text": "it",
-    "start": 7.079,
-    "end": 7.139
+    "text": "leave",
+    "start": 6.08,
+    "end": 6.42
   },
   {
     "id": "w19",
-    "text": "alone.",
-    "start": 7.219,
-    "end": 7.899
+    "text": "it",
+    "start": 6.42,
+    "end": 6.5
   },
   {
     "id": "w20",
-    "text": "No",
-    "start": 7.98,
-    "end": 8.059
+    "text": "alone.",
+    "start": 6.68,
+    "end": 7.14
   },
   {
     "id": "w21",
-    "text": "other",
-    "start": 8.099,
-    "end": 8.24
+    "text": "No",
+    "start": 7.14,
+    "end": 7.44
   },
   {
     "id": "w22",
-    "text": "serums",
-    "start": 8.359,
-    "end": 8.659
+    "text": "other",
+    "start": 7.44,
+    "end": 7.67
   },
   {
     "id": "w23",
-    "text": "or",
-    "start": 8.679,
-    "end": 8.779
+    "text": "serums",
+    "start": 7.67,
+    "end": 8.09
   },
   {
     "id": "w24",
-    "text": "moisturizers",
-    "start": 8.819,
-    "end": 9.46
+    "text": "or",
+    "start": 8.1,
+    "end": 8.16
   },
   {
     "id": "w25",
-    "text": "on",
-    "start": 9.5,
-    "end": 9.64
+    "text": "moisturizers",
+    "start": 8.29,
+    "end": 9.03
   },
   {
     "id": "w26",
+    "text": "on",
+    "start": 9.15,
+    "end": 9.16
+  },
+  {
+    "id": "w27",
     "text": "top.",
-    "start": 9.659,
-    "end": 9.96
+    "start": 9.22,
+    "end": 9.431
   }
 ]

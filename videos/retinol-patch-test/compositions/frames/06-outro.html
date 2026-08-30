@@ -74,6 +74,11 @@
           font-family: var(--font-mono); font-size: 26px; letter-spacing: 0.02em; color: rgb(116, 112, 105);
           opacity: 0;
         }
+
+        /* Points at the description box below the frame -- neutral tone
+           (matches the disclaimer's muted grey) since aqua is already this
+           frame's one accent, spent on the pill underline. */
+        .outro-arrow-wrap { top: 1300px; left: 0; width: 100%; display: flex; justify-content: center; opacity: 0; }
       </style>
 
       <div id="root" data-composition-id="06-outro" data-width="1080" data-height="1920" data-duration="10.346">
@@ -90,7 +95,13 @@
         </div>
 
         <div id="outro-disclaimer" class="clip outro-disclaimer" data-start="0" data-duration="10.346">
-          General patch-testing guide &mdash; not sourced claims, not medical advice.
+          General patch-testing guide — not sourced claims, not medical advice.
+        </div>
+
+        <div id="outro-arrow-wrap" class="clip outro-arrow-wrap" data-start="0" data-duration="10.346">
+          <svg width="48" height="28" viewBox="0 0 48 28">
+            <path d="M4,4 L24,20 L44,4" fill="none" stroke="rgb(116,112,105)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
         </div>
       </div>
 
@@ -115,6 +126,13 @@
         tl.fromTo("#outro-subline", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 7.5);
 
         tl.fromTo("#outro-disclaimer", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 8.3);
+
+        // CTA arrow -- feedback asked for a visual cue pointing viewers to
+        // the description box. Bounded nudge (not an infinite loop, per this
+        // project's determinism rule): fades in, then settles by 10.2s,
+        // inside the 10.346s runtime of this final (no-tail) scene.
+        tl.fromTo("#outro-arrow-wrap", { opacity: 0, y: -8 }, { opacity: 0.7, y: 0, duration: 0.3, ease: "power2.out" }, 8.6);
+        tl.to("#outro-arrow-wrap", { y: 10, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 2 }, 9.0);
 
         tl.to({}, { duration: 10.346 }, 0);
         window.__timelines["06-outro"] = tl;

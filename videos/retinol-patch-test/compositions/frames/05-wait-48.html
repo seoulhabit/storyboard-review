@@ -53,7 +53,7 @@
         .split-zone { top: 1160px; bottom: auto; left: var(--short-safe-left); width: calc(100% - var(--short-safe-left) - var(--short-safe-right)); display: flex; align-items: center; gap: 32px; }
         .split-col { flex: 1; padding: 32px; border-radius: 12px; opacity: 0; }
         .split-normal { border: 2px solid var(--rule); background: transparent; }
-        .split-stop { border: 2px solid var(--coral); background: rgba(201, 122, 92, 0.08); }
+        .split-stop { border: 3px solid var(--coral); background: rgba(201, 122, 92, 0.16); }
         .split-kicker {
           font-family: var(--font-mono); font-weight: 700; font-size: 32px; letter-spacing: 0.06em;
           margin-bottom: 12px;
@@ -62,6 +62,7 @@
         .split-stop .split-kicker { color: var(--coral); }
         .split-body { font-family: var(--font-mono); font-size: 30px; line-height: 1.4; color: var(--ink-2-dark); }
         .split-stop .split-body { color: var(--ink); }
+        .split-stop-em { color: var(--coral); font-weight: 700; }
       </style>
 
       <div id="root" data-composition-id="05-wait-48" data-width="1080" data-height="1920" data-duration="13.497">
@@ -85,7 +86,7 @@
           </div>
           <div class="split-col split-stop" id="split-stop">
             <div class="split-kicker">STOP</div>
-            <div class="split-body">Severe redness, stinging, or raised bumps &mdash; wash it off. Your skin needs a gentler formula.</div>
+            <div class="split-body"><span class="split-stop-em">Severe redness, stinging, or raised bumps</span> — wash it off. Your skin needs a gentler formula.</div>
           </div>
         </div>
       </div>
@@ -97,16 +98,17 @@
 
         tl.fromTo("#headline", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.2);
 
-        // Ladder compressed to a 1.0-7.75 draw window so 48H lands as a
-        // suspense beat right before the STOP reveal, not tied to when "48
-        // hours" is literally spoken (~2.8s) -- same non-literal pacing as
-        // the original, fit to this Kimberly take's longer runway.
-        tl.to("#ladder-track", { scaleY: 1, duration: 6.75, ease: "none" }, 1.0);
+        // Draw window tightened from the original 6.75s crawl to 3.6s --
+        // feedback flagged this line-draw as dragging right before the CTA,
+        // so it now resolves well before the STOP reveal instead of tying
+        // up screen time through it. 48H still lands as a suspense beat, not
+        // tied to when "48 hours" is literally spoken (~2.8s).
+        tl.to("#ladder-track", { scaleY: 1, duration: 3.6, ease: "none" }, 1.0);
         tl.fromTo("#rung-1", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 1.25);
-        tl.fromTo("#rung-2", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.04);
-        tl.fromTo("#rung-3", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 7.75);
+        tl.fromTo("#rung-2", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 2.75);
+        tl.fromTo("#rung-3", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 4.6);
 
-        tl.fromTo("#split-normal", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 8.15);
+        tl.fromTo("#split-normal", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 6.8);
 
         // Coral reveal retimed to "wash"[9.27-9.55] in the Kimberly take
         // (measured, see frame.md § Re-voice) -- lands on the actual

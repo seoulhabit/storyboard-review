@@ -87,7 +87,15 @@
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true });
 
-        tl.fromTo("#hook-bottle", { opacity: 0, y: 10 }, { opacity: 0.55, y: 0, duration: 0.6, ease: "power3.out" }, 0.1);
+        // Drops in from above with a physical bounce, instead of a plain
+        // fade -- the opening 3-5s read as static per feedback; a moving
+        // mark on frame 1 gives Shorts viewers something to catch on scroll.
+        // Starts already faintly visible at t=0 (not fully off-canvas/
+        // invisible) so frame zero is composed rather than blank paper,
+        // per this skill's frame-zero rule -- the bounce still plays, it
+        // just settles from a nearer, partly-visible position instead of
+        // from nothing.
+        tl.fromTo("#hook-bottle", { opacity: 0.18, y: -90 }, { opacity: 0.55, y: 0, duration: 0.7, ease: "bounce.out" }, 0);
         tl.to("#hook-bottle", { opacity: 0.25, duration: 0.5, ease: "power2.inOut" }, 8.9);
 
         // Word starts measured from assets/voice/01.wav (Kimberly take) via
@@ -126,6 +134,13 @@
 
         tl.to("#hook-strike", { scaleX: 1, duration: 0.18, ease: "power2.in" }, 8.96);
         tl.to(["#hook-line-1", "#hook-strike-wrap"], { opacity: 0.4, duration: 0.25, ease: "power2.out" }, 9.0);
+
+        // Aggressive camera-punch on "Stop!" (feedback: the STOP beat needed
+        // a sharper jolt). Scales the whole frame briefly -- #root already
+        // clips to the outer canvas, so this reads as a real zoom, not a
+        // layout shift -- then settles before the WAIT chip lands at 9.15.
+        tl.fromTo("#root", { scale: 1 }, { scale: 1.07, duration: 0.12, ease: "power4.out", transformOrigin: "50% 50%" }, 8.96);
+        tl.to("#root", { scale: 1, duration: 0.3, ease: "power2.out" }, 9.08);
 
         tl.fromTo("#hook-wait", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 9.15);
 

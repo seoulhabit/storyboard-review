@@ -374,3 +374,207 @@ near-identical total is coincidence; see § Re-voice's pacing-variance note,
 since the two Kimberly generations distributed their time very differently
 frame-by-frame despite similar totals). Still comfortably inside the
 faceless-explainer route's 30–90s sweet spot (hard cap ~3min).
+
+## Second Shorts-optimization pass (post-ship, feedback round 2)
+
+Scene-level timing (start/duration per frame, VO sync) is untouched — every
+change here is an in-scene animation, color, or added-element edit. Verified
+with `npm run check` (0 errors/warnings, 12/12 contrast) and pixel-measured
+snapshots (`hyperframes snapshot`) rather than a visual glance, per this
+project's established audit method (see § Shorts safe-zone audit above).
+
+- **Frame 1 — static open + weak STOP beat.** The bottle mark previously
+  faded up 10px; it now drops in from off-frame with a physical bounce
+  (`y:-200 -> 0`, `ease: bounce.out`, 0.7s) so the opening reads as motion,
+  not a still image, on the scroll-past window. Separately, "Stop!" (the
+  real word start, 8.96s) now triggers a fast camera-punch on `#root`
+  (scale 1 -> 1.07 -> 1, ~0.4s total) layered on top of the existing
+  strikethrough + dim + buzzer SFX — confirmed via pixel measurement that
+  the bottle's on-screen bbox grows ~6% at the punch's peak (9.02s) and
+  recenters on the full 1080x1920 frame, not on the text block, which is
+  what makes it read as a camera move rather than a local UI wiggle.
+- **Frame 5 — draggy ladder, flat caution copy.** The 0H/24H/48H draw
+  window was compressed from a 6.75s crawl to 3.6s (rungs now land at
+  1.25/2.75/4.6s instead of 1.25/4.04/7.75s); `split-normal` moved up from
+  8.15s to 6.8s to close the dead air that opened up once the ladder
+  resolves faster. `split-stop`'s reveal stays hard-pinned to 9.25s (the
+  real word "wash," this video's one safety-boundary sync point) —
+  unchanged. Separately, "Severe redness, stinging, or raised bumps" inside
+  the STOP card is now wrapped in `.split-stop-em` (coral, bold) instead of
+  reading in the same ink-grey as every other line of body copy; the coral
+  card's border (2px->3px) and background tint (0.08->0.16 alpha) were also
+  strengthened. This spends the frame's coral accent more assertively
+  rather than introducing a second "warning orange" — the design system's
+  one-highlight-color-per-frame budget (see § Design-system reconciliation)
+  stays intact.
+- **Frame 4 — flat reveals on the two callouts most likely to get missed on
+  a small screen.** "PEA-SIZED." (`#dose-label`) and "CLEAN, DRY SKIN"
+  (`#rule-1`) now pop in on a `back.out` overshoot (scale 0.82/0.85 -> 1)
+  instead of a plain fade+rise, matching the spring already used on
+  `#dose-dot`. Font sizes are unchanged here — they were already bumped and
+  pixel-validated in the prior round (§ Font-size validation); the request
+  offered "larger or pop-in" as alternatives, and animation was the lower-
+  risk lever given the sizes already sit close to their safe-zone ceiling.
+- **Frame 6 — no visual nudge toward the CTA.** Added a small downward
+  chevron (`#outro-arrow-wrap`) between the subline and the disclaimer,
+  entering at 8.6s and giving two bounded nudge-down cycles (`yoyo: true,
+  repeat: 2` — not an infinite loop, per this project's determinism rule)
+  that finish by 10.2s, inside this final (no-tail) scene's 10.346s runtime.
+  Colored to match the disclaimer's muted grey rather than the frame's aqua
+  accent, which is already spent once on the pill underline. Pixel-measured
+  bbox at 59.4s: x 517-562, y 1302-1323 — centered in the safe box (x
+  60-918, y 120-1560) with no overlap on neighboring text.
+- **SFX at the STOP moment.** The feedback asked for "a sharp sound effect
+  ... right at the STOP moment." One already exists — `buzzer.mp3` at 8.96s
+  (`index.html`, tied to the real word "Stop!") — so no SFX change was made
+  here; the camera-punch above is the actual new addition to that beat.
+- **Real b-roll / tactile close-ups — not applied.** The feedback also asked
+  for intercut footage of retinol texture or a real person's hands/jawline.
+  This project has no real-footage asset in its inventory and is built
+  entirely from the checked-in HTML/SVG catalog; sourcing or fabricating
+  footage is outside what this pass can responsibly do without a real,
+  licensed clip to work from. Flagging this explicitly rather than
+  substituting an illustrated stand-in the feedback didn't ask for.
+
+## Skill-compliance audit fixes (2026-08-29)
+
+A `faceless-video-craft` skill review (not tied to the kbeauty-one-percent-line
+skill-review goal — a separate request against this project) found and fixed
+four issues, then closed the loop with a real render and pixel/audio
+verification rather than trusting `npm run check` alone:
+
+1. **Frame zero was blank.** Frame 1's bottle mark didn't start fading in
+   until `t=0.1s` from `opacity:0`, so the literal first exported frame was
+   empty paper. Fixed in `01-hook.html` — see the Frame 1 revision note above.
+2. **Frame 2's `<img>` was missing the mandatory attributes.** No
+   `loading`/`decoding`/`width`/`height`, no fallback background on the
+   wrapper. Fixed — see the Frame 2 revision note above.
+3. **All six `assets/voice/NN.words.json` transcripts were stale**, dated
+   ~20 hours before the currently-shipped `.wav` files (all six wavs share
+   one mtime from the worktree-recovery rebuild — see § Re-voice's
+   "concurrent-session file collision" — but the transcripts were never
+   regenerated after). Confirmed via `ffmpeg silencedetect` on Frame 1's
+   audio before touching anything: the real "Stop!" burst sits at
+   ~8.93-9.15s, matching the code's hardcoded 8.96s trigger, not the stale
+   JSON's claimed 5.6s. Regenerated all six with `hyperframes transcribe
+   <file> --json` (one at a time, per the shared-sidecar-clobber gotcha
+   below § Methodology), confirming every word the code times against
+   (`slather`@4.82, `Stop!`@8.96, `wash`@9.27, etc.) matches the fresh
+   transcript exactly. The code was never wrong; only the saved reference
+   file was. Logged as a general pipeline gotcha in project memory.
+4. **No audio ever faded in/out.** All 23 `<audio>` elements in `index.html`
+   (6 VO lines, 16 SFX one-shots, BGM) were flat `data-volume` with no
+   `data-automation` envelope — hard cuts on every clip edge. Added a fade
+   to each (VO: 0.08s in / 0.1s out; short SFX: ~0.01-0.02s in / 0.05-0.1s
+   out, sized to not blunt a one-shot's transient; the `tick` texture and
+   BGM: longer 0.05s/0.4s in, 0.1s/0.5s out).
+
+   **The skill's own `data-automation` example is stale for this pinned
+   `hyperframes@0.8.17`.** The canonical pattern doc shows
+   `data-automation='{"volume":[[t,v],...]}'` — this pinned engine rejects
+   that shape outright (`Unsupported automation version: undefined`, caught
+   by `npm run render`'s correctness gate, *not* by `npm run check`, which
+   passed both before and after). Read the actual validator in the installed
+   CLI's bundled `dist/cli.js` (search for `Unsupported automation version`)
+   to get the real shape: `{"version":1,"lanes":[{"target":"volume","points":
+   [{"t":0,"v":0},{"t":0.08,"v":1},...]}]}` — `version` must be the literal
+   number `1`, points are `{t,v}` objects, not `[t,v]` tuples, and lanes need
+   an explicit `target` (`"volume"` for gain; `"fx.<nodeId>.<param>"` for an
+   effect parameter).
+
+   **Second, more dangerous bug: a `data-automation` volume lane REPLACES
+   `data-volume` entirely — it does not multiply against it.** The first fix
+   attempt held each clip's automation curve at `v:1` during its "full
+   volume" plateau, on the assumption that `1` meant "100% of `data-volume`"
+   the way it would in a normal fader-times-envelope model. It doesn't: read
+   the engine's own gain-resolution code (`dist/cli.js`, the block computing
+   `x` from `Tl(r, ...)` right after the automation lookup) — when an
+   automation "volume" lane exists for an element, its interpolated value
+   *is* the final gain, full stop; `data-volume` is only consulted as a
+   fallback when no automation/keyframes exist at all. Net effect: every
+   clip that got a `v:1` plateau — BGM (`data-volume="0.12"`) and all 16 SFX
+   (`0.25`/`0.35`) — started playing at full source level instead of its
+   authored mix level the instant the fade "finished." This shipped as a
+   render that passed `npm run check` *and* `npm run render` with zero
+   warnings; it was only caught because the user listened to the render and
+   said the BGM sounded very loud. Verified by ear-report, not eyeballing:
+   `ffmpeg astats` RMS in a VO-silent window (7.2-8.5s, confirmed silent via
+   `silencedetect` earlier) measured -24.2dB on the original un-automated
+   render vs. **-14.2dB** on the buggy one — a real +10dB the ear caught
+   correctly. Fixed by setting each clip's automation plateau to its own
+   actual `data-volume` number instead of the placeholder `1` (VO lines were
+   accidentally correct throughout, since their `data-volume` already is
+   `1`). Re-verified post-fix: the same window now measures -24.3dB, matching
+   the pre-automation baseline within noise, while the 0.0-0.1s fade-in
+   window still measures a genuinely quieter -43dB — the fade survived, the
+   level regression didn't. **Lesson: never assume an automation/envelope
+   system multiplies against a base gain — confirm from the engine's own
+   gain-resolution code, and always A/B a corrected render's ear-reportable
+   levels against the pre-change baseline, not just against "does it still
+   ramp."** This exact gotcha is now also logged in the skill itself.
+
+## Thumbnails (2026-08-29)
+
+Built this video's first YouTube thumbnails in `assets/thumbnail/`, following
+the extract-grade-finalize convention established on `kbeauty-one-percent-line`
+and `seoulhabit-launch` (real frame from the render, light per-video grading
+pass, no separate composition authored) — now also written into the
+`faceless-video-craft` skill's own "The thumbnail" section.
+
+Three candidates pulled from the corrected render
+(`renders/retinol-patch-test_2026-08-29_23-00-57.mp4`) via
+`hyperframes snapshot`, each checked against the same frame-zero discipline
+as the video itself (fully settled, not mid-crossfade/mid-tween) before
+grading:
+
+- **`hook-stop.png`** (t=9.48s) — the hook's payoff: struck-through question
+  + "WAIT." on highlighter. Paper ground; graded
+  `eq=contrast=1.06:saturation=1.05,unsharp=5:5:0.5` (no vignette — this
+  video's light background, same lesson as kbeauty's first grading attempt).
+- **`powerful-stakes.png`** (t=16.0s) — Frame 2's real product photo + "=
+  POWERFUL" chip. Ink ground, so graded separately rather than reusing the
+  paper grade verbatim: `eq=contrast=1.08:saturation=1.08,unsharp=5:5:0.5`.
+- **`safety-stop-card.png`** (t=48.0s) — "Wait 48 Hours" headline + ladder +
+  the coral STOP card. Paper ground, same grade as `hook-stop`.
+
+Explicitly did NOT pull a candidate from the outro ("You're ready." +
+seoulhabit.com, t≈59s) despite it being a clean, settled frame — it's the
+video's resolution/payoff, and a thumbnail that shows the ending removes the
+reason to click. Kept to candidates that raise a question or a stake instead.
+
+**Grid-size legibility check** (per the skill's new rule — downscaled each
+to ~120×213px, roughly Shorts-feed-tile size, before judging):
+`safety-stop-card` reads best small — short bold headline, a simple
+line-and-dots icon, and a distinct coral color-block all survive
+compression. `hook-stop` still reads as "something crossed out + a bold
+call-to-action chip" even once the sentence itself blurs. `powerful-stakes`
+is the weakest of the three at grid size — a light rectangle with two small
+dark shapes on black reads as "a product exists" more than it raises a
+question. Set **`safety-stop-card.png`** as `thumbnail-final.png`.
+
+**vidIQ.** `vidiq_score_title` on the existing caption.txt title ("How to
+Patch Test Retinol (Beginner's Guide) 🧴") scored 86/100 — kept it rather
+than switching to any of `vidiq_generate_titles`' suggestions (85-88), which
+scored comparably but leaned hashtag-heavy in a way that doesn't match this
+channel's calmer, non-hashtag voice. `vidiq_score_thumbnail` could not be
+used — it requires a live YouTube `videoId`/existing upload, and this
+project hasn't published yet; noting this as a known pre-publish gap rather
+than faking an ID. `vidiq_similar_thumbnails` also has a hard limitation
+worth recording: **it only searches long-form video thumbnails, not
+Shorts** — so its "competitive check" for this Shorts thumbnail concept
+isn't a real read on the actual competitive shelf; the results it returned
+(generic long-form skincare product-review thumbnails, unrelated hobby/DIY
+videos) confirm it wasn't finding true comparables, not that the concept is
+uncrowded. Re-run the thumbnail scoring tools once this video actually has a
+`videoId`, rather than trusting this pre-publish pass as final.
+
+All four verified with `npm run check` (clean throughout) plus a real
+`npm run render` and fresh `hyperframes snapshot` frames at the changed
+beats, followed by the loudness correction above — current render:
+`renders/retinol-patch-test_2026-08-29_23-00-57.mp4`. Not in scope for this
+pass: Frame 1's hook still doesn't show any on-screen text until ~3s and
+doesn't land its "Stop!" payoff until ~9s of the 10s scene, while the VO is
+already well into the line by then — a real tension with the skill's
+"payoff visible by ~2s" hook guidance, but fixing it well means trimming or
+restructuring the VO content itself, not a mechanical timing tweak, so it's
+flagged rather than guessed at.

@@ -2,121 +2,121 @@
   {
     "id": "w0",
     "text": "So",
-    "start": 0.259,
-    "end": 0.74
+    "start": 0.02,
+    "end": 0.21
   },
   {
     "id": "w1",
     "text": "you",
-    "start": 0.799,
-    "end": 0.919
+    "start": 0.21,
+    "end": 0.53
   },
   {
     "id": "w2",
     "text": "just",
-    "start": 0.979,
-    "end": 1.099
+    "start": 0.7,
+    "end": 0.75
   },
   {
     "id": "w3",
     "text": "got",
-    "start": 1.139,
-    "end": 1.22
+    "start": 1.01,
+    "end": 1.27
   },
   {
     "id": "w4",
     "text": "a",
-    "start": 1.259,
-    "end": 1.319
+    "start": 1.27,
+    "end": 1.37
   },
   {
     "id": "w5",
     "text": "brand",
-    "start": 1.36,
-    "end": 1.579
+    "start": 1.37,
+    "end": 1.9
   },
   {
     "id": "w6",
     "text": "new",
-    "start": 1.639,
-    "end": 1.74
+    "start": 1.9,
+    "end": 2.22
   },
   {
     "id": "w7",
-    "text": "retinol,",
-    "start": 1.779,
-    "end": 2.22
+    "text": "retinol",
+    "start": 2.22,
+    "end": 2.99
   },
   {
     "id": "w8",
     "text": "and",
-    "start": 2.519,
-    "end": 2.619
+    "start": 2.99,
+    "end": 3.03
   },
   {
     "id": "w9",
     "text": "you",
-    "start": 2.639,
-    "end": 2.7
+    "start": 3.52,
+    "end": 4.56
   },
   {
     "id": "w10",
     "text": "want",
-    "start": 2.74,
-    "end": 2.839
+    "start": 4.56,
+    "end": 4.71
   },
   {
     "id": "w11",
     "text": "to",
-    "start": 2.859,
-    "end": 3
+    "start": 4.78,
+    "end": 4.82
   },
   {
     "id": "w12",
     "text": "slather",
-    "start": 3.039,
-    "end": 3.379
+    "start": 4.82,
+    "end": 5.28
   },
   {
     "id": "w13",
     "text": "it",
-    "start": 3.439,
-    "end": 3.599
+    "start": 5.28,
+    "end": 5.36
   },
   {
     "id": "w14",
     "text": "all",
-    "start": 3.659,
-    "end": 3.839
+    "start": 5.46,
+    "end": 5.56
   },
   {
     "id": "w15",
     "text": "over",
-    "start": 3.879,
-    "end": 4.039
+    "start": 5.56,
+    "end": 5.88
   },
   {
     "id": "w16",
     "text": "your",
-    "start": 4.099,
-    "end": 4.259
+    "start": 5.88,
+    "end": 6.04
   },
   {
     "id": "w17",
     "text": "face",
-    "start": 4.259,
-    "end": 4.519
+    "start": 6.06,
+    "end": 6.54
   },
   {
     "id": "w18",
-    "text": "immediately?",
-    "start": 4.559,
-    "end": 5.159
+    "text": "immediately.",
+    "start": 6.74,
+    "end": 8.96
   },
   {
     "id": "w19",
     "text": "Stop!",
-    "start": 5.619,
-    "end": 6.019
+    "start": 8.96,
+    "end": 9.5
   }
 ]

@@ -2,169 +2,163 @@
   {
     "id": "w0",
     "text": "Because",
-    "start": 0.119,
-    "end": 0.5
+    "start": 0.25,
+    "end": 0.41
   },
   {
     "id": "w1",
     "text": "retinol",
-    "start": 0.579,
-    "end": 0.959
+    "start": 0.41,
+    "end": 0.8
   },
   {
     "id": "w2",
     "text": "speeds",
-    "start": 1.059,
-    "end": 1.379
+    "start": 0.8,
+    "end": 1.15
   },
   {
     "id": "w3",
     "text": "up",
-    "start": 1.419,
-    "end": 1.519
+    "start": 1.15,
+    "end": 1.26
   },
   {
     "id": "w4",
     "text": "cell",
-    "start": 1.599,
-    "end": 1.819
+    "start": 1.26,
+    "end": 1.42
   },
   {
     "id": "w5",
     "text": "turnover,",
-    "start": 1.879,
-    "end": 2.359
+    "start": 1.59,
+    "end": 2.34
   },
   {
     "id": "w6",
     "text": "test",
-    "start": 2.759,
-    "end": 3.039
+    "start": 2.64,
+    "end": 2.8
   },
   {
     "id": "w7",
     "text": "it",
-    "start": 3.059,
-    "end": 3.179
+    "start": 2.91,
+    "end": 2.92
   },
   {
     "id": "w8",
     "text": "right",
-    "start": 3.24,
-    "end": 3.399
+    "start": 2.92,
+    "end": 3.21
   },
   {
     "id": "w9",
     "text": "behind",
-    "start": 3.439,
-    "end": 3.759
+    "start": 3.21,
+    "end": 3.56
   },
   {
     "id": "w10",
     "text": "your",
-    "start": 3.799,
-    "end": 3.939
+    "start": 3.56,
+    "end": 3.79
   },
   {
     "id": "w11",
     "text": "ear",
-    "start": 3.98,
-    "end": 4.239
+    "start": 3.8,
+    "end": 4
   },
   {
     "id": "w12",
     "text": "or",
-    "start": 4.679,
-    "end": 4.759
+    "start": 4,
+    "end": 4.12
   },
   {
     "id": "w13",
     "text": "along",
-    "start": 4.819,
-    "end": 5.099
+    "start": 4.13,
+    "end": 4.46
   },
   {
     "id": "w14",
     "text": "your",
-    "start": 5.139,
-    "end": 5.219
+    "start": 4.46,
+    "end": 4.72
   },
   {
     "id": "w15",
-    "text": "jawline",
-    "start": 5.319,
-    "end": 5.799
+    "text": "jawline,",
+    "start": 4.72,
+    "end": 5.28
   },
   {
     "id": "w16",
-    "text": "—",
-    "start": 5.799,
-    "end": 5.799
+    "text": "the",
+    "start": 5.36,
+    "end": 5.47
   },
   {
     "id": "w17",
-    "text": "the",
-    "start": 5.859,
-    "end": 5.96
+    "text": "spots",
+    "start": 5.61,
+    "end": 5.8
   },
   {
     "id": "w18",
-    "text": "spots",
-    "start": 6,
-    "end": 6.299
+    "text": "that",
+    "start": 5.8,
+    "end": 6.06
   },
   {
     "id": "w19",
-    "text": "that",
-    "start": 6.339,
-    "end": 6.44
+    "text": "behave",
+    "start": 6.06,
+    "end": 6.31
   },
   {
     "id": "w20",
-    "text": "behave",
+    "text": "most",
     "start": 6.48,
-    "end": 6.799
+    "end": 6.71
   },
   {
     "id": "w21",
-    "text": "most",
-    "start": 6.899,
-    "end": 7.099
+    "text": "like",
+    "start": 6.71,
+    "end": 6.97
   },
   {
     "id": "w22",
-    "text": "like",
-    "start": 7.159,
-    "end": 7.279
+    "text": "the",
+    "start": 6.97,
+    "end": 7.09
   },
   {
     "id": "w23",
-    "text": "the",
-    "start": 7.319,
-    "end": 7.379
+    "text": "skin",
+    "start": 7.25,
+    "end": 7.42
   },
   {
     "id": "w24",
-    "text": "skin",
-    "start": 7.46,
-    "end": 7.639
+    "text": "on",
+    "start": 7.42,
+    "end": 7.5
   },
   {
     "id": "w25",
-    "text": "on",
-    "start": 7.679,
-    "end": 7.779
+    "text": "your",
+    "start": 7.56,
+    "end": 7.72
   },
   {
     "id": "w26",
-    "text": "your",
-    "start": 7.819,
-    "end": 7.94
-  },
-  {
-    "id": "w27",
     "text": "face.",
-    "start": 7.98,
-    "end": 8.38
+    "start": 8,
+    "end": 8.12
   }
 ]

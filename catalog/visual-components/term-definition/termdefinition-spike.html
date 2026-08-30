@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<title>TermDefinition — harvested component</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+  rel="stylesheet"
+/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* Tokens copied verbatim from the five shipped videos that already build
+     this card independently (see README "Where this was found"). Not
+     re-verified live against DesignSync this session (unavailable,
+     non-interactive) — matches shipped code, same disclosure routine-ladder's
+     README uses when it can't independently re-check the live project. */
+  :root {
+    --paper: #f7f5f0;
+    --ink: #131516;
+    --aqua: #59b8ae;
+    --highlighter: #e0a32b;
+    --ink-2-dark: #878b8c;
+    --ink-3-dark: #7c8082;
+    --rule-dark: #333333;
+    --capsule-dark: rgba(19, 21, 22, 0.8);
+
+    --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+
+    --t-chapter: 72px;
+    --t-body: 32px;
+    --t-annot: 28px;
+    --t-chip: 22px;
+    --t-floor: 20px;
+    --lh-tight: 1.05;
+    --lh-snug: 1.2;
+    --lh-body: 1.45;
+    --tr-display: -0.02em;
+    --tr-mono: 0.04em;
+    --tr-mono-wide: 0.1em;
+
+    --s-3: 12px;
+    --s-4: 20px;
+    --s-5: 32px;
+    --s-6: 60px;
+    --r-3: 10px;
+    --r-2: 6px;
+    --rule-w-thin: 1px;
+
+    --short-safe-top: 120px;
+    --short-safe-right: 162px;
+    --short-safe-bottom: 360px;
+    --short-safe-left: 60px;
+
+    --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); }
+  body { font-family: var(--font-body); }
+
+  #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); }
+  .bg { position: absolute; inset: 0; z-index: 0; background: var(--ink); }
+  .clip { position: absolute; inset: 0; }
+
+  /* ---- companion progress rail — travels alongside TermDefinition in every
+     shipped use, continuous across the whole runtime, linear (no ease). ---- */
+  .progress-wrap {
+    position: absolute; top: var(--s-6); left: var(--short-safe-left); right: var(--short-safe-right);
+    height: 6px; z-index: 50; background: var(--rule-dark); border-radius: 2px; overflow: hidden;
+  }
+  .progress-fill { display: block; width: 100%; height: 100%; background: var(--aqua); transform-origin: 0% 50%; }
+
+  .wordmark {
+    position: absolute; top: 96px; left: 0; width: 100%; text-align: center;
+    font-family: var(--font-mono); font-size: var(--t-floor); letter-spacing: var(--tr-mono); color: var(--ink-3-dark);
+  }
+
+  /* ---------- TermDefinition — a full-frame-hero adaptation. Field
+     contract: icon (role), name, kr (optional), category, what (primary
+     definition), used (secondary "commonly used for" line), index (n of N).
+     Fill/border/radius/shadow/padding below are the shipped values. ---------- */
+  .card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .card-inner {
+    display: flex; flex-direction: column; align-items: center; gap: var(--s-3);
+    max-width: 820px; padding: var(--s-5);
+    background: var(--capsule-dark); border: var(--rule-w-thin) solid var(--rule-dark);
+    border-radius: var(--r-3); box-shadow: var(--elev-2);
+  }
+  .term-icon { width: 96px; height: 96px; color: var(--paper); }
+  .term-head { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: center; gap: var(--s-4); margin-top: var(--s-4); }
+  .term-name { font-family: var(--font-display); font-weight: 700; font-size: var(--t-chapter); line-height: var(--lh-tight); letter-spacing: var(--tr-display); color: var(--paper); }
+  .term-kr { font-family: var(--font-kr); font-weight: 500; font-size: var(--t-body); line-height: var(--lh-snug); color: var(--aqua); }
+  .term-category { font-family: var(--font-mono); font-weight: 600; font-size: var(--t-chip); letter-spacing: var(--tr-mono-wide); text-transform: uppercase; color: var(--ink-3-dark); }
+  .term-rule { margin-top: var(--s-4); width: 56px; height: var(--rule-w-thin); background: var(--rule-dark); transform-origin: 50% 50%; }
+  .term-body { margin-top: var(--s-4); max-width: 700px; font-family: var(--font-body); font-weight: 400; font-size: var(--t-body); line-height: var(--lh-body); color: var(--ink-2-dark); text-align: center; }
+  .term-label-2 { margin-top: var(--s-4); font-family: var(--font-mono); font-weight: 600; font-size: var(--t-chip); letter-spacing: var(--tr-mono-wide); text-transform: uppercase; color: var(--ink-3-dark); }
+  .term-body-2 { margin-top: var(--s-3); max-width: 700px; font-family: var(--font-body); font-weight: 400; font-size: var(--t-annot); line-height: var(--lh-body); color: var(--ink-3-dark); text-align: center; }
+  .term-index { margin-top: var(--s-5); font-family: var(--font-mono); font-weight: 500; font-size: var(--t-chip); letter-spacing: var(--tr-mono); color: var(--ink-3-dark); }
+
+  .debug-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(19,21,22,.92); color: var(--paper); font-family: var(--font-mono); font-size: 13px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .debug-bar input[type="range"] { flex: 1; }
+  .debug-bar button { font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: var(--r-2); border: 1px solid var(--rule-dark); background: transparent; color: var(--paper); cursor: pointer; }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div class="bg"></div>
+    <div class="wordmark">SeoulHabit</div>
+    <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+<script>
+(function () {
+  // Real Icon component's "ingredient" role — Lucide "leaf", 24x24 viewBox,
+  // constant 3-unit stroke. Copied from the shipped code's own comment
+  // pointing at Icon.jsx; not redrawn. Swap ICON_ROLES per category by
+  // substituting a different Icon.jsx glyph here — not implemented in this
+  // spike since the other glyphs weren't available this session (see README).
+  var LEAF_ICON =
+    '<svg class="term-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>' +
+    '<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>' +
+    "</svg>";
+
+  // Demo dataset — invented for this spike, NOT the real catalog content
+  // (skincare-ingredient-glossary's 20 real ingredients stay in that project).
+  var TERMS = [
+    { name: "Retinal", kr: "레티날", category: "Vitamin A derivative", what: "A faster-converting relative of retinol that reaches active retinoic acid in one enzymatic step instead of two.", used: "Fine lines, texture, and cell turnover in shorter timelines than retinol." },
+    { name: "PDRN", kr: "", category: "Nucleotide complex", what: "Polydeoxyribonucleotide — a salmon-derived DNA fragment used for tissue repair signaling.", used: "Post-procedure recovery and barrier regeneration." },
+    { name: "Azelaic Acid", kr: "아젤라산", category: "Dicarboxylic acid", what: "A gentler brightening and anti-inflammatory acid tolerated by most skin types.", used: "Rosacea, post-acne marks, and uneven tone." }
+  ];
+
+  var CARD_START = 0;
+  var CARD_DUR = 3.5;
+  var root = document.getElementById("root");
+  var cardStarts = [];
+
+  TERMS.forEach(function (term, i) {
+    var start = CARD_START + i * CARD_DUR;
+    cardStarts.push(start);
+    var section = document.createElement("section");
+    section.className = "clip card";
+    section.id = "card-" + i;
+    var krLine = term.kr ? '<span class="term-kr" id="kr-' + i + '">' + term.kr + "</span>" : "";
+    section.innerHTML =
+      '<div class="card-inner" id="inner-' + i + '">' +
+      LEAF_ICON.replace('class="term-icon"', 'class="term-icon" id="icon-' + i + '"') +
+      '<div class="term-head"><h2 class="term-name" id="name-' + i + '">' + term.name + "</h2>" + krLine + "</div>" +
+      '<div class="term-category" id="cat-' + i + '">' + term.category + "</div>" +
+      '<p class="term-body" id="what-' + i + '">' + term.what + "</p>" +
+      '<div class="term-rule" id="rule-' + i + '"></div>' +
+      '<div class="term-label-2" id="label2-' + i + '">Commonly used for</div>' +
+      '<p class="term-body-2" id="used-' + i + '">' + term.used + "</p>" +
+      "</div>" +
+      '<div class="term-index">' + String(i + 1).padStart(2, "0") + " · " + TERMS.length + "</div>";
+    root.appendChild(section);
+  });
+
+  var D_SNAP = 0.18, D_BASE = 0.5, D_INOUT = 0.5, STAGGER_LINE = 0.08;
+  var TOTAL = CARD_START + TERMS.length * CARD_DUR;
+
+  var tl = gsap.timeline({ paused: true });
+  tl.fromTo("#progress-fill", { scaleX: 0 }, { scaleX: 1, duration: TOTAL, ease: "none" }, 0);
+
+  // Register every card's hidden baseline at t=0, inside the timeline —
+  // not just in CSS. Without this, a direct seek to a time before card i's
+  // own start renders it at its raw CSS default (opacity:1, fully visible)
+  // instead of hidden, because none of its fromTo() tweens have fired yet
+  // and GSAP doesn't pre-apply a timeline child's "from" state on an
+  // out-of-order seek. Caught on screen: two cards' .term-index labels
+  // visible at once at t=1.6s before this fix. Same root cause and same
+  // fix this catalog's own faceless-video-craft skill documents for a
+  // different case (a reused element hit by several fromTo() calls) —
+  // `tl.set(target, {...}, 0)` inside the timeline, not a bare CSS default
+  // or a `gsap.set()` outside it.
+  TERMS.forEach(function (_, i) {
+    tl.set("#card-" + i, { opacity: i === 0 ? 1 : 0 }, 0);
+  });
+
+  TERMS.forEach(function (term, i) {
+    var t = cardStarts[i];
+    var nextBoundary = i === TERMS.length - 1 ? TOTAL : cardStarts[i + 1];
+    if (i > 0) tl.set("#card-" + i, { opacity: 1 }, t);
+    tl.fromTo("#icon-" + i, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: D_SNAP, ease: "power2.out" }, t);
+    tl.fromTo("#name-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: "power2.out" }, t + STAGGER_LINE);
+    if (term.kr) tl.fromTo("#kr-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: "power2.out" }, t + STAGGER_LINE * 2);
+    tl.fromTo("#cat-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: "power2.out" }, t + STAGGER_LINE * 3);
+    tl.fromTo("#what-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: "power2.out" }, t + STAGGER_LINE * 4);
+    tl.fromTo("#rule-" + i, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: D_SNAP, ease: "power2.out" }, t + STAGGER_LINE * 5);
+    tl.fromTo("#label2-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: "power2.out" }, t + STAGGER_LINE * 6);
+    tl.fromTo("#used-" + i, { y: 48, opacity: 0 }, { y: 0, opacity: 1, duration: D_BASE, ease: "power2.out" }, t + STAGGER_LINE * 7);
+    tl.fromTo("#inner-" + i, { opacity: 1 }, { opacity: 0, duration: D_INOUT, ease: "power2.inOut" }, t + CARD_DUR - 0.55);
+    tl.set("#card-" + i, { opacity: 0 }, nextBoundary);
+  });
+  tl.to({}, { duration: TOTAL }, 0);
+
+  function renderFrame(t) { if (t === 0) tl.progress(0); else tl.time(t); }
+  window.renderFrame = renderFrame;
+  window.__termDefinitionTimeline = tl;
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement("div");
+    bar.className = "debug-bar";
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector("#dbg-range"), label = bar.querySelector("#dbg-t");
+    range.addEventListener("input", function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector("#dbg-0").addEventListener("click", function () { range.value = 0; renderFrame(0); label.textContent = "0.00"; });
+    bar.querySelector("#dbg-end").addEventListener("click", function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

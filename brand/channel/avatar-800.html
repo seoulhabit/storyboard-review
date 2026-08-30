@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SeoulHabitSkin — Avatar 800x800</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Noto Sans KR";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500;
+    font-display: block;
+  }
+  html, body { margin: 0; padding: 0; }
+  #canvas {
+    width: 800px;
+    height: 800px;
+    background: #F7F5F0; /* --paper */
+    position: relative;
+    overflow: hidden;
+  }
+  #glyph {
+    position: absolute;
+    left: 50%;
+    top: 53%; /* optical centering: Hangul syllable blocks sit high in the em box */
+    transform: translate(-50%, -50%);
+    font-family: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 480px; /* ~60% of 800 canvas */
+    line-height: 1;
+    color: #131516; /* --ink */
+  }
+  /* crop-safety guide, 720px circle centered — QA only, hidden by default,
+     shown with ?debug=1 (never baked into an export). */
+  #safe-circle {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 720px; height: 720px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  body.debug #safe-circle {
+    border: 1px dashed rgba(201,122,92,0.35);
+  }
+</style>
+</head>
+<body>
+  <div id="canvas">
+    <div id="safe-circle"></div>
+    <div id="glyph">습</div>
+  </div>
+  <script>
+    if (new URLSearchParams(location.search).has('debug')) {
+      document.body.classList.add('debug');
+    }
+  </script>
+</body>
+</html>

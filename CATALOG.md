@@ -1,10 +1,43 @@
 # Catalog
 
-Inventory of what this repo contains as of 2026-08-29, with emphasis on
+Inventory of what this repo contains as of 2026-08-30, with emphasis on
 what the most recent working session created or changed. Video projects
 live under `videos/<slug>/` as self-contained HyperFrames projects
 (`index.html`, `compositions/frames/`, `STORYBOARD.md`, `assets/`,
 `renders/`). Reusable stock media and components live under `catalog/`.
+
+## 2026-08-30 session
+
+- **SeoulHabitSkin channel branding** — `brand/channel/` now ships real,
+  pixel-exact PNG exports (`avatar-800.png`, `banner-2560.png`,
+  `watermark-150.png`), not just HTML source — see that folder's own README
+  for how they're produced and regenerated. The banner's macro-plate photo
+  was generated (`generate_image`, `marketing_studio_image`) and composited
+  in as a real `<img>`, replacing an earlier placeholder.
+- **`faceless-video-craft` skill** — added a dedicated *The captions*
+  section (previously three sentences buried in an audio-mixing bullet),
+  a *Consistency across a channel's videos* section, and a publish-envelope
+  completeness check in the verification loop. See
+  `.claude/skills/faceless-video-craft/SKILL.md`'s own diff for the full
+  reasoning — it was driven by gaps found in this repo's own video catalog.
+- **Two visual components harvested into `catalog/visual-components/`**,
+  found by reviewing every shipped composition's HTML for recurring
+  patterns never added to the shared catalog:
+  - **TermDefinition** — a full-frame term/definition hero card, built
+    independently five separate times (four `skincare-glossary-part-*`
+    videos + `skincare-ingredient-glossary`) with identical class names and
+    tokens, never once shared. The single strongest harvest candidate found.
+  - **ThresholdList** — generalized from `kbeauty-one-percent-line`'s "1%
+    Line" scene (a ranked list split by a cutoff line) into a reusable
+    above/below-threshold mechanism.
+  - A real bug was found and fixed in the TermDefinition spike during
+    verification (two cards' index labels visible simultaneously — a
+    missing `t=0` timeline baseline, the same root cause the
+    faceless-video-craft skill's own failure-modes list already names for a
+    different case) — see that component's own file comments.
+  - See `catalog/README.md`'s "Considered and not harvested" note for
+    patterns reviewed and declined (`.cta-chip`, `.trick-fan-chip`,
+    `.htu-word`, the `hook-bottle-*` icon), with reasoning.
 
 ## Active video projects
 
@@ -48,9 +81,21 @@ before generating or licensing new plates (see root [CLAUDE.md](CLAUDE.md)):
 
 - `ingredient-photography/` — macro ingredient stills, tracked in `manifest.json`
 - `product-photography/` — fictional K-beauty product photography (see that folder's own manifest + README for the generation/verification log)
-- `visual-components/` — reusable HyperFrames components (e.g. `routine-ladder/`)
+- `visual-components/` — reusable HyperFrames components: `evidence-meter/`,
+  `graded-scale/`, `split-face-protocol/`, `dawn-to-dusk-routine/`,
+  `routine-ladder/`, `celestial-arc/`, `term-definition/`, `threshold-list/`
+  — see `catalog/README.md` for what each one is and its provenance
 - `marks/` — standalone graphic marks
 - `ingredients/one-percent-line/` — production record for the kbeauty-one-percent-line video (render history, catalog-imagery usage, authorizations)
+
+## Channel branding (`brand/`)
+
+- `brand/channel/` — SeoulHabitSkin YouTube channel branding kit (avatar,
+  banner, watermark, About-section copy), built from VidIQ competitor/keyword
+  research and extending the existing SeoulHabit Video Design System rather
+  than a new identity. See that folder's own README for the asset list, the
+  QA harnesses kept as working history, and two real contrast/layout bugs
+  found and fixed during verification.
 
 ## Tooling / config added this session
 

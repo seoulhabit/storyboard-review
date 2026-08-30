@@ -482,14 +482,14 @@ Rules:
   integrated / -1.5 dBTP target as a **separate post-render step** (two-pass
   `ffmpeg loudnorm` on the exported MP4, video stream copied through
   unchanged) — do not assume the render already did this.
-- **Captions are a separate deliverable, not a mux side-effect.** Generate a
-  word-level transcript (the project's transcribe tooling, e.g. `hyperframes
-  transcribe`) against the final mixed VO, hand-correct proper nouns and
-  domain terms (a generic ASR model will mangle brand names and technical
-  acronyms), and decide burned-in vs. sidecar `.srt` as a platform choice —
-  see *Audio and captions* below. Whisper-class models can hallucinate a
-  trailing cue past the true end of the audio; check the transcript's last
-  timestamp against the file's real duration before shipping it.
+- **Captions are a separate deliverable, not a mux side-effect.** Full
+  workflow — transcript generation, proper-noun correction, burned-in vs.
+  `.srt`, competitive research, verification — is in *The captions* below.
+  One thing worth flagging here since it's an audio-pipeline gotcha rather
+  than a captions-authoring one: Whisper-class transcription models can
+  hallucinate a trailing cue past the true end of the audio; check the
+  transcript's last timestamp against the file's real duration before
+  handing it off to the caption-authoring step.
 - **A synthetic voice will mispronounce domain terms.** If TTS says an
   acronym or coined term wrong (a technical acronym spoken as a word, a
   brand name stressed incorrectly), fix it by respelling the *TTS prompt*
@@ -614,15 +614,20 @@ Follow this order; skipping ahead is what produces expensive rework.
 10. **Render, then extract frames and inspect.** Check frame zero, every
     scene's settle frame, every transition midpoint, and the last frame. See
     *Verification loop* for the two checks a passing lint cannot substitute for.
-11. **Publish envelope.** Title, thumbnail, chapters, end screen targets,
-    pinned comment — see the YouTube delivery section (including *The
-    thumbnail*). These are part of the video, not afterthoughts.
+11. **Publish envelope.** Title, thumbnail, captions, chapters, end screen
+    targets, pinned comment — see the YouTube delivery section (*The
+    thumbnail* and *The captions*). All of these are part of the video, not
+    afterthoughts, and none is optional: a finished render with no captions or
+    no thumbnail is not a done project, the same way a render with no audio
+    mix would not be considered done.
 
 ## Verification loop
 
-A lint/check pass and a rendered file are necessary, not sufficient. Two
+A lint/check pass and a rendered file are necessary, not sufficient. Three
 specific failure classes survive a clean check and a manifest that says
-"success," and both require actually looking at extracted frames:
+"success" — the first two require actually looking at extracted frames, the
+third requires checking the publish envelope, which nothing in the render
+pipeline verifies on its own:
 
 **Static-hold detection.** A frozen-but-fully-populated frame looks identical
 to a healthy one on any brightness/contrast/luma-variance metric — a scanner
@@ -643,6 +648,16 @@ crossfades* below for when a crossfade is and isn't safe.
 Also always check: frame zero (must be composed, not mid-fade — see mandatory
 rule 4), and, for a short, that the last frame hands back toward the first if
 a loop was promised (see *The hook* below).
+
+**Publish-envelope completeness check.** A clean render says nothing about
+whether captions or a thumbnail exist — those are separate files a check
+script has no reason to look for. Before calling a project done, confirm by
+listing the project's own directory, not by recalling whether the step was
+done: a burned-in caption composition or a real `.srt` (not a same-named but
+unrelated file — see *The captions*' naming note), and a finalized thumbnail
+(not just candidates — see *The thumbnail*'s file convention). This is the
+check that catches a project with a complete word-level transcript and zero
+caption output built from it.
 
 ## Cuts vs crossfades
 
@@ -776,21 +791,90 @@ No true in-player branching exists. The real inventory:
 Design branching as a *graph of videos* with the composition treated as one
 node — never promise in-video interactivity the player cannot deliver.
 
-### Audio and captions
+### Audio mastering
 
 - Narration and music are normal, in-composition citizens — see *Audio is a
   first-class composition layer* above for the mechanics. What stays banned is
   wall-clock-driven audio (an autoplaying `<video>`'s own audio track, an
   `<audio>` element left to free-run instead of being scheduled by
   `data-start`).
-- **Captions are type, not accessibility garnish.** A large share of
-  shorts viewing is muted; narration's text should appear as composed,
-  beat-timed typography inside the safe zone, generated from a real
-  word-level transcript of the final mixed VO — not eyeballed timing. Decide
-  burned-in vs. sidecar `.srt` per platform target.
 - Master audio to YouTube's ~-14 LUFS integrated / -1.5 dBTP normalization
   target as a **post-render** step; louder than that is simply turned down by
   the platform.
+
+Captions are their own deliverable, with the same weight as the mix — see
+*The captions* below, not a bullet point here.
+
+### The captions
+
+Captions carry the same status as the thumbnail: produced and checked before
+publish, not improvised from whatever transcript data happens to already
+exist. **The raw material existing is not the same as the caption existing.**
+A project can have a full set of per-clip word-level transcripts and still
+ship with no on-screen captions and no sidecar file, because nothing turned
+that data into either — a real, observed gap in this project's own catalog
+(see *Consistency across a channel's videos* below), not a hypothetical.
+
+Two outputs, and most projects need both:
+
+- **Burned-in, beat-timed typography.** The primary deliverable for anything
+  vertical/muted-first (a short). Word-synced on-screen text inside the safe
+  zone, built as its own sub-composition included on the root timeline like
+  any other scene, driven by the same time model as everything else in this
+  file — no separate rendering path, no library that plays on its own clock.
+  Check the project's shared catalog for an existing caption-skin component
+  (type treatment, highlight colour, entrance/exit beat) before authoring a
+  new one — a caption skin is exactly the reusable component *Consistency
+  across a channel's videos* names, and a working precedent is worth reusing
+  rather than reinventing per video.
+- **Sidecar `.srt`.** Required for long-form (YouTube's own caption track,
+  searchable, accessible) and cheap once the transcript exists. Not a
+  substitute for burned-in type on a short — a short is watched muted inside
+  the platform's own UI chrome, which does not surface an uploaded `.srt` the
+  way the desktop player does.
+
+Production order:
+
+1. Generate a word-level transcript of the **final mixed VO**, not a draft
+   take, using the project's transcribe tooling (e.g. `hyperframes
+   transcribe`). Re-generate after any voice swap or retime — a transcript
+   from an earlier take silently desyncs from the shipped audio, the same
+   stale-sidecar risk that already applies to `.words.json` files generally
+   (see the re-timing cascade section above).
+2. Hand-correct proper nouns, ingredient names, and coined/technical terms —
+   a generic ASR pass will mangle exactly the vocabulary a skincare-education
+   video depends on getting right. This is the audio section's TTS-
+   mispronunciation correction pass run in the other direction: there the fix
+   is respelling the *TTS prompt*; here the fix is correcting the
+   *transcript text* against what was actually said.
+3. Build caption beats from the corrected transcript, reusing the catalog's
+   caption-skin component where one exists.
+4. Export the `.srt` from the same corrected transcript — one source of
+   truth for both outputs, not two independently-timed passes that can drift
+   from each other.
+
+**Competitive research, the same way the thumbnail section uses one.** Before
+committing to a caption style, `vidiq_video_transcript` against a handful of
+outlier videos in the niche — the same outlier set the beat sheet's own
+pre-production research already pulled — shows real caption pacing and
+phrase-grouping conventions that are currently winning. Feed that into the
+beat-timed grouping decision the same way `vidiq_similar_thumbnails` feeds the
+thumbnail's competitive check.
+
+**Verification, same discipline as everything else in this skill.** Extract a
+frame at a caption's mid-hold, not just its entrance beat, and confirm the
+text is legible inside the safe zone at the target canvas size (see *9:16-
+native composition*'s type floor). Play the `.srt` back against the actual
+rendered audio, not the pre-mix draft, to catch timing drift introduced by a
+late retime.
+
+**Naming note, from a real defect found in this project's own catalog:** a
+file literally named `caption.txt` turned out, on inspection, to be the
+video's YouTube *description/CTA copy* — not a caption/subtitle file at all.
+Its presence across most of a catalog's projects can look, at a glance, like
+the caption requirement is satisfied when it is an entirely different
+deliverable. Don't infer caption status from a filename; check for an actual
+burned-in caption composition or a real `.srt`.
 
 ### The thumbnail
 
@@ -904,7 +988,7 @@ actually differentiate:
 | `design:design-critique` | Review pass on rendered frames, not on code. |
 | `theme-factory` / `canvas-design` | Palette and static key-art exploration before motion. |
 | `marketing:draft-content` | Titles, descriptions, hooks — the publish envelope. |
-| `searchfit-seo:*`, vidIQ tools | Topic/title/outlier research **before** the beat sheet (it changes the beats); thumbnail generation, scoring, and refinement **after** the render — see *The thumbnail*. |
+| `searchfit-seo:*`, vidIQ tools | Topic/title/outlier research **before** the beat sheet (it changes the beats); competitive caption-pacing research via `vidiq_video_transcript` before the caption pass — see *The captions*; thumbnail generation, scoring, and refinement **after** the render — see *The thumbnail*. |
 | Higgsfield / HyperFrames MCP | Plate generation and cloud render. Both are asset/infra tools, not design authorities. |
 
 ## Design tokens across sub-compositions
@@ -918,6 +1002,67 @@ inlines-by-build-step into each sub-composition, and check for tokens that are
 declared but never referenced anywhere (a dead accent color, an unused
 elevation level) — that's a sign the token file and the compositions have
 already started to diverge.
+
+## Consistency across a channel's videos
+
+*Design tokens across sub-compositions* (above) covers drift **within** one
+project's multiple scene files. The same trap exists one level up, **across**
+a channel's separate video projects, and is easier to miss because each
+project looks complete in isolation — it only becomes visible when the whole
+catalog is compared side by side, project by project, not assumed from the
+existence of a shared catalog folder.
+
+What should be inherited channel-wide, and how to check whether it actually
+is:
+
+- **Palette and type tokens.** One canonical `tokens.css`, referenced (or
+  deliberately copied with a comment naming the source of truth) by every
+  project on the channel — not re-derived from memory per video. Audit by
+  grepping every project's token file for the same handful of hex values; if
+  two projects define `--ink` differently with no stated reason, that's
+  drift, not a deliberate palette evolution.
+- **The audio mastering chain.** The EQ/compressor/de-ess/limiter chain (see
+  *Audio mastering*) is a channel-level decision, not a per-video one — it's
+  what makes a channel's narration sound like the same show. Reuse the
+  `data-fx-chain` verbatim across projects unless there's a specific reason
+  (a different mic, a different VO voice with different spectral problems) to
+  deviate, and note the reason when it happens.
+- **The caption skin.** The type treatment, highlight colour, and
+  entrance/exit beat for burned-in captions — see *The captions* above. This
+  is the clearest case of a component that should exist exactly once and be
+  referenced everywhere, checked for the same way the production loop's
+  Component-check step already checks for a reusable visual component.
+- **The thumbnail's structural template, not its grade.** *The thumbnail*
+  section already establishes that a colour grade doesn't port between videos
+  with different backgrounds — that rule stands. What *should* stay
+  consistent is the structural template underneath the grade: where the
+  headline sits, how much of the frame the hero subject occupies, whether a
+  source/credibility chip appears in the same corner every time. A channel
+  where every thumbnail is instantly recognizable as "that channel" before
+  the title is even read is doing this on purpose, not by accident.
+- **The shared catalog location itself.** If a project keeps a shared catalog
+  for imagery and components (see *Asset protocol* and the Component-check
+  production-loop step), tokens, audio chains, and caption skins belong in
+  that same catalog as first-class citizens — not scattered as one-off files
+  duplicated into each project's own `assets/`. A catalog that indexes plates
+  and components while palette and audio-chain files are silently
+  copy-pasted per project carries the exact drift risk the plate-catalog rule
+  exists to prevent, just for a different asset type.
+
+**Audit method — check a real catalog before assuming consistency; don't infer
+it from a shared catalog folder existing.** Enumerate every video project and
+check, per project: does a tokens file exist and do its values match the
+others; does an audio fx-chain exist and is it the same chain; does a caption
+mechanism exist and is it the same mechanism; does a thumbnail exist. A
+catalog where a few projects fully agree and the rest have none of the above
+is not "mostly consistent" — it's one working precedent that never got
+applied, which reads identically to no precedent at all from a new project's
+starting point. Confirmed in this exact shape in one real project catalog: two
+projects shared identical palette tokens and an audio chain, two others
+independently built the same burned-in-caption mechanism (a dedicated
+`captions.html` sub-composition plus a shared caption-skin file) — but no
+project combined captions with a thumbnail, no convention document named
+either pattern as "the" approach, and the majority of projects had neither.
 
 ## Failure modes worth naming
 
@@ -1003,3 +1148,13 @@ already started to diverge.
   scene, caught only by listening past the cue.
 - A storyboard/spec document whose timing table wasn't re-derived after a real
   timing change, so it stops being trustworthy as a reference.
+- Shipping a project with a complete word-level transcript and no caption
+  output built from it — the raw material existing is not the same as the
+  deliverable existing.
+- Two incompatible caption mechanisms coexisting across a channel's projects
+  with no documented convention for which one is current.
+- Mistaking a file named for what it contains (a `caption.txt` that is
+  actually a video description) for the deliverable its name suggests.
+- Reinventing a channel's palette, audio-mastering chain, or caption skin from
+  scratch per video instead of pulling the channel's own established one — see
+  *Consistency across a channel's videos*.

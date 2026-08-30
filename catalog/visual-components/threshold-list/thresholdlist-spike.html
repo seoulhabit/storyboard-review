@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ThresholdList — harvested component</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* Tokens copied verbatim from the source composition (see README). Not
+     re-verified live against DesignSync this session (unavailable,
+     non-interactive) — matches shipped code. */
+  :root {
+    --ink: #131516;
+    --paper: #F7F5F0;
+    --coral: #C97A5C;
+    --aqua: #59B8AE;
+    --ink-3: #9C978D;
+    --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --r-2: 6px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); }
+  #root {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--ink); font-family: var(--font-mono);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  .tl-label { top: 220px; left: 0; width: 100%; text-align: center; }
+  .tl-label-text { font-family: var(--font-display); font-size: 68px; color: var(--paper); }
+  .tl-underline { width: 320px; height: 4px; background: var(--aqua); margin: 18px auto 0; transform: scaleX(0); }
+
+  /* padding cleared for the 1080-canvas short-lane safe area on both sides. */
+  .tl-list { top: 480px; left: 0; width: 100%; padding: 0 180px 0 80px; transform-origin: 0 0; }
+  .tl-row {
+    font-family: var(--font-mono); font-size: 38px; padding: 16px 0; color: var(--paper);
+    border-bottom: 1px solid rgba(247,245,240,0.12); opacity: 0; transform: translateY(10px);
+  }
+  .tl-row.tl-below { color: var(--ink-3); }
+  .tl-rule { width: 100%; height: 6px; margin: 4px 0 10px; background: var(--coral); transform: scaleX(0); transform-origin: left center; }
+
+  .debug-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(19,21,22,.92); color: var(--paper); font-family: var(--font-mono); font-size: 13px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .debug-bar input[type="range"] { flex: 1; }
+  .debug-bar button { font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: var(--r-2); border: 1px solid var(--ink-3); background: transparent; color: var(--paper); cursor: pointer; }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div class="clip tl-label">
+      <div class="tl-label-text" id="tl-label-text">THE CUTOFF</div>
+      <div class="tl-underline" id="tl-underline"></div>
+    </div>
+    <div class="clip tl-list" id="tl-list"></div>
+  </div>
+
+<script>
+(function () {
+  // Field contract — generalized from the source's fixed INCI-label case.
+  // `title`: the threshold's name/claim. `above`: ranked items where order
+  // is the meaningful signal. `below`: items past the cutoff, where order
+  // no longer means anything (or means something different) — this is the
+  // component's whole thesis, visualized by the rule-slam + scramble beat.
+  // Demo data — invented for this spike, not the real "1% LINE"/INCI
+  // content (that stays in videos/kbeauty-one-percent-line/, see README).
+  var DATA = {
+    title: "THE TOP 5",
+    above: ["ROUTINE CONSISTENCY", "SPF DAILY", "GENTLE CLEANSING", "BARRIER-FIRST ACTIVES", "PATCH TESTING"],
+    below: ["EXPENSIVE SERUMS", "16-STEP ROUTINES", "TREND CHASING"]
+  };
+
+  document.getElementById("tl-label-text").textContent = DATA.title;
+
+  var list = document.getElementById("tl-list");
+  DATA.above.forEach(function (label, i) {
+    var row = document.createElement("div");
+    row.className = "tl-row"; row.id = "tl-above-" + i; row.textContent = label;
+    list.appendChild(row);
+  });
+  var rule = document.createElement("div");
+  rule.className = "tl-rule"; rule.id = "tl-rule-line";
+  list.appendChild(rule);
+  DATA.below.forEach(function (label, i) {
+    var row = document.createElement("div");
+    row.className = "tl-row tl-below"; row.id = "tl-below-" + i; row.textContent = label;
+    list.appendChild(row);
+  });
+
+  var TOTAL = 13.1; // matches the source composition's timing proportions
+  var tl = gsap.timeline({ paused: true });
+
+  tl.fromTo("#tl-label-text", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 0.15);
+  tl.to("#tl-underline", { scaleX: 1, duration: 0.35, ease: "power3.out" }, 0.55);
+
+  DATA.above.forEach(function (_, i) {
+    tl.fromTo("#tl-above-" + i, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 1.4 + i * 0.22);
+  });
+
+  // The rule slam — the component's one voltage moment. Sits in normal
+  // document flow directly above the first below-threshold row.
+  tl.fromTo("#tl-rule-line", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.16, ease: "power2.in" }, 6.4);
+
+  // Dynamic zoom: push in on the above-cutoff cluster while it's being
+  // explained, pan down to land on the rule slam, pull back out for the
+  // close. transform-origin is 0 0 on #tl-list.
+  tl.fromTo("#tl-list", { scale: 1, x: 0, y: 0 }, { scale: 1.55, x: -36, y: 141.22, duration: 0.45, ease: "power2.inOut" }, 1.5);
+  tl.to("#tl-list", { y: -274.65, duration: 0.5, ease: "power2.inOut" }, 5.95);
+  tl.to("#tl-list", { scale: 1, x: 0, y: 0, duration: 0.5, ease: "power2.inOut" }, 11.5);
+
+  DATA.below.forEach(function (_, i) {
+    tl.fromTo("#tl-below-" + i, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 2.7 + i * 0.22);
+  });
+  // Below-cutoff rows desaturate + drift down/fade once the rule lands.
+  DATA.below.forEach(function (_, i) {
+    tl.to("#tl-below-" + i, { y: 24, opacity: 0.35, duration: 0.5, ease: "power2.inOut" }, 6.6 + i * 0.1);
+  });
+
+  // Scramble beat — literalizes "order stops meaning anything past the
+  // cutoff": the last two below-rows jitter laterally (never crossing each
+  // other's text box — a vertical swap was tried in the source and lint-
+  // flagged content_overlap; lateral jitter has no shared space to cross).
+  if (DATA.below.length >= 2) {
+    var lastTwo = [DATA.below.length - 2, DATA.below.length - 1];
+    tl.to("#tl-below-" + lastTwo[0], { x: 26, duration: 0.4, ease: "power2.inOut" }, 8.6);
+    tl.to("#tl-below-" + lastTwo[1], { x: -26, duration: 0.4, ease: "power2.inOut" }, 8.6);
+    tl.to("#tl-below-" + lastTwo[0], { x: 0, duration: 0.4, ease: "power2.inOut" }, 9.4);
+    tl.to("#tl-below-" + lastTwo[1], { x: 0, duration: 0.4, ease: "power2.inOut" }, 9.4);
+  }
+  if (DATA.below.length >= 1) {
+    tl.to("#tl-below-0", { x: 10, duration: 0.3, ease: "power1.inOut", yoyo: true, repeat: 1 }, 9.9);
+  }
+
+  tl.to([".tl-label", "#tl-list"], { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 12.3);
+  tl.to({}, { duration: TOTAL }, 0);
+
+  function renderFrame(t) { if (t === 0) tl.progress(0); else tl.time(t); }
+  window.renderFrame = renderFrame;
+  window.__thresholdListTimeline = tl;
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement("div");
+    bar.className = "debug-bar";
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector("#dbg-range"), label = bar.querySelector("#dbg-t");
+    range.addEventListener("input", function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector("#dbg-0").addEventListener("click", function () { range.value = 0; renderFrame(0); label.textContent = "0.00"; });
+    bar.querySelector("#dbg-end").addEventListener("click", function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

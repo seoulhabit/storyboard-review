@@ -29,7 +29,7 @@ A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all sixteen (click a
+Open [index.html](index.html) for a browsable gallery of all nineteen (click a
 card to load its live preview — they're not auto-loaded so the page doesn't
 try to run four GSAP timelines and a WebGL scene at once).
 
@@ -86,10 +86,31 @@ side; this folder is the design-reference side.
 | [Dawn to Dusk Skincare](visual-components/dawn-to-dusk-routine/am-pm-skincare-spike.html) | `am-pm-skincare-spike.html` | AM ("Protect", 5 steps) vs PM ("Treat + Replenish", 5 steps) routine checklist | Unnumbered, earlier-stage — no design-law framing or deterministic clock yet |
 | [RoutineLadder](visual-components/routine-ladder/routineladder-spike.html) | `routineladder-spike.html` | Six-rung focus ladder, one step at a time in a deterministic-clock 3D depth stack — Cleanse → Toner → Essence-Serum → Ampoule → Moisturiser → SPF | Unnumbered — `catalog.md` Flag 3 guesses this is one of the design system's own unfilled "3/5" series slots (1, 2, or 5) but doesn't confirm which |
 | [Celestial Arc](visual-components/celestial-arc/celestial-arc-spike.html) | `celestial-arc-spike.html` | Day/night sky motif — dashed sunrise-to-sunset arc, traveling color-shift dot, pulsing CSS sun, crescent moon + twinkling stars | Unnumbered — extracted from Dawn to Dusk Skincare's hero backdrop so the motif is reusable on its own |
+| [TermDefinition](visual-components/term-definition/termdefinition-spike.html) | `termdefinition-spike.html` | Full-frame hero card — icon, name (+ optional Korean), category, definition, "commonly used for" line, cycling through a data array with a shared progress rail | Unnumbered — the design system's own name, harvested from **five** independent shipped reimplementations (the four `skincare-glossary-part-*` videos + `skincare-ingredient-glossary`), none of which knew about the others |
+| [ThresholdList](visual-components/threshold-list/thresholdlist-spike.html) | `thresholdlist-spike.html` | Ranked list split by a cutoff line — a "rule slam" lands at the threshold, below-cutoff rows desaturate and scramble to visualize "order stops meaning anything here" | Unnumbered — generalized from `kbeauty-one-percent-line`'s "1% Line" scene into a reusable above/below-cutoff mechanism |
 
 The in-page numbering (3/5, 4/5) is the components' own — slots 1, 2, and 5
 don't appear among today's files, so treat that as a hint about a larger
-plan rather than a complete series.
+plan rather than a complete series. `TermDefinition` and `ThresholdList` are
+outside that numbering; see each entry's own README for provenance.
+
+**Considered and not harvested, 2026-08-30 review** — checked against the
+same bar the two entries above cleared, and didn't:
+- `.cta-chip` (`kbeauty-one-percent-line/08-cta-endcard.html`) — a labeled
+  pill, optionally with a thumbnail image (`cta-chip-hb` variant, "X = Y"
+  equivalence text). Already an established design-system-level pattern
+  (pill chips, `--r-pill`) rather than a distinct component with its own
+  choreography — see `seoulhabit-launch/frame.md`'s own notes on this.
+- `.trick-fan-chip` (`kbeauty-one-percent-line/05-the-trick.html`) — a fanned
+  cluster of ingredient-name chips. Single use, lower generality than
+  ThresholdList's mechanism; not harvested this pass.
+- `.htu-word` (`snail-mucin-truth/05-how-to-use.html`) — word-by-word kinetic
+  type reveal. Already documented as a general motion technique ("type as
+  the performer") rather than a discrete component with its own state/data
+  contract — nothing to harvest beyond what's already written down.
+- The `hook-bottle-*` SVGs (`kbeauty-one-percent-line/01-hook.html`) — a
+  decorative dropper-bottle icon, not a data-driven component. Closer to
+  `marks/` than `visual-components/`; not harvested.
 
 ## Marks
 

@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SeoulHabitSkin — Banner 2560x1440</title>
+<style>
+  @font-face {
+    font-family: "EB Garamond";
+    src: local("EB Garamond");
+  }
+  html, body { margin: 0; padding: 0; }
+  #canvas {
+    width: 2560px;
+    height: 1440px;
+    background: #F7F5F0; /* --paper */
+    position: relative;
+    overflow: hidden;
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* safe area: 1546 x 423, centered => x 507-2053, y 508-931.
+     QA guide only — hidden by default, shown with ?debug=1 (never baked
+     into an export). */
+  #safe-area {
+    position: absolute;
+    left: 507px; top: 508px;
+    width: 1546px; height: 423px;
+  }
+  body.debug #safe-area {
+    outline: 1px dashed rgba(201,122,92,0.4);
+  }
+
+  /* Right-hand macro plate, bleeds off the right edge. Starts at x=1900 so
+     it never overlaps the headline (measured right edge 1860px) inside the
+     safe area — verified via getBoundingClientRect. Real generated photo
+     (assets/images/macro-serum-drop.png, marketing_studio_image, 768x1376),
+     not a placeholder. */
+  #plate {
+    position: absolute;
+    right: 0; top: 0;
+    width: 660px; height: 1440px;
+    overflow: hidden;
+    background: #EFE9DC; /* fallback if the file fails to load */
+  }
+  #plate img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 40%;
+    display: block;
+  }
+
+  #content {
+    position: absolute;
+    left: 560px; top: 508px;
+    width: 1300px; height: 423px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 34px;
+    letter-spacing: 0.12em;
+    color: #6B6B6B; /* --ink-2 */
+    margin-bottom: 22px;
+  }
+  #headline {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 400;
+    font-size: 118px;
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    color: #131516; /* --ink */
+  }
+  /* Sits partly over the macro plate (safe-area right edge 2053, plate starts
+     1900) — the plate is a real photo in production, not this placeholder
+     gradient, so contrast against it can't be guaranteed by color alone.
+     Same fix the video frames already use for text-over-unpredictable-footage
+     (frame.md's Scrim treatment): an opaque surface behind the copy. */
+  #schedule {
+    position: absolute;
+    right: 510px; bottom: 512px;
+    display: flex;
+    align-items: center;
+    padding: 9px 20px;
+    background: var(--mist, #F0EBE1);
+    border-radius: 999px; /* --r-pill — established chip pattern in this system */
+  }
+  #schedule span {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    color: #131516; /* --ink — full contrast, guaranteed by the opaque pill */
+  }
+
+  /* breakpoint guides for QA — not exported */
+  .bp-guide {
+    position: absolute;
+    top: 0; bottom: 0;
+    border-left: 1px solid rgba(89,184,174,0.5);
+    border-right: 1px solid rgba(89,184,174,0.5);
+  }
+  #bp-mobile { left: 507px; width: 1546px; } /* == safe area */
+  #bp-tablet { left: 352.5px; width: 1855px; }
+</style>
+</head>
+<body>
+  <div id="canvas">
+    <div id="plate">
+      <img src="assets/images/macro-serum-drop.png" alt=""
+           width="768" height="1376"
+           loading="eager" decoding="sync">
+    </div>
+    <div id="safe-area"></div>
+    <div id="content">
+      <div id="eyebrow">EVIDENCE · NOT HYPE</div>
+      <div id="headline">Korean Skincare,<br>Fact&#8209;Checked.</div>
+    </div>
+    <div id="schedule"><span>NEW VIDEO EVERY DAY</span></div>
+  </div>
+  <script>
+    if (new URLSearchParams(location.search).has('debug')) {
+      document.body.classList.add('debug');
+    }
+  </script>
+</body>
+</html>

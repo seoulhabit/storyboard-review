@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Banner safe-area crop preview</title>
+<style>
+  body { margin: 0; padding: 16px; background: #ddd; font: 12px system-ui; color: #111; }
+  .label { font-weight: 600; margin-bottom: 6px; }
+  .crop-box {
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid #59B8AE;
+    margin-bottom: 20px;
+  }
+  .crop-box iframe {
+    position: absolute;
+    border: none;
+    width: 2560px;
+    height: 1440px;
+  }
+</style>
+</head>
+<body>
+  <div class="label">Mobile safe area — 1546 x 423 (centered crop)</div>
+  <div class="crop-box" style="width:1546px; height:423px;">
+    <iframe src="banner-2560.html" style="left:-507px; top:-508px;"></iframe>
+  </div>
+
+  <div class="label">Tablet crop — 1855 x 423 (centered)</div>
+  <div class="crop-box" style="width:1855px; height:423px;">
+    <iframe src="banner-2560.html" style="left:-352.5px; top:-508px;"></iframe>
+  </div>
+
+  <div class="label">Desktop — full 2560 x 423 strip (centered)</div>
+  <div class="crop-box" style="width:2560px; height:423px;">
+    <iframe src="banner-2560.html" style="left:0px; top:-508px;"></iframe>
+  </div>
+</body>
+</html>

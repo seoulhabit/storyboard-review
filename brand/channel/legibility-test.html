@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Avatar legibility test — 24/32/48px</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500;
+    font-display: block;
+  }
+  body { margin: 0; padding: 20px; background: #fff; font: 12px system-ui; color: #111; }
+  .row-label { font-weight: 600; margin: 18px 0 8px; }
+  .strip { display: flex; gap: 30px; align-items: center; }
+  .cell { text-align: center; width: 90px; }
+  .cell div.cap { font-size: 10px; margin-top: 5px; }
+  .avatar {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    background: #F7F5F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .glyph {
+    font-family: "Noto Sans KR Video", sans-serif;
+    font-weight: 500;
+    color: #131516;
+    line-height: 1;
+  }
+  img.avatar { object-fit: cover; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    const refs = [
+      ["Soko Glam (wordmark, survived)", "https://yt3.ggpht.com/ytc/AIdro_m92R6vrMjCmeP6UNolHCChoKG2lp5Hek3TNSV_hGHYaUo=s800-c-k-c0x00ffffff-no-rj"],
+      ["Song of Skin (wordmark, failed)", "https://yt3.ggpht.com/iG_ScOiIdLAzI7SMBfPJT9SUjrned7f_JaaV0FyqeNzZDy8HJ6WlP4j5xSgNcDM3C0lJkDEAzA=s800-c-k-c0x00ffffff-no-rj"],
+      ["Wishtrend TV (wordmark, failed)", "https://yt3.ggpht.com/XVoEK9XlpWn_IYtcW0BAPadNj8b8qNj7SU1sIJBdl9j5kibjdzC9f11IQ0zLX4IG8PwzKSzZ=s800-c-k-c0x00ffffff-no-rj"]
+    ];
+    const sizes = [24, 32, 48];
+    const root = document.getElementById('root');
+    for (const s of sizes) {
+      const label = document.createElement('div');
+      label.className = 'row-label';
+      label.textContent = s + 'px  (24=comment thread, 32=sidebar, 48=channel row)';
+      root.appendChild(label);
+      const strip = document.createElement('div');
+      strip.className = 'strip';
+
+      // our new SeoulHabitSkin avatar first
+      const cell0 = document.createElement('div');
+      cell0.className = 'cell';
+      const av0 = document.createElement('div');
+      av0.className = 'avatar';
+      av0.style.width = s + 'px'; av0.style.height = s + 'px';
+      const g = document.createElement('div');
+      g.className = 'glyph';
+      g.textContent = '습';
+      g.style.fontSize = Math.round(s * 0.62) + 'px';
+      av0.appendChild(g);
+      const cap0 = document.createElement('div');
+      cap0.className = 'cap';
+      cap0.textContent = 'SeoulHabitSkin (new)';
+      cell0.appendChild(av0); cell0.appendChild(cap0);
+      strip.appendChild(cell0);
+
+      for (const [name, url] of refs) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const im = document.createElement('img');
+        im.className = 'avatar';
+        im.src = url; im.width = s; im.height = s;
+        im.referrerPolicy = 'no-referrer';
+        const cap = document.createElement('div');
+        cap.className = 'cap';
+        cap.textContent = name;
+        cell.appendChild(im); cell.appendChild(cap);
+        strip.appendChild(cell);
+      }
+      root.appendChild(strip);
+    }
+  </script>
+</body>
+</html>

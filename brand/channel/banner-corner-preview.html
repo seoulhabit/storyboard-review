@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Banner corner check</title>
+<style>
+  body { margin: 0; padding: 16px; background: #ddd; font: 12px system-ui; }
+  .label { font-weight: 600; margin-bottom: 6px; }
+  .crop-box {
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid #59B8AE;
+    width: 700px; height: 423px;
+  }
+  .crop-box iframe {
+    position: absolute;
+    border: none;
+    width: 2560px;
+    height: 1440px;
+    left: -1860px; /* show x 1860-2560, the right edge of the safe area + plate */
+    top: -508px;
+  }
+</style>
+</head>
+<body>
+  <div class="label">Bottom-right corner: safe-area edge (x=2053) marked, schedule text over plate</div>
+  <div class="crop-box">
+    <iframe src="banner-2560.html"></iframe>
+  </div>
+</body>
+</html>

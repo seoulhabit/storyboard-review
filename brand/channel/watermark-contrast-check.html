@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Watermark contrast check</title>
+<style>
+  body { margin: 0; padding: 16px; background: #333; font: 12px system-ui; color: #fff; display: flex; gap: 24px; }
+  .swatch { width: 240px; height: 240px; position: relative; border-radius: 6px; overflow: hidden; }
+  .swatch iframe { position: absolute; right: 8px; bottom: 8px; width: 150px; height: 150px; border: none; }
+  .label { position: absolute; top: 6px; left: 8px; font-size: 11px; }
+  .dark { background: linear-gradient(135deg, #0a0a0a, #2b1a12); }
+  .bright { background: linear-gradient(135deg, #f2ede2, #d9cdb8); }
+  .midtone-skin { background: linear-gradient(135deg, #c9a68a, #8a6a52); }
+</style>
+</head>
+<body>
+  <div class="swatch dark"><div class="label">dark footage</div><iframe src="watermark-150.html"></iframe></div>
+  <div class="swatch bright"><div class="label">bright footage</div><iframe src="watermark-150.html"></iframe></div>
+  <div class="swatch midtone-skin"><div class="label">skin-tone macro</div><iframe src="watermark-150.html"></iframe></div>
+</body>
+</html>

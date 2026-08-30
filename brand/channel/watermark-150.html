@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SeoulHabitSkin — Watermark 150x150</title>
+<style>
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Noto Sans KR";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500;
+    font-display: block;
+  }
+  html, body { margin: 0; padding: 0; background: transparent; }
+  #canvas {
+    width: 150px;
+    height: 150px;
+    position: relative;
+  }
+  /* Measured contrast: coral disc alone is 1.01:1 against warm skin-tone/
+     product-macro footage (this channel's actual B-roll per frame.md — amber
+     bottles, serum drops, gel textures) — effectively invisible. A solid
+     --paper ring (a stroke, not a glow/shadow — the design system bans
+     drop-shadow/box-shadow specifically, not hairline borders; matches its
+     existing --elev-1 "hairline seat" vocabulary) brings that to 3.02:1,
+     clearing the WCAG AA graphical-object threshold, while dark-footage
+     contrast stays excellent (17.7:1 for the ring vs 5.9:1 for the coral
+     alone). Verified in watermark-contrast-check.html against dark/bright/
+     skin-tone swatches. */
+  #disc {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 138px; height: 138px;
+    transform: translate(-50%, -50%);
+    background: #C97A5C; /* --coral */
+    border: 4px solid #F7F5F0; /* --paper ring, box-sizing keeps outer edge at 138px */
+    box-sizing: border-box;
+    border-radius: 50%;
+  }
+  #glyph {
+    position: absolute;
+    left: 50%; top: 53%;
+    transform: translate(-50%, -50%);
+    font-family: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+    font-weight: 500;
+    font-size: 78px; /* ~56% of 138 disc diameter */
+    line-height: 1;
+    color: #F7F5F0; /* --paper */
+  }
+</style>
+</head>
+<body>
+  <div id="canvas">
+    <div id="disc"></div>
+    <div id="glyph">습</div>
+  </div>
+</body>
+</html>

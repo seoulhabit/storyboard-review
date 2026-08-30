@@ -38,6 +38,29 @@ live under `videos/<slug>/` as self-contained HyperFrames projects
   - See `catalog/README.md`'s "Considered and not harvested" note for
     patterns reviewed and declined (`.cta-chip`, `.trick-fan-chip`,
     `.htu-word`, the `hook-bottle-*` icon), with reasoning.
+- **`catalog/index.html` redesigned** — the gallery previously treated every
+  entry as a uniform "card + load-preview button," which hid the thing that
+  actually matters now that the catalog holds real components, not just
+  images: whether an entry has a data contract and a time axis at all.
+  Cards now carry two explicit axes — **kind** (component / static
+  composition / mark / photography / linked) and, for components, **control**
+  (`⏱ clock` deterministic-and-seekable, `◧ select` a discrete prop,
+  `⚠ none` no scrub interface — flagged per-card when that's because the
+  component isn't render-safe, e.g. Celestial Arc's autoplaying CSS
+  `@keyframes`, not just because it's early-stage). Duration and a short
+  field contract are shown before loading anything. Loading a
+  `debug`-gated component now auto-appends `?debug=1` — previously
+  RoutineLadder's scrubber was invisible in the gallery unless you already
+  knew that query param existed, so the component looked like a frozen
+  image even though it's fully seekable. Photography (the 25-still
+  ingredient set + 12-scene product set, 37 total) is now in the gallery at
+  all — it wasn't before — rendered as real inline thumbnails rather than
+  an iframe-loading button, since there's nothing to scrub. One real bug was
+  found and fixed while verifying the rebuild: an unescaped literal
+  `<select>` in a description string got parsed as a real HTML tag, silently
+  nesting the next two cards inside GradedScale's card instead of as
+  siblings — caught by comparing `grid.children.length` against the actual
+  title count, not by eyeballing the render.
 
 ## Active video projects
 

@@ -29,9 +29,22 @@ A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 "EvidenceMeter" scene (visual component) that cites `ING-PDRN-S004`.
 
-Open [index.html](index.html) for a browsable gallery of all nineteen (click a
-card to load its live preview — they're not auto-loaded so the page doesn't
-try to run four GSAP timelines and a WebGL scene at once).
+Open [index.html](index.html) for a browsable gallery — redesigned 2026-08-30
+to stop treating every entry as an image. Cards are grouped by **kind**
+(component / static composition / mark / photography / linked) and, for
+components specifically, by **control** — `⏱ clock` (deterministic,
+seekable, safe for a real render), `◧ select` (a discrete prop, no time
+axis), or `⚠ none` (no scrub interface yet, or — flagged per-card — running
+on its own autoplaying clock and *not* render-safe, like Celestial Arc's
+CSS `@keyframes`). Every clock/select component shows its duration and a
+short field contract on the card face, before you load anything — the point
+of harvesting a component is knowing what you can pass it without reading
+its source. Loading a `debug`-gated clock component auto-appends `?debug=1`
+so its scrubber is visible immediately, not just to whoever already knew
+that flag existed. Photography (37 stills across the two photo catalogs)
+renders as real inline thumbnails, not a "load preview" button, since
+there's no timeline to scrub. Cards aren't auto-loaded on page open so the
+page doesn't try to run several GSAP timelines and a WebGL scene at once.
 
 ## Shared design rules
 

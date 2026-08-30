@@ -6,8 +6,13 @@
 <title>Component Catalog — Story Board</title>
 <style>
   :root{
-    --bg:#1C1A17; --card:#2C2720; --card-edge:#3A342A;
-    --amber:#E8A33D; --amber-dim:#8A6528; --teal:#4F9B8E;
+    --bg:#1C1A17; --card:#2C2720; --card-edge:#3A342A; --card-edge-hi:#4A4232;
+    --amber:#E8A33D; --amber-dim:#8A6528; --amber-wash:rgba(232,163,61,0.08);
+    --teal:#4F9B8E; --teal-dim:#2f6058;
+    --violet:#9B8AC4; --violet-dim:#5f5480;
+    --warn:#D9764A; --warn-dim:#8a4a2c;
+    --mauve:#C98FB0; --mauve-dim:#8a5c73;
+    --sky:#6FA8C9; --sky-dim:#3d6a80;
     --text:#F0EBE3; --text-muted:#9C948A; --text-faint:#655D51;
   }
   *{box-sizing:border-box;}
@@ -19,30 +24,60 @@
   header p{margin:0;color:var(--text-muted);font-size:13px;}
   header a{color:var(--amber);text-decoration:none;}
   header a:hover{text-decoration:underline;}
-  main{padding:24px 32px 60px;max-width:1200px;margin:0 auto;}
-  .rules{background:var(--card);border:1px solid var(--card-edge);border-radius:10px;
-    padding:16px 20px;margin-bottom:32px;font-size:12.5px;color:var(--text-muted);line-height:1.6;}
-  .rules b{color:var(--text);}
-  section{margin-bottom:36px;}
-  section > h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);
-    margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--card-edge);}
+  main{padding:24px 32px 60px;max-width:1240px;margin:0 auto;}
+
+  /* ---------- legend: the two axes that actually matter now ---------- */
+  .legend{background:var(--card);border:1px solid var(--card-edge);border-radius:10px;
+    padding:18px 22px;margin-bottom:32px;font-size:12.5px;color:var(--text-muted);line-height:1.7;}
+  .legend h3{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text);}
+  .legend-row{display:flex;flex-wrap:wrap;gap:8px 10px;margin-bottom:10px;align-items:center;}
+  .legend-row:last-of-type{margin-bottom:0;}
+  .legend b{color:var(--text);font-weight:600;}
+  .legend .note{color:var(--text-faint);font-size:11.5px;}
+
+  section{margin-bottom:40px;}
+  section > .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    margin:0 0 6px;padding-bottom:8px;border-bottom:1px solid var(--card-edge);}
+  section > .sec-head h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin:0;}
+  section > .sec-head .sec-count{font-size:11px;color:var(--text-faint);}
+  section > .sec-sub{font-size:12px;color:var(--text-faint);margin:0 0 14px;line-height:1.5;}
+
   .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));gap:16px;}
-  .card{background:var(--card);border:1px solid var(--card-edge);border-radius:10px;
+
+  /* ---------- badges: kind-colored left rail + pill badges ---------- */
+  .card{background:var(--card);border:1px solid var(--card-edge);border-left-width:3px;border-radius:10px;
     padding:18px 20px;display:flex;flex-direction:column;gap:10px;}
+  .card.k-component{border-left-color:var(--amber);}
+  .card.k-static{border-left-color:var(--text-faint);}
+  .card.k-mark{border-left-color:var(--mauve);}
+  .card.k-linked{border-left-color:var(--sky);}
+  .card.k-gap{border-left-color:var(--card-edge);}
+
   .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
   .card-title{font-size:15px;font-weight:600;}
   .card-file{font-size:11px;color:var(--text-faint);margin-top:3px;word-break:break-all;}
+  .badge-row{display:flex;flex-wrap:wrap;gap:6px;}
   .badge{flex-shrink:0;font-size:10px;text-transform:uppercase;letter-spacing:.04em;
     padding:3px 8px;border-radius:99px;border:1px solid var(--card-edge);color:var(--text-muted);white-space:nowrap;}
-  .badge.spike{color:var(--amber);border-color:var(--amber-dim);}
-  .badge.sketch{color:var(--teal);border-color:#2f6058;}
-  .badge.linked{color:#6FA8C9;border-color:#3d6a80;}
-  .badge.gap{color:var(--text-faint);border-color:var(--card-edge);}
-  .badge.mark{color:#C98FB0;border-color:#8a5c73;}
+  .badge.status-spike{color:var(--amber);border-color:var(--amber-dim);}
+  .badge.status-sketch{color:var(--teal);border-color:var(--teal-dim);}
+  .badge.status-linked{color:var(--sky);border-color:var(--sky-dim);}
+  .badge.status-gap{color:var(--text-faint);border-color:var(--card-edge);}
+  .badge.status-mark{color:var(--mauve);border-color:var(--mauve-dim);}
+  .badge.ctl-clock{color:var(--teal);border-color:var(--teal-dim);background:rgba(79,155,142,0.08);}
+  .badge.ctl-select{color:var(--violet);border-color:var(--violet-dim);background:rgba(155,138,196,0.08);}
+  .badge.ctl-none{color:var(--warn);border-color:var(--warn-dim);background:rgba(217,118,74,0.08);}
+  .badge.duration{color:var(--text);border-color:var(--card-edge-hi);font-family:"SF Mono","JetBrains Mono",monospace;}
+
+  .contract{background:var(--bg);border:1px solid var(--card-edge);border-radius:6px;
+    padding:8px 10px;font-size:11px;color:var(--text-muted);line-height:1.5;}
+  .contract .k{color:var(--amber);}
+  .warn-note{background:rgba(217,118,74,0.09);border:1px solid var(--warn-dim);border-radius:6px;
+    padding:8px 10px;font-size:11.5px;color:#E3A78B;line-height:1.5;}
+
   .no-preview{border:1px dashed var(--card-edge);border-radius:8px;padding:14px;
     font-size:12px;color:var(--text-faint);text-align:center;}
   .card-desc{font-size:12.5px;color:var(--text-muted);line-height:1.5;margin:0;}
-  .card-slot{}
   .load-btn{width:100%;background:var(--bg);border:1px dashed var(--card-edge);color:var(--text-muted);
     border-radius:8px;padding:14px;font-size:12px;cursor:pointer;font-family:inherit;}
   .load-btn:hover{border-color:var(--amber-dim);color:var(--amber);}
@@ -50,122 +85,288 @@
   .card-links{display:flex;gap:14px;font-size:11px;}
   .card-links a{color:var(--text-faint);text-decoration:none;}
   .card-links a:hover{color:var(--amber);}
+
+  /* ---------- photography: thumbnail grids, not iframe cards ---------- */
+  .photo-group{margin-bottom:22px;}
+  .photo-group h3{font-size:12px;color:var(--text-muted);margin:0 0 4px;font-weight:600;}
+  .photo-group .photo-count{font-size:11px;color:var(--text-faint);margin:0 0 10px;}
+  .photo-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));gap:8px;}
+  .photo-tile{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--card-edge);
+    background:var(--card);aspect-ratio:1;display:block;text-decoration:none;}
+  .photo-tile img{width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(0.92);transition:transform .15s ease, filter .15s ease;}
+  .photo-tile:hover img{transform:scale(1.05);filter:saturate(1.05);}
+  .photo-tile .tile-label{position:absolute;left:0;right:0;bottom:0;padding:5px 7px 4px;
+    background:linear-gradient(to top, rgba(0,0,0,0.82), transparent);
+    font-size:9.5px;color:var(--text);line-height:1.25;}
+
   .empty{color:var(--text-muted);padding:40px 0;text-align:center;}
 </style>
 </head>
 <body>
 <header>
   <h1>Component Catalog</h1>
-  <p><span class="mono">Story Board/catalog</span> &middot; see <a href="README.md">README.md</a> for the full write-up · click a card to load its live preview</p>
+  <p><span class="mono">Story Board/catalog</span> &middot; see <a href="README.md">README.md</a> for full write-ups &middot; click a card to load its live preview</p>
 </header>
 <main>
-  <div class="rules">
-    <b>Shared design rules</b> across the rules-based components (EvidenceMeter, GradedScale, SplitFaceProtocol):
-    no success color (confirmed reads the same at every level) &middot;
-    deterministic <span class="mono">t</span>-driven GSAP clocks (paused, scrubbed, no autoplay) &middot;
-    locked to their claim/source chip, never rendered standalone. Cards tagged
-    <span class="badge sketch" style="display:inline;padding:2px 6px;">sketch</span> don't follow these yet.
+  <div class="legend">
+    <h3>How to read this catalog</h3>
+    <div class="legend-row">
+      <b>Kind</b> — what the thing fundamentally is:
+      <span class="badge status-spike" style="display:inline-flex;">component</span>
+      <span class="badge" style="display:inline-flex;border-color:var(--card-edge-hi);">static composition</span>
+      <span class="badge status-mark" style="display:inline-flex;">mark</span>
+      <span class="badge status-linked" style="display:inline-flex;">photography / linked</span>
+    </div>
+    <div class="legend-row">
+      <b>Control</b> (components only) — how you drive it, not just how finished it is:
+      <span class="badge ctl-clock" style="display:inline-flex;">⏱ clock</span>
+      <span class="note">deterministic, seekable via a <span class="mono">t</span> value — safe for real renders</span>
+    </div>
+    <div class="legend-row">
+      <span style="width:0"></span>
+      <span class="badge ctl-select" style="display:inline-flex;">◧ select</span>
+      <span class="note">a discrete prop (a dropdown, an enum), no time axis</span>
+    </div>
+    <div class="legend-row">
+      <span style="width:0"></span>
+      <span class="badge ctl-none" style="display:inline-flex;">⚠ none</span>
+      <span class="note">no scrub interface yet — either nothing's been authored, or (flagged per-card) it plays on its own clock and isn't render-safe</span>
+    </div>
+    <div class="legend-row">
+      <span class="note">Duration and a short field contract are shown for every clock/select component that has one documented — the point of harvesting a component is knowing what you can pass it without reading its source.</span>
+    </div>
   </div>
 
   <section>
-    <h2>Ingredients — substance-specific</h2>
-    <div class="grid" id="grid-ingredients"></div>
-  </section>
-
-  <section>
-    <h2>Visual components — reusable, ingredient-agnostic</h2>
+    <div class="sec-head"><h2>Data-driven components</h2><span class="sec-count" id="count-components"></span></div>
+    <p class="sec-sub">Reusable, ingredient-agnostic. Loading a <b>clock</b>-control item auto-opens its debug scrubber if it's gated behind one — you shouldn't have to already know that flag exists to see it move.</p>
     <div class="grid" id="grid-components"></div>
   </section>
 
   <section>
-    <h2>Marks — standalone identity exploration</h2>
+    <div class="sec-head"><h2>Static compositions</h2><span class="sec-count" id="count-static"></span></div>
+    <p class="sec-sub">Single-frame, ingredient-specific posters — not reusable components, no control axis by design.</p>
+    <div class="grid" id="grid-static"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Marks</h2><span class="sec-count" id="count-marks"></span></div>
+    <p class="sec-sub">Standalone identity/logo exploration — flat vector SVGs, not posters or components.</p>
     <div class="grid" id="grid-marks"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Photography</h2><span class="sec-count" id="count-photo"></span></div>
+    <p class="sec-sub">Raw stills, not components — for B-roll and thumbnails. Click a tile to open it full size.</p>
+    <div id="photo-root"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Linked projects</h2><span class="sec-count" id="count-linked"></span></div>
+    <p class="sec-sub">No file lives under <span class="mono">catalog/</span> — content already has a proper home in <span class="mono">videos/</span> and isn't duplicated here.</p>
+    <div class="grid" id="grid-linked"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Gaps</h2><span class="sec-count" id="count-gap"></span></div>
+    <p class="sec-sub">Documented honestly as nothing-built-yet, rather than backfilled with a placeholder.</p>
+    <div class="grid" id="grid-gap"></div>
   </section>
 </main>
 
 <script>
+// kind: "component" | "static" | "mark" | "photo" | "linked" | "gap"
+// control (kind:"component" only): "clock" | "select" | "none"
+// scrubber (control:"clock" only): "builtin" (already visible on load) | "debug" (needs ?debug=1, auto-applied)
 const ITEMS = {
-  "grid-ingredients": [
+  "grid-components": [
+    { title: "TermDefinition", file: "termdefinition-spike.html", src: "visual-components/term-definition/termdefinition-spike.html",
+      status: "spike", control: "clock", scrubber: "debug", duration: 10.5,
+      contract: "<span class=\"k\">{ name, kr?, category, what, used }[]</span> — swap the <span class=\"k\">TERMS</span> array",
+      desc: "Full-frame hero card — icon, name (+ Korean), category, definition, \"commonly used for\" line, cycling through a data array. Harvested from five independent shipped reimplementations across the glossary videos." },
+    { title: "ThresholdList", file: "thresholdlist-spike.html", src: "visual-components/threshold-list/thresholdlist-spike.html",
+      status: "spike", control: "clock", scrubber: "debug", duration: 13.1,
+      contract: "<span class=\"k\">{ title, above: string[], below: string[] }</span>",
+      desc: "Ranked list split by a cutoff line — a rule slam lands at the threshold, below-cutoff rows desaturate and scramble. Generalized from kbeauty-one-percent-line's \"1% Line\" scene." },
+    { title: "RoutineLadder", file: "routineladder-spike.html", src: "visual-components/routine-ladder/routineladder-spike.html",
+      status: "spike", control: "clock", scrubber: "debug", duration: 8.56,
+      contract: "Fixed 6-step markup (<span class=\"k\">#rung-1…#rung-6</span>) — content is hand-edited, not yet a swappable data array",
+      desc: "Six-rung focus ladder in a deterministic-clock 3D depth stack — Cleanse → Toner → Essence-Serum → Ampoule → Moisturiser → SPF, one step in focus at a time." },
+    { title: "EvidenceMeter — Lockup + Design Modes", file: "evidencemeter-spike.html", src: "visual-components/evidence-meter/evidencemeter-spike.html",
+      status: "spike", tag: "Component 3/5", control: "clock", scrubber: "builtin", duration: 0.42,
+      contract: "<span class=\"k\">{ score: 0–4 }</span> — 4 confidence tiers, plus 5 color modes and a present/absent design mode set via UI, not props",
+      desc: "Flat 2D instrument: claim → meter → source footnote." },
+    { title: "EvidenceMeter — Volumetric Monolith", file: "evidencemeter-3d-spike.html", src: "visual-components/evidence-meter/evidencemeter-3d-spike.html",
+      status: "spike", tag: "Component 3/5 (alt)", control: "clock", scrubber: "builtin", duration: 1.04,
+      contract: "<span class=\"k\">{ score: 0–4 }</span> — same contract as the 2D lockup, rendered as a Three.js object",
+      desc: "Same component as a Three.js 3D object instead of a flat panel." },
+    { title: "SplitFaceProtocol — Clinical Vector Map", file: "splitfaceprotocol-spike.html", src: "visual-components/split-face-protocol/splitfaceprotocol-spike.html",
+      status: "spike", control: "clock", scrubber: "builtin", duration: 2.85,
+      contract: "Fixed two-arm diagram — content targeted via <span class=\"k\">#control-arm</span> / <span class=\"k\">#active-arm</span>, not a data array",
+      desc: "Pure-SVG bilateral study diagram — independently targetable arms, no photography." },
+    { title: "GradedScale — Strict Enum Badge", file: "gradedscale-spike.html", src: "visual-components/graded-scale/gradedscale-spike.html",
+      status: "spike", tag: "Component 4/5", control: "select", duration: null,
+      contract: "<span class=\"k\">{ value: 1–5 (integer) }</span> — validateGradedScale() fails loud on anything else",
+      desc: "5-node hard-enum badge, driven by an in-page gate dropdown (a native select element), not a time axis." },
+    { title: "Dawn to Dusk Skincare", file: "am-pm-skincare-spike.html", src: "visual-components/dawn-to-dusk-routine/am-pm-skincare-spike.html",
+      status: "sketch", control: "none", duration: null,
+      contract: null,
+      warn: "Static — no motion authored yet. No design-law framing, no deterministic clock. Earliest-stage item in this section.",
+      desc: "AM (\"Protect\", 5 steps) vs PM (\"Treat + Replenish\", 5 steps) routine checklist. The \"day and night\" component." },
+    { title: "Celestial Arc", file: "celestial-arc-spike.html", src: "visual-components/celestial-arc/celestial-arc-spike.html",
+      status: "spike", control: "none", duration: null,
+      contract: null,
+      warn: "Runs on autoplaying CSS <span class=\"mono\">@keyframes … infinite</span>, not a paused/seekable GSAP timeline — it violates this project's own render-determinism rule (see faceless-video-craft skill). Fine to look at; not yet safe to drop into a real render.",
+      desc: "Day/night sky motif — dashed sunrise-to-sunset arc with a traveling color-shift dot, pulsing sun, crescent moon + twinkling stars. Extracted from Dawn to Dusk Skincare's hero backdrop." },
+  ],
+  "grid-static": [
     { title: "PDRN Renewal", file: "pdrn-poster-spike.html", src: "ingredients/pdrn/pdrn-poster-spike.html",
       status: "spike", desc: "Branded hero poster — 4 steps / 7 benefits, Trinity Medical Aesthetics, Traditional Chinese copy." },
     { title: "PDRN Skin Regeneration", file: "pdrn-skin-regeneration-spike.html", src: "ingredients/pdrn/pdrn-skin-regeneration-spike.html",
       status: "spike", desc: "3-point mechanism explainer — Barrier Repair, Reduces Inflammation, Boosts Cell Renewal. Not a poster." },
     { title: "Snail Mucin Essence", file: "snail-mucin-poster-spike.html", src: "ingredients/snail-mucin/snail-mucin-poster-spike.html",
       status: "spike", desc: "Same poster template family as PDRN Renewal — 5 key actives / 4 skin benefits, different ingredient." },
-    { title: "Ginseng — Two Routes", file: "→ videos/red-ginseng-two-routes/", src: null,
-      status: "linked", desc: "“Oral and topical red ginseng aren’t interchangeable.” Rendered (40.1s). Linked to the real project, not duplicated. Its scene files are template fragments (need the real HyperFrames runtime, not viewable standalone) — see README.md for the frame-packet write-ups instead." },
-    { title: "Retinal vs. Retinol", file: "no file yet", src: null,
-      status: "gap", desc: "“What the Research Actually Compared.” Validated script exists, but no poster/spike/video project lives in this repo yet." },
-    { title: "Skincare Ingredient Glossary", file: "→ videos/skincare-ingredient-glossary/", src: null,
-      status: "linked", desc: "76s, 20 ingredients (AHA/BHA → Vitamin C), one card each. Already rendered. Linked to the real project, not duplicated." },
-  ],
-  "grid-components": [
-    { title: "EvidenceMeter — Lockup + Design Modes", file: "evidencemeter-spike.html", src: "visual-components/evidence-meter/evidencemeter-spike.html",
-      status: "spike", tag: "Component 3/5", desc: "Flat 2D instrument: claim → meter → source footnote. 4 confidence levels, 5 color modes, plus a present/absent design mode." },
-    { title: "EvidenceMeter — Volumetric Monolith", file: "evidencemeter-3d-spike.html", src: "visual-components/evidence-meter/evidencemeter-3d-spike.html",
-      status: "spike", tag: "Component 3/5 (alt)", desc: "Same component as a Three.js 3D object instead of a flat panel." },
-    { title: "GradedScale — Strict Enum Badge", file: "gradedscale-spike.html", src: "visual-components/graded-scale/gradedscale-spike.html",
-      status: "spike", tag: "Component 4/5", desc: "5-node hard-enum badge, integers 1–5 only. validateGradedScale() fails loud on anything else." },
-    { title: "SplitFaceProtocol — Clinical Vector Map", file: "splitfaceprotocol-spike.html", src: "visual-components/split-face-protocol/splitfaceprotocol-spike.html",
-      status: "spike", desc: "Pure-SVG bilateral study diagram — #control-arm / #active-arm, independently targetable, no photography." },
-    { title: "Dawn to Dusk Skincare", file: "am-pm-skincare-spike.html", src: "visual-components/dawn-to-dusk-routine/am-pm-skincare-spike.html",
-      status: "sketch", desc: "AM (“Protect”, 5 steps) vs PM (“Treat + Replenish”, 5 steps) routine checklist. The “day and night” component." },
-    { title: "RoutineLadder", file: "routineladder-spike.html", src: "visual-components/routine-ladder/routineladder-spike.html",
-      status: "spike", desc: "Six-rung focus ladder in a deterministic-clock 3D depth stack — Cleanse → Toner → Essence-Serum → Ampoule → Moisturiser → SPF, one step in focus at a time." },
-    { title: "Celestial Arc", file: "celestial-arc-spike.html", src: "visual-components/celestial-arc/celestial-arc-spike.html",
-      status: "spike", desc: "Day/night sky motif — dashed sunrise-to-sunset arc with a traveling color-shift dot, pulsing CSS sun, crescent moon + twinkling stars. Extracted from Dawn to Dusk Skincare's hero backdrop." },
-    { title: "TermDefinition", file: "termdefinition-spike.html", src: "visual-components/term-definition/termdefinition-spike.html",
-      status: "spike", desc: "Full-frame hero card — icon, name (+ Korean), category, definition, \"commonly used for\" line, cycling through a data array. Harvested from five independent shipped reimplementations across the glossary videos." },
-    { title: "ThresholdList", file: "thresholdlist-spike.html", src: "visual-components/threshold-list/thresholdlist-spike.html",
-      status: "spike", desc: "Ranked list split by a cutoff line — a rule slam lands at the threshold, below-cutoff rows desaturate and scramble. Generalized from kbeauty-one-percent-line's \"1% Line\" scene." },
   ],
   "grid-marks": [
     { title: "PDRN Mark", file: "pdrn-primary.svg + 8 alts", src: "marks/pdrn/pdrn-primary.svg",
-      status: "mark", desc: "Double-helix abstraction, clinical teal with a coral accent strand. Three revision rounds — cross-rungs added, then smoothed for cleaner reproduction." },
+      status: "mark", desc: "Double-helix abstraction, clinical teal with a coral accent strand." },
     { title: "Ginseng Mark", file: "ginseng-primary.svg + 3 alts", src: "marks/ginseng/ginseng-primary.svg",
-      status: "mark", desc: "Abstract root mark matched to a real reference photo — ringed neck, tapering body, root-hair tendrils, sandy tan and umber." },
+      status: "mark", desc: "Abstract root mark matched to a real reference photo — ringed neck, tapering body, root-hair tendrils." },
     { title: "Ingredient Mark (generic)", file: "ingredient-primary.svg + 3 alts", src: "marks/ingredient-generic/ingredient-primary.svg",
-      status: "mark", desc: "Generic study preceding the named marks — leaf/droplet silhouette in jade with an amber facet, not tied to one ingredient." },
+      status: "mark", desc: "Generic study preceding the named marks — leaf/droplet silhouette in jade, not tied to one ingredient." },
     { title: "Fold & Spark Brand Mark", file: "logo-primary.svg + 3 alts", src: "marks/brand-education/logo-primary.svg",
-      status: "mark", desc: "Brand-level proposal, not ingredient-specific — angular fan/pages symbol with a spark facet, on deep slate navy. Name doesn't appear elsewhere in this repo yet." },
+      status: "mark", desc: "Brand-level proposal, not ingredient-specific. Name doesn't appear elsewhere in this repo yet." },
+  ],
+  "grid-linked": [
+    { title: "Ginseng — Two Routes", file: "→ videos/red-ginseng-two-routes/", src: null,
+      status: "linked", desc: "“Oral and topical red ginseng aren’t interchangeable.” Rendered (40.1s). Scene files are template fragments — need the real HyperFrames runtime, not viewable standalone." },
+    { title: "Skincare Ingredient Glossary", file: "→ videos/skincare-ingredient-glossary/", src: null,
+      status: "linked", desc: "76s, 20 ingredients (AHA/BHA → Vitamin C), one card each. Already rendered — and the real source TermDefinition was harvested from, see Components above." },
+  ],
+  "grid-gap": [
+    { title: "Retinal vs. Retinol", file: "no file yet", src: null,
+      status: "gap", desc: "“What the Research Actually Compared.” Validated script exists, but no poster/spike/video project lives in this repo yet." },
   ],
 };
 
-function cardHTML(item) {
-  const tag = item.tag ? ` &middot; ${item.tag}` : "";
+const CTL_LABEL = { clock: "⏱ clock", select: "◧ select", none: "⚠ none" };
+
+function badgesFor(item, kind) {
+  const b = [`<span class="badge status-${item.status}">${item.status}</span>`];
+  if (kind === "component") {
+    b.push(`<span class="badge ctl-${item.control}">${CTL_LABEL[item.control]}</span>`);
+    if (item.duration != null) b.push(`<span class="badge duration">${item.duration}s</span>`);
+  }
+  if (item.tag) b.push(`<span class="badge">${item.tag}</span>`);
+  return b.join("");
+}
+
+function cardHTML(item, kind) {
   const slot = item.src
     ? `<div class="card-slot">
-        <button class="load-btn" data-src="${item.src}">&#9654; Load preview</button>
+        <button class="load-btn" data-src="${item.src}" data-scrubber="${item.scrubber || ''}">&#9654; Load preview</button>
       </div>
       <div class="card-links">
         <a href="${item.src}" target="_blank">Open in new tab &#8599;</a>
       </div>`
     : `<div class="no-preview">No local file to preview — see README.md for what exists and where.</div>`;
+  const contractHTML = item.contract ? `<div class="contract">${item.contract}</div>` : "";
+  const warnHTML = item.warn ? `<div class="warn-note">${item.warn}</div>` : "";
   return `
-    <div class="card">
+    <div class="card k-${kind}">
       <div class="card-head">
         <div>
           <div class="card-title">${item.title}</div>
-          <div class="card-file mono">${item.file}${tag}</div>
+          <div class="card-file mono">${item.file}</div>
         </div>
-        <span class="badge ${item.status}">${item.status}</span>
       </div>
+      <div class="badge-row">${badgesFor(item, kind)}</div>
       <p class="card-desc">${item.desc}</p>
+      ${contractHTML}
+      ${warnHTML}
       ${slot}
     </div>`;
 }
 
+const KIND_BY_GRID = {
+  "grid-components": "component",
+  "grid-static": "static",
+  "grid-marks": "mark",
+  "grid-linked": "linked",
+  "grid-gap": "gap",
+};
+
 for (const [gridId, items] of Object.entries(ITEMS)) {
-  document.getElementById(gridId).innerHTML = items.map(cardHTML).join("");
+  document.getElementById(gridId).innerHTML = items.map(it => cardHTML(it, KIND_BY_GRID[gridId])).join("");
+  const countEl = document.getElementById("count-" + gridId.replace("grid-", ""));
+  if (countEl) countEl.textContent = items.length + (items.length === 1 ? " item" : " items");
 }
 
 document.querySelectorAll(".load-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const iframe = document.createElement("iframe");
-    iframe.src = btn.dataset.src;
+    let src = btn.dataset.src;
+    // Auto-open the debug scrubber for clock/debug components — the whole
+    // point of this redesign is not requiring the visitor to already know
+    // a hidden query-param convention exists to see the component move.
+    if (btn.dataset.scrubber === "debug") src += (src.includes("?") ? "&" : "?") + "debug=1";
+    iframe.src = src;
     btn.replaceWith(iframe);
   });
 });
+
+// ---------- Photography: real thumbnail grids, not iframe cards ----------
+const INGREDIENT_STILLS = [
+  "01-aha-bha","02-centella-asiatica","03-bamboo-extract","04-green-tea","05-birch-sap",
+  "06-ginseng","07-bifida-ferment-lysate","08-hyaluronic-acid","09-ceramides","10-niacinamide",
+  "11-peptides","12-snail-mucin","12b-snail-mucin-source","12c-snail-mucin-alt-dropper-moss-1",
+  "12d-snail-mucin-alt-dropper-moss-2","12e-snail-mucin-alt-dropper-studio-1","12f-snail-mucin-alt-dropper-studio-2",
+  "13-panthenol","14-soybean-extract","15-propolis","16-retinol","17-royal-jelly","18-mugwort",
+  "19-rice-extract","20-vitamin-c",
+];
+const PRODUCT_SCENES = [
+  { file: "A01-01", label: "세럼 · 30mL" }, { file: "A02-01", label: "로션 · 50mL" },
+  { file: "A03-01", label: "토너패드 · 70매" }, { file: "A04-01", label: "젤 · 80mL" },
+  { file: "A05-01", label: "에센스 · 100mL" }, { file: "A06-01", label: "쿠션 · 15g" },
+  { file: "B01-01", label: "Scene B01" }, { file: "B02-01", label: "Scene B02" },
+  { file: "B03-01", label: "Scene B03" },
+  { file: "C01-01", label: "Full lineup (6 SKUs)" }, { file: "C02-01", label: "세럼 · 30mL" },
+  { file: "C03-01", label: "4-piece grouping" },
+];
+
+function labelFromSlug(slug) {
+  return slug.replace(/^\d+[a-z]?-/, "").replace(/-/g, " ");
+}
+
+function photoGridHTML(tiles) {
+  return `<div class="photo-grid">${tiles.map(t =>
+    `<a class="photo-tile" href="${t.href}" target="_blank" title="${t.title}">
+      <img src="${t.href}" alt="${t.title}" loading="lazy">
+      <span class="tile-label">${t.title}</span>
+    </a>`
+  ).join("")}</div>`;
+}
+
+const ingredientTiles = INGREDIENT_STILLS.map(slug => ({
+  href: `ingredient-photography/${slug}.png`, title: labelFromSlug(slug),
+}));
+const productTiles = PRODUCT_SCENES.map(s => ({
+  href: `product-photography/assets/${s.file}.png`, title: s.label,
+}));
+
+document.getElementById("photo-root").innerHTML = `
+  <div class="photo-group">
+    <h3>Ingredient photography</h3>
+    <p class="photo-count">${ingredientTiles.length} stills — one per glossary ingredient, numbered to match <span class="mono">skincare-ingredient-glossary</span> 1:1, plus 5 Snail Mucin alt crops.</p>
+    ${photoGridHTML(ingredientTiles)}
+  </div>
+  <div class="photo-group">
+    <h3>Product photography</h3>
+    <p class="photo-count">${productTiles.length} scenes — fictional, unbranded K-beauty packaging. Labels are the Korean text actually rendered on the packaging in each shot (verified per-asset in <span class="mono">manifest.json</span>).</p>
+    ${photoGridHTML(productTiles)}
+  </div>`;
+document.getElementById("count-photo").textContent = (ingredientTiles.length + productTiles.length) + " items";
 </script>
 </body>
 </html>

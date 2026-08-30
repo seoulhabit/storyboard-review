@@ -14,13 +14,28 @@ published INCI list, then a Hanbang (traditional Korean herbal) INCI-to-
 common-name cheat sheet — Snail Secretion Filtrate = Snail Mucin, Panax Root
 = Ginseng, Artemisia Princeps = Mugwort.
 
-**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_20-25-00.mp4` —
+**Rendered:** `renders/kbeauty-one-percent-line_2026-08-29_21-05-00.mp4` —
 115.5s, 1080x1920, mastered -15.0 LUFS / -1.3dBTP (confirmed via
 `ffmpeg ebur128`). Passed `npm run check`
 (lint/runtime/layout/motion/contrast) clean.
 
 **Status:** in review — the creator has continued past the originally
-planned 3 rounds with further feedback. Round 6 was driven by comments
+planned 3 rounds with further feedback. Round 7, another Studio comments
+pass: real ginseng photography added to Frames 1 and 2 (the hook's
+"0.5% GINSENG." payoff and the promise diagram's "BEAKER + TEST" icon,
+both reusing the already-approved still), Frame 3's water/leaf photos
+enlarged 220->300px to use vertical space the equation zone was leaving
+unfilled, and Frames 5-6 got a real text-vs-skill audit against the
+`faceless-video-craft` skill's 40px reading-text floor — most violations
+fixed, one (Frame 5's 4-name ingredient fan) partially bumped with the
+trade-off documented, and one (Frame 6's 14-row real INCI list) left
+untouched and flagged as needing a deliberate card redesign rather than a
+side-effect change. Two image placements needed a follow-up fix after a
+first render showed real problems a lint pass didn't catch: Frame 1's
+ginseng photo initially overlapped the VO caption text below it, and
+Frame 6's enlarged "1% LINE" tag first attempt clipped off the canvas
+edge because it sits inside a 1.8x zoom-push beat. Round 6 was driven by
+comments
 left directly in HyperFrames Studio (`.hyperframes/frame-comments.json`)
 rather than chat: Frame 7's three small stacked ingredient cards became
 one big flashcard shown one at a time (still timed to each term's real VO

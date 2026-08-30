@@ -1187,3 +1187,76 @@ the current `index.html`, not hand-maintained.)
     `renders/kbeauty-one-percent-line_2026-08-29_20-25-00.mp4`, 115.5s,
     1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged from round 5 — this
     round was visual-only). Superseded intermediate renders removed.
+
+- **2026-08-29 (round 7 — a second Studio comments pass: catalog photos in
+  Frames 1/2/3, text-vs-skill review in Frames 5/6)**:
+  - **Frame 1 (hook) — real ginseng photo added to the payoff.** Comment:
+    "Add the Image of Ginsing from catalog." Reuses the already-approved
+    `ingredient-ginseng.png` still (Frame 4b/5/7/8), landing as a third
+    beat (2.15s) right after "0.5% GINSENG." — confirms the stat against
+    the real root instead of just asserting it. First attempt sized the
+    photo at 120px as a third row in the stat zone's flex column; a real
+    render showed it visibly overlapping the VO caption line below —
+    the zone's title text ("80% GINSENG?") wraps to 2 lines at this
+    canvas width, so the zone was already taller than hand-estimated
+    before adding anything. Fixed by shrinking to 88px and pulling it
+    closer with a negative margin; confirmed via re-render that it now
+    clears the VO zone with real margin.
+  - **Frame 2 (promise) — real image added to the diagram.** Comment:
+    "Show Relevant image here" — the frame was two bordered text-only
+    icon boxes with no photography at all. Added the same ginseng still
+    to the "BEAKER + TEST" side (this video's own running example
+    ingredient, not a generic stock choice — reads as "what actually
+    gets tested"); left "INGREDIENT LABEL" text-only since no catalog
+    photo represents a printed label specifically. Confirmed no overflow
+    in the 260px icon box.
+  - **Frame 3 (extract loophole) — water/leaf photos enlarged.** Comment:
+    "Waletr and that green leave bigger imagees ... space is waisted."
+    The 500px-tall equation zone was vertically centering a much shorter
+    content block once "EXTRACT" faded out, leaving real unused space
+    during the ~5s photo hold. `.loop-eq-photo` 220->300px, `+` glyph
+    52->64px, labels 28->32px — still centered well clear of safe-bottom.
+    Blank-frame window for this scene actually improved slightly
+    (533ms->467ms) with the larger, more detailed photos.
+  - **Frames 5 & 6 — text reviewed against the skill's stated type floor**
+    ("Reading/body text: 40px minimum"). Both comments read "Use of text
+    are review against skill."
+    - Frame 5 (`05-the-trick.html`): `.trick-note` 36->40, `.trick-fan-capstone`
+      34->40, `.trick-fan-tag` 24->40 (a full instructional clause, not a
+      one/two-word kicker, so treated as reading text) — all confirmed
+      via re-render, no wrap/overflow issues. `.trick-fan-chip` (the 4
+      real INCI extract names in a wrapping fan of small pills) was
+      26px; a literal 40px would force each of these 4 long names onto
+      its own full-width row, pushing the fan's height past
+      `.trick-fan-capstone` below it in this scene's tight remaining
+      vertical budget before safe-bottom. Bumped to 32px (+23% legible
+      area) instead of forcing a redesign this single comment didn't
+      ask for — flagged here as a real, deliberate partial-compliance
+      trade-off, not a silent miss.
+    - Frame 6 (`06-teardown.html`): `.tear-scan-label` 20->24 (safe, no
+      cascading risk — absolutely positioned inside the scan bar, not
+      in row flow). `.tear-line-tag` 27px; first attempt at 34px passed
+      `npm run check` clean but a real render showed it clipped off the
+      canvas's right edge — this tag sits inside the zoom-push beat
+      (`#tear-card` at 1.8x scale), so the extra width gets amplified
+      1.8x on screen, not just added once. Backed off to 30px, confirmed
+      via re-render that it clears the edge. **Not touched, and flagged
+      rather than silently skipped or silently force-changed**:
+      `.tear-row` (27px, the actual 14 real published INCI names — this
+      frame's single most content-critical text and its riskiest to
+      touch), `.tear-sub` (24px), `.tear-brand` (40px, at the floor),
+      `.tear-disclaimer` (24px). All 14 rows live in a fixed 1200px card
+      whose spacing, zoom-push timing (tied to exact row Y-offsets), and
+      safe-bottom clearance were tuned and verified across 5 prior
+      rounds; a real 40px floor on the row text would need a deliberate
+      card redesign (taller card, fewer rows visible at once, or a
+      paginated reveal) — real follow-up work, not a safe side effect of
+      this comment.
+  - `npm run check`: 0 issues throughout. Blank-frame scan re-run clean
+    each pass (same 10 stretches, no new ones; Frame 3's own window
+    improved).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_21-05-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged — visual-only
+    round). Superseded intermediate renders (three from this pass alone,
+    two from the Frame 1/6 overflow fixes) removed.

@@ -100,7 +100,7 @@
           border-radius: 10px;
           opacity: 0;
         }
-        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 52px; color: var(--ink-2); opacity: 0; }
+        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 64px; color: var(--ink-2); opacity: 0; }
 
         /* Round-4 feedback: swap the hand-drawn beaker/leaf SVG for real catalog photos —
            water/plant is a literal, on-topic pairing (this frame's own K-BEAUTY chip
@@ -109,16 +109,20 @@
            and product-photography/B01-01.png (droplet macro, cropped to the droplet).
            Downsampled/cropped to project-local assets/images/, matching every other
            asset in this project. */
-        .loop-eq-photos { display: flex; align-items: center; justify-content: center; gap: 32px; }
-        .loop-eq-term { display: flex; flex-direction: column; align-items: center; gap: 16px; opacity: 0; transform: scale(0.85); }
+        .loop-eq-photos { display: flex; align-items: center; justify-content: center; gap: 40px; }
+        .loop-eq-term { display: flex; flex-direction: column; align-items: center; gap: 20px; opacity: 0; transform: scale(0.85); }
         /* border added (was shadow-only): both source photos are shot on near-white
            backgrounds (this catalog's own house style), so against the paper canvas
            they measured as near-blank on a real render — the blank-frame scanner
            regressed this scene back to its pre-round-1 flagged state. A solid ink
-           border gives the card real edge contrast without needing a busier photo. */
+           border gives the card real edge contrast without needing a busier photo.
+           Round-7 feedback: sized up 220->300px — the 500px-tall equation zone was
+           vertically centering a much shorter content block, leaving real unused
+           space above/below during the ~5s hold; the zone itself didn't move, so this
+           stays centered well clear of safe-bottom (verified via re-render). */
         .loop-eq-photo {
-          width: 220px; height: 220px;
-          border-radius: 20px;
+          width: 300px; height: 300px;
+          border-radius: 24px;
           border: 3px solid var(--ink);
           object-fit: cover;
           box-shadow: 0 18px 32px -20px rgba(19,21,22,0.35);
@@ -126,7 +130,7 @@
         }
         .loop-eq-term-label {
           font-family: var(--font-mono);
-          font-size: 28px;
+          font-size: 32px;
           font-weight: 500;
           color: var(--ink);
           text-align: center;

@@ -146,6 +146,21 @@
           color: var(--ink);
           text-align: center;
         }
+        /* Round-7 feedback: "add the image of Ginseng from catalog" — the payoff stat
+           names Ginseng but the frame never shows it. Reuses the same
+           ingredient-photography still already approved and used in Frame 4b/5/7/8 (no
+           new generation). Lands as a third beat after the strike and the stat text,
+           confirming the number against the real root rather than just asserting it. */
+        .hook-ginseng-photo {
+          width: 88px; height: 88px;
+          margin-top: -18px;
+          border-radius: 16px;
+          object-fit: cover;
+          border: 3px solid var(--ink);
+          box-shadow: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          opacity: 0;
+          transform: scale(0.85);
+        }
 
         /* Width kept inside safe-left/safe-right (60..918) so the box itself
            can't drift into the engagement rail; top raised from 1320 so up to
@@ -207,6 +222,7 @@
             <div data-hf-id="hf-hook-05mark" id="hook-stat-05-mark" class="hook-stat-05-mark"></div>
             <div data-hf-id="hf-hook-05" id="hook-stat-05" class="hook-stat-05">0.5% GINSENG.</div>
           </div>
+          <img data-hf-id="hf-hook-ginsengphoto" class="hook-ginseng-photo" id="hook-ginseng-photo" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
         </div>
 
         <div data-hf-id="hf-hook-vo" id="hook-vo-zone" class="clip hook-vo-zone" data-start="0" data-duration="8.7">
@@ -257,6 +273,9 @@
         // "0.5% GINSENG." reveal with the frame's one aqua mark — the payoff itself
         tl.fromTo("#hook-stat-05-wrap", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 1.9);
         tl.to("#hook-stat-05-mark", { scaleX: 1, duration: 0.4, ease: "power3.out" }, 1.95);
+        // Real ginseng root photo confirms the stat right after it lands, not
+        // simultaneously — a third, distinct beat instead of everything landing at once.
+        tl.fromTo("#hook-ginseng-photo", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 2.15);
 
         // VO line, word reveal on REAL onsets from renders/transcript.json (scene-local =
         // absolute - 0.0), not an estimated per-char schedule — the words now land exactly

@@ -65,6 +65,18 @@
           box-shadow: var(--elev-2);
           opacity: 0;
         }
+        /* Round-7 feedback: review text against the skill's 40px reading floor. This
+           is the frame's most content-critical text (all 14 real published INCI
+           names) and its most invasive to touch — NOT bumped this round, flagged
+           instead of silently left or silently force-changed. The 14 rows fill a
+           fixed 1200px card whose height, row spacing, zoom-push timing (tied to
+           exact row Y-offsets), and safe-bottom clearance were tuned and verified
+           across 5 prior rounds; even a partial-size bump (the way trick-fan-chip
+           got 26->32 in Frame 5) would shift every later row's position and require
+           re-deriving the zoom math and re-verifying the blank-frame scan from
+           scratch. A real 40px floor here needs a deliberate redesign of the card
+           (taller card, fewer visible rows at once, or a paginated/scrolled reveal) —
+           worth doing as its own scoped pass, not as a side effect of this comment. */
         .tear-row {
           font-family: var(--font-mono);
           font-size: 27px;
@@ -113,11 +125,18 @@
            bans glow outright ("No glow anywhere. Elevation shadows only."), so the
            anchor is a hard elevation shadow (solid, not blurred/radiant) plus a
            punchier settle instead — same intent, browser-drawn-only-compliant. */
+        /* Round-7 feedback: review text against the skill's 40px floor. Was 27px.
+           First attempt bumped to 34px — a real render showed it clipped off the
+           right edge of the canvas: this row is inside the zoom-push beat (scale
+           1.8x on #tear-card, see the timeline below), so extra tag width here gets
+           amplified 1.8x on screen, not just added once. Backed off to 30px, a
+           smaller but still real improvement, confirmed via re-render that it clears
+           the right edge at the zoomed-in scale. */
         .tear-line-tag {
           display: inline-block;
           margin-left: 18px;
           font-family: var(--font-mono);
-          font-size: 27px;
+          font-size: 30px;
           font-weight: 700;
           letter-spacing: 0.05em;
           color: var(--ink);
@@ -148,11 +167,15 @@
            the bar itself (not a new standalone element) so the concept is seeded
            during the reading pass and the tag at 12.95 reads as a payoff, not a
            first mention. */
+        /* Round-7: was 20px, bumped toward the skill's floor. Not independently
+           positioned relative to card rows (absolute inside the scan bar), so no
+           cascading-height risk the way tear-row/tear-line-tag have — just needs to
+           keep fitting inside the 65px-tall scan bar, verified via re-render. */
         .tear-scan-label {
           position: absolute; right: 48px; top: 50%;
           transform: translateY(-50%);
           font-family: var(--font-mono);
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 500;
           letter-spacing: 0.05em;
           color: var(--ink-2);

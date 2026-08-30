@@ -57,21 +57,24 @@
            the same family, subordinate to the first, not a second independent hit */
         .trick-chip-sub { background: rgba(89, 184, 174, 0.35); color: var(--paper); border: 2px solid var(--aqua); }
 
+        /* Round-7 feedback: review text against the faceless-video-craft skill's type
+           floor ("Reading/body text: 40px minimum"). Was 36px. */
         .trick-note {
           top: 700px; left: 111px; width: 858px;
           display: flex; flex-direction: column; gap: 20px;
           font-family: var(--font-display);
-          font-size: 36px;
+          font-size: 40px;
           line-height: 1.3;
           color: var(--paper);
           text-align: center;
         }
         .trick-note-line { opacity: 0; }
 
+        /* Was 34px — under the skill's 40px reading floor. */
         .trick-fan-capstone {
           top: 1500px; left: 0; width: 100%; text-align: center;
           font-family: var(--font-mono);
-          font-size: 34px;
+          font-size: 40px;
           font-weight: 500;
           color: var(--aqua);
           opacity: 0;
@@ -86,9 +89,22 @@
            its wrapped row, turning label pills into huge ovals with the text pinned to
            the top edge. align-items/content keep it tight now that height is intrinsic. */
         .trick-fan { top: 1140px; bottom: auto; left: 0; width: 100%; padding: 0 162px 0 60px; display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; justify-content: center; gap: 20px; }
+        /* Round-7 feedback: review text against the skill's 40px reading floor. Was
+           26px — flagged, but NOT bumped to a strict 40px here: these are 4 real,
+           long INCI names ("Camellia Sinensis Leaf Extract" etc.) in a wrapping fan of
+           small pills, by design a many-small-tags layout (this project's own
+           "layout variety" rule elsewhere argues for keeping that variety, not
+           collapsing every text element into the same big-body-text treatment). At a
+           literal 40px these would each need their own full-width row, which pushes
+           the fan's height past `.trick-fan-capstone` below it and close to
+           safe-bottom (1920-360=1560) in this scene's already-tight remaining vertical
+           budget. Bumped as far as this layout safely holds (26->32px, +23% legible
+           area) instead of forcing full compliance into a redesign this single
+           feedback item didn't ask for — flagging here rather than silently leaving
+           it at 26 or silently forcing a bigger change. */
         .trick-fan-chip {
           font-family: var(--font-mono);
-          font-size: 26px;
+          font-size: 32px;
           font-weight: 600;
           color: var(--ink-3);
           border: 1px solid var(--ink-3);
@@ -96,7 +112,10 @@
           border-radius: 999px;
           opacity: 0;
         }
-        .trick-fan-tag { top: 1040px; left: 0; width: 100%; height: 60px; text-align: center; font-size: var(--t-label); color: var(--ink-3); opacity: 0; }
+        /* Was var(--t-label) = 24px, under the 40px floor — this is a full instructional
+           clause a viewer reads, not a one/two-word section kicker, so treated as
+           reading text and bumped to the floor. */
+        .trick-fan-tag { top: 1040px; left: 0; width: 100%; height: 60px; text-align: center; font-size: 40px; color: var(--ink-3); opacity: 0; }
       </style>
 
       <div data-hf-id="hf-trick-root" id="root" data-composition-id="05-the-trick" data-width="1080" data-height="1920" data-duration="20.54">

@@ -77,6 +77,20 @@
           opacity: 0;
           transform: scale(0.85);
         }
+        /* Round-7 feedback: "show relevant image here" — the diagram was two bordered
+           text boxes with no photography anywhere in the frame. Reuses the same
+           ginseng ingredient-photography still from Frame 1/4b/5/7/8 (no new
+           generation) on the "what gets tested" side — it's this video's own running
+           example ingredient, not a generic stock choice. Column layout only on this
+           one icon; the label-side icon stays text-only (no catalog photo represents
+           "a printed ingredient label" specifically). */
+        .promise-icon-photo { flex-direction: column; gap: 14px; }
+        .promise-icon-img {
+          width: 108px; height: 108px;
+          border-radius: 14px;
+          object-fit: cover;
+          border: 2px solid var(--aqua);
+        }
         .promise-arrow {
           width: 90px; height: 4px;
           background: var(--ink-3);
@@ -112,7 +126,7 @@
       <div data-hf-id="hf-promise-root" id="root" data-composition-id="02-promise" data-width="1080" data-height="1920" data-duration="8.78">
         <div data-hf-id="hf-promise-kicker" id="promise-kicker" class="clip promise-kicker" data-start="0" data-duration="8.78"></div>
         <div data-hf-id="hf-promise-diagram" id="promise-diagram" class="clip promise-diagram" data-start="0" data-duration="8.78">
-          <div data-hf-id="hf-pi1" class="promise-icon" id="promise-icon-chemist">BEAKER<br data-hf-id="hf-x5px">+ TEST</div>
+          <div data-hf-id="hf-pi1" class="promise-icon promise-icon-photo" id="promise-icon-chemist"><img data-hf-id="hf-pi1img" class="promise-icon-img" src="assets/images/ingredient-ginseng.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">BEAKER<br data-hf-id="hf-x5px">+ TEST</div>
           <div data-hf-id="hf-pa1" class="promise-arrow" id="promise-arrow"></div>
           <div data-hf-id="hf-pi2" class="promise-icon" id="promise-icon-label">INGREDIENT<br data-hf-id="hf-rsrt">LABEL</div>
         </div>

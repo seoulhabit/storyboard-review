@@ -36,6 +36,10 @@
           --t-frame: 50px;
           --t-body: 32px;
           --t-label: 24px;
+          --safe-top: 120px;
+          --safe-bottom: 360px;
+          --safe-left: 60px;
+          --safe-right: 162px;
 
           position: relative;
           width: 1080px;
@@ -72,38 +76,79 @@
         .loop-chip-west { background: rgba(19,21,22,0.08); color: var(--ink); }
         .loop-chip-kr { background: rgba(89,184,174,0.22); color: var(--aqua); border: 2px solid var(--aqua); }
 
+        /* Round-8 feedback: once the split comparison fades at 6.6s, everything above
+           this zone (title, both columns) goes fully blank — only the equation's own
+           small content was left, reading as if the photos "dominate" a frame that's
+           mostly empty canvas. Fix isn't smaller photos, it's more real content: grew
+           this zone from a 500px island (1050-1550) to 900px (550-1450), using most of
+           the safe vertical band the split vacated, still clear of safe-bottom
+           (1920-360=1560). */
         .loop-equation {
-          top: 1180px; left: 0; width: 100%; height: 500px;
+          top: 550px; left: 0; width: 100%; height: 900px;
           display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
         }
+        /* Recap callback: closes the loop between the split's own K-BEAUTY chip
+           ("CENTELLA EXTRACT — 70%") and the water+plant equation below — without it,
+           a viewer who's forgotten the chip by the time the equation lands has no text
+           telling them what the equation is actually proving. Reuses the hook's own
+           big-stat/small-qualifier two-tier pattern (compare Frame 1's "80%"/"0.5%")
+           for visual consistency across the video, not a new type treatment. */
+        .loop-eq-recap { display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; }
+        .loop-eq-recap-pct { font-family: var(--font-body); font-weight: 800; font-size: 128px; line-height: 1; color: var(--ink); }
+        .loop-eq-recap-label { font-family: var(--font-mono); font-size: 34px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink-2); }
         .loop-eq-word {
           font-family: var(--font-body);
           font-weight: 800;
-          font-size: 76px;
+          font-size: 96px;
           color: var(--ink);
           opacity: 0;
         }
         .loop-eq-split { display: flex; align-items: center; gap: 28px; }
         .loop-eq-part {
           font-family: var(--font-mono);
-          font-size: 34px;
+          font-size: 42px;
           font-weight: 500;
           color: var(--ink);
           background: rgba(19,21,22,0.06);
-          padding: 16px 24px;
+          padding: 20px 30px;
           border-radius: 10px;
           opacity: 0;
         }
-        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 44px; color: var(--ink-2); opacity: 0; }
+        .loop-eq-plus { font-family: var(--font-body); font-weight: 800; font-size: 64px; color: var(--ink-2); opacity: 0; }
 
-        .loop-beaker-wrap { display: flex; align-items: flex-end; justify-content: center; height: 140px; }
-        .loop-beaker-svg { overflow: visible; }
-        .loop-beaker-outline { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
-        .loop-beaker-waterline { stroke: var(--ink-2); stroke-width: 2; opacity: 0.6; }
-        .loop-beaker-ripple { fill: none; stroke: var(--ink-2); stroke-width: 2; opacity: 0; transform-origin: 60px 95px; }
-        .loop-leaf-group { opacity: 0; transform-origin: 60px 87px; }
-        .loop-leaf-shape { fill: var(--ink-2); }
-        .loop-leaf-vein { stroke: var(--paper); stroke-width: 1.5; opacity: 0.6; }
+        /* Round-4 feedback: swap the hand-drawn beaker/leaf SVG for real catalog photos —
+           water/plant is a literal, on-topic pairing (this frame's own K-BEAUTY chip
+           already says "CENTELLA EXTRACT — 70%"), not a decorative photo. Sourced from
+           ingredient-photography/02-centella-asiatica.png (the actual named ingredient)
+           and product-photography/B01-01.png (droplet macro, cropped to the droplet).
+           Downsampled/cropped to project-local assets/images/, matching every other
+           asset in this project. */
+        .loop-eq-photos { display: flex; align-items: center; justify-content: center; gap: 40px; }
+        .loop-eq-term { display: flex; flex-direction: column; align-items: center; gap: 20px; opacity: 0; transform: scale(0.85); }
+        /* border added (was shadow-only): both source photos are shot on near-white
+           backgrounds (this catalog's own house style), so against the paper canvas
+           they measured as near-blank on a real render — the blank-frame scanner
+           regressed this scene back to its pre-round-1 flagged state. A solid ink
+           border gives the card real edge contrast without needing a busier photo.
+           Round-7 feedback: sized up 220->300px — the 500px-tall equation zone was
+           vertically centering a much shorter content block, leaving real unused
+           space above/below during the ~5s hold; the zone itself didn't move, so this
+           stays centered well clear of safe-bottom (verified via re-render). */
+        .loop-eq-photo {
+          width: 300px; height: 300px;
+          border-radius: 24px;
+          border: 3px solid var(--ink);
+          object-fit: cover;
+          box-shadow: 0 18px 32px -20px rgba(19,21,22,0.35);
+          background: var(--paper);
+        }
+        .loop-eq-term-label {
+          font-family: var(--font-mono);
+          font-size: 32px;
+          font-weight: 500;
+          color: var(--ink);
+          text-align: center;
+        }
       </style>
 
       <div data-hf-id="hf-loop-root" id="root" data-composition-id="03-extract-loophole" data-width="1080" data-height="1920" data-duration="15.26">
@@ -121,23 +166,21 @@
         <div data-hf-id="hf-loop-rule" id="loop-rule" class="clip loop-rule" data-start="0" data-duration="15.26"></div>
 
         <div data-hf-id="hf-loop-eq" id="loop-equation" class="clip loop-equation" data-start="0" data-duration="15.26">
-          <div data-hf-id="hf-loop-eqword" class="loop-eq-word" id="loop-eq-word">"EXTRACT"</div>
-          <div data-hf-id="hf-loop-beaker" class="loop-beaker-wrap" id="loop-beaker-wrap">
-            <svg data-hf-id="hf-0olf" class="loop-beaker-svg" width="120" height="140" viewBox="0 0 120 140">
-              <path data-hf-id="hf-loop-beakerpath" class="loop-beaker-outline" d="M45,15 L32,118 Q32,124 38,124 L82,124 Q88,124 88,118 L75,15" />
-              <line data-hf-id="hf-loop-waterline" class="loop-beaker-waterline" id="loop-waterline" x1="36" y1="95" x2="84" y2="95" />
-              <ellipse data-hf-id="hf-loop-ripple1" class="loop-beaker-ripple" id="loop-ripple-1" cx="60" cy="95" rx="10" ry="4" />
-              <ellipse data-hf-id="hf-loop-ripple2" class="loop-beaker-ripple" id="loop-ripple-2" cx="60" cy="95" rx="10" ry="4" />
-              <g data-hf-id="hf-loop-leafgroup" class="loop-leaf-group" id="loop-leaf-group">
-                <path data-hf-id="hf-loop-leafshape" class="loop-leaf-shape" d="M60,72 Q75,82 60,102 Q45,82 60,72 Z" />
-                <line data-hf-id="hf-loop-leafvein" class="loop-leaf-vein" x1="60" y1="75" x2="60" y2="99" />
-              </g>
-            </svg>
+          <div data-hf-id="hf-loop-eqrecap" class="loop-eq-recap" id="loop-eq-recap">
+            <div data-hf-id="hf-loop-eqrecappct" class="loop-eq-recap-pct">70%</div>
+            <div data-hf-id="hf-loop-eqrecaplabel" class="loop-eq-recap-label">CENTELLA EXTRACT</div>
           </div>
-          <div data-hf-id="hf-loop-eqsplit" class="loop-eq-split" id="loop-eq-split">
-            <div data-hf-id="hf-loop-eqp1" class="loop-eq-part" id="loop-eq-water">WATER</div>
+          <div data-hf-id="hf-loop-eqword" class="loop-eq-word" id="loop-eq-word">"EXTRACT"</div>
+          <div data-hf-id="hf-loop-eqphotos" class="loop-eq-photos" id="loop-eq-photos">
+            <div data-hf-id="hf-loop-termwater" class="loop-eq-term" id="loop-term-water">
+              <img data-hf-id="hf-loop-photowater" class="loop-eq-photo" id="loop-eq-photo-water-img" src="assets/images/loop-water-droplet.png" alt="" width="700" height="700" loading="eager" decoding="sync">
+              <div data-hf-id="hf-loop-labelwater" class="loop-eq-term-label">WATER</div>
+            </div>
             <div data-hf-id="hf-loop-eqplus" class="loop-eq-plus" id="loop-eq-plus">+</div>
-            <div data-hf-id="hf-loop-eqp2" class="loop-eq-part" id="loop-eq-tiny">TINY BIT OF PLANT</div>
+            <div data-hf-id="hf-loop-termplant" class="loop-eq-term" id="loop-term-plant">
+              <img data-hf-id="hf-loop-photoplant" class="loop-eq-photo" id="loop-eq-photo-plant-img" src="assets/images/loop-centella-leaf.png" alt="" width="700" height="700" loading="eager" decoding="sync">
+              <div data-hf-id="hf-loop-labelplant" class="loop-eq-term-label">TINY BIT OF PLANT</div>
+            </div>
           </div>
         </div>
       </div>
@@ -165,22 +208,21 @@
         // 0.2s later, closing a blank-canvas gap between the two beats.
         tl.fromTo("#loop-eq-word", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 7.0);
         tl.to("#loop-eq-word", { opacity: 0, y: -18, duration: 0.22, ease: "power2.in" }, 8.7);
-        // a single leaf drops into the beaker as "TINY BIT OF PLANT" lands — visual scaffolding
-        // for the extraction concept so it isn't carried by text alone
-        tl.fromTo("#loop-leaf-group", { opacity: 0, y: -55, rotation: -18 }, { opacity: 1, y: 0, rotation: 0, duration: 0.3, ease: "power2.in" }, 8.85);
-        // ripple repeats 3x through the static equation hold (finite/bounded, not an infinite
-        // loop) instead of firing once and leaving the frame a literal freeze-frame for the
-        // ~5s the VO takes to finish this beat's sentence after the visual has already landed —
-        // found via the blank-frame scanner flagging 25.3-33.0s as pixel-identical.
-        const RIPPLE_STARTS = [9.12, 10.62, 12.12];
-        RIPPLE_STARTS.forEach((start) => {
-          tl.fromTo(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 0.4 }, { opacity: 0.5, scale: 1, duration: 0.18, ease: "power2.out" }, start);
-          tl.to(["#loop-ripple-1", "#loop-ripple-2"], { opacity: 0, scale: 1.6, duration: 0.35, ease: "power2.out" }, start + 0.18);
-        });
-
-        tl.fromTo("#loop-eq-water", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 8.95);
+        // Real photo terms pop in (was: a leaf dropping into an SVG beaker + ripples).
+        // WATER lands first, then the plus, then the actual Centella leaf for "TINY BIT
+        // OF PLANT" — the ingredient this frame's own K-BEAUTY chip already names.
+        tl.fromTo("#loop-term-water", { opacity: 0, x: -24, scale: 0.85 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 8.85);
         tl.fromTo("#loop-eq-plus", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power3.out" }, 9.15);
-        tl.fromTo("#loop-eq-tiny", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 9.3);
+        tl.fromTo("#loop-term-plant", { opacity: 0, x: 24, scale: 0.85 }, { opacity: 1, x: 0, scale: 1, duration: 0.35, ease: "power3.out" }, 9.3);
+        // Recap callback lands right after both terms have — "EXTRACT" flew apart into
+        // this equation, so this closes the loop it opened: the 70% claim IS this.
+        tl.fromTo("#loop-eq-recap", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 9.75);
+
+        // Sustained motion through the hold (was the ripple bursts + waterline shimmer) —
+        // a slow, bounded breathing scale on each photo so the ~5s hold before fade-out
+        // isn't just two static images sitting still on a mostly-white canvas.
+        tl.to("#loop-eq-photo-water-img", { scale: 1.05, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 3 }, 9.6);
+        tl.to("#loop-eq-photo-plant-img", { scale: 1.05, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 3 }, 10.0);
 
         tl.to("#loop-equation", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 14.4);
 

@@ -17,7 +17,7 @@ after generation. Design source: `frame.md`.
 
 ## Frame 1 — hook
 
-- status: planned
+- status: animated
 - src: compositions/frames/01-hook.html
 - type: hook
 - start: 0.0
@@ -34,10 +34,10 @@ after generation. Design source: `frame.md`.
 
 ## Frame 2 — promise
 
-- status: planned
+- status: animated
 - src: compositions/frames/02-promise.html
 - type: branding
-- start: ~8.0
+- start: 8.20
 - duration target: ~7.0s
 - blueprint: titlecard-reveal — kinetic headline build
 - rules: dynamic-content-sequencing
@@ -50,10 +50,10 @@ after generation. Design source: `frame.md`.
 
 ## Frame 3 — the extract loophole
 
-- status: planned
+- status: animated
 - src: compositions/frames/03-extract-loophole.html
 - type: concept
-- start: ~15.0
+- start: 16.48
 - duration target: ~13.0s
 - blueprint: split-screen comparison, dynamic-content-sequencing
 - rules: dynamic-content-sequencing, spring-pop-entrance
@@ -70,10 +70,10 @@ after generation. Design source: `frame.md`.
 
 ## Frame 4 — the 1% line
 
-- status: planned
+- status: animated
 - src: compositions/frames/04-one-percent-line.html
 - type: concept (this video's coral "voltage moment")
-- start: ~28.0
+- start: 31.24
 - duration target: ~14.0s
 - blueprint: scrolling-list-reveal + hard-cut rule slash
 - rules: dynamic-content-sequencing
@@ -86,12 +86,31 @@ after generation. Design source: `frame.md`.
   Line. Ingredients are legally listed by concentration, until the one
   percent mark. After 1%, brands can scramble them in any order."
 
+## Frame 4b — ingredient macro showcase
+
+- status: animated
+- src: compositions/frames/04b-ingredient-showcase.html
+- type: B-roll interlude
+- start: 43.84
+- duration: 3.0 (no cross-fade tail into it or out of it — hard cut both sides)
+- beat: Paper ground, no VO — the one wordless beat in an otherwise
+  wall-to-wall narrated video. "BEYOND THE LABEL" kicker. Three flat-lay
+  ingredient stills (snail mucin, ginseng, mugwort — the same three Frame 7
+  later Hanbang-translates, in the same order) each get a quick snap-in, a
+  brief Ken-Burns push+drift while held, and a whip-out into the next.
+  Sourced from `catalog/ingredient-photography/` (see `frame.md` § B-roll)
+  rather than generated fresh — confirmed identical to the catalog's
+  `06-ginseng.png` / `12-snail-mucin.png` / `18-mugwort.png` at the 2026-08-29
+  skill-review pass. Added after an initial cut felt thin on sensory variety
+  against six frames of typography-only scenes; cut down from a first 5.8s
+  pass to this 3.0s rapid-fire length after pacing feedback.
+
 ## Frame 5 — the trick
 
-- status: planned
+- status: animated
 - src: compositions/frames/05-the-trick.html
 - type: concept
-- start: ~42.0
+- start: 46.34
 - duration target: ~13.0s
 - blueprint: highlight + directional-arrow callout
 - rules: dynamic-content-sequencing
@@ -107,10 +126,10 @@ after generation. Design source: `frame.md`.
 
 ## Frame 6 — live teardown
 
-- status: planned
+- status: animated
 - src: compositions/frames/06-teardown.html
 - type: proof / worked-example
-- start: ~55.0
+- start: 66.38
 - duration target: ~20.0s
 - blueprint: label-card teardown, dynamic-content-sequencing
 - rules: dynamic-content-sequencing, spring-pop-entrance
@@ -135,10 +154,10 @@ after generation. Design source: `frame.md`.
 
 ## Frame 7 — Hanbang rapid fire
 
-- status: planned
+- status: animated
 - src: compositions/frames/07-hanbang-rapidfire.html
 - type: listicle
-- start: ~75.0
+- start: 84.90
 - duration target: ~20.0s
 - blueprint: flashcard-sequence, dynamic-content-sequencing
 - rules: dynamic-content-sequencing, spring-pop-entrance
@@ -155,10 +174,10 @@ after generation. Design source: `frame.md`.
 
 ## Frame 8 — CTA / endcard
 
-- status: planned
+- status: animated
 - src: compositions/frames/08-cta-endcard.html
 - type: cta
-- start: ~95.0
+- start: 105.74
 - duration target: ~10.0 (no cross-fade tail — final frame)
 - blueprint: titlecard-reveal (freeze-grid) — adapted from
   `red-ginseng-two-routes/06-endcard.html`
@@ -204,20 +223,25 @@ after generation. Design source: `frame.md`.
   seoulhabit-launch precedent of setting boundaries from real VO length
   rather than an even split.
 
-| Frame | start | duration (incl. 0.5s tail except last) |
+| Frame | start | duration |
 |---|---|---|
 | 01 hook | 0.00 | 8.70 |
 | 02 promise | 8.20 | 8.78 |
 | 03 extract-loophole | 16.48 | 15.26 |
 | 04 one-percent-line | 31.24 | 13.10 |
-| 05 the-trick | 43.84 | 20.54 |
-| 06 teardown | 63.88 | 19.02 |
-| 07 hanbang-rapidfire | 82.40 | 21.34 |
-| 08 cta-endcard | 103.24 | 9.80 (no tail — final frame) |
+| 04b ingredient-showcase | 43.84 | 3.00 |
+| 05 the-trick | 46.34 | 20.54 |
+| 06 teardown | 66.38 | 19.02 |
+| 07 hanbang-rapidfire | 84.90 | 21.34 |
+| 08 cta-endcard | 105.74 | 9.80 (no tail — final frame) |
 
-Total composition length: 113.04s (~1:53) — the script's own 105s estimate
-was pre-VO; real spoken pacing plus the CTA's frozen-grid hold lands here,
-still well inside the faceless-explainer workflow's ~3-minute hard cap.
+Total composition length: 115.54s (~1:56) — the script's own 105s estimate
+was pre-VO; real spoken pacing, the Frame 4b insert, and the CTA's held
+close land here, still well inside the faceless-explainer workflow's
+~3-minute hard cap. (Superseded the 113.04s figure above the 2026-08-29
+skill-review pass's own build-history entry — that number predates the 4b
+insert's cascade and was never re-derived; this table is generated from
+the current `index.html`, not hand-maintained.)
 
 - 2026-08-29: Reviewer feedback — narrator mispronounced "INCI" as "inky"
   in Frame 7's VO (confirmed by transcribing `assets/voice/07.wav` with
@@ -750,3 +774,578 @@ still well inside the faceless-explainer workflow's ~3-minute hard cap.
     115.57s, h264 1080x1920 30fps (video copied through unchanged), audio
     AAC 192kbps at -14.15 LUFS / -1.34dBTP. Superseded renders removed;
     `npm run check` (hyperframes check + SFX audit) clean.
+- 2026-08-29 (skill-review pass, round 1 of 3): Creator feedback after
+  watching the first cut — frames read too empty/small for 9:16, the
+  aggressive brief got flattened by the design-system translation, and
+  several beats felt broken/static. A companion pass also found the
+  `faceless-video-craft` skill itself taught a non-existent engine API
+  (`data-time-start`/`window.seek`, `/mnt/assets` paths, a ban on
+  `<audio>`) — fixed there, not just here. Changes to this project,
+  "max energy in-system" direction (keep SeoulHabit tokens/fonts, no literal
+  neon):
+  - **All 8 scene transitions changed from 0.5s cross-opacity fades to hard
+    cuts.** Every boundary in this video crosses a paper<->ink ground
+    change; a fade between them produced a muddy near-blank midpoint frame
+    (visually confirmed at the old t=105.9s Frame7->8 handoff). Native
+    `data-start`/`data-duration` visibility switching already gives a clean
+    cut with the crossfade tweens removed from `index.html`'s root timeline.
+  - **Cadence fixed in every frame with a static hold longer than ~3s**
+    (worst: Frame 5 at ~12s combined, Frame 7 at ~18.6s combined across
+    three gaps). New beats are VO-word-synced using real onsets from
+    `renders/transcript.json` (scene-local = absolute - scene start), not
+    estimates: Frame 4 gets a literal "scramble" of the below-the-line rows
+    timed to "brands can scramble them in any order"; Frame 5 splits its
+    note into two VO-timed clauses plus a second emphasis pass + capstone
+    stat; Frame 6 adds a reading-progress scan bar plus retimes the aqua
+    mark and a re-emphasis on Ethylhexylglycerin; Frame 7 gets an entirely
+    new VO-synced subtitle (it turned out the old kicker faded at 1.0s with
+    nothing behind it — a literal blank canvas until card 1 at a flat 0.8s,
+    which itself popped 7s before the VO named it) and the three cards are
+    retimed to the real onset of each Hanbang term instead of a fixed 6.4s
+    grid; Frame 8's dead 4.75s tail after the VO ends gets a chip highlight
+    sweep + second headline pulse.
+  - **First attempt at Frame 6 overcorrected** — delaying every row to its
+    VO onset (matching the other frames' fix) reintroduced the exact
+    near-white/low-contrast empty-card defect the original build had
+    already fixed with a fast reveal. Reverted to the fast fill; the reading
+    scan bar carries the gap instead. Worth remembering: VO-sync the
+    *emphasis* beats, not necessarily every reveal.
+  - **Hook payoff moved from local 3.0s/3.3s to 1.6s/1.9s** — shorts
+    retention is decided in the first ~2s and the old timing spent all of it
+    on setup. VO's own word-by-word reveal switched from an estimated
+    per-char schedule to real transcript onsets.
+  - **Fill-the-frame scale pass**: hook stat type 108->128px / 88->104px;
+    Frame 2's kicker/icons enlarged and gained a VO-synced follow-up line
+    filling what was empty canvas below the diagram; Frame 3's beaker SVG
+    scaled ~1.7x and its equation type enlarged (this one was genuinely
+    measuring as nearblank per-frame — low ink coverage over a large paper
+    canvas, not just a motion gap, per `scripts/check-blank-frames.py`);
+    Frame 4's list type 34->38px; Frame 7's new subtitle sized up to 54px
+    paper-white type (not dim ink-3 gray) with the kicker held longer
+    alongside it for combined visual mass.
+  - **Safe-area violations fixed everywhere they were found**: Frame 1's VO
+    zone width/position, Frame 3's equation block, Frame 4's list padding,
+    Frame 4b's image stage, Frame 5's note/fan padding, Frame 7's card zone
+    (card 3 was landing at y1608-1820, inside the reserved Shorts bottom
+    strip), Frame 8's recap grid padding. All 9 scene files now declare the
+    same `--safe-top/bottom/left/right` tokens from `tokens.css` instead of
+    only 2 of them doing so inconsistently.
+  - **Frame 4b's three `<img>` tags were missing `loading="eager"`,
+    `decoding="sync"`, and explicit `width`/`height`** — a direct mandatory-
+    rule violation the audit caught; fixed (1400x1400, matching the actual
+    downsampled files).
+  - `npm run check` clean (0 lint/runtime/layout errors — two real
+    `content_overlap` layout errors surfaced mid-build from the new
+    beats and were fixed: a vertical row-swap in Frame 4 was changed to a
+    lateral jitter, Frame 5's capstone stat was repositioned lower).
+  - Blank-frame scan improved from 3 stretches over 6s (7.6s / 6.1s / 7.7s)
+    to under 2s each after two more passes; the 2 remaining ~1.9s flags
+    (Frame 3's equation hold, Frame 7's subtitle-to-card handoff) are
+    real content, not literal freezes — flagged for the creator's round-1
+    review rather than chased further against a heuristic that can't
+    distinguish "sparse but intentional" from "broken."
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_15-41-16.mp4`,
+    115.5s, 1080x1920. Loudness mastering pass not yet re-applied to this
+    render — do that after round 1 feedback locks the picture, to avoid
+    re-mastering on every iteration.
+- 2026-08-29 (round 1 feedback applied): Creator watched the round-1 cut and
+  flagged four concrete visual defects, all fixed:
+  - **Frame 5's fan chips** (Camellia/Panax/Artemisia/Tocopherol) were
+    rendering as huge circle-like outlines with text pinned to the top edge
+    instead of small label pills. Root cause: `.trick-fan` only redeclared
+    `top`/`left`/`width` from `.clip`'s `inset:0`, leaving `bottom:0` in
+    effect — the flex-wrap container was ~780px tall and `align-items:
+    stretch` blew each wrapped chip up to fill it. Fixed with `bottom: auto`
+    plus explicit `align-items`/`align-content`. Audited every other frame
+    for the same `.clip`-derived-height pattern on a `flex-wrap` container —
+    this was the only instance in the project.
+  - **Frame 6 had no explicit "1% Line" callout** near the Ethylhexylglycerin
+    strike, and **the strike itself ran the full row width** (900px) instead
+    of stopping at the actual word, reading as a stray glitch line rather
+    than a redaction. Fixed by measuring the word's real rendered width at
+    init (`#tear-r10-word.offsetWidth`, deterministic — same text every
+    render) and animating the strike via `scaleX` instead of `width`; added
+    an ink-bordered "1% LINE" tag inline after the struck word.
+  - **Frame 8's recap chips** (2-col grid) had shorter single-line chips
+    sitting top-aligned with a lot of dead space below, next to their
+    2-line row partners — CSS grid stretches every cell in a row to the
+    tallest one, and `.cta-chip` had no vertical centering. Fixed with
+    `display:flex; align-items:center`. First attempt at this broke word
+    spacing around the "=" in the three Hanbang chips ("Root=Ginseng", no
+    space) — a flex container splits mixed text+element content into
+    separate anonymous flex items at each element boundary and collapses
+    the whitespace between them. Fixed by wrapping each affected chip's
+    full content in one inner `<span>` so it stays a single flex item with
+    normal (non-flex) text flow inside — worth remembering for any future
+    flex-centered element that mixes raw text with a child element.
+  - `npm run check`: 0 issues across all 9 layout samples (was flagging the
+    strike/text occlusion as an info-level finding before the width fix).
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_16-20-21.mp4`,
+    115.5s, 1080x1920.
+- 2026-08-29 (round 1 feedback, second pass): Creator re-reviewed and
+  reported all four fixes above as still present/unchanged — re-verified
+  against the single render file that actually exists on disk (md5-checked,
+  fresh frame extraction at the exact timestamps cited) and every fix was
+  confirmed correctly rendered. Most likely explanation: a cached copy of
+  an earlier delivery. Two genuine new refinements came with the report and
+  were applied regardless:
+  - The "1% LINE" tag sized up (18px/2px border -> 27px/3px border, matching
+    the hero row's own type scale) so it reads as an actual focal point
+    instead of a small aside.
+  - Frame 5's fan chips (Camellia/Panax/Artemisia/Tocopherol) bumped to
+    font-weight 600 — flagged as reading smaller/thinner than surrounding
+    type on mobile despite being the same font-size.
+  - Two `pop.mp3` SFX cues added: one on Frame 5's "<1% EACH" capstone
+    (local 16.8 / abs 63.14), one on Frame 6's "1% LINE" tag reveal (local
+    13.05 / abs 79.43, layered ~150ms after the existing whip-slash on the
+    strike itself) — both confirmed audible via `ffmpeg volumedetect`
+    (-11.3dB and -7.4dB peaks respectively, well above the surrounding
+    -25/-23dB ambient floor).
+  - `npm run check`: 0 issues, 24 SFX elements (was 22) all pass duration
+    audit.
+  - Superseded renders removed; only
+    `renders/kbeauty-one-percent-line_2026-08-29_16-47-01.mp4` (115.5s,
+    1080x1920) remains.
+- 2026-08-29 (round 2/3 feedback — hook energy, learning-phase texture,
+  1%-line anchor, CTA countdown): Creator asked for a physical hook shot,
+  more B-roll texture through the learning phase, a "dissolve" teardown, a
+  glowing anchor line, a full VO re-voice for urgency, and a screenshot
+  countdown. Checked the governing rules before touching anything —
+  `catalog/product-photography/README.md` states product photography is
+  "not HyperFrames assets... needs its own filed decision record first,"
+  and the `seoulhabit-video-3d` skill states "Browser-drawn only... No
+  generative imagery, ever" and "No glow anywhere. Elevation shadows
+  only." Creator then explicitly authorized full catalog use for this
+  project, which lifted the imagery gate; the no-glow rule was not
+  addressed by that authorization and was treated as still standing, with
+  intent translated into elevation instead (matching how this project
+  already translated the original "neon glow" brief).
+  - **Frame 1 hook**: the three abstract capsule-outline "bottles" replaced
+    with a proper browser-drawn SVG dropper-bottle silhouette (cap, neck,
+    dropper tube, fill line, empty nameplate — still unbranded, still
+    vector). Layered behind them: the catalog's `product-photography/A01`
+    (unbranded frosted celadon dropper bottle, verified/approved asset,
+    manifest-checked) as a blurred, scrim-tinted full-bleed background
+    texture — present from frame zero, recedes by local 3.0s per the "first
+    three seconds" ask. Downsampled and copied to the project's own
+    `assets/images/hook-bottle-photo.png` (project-local, matching every
+    other asset convention here).
+  - **VO energy**: creator chose the mix-only fix over a full re-voice
+    (which would cascade into re-timing every scene). Voiceover bus
+    fx-chain retuned — faster/tighter compression (attack 10ms->5ms, ratio
+    3:1->4:1, makeup +2->+3), less low-mid "weight" (150Hz +1.5->+0.8dB),
+    more 3kHz presence (+1.5->+2.5dB). Diverges from the seoulhabit-launch
+    shared chain intentionally (kept verbatim there); noted in an
+    index.html comment. Final loudness is still set by the existing
+    post-render loudnorm pass regardless of this chain's own limiter, so
+    the audible change is dynamics/tone, not volume.
+  - **Frame 6 teardown, three changes**: (1) the Niacinamide aqua highlight
+    is now an SVG stroke-dashoffset draw-on (a real "marker circling the
+    word" reveal) instead of a shape fading in. (2) The "1% LINE" tag gets
+    a hard elevation shadow (`box-shadow: 6px 6px 0 var(--ink)`, no blur —
+    the no-glow-compliant translation of "make it glow") and a two-step
+    overshoot-then-settle scale (hand-built from two power-eased tweens,
+    since back/elastic eases are banned here) for a punchier landing. (3)
+    The trailing "fairy dust" ingredients now hold readable for ~1.2s then
+    genuinely dissolve away (blur 1.5px->3px, plus y+14/scale0.94/opacity
+    0.3 together) instead of just gaining a static blur.
+  - **Frame 7 cards**: each Hanbang flashcard gets a 104px thumbnail reusing
+    the *already-approved* ingredient-photography stills from Frame 4b
+    (snail mucin, ginseng, mugwort) — no new generation, zero new asset
+    cost, directly answers both "vary visual texture" and "raw ginseng
+    root" from the feedback. `.hb-card` restructured to flex row
+    (thumbnail + a wrapped text-stack child, learning from the Frame 8
+    flex/whitespace lesson two rounds ago — never let mixed content
+    fragment into separate flex items unintentionally).
+  - **Frame 8 CTA**: a "Screenshot in 3... 2... 1..." countdown replaces
+    the second generic headline pulse in the dead post-VO tail. Digits are
+    separate opacity-toggled elements sharing the headline's slot (this
+    project's established content-swap idiom everywhere else) rather than
+    a `.call()`-driven text mutation, which nothing else here uses and
+    whose seek-time firing behavior wasn't worth depending on unverified.
+    Three `shutter-click.mp3` ticks added (one per digit) — the video now
+    deliberately ends on "1," not mid-motion.
+  - `npm run check`: caught one real timing-boundary warning (two
+    sequential tweens on `#tear-line-tag` touching at the exact same
+    frame) during this pass, fixed by nudging the second tween 0.01s later.
+    0 errors/warnings after; 27/27 SFX pass duration audit.
+  - Re-rendered: `renders/kbeauty-one-percent-line_2026-08-29_17-13-53.mp4`,
+    115.5s, 1080x1920. Superseded renders removed.
+- 2026-08-29 (round 3 feedback — audio clipping, safe-area re-check, catalog
+  coverage): Creator sent a structured issue report (NLE-style fix
+  instructions from a generic review template — didn't match this project's
+  actual deterministic-composition pipeline, so each item was independently
+  verified against the real render rather than the suggested fix applied
+  blind).
+  - **Confirmed real: audio clipping ("harsh static blast") at 0:23.**
+    Spectrogram showed a hard broadband-noise boundary exactly at the
+    `glitch-shatter.mp3` SFX cue (23.48s); `ffmpeg volumedetect` confirmed
+    `max_volume: 0.0dB` with 380 samples flat-topped at 0dBFS — genuine
+    digital clipping, not a false alarm. Root cause: the post-render
+    two-pass `loudnorm` mastering pass had been deliberately deferred
+    across the last two feedback rounds ("avoid re-mastering on every
+    iteration" — see the round-1 entry above) so this render never got the
+    true-peak ceiling that would have caught it. Not a "corrupted asset"
+    needing NLE frame deletion as suggested — applied the same two-pass
+    mastering process as every prior lock (`I=-14:TP=-1.5:LRA=11`, video
+    stream copied, audio re-encoded AAC 192kbps). Final: -14.29 LUFS /
+    -1.50dBTP, confirmed max_volume -1.3dB at the former clip point.
+  - **Investigated, not reversed: the CTA countdown "reads as dead air."**
+    This exact countdown was explicitly requested in round 2 ("forces a
+    pause or rewind"). Frame-by-frame extraction showed it *was* animating
+    correctly (3->2->1, no actual blank gaps between digits — confirmed
+    the transitions are back-to-back), so the fix was making the countdown
+    itself hit harder, not removing it: digits sized up 96px->140px (still
+    clears the lockup below with margin), plus a new ink tick-ring
+    (bounded expand+fade stroke, one reused element re-triggered per
+    digit) for real per-beat impact. No blur/glow, per the standing rule.
+  - **Investigated, not moved: disclaimer safe-area position.** Extracted
+    frames at both disclaimer's exact timestamps with the real
+    `--safe-bottom` (1560px) boundary drawn in as a red overlay line —
+    both disclaimers sit clearly above it with comfortable margin, at both
+    the project's own token value and the stricter faceless-video-craft
+    skill number (1536px). Not moved; the earlier round-1 safe-area fix
+    already covered these correctly.
+  - **BGM vs VO balance.** `data-volume` on the BGM track dropped
+    0.12->0.07 (~-4.7dB, within the requested -4 to -6dB range) — a flat
+    gain change that doesn't touch the carve automation's ducking curve
+    (machine-generated by `hyperframes-audio`'s `carve.mjs`, never
+    hand-edited).
+  - **Frame 6's "1% LINE" tag retimed** after a creator screenshot showed
+    the strike fully drawn with no tag visible next to it — the tag's
+    fade-in (12.95->13.10, was 13.05->13.27) now completes at the exact
+    moment the strike finishes drawing (13.1) instead of ~0.3s after, so a
+    viewer pausing right on the completed strike no longer catches the tag
+    mid-fade and easy to miss.
+  - **Catalog coverage extended further** after the creator flagged the
+    CTA endcard and Frame 1 as still reading text/graphics-only despite
+    approved imagery existing: the three Hanbang recap chips in Frame 8
+    now carry the same already-approved ingredient thumbnails used in
+    Frame 7 (zero new assets); Frame 1's product photo now recedes to a
+    persistent 0.3-opacity backdrop instead of disappearing entirely by
+    3s; Frame 6's teardown card gained a circular product-photo accent
+    (same catalog image as Frame 1) near its header — a live bottle
+    teardown being a natural fit for "this is a real physical product"
+    that had been missed.
+  - **Real bug found and fixed during this pass, unrelated to the feedback
+    itself**: the new countdown ring (and, on closer inspection, Frame 3's
+    pre-existing ripple effect — same underlying pattern) was bleeding
+    through visibly for several seconds *before* its first scheduled
+    appearance. Root cause: reusing one element across multiple `fromTo()`
+    calls at different timeline positions, with nothing establishing its
+    `t=0` state as part of the timeline itself. A bare `gsap.set()` call
+    outside the timeline was tried first and did **not** fix it (confirmed
+    by re-rendering and re-checking) — the render engine seeks timelines
+    directly to arbitrary times without passing through `t=0` first, so a
+    set() made outside the timeline's own tween sequence doesn't take
+    precedence. `tl.set(target, {...}, 0)` — registered *inside* the
+    timeline — was the actual fix, confirmed by re-render. Folded into
+    `faceless-video-craft`'s failure-modes list with the corrected
+    (verified, not assumed) explanation.
+  - `npm run check`: 0 issues throughout this pass. 27/27 SFX pass duration
+    audit.
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_18-08-00.mp4`, 115.5s,
+    1080x1920, -14.29 LUFS / -1.50dBTP. Superseded renders (six
+    intermediate files from this pass alone) removed.
+
+- **2026-08-29 (round 4 — audio fix + Frame 3 catalog-photo swap)**:
+  - **SFX-6 "harsh blast" at 21-24s, investigated and fixed.** Creator
+    flagged a problem in the sound between 21s and 24s (overlaps the
+    `glitch-shatter.mp3` cue at 23.48-24.58s on `el-sfx-6`).
+    `data-volume` dropped 0.35->0.15. First verification pass compared
+    raw `volumedetect` peaks before/after and found the window's
+    `max_volume` unchanged (~0dB both times) — looked like the fix had no
+    effect. Root cause of *that* confusion: the render being checked was
+    still unmastered, and an unmastered render's peak sits near 0dBFS
+    regardless of any single clip's gain until the two-pass `loudnorm`
+    master runs — `max_volume` on a raw render was never the right signal
+    to read. Comparing *mean* energy in the window instead confirmed the
+    real effect: -16.4dB -> -19.9dB (~3.5dB quieter), matching the
+    0.35->0.15 gain cut. Ran the actual two-pass `loudnorm` master this
+    render was still owed (pass 1 measured `I=-19.38:TP=1.29:LRA=4.00`,
+    pass 2 applied `linear=true` against those stats): final file
+    -14.35 LUFS / -0.51dBTP overall, -18.4dB mean / -0.5dB max in the
+    21-24s window specifically — quieter than the pre-fix reading and no
+    clipping. Lesson: always master before judging a render's peak/level;
+    an unmastered file's absolute peak is not diagnostic.
+  - **Frame 3's hand-drawn SVG beaker/leaf replaced with real catalog
+    photos.** Creator flagged the beaker illustration in
+    `03-extract-loophole.html` directly ("notice this svg rather use a
+    available pic") after already pushing on catalog underuse this round.
+    Removed the `.loop-beaker-*`/`.loop-leaf-*` SVG markup and the old
+    text-only `WATER + Centella` equation row entirely. Replaced with two
+    bordered photo cards (`loop-water-droplet.png`, cropped from
+    `product-photography/B01-01.png`'s droplet macro; `loop-centella-leaf.png`,
+    from `ingredient-photography/02-centella-asiatica.png`) under the
+    labels WATER / TINY BIT OF PLANT — a literal, on-topic pairing, not
+    decoration: this frame's own K-BEAUTY chip already names "CENTELLA
+    EXTRACT — 70%". First render regressed the blank-frame scanner for
+    this scene from 467ms back to 7533ms: both source photos are shot on
+    this catalog's own near-white house background, reading as low-contrast
+    against the paper canvas. Fixed with a solid `3px solid var(--ink)`
+    border and a 200px->220px size bump on `.loop-eq-photo` — re-render
+    confirmed the window back down to 533ms.
+  - `npm run check`: 0 issues.
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_18-45-00.mp4`, 115.5s,
+    1080x1920, -14.35 LUFS / -0.51dBTP. Blank-frame scan re-run clean
+    (no new stretches beyond the two pre-existing, previously-verified
+    intentional scene-opening beats at t=31.0s and t=84.8s). Superseded
+    intermediate renders from this pass removed.
+
+- **2026-08-29 (round 5 — remove shatter SFX outright, seed the 1% line
+  concept earlier, verify the tag isn't actually missing)**:
+  - **"1% is still missing" — investigated, not a bug.** Creator's
+    screenshot was paused at 1:11 on the Niacinamide (2%) row (the aqua
+    marker-circle beat); the "1% LINE" tag itself lives 8s later at 1:19,
+    on Ethylhexylglycerin — the actual concentration cutoff in the real
+    published INCI list (Niacinamide at 2% is still above the line).
+    Re-extracted the 1:19 frame and confirmed the tag renders correctly
+    there, unchanged from round 3's fix. Real gap identified instead: the
+    reading-scan bar that sweeps rows 1-9 (local 1.3-5.85s) never named
+    what it was building toward, so the 1:19 reveal landed as a first
+    mention rather than a payoff.
+  - **1% concept now seeded during the scan sweep.** Added a small
+    right-aligned label riding inside `#tear-scan` itself (no new
+    standalone element) reading "LOOKING FOR THE 1% LINE..." — visible
+    for the whole 1.3-5.85s sweep, including right at the Niacinamide row
+    the creator's screenshot caught. First pass positioned it via
+    `right: 0` on the label, which doesn't respect `.tear-card`'s own
+    padding the way in-flow row text does (`.tear-scan`'s `left:0;right:0`
+    spans the card's full padding box, flush with the visible edges by
+    design) — the label overflowed past the card's right edge into the
+    paper background. Fixed by matching the row text's own 48px inset
+    (`right: 48px`) instead of the scan bar's own edge; confirmed via
+    re-render.
+  - **`el-sfx-6` (glitch-shatter.mp3) removed entirely**, not just
+    quieted further. Creator still heard "a shatter sound" after round
+    4's 0.35->0.15 gain cut. Global `loudnorm` pass-1 measurement on
+    this render vs. the prior one confirms it was the single loudest
+    moment in the whole video (`input_tp` 1.29dBTP -> -3.67dBTP after
+    removal) — consistent with the round-4 note that this was a
+    full-spectrum, near-maximum-loudness burst no further gain trim was
+    going to make unnoticeable next to the calm VO around it. The
+    "EXTRACT" text break in `03-extract-loophole.html` (the visual beat
+    the SFX punctuated) plays silent now; the scale/fade tween itself
+    carries the moment. 21-24s window re-verified post-removal: peak
+    dropped from ~0dB to -4.2dB pre-master (no longer reads as an
+    isolated transient at all).
+  - `npm run check`: 0 issues. Blank-frame scan re-run clean (same 10
+    stretches as the prior pass, no new ones).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_19-20-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP confirmed via `ffmpeg ebur128`
+    (fresh loudnorm pass: measured -20.64 LUFS / -3.67dBTP in, targeted
+    -14/-1.5/11 out). Superseded intermediate renders from this pass
+    removed.
+
+- **2026-08-29 (round 6 — Studio storyboard fixes: status schema warning,
+  Frame 7 sequential flashcards, Frame 8 chip thumbnails)**:
+  - **9 "unknown status" storyboard warnings, fixed.** Studio's storyboard
+    view (`http://localhost:3003`) flagged all 9 frames with `Frame N:
+    unknown status "rendered"; defaulting to "outline"` — a schema
+    mismatch, not a content bug. `STORYBOARD.md`'s per-frame frontmatter
+    used `status: rendered`, but Studio's plan schema only recognizes
+    `outline` / `built` / `animated` (confirmed by reading the actual
+    validation logic in the installed `hyperframes` package, not
+    guessing); "rendered" isn't a per-frame status at all — video export
+    happens at the whole-project level via `npm run render`, separate
+    from the plan doc. Changed all 9 frames to `status: animated` (the
+    correct terminal state — every frame's `window.__timelines` entry is
+    fully authored). Studio dashboard now correctly reads "9 of 9
+    animations ready" instead of "0 Built / 0 Animated."
+  - **Frame 7 (Hanbang cheat sheet) — three small stacked cards replaced
+    with one big sequential flashcard.** Studio comment: "Rather than
+    showing 3 images stacked show bigger each as the name of ingredient
+    comes." The 3 `.hb-card`s previously lived in a `flex-direction:
+    column` stack (104px thumbnails, all 3 slots reserving layout space
+    from scene start) and accumulated on screen as each one's onset hit.
+    Restructured to a single `.hb-card-stack` (740x760px, centered) with
+    all 3 cards `position:absolute; inset:0` on top of each other — only
+    one opaque at a time. Thumbnail sized up 104->300px, common-name text
+    56->96px. Timeline unchanged in *when* each card enters (still tied
+    to the real VO onset for each Hanbang term — "Snail" 7.77s local,
+    "Panax" 11.76s, "Artemisia" 15.77s — not touched), but each card now
+    fades out 0.2s before the next fades in instead of staying on screen
+    permanently. Verified via frame extraction at all 3 onsets: each
+    ingredient fills the same slot alone, safe-area clear.
+  - **Frame 8 (CTA endcard) — recap-chip thumbnails enlarged.** Studio
+    comment: "Impove the use of image for screen shot beeter image."
+    Ambiguous on its own (no image currently sits near the "SCREENSHOT
+    THIS" headline at all) — asked the creator directly rather than
+    guessing between "add a bottle photo near the headline" and "enlarge
+    the existing recap-chip thumbnails"; confirmed the latter. `.cta-chip-thumb`
+    64px -> 88px. The chips' own height is text-driven (3-4 wrapped
+    lines at 26px already exceeds 64px, let alone 88px), so this doesn't
+    grow the grid's footprint — confirmed via `npm run check`'s layout
+    pass and a direct frame extraction, no clipping.
+  - `npm run check`: 0 issues. Blank-frame scan re-run clean (same 10
+    stretches as prior passes, no new ones in either changed frame's own
+    window).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_20-25-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged from round 5 — this
+    round was visual-only). Superseded intermediate renders removed.
+
+- **2026-08-29 (round 7 — a second Studio comments pass: catalog photos in
+  Frames 1/2/3, text-vs-skill review in Frames 5/6)**:
+  - **Frame 1 (hook) — real ginseng photo added to the payoff.** Comment:
+    "Add the Image of Ginsing from catalog." Reuses the already-approved
+    `ingredient-ginseng.png` still (Frame 4b/5/7/8), landing as a third
+    beat (2.15s) right after "0.5% GINSENG." — confirms the stat against
+    the real root instead of just asserting it. First attempt sized the
+    photo at 120px as a third row in the stat zone's flex column; a real
+    render showed it visibly overlapping the VO caption line below —
+    the zone's title text ("80% GINSENG?") wraps to 2 lines at this
+    canvas width, so the zone was already taller than hand-estimated
+    before adding anything. Fixed by shrinking to 88px and pulling it
+    closer with a negative margin; confirmed via re-render that it now
+    clears the VO zone with real margin.
+  - **Frame 2 (promise) — real image added to the diagram.** Comment:
+    "Show Relevant image here" — the frame was two bordered text-only
+    icon boxes with no photography at all. Added the same ginseng still
+    to the "BEAKER + TEST" side (this video's own running example
+    ingredient, not a generic stock choice — reads as "what actually
+    gets tested"); left "INGREDIENT LABEL" text-only since no catalog
+    photo represents a printed label specifically. Confirmed no overflow
+    in the 260px icon box.
+  - **Frame 3 (extract loophole) — water/leaf photos enlarged.** Comment:
+    "Waletr and that green leave bigger imagees ... space is waisted."
+    The 500px-tall equation zone was vertically centering a much shorter
+    content block once "EXTRACT" faded out, leaving real unused space
+    during the ~5s photo hold. `.loop-eq-photo` 220->300px, `+` glyph
+    52->64px, labels 28->32px — still centered well clear of safe-bottom.
+    Blank-frame window for this scene actually improved slightly
+    (533ms->467ms) with the larger, more detailed photos.
+  - **Frames 5 & 6 — text reviewed against the skill's stated type floor**
+    ("Reading/body text: 40px minimum"). Both comments read "Use of text
+    are review against skill."
+    - Frame 5 (`05-the-trick.html`): `.trick-note` 36->40, `.trick-fan-capstone`
+      34->40, `.trick-fan-tag` 24->40 (a full instructional clause, not a
+      one/two-word kicker, so treated as reading text) — all confirmed
+      via re-render, no wrap/overflow issues. `.trick-fan-chip` (the 4
+      real INCI extract names in a wrapping fan of small pills) was
+      26px; a literal 40px would force each of these 4 long names onto
+      its own full-width row, pushing the fan's height past
+      `.trick-fan-capstone` below it in this scene's tight remaining
+      vertical budget before safe-bottom. Bumped to 32px (+23% legible
+      area) instead of forcing a redesign this single comment didn't
+      ask for — flagged here as a real, deliberate partial-compliance
+      trade-off, not a silent miss.
+    - Frame 6 (`06-teardown.html`): `.tear-scan-label` 20->24 (safe, no
+      cascading risk — absolutely positioned inside the scan bar, not
+      in row flow). `.tear-line-tag` 27px; first attempt at 34px passed
+      `npm run check` clean but a real render showed it clipped off the
+      canvas's right edge — this tag sits inside the zoom-push beat
+      (`#tear-card` at 1.8x scale), so the extra width gets amplified
+      1.8x on screen, not just added once. Backed off to 30px, confirmed
+      via re-render that it clears the edge. **Not touched, and flagged
+      rather than silently skipped or silently force-changed**:
+      `.tear-row` (27px, the actual 14 real published INCI names — this
+      frame's single most content-critical text and its riskiest to
+      touch), `.tear-sub` (24px), `.tear-brand` (40px, at the floor),
+      `.tear-disclaimer` (24px). All 14 rows live in a fixed 1200px card
+      whose spacing, zoom-push timing (tied to exact row Y-offsets), and
+      safe-bottom clearance were tuned and verified across 5 prior
+      rounds; a real 40px floor on the row text would need a deliberate
+      card redesign (taller card, fewer rows visible at once, or a
+      paginated reveal) — real follow-up work, not a safe side effect of
+      this comment.
+  - `npm run check`: 0 issues throughout. Blank-frame scan re-run clean
+    each pass (same 10 stretches, no new ones; Frame 3's own window
+    improved).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_21-05-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged — visual-only
+    round). Superseded intermediate renders (three from this pass alone,
+    two from the Frame 1/6 overflow fixes) removed.
+
+- **2026-08-29 (thumbnail) — `assets/thumbnail/`, following the same
+  extract-grade-finalize convention already established in
+  `seoulhabit-launch`**: pulled the hook's own resolved payoff frame
+  (t=2.7s — struck "80% GINSENG?", "0.5% GINSENG." with its aqua mark,
+  and the round-7 ginseng photo, all settled) from the current render as
+  `hook-frame-source.png`, rather than building a separate thumbnail
+  composition. First grading pass copied `seoulhabit-launch`'s exact
+  filter chain (contrast/saturation boost + vignette) without adjusting
+  for this video's own light paper background — the vignette read as a
+  muddy gray cast instead of a natural darkening, since it was tuned for
+  a dark-ink-background video. Redone with a lighter touch appropriate
+  to this project's own palette (contrast 1.06, saturation 1.05, mild
+  unsharp, no vignette) as `hook-frame-graded.png`. No title text was
+  added on top: unlike the `seoulhabit-launch` source frame (a plain
+  product shot with only small ingredient-chip labels, needing an added
+  headline for thumbnail legibility), this frame's own in-video
+  typography already carries a full, high-contrast hook claim — adding
+  another headline would compete with it, not help it. Saved directly as
+  `thumbnail-final.png`, 1080x1920, matching the Shorts thumbnail format
+  used elsewhere in this project. Three additional thumbnail candidates
+  were pulled the same way from creator-supplied timestamps/descriptions
+  ("The Curiosity Gap," "The High-Value Promise," "The Visual Equation")
+  and saved as `candidate-<name>-source.png` / `-final.png`; not yet
+  chosen as the final. Note: the "Visual Equation" candidate (t=26s) now
+  reflects the pre-round-8 version of Frame 3 and should be re-pulled if
+  it's a live candidate — the frame it was extracted from changed
+  materially in round 8 below.
+
+- **2026-08-29 (round 8 — fill the canvas, don't shrink the photos)**:
+  Creator flagged that the ingredient photos across a few frames looked
+  like they "take majority of the space." Measured it precisely rather
+  than eyeballing: at their actual authored CSS sizes, the photos never
+  exceed ~9% of the 1080x1920 canvas in any frame (Frame 3's water/leaf
+  pair, the largest case, at 300x300 each = 8.7%). The real issue was
+  perceptual, concentrated in Frame 3 (`03-extract-loophole.html`):
+  once the split-comparison content fades out at local 6.6s, the entire
+  top ~1050px of the canvas goes fully blank for the rest of the scene —
+  the two small photo cards become the frame's *only* content by
+  default, not because they're large. Creator confirmed the fix should
+  add content to fill that space, not shrink the photos further (which
+  would have fought the round-4 and round-7 size increases directly).
+  Added a recap callback — "70%" (128px, matching the hook's own
+  big-stat/small-qualifier two-tier pattern from Frame 1's "80%"/"0.5%")
+  over "CENTELLA EXTRACT" — closing the loop between the split's own
+  K-BEAUTY chip ("CENTELLA EXTRACT — 70%", shown earlier in the same
+  scene) and the water+plant equation: without it, nothing on screen
+  told a viewer what the equation was actually proving. `.loop-equation`
+  grew from a 500px zone (1050-1550) to 900px (550-1450), using most of
+  the safe vertical band the split vacated — vertical occupancy roughly
+  35%->62.5% of the safe column, much closer to this skill's own
+  65-80% target. Verified via re-render: the recap correctly stays
+  hidden until its 9.75s reveal (checked a frame at local 8.0s, mid-way
+  through the "EXTRACT" word beat, well before the recap's own reveal —
+  no bleed-through), and the settled hold frame now uses most of the
+  vertical canvas instead of two small cards floating in empty space.
+  `npm run check`: 0 issues. Blank-frame scan re-run clean (same 10
+  stretches, no new ones).
+  - Re-rendered and re-mastered:
+    `renders/kbeauty-one-percent-line_2026-08-29_21-40-00.mp4`, 115.5s,
+    1080x1920, -15.0 LUFS / -1.3dBTP (audio unchanged — visual-only
+    round). Superseded render removed.
+
+- **2026-08-29 (thumbnail refresh) — re-pulled every `assets/thumbnail/`
+  candidate from the current render** (`_21-40-00.mp4`), closing the
+  staleness the previous thumbnail entry itself flagged: the "Visual
+  Equation" candidate predated round 8's Frame 3 rework. All three
+  candidates + `thumbnail-final.png` now come from the current render:
+  - `candidate-visual-equation` re-pulled at t=28.5s (was t=26s) — now
+    shows the round-8 state: "70% CENTELLA EXTRACT" recap over the
+    water+plant equation in the enlarged 900px zone, instead of the two
+    small cards floating under ~1050px of blank canvas.
+  - `candidate-high-value-promise` re-pulled at t=113.0s — the endcard's
+    fully settled state (recap chips + all 3 Hanbang rows + "SCREENSHOT
+    THIS" + 습 SeoulHabit lockup + disclaimer). Checked t=114.5s too and
+    rejected it: the CTA countdown ("1") has replaced the headline by
+    then. The old candidate was an earlier, pre-lockup beat.
+  - `candidate-curiosity-gap` / `hook-frame-*` / `thumbnail-final.png`
+    re-pulled at the same t=2.7s payoff moment; PSNR vs the old source
+    measured 52.8dB (codec noise only — Frame 1 unchanged since), so
+    these are visually identical, refreshed for provenance consistency.
+  - Grading chain verified before reuse rather than assumed: applying
+    `eq=contrast=1.06:saturation=1.05,unsharp=5:5:0.5` to the prior
+    source byte-identically reproduced the prior `hook-frame-graded.png`
+    (PSNR = inf), confirming that as the exact established per-video
+    grade; same chain applied to all refreshed finals (still no vignette,
+    per the earlier light-background lesson). `thumbnail-final.png`
+    remains the hook payoff frame pending the creator's pick among the
+    three candidates.

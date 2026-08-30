@@ -27,6 +27,10 @@
           --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
           --t-body: 32px;
           --t-label: 24px;
+          --safe-top: 120px;
+          --safe-bottom: 360px;
+          --safe-left: 60px;
+          --safe-right: 162px;
 
           position: relative;
           width: 1080px;
@@ -53,30 +57,65 @@
            the same family, subordinate to the first, not a second independent hit */
         .trick-chip-sub { background: rgba(89, 184, 174, 0.35); color: var(--paper); border: 2px solid var(--aqua); }
 
+        /* Round-7 feedback: review text against the faceless-video-craft skill's type
+           floor ("Reading/body text: 40px minimum"). Was 36px. */
         .trick-note {
-          top: 700px; left: 90px; width: 900px;
+          top: 700px; left: 111px; width: 858px;
+          display: flex; flex-direction: column; gap: 20px;
           font-family: var(--font-display);
-          font-size: 36px;
+          font-size: 40px;
           line-height: 1.3;
           color: var(--paper);
           text-align: center;
+        }
+        .trick-note-line { opacity: 0; }
+
+        /* Was 34px — under the skill's 40px reading floor. */
+        .trick-fan-capstone {
+          top: 1500px; left: 0; width: 100%; text-align: center;
+          font-family: var(--font-mono);
+          font-size: 40px;
+          font-weight: 500;
+          color: var(--aqua);
           opacity: 0;
         }
 
         .trick-arrow { top: 900px; left: 0; width: 100%; display: flex; justify-content: center; }
         .trick-arrow-glyph { font-size: 90px; color: var(--aqua); opacity: 0; transform: scaleY(0.6); transform-origin: top center; }
 
-        .trick-fan { top: 1140px; left: 0; width: 100%; padding: 0 100px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        /* bottom: auto overrides .clip's inset:0 (which left bottom:0 in effect here,
+           since this rule only redeclared top/left/width) — without it the flex-wrap
+           container was ~780px tall and align-items:stretch blew each chip up to fill
+           its wrapped row, turning label pills into huge ovals with the text pinned to
+           the top edge. align-items/content keep it tight now that height is intrinsic. */
+        .trick-fan { top: 1140px; bottom: auto; left: 0; width: 100%; padding: 0 162px 0 60px; display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; justify-content: center; gap: 20px; }
+        /* Round-7 feedback: review text against the skill's 40px reading floor. Was
+           26px — flagged, but NOT bumped to a strict 40px here: these are 4 real,
+           long INCI names ("Camellia Sinensis Leaf Extract" etc.) in a wrapping fan of
+           small pills, by design a many-small-tags layout (this project's own
+           "layout variety" rule elsewhere argues for keeping that variety, not
+           collapsing every text element into the same big-body-text treatment). At a
+           literal 40px these would each need their own full-width row, which pushes
+           the fan's height past `.trick-fan-capstone` below it and close to
+           safe-bottom (1920-360=1560) in this scene's already-tight remaining vertical
+           budget. Bumped as far as this layout safely holds (26->32px, +23% legible
+           area) instead of forcing full compliance into a redesign this single
+           feedback item didn't ask for — flagging here rather than silently leaving
+           it at 26 or silently forcing a bigger change. */
         .trick-fan-chip {
           font-family: var(--font-mono);
-          font-size: 26px;
+          font-size: 32px;
+          font-weight: 600;
           color: var(--ink-3);
           border: 1px solid var(--ink-3);
           padding: 12px 20px;
           border-radius: 999px;
           opacity: 0;
         }
-        .trick-fan-tag { top: 1040px; left: 0; width: 100%; height: 60px; text-align: center; font-size: var(--t-label); color: var(--ink-3); opacity: 0; }
+        /* Was var(--t-label) = 24px, under the 40px floor — this is a full instructional
+           clause a viewer reads, not a one/two-word section kicker, so treated as
+           reading text and bumped to the floor. */
+        .trick-fan-tag { top: 1040px; left: 0; width: 100%; height: 60px; text-align: center; font-size: 40px; color: var(--ink-3); opacity: 0; }
       </style>
 
       <div data-hf-id="hf-trick-root" id="root" data-composition-id="05-the-trick" data-width="1080" data-height="1920" data-duration="20.54">
@@ -84,7 +123,10 @@
           <div data-hf-id="hf-trick-c1" class="trick-chip" id="trick-chip-phenoxy">PHENOXYETHANOL</div>
           <div data-hf-id="hf-trick-c2" class="trick-chip trick-chip-sub" id="trick-chip-ehg">ETHYLHEXYLGLYCERIN</div>
         </div>
-        <div data-hf-id="hf-trick-note" id="trick-note" class="clip trick-note" data-start="0" data-duration="20.54">Phenoxyethanol: an actual legal cap, ~1%. Ethylhexylglycerin: same fractions-of-a-percent range.</div>
+        <div data-hf-id="hf-trick-note" id="trick-note" class="clip trick-note" data-start="0" data-duration="20.54">
+          <div data-hf-id="hf-trick-note1" class="trick-note-line" id="trick-note-1">Phenoxyethanol: an actual legal cap, ~1%.</div>
+          <div data-hf-id="hf-trick-note2" class="trick-note-line" id="trick-note-2">Ethylhexylglycerin: same fractions-of-a-percent range.</div>
+        </div>
         <div data-hf-id="hf-trick-arrow" id="trick-arrow" class="clip trick-arrow" data-start="0" data-duration="20.54">
           <div data-hf-id="hf-trick-arrowg" class="trick-arrow-glyph" id="trick-arrow-glyph">&#8595;</div>
         </div>
@@ -95,6 +137,7 @@
           <div data-hf-id="hf-trick-f3" class="trick-fan-chip" id="trick-fan-3">Artemisia Princeps Extract</div>
           <div data-hf-id="hf-trick-f4" class="trick-fan-chip" id="trick-fan-4">Tocopherol</div>
         </div>
+        <div data-hf-id="hf-trick-capstone" id="trick-fan-capstone" class="clip trick-fan-capstone" data-start="0" data-duration="20.54">&lt;1% EACH</div>
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
@@ -107,8 +150,15 @@
         tl.fromTo("#trick-chip-ehg", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 0.75);
         tl.to(["#trick-chip-phenoxy", "#trick-chip-ehg"], { scale: 1.04, duration: 0.14, ease: "power2.out", yoyo: true, repeat: 3 }, 1.3);
 
-        tl.fromTo("#trick-note", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.6);
-        tl.to("#trick-note", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 8.6);
+        // Note split into its own two VO clauses (was one block sitting static 2.6->8.6,
+        // a 6s freeze) so each half appears when the line is actually spoken (local
+        // 5.08-8.28 and 8.33-12.33). Chip emphasis pulses tie the existing chips to the
+        // same two moments instead of adding new DOM for it.
+        tl.fromTo("#trick-note-1", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.6);
+        tl.to("#trick-chip-phenoxy", { scale: 1.08, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }, 5.1);
+        tl.fromTo("#trick-note-2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 8.3);
+        tl.to("#trick-chip-ehg", { scale: 1.08, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }, 8.35);
+        tl.to("#trick-note", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 8.9);
 
         tl.fromTo("#trick-arrow-glyph", { opacity: 0, scaleY: 0.6 }, { opacity: 1, scaleY: 1, duration: 0.4, ease: "power3.out" }, 9.2);
         tl.to("#trick-arrow-glyph", { y: 14, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 3 }, 9.7);
@@ -119,7 +169,16 @@
           tl.fromTo(id, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 9.9 + i * 0.18);
         });
 
-        tl.to(["#trick-chips", "#trick-arrow", "#trick-fan", "#trick-fan-tag"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 19.7);
+        // VO local 12.33-18.94: "Once you spot them, every single ingredient listed after
+        // makes up less than 1% of the bottle." Was a flat 6.4s freeze (13.3->19.7) — a
+        // second emphasis pass across the fan chips plus a capstone stat fills it with
+        // beats tied to the actual sentence instead of idle decoration.
+        FAN.forEach((id, i) => {
+          tl.to(id, { scale: 1.06, duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1 }, 13.6 + i * 0.35);
+        });
+        tl.fromTo("#trick-fan-capstone", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 16.8);
+
+        tl.to(["#trick-chips", "#trick-arrow", "#trick-fan", "#trick-fan-tag", "#trick-fan-capstone"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 19.7);
 
         tl.to({}, { duration: 20.54 }, 0);
         window.__timelines["05-the-trick"] = tl;

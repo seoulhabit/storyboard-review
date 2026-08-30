@@ -51,6 +51,32 @@
         }
         .tear-brand { font-family: var(--font-display); font-size: 40px; color: var(--ink); margin-bottom: 6px; }
         .tear-sub { font-family: var(--font-mono); font-size: var(--t-label); color: var(--ink-2); margin-bottom: 32px; }
+        /* Reuses the same catalog product photo from Frame 1 (not a new asset) —
+           round-3 feedback wanted the catalog's photography felt through more of the
+           video, and a live bottle teardown is a natural place for it: reinforces
+           "this is a real physical product" during the one scene that's literally
+           about reading a bottle's own label. Unbranded, matching this card's own
+           "no brand trade dress" convention. */
+        .tear-brand-photo {
+          position: absolute; top: 40px; right: 40px;
+          width: 108px; height: 108px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: var(--elev-2);
+          opacity: 0;
+        }
+        /* Round-7 feedback: review text against the skill's 40px reading floor. This
+           is the frame's most content-critical text (all 14 real published INCI
+           names) and its most invasive to touch — NOT bumped this round, flagged
+           instead of silently left or silently force-changed. The 14 rows fill a
+           fixed 1200px card whose height, row spacing, zoom-push timing (tied to
+           exact row Y-offsets), and safe-bottom clearance were tuned and verified
+           across 5 prior rounds; even a partial-size bump (the way trick-fan-chip
+           got 26->32 in Frame 5) would shift every later row's position and require
+           re-deriving the zoom math and re-verifying the blank-frame scan from
+           scratch. A real 40px floor here needs a deliberate redesign of the card
+           (taller card, fewer visible rows at once, or a paginated/scrolled reveal) —
+           worth doing as its own scoped pass, not as a side effect of this comment. */
         .tear-row {
           font-family: var(--font-mono);
           font-size: 27px;
@@ -61,19 +87,102 @@
         .tear-row.tear-hero { color: var(--ink); font-weight: 700; }
         .tear-row.tear-below { color: var(--ink-2); filter: blur(1.5px); }
 
-        .tear-mark-circle {
+        /* Now an SVG stroke-draw (was a CSS border pill that just faded in) — a real
+           "marker circling the word" reveal instead of a static shape appearing,
+           per round-2 feedback asking for a physical-marker-highlight feel. */
+        .tear-mark-circle-svg {
           position: absolute;
           left: -14px; top: 2px; width: 240px; height: 52px;
-          border: 4px solid var(--aqua);
-          border-radius: 999px;
-          opacity: 0;
+          overflow: visible;
         }
+        .tear-mark-circle-path {
+          fill: none;
+          stroke: var(--aqua);
+          stroke-width: 4;
+          stroke-linecap: round;
+          stroke-dasharray: 540;
+          stroke-dashoffset: 540;
+        }
+        /* width set per-word by JS (measured off #tear-r10-word, deterministic since the
+           text never changes) instead of 100% of the row — the row div is full card
+           width, so a percentage-based strike shot straight past the end of the actual
+           word into empty space, reading as a stray glitch line rather than a redaction.
+           Animated via scaleX (transform) instead of width, matching the project's own
+           lint guidance to prefer transforms over layout properties. */
         .tear-mark-strike {
           position: absolute;
-          left: 0; top: 50%; width: 0%; height: 4px;
+          left: 0; top: 50%; height: 4px;
           background: var(--ink);
+          transform: scaleX(0);
+          transform-origin: left center;
         }
         .tear-row-wrap { position: relative; }
+
+        /* Sized up from the round-1-feedback pass (18px/2px border/3px 10px padding) —
+           the creator wanted it reading as a clearer focal point, not just present.
+           Round-2 feedback asked to make this "visually unforgettable" via a glowing
+           line — this project's own design system (frame.md, seoulhabit-video-3d)
+           bans glow outright ("No glow anywhere. Elevation shadows only."), so the
+           anchor is a hard elevation shadow (solid, not blurred/radiant) plus a
+           punchier settle instead — same intent, browser-drawn-only-compliant. */
+        /* Round-7 feedback: review text against the skill's 40px floor. Was 27px.
+           First attempt bumped to 34px — a real render showed it clipped off the
+           right edge of the canvas: this row is inside the zoom-push beat (scale
+           1.8x on #tear-card, see the timeline below), so extra tag width here gets
+           amplified 1.8x on screen, not just added once. Backed off to 30px, a
+           smaller but still real improvement, confirmed via re-render that it clears
+           the right edge at the zoomed-in scale. */
+        .tear-line-tag {
+          display: inline-block;
+          margin-left: 18px;
+          font-family: var(--font-mono);
+          font-size: 30px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          color: var(--ink);
+          background: var(--paper);
+          border: 3px solid var(--ink);
+          border-radius: 999px;
+          padding: 6px 16px;
+          vertical-align: middle;
+          box-shadow: 6px 6px 0 0 var(--ink);
+          opacity: 0;
+          transform: scale(0.85);
+        }
+
+        /* reading-progress scan bar: a real render (postrender/check-blank-frames.py)
+           showed delaying every row's reveal to its VO onset reintroduced the exact
+           near-white-card low-contrast defect the original build already fixed — so the
+           rows fill fast again (below) for contrast, and this bar instead carries the
+           1.3-5.9s gap with motion that encodes "we're reading down toward Niacinamide". */
+        .tear-scan {
+          position: absolute; left: 0; right: 0; top: 171px; height: 65px;
+          background: rgba(89, 184, 174, 0.10);
+          border-left: 3px solid var(--aqua);
+          opacity: 0;
+        }
+        /* Round-4 feedback: the "1% LINE" callout only ever named the cutoff once,
+           at the very end (local 12.95) — the scan bar's own downward sweep had
+           nothing telling a viewer what it was sweeping toward. Riding the label on
+           the bar itself (not a new standalone element) so the concept is seeded
+           during the reading pass and the tag at 12.95 reads as a payoff, not a
+           first mention. */
+        /* Round-7: was 20px, bumped toward the skill's floor. Not independently
+           positioned relative to card rows (absolute inside the scan bar), so no
+           cascading-height risk the way tear-row/tear-line-tag have — just needs to
+           keep fitting inside the 65px-tall scan bar, verified via re-render. */
+        .tear-scan-label {
+          position: absolute; right: 48px; top: 50%;
+          transform: translateY(-50%);
+          font-family: var(--font-mono);
+          font-size: 24px;
+          font-weight: 500;
+          letter-spacing: 0.05em;
+          color: var(--ink-2);
+          background: var(--white);
+          padding-left: 20px;
+          white-space: nowrap;
+        }
 
         .tear-disclaimer {
           top: 1480px; left: 90px; width: 900px;
@@ -87,6 +196,7 @@
 
       <div data-hf-id="hf-tear-root" id="root" data-composition-id="06-teardown" data-width="1080" data-height="1920" data-duration="19.02">
         <div data-hf-id="hf-tear-card" id="tear-card" class="clip tear-card" data-start="0" data-duration="19.02">
+          <img data-hf-id="hf-tear-brandphoto" class="tear-brand-photo" id="tear-brand-photo" src="assets/images/hook-bottle-photo.png" alt="" width="1080" height="1935" loading="eager" decoding="sync">
           <div data-hf-id="hf-tear-brand" class="tear-brand" id="tear-brand">GLOW SERUM</div>
           <div data-hf-id="hf-tear-sub" class="tear-sub" id="tear-sub">PROPOLIS + NIACINAMIDE — INCI ORDER</div>
 
@@ -95,15 +205,20 @@
           <div data-hf-id="hf-tear-r3" class="tear-row" id="tear-row-3">Glycerin</div>
           <div data-hf-id="hf-tear-r4" class="tear-row" id="tear-row-4">Butylene Glycol</div>
           <div data-hf-id="hf-tear-r5" class="tear-row" id="tear-row-5">Water</div>
+          <div data-hf-id="hf-tear-scan" class="tear-scan" id="tear-scan">
+            <div data-hf-id="hf-tear-scanlabel" class="tear-scan-label" id="tear-scan-label">LOOKING FOR THE 1% LINE...</div>
+          </div>
           <div data-hf-id="hf-tear-r6wrap" class="tear-row-wrap">
             <div data-hf-id="hf-tear-r6" class="tear-row tear-hero" id="tear-row-6">Niacinamide (2%)</div>
-            <div data-hf-id="hf-tear-mark" class="tear-mark-circle" id="tear-mark-circle"></div>
+            <svg data-hf-id="hf-tear-mark" class="tear-mark-circle-svg" id="tear-mark-circle" viewBox="0 0 240 52" xmlns="http://www.w3.org/2000/svg">
+              <rect data-hf-id="hf-tear-markpath" class="tear-mark-circle-path" id="tear-mark-circle-path" x="2" y="2" width="236" height="48" rx="24"/>
+            </svg>
           </div>
           <div data-hf-id="hf-tear-r7" class="tear-row" id="tear-row-7">1,2-Hexanediol</div>
           <div data-hf-id="hf-tear-r8" class="tear-row" id="tear-row-8">Centella Asiatica Extract</div>
           <div data-hf-id="hf-tear-r9" class="tear-row" id="tear-row-9">Calophyllum Inophyllum Seed Oil</div>
           <div data-hf-id="hf-tear-r10wrap" class="tear-row-wrap">
-            <div data-hf-id="hf-tear-r10" class="tear-row tear-hero" id="tear-row-10">Ethylhexylglycerin</div>
+            <div data-hf-id="hf-tear-r10" class="tear-row tear-hero" id="tear-row-10"><span data-hf-id="hf-tear-r10word" id="tear-r10-word">Ethylhexylglycerin</span><span data-hf-id="hf-tear-linetag" class="tear-line-tag" id="tear-line-tag">1% LINE</span></div>
             <div data-hf-id="hf-tear-strike" class="tear-mark-strike" id="tear-mark-strike" data-layout-allow-occlusion></div>
           </div>
           <div data-hf-id="hf-tear-r11" class="tear-row tear-below" id="tear-row-11">Dextrin</div>
@@ -121,30 +236,69 @@
 
         // card drop-in (SFX whoosh-thud.mp3)
         tl.fromTo("#tear-card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.15);
+        tl.fromTo("#tear-brand-photo", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, 0.35);
 
-        // Starts the instant the card finishes appearing (was 0.8, a 0.65s empty-card wait
-        // after the 0.15-0.6 entrance) and fills in faster (0.09s->0.06s stagger) — the
-        // near-white card on paper background reads as low-contrast until enough row text
-        // populates it, which the blank-frame scanner caught as a slow build at 66.27-67.67s.
+        // Fast fill for contrast (rows 1-10 populate the near-white card by ~1.14s, same
+        // pacing as the original build — delaying this to match each VO onset reintroduced
+        // the exact near-white/low-contrast defect the original fix addressed). The reading
+        // scan bar below carries the 1.3-5.9s gap instead, so the card isn't just visible,
+        // it's doing something while the VO reads down toward Niacinamide.
         const ROWS = ["#tear-row-1", "#tear-row-2", "#tear-row-3", "#tear-row-4", "#tear-row-5", "#tear-row-6", "#tear-row-7", "#tear-row-8", "#tear-row-9", "#tear-row-10"];
         ROWS.forEach((id, i) => {
           tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power3.out" }, 0.6 + i * 0.06);
         });
 
-        // aqua circle on Niacinamide (2%) — this frame's one aqua highlight (SFX marker-squeak.mp3)
-        tl.fromTo("#tear-mark-circle", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 9.2);
+        // Reading-progress bar: one continuous move from row 1 to row 6 while VO says
+        // "Beauty of Joseon Glow Serum. We've got propolis extract making up the bulk, and
+        // our active niacinamide..." (local 1.31-6.19) — real motion tied to the actual
+        // line, not decoration added to pass a scanner.
+        tl.fromTo("#tear-scan", { opacity: 0, y: 0 }, { opacity: 1, y: 0, duration: 0.3 }, 1.3);
+        tl.to("#tear-scan", { y: 327, duration: 4.3, ease: "power1.inOut" }, 1.6);
+        tl.to("#tear-scan", { opacity: 0, duration: 0.25 }, 5.85);
 
-        // trailing rows fade/blur in (below-the-line preview before the strike lands)
-        const TAIL = ["#tear-row-11", "#tear-row-12", "#tear-row-13", "#tear-row-14"];
-        TAIL.forEach((id, i) => {
-          tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power3.out" }, 10.6 + i * 0.12);
-        });
+        // aqua circle on Niacinamide (2%) — this frame's one aqua highlight (SFX marker-squeak.mp3),
+        // retimed from 9.2 to 6.4 to land right as the word is actually spoken (6.19-6.84)
+        // and while the push-in (below) is still settled on this row, not already panned away.
+        // Drawn on via stroke-dashoffset (a real marker-stroke reveal) rather than a shape
+        // fading in — per round-2 feedback asking for a physical-marker-highlight feel.
+        tl.to("#tear-mark-circle-path", { strokeDashoffset: 0, duration: 0.4, ease: "power2.out" }, 6.4);
+        // re-emphasize Ethylhexylglycerin (already visible since ~1.02s) right as it's
+        // actually named — "Boom. Ethylhexylglycerin." local 9.99-11.94.
+        tl.to("#tear-row-10", { scale: 1.05, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1, transformOrigin: "0 50%" }, 9.85);
 
         // ink strike under Ethylhexylglycerin — kept ink-weight, not coral (coral's one voltage
-        // moment is spent in Frame 4); everything below blurs to read as "trace amounts"
-        // without dropping opacity far enough to break WCAG contrast (SFX whip-slash.mp3)
-        tl.to("#tear-mark-strike", { width: "100%", duration: 0.2, ease: "power2.in" }, 12.9);
-        tl.to(TAIL, { filter: "blur(1.5px)", duration: 0.4, ease: "power2.inOut" }, 13.1);
+        // moment is spent in Frame 4). Local 12.9 matches "Everything below it." (11.94-13.33).
+        // Width measured off the word itself (deterministic — same text every render) so the
+        // strike stops exactly at the word's edge instead of running the full row width.
+        const strikeWordWidth = document.getElementById("tear-r10-word").offsetWidth;
+        gsap.set("#tear-mark-strike", { width: strikeWordWidth });
+        tl.to("#tear-mark-strike", { scaleX: 1, duration: 0.2, ease: "power2.in" }, 12.9);
+        // "1% LINE" callout — the strike alone didn't visually name what it was marking;
+        // this anchors the eye on the actual cutoff the VO is describing. Two-step scale
+        // (overshoot then settle) for a punchier "anchor" landing — no back/elastic ease
+        // (banned by this project's motion rules), so the overshoot is hand-built from
+        // two power-eased tweens instead.
+        // Retimed 13.05->12.95 and shortened 0.22->0.15s: the strike itself finishes
+        // drawing at 13.1 (started 12.9, 0.2s duration), and the tag was only ~68%
+        // opaque at that point — a viewer pausing right as the strike completes (a
+        // real report) caught a fully-drawn strike next to a still-fading, easy-to-miss
+        // tag. Now both land together: tag reaches full opacity at 13.1, same moment
+        // the strike finishes.
+        tl.fromTo("#tear-line-tag", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1.15, duration: 0.15, ease: "power3.out" }, 12.95);
+        tl.to("#tear-line-tag", { scale: 1, duration: 0.15, ease: "power2.inOut" }, 13.12);
+
+        // trailing rows fade in, then DISSOLVE away (was a static blur fade) — round-2
+        // feedback asked for the "fairy dust" ingredients to physically fall off rather
+        // than the wall-of-text just sitting there. Blur is a legibility/dissolve device
+        // here, not a lit "glow" (still banned) — matte defocus, no radiance/bloom.
+        // Timed to "Dextrin, xanthan gum, tocopherol" (local 13.38-15.93), after the
+        // pull-back (13.8, see push-in below) so they're actually in frame when revealed.
+        const TAIL = ["#tear-row-11", "#tear-row-12", "#tear-row-13", "#tear-row-14"];
+        TAIL.forEach((id, i) => {
+          tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power3.out" }, 13.9 + i * 0.25);
+        });
+        // held readable for ~1.2s after the last one lands, then dissolves away
+        tl.to(TAIL, { filter: "blur(3px)", y: 14, scale: 0.94, opacity: 0.3, duration: 0.6, ease: "power2.in" }, 16.0);
 
         // dynamic zoom: push in on Niacinamide, then pan down to land on Ethylhexylglycerin,
         // exactly as the VO names each word (transcribed via `hyperframes transcribe` —
@@ -155,7 +309,7 @@
         tl.to("#tear-card", { y: -760.58, duration: 0.5, ease: "power2.inOut" }, 9.75);
         tl.to("#tear-card", { scale: 1, x: 0, y: 0, duration: 0.5, ease: "power2.inOut" }, 13.3);
 
-        tl.fromTo("#tear-disclaimer", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" }, 15.2);
+        tl.fromTo("#tear-disclaimer", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" }, 15.5);
 
         tl.to(["#tear-card", "#tear-disclaimer"], { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 18.2);
 

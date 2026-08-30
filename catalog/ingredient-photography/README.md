@@ -40,6 +40,27 @@ than raster.
 | 19 | Rice Extract | `19-rice-extract.png` | rice grains + rice-water dish |
 | 20 | Vitamin C | `20-vitamin-c.png` | halved fresh orange |
 
+## seoulhabit-learn additions (2026-08-30)
+
+Six more entries, added for `seoulhabit-learn` handles the original 20-item glossary set
+doesn't cover. Named `sh-<handle>.png` (not `NN-slug.png`) to mark them as this addition, not
+members of the numbered glossary set above — see `TREATMENT-SPEC.md` for why. Manifest with
+full generation provenance (model, job id, prompt, reference image) at `manifest.json` in this
+folder.
+
+| Handle | File | Depicted as | Branded |
+|---|---|---|---|
+| `pdrn` | `sh-pdrn.png` | glass dish, pale opalescent viscous serum with a pouring stream | No |
+| `tea-tree-oil` | `sh-tea-tree-oil.png` | glass dropper bottle, pale essential oil | No |
+| `betaine-salicylate` | `sh-betaine-salicylate.png` | glass dish, clear liquid solution | No |
+| `madecassoside` | `sh-madecassoside.png` | glass dish, white crystalline powder | No |
+| `galactomyces` | `sh-galactomyces.png` | glass dish, cloudy fermented liquid | No |
+| `retinal` | `sh-retinal.png` | glass dropper bottle, deep vivid orange-amber oil | No |
+
+**Bottle/dropper-format subjects are branded with SeoulHabit marketing going forward**
+(`TREATMENT-SPEC.md`'s 2026-08-30 amendment) — `tea-tree-oil` and `retinal` above predate that
+ruling and were kept as generated, not regenerated.
+
 Raw botanicals are shown as the real plant/root/leaf/fruit. Ingredients
 with no natural "raw" form of their own (niacinamide, hyaluronic acid,
 peptides, ceramides, panthenol, AHA/BHA, bifida ferment lysate) are shown

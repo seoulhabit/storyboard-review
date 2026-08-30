@@ -79,3 +79,16 @@ made per subject from what the record actually says the ingredient is — matchi
 own stated practice ("matched to each one's 'what it is' text ... not invented freehand"), not
 a fixed rule this spec can state in advance. The founder confirms each new subject's proposed
 treatment before generation, same as any other identity-slot image.
+
+## Generation mechanics (discovered 2026-08-30, for whoever runs generation next)
+
+Higgsfield's `marketing_studio_image` model (the tool this folder's own README already
+credits, and the standing generation tool per `seoulhabit-learn`'s `DEC-072`) takes a required
+`medias` reference-image input, not a text prompt alone — confirmed via `models_explore` on
+this model id. This matches the folder's own README ("styled to match a user-supplied
+reference photo of 7 sample ingredients"). A new generation should pass one of the existing 20
+entries (or the original 7-sample reference, if still available) as the reference image, not
+attempt a from-scratch text-only prompt against this spec's written description alone.
+
+Cost, preflighted via `get_cost: true` (no charge): **2 credits per generation at 2k
+resolution**, 1:1 aspect ratio.

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Revision: stronger-hook cinematic cut, retimed to REAL voice audio
+      (Higgsfield seed_audio, Kimberly). See BRIEF.md § Revision for the full
+      record, including: voice/01.wav trimmed 5.240s -> 4.950s to remove a
+      synthesis-artifact click near its tail; captions moved to lower-third,
+      grouped into 3-5 word phrases, and restyled (stroke, no background bar)
+      per user feedback on the first cut.
+    -->
+    <div data-hf-id="hf-root2" id="root" data-composition-id="main" data-start="0" data-duration="39.970" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-s01" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0" data-duration="5.3" data-track-index="0"></div>
+      <audio data-hf-id="hf-v01" id="el-01-hook-voice" src="assets/voice/01.wav" data-start="0" data-duration="4.95" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-s02" id="el-02-serum-counter" class="scene" data-composition-id="02-serum-counter" data-composition-src="compositions/frames/02-serum-counter.html" data-start="4.95" data-duration="2.87" data-track-index="1"></div>
+      <audio data-hf-id="hf-v02" id="el-02-voice" src="assets/voice/02.wav" data-start="4.95" data-duration="6.980875" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-s03" id="el-03-desert-morph" class="scene" data-composition-id="03-desert-morph" data-composition-src="compositions/frames/03-desert-morph.html" data-start="7.47" data-duration="4.810875" data-track-index="0"></div>
+      <!-- scene 3 shares el-02-voice's continuous audio block (one VO line, cut visually at "serums,") -->
+
+      <div data-hf-id="hf-s04" id="el-04-ceramides" class="scene" data-composition-id="04-ceramides" data-composition-src="compositions/frames/04-ceramides.html" data-start="11.930875" data-duration="11.907417" data-track-index="1"></div>
+      <audio data-hf-id="hf-v03" id="el-04-voice" src="assets/voice/03.wav" data-start="11.930875" data-duration="11.557417" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-s05" id="el-05-sourcing" class="scene" data-composition-id="05-sourcing" data-composition-src="compositions/frames/05-sourcing.html" data-start="23.488292" data-duration="8.909542" data-track-index="0"></div>
+      <audio data-hf-id="hf-v04" id="el-05-voice" src="assets/voice/04.wav" data-start="23.488292" data-duration="8.559542" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-s06" id="el-06-outro" class="scene" data-composition-id="06-outro" data-composition-src="compositions/frames/06-outro.html" data-start="32.047834" data-duration="7.921917" data-track-index="1"></div>
+      <audio data-hf-id="hf-v05" id="el-06-voice" src="assets/voice/05.wav" data-start="32.047834" data-duration="7.521917" data-track-index="10" data-volume="1"></audio>
+
+      <!-- BGM -->
+      <audio data-hf-id="hf-bgm" id="el-bgm" src="assets/bgm/track.loop.wav" data-start="0" data-duration="39.970" data-track-index="11" data-volume="0.12"></audio>
+
+      <!-- captions -->
+      <div data-hf-id="hf-caps" id="el-captions" class="scene" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="39.970" data-track-index="2"></div>
+
+      <!-- SFX -->
+      <audio data-hf-id="hf-sfx-0" id="el-sfx-hit" src="assets/sfx/cinematic-sub-bass-impact-hit.mp3" data-start="0" data-duration="3.058" data-track-index="20" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-sfx-1" id="el-sfx-whoosh-1" src="assets/sfx/soft-air-whoosh-transition.mp3" data-start="4.95" data-duration="1.423" data-track-index="21" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-sfx-2" id="el-sfx-whoosh-2" src="assets/sfx/soft-air-whoosh-transition.mp3" data-start="7.47" data-duration="1.423" data-track-index="22" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-sfx-3" id="el-sfx-chime" src="assets/sfx/bright-glass-chime.mp3" data-start="11.930875" data-duration="1.334" data-track-index="23" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-sfx-4" id="el-sfx-bell" src="assets/sfx/subtle-bell-notification.mp3" data-start="32.047834" data-duration="0.72" data-track-index="24" data-volume="0.35"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── scene transitions: brisk crossfades (0.35s power2.inOut) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-01-hook", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 4.95);
+        tl.fromTo("#el-02-serum-counter", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" }, 4.95);
+        tl.to("#el-02-serum-counter", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 7.47);
+        tl.fromTo("#el-03-desert-morph", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" }, 7.47);
+        tl.to("#el-03-desert-morph", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 11.930875);
+        tl.fromTo("#el-04-ceramides", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" }, 11.930875);
+        tl.to("#el-04-ceramides", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 23.488292);
+        tl.fromTo("#el-05-sourcing", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" }, 23.488292);
+        tl.to("#el-05-sourcing", { opacity: 0, duration: 0.35, ease: "power2.inOut" }, 32.047834);
+        tl.fromTo("#el-06-outro", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.inOut" }, 32.047834);
+        tl.to({}, { duration: 39.970 }, 0); // full-span anchor — main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

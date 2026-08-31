@@ -1,0 +1,74 @@
+<template>
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #1a1a1a;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  #root * { box-sizing: border-box; }
+  #root .clip { position: absolute; }
+
+  .s-plate { inset: 0; overflow: hidden; background: #1a1a1a; }
+  .s-plate img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transform-origin: 50% 40%;
+    will-change: transform;
+  }
+  .s-scrim {
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.30) 100%);
+  }
+  .s-stamp-wrap {
+    left: 0; right: 0; top: 168px;
+    display: flex; justify-content: center;
+  }
+  .s-stamp {
+    opacity: 0;
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: 10px;
+    color: #ffffff;
+    background: rgba(0,0,0,0.42);
+    padding: 14px 30px;
+    border-radius: 4px;
+    text-align: center;
+  }
+</style>
+
+<div data-hf-id="hf-02-serum-counter-root" id="root" data-composition-id="02-serum-counter" data-width="1080" data-height="1920" data-duration="2.87">
+  <div data-hf-id="hf-02-serum-counter-plate" id="s-02-serum-counter-plate" class="clip s-plate" data-start="0" data-duration="2.87" data-track-index="0">
+    <img src="assets/images/02-serum-counter.png" alt="Marble bathroom counter crowded with amber serum dropper bottles" width="1536" height="2752" loading="eager" decoding="sync">
+  </div>
+  <div data-hf-id="hf-02-serum-counter-scrim" id="s-02-serum-counter-scrim" class="clip s-scrim" data-start="0" data-duration="2.87" data-track-index="1"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var root = document.currentScript.parentElement;
+  var q = function (sel) { return root.querySelector(sel); };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // Ken Burns — continuous, constant-speed push on the image plate only.
+  tl.fromTo(q('.s-plate img'),
+    { scale: 1, y: 0 },
+    { scale: 1.1, y: -30, duration: 2.87, ease: 'none' }, 0);
+
+
+  tl.set({}, {}, 2.87);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-serum-counter'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,127 @@
+<template id="captions-template">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+  #cap-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1380px;
+    height: 240px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .cap-group {
+    /* Fills the lower-third band; flexbox centers the inner text block so
+       no base transform is needed here — GSAP owns y/opacity for the
+       entrance cleanly, with nothing to conflict with (see
+       determinism-rules: never pair a CSS transform with a GSAP tween on
+       the same property). */
+    position: absolute;
+    inset: 0;
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .cap-group-inner {
+    /* Normal inline text flow (NOT flex) — a flex-of-word-spans layout
+       trims each span's trailing space at its own box edge (CSS collapses
+       whitespace at the end of an inline formatting context), which ran
+       every word together. Plain inline flow handles spacing AND natural
+       multi-line wrap for free. */
+    text-align: center;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+  .cap-word {
+    color: #ffffff;
+    /* Hard 3px black outline (8-direction) + soft ambient shadow — legible
+       over any underlying photo without an opaque backing bar. */
+    text-shadow:
+      -4px -4px 0 #000, 4px -4px 0 #000, -4px 4px 0 #000, 4px 4px 0 #000,
+      -4px 0 0 #000, 4px 0 0 #000, 0 -4px 0 #000, 0 4px 0 #000,
+      -3px -3px 0 #000, 3px 3px 0 #000, -3px 3px 0 #000, 3px -3px 0 #000,
+      0 10px 22px rgba(0,0,0,0.6);
+  }
+  .cap-word.cap-key { color: #FFECC2; }
+</style>
+
+<div data-hf-id="hf-capr" id="captions-root" data-composition-id="captions" data-width="1080" data-height="1920" data-duration="39.970">
+  <div data-hf-id="hf-capc" id="cap-container"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+
+  var _fitCanvas = document.createElement("canvas");
+  var _fitCtx = _fitCanvas.getContext("2d");
+  function fitFontSize(text, baseFontSize, fontWeight, fontFamily, maxWidth) {
+    var size = baseFontSize;
+    var minSize = Math.floor(baseFontSize * 0.45);
+    while (size > minSize) {
+      _fitCtx.font = fontWeight + " " + size + "px " + fontFamily;
+      if (_fitCtx.measureText(text).width <= maxWidth) return size;
+      size -= 2;
+    }
+    return minSize;
+  }
+
+  // REAL word timing (Higgsfield seed_audio, Kimberly voice; whisper
+  // small.en transcription), grouped into natural 3-5 word phrases. One
+  // manual correction: line 1 dropped "Stop" in ASR; re-inserted from
+  // acoustic evidence (see BRIEF.md § Revision).
+  var GROUPS = [{"text":"STOP USING RETINOL UNTIL YOU","start":0,"end":1.34,"words":[{"text":"STOP","key":true},{"text":"USING","key":false},{"text":"RETINOL","key":false},{"text":"UNTIL","key":false},{"text":"YOU","key":false}]},{"text":"DO THIS ONE THING.","start":1.34,"end":3,"words":[{"text":"DO","key":false},{"text":"THIS","key":false},{"text":"ONE","key":false},{"text":"THING.","key":false}]},{"text":"IT MIGHT BE DESTROYING YOUR","start":3.06,"end":4.21,"words":[{"text":"IT","key":false},{"text":"MIGHT","key":false},{"text":"BE","key":false},{"text":"DESTROYING","key":false},{"text":"YOUR","key":false}]},{"text":"SKIN BARRIER.","start":4.34,"end":4.8,"words":[{"text":"SKIN","key":false},{"text":"BARRIER.","key":false}]},{"text":"YOU'RE SPENDING A FORTUNE ON","start":5.19,"end":6.84,"words":[{"text":"YOU'RE","key":false},{"text":"SPENDING","key":false},{"text":"A","key":false},{"text":"FORTUNE","key":false},{"text":"ON","key":false}]},{"text":"SERUMS, BUT IF YOUR BARRIER","start":6.84,"end":8.32,"words":[{"text":"SERUMS,","key":false},{"text":"BUT","key":false},{"text":"IF","key":false},{"text":"YOUR","key":false},{"text":"BARRIER","key":false}]},{"text":"IS CRACKED, THAT HYDRATION","start":8.46,"end":9.8,"words":[{"text":"IS","key":false},{"text":"CRACKED,","key":true},{"text":"THAT","key":false},{"text":"HYDRATION","key":false}]},{"text":"LITERALLY JUST EVAPORATES.","start":9.98,"end":11.67,"words":[{"text":"LITERALLY","key":false},{"text":"JUST","key":false},{"text":"EVAPORATES.","key":false}]},{"text":"ENTER CERAMIDES, THEY MAKE UP","start":12.481,"end":14.431,"words":[{"text":"ENTER","key":false},{"text":"CERAMIDES,","key":true},{"text":"THEY","key":false},{"text":"MAKE","key":false},{"text":"UP","key":false}]},{"text":"50% OF YOUR SKIN'S OUTER","start":14.521,"end":16.401,"words":[{"text":"50%","key":true},{"text":"OF","key":false},{"text":"YOUR","key":false},{"text":"SKIN'S","key":false},{"text":"OUTER","key":false}]},{"text":"LAYER, THE PROTECTIVE GROUT","start":16.831,"end":18.021,"words":[{"text":"LAYER,","key":false},{"text":"THE","key":false},{"text":"PROTECTIVE","key":false},{"text":"GROUT","key":false}]},{"text":"HOLDING YOUR SKIN CELL BRICKS","start":18.251,"end":19.461,"words":[{"text":"HOLDING","key":false},{"text":"YOUR","key":false},{"text":"SKIN","key":false},{"text":"CELL","key":false},{"text":"BRICKS","key":false}]},{"text":"TOGETHER. BUT BY","start":19.601,"end":20.251,"words":[{"text":"TOGETHER.","key":false},{"text":"BUT","key":false},{"text":"BY","key":false}]},{"text":"AGE 30, YOU'VE LOST 40%","start":20.571,"end":23.261,"words":[{"text":"AGE","key":false},{"text":"30,","key":false},{"text":"YOU'VE","key":false},{"text":"LOST","key":false},{"text":"40%","key":true}]},{"text":"OF THEM.","start":23.261,"end":23.931,"words":[{"text":"OF","key":false},{"text":"THEM.","key":false}]},{"text":"TO FIX THE CRACKS, WE","start":23.628,"end":24.908,"words":[{"text":"TO","key":false},{"text":"FIX","key":false},{"text":"THE","key":false},{"text":"CRACKS,","key":false},{"text":"WE","key":false}]},{"text":"HAVE TO PUT THEM BACK.","start":24.908,"end":25.788,"words":[{"text":"HAVE","key":false},{"text":"TO","key":false},{"text":"PUT","key":false},{"text":"THEM","key":false},{"text":"BACK.","key":false}]},{"text":"SKIN CARE CERAMIDES ARE","start":26.268,"end":27.258,"words":[{"text":"SKIN","key":false},{"text":"CARE","key":false},{"text":"CERAMIDES","key":false},{"text":"ARE","key":false}]},{"text":"USUALLY PLANT DERIVED FROM","start":27.528,"end":28.478,"words":[{"text":"USUALLY","key":false},{"text":"PLANT","key":false},{"text":"DERIVED","key":false},{"text":"FROM","key":false}]},{"text":"WHEAT OR RICE OR LAB-MADE","start":28.758,"end":30.568,"words":[{"text":"WHEAT","key":false},{"text":"OR","key":false},{"text":"RICE","key":false},{"text":"OR","key":false},{"text":"LAB-MADE","key":false}]},{"text":"TO MATCH YOUR SKIN PERFECTLY.","start":30.568,"end":31.748,"words":[{"text":"TO","key":false},{"text":"MATCH","key":false},{"text":"YOUR","key":false},{"text":"SKIN","key":false},{"text":"PERFECTLY.","key":false}]},{"text":"THEY LOCK MOISTURE IN AND","start":32.298,"end":33.408,"words":[{"text":"THEY","key":false},{"text":"LOCK","key":false},{"text":"MOISTURE","key":false},{"text":"IN","key":false},{"text":"AND","key":false}]},{"text":"BLOCK IRRITANTS OUT.","start":33.408,"end":34.628,"words":[{"text":"BLOCK","key":false},{"text":"IRRITANTS","key":false},{"text":"OUT.","key":false}]},{"text":"FIX YOUR BARRIER FIRST.","start":34.628,"end":35.848,"words":[{"text":"FIX","key":false},{"text":"YOUR","key":false},{"text":"BARRIER","key":false},{"text":"FIRST.","key":false}]},{"text":"SUBSCRIBE FOR MORE SKINCARE SCIENCE.","start":36.108,"end":37.688,"words":[{"text":"SUBSCRIBE","key":true},{"text":"FOR","key":false},{"text":"MORE","key":false},{"text":"SKINCARE","key":false},{"text":"SCIENCE.","key":false}]}];
+
+  var container = document.getElementById("cap-container");
+  var tl = gsap.timeline({ paused: true });
+
+  GROUPS.forEach(function (g, gi) {
+    var el = document.createElement("div");
+    el.className = "cap-group";
+    el.id = "cap-g-" + gi;
+    var inner = document.createElement("div");
+    inner.className = "cap-group-inner";
+    g.words.forEach(function (w, wi) {
+      var span = document.createElement("span");
+      span.className = "cap-word" + (w.key ? " cap-key" : "");
+      span.textContent = w.text + (wi < g.words.length - 1 ? " " : "");
+      inner.appendChild(span);
+    });
+    el.appendChild(inner);
+    container.appendChild(el);
+    inner.style.fontSize = fitFontSize(g.text, 84, "400", "'Anton', sans-serif", 960) + "px";
+
+    tl.set(el, { visibility: "visible" }, g.start);
+    var entranceMode = gi % 3;
+    if (entranceMode === 0) {
+      tl.fromTo(el, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, g.start);
+    } else if (entranceMode === 1) {
+      tl.fromTo(el, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.24, ease: "back.out(1.6)" }, g.start);
+    } else {
+      tl.fromTo(el, { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, g.start);
+    }
+
+    // Exit always completes before the next group's entrance — guaranteed
+    // geometrically, not just by tuned duration (real ASR gaps vary).
+    var nextStart = gi < GROUPS.length - 1 ? GROUPS[gi + 1].start : Infinity;
+    var exitStart = Math.min(g.end, nextStart - 0.05);
+    var exitDur = Math.max(0.01, Math.min(0.14, nextStart - exitStart - 0.02));
+    tl.to(el, { opacity: 0, duration: exitDur, ease: "power2.in" }, exitStart);
+    tl.set(el, { opacity: 0, visibility: "hidden" }, Math.min(exitStart + exitDur + 0.005, nextStart - 0.001));
+  });
+
+  tl.to({}, { duration: 39.970 }, 0); // full-span anchor
+
+  window.__timelines["captions"] = tl;
+})();
+</script>
+</template>

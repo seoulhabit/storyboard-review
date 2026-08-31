@@ -1,0 +1,59 @@
+{
+  "tts_provider": "heygen",
+  "voice_id": "05f19352e8f74b0392a8f411eba40de1",
+  "bgm": {
+    "path": "assets/bgm/track.mp3",
+    "volume": 0.9,
+    "query": "lo-fi chill upbeat electronic synth beauty skincare focus",
+    "mode": "retrieve",
+    "duration_s": 24
+  },
+  "bgm_pending": false,
+  "bgm_provider": "heygen",
+  "bgm_pid": null,
+  "bgm_log": null,
+  "bgm_mode": "retrieve",
+  "bgm_target_duration_s": null,
+  "bgm_seed_duration_s": null,
+  "bgm_loop_count": null,
+  "voices": [],
+  "sfx": [
+    {
+      "id": "01",
+      "name": "cinematic sub bass impact hit",
+      "file": "assets/sfx/cinematic-sub-bass-impact-hit.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 3.058,
+      "volume": 0.35
+    },
+    {
+      "id": "02",
+      "name": "soft air whoosh transition",
+      "file": "assets/sfx/soft-air-whoosh-transition.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.423,
+      "volume": 0.35
+    },
+    {
+      "id": "03",
+      "name": "bright glass chime",
+      "file": "assets/sfx/bright-glass-chime.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 1.334,
+      "volume": 0.35
+    },
+    {
+      "id": "05",
+      "name": "subtle bell notification",
+      "file": "assets/sfx/subtle-bell-notification.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 0.72,
+      "volume": 0.35
+    }
+  ],
+  "total_duration_s": 0
+}

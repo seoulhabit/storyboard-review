@@ -1,0 +1,163 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+  .mx-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .mx-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.08; mix-blend-mode:multiply; }
+
+  .mx-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:26px; padding:0 90px; text-align:center; }
+  .mx-caption { font-weight:800; font-size:4.6cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.1; opacity:0; }
+  .mx-caption .accent { color:#3A7871; }
+
+  .mx-field { position:relative; width:640px; height:560px; border:1px solid rgba(19,21,22,0.14); border-radius:32px; background:transparent; overflow:hidden; }
+  .mx-tag { position:absolute; bottom:24px; left:36px; font-weight:700; font-size:1.5cqw; letter-spacing:0.06em; color:rgba(19,21,22,0.62); text-align:left; }
+
+  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:32px 52px; text-align:left; opacity:0; }
+  .uc-claim { font-size:2.5cqw; line-height:1.42; font-weight:600; margin-bottom:14px; }
+  .uc-hl { background-color:rgba(255,224,61,0.68); padding:0.1em 0.05em; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+  .uc-cites { display:flex; flex-direction:column; gap:6px; }
+  .uc-cite { font-family:'Inter',sans-serif; font-weight:700; font-size:2.2cqw; color:#9F6149; border:1px solid rgba(201,122,92,0.4); border-radius:999px; padding:5px 14px; background:rgba(201,122,92,0.06); align-self:flex-start; }
+</style>
+<div data-hf-id="hf-m5rt" data-composition-id="05-mechanism" id="root" data-width="1080" data-height="1920" data-duration="8.600">
+  <div data-hf-id="hf-m5bg" id="mx-bg" class="clip mx-bg" data-start="0" data-duration="8.600" data-track-index="0"></div>
+  <div data-hf-id="hf-m5gr" id="mx-grain" class="clip mx-grain" data-start="0" data-duration="8.600" data-track-index="1"></div>
+
+  <div data-hf-id="hf-m5st" id="mx-stage" class="clip mx-stage" data-start="0" data-duration="8.600" data-track-index="2">
+    <div data-hf-id="hf-m5cp" class="mx-caption" id="mx-caption">Collagen <span data-hf-id="hf-m5ac" class="accent">Synthesis</span></div>
+
+    <div data-hf-id="hf-m5fd" class="mx-field" id="mx-field">
+      <svg data-hf-id="hf-m5sv" id="mx-svg" viewBox="0 0 640 560" width="640" height="560" aria-hidden="true">
+        <g data-hf-id="hf-m5kn" id="mx-knot"></g>
+        <g data-hf-id="hf-m5nw" id="mx-new"></g>
+      </svg>
+      <div data-hf-id="hf-m5tg" class="mx-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div data-hf-id="hf-m5cd" class="uc-card" id="mx-card">
+      <div data-hf-id="hf-m5cl" class="uc-claim"><span data-hf-id="hf-m5hl" class="uc-hl">Suppresses fibroblast migration linked to raised scarring; prompts type I/III collagen synthesis (in vitro).</span></div>
+      <div data-hf-id="hf-m5ct" class="uc-cites">
+        <span data-hf-id="hf-m5c1" class="uc-cite">Song et al. 2012 · PMID 22360962</span>
+        <span data-hf-id="hf-m5c2" class="uc-cite">Bonté et al. 1995 · PMID 7741425</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  function lcg(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  var rnd = lcg(20260829);
+  var NS = 'http://www.w3.org/2000/svg';
+  var knot = document.getElementById('mx-knot');
+  var CX = 320, CY = 280;
+  var strandEls = [];
+  for (var i = 0; i < 14; i++) {
+    var a0 = rnd() * Math.PI * 2, a1 = rnd() * Math.PI * 2, a2 = rnd() * Math.PI * 2;
+    var r0 = 26 + rnd() * 64, r1 = 20 + rnd() * 70, r2 = 24 + rnd() * 60;
+    var x0 = CX + Math.cos(a0) * r0, y0 = CY + Math.sin(a0) * r0 * 0.8;
+    var x1 = CX + Math.cos(a1) * (r1 + 40), y1 = CY + Math.sin(a1) * r1;
+    var x2 = CX + Math.cos(a2) * r2, y2 = CY + Math.sin(a2) * r2 * 0.85;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) +
+      ' Q' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' + x2.toFixed(1) + ',' + y2.toFixed(1));
+    p.setAttribute('stroke', i % 3 === 0 ? '#131516' : 'rgba(19,21,22,0.55)');
+    p.setAttribute('stroke-width', (2.6 + rnd() * 1.6).toFixed(1));
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    knot.appendChild(p);
+    strandEls.push(p);
+    rnd();
+  }
+
+  // A few newly-synthesized strands, aqua-tinted to mark them as the frame's interrogated
+  // element — distinct from the pre-existing ink tangle. Deterministic, index-seeded
+  // positions near the mass (not drawn from the shared LCG — see project notes on why).
+  var newG = document.getElementById('mx-new');
+  var newStrands = [];
+  var newDefs = [
+    { a: 0.6, r: 70, len: 60, rot: 0.9 },
+    { a: 2.1, r: 55, len: 50, rot: -0.6 },
+    { a: 3.4, r: 80, len: 65, rot: 1.4 },
+    { a: 4.8, r: 60, len: 45, rot: -1.1 }
+  ];
+  newDefs.forEach(function (d, i) {
+    var cx = CX + Math.cos(d.a) * d.r * 0.5, cy = CY + Math.sin(d.a) * d.r * 0.4;
+    var x0 = cx - Math.cos(d.rot) * d.len / 2, y0 = cy - Math.sin(d.rot) * d.len / 2;
+    var x1 = cx + Math.cos(d.rot) * d.len / 2, y1 = cy + Math.sin(d.rot) * d.len / 2;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) + ' Q' + cx.toFixed(1) + ',' + (cy - 14).toFixed(1) + ' ' + x1.toFixed(1) + ',' + y1.toFixed(1));
+    p.setAttribute('stroke', '#59B8AE');
+    p.setAttribute('stroke-width', '3.4');
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    newG.appendChild(p);
+    newStrands.push(p);
+  });
+  gsap.set(newStrands, { opacity: 0, scale: 0.7, transformOrigin: '320px 280px' });
+
+  var field = document.getElementById('mx-field');
+  var caption = document.getElementById('mx-caption');
+  var card = document.getElementById('mx-card');
+  var knotG = document.getElementById('mx-knot');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  gsap.set(knotG, { y: -10, scale: 1.3, svgOrigin: '320 280' });
+  gsap.set(field, { scale: 1.05 });
+
+  // Local cues (real take): calms@0.25-0.55 · fibroblast cells@0.89-1.90 ·
+  // behind that overgrowth@2.04-3.10 · prompts@3.92-4.23 · synthesize@5.04-5.70 ·
+  // fresh structural collagen@6.09-7.68.
+
+  // "calms": a thin aqua plane sweeps the field — the calming signal arriving.
+  var sweep = document.createElementNS(NS, 'rect');
+  sweep.setAttribute('x', '80'); sweep.setAttribute('y', '120'); sweep.setAttribute('width', '6'); sweep.setAttribute('height', '320');
+  sweep.setAttribute('fill', 'rgba(89,184,174,0.5)');
+  document.getElementById('mx-svg').insertBefore(sweep, knot);
+  gsap.set(sweep, { x: 0, opacity: 0 });
+  tl.to(sweep, { opacity: 1, duration: 0.15 }, 0.25);
+  tl.to(sweep, { x: 480, duration: 0.6, ease: 'power2.inOut' }, 0.25);
+  tl.to(sweep, { opacity: 0, duration: 0.2 }, 0.75);
+
+  // The restless wobble (carried over from 02/03) decays smoothly to near-stillness after
+  // the sweep passes — migration calming down, not a snap into order. No overshoot anywhere
+  // in this beat: nothing here is forced into alignment, so nothing earns the licensed
+  // back.out(1.4) this project reserves for an actual structural snap (there isn't one).
+  strandEls.forEach(function (el, i) {
+    var phase = i * 1.31;
+    var freq = 1.5 + (i % 4) * 0.3;
+    var ampStart = 1.6 + (i % 3) * 0.3;
+    var w = { p: 0 };
+    tl.to(w, { p: 8.600, duration: 8.600, ease: 'none', onUpdate: function () {
+      var settle = 1 - gsap.utils.clamp(0, 1, (w.p - 0.9) / 6.5); // decays to ~0 by beat end
+      var amp = ampStart * settle;
+      gsap.set(el, { x: Math.sin(w.p * freq + phase) * amp, y: Math.cos(w.p * freq * 0.7 + phase) * amp * 0.6 });
+    } }, 0);
+  });
+
+  // "prompts ... synthesize": claim card, then the new aqua strands appear one by one —
+  // fresh collagen, visually distinct from the existing ink tangle it's added to.
+  tl.fromTo(card, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 4.10);
+  newStrands.forEach(function (s, i) {
+    tl.to(s, { opacity: 1, scale: 1, duration: 0.5 }, 5.04 + i * 0.35);
+  });
+
+  // "fresh structural collagen": key label lands.
+  tl.fromTo(caption, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4 }, 6.09);
+
+  // slow camera pull throughout, same calm register as every other beat.
+  tl.to(field, { scale: 1.0, duration: 6.5, ease: 'power1.inOut' }, 1.2);
+
+  tl.to({}, { duration: 8.600 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['05-mechanism'] = tl;
+})();
+</script>
+</template>

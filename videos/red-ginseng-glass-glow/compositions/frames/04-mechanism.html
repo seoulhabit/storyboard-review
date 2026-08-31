@@ -1,0 +1,53 @@
+<template>
+<link data-hf-id="hf-m4l1" rel="preconnect" href="https://fonts.googleapis.com">
+<link data-hf-id="hf-m4l2" rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link data-hf-id="hf-m4l3" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#1A1512; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .plate-wrap { overflow:hidden; background:#1A1512; }
+  .plate-wrap img { width:1080px; height:1920px; object-fit:cover; display:block; will-change:transform; }
+  .grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.07; mix-blend-mode:multiply; }
+  .evidence { top:auto; bottom:520px; left:72px; right:auto; width:auto; display:flex; }
+  .ev-card { background:#16181A; color:#FFFFFF; border-radius:18px; padding:26px 34px; max-width:820px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35); border-left:6px solid #59B8AE; }
+  .ev-head { font-weight:800; font-size:34px; letter-spacing:0.08em; text-transform:uppercase; }
+  .ev-claim { margin-top:12px; font-weight:700; font-size:26px; line-height:1.35; color:rgba(255,255,255,0.88); }
+  .ev-src { margin-top:10px; font-weight:700; font-size:23px; letter-spacing:0.06em; color:rgba(255,255,255,0.72); }
+  .idx-tag { top:auto; bottom:420px; left:auto; right:180px; width:auto; height:auto; font-weight:700; font-size:22px;
+    letter-spacing:0.1em; color:rgba(255,255,255,0.88); background:#16181A; padding:10px 20px; border-radius:999px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.3); }
+</style>
+<div data-hf-id="hf-m4rt" data-composition-id="04-mechanism" id="root" data-width="1080" data-height="1920" data-duration="10.523">
+  <div data-hf-id="hf-m4pw" id="m4-plate" class="clip plate-wrap" data-start="0" data-duration="10.523" data-track-index="0">
+    <img data-hf-id="hf-m4im" id="m4-img" src="assets/plates/04.png" alt="" width="1080" height="1920" loading="eager" decoding="sync" data-layout-allow-overflow="true">
+  </div>
+  <div data-hf-id="hf-m4gr" id="m4-grain" class="clip grain" data-start="0" data-duration="10.523" data-track-index="1"></div>
+  <div data-hf-id="hf-m4ev" id="m4-evidence" class="clip evidence" data-start="0" data-duration="10.523" data-track-index="2">
+    <div data-hf-id="hf-m4cd" class="ev-card" id="m4-card">
+      <div data-hf-id="hf-m4hd" class="ev-head" id="m4-head">Ginsenosides</div>
+      <div data-hf-id="hf-m4cl" class="ev-claim" id="m4-claim">In vitro: reduced reactive-oxygen build-up in UVB-stressed skin cells</div>
+      <div data-hf-id="hf-m4sr" class="ev-src" id="m4-src">J Ginseng Res 2024 · PMID 38465216</div>
+    </div>
+  </div>
+  <div data-hf-id="hf-m4ix" id="m4-idx" class="clip idx-tag" data-start="0" data-duration="10.523" data-track-index="3">04 / 06</div>
+</div>
+
+<script data-hf-id="hf-m4s0" src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script data-hf-id="hf-m4s1">
+(function () {
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+
+  tl.fromTo('#m4-img', { scale: 1.0 }, { scale: 1.07, duration: 10.523, transformOrigin: '50% 48%' }, 0);
+  // Chip lands as the VO names the compound (~1.9s local) and stays for the read.
+  gsap.set('#m4-card', { opacity: 0, y: 22 });
+  tl.to('#m4-card', { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 1.9);
+
+  tl.to({}, { duration: 10.523 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-mechanism'] = tl;
+})();
+</script>
+</template>

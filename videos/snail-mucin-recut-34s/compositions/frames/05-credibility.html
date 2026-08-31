@@ -1,0 +1,81 @@
+<template data-composition-id="05-credibility" data-duration="6.0">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style data-brand-tokens="">
+  @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  :root {
+    --green: #2c4a34; --green-deep: #0f2016; --green-lite: #cddfb9;
+    --pink: #b9835a; --pink-deep: #8a5a37;
+    --cream: #fbfaf4; --cream-2: #e8efdd; --ink: #0f2016;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 162px;
+    --cap-band-top: 1168px;
+    --content-bottom-limit: calc(1920px - var(--cap-band-top) + 32px);
+  }
+</style>
+
+<style>
+  #root { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden;
+    background: #12100c; font-family: var(--font-display); }
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
+
+  .media-plate { position: absolute; inset: -4%; }
+  .media-plate img { width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(0.35) contrast(1.05); }
+  .scrim { position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, transparent 35%, rgba(0,0,0,.65) 100%); }
+
+  .tag { position: absolute; top: var(--safe-top); left: var(--safe-left);
+    font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.06em;
+    color: var(--cream); background: rgba(15,32,22,.7); padding: 10px 18px; border-radius: 3px;
+    opacity: 0; }
+
+  .cred-line { position: absolute; left: var(--safe-left); right: var(--safe-right);
+    bottom: var(--content-bottom-limit); font-weight: 700; font-size: 54px; line-height: 1.12;
+    color: var(--cream); opacity: 0; text-shadow: 0 2px 20px rgba(0,0,0,.5); }
+</style>
+
+<div id="root" class="clip" data-composition-id="05-credibility" data-width="1080" data-height="1920">
+  <div class="media-plate" data-layout-allow-overflow>
+    <img id="cred-kb" src="assets/plates/01a-archival-lab.png" alt="" width="1152" height="2048"
+         loading="eager" decoding="sync">
+  </div>
+  <div class="scrim"></div>
+  <div class="tag" id="cred-tag">1960S · SPAIN</div>
+  <div class="cred-line" id="cred-line">THAT SAME GOO IS NOW<br>SKINCARE'S BIGGEST OBSESSION.</div>
+</div>
+
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+
+  // ytCameraMove helper, pasted per hyperframes add convention (same helper
+  // installed via `npx hyperframes add yt-camera-move`, compositions/components/).
+  window.ytCameraMove = window.ytCameraMove || function (tl, target, at, opts) {
+    opts = opts || {};
+    var dur = opts.dur === undefined ? 1.2 : opts.dur;
+    gsap.set(target, { transformPerspective: 1200, transformOrigin: opts.origin || "50% 50%" });
+    tl.to(target, {
+      scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+      x: opts.slideX || 0, y: opts.slideY || 0,
+      duration: dur, ease: opts.ease || "power2.inOut",
+    }, at);
+  };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // Frame zero of this scene is already mid-composition (the cut lands on a
+  // held, legible frame) — Ken Burns creep runs across nearly the whole 6.0s.
+  window.ytCameraMove(tl, "#cred-kb", 0, { zoom: 0.09, slideX: -18, slideY: -22, dur: 5.6, ease: "sine.inOut" });
+
+  tl.fromTo("#cred-tag", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0.6);
+  tl.fromTo("#cred-line", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 2.8);
+  tl.to("#cred-line", { opacity: 0.4, duration: 0.4, ease: "power2.out" }, 5.0);
+
+  tl.to({}, { duration: 6.0 }, 0); // anchor
+  window.__timelines["05-credibility"] = tl;
+})();
+</script>
+</template>

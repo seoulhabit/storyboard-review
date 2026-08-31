@@ -1,0 +1,115 @@
+<template data-composition-id="03-fix" data-duration="8.0">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style data-brand-tokens="">
+  @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  :root {
+    --green: #2c4a34; --green-deep: #0f2016; --green-lite: #cddfb9;
+    --pink: #b9835a; --pink-deep: #8a5a37;
+    --cream: #fbfaf4; --cream-2: #e8efdd; --ink: #0f2016;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 162px;
+  }
+</style>
+
+<style>
+  #root { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden;
+    background: var(--green-deep); font-family: var(--font-display); }
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
+  #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+
+  /* D1 fix: this plate measured static almost the entire 8s (three 0.42s label
+     fades, then 0.00 diff runs of 2.0-2.5s each in between). inset:-4% + the
+     camera-move helper below give it a continuous, slow push for the full scene
+     (same allow-overflow convention Scene 05 uses so a zoomed/panned plate never
+     reveals its own edge). */
+  .media-plate { position: absolute; inset: -4%; background: #1A1A1A; }
+  .media-plate img { width: 100%; height: 100%; object-fit: cover; opacity: 0.28;
+    filter: saturate(0.85) brightness(0.75); display: block; }
+
+  /* Depth roles: dimmed texture plate behind, Flex column of steps in front — anchored
+     to a structural grid (left safe column), not floating centered in open canvas. */
+  .steps { position: absolute; left: var(--safe-left); right: var(--safe-right);
+    top: 0; bottom: var(--safe-bottom); display: flex; flex-direction: column;
+    justify-content: center; gap: 56px; }
+
+  .step { display: flex; align-items: baseline; gap: 28px; opacity: var(--p, 0);
+    transform: translateX(calc((1 - var(--p, 0)) * -36px)); }
+  .step-ord { font-family: var(--font-mono); font-weight: 500; font-size: 56px;
+    color: var(--pink); min-width: 96px; }
+  .step-label { font-weight: 700; font-size: 62px; line-height: 1.08; color: var(--cream); }
+  .step-label small { display: block; font-family: var(--font-mono); font-weight: 500;
+    font-size: 32px; color: var(--cream-2); margin-top: 6px; letter-spacing: 0.02em; }
+
+  /* D1 fix: the 2.08s and 2.58s gaps between each step's own entrance and the
+     next one's arrival were completely static otherwise. A dwell-fill bar gives
+     each step continuous motion for as long as it's the active one — position
+     encoding elapsed time on the current step, not decoration. */
+  .step-bar-track { margin-top: 18px; height: 4px; width: 100%; max-width: 460px;
+    background: rgba(251,250,244,0.16); border-radius: 2px; overflow: hidden; }
+  .step-bar-fill { height: 100%; width: 100%; background: var(--pink);
+    transform: scaleX(0); transform-origin: 0% 50%; }
+</style>
+
+<div id="root" class="clip" data-composition-id="03-fix" data-width="1080" data-height="1920">
+  <div class="media-plate" data-layout-allow-overflow>
+    <img id="fix-plate" src="assets/plates/01b-macro-slime-spatula.png" alt="" width="1152" height="2048"
+         loading="eager" decoding="sync">
+  </div>
+  <div class="steps">
+    <div class="step" id="step-1"><span class="step-ord">01</span>
+      <div class="step-label">MIST<small>Damp face first</small>
+        <div class="step-bar-track"><div class="step-bar-fill" id="bar-1"></div></div>
+      </div></div>
+    <div class="step" id="step-2"><span class="step-ord">02</span>
+      <div class="step-label">PAT<small>Never rub it in</small>
+        <div class="step-bar-track"><div class="step-bar-fill" id="bar-2"></div></div>
+      </div></div>
+    <div class="step" id="step-3"><span class="step-ord">03</span>
+      <div class="step-label">SEAL<small>Moisturizer, right after</small>
+        <div class="step-bar-track"><div class="step-bar-fill" id="bar-3"></div></div>
+      </div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+
+  // ytCameraMove helper, pasted per hyperframes add convention (same helper
+  // installed via `npx hyperframes add yt-camera-move`, compositions/components/).
+  window.ytCameraMove = window.ytCameraMove || function (tl, target, at, opts) {
+    opts = opts || {};
+    var dur = opts.dur === undefined ? 1.2 : opts.dur;
+    gsap.set(target, { transformPerspective: 1200, transformOrigin: opts.origin || "50% 50%" });
+    tl.to(target, {
+      scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+      x: opts.slideX || 0, y: opts.slideY || 0,
+      duration: dur, ease: opts.ease || "power2.inOut",
+    }, at);
+  };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // D1 fix: background plate stays alive across the whole 8s hold instead of
+  // sitting motionless behind the list.
+  window.ytCameraMove(tl, "#fix-plate", 0.1, { zoom: 0.08, slideX: 14, slideY: -10, dur: 7.7, ease: "sine.inOut" });
+
+  // This IS a real ordered sequence, so numbered markers earn their place here
+  // (frontend-design: structure encodes something true, not decoration).
+  tl.to("#step-1", { "--p": 1, duration: 0.42, ease: "power3.out" }, 0.0);
+  tl.fromTo("#bar-1", { scaleX: 0 }, { scaleX: 1, duration: 1.9, ease: "power1.out" }, 0.5);
+
+  tl.to("#step-2", { "--p": 1, duration: 0.42, ease: "power3.out" }, 2.5);
+  tl.fromTo("#bar-2", { scaleX: 0 }, { scaleX: 1, duration: 1.9, ease: "power1.out" }, 3.0);
+
+  tl.to("#step-3", { "--p": 1, duration: 0.42, ease: "power3.out" }, 5.0);
+  tl.fromTo("#bar-3", { scaleX: 0 }, { scaleX: 1, duration: 2.4, ease: "power1.out" }, 5.5);
+
+  tl.to({}, { duration: 8.0 }, 0); // anchor
+  window.__timelines["03-fix"] = tl;
+})();
+</script>
+</template>

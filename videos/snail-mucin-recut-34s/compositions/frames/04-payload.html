@@ -1,0 +1,100 @@
+<template data-composition-id="04-payload" data-duration="8.0">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style data-brand-tokens="">
+  @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  :root {
+    --green: #2c4a34; --green-deep: #0f2016; --green-lite: #cddfb9;
+    --pink: #b9835a; --pink-deep: #8a5a37;
+    --cream: #fbfaf4; --cream-2: #e8efdd; --ink: #0f2016;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 162px;
+    --cap-band-top: 1168px;
+    --content-bottom-limit: calc(1920px - var(--cap-band-top) + 32px);
+  }
+</style>
+
+<style>
+  #root { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden;
+    background: var(--ink); font-family: var(--font-display); }
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
+
+  /* D1 fix: this plate never moved at all (only the card swaps registered any
+     pixel change, at a mean diff of 2-4/255 — just antialiasing on the fading
+     card edges, not real motion). inset:-4% + allow-overflow, same convention
+     as Scene 05/03, so the continuous push below never reveals the plate edge. */
+  .media-plate { position: absolute; inset: -4%; background: #1A1A1A; }
+  .media-plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scrim { position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,32,22,.55) 0%, rgba(15,32,22,.15) 40%, rgba(15,32,22,.7) 100%); }
+
+  .card-slot { position: absolute; left: var(--safe-left); right: var(--safe-right);
+    bottom: var(--content-bottom-limit); display: flex; flex-direction: column; gap: 10px; }
+  .card { position: absolute; left: 0; right: 0; bottom: 0; opacity: 0; transform: scale(0.92);
+    background: rgba(15,32,22,.82); border-left: 6px solid var(--pink); border-radius: 4px;
+    padding: 28px 34px; }
+  .card-name { font-family: var(--font-mono); font-weight: 500; font-size: 40px;
+    letter-spacing: 0.02em; color: var(--pink); }
+  .card-fn { margin-top: 8px; font-weight: 700; font-size: 44px; line-height: 1.1; color: var(--cream); }
+
+  .payoff-line { position: absolute; left: 0; right: 0; top: var(--safe-top); text-align: center;
+    font-weight: 700; font-size: 52px; color: var(--cream); opacity: 0; padding: 0 60px; }
+</style>
+
+<div id="root" class="clip" data-composition-id="04-payload" data-width="1080" data-height="1920">
+  <div class="media-plate" data-layout-allow-overflow>
+    <img id="payload-plate" src="assets/plates/03-macro-droplet.png" alt="" width="1152" height="2048" loading="eager" decoding="sync">
+  </div>
+  <div class="scrim"></div>
+  <div class="card-slot">
+    <div class="card" id="card-1"><div class="card-name">GLYCOLIC ACID</div><div class="card-fn">Eats away dead skin.</div></div>
+    <div class="card" id="card-2"><div class="card-name">ALLANTOIN</div><div class="card-fn">Heals wounds.</div></div>
+    <div class="card" id="card-3"><div class="card-name">HYALURONIC ACID</div><div class="card-fn">Massive doses of hydration.</div></div>
+  </div>
+  <div class="payoff-line" id="payoff-line">ENGINEERED BY NATURE.</div>
+</div>
+
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+
+  // ytCameraMove helper, pasted per hyperframes add convention (same helper
+  // installed via `npx hyperframes add yt-camera-move`, compositions/components/).
+  window.ytCameraMove = window.ytCameraMove || function (tl, target, at, opts) {
+    opts = opts || {};
+    var dur = opts.dur === undefined ? 1.2 : opts.dur;
+    gsap.set(target, { transformPerspective: 1200, transformOrigin: opts.origin || "50% 50%" });
+    tl.to(target, {
+      scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+      x: opts.slideX || 0, y: opts.slideY || 0,
+      duration: dur, ease: opts.ease || "power2.inOut",
+    }, at);
+  };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // D1 fix: continuous push under the card swaps, replacing the fixed scale(1.06)
+  // that never animated. Was carrying the original 6% starting punch-in as its
+  // zoom target so frame zero doesn't jump.
+  window.ytCameraMove(tl, "#payload-plate", 0.1, { zoom: 0.09, slideX: -12, slideY: 10, dur: 7.7, ease: "sine.inOut", origin: "50% 40%" });
+
+  // One mechanism (same-slot card swap), two labels max per card (name + function) —
+  // three cards in 8s instead of the source's three in 25s.
+  function showCard(id, at) {
+    tl.to(id, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, at);
+    tl.to(id, { opacity: 0, scale: 0.94, duration: 0.3, ease: "power2.in" }, at + 2.0);
+  }
+  showCard("#card-1", 0.8);
+  showCard("#card-2", 3.1);
+  tl.to("#card-3", { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.4)" }, 5.4);
+  // card-3 stays up (no exit) — it hands off directly to the payoff line
+
+  tl.to("#payoff-line", { opacity: 1, duration: 0.4, ease: "power2.out" }, 7.0);
+
+  tl.to({}, { duration: 8.0 }, 0); // anchor
+  window.__timelines["04-payload"] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,125 @@
+<template data-composition-id="02-why" data-duration="6.0">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style data-brand-tokens="">
+  @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
+  :root {
+    --green: #2c4a34; --green-deep: #0f2016; --green-lite: #cddfb9;
+    --pink: #b9835a; --pink-deep: #8a5a37;
+    --cream: #fbfaf4; --cream-2: #e8efdd; --ink: #0f2016;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 162px;
+  }
+</style>
+
+<style>
+  #root { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden;
+    background: var(--ink); font-family: var(--font-display); }
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
+  #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+
+  /* SplitCompare mechanism, adapted from catalog/visual-components/split-compare.
+     Field contract: {left: DRY SPONGE, right: MISTED SPONGE, interrogated: "right"}. */
+  .sc-field { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden; }
+  .sc-field.left { left: 0; }
+  .sc-field.right { left: 50%; }
+  .sc-field img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #sc-field-left img { filter: grayscale(0.15) brightness(0.97); }
+
+  .sc-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px;
+    background: var(--cream); transform: translateX(-50%) scaleY(0); transform-origin: 50% 0%; z-index: 3; }
+
+  .sc-flood { position: absolute; inset: 0; background: var(--pink); mix-blend-mode: multiply;
+    opacity: 0; }
+
+  .sc-label { position: absolute; top: var(--safe-top); left: 0; right: 0; text-align: center;
+    font-family: var(--font-mono); font-weight: 500; font-size: 34px; letter-spacing: 0.04em;
+    color: var(--cream); opacity: 0; transform: translateY(-8px); z-index: 2; }
+  .sc-label.left { left: 0; width: 50%; }
+  .sc-label.right { left: 50%; width: 50%; }
+
+  .sc-verdict { position: absolute; top: 900px; width: 50%; display: flex;
+    align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 64px; color: var(--cream);
+    opacity: 0; text-shadow: 0 2px 20px rgba(0,0,0,.5); z-index: 2; }
+  .sc-verdict.left { left: 0; }
+  .sc-verdict.right { left: 50%; }
+
+  /* D3 fix: raw pink text directly on the plate measured 1.44:1 contrast on the
+     rendered frame (WCAG AA large-text floor is 3:1) — the right half of the claim
+     was effectively unreadable. An opaque ink pill guarantees contrast regardless
+     of which half of the split the text sits over. */
+  .headline-band { position: absolute; top: 420px; left: 0; right: 0; display: flex;
+    justify-content: center; opacity: 0; z-index: 2; padding: 0 60px; }
+  .headline-band .pill { background: rgba(15,32,22,.88); border-radius: 8px;
+    padding: 18px 34px; text-align: center; font-family: var(--font-display); font-weight: 700;
+    font-size: 46px; color: var(--cream); }
+</style>
+
+<div id="root" class="clip" data-composition-id="02-why" data-width="1080" data-height="1920">
+  <div class="sc-field left" id="sc-field-left">
+    <img id="sc-img-left" src="assets/plates/05a-dry-sponge.png" alt="" width="1152" height="2048" loading="eager" decoding="sync">
+  </div>
+  <div class="sc-field right" id="sc-field-right">
+    <img id="sc-img-right" src="assets/plates/05b-wet-sponge.png" alt="" width="1152" height="2048" loading="eager" decoding="sync">
+    <div class="sc-flood" id="sc-flood"></div>
+  </div>
+  <div class="sc-divider" id="sc-divider"></div>
+  <div class="sc-label left" id="sc-label-left">DRY SPONGE</div>
+  <div class="sc-label right" id="sc-label-right">MISTED SPONGE</div>
+  <div class="sc-verdict left" id="sc-verdict-left">PANICS</div>
+  <div class="sc-verdict right" id="sc-verdict-right">ABSORBS</div>
+  <div class="headline-band" id="headline-band"><div class="pill">IT'S A MOISTURE MAGNET.</div></div>
+</div>
+
+<script>
+(function () {
+  window.__timelines = window.__timelines || {};
+
+  // ytCameraMove helper, pasted per hyperframes add convention (same helper
+  // installed via `npx hyperframes add yt-camera-move`, compositions/components/).
+  window.ytCameraMove = window.ytCameraMove || function (tl, target, at, opts) {
+    opts = opts || {};
+    var dur = opts.dur === undefined ? 1.2 : opts.dur;
+    gsap.set(target, { transformPerspective: 1200, transformOrigin: opts.origin || "50% 50%" });
+    tl.to(target, {
+      scale: 1 + (opts.zoom === undefined ? 0.11 : opts.zoom),
+      x: opts.slideX || 0, y: opts.slideY || 0,
+      duration: dur, ease: opts.ease || "power2.inOut",
+    }, at);
+  };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // D1 fix: both halves measured fully static (0.00 mean pixel diff, 2.0-2.5s runs).
+  // Opposed slow pushes — the split IS the point, so the two sides move apart from
+  // each other rather than in the same direction. Runs the length of the scene.
+  window.ytCameraMove(tl, "#sc-img-left", 0.15, { zoom: 0.06, slideX: 10, slideY: -8, dur: 5.6, ease: "sine.inOut" });
+  window.ytCameraMove(tl, "#sc-img-right", 0.15, { zoom: 0.10, slideX: -12, slideY: -14, dur: 5.6, ease: "sine.inOut" });
+
+  // Adapted from catalog/visual-components/split-compare: divider first, labels next
+  // (independently, never a shared label), then the flood on the interrogated side only.
+  tl.fromTo("#sc-divider", { scaleY: 0 }, { scaleY: 1, duration: 0.4, ease: "power3.out" }, 0);
+  tl.fromTo("#sc-label-left", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.25);
+  tl.fromTo("#sc-label-right", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.35);
+  tl.fromTo("#sc-flood", { opacity: 0 }, { opacity: 0.32, duration: 0.45, ease: "power2.out" }, 0.7);
+
+  // Framing line lands first (own band at y=420, clear of the labels above it).
+  tl.fromTo("#headline-band", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 1.2);
+
+  // Reversal beat: PANICS (left) vs ABSORBS (right) — the actual claim this scene exists
+  // to make. Own band at y=900, clear of both the headline above and the caption band
+  // below (which starts at y=1168).
+  tl.fromTo("#sc-verdict-left", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.5)" }, 3.0);
+  tl.fromTo("#sc-verdict-right", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.5)" }, 3.15);
+
+  // hold clears cleanly before the hard cut to Scene 03
+  tl.to("#headline-band", { opacity: 0.85, duration: 0.3 }, 5.6);
+
+  tl.to({}, { duration: 6.0 }, 0); // anchor
+  window.__timelines["02-why"] = tl;
+})();
+</script>
+</template>

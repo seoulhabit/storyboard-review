@@ -1,0 +1,27 @@
+# 60-Second YouTube Short Script: The Gentle Alternative (user-supplied, verbatim)
+
+Production Notes for AI Video/Audio Generation:
+- Audio Generation Engine: Higgsfield
+- Voiceover (VO) Model: Kimberly
+- Pacing: Fast, energetic, ~140 words total for a 60-second runtime.
+- Background Music: Upbeat, trendy lo-fi (low volume, underneath VO).
+
+[0:00 - 0:05]
+Visual: Split screen. Left side: angry, red, irritated skin. Right side: calm, glowing skin. High-contrast text overlay: "Love BHA but hate the peeling?"
+VO (Kimberly / Higgsfield): "If you want to clear blackheads without irritation, but traditional Salicylic Acid leaves your skin red and peeling... stop using it."
+
+[0:05 - 0:15]
+Visual: Presenter on camera, shaking head and pushing away a generic acid dropper bottle.
+VO (Kimberly / Higgsfield): "BHA is famous for clearing pores, but it can be way too harsh. You don't have to destroy your skin barrier just to get rid of breakouts."
+
+[0:15 - 0:30]
+Visual: Zoom in on presenter. A sleek graphic pops up on screen showing two puzzle pieces clicking together: "Salicylic Acid" + "Betaine". Text overlay: "BETAINE SALICYLATE".
+VO (Kimberly / Higgsfield): "Meet your new best friend: Betaine Salicylate. This is the ultimate Salicylic acid alternative. It's literally salicylic acid attached to a hydrating amino acid called Betaine."
+
+[0:30 - 0:45]
+Visual: B-roll of gently patting a clear liquid into the skin, looking hydrated and plump. Text overlay: "Exfoliant for Sensitive Skin".
+VO (Kimberly / Higgsfield): "This means you get all the blackhead-busting, pore-unclogging power of a BHA, but with built-in hydration. It is hands-down the best exfoliant for sensitive skin."
+
+[0:45 - 0:60]
+Visual: Presenter on camera holding up a product with Betaine Salicylate (like COSRX BHA) or smiling confidently. Pointing down to the comments. Text overlay: "Subscribe for more!"
+VO (Kimberly / Higgsfield): "You get the glow, without the burn. Have you checked your ingredient lists for this yet? Let me know in the comments and subscribe for more skincare secrets!"

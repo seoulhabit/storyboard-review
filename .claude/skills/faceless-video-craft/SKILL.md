@@ -103,6 +103,30 @@ defects, not hypotheticals:
   process must not borrow chart grammar — axes, gridlines, a plotted line or
   point — that implies a real measurement sits behind it. Label a diagram as
   a diagram when it isn't a rendering of actual study data.
+- **An untranslated clinical/technical register in the claim itself.** A
+  citation pill (`Journal · Year`, a CFR/regulation code) is a provenance
+  stamp, not something the viewer has to parse — that's already covered
+  above. This is different: it's the *claim sentence* — the headline,
+  qualifier, or instruction the video is actually asking the viewer to walk
+  away with — using clinical/regulatory shorthand as if the audience already
+  has the vocabulary to decode it (a raw statistic with no plain-language
+  frame — "reduced TEWL by 23%" with no gloss for what TEWL is or why 23%
+  matters; a mechanism-of-action term dropped in unexplained — "inhibits
+  tyrosinase" instead of "slows the enzyme that makes dark spots"; a severity
+  or dosing term borrowed straight from a regulatory text without
+  translating it into what the viewer should actually do). The test: could
+  the target audience (see the project's own `audience:` line) act on the
+  on-screen sentence correctly without knowing what the technical term
+  means? If not, it needs a plain-language equivalent standing in the
+  headline/qualifier position, with the technical term optionally still
+  present as backup, not instead of the translation. Citations sitting
+  beside an already-plain-language claim are the sanctioned pattern this
+  rule doesn't flag — confirmed against `videos/peeling-not-progress`'s full
+  copy deck: every claim/instruction ("Severe burning or swelling? Stop and
+  ask a doctor.", "In trials, more irritation didn't mean better results.")
+  is plain English on its own, with citation pills (`Arch Dermatol · 1995`,
+  `21 CFR 333.350`) doing pure provenance work beside it — a real example of
+  what passing this check looks like, not just what failing it looks like.
 
 This is the craft half of research integrity: presentation, not whether the
 underlying claim is true. Whether a claim is defensible — a real source
@@ -110,7 +134,11 @@ exists, the cited population/product-type/route actually matches, injected
 clinical treatments are distinguished from topical cosmetics — is
 domain-truth work, and as the note above says, no project skill in this repo
 currently holds it. Don't let that missing home become an excuse to skip the
-presentation half this section does own.
+presentation half this section does own. The same is true of the
+plain-language rule just above: whether the *underlying science* is
+correctly simplified (not just readably worded) is domain-truth work outside
+this skill's remit; what this section owns is that the on-screen sentence
+carrying the claim doesn't require the viewer to already speak clinical.
 
 ## The five things that actually break work
 
@@ -874,8 +902,17 @@ for next time:
 8. **Does a real sidecar caption file exist** — not a same-named but
    unrelated file (see *The captions*' naming note below) — alongside the
    burned-in track? Measured gap: only 4 of 24 shipped projects ship one.
-9. **Are all on-screen citations real and human-readable, with no internal
-   IDs?** See *What must never reach a rendered frame* above.
+9a. **Are all on-screen citations real and human-readable, with no internal
+    IDs?** See *What must never reach a rendered frame* above.
+9b. **Does every on-screen claim/instruction stand on its own in plain
+    language, independent of whether its citation is understood?** Distinct
+    from 9a, which checks the citation's own format — this checks the
+    *claim sentence* next to it. Read each headline/qualifier/instruction
+    against the project's own stated audience and ask whether it requires
+    clinical vocabulary to act on correctly; a citation pill is allowed to
+    stay terse (`Journal · Year`, a regulation code) exactly because it's
+    provenance, not the instruction itself. See *What must never reach a
+    rendered frame*'s "untranslated clinical/technical register" entry.
 10. **Are there no placeholders, unfinished text, or debug-overlay
     artifacts in frame?** Same section as above.
 11. **Is the closing beat one specific, lesson-tied action**, not a
@@ -1804,3 +1841,10 @@ either pattern as "the" approach, and the majority of projects had neither.
   transform's transient overshoot needs the transform removed (or bounded),
   not a bigger padding number that only shifts where the same bug resurfaces
   next time a scene's resting position happens to sit close to the line.
+- Cleaning up a citation pill's *format* (converting an internal ID to
+  `Journal · Year`) and treating that as having handled the video's clinical
+  language, when the check that actually matters is whether the *claim
+  sentence itself* — not its footnote — requires the viewer to already know
+  clinical or regulatory vocabulary to act on it correctly. The two are
+  independent: a pill can be perfectly formatted next to a headline the
+  target audience can't parse.

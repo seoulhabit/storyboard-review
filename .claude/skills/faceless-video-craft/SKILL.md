@@ -160,6 +160,10 @@ platform. Linux is the reference path; macOS and Windows fall back to an
 approximate capture. GPU/driver differences (ANGLE, Metal, SwiftShader) change
 antialiasing and WebGL output. Fix the render environment before you build an
 acceptance harness on top of it, and re-baseline when you move to CI or cloud.
+That reference path is not strictly the safer one, though: Linux's
+headless-shell capture defaults to a `beginframe` mode with its own frame-0
+and scene-boundary fragility that macOS's screenshot fallback is structurally
+immune to — see *Verification loop*'s frame-index-vs-nominal-timestamp check.
 
 **3. Verify by pixels, never by manifest.** A render that reports success can
 still contain missing glyphs, clipped text, an unloaded font falling back, a
@@ -982,6 +986,49 @@ crossfades* below for when a crossfade is and isn't safe.
 Also always check: frame zero (must be composed, not mid-fade — see mandatory
 rule 4), and, for a short, that the last frame hands back toward the first if
 a loop was promised (see *The hook* below).
+
+**Frame-index-to-timestamp check, `beginframe` capture mode.** The frame-zero
+check above assumes frame index and nominal timeline time line up — on a
+Linux/cloud render they can silently diverge, in a way a clean local render
+gives no warning of. HyperFrames' Linux headless-shell path defaults to a
+`beginframe` capture mode (confirmed in `hyperframes@0.8.17`'s and `0.8.20`'s
+bundled `dist/cli.js`, identical in both: `captureMode` is `"beginframe"` only
+when `headlessShell && process.platform === "linux"`; every other platform
+gets plain `"screenshot"` capture). In `beginframe` mode, a CDP
+`HeadlessExperimental.beginFrame` response with `hasDamage: false` makes the
+engine reuse the *previous* captured buffer instead of re-screenshotting
+(`beginFrameCapture`) — and the composite-pending force-repaint workaround
+that plain `screenshot` mode gets before every capture
+(`prepareFrameForCapture`'s 1×1 `Page.captureScreenshot` flush) is explicitly
+skipped when `captureMode === "beginframe"`. At frame 0 there is no previous
+buffer to reuse, so a `hasDamage:false` first frame — the likely state right
+after a `data-composition-src` sub-composition mount, before its content has
+actually painted — can ship with the entrance element missing entirely, not
+just under-tweened, even though the composition source has no bug. Confirmed
+on `videos/snail-mucin-recut-34s`: its Linux/`beginframe`-mode master had a
+frame 0 missing its title text outright (first appearing ~3 frames later),
+though the composition's own entrance is a scale-only settle (0.98→1.0, no
+opacity animation) with no reason to produce that. A clean local render is
+not evidence this is fine — macOS/Windows never take the `beginframe` path at
+all, so the identical composition renders a fully composed frame 0 locally;
+checked against `madecassoside-clinical-cut`, `madecassoside-flat-matrix`,
+`red-ginseng-glass-glow`, and `retinal-clinical-dossier`'s locally-rendered
+masters, which all use the same `data-composition-src` + scale-only-settle
+entrance pattern and all had a correctly composed frame 0. Treat any
+Linux/cloud-rendered master (`hyperframes cloud`/`cloudrun`/`lambda`, or CI)
+as needing its own frame-0 and scene-boundary extraction — don't infer safety
+from a clean local render or from reading the composition source, since the
+defect lives in the capture pipeline, not the markup. If it reproduces,
+`PRODUCER_FORCE_SCREENSHOT=true` forces the same `screenshot` path macOS
+uses — an internal env var found in the bundled source, not a published or
+stable CLI flag, so test it before depending on it, and expect a render-speed
+cost. A related symptom — two adjacent scenes at a cut each reading as a
+different, internally-inconsistent point in time within one captured frame —
+is consistent with the same stale-buffer-reuse mechanism firing mid-transition
+rather than at frame 0, but that specific mechanism is inferred, not
+source-confirmed the way the frame-0 case is: verify a suspect cut the same
+way, by extracting and eyeballing the boundary frame, rather than assuming
+the cause.
 
 **Phone-scale legibility check.** Downscale an extracted frame to roughly 25%
 size — the same "phone-viewing-simulation habit" *The thumbnail* section

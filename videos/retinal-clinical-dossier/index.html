@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Retinal Clinical Dossier</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      /* House tokens (pdrn-cellular-science lineage). The pasted brief's palette maps onto
+         them: deep charcoal -> ink, off-white/bone -> paper, clinical teal -> aqua,
+         soft red -> coral. Tokens carry the decision and are not overridden. */
+      :root {
+        --ink: #131516;
+        --paper: #F7F5F0;
+        --card: #FBF9F5;
+        --aqua: #59B8AE;
+        --aqua-text: #3A7871;
+        --coral: #C97A5C;
+        --coral-text: #9F6149;
+        --ink-muted: rgba(19,21,22,0.62);
+        --paper-muted: rgba(247,245,240,0.68);
+        --line: rgba(19,21,22,0.12);
+        --line-paper: rgba(247,245,240,0.16);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+        background: var(--ink); font-family: 'Inter', 'Helvetica Neue', sans-serif; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .dark  { background: var(--ink);   color: var(--paper); }
+      .light { background: var(--paper); color: var(--ink); }
+
+      .label { font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; font-size: 26px; }
+      .flag-unsourced { font-family: 'JetBrains Mono', monospace; font-size: 34px; font-weight: 500; letter-spacing: 0.04em; }
+      .vo-caption { top: 196px; left: 0; width: 100%; display: flex; justify-content: center;
+        z-index: 50; pointer-events: none; }
+      .vo-caption span { display: inline-block; max-width: 760px; background: rgba(247,245,240,0.94);
+        color: var(--ink); border: 1px solid var(--line); font-weight: 800; font-size: 40px;
+        line-height: 1.3; text-align: center; padding: 12px 26px; border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(19,21,22,0.12); }
+
+      /* ---------- Scene 1 · Hook (0-8) ---------- */
+      .s1-head { position: absolute; top: 384px; left: 0; width: 100%; text-align: center;
+        font-weight: 800; font-size: 100px; letter-spacing: 0.01em; color: var(--paper); }
+      .s1-kicker { position: absolute; top: 520px; left: 0; width: 100%; text-align: center;
+        color: var(--paper-muted); }
+      .s1-stage { position: absolute; top: 574px; left: 0; width: 1080px; height: 700px;
+        display: flex; align-items: center; justify-content: center; }
+      .s1-tag { position: absolute; top: 1444px; left: 129px; color: var(--paper-muted);
+        font-weight: 700; font-size: 24px; letter-spacing: 0.2em; text-transform: uppercase; }
+      .s1-fix { position: absolute; top: 1318px; left: 0; width: 1080px; display: flex;
+        justify-content: center; opacity: 0; }
+      .s1-fix span { border: 2px solid var(--aqua); color: var(--paper); border-radius: 999px;
+        padding: 18px 42px; font-weight: 800; font-size: 40px; letter-spacing: 0.14em; }
+      .s1-fix b { color: var(--aqua); font-weight: 800; }
+
+      /* ---------- Scene 2 · Conversion path (8-18) ---------- */
+      .s2-card { position: absolute; left: 129px; top: 468px; width: 822px;
+        background: var(--card); border: 1px solid var(--line); border-radius: 28px;
+        padding: 60px 64px 52px; box-shadow: 0 10px 34px rgba(19,21,22,0.10); opacity: 0; }
+      .s2-card .label { color: var(--ink-muted); margin-bottom: 44px; }
+      .s2-node { position: relative; border: 2px solid rgba(19,21,22,0.22); border-radius: 18px;
+        padding: 26px 32px; text-align: center; font-weight: 700; font-size: 42px;
+        letter-spacing: 0.04em; color: var(--ink); opacity: 0; }
+      .s2-check { position: absolute; top: -18px; right: -18px; width: 44px; height: 44px;
+        border-radius: 50%; background: var(--aqua); display: flex; align-items: center;
+        justify-content: center; opacity: 0; box-shadow: 0 4px 12px rgba(19,21,22,0.18); }
+      .s2-node small { display: block; font-weight: 600; font-size: 24px;
+        letter-spacing: 0.14em; color: var(--ink-muted); margin-top: 8px; }
+      .s2-node.is-active { border-color: var(--aqua); }
+      .s2-arrow-row { display: flex; align-items: center; justify-content: center;
+        gap: 24px; height: 108px; opacity: 0; }
+      .s2-step { font-weight: 700; font-size: 26px; letter-spacing: 0.16em;
+        color: var(--coral-text); text-transform: uppercase; opacity: 0; }
+      .s2-foot { margin-top: 44px; text-align: left; color: var(--ink-muted);
+        font-weight: 600; font-size: 22px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+      /* ---------- Scene 3 · Dossier (18-28) ---------- */
+      .s3-card { position: absolute; left: 129px; top: 388px; width: 822px;
+        background: var(--card); border: 1px solid var(--line); border-radius: 28px;
+        padding: 56px 64px 48px; box-shadow: 0 10px 34px rgba(19,21,22,0.10); opacity: 0; }
+      .s3-row { padding: 30px 0; border-bottom: 1px solid var(--line); opacity: 0; }
+      .s3-row:last-child { border-bottom: none; }
+      .s3-row .label { color: var(--ink-muted); margin-bottom: 16px; }
+      .s3-name { font-weight: 800; font-size: 78px; color: var(--ink); letter-spacing: 0.01em; }
+      .s3-sub { font-weight: 600; font-size: 34px; color: var(--ink-muted); margin-top: 6px; }
+      .s3-body { font-weight: 500; font-size: 34px; line-height: 1.45; color: var(--ink); }
+      .s3-claim { font-weight: 700; font-size: 38px; line-height: 1.4; color: var(--ink); }
+      .s3-claim-u { display: block; width: 100%; height: 6px; background: var(--aqua);
+        border-radius: 3px; margin-top: 14px; transform-origin: 0 50%; }
+      .s3-dots { display: flex; align-items: center; gap: 16px; margin-top: 26px; }
+      .s3-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--aqua); opacity: 0; }
+      .s3-known { font-weight: 700; font-size: 28px; letter-spacing: 0.18em; color: var(--ink); margin-left: 10px; }
+      .s3-flag { color: var(--ink-muted); margin-top: 4px; }
+
+      /* ---------- Scene 4 · Fibroblasts (28-38) ---------- */
+      .s4-grid { position: absolute; inset: 0; opacity: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='108' height='108'%3E%3Cpath d='M108 0H0V108' fill='none' stroke='%23131516' stroke-opacity='0.10' stroke-width='2'/%3E%3C/svg%3E"); }
+      .s4-stack { position: absolute; left: 108px; top: 560px; width: 760px;
+        display: flex; flex-direction: column; gap: 34px; }
+      .s4-over { color: var(--ink-muted); opacity: 0; }
+      .s4-head { font-weight: 800; font-size: 76px; color: var(--ink); letter-spacing: 0.01em; opacity: 0; }
+      .s4-body { font-weight: 500; font-size: 38px; line-height: 1.5; color: var(--ink);
+        background: rgba(251,249,245,0.92); border-radius: 18px; padding: 8px 12px 8px 0; opacity: 0; }
+      .s4-flag { color: var(--ink-muted); opacity: 0; }
+      .s4-icons { display: flex; gap: 48px; margin-top: 26px; }
+      .s4-icon { width: 240px; display: flex; flex-direction: column; align-items: center;
+        gap: 18px; opacity: 0; }
+      .s4-tile { width: 240px; height: 150px; background: var(--card);
+        border: 1px solid var(--line); border-radius: 22px; display: flex;
+        align-items: center; justify-content: center; box-shadow: 0 6px 22px rgba(19,21,22,0.08); }
+      .s4-cap { font-weight: 700; font-size: 24px; letter-spacing: 0.18em; color: var(--ink-muted);
+        text-transform: uppercase; }
+      .s4-cell { position: absolute; width: 104px; height: 104px; background: rgba(89,184,174,0.16);
+        border: 2px solid rgba(89,184,174,0.5); border-radius: 4px; opacity: 0; }
+
+      /* ---------- Scene 5 · Application (38-48) ---------- */
+      .s5-head { position: absolute; top: 356px; left: 0; width: 100%; text-align: center;
+        font-weight: 700; font-size: 34px; letter-spacing: 0.22em; color: var(--paper-muted);
+        text-transform: uppercase; }
+      .s5-grid { position: absolute; left: 70px; top: 430px; width: 830px; height: 940px;
+        display: grid; grid-template-columns: 430px 400px; align-items: center; }
+      .s5-text { display: flex; flex-direction: column; gap: 26px; }
+      .s5-gentle { font-weight: 800; font-size: 82px; color: var(--paper); opacity: 0; }
+      .s5-weekly { font-weight: 600; font-size: 46px; letter-spacing: 0.08em;
+        color: var(--paper-muted); opacity: 0; }
+      .s5-div { width: 220px; height: 1px; background: var(--line-paper); opacity: 0; }
+      .s5-pips { display: flex; gap: 14px; align-items: center; }
+      .s5-pip { width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(247,245,240,0.4);
+        opacity: 0; }
+      .s5-pip.on { background: var(--aqua); border-color: var(--aqua); }
+      .s5-flag { color: var(--paper-muted); opacity: 0; }
+
+      /* ---------- Scene 6 · CTA (48-56) ---------- */
+      .s6-stack { position: absolute; left: 0; top: 370px; width: 1080px;
+        display: flex; flex-direction: column; align-items: center; gap: 22px; }
+      .s6-name { display: flex; align-items: center; gap: 18px; font-weight: 700; font-size: 30px;
+        letter-spacing: 0.24em; color: var(--paper-muted); text-transform: uppercase; opacity: 0; }
+      .s6-name i { width: 18px; height: 18px; border-radius: 50%; background: var(--aqua);
+        display: inline-block; font-style: normal; }
+      .s6-line { font-weight: 800; font-size: 124px; color: var(--paper);
+        letter-spacing: 0.01em; opacity: 0; }
+      .s6-underline { width: 320px; height: 8px; background: var(--aqua); border-radius: 4px;
+        transform-origin: 0 50%; }
+      .s6-o { color: var(--coral); text-decoration: line-through;
+        text-decoration-thickness: 8px; }
+      .s6-a { color: var(--aqua); }
+      .s6-pill { margin-top: 56px; background: var(--paper); color: var(--ink);
+        border-radius: 999px; padding: 30px 58px; font-weight: 800; font-size: 40px;
+        letter-spacing: 0.06em; box-shadow: 0 12px 34px rgba(0,0,0,0.35); opacity: 0; }
+      .s6-tag { margin-top: 40px; color: var(--paper-muted); font-weight: 700;
+        font-size: 24px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Retinal Clinical Dossier - 56s silent 9:16 short. Six hard-cut scenes:
+      S1 0-8 hook (ink) / S2 8-18 conversion path (paper) / S3 18-28 dossier (paper) /
+      S4 28-38 fibroblasts (paper) / S5 38-48 application (ink) / S6 48-56 CTA (ink).
+      The brief's ING-ret-S001 / ING-ret-S002 citation ids resolve to no record in
+      catalog/ingredients (retinal-vs-retinol is a flagged gap), so every efficacy /
+      gentleness claim carries the UNSOURCED flag instead of a citation chip.
+    -->
+    <div id="root" data-composition-id="main" data-start="0.000" data-duration="56.000" data-width="1080" data-height="1920">
+
+      <!-- Scene 1 · Hook -->
+      <section id="s1" class="scene clip dark" data-start="0.000" data-duration="8.000" data-track-index="0">
+        <h1 class="s1-head" id="s1-head">WASTING TIME?</h1>
+        <div class="s1-kicker label" id="s1-kicker">Retinal vs Retinol &middot; Dossier N#03</div>
+        <div class="s1-stage">
+          <svg id="s1-svg" viewBox="0 0 420 780" width="356" height="661" aria-hidden="true">
+            <g id="s1-bottle" fill="none" stroke="#F7F5F0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+              <!-- dropper bulb -->
+              <path d="M210,28 C186,28 172,44 172,62 C172,80 186,92 210,92 C234,92 248,80 248,62 C248,44 234,28 210,28 Z"/>
+              <!-- cap collar -->
+              <rect x="168" y="96" width="84" height="58" rx="10"/>
+              <!-- pipette hint inside neck -->
+              <path d="M210,154 V232" stroke-opacity="0.55"/>
+              <!-- neck -->
+              <path d="M182,154 V212 M238,154 V212"/>
+              <!-- shoulders + body -->
+              <path d="M182,212 C132,238 104,272 104,330 V648 C104,690 136,718 178,718 H242 C284,718 316,690 316,648 V330 C316,272 288,238 238,212"/>
+              <!-- fill line -->
+              <path d="M124,364 H296" stroke-opacity="0.35"/>
+              <text x="210" y="520" text-anchor="middle" font-family="Inter" font-weight="700"
+                font-size="30" letter-spacing="7" fill="rgba(247,245,240,0.68)" stroke="none">RETINOL</text>
+            </g>
+            <g stroke="#C97A5C" stroke-width="16" stroke-linecap="round" fill="none">
+              <path id="s1-x1" d="M78,208 L342,700" stroke-dasharray="560" stroke-dashoffset="560"/>
+              <path id="s1-x2" d="M342,208 L78,700" stroke-dasharray="560" stroke-dashoffset="560"/>
+            </g>
+          </svg>
+        </div>
+        <div class="s1-fix" id="s1-fix"><span>THE UPGRADE &middot; <b>RETINAL</b></span></div>
+        <div class="s1-tag">N#03 &middot; Ingredient dossier</div>
+      </section>
+
+      <!-- Scene 2 · Conversion path -->
+      <section id="s2" class="scene clip light" data-start="8.000" data-duration="10.000" data-track-index="1">
+        <div class="s2-card" id="s2-card">
+          <div class="label">Conversion path</div>
+          <div class="s2-node" id="s2-n1">RETINOL</div>
+          <div class="s2-arrow-row" id="s2-a1">
+            <svg width="56" height="92" viewBox="0 0 56 92" aria-hidden="true">
+              <path id="s2-a1-line" d="M28,6 V66 M10,52 L28,74 L46,52" fill="none"
+                stroke="rgba(19,21,22,0.30)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="s2-step" id="s2-s1">Step 1 &middot; conversion</div>
+          </div>
+          <div class="s2-node" id="s2-n2">RETINALDEHYDE <small>RETINAL</small></div>
+          <div class="s2-arrow-row" id="s2-a2">
+            <svg width="56" height="92" viewBox="0 0 56 92" aria-hidden="true">
+              <path id="s2-a2-line" d="M28,6 V66 M10,52 L28,74 L46,52" fill="none"
+                stroke="rgba(19,21,22,0.30)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="s2-step" id="s2-s2">Step 2 &middot; conversion</div>
+          </div>
+          <div class="s2-node" id="s2-n3">RETINOIC ACID <small>ACTIVE FORM</small>
+            <div class="s2-check" id="s2-check">
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+                <path d="M4,11 L9,16 L18,6" fill="none" stroke="#131516" stroke-width="3"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="s2-foot">Pathway &mdash; illustrative, not a claim</div>
+        </div>
+      </section>
+
+      <!-- Scene 3 · Dossier -->
+      <section id="s3" class="scene clip light" data-start="18.000" data-duration="10.000" data-track-index="0">
+        <div class="s3-card" id="s3-card">
+          <div class="s3-row" id="s3-r1">
+            <div class="label">Ingredient identity</div>
+            <div class="s3-name">RETINAL</div>
+            <div class="s3-sub">Retinaldehyde</div>
+          </div>
+          <div class="s3-row" id="s3-r2">
+            <div class="label">What it is</div>
+            <div class="s3-body">Direct precursor to active retinoic acid. Skips the first conversion step.</div>
+          </div>
+          <div class="s3-row" id="s3-r3">
+            <div class="label">Claim</div>
+            <div class="s3-claim">Up to 11&times; faster acting than traditional retinol.</div>
+            <div class="s3-claim-u" id="s3-claim-u"></div>
+            <div class="s3-dots">
+              <div class="s3-dot" id="s3-d1"></div>
+              <div class="s3-dot" id="s3-d2"></div>
+              <div class="s3-dot" id="s3-d3"></div>
+              <div class="s3-known">KNOWN</div>
+            </div>
+          </div>
+          <div class="s3-row" id="s3-r4">
+            <div class="flag-unsourced s3-flag">&#9675; UNSOURCED &mdash; no verified source record on file</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 4 · Fibroblasts -->
+      <section id="s4" class="scene clip light" data-start="28.000" data-duration="10.000" data-track-index="1">
+        <div class="s4-grid" id="s4-grid"></div>
+        <div class="s4-cell" id="s4-c1" style="left:110px;  top:220px;"></div>
+        <div class="s4-cell" id="s4-c2" style="left:758px;  top:436px;"></div>
+        <div class="s4-cell" id="s4-c3" style="left:866px;  top:1408px;"></div>
+        <div class="s4-cell" id="s4-c4" style="left:218px;  top:1516px;"></div>
+        <div class="s4-cell" id="s4-c5" style="left:650px;  top:112px;"></div>
+        <div class="s4-stack">
+          <div class="label s4-over" id="s4-over">Cellular action</div>
+          <div class="s4-head" id="s4-head">FIBROBLASTS</div>
+          <div class="s4-body" id="s4-body">Wakes up cellular factories that create new collagen, elastin, and clear cellular turnover.</div>
+          <div class="flag-unsourced s4-flag" id="s4-flag">&#9675; UNSOURCED &mdash; no verified source record on file</div>
+          <div class="s4-icons">
+            <div class="s4-icon" id="s4-i1">
+              <div class="s4-tile">
+                <svg width="180" height="80" viewBox="0 0 180 80" aria-hidden="true">
+                  <path d="M8,40 C26,10 44,10 62,40 C80,70 98,70 116,40 C134,10 152,10 170,40"
+                    fill="none" stroke="#3A7871" stroke-width="8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="s4-cap">Collagen</div>
+            </div>
+            <div class="s4-icon" id="s4-i2">
+              <div class="s4-tile">
+                <svg width="180" height="80" viewBox="0 0 180 80" aria-hidden="true">
+                  <path d="M90,40 C74,12 34,12 22,40 C10,68 42,68 58,52 L122,28 C138,12 170,12 158,40 C146,68 106,68 90,40 Z"
+                    fill="none" stroke="#3A7871" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="s4-cap">Elastin</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 5 · Application -->
+      <section id="s5" class="scene clip dark" data-start="38.000" data-duration="10.000" data-track-index="0">
+        <div class="s5-head">Application &middot; Topical &middot; N#03</div>
+        <div class="s5-grid">
+          <svg id="s5-svg" viewBox="0 0 430 900" width="430" height="900" aria-hidden="true">
+            <path id="s5-face" fill="none" stroke="#F7F5F0" stroke-width="5" stroke-linecap="round"
+              d="M155,152 C262,96 356,162 358,272 C359,322 352,354 340,384 C334,399 336,410 346,418 C357,430 363,449 358,464 C354,475 345,479 337,476 C341,488 346,493 344,505 C342,515 335,518 329,515 C333,525 337,531 333,543 C328,557 317,561 309,558 C315,573 313,591 301,603 C283,623 251,637 216,641 C181,645 153,631 139,607 C133,651 135,721 129,801"/>
+            <g id="s5-marker" opacity="0">
+              <circle cx="240" cy="482" r="62" fill="none" stroke="#59B8AE" stroke-width="5"
+                stroke-dasharray="10 12"/>
+              <circle cx="240" cy="482" r="8" fill="#59B8AE"/>
+            </g>
+          </svg>
+          <div class="s5-text">
+            <div class="s5-gentle" id="s5-gentle">GENTLE</div>
+            <div class="s5-weekly" id="s5-weekly">2&ndash;3&times; WEEKLY</div>
+            <div class="s5-pips" id="s5-pips">
+              <div class="s5-pip on" id="s5-p1"></div>
+              <div class="s5-pip" id="s5-p2"></div>
+              <div class="s5-pip on" id="s5-p3"></div>
+              <div class="s5-pip" id="s5-p4"></div>
+              <div class="s5-pip on" id="s5-p5"></div>
+              <div class="s5-pip" id="s5-p6"></div>
+              <div class="s5-pip" id="s5-p7"></div>
+            </div>
+            <div class="s5-div" id="s5-div"></div>
+            <div class="flag-unsourced s5-flag" id="s5-flag">&#9675; UNSOURCED &mdash; no verified source record on file</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 6 · CTA -->
+      <section id="s6" class="scene clip dark" data-start="48.000" data-duration="8.000" data-track-index="1">
+        <div class="s6-stack">
+          <div class="s6-name" id="s6-name"><i></i>RETINAL &middot; ONE STEP AHEAD</div>
+          <div class="s6-line" id="s6-l1">DROP THE <span class="s6-o">O</span></div>
+          <div class="s6-line" id="s6-l2">GET THE <span class="s6-a">A</span></div>
+          <div class="s6-underline" id="s6-underline"></div>
+          <div class="s6-pill" id="s6-pill">BEGINNER FORMULAS &#128071;</div>
+          <div class="s6-tag" id="s6-tag">N#03 &middot; Ingredient dossier</div>
+        </div>
+      </section>
+
+      <!-- Kimberly VO (seed_audio) — takes gated per series rules; captions burned from
+           SCRIPT.md text, word-timed from Whisper via `hyperframes transcribe`. -->
+            <audio id="el-01-voice" src="assets/voice/01.wav" data-start="0.300" data-duration="6.570" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-02-voice" src="assets/voice/02.wav" data-start="8.300" data-duration="9.446" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-03-voice" src="assets/voice/03.wav" data-start="18.300" data-duration="8.922" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-04-voice" src="assets/voice/04.wav" data-start="28.500" data-duration="9.208" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-05-voice" src="assets/voice/05.wav" data-start="38.600" data-duration="7.364" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-06-voice" src="assets/voice/06.wav" data-start="48.400" data-duration="6.080" data-track-index="10" data-volume="1"></audio>
+
+      <!-- House clinical BGM bed (reused from pdrn-cellular-science lineage), ducked to
+           ~-25dB under VO per round-5 review: 20*log10(0.056) ~= -25dB. -->
+      <audio id="el-bgm" src="assets/bgm/track-pulse.wav" data-start="0.000" data-duration="56.000" data-track-index="11" data-volume="0.056"></audio>
+
+      <div id="el-cap-01" class="clip vo-caption" data-start="0.300" data-duration="1.930" data-track-index="5"><span>Is your retinol wasting your time?</span></div>
+      <div id="el-cap-02" class="clip vo-caption" data-start="2.230" data-duration="3.950" data-track-index="5"><span>It takes two separate steps just to start working.</span></div>
+      <div id="el-cap-03" class="clip vo-caption" data-start="8.300" data-duration="3.750" data-track-index="5"><span>Retinol converts twice before your skin can use it.</span></div>
+      <div id="el-cap-04" class="clip vo-caption" data-start="12.050" data-duration="1.270" data-track-index="5"><span>First to retinal,</span></div>
+      <div id="el-cap-05" class="clip vo-caption" data-start="13.320" data-duration="1.390" data-track-index="5"><span>then to retinoic acid,</span></div>
+      <div id="el-cap-06" class="clip vo-caption" data-start="14.710" data-duration="1.320" data-track-index="5"><span>the active form</span></div>
+      <div id="el-cap-07" class="clip vo-caption" data-start="16.030" data-duration="1.970" data-track-index="5"><span>your skin actually uses.</span></div>
+      <div id="el-cap-08" class="clip vo-caption" data-start="18.300" data-duration="2.290" data-track-index="5"><span>Retinal is one step from the active form,</span></div>
+      <div id="el-cap-09" class="clip vo-caption" data-start="20.590" data-duration="1.560" data-track-index="5"><span>skipping that first</span></div>
+      <div id="el-cap-10" class="clip vo-caption" data-start="22.150" data-duration="1.370" data-track-index="5"><span>slow conversion.</span></div>
+      <div id="el-cap-11" class="clip vo-caption" data-start="23.520" data-duration="1.000" data-track-index="5"><span>The claim,</span></div>
+      <div id="el-cap-12" class="clip vo-caption" data-start="24.520" data-duration="3.280" data-track-index="5"><span>up to eleven times faster acting than traditional retinol.</span></div>
+      <div id="el-cap-13" class="clip vo-caption" data-start="28.940" data-duration="2.360" data-track-index="5"><span>Inside your skin, it wakes up fibroblast cells,</span></div>
+      <div id="el-cap-14" class="clip vo-caption" data-start="31.300" data-duration="1.820" data-track-index="5"><span>the tiny factories that build</span></div>
+      <div id="el-cap-15" class="clip vo-caption" data-start="33.120" data-duration="2.120" data-track-index="5"><span>new collagen and elastin,</span></div>
+      <div id="el-cap-16" class="clip vo-caption" data-start="35.240" data-duration="2.750" data-track-index="5"><span>and keep cell turnover moving smoothly.</span></div>
+      <div id="el-cap-17" class="clip vo-caption" data-start="39.020" data-duration="1.120" data-track-index="5"><span>Applied to the skin,</span></div>
+      <div id="el-cap-18" class="clip vo-caption" data-start="40.140" data-duration="3.320" data-track-index="5"><span>it is still an active ingredient, so start gentle.</span></div>
+      <div id="el-cap-19" class="clip vo-caption" data-start="43.460" data-duration="3.304" data-track-index="5"><span>Two to three nights a week is enough to begin.</span></div>
+      <div id="el-cap-20" class="clip vo-caption" data-start="48.760" data-duration="1.580" data-track-index="5"><span>One step ahead.</span></div>
+      <div id="el-cap-21" class="clip vo-caption" data-start="50.340" data-duration="1.970" data-track-index="5"><span>Drop the O, get the A.</span></div>
+      <div id="el-cap-22" class="clip vo-caption" data-start="52.310" data-duration="1.930" data-track-index="5"><span>Formulas below.</span></div>
+
+    </div>
+
+    <script>
+      (function () {
+        var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+        /* ---- Scene 1 (0-8): frame zero fully composed (headline, RETINAL-naming kicker,
+           bottle, tag opaque at t=0). Continuous push-in + early X + answer tag = no dead air. */
+        tl.fromTo('#s1-bottle', { scale: 1.02, svgOrigin: '210 390' },
+          { scale: 1, duration: 1.2, svgOrigin: '210 390' }, 0);
+        tl.fromTo('#s1-stage', { scale: 1 }, { scale: 1.035, duration: 8, ease: 'none',
+          transformOrigin: '50% 45%' }, 0);
+        tl.to('#s1-x1', { attr: { 'stroke-dashoffset': 0 }, duration: 0.45, ease: 'power2.inOut' }, 0.9);
+        tl.to('#s1-x2', { attr: { 'stroke-dashoffset': 0 }, duration: 0.45, ease: 'power2.inOut' }, 1.45);
+        tl.fromTo('#s1-svg', { scale: 1 }, { scale: 1.015, duration: 0.8, ease: 'sine.inOut',
+          yoyo: true, repeat: 3, transformOrigin: '50% 55%' }, 2.1);
+        tl.fromTo('#s1-fix', { autoAlpha: 0, y: 46 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 3.4);
+        tl.fromTo('#s1-fix', { scale: 1 }, { scale: 1.03, duration: 0.8, ease: 'sine.inOut',
+          yoyo: true, repeat: 3, transformOrigin: '50% 50%' }, 4.4);
+
+        /* ---- Scene 2 (8-18): quick node cascade, highlights synced to the VO mentions. */
+        tl.fromTo('#s2-card', { autoAlpha: 0, y: 90 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 8.05);
+        tl.fromTo('#s2-card', { scale: 1 }, { scale: 1.015, duration: 9.0, ease: 'none',
+          transformOrigin: '50% 30%' }, 8.8);
+        tl.fromTo('#s2-n1', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 8.45);
+        tl.fromTo('#s2-a1', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 }, 8.85);
+        tl.fromTo('#s2-n2', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 8.75);
+        tl.fromTo('#s2-a2', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35 }, 9.15);
+        tl.fromTo('#s2-n3', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 9.05);
+        /* highlight timing now synced to the VO's own "first to retinal / then to
+           retinoic acid" mentions, not arbitrary offsets, since the take runs to 17.7s */
+        tl.to('#s2-a1-line', { attr: { stroke: '#C97A5C' }, duration: 0.4 }, 12.05);
+        tl.fromTo('#s2-s1', { autoAlpha: 0, x: -14 }, { autoAlpha: 1, x: 0, duration: 0.4 }, 12.05);
+        tl.to('#s2-a2-line', { attr: { stroke: '#C97A5C' }, duration: 0.4 }, 13.32);
+        tl.fromTo('#s2-s2', { autoAlpha: 0, x: -14 }, { autoAlpha: 1, x: 0, duration: 0.4 }, 13.32);
+        tl.to('#s2-n3', { borderColor: '#59B8AE', duration: 0.4 }, 14.71);
+        tl.fromTo('#s2-n3', { scale: 1 }, { scale: 1.02, duration: 0.7, ease: 'sine.inOut',
+          yoyo: true, repeat: 3, transformOrigin: '50% 50%' }, 14.9);
+        /* confirming checkmark lands right as the VO's own "actually uses" line closes -
+           a capstone beat, not a silence-filler, now that narration covers the scene */
+        tl.fromTo('#s2-check', { autoAlpha: 0, scale: 0.3 },
+          { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'back.out(1.6)',
+            transformOrigin: '50% 50%' }, 16.9);
+        tl.fromTo('#s2-check', { scale: 1 }, { scale: 1.1, duration: 0.5, ease: 'sine.inOut',
+          yoyo: true, repeat: 1, transformOrigin: '50% 50%' }, 17.4);
+
+        /* ---- Scene 3 (18-28): dossier rows land fast; claim gets an aqua underline sweep. */
+        tl.fromTo('#s3-card', { autoAlpha: 0, y: 90 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 18.05);
+        tl.fromTo('#s3-card', { scale: 1 }, { scale: 1.015, duration: 9.0, ease: 'none',
+          transformOrigin: '50% 30%' }, 18.8);
+        tl.fromTo('#s3-r1', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 18.4);
+        tl.fromTo('#s3-r2', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 18.85);
+        tl.fromTo('#s3-r3', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 19.3);
+        tl.fromTo('#s3-d1', { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.35 }, 20.4);
+        tl.fromTo('#s3-d2', { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.35 }, 20.6);
+        tl.fromTo('#s3-d3', { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.35 }, 20.8);
+        /* underline sweep now syncs to the VO's own "up to eleven times faster..." line
+           (which runs to 27.0s), so the claim/dots re-emphasis lands on live narration
+           instead of filling silence, and the flag reveal follows right after VO ends */
+        tl.fromTo('#s3-claim-u', { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power3.out' }, 24.52);
+        tl.fromTo('.s3-claim', { scale: 1 }, { scale: 1.015, duration: 0.5, ease: 'sine.inOut',
+          transformOrigin: '0% 50%' }, 25.2);
+        tl.to('.s3-claim', { scale: 1, duration: 0.5, ease: 'sine.inOut', transformOrigin: '0% 50%' }, 25.7);
+        tl.to(['#s3-d1', '#s3-d2', '#s3-d3'], { autoAlpha: 0.35, duration: 0.35, stagger: 0.07 }, 26.2);
+        tl.to(['#s3-d1', '#s3-d2', '#s3-d3'], { autoAlpha: 1, duration: 0.35, stagger: 0.07 }, 26.7);
+        tl.fromTo('#s3-r4', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 27.1);
+
+        /* ---- Scene 4 (28-38): grid breathes - active cells light up around the copy.
+           Round 5: ripple-deleted the 4s dead tail that used to run 38-42 (post-VO
+           silence with no beat) — scene now cuts at 38, right after the VO's own
+           "...moving smoothly" line ends (~37.7s), matching the other scenes' <2s tails. */
+        tl.fromTo('#s4-grid', { autoAlpha: 0 }, { autoAlpha: 0.5, duration: 0.6 }, 28.05);
+        tl.fromTo('.s4-stack', { scale: 1 }, { scale: 1.02, duration: 12.5, ease: 'none',
+          transformOrigin: '40% 40%' }, 29.0);
+        tl.fromTo('#s4-over', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 28.3);
+        tl.fromTo('#s4-head', { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 28.55);
+        tl.fromTo('#s4-body', { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 28.85);
+        tl.fromTo('#s4-flag', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45 }, 29.35);
+        tl.fromTo('#s4-i1', { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 29.65);
+        tl.fromTo('#s4-i2', { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 29.9);
+        tl.fromTo('#s4-i1', { scale: 1 }, { scale: 1.045, duration: 1.1, ease: 'sine.inOut',
+          yoyo: true, repeat: 7, transformOrigin: '50% 50%' }, 30.8);
+        tl.fromTo('#s4-i2', { scale: 1 }, { scale: 1.045, duration: 1.1, ease: 'sine.inOut',
+          yoyo: true, repeat: 7, transformOrigin: '50% 50%' }, 31.35);
+        ['#s4-c1', '#s4-c2', '#s4-c3', '#s4-c4', '#s4-c5'].forEach(function (id, i) {
+          tl.fromTo(id, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'sine.inOut',
+            yoyo: true, repeat: 1, repeatDelay: 1.3 }, 30.5 + i * 1.9);
+        });
+
+        /* ---- Scene 5 (38-48): reworked - cleaner profile draw, cheek marker, week pips.
+           Round 5: shifted -4s by the S4 ripple delete; all internal relative timing
+           (VO sync, stagger) is unchanged from round 4. */
+        var face = document.getElementById('s5-face');
+        var faceLen = Math.ceil(face.getTotalLength()) + 2;
+        face.setAttribute('stroke-dasharray', faceLen);
+        face.setAttribute('stroke-dashoffset', faceLen);
+        tl.to('#s5-face', { attr: { 'stroke-dashoffset': 0 }, duration: 1.3, ease: 'power2.inOut' }, 38.1);
+        tl.fromTo('.s5-grid', { scale: 1 }, { scale: 1.03, duration: 9.6, ease: 'none',
+          transformOrigin: '45% 45%' }, 38.2);
+        tl.fromTo('#s5-marker', { autoAlpha: 0, scale: 0.6, svgOrigin: "240 482" },
+          { autoAlpha: 1, scale: 1, duration: 0.5, svgOrigin: "240 482" }, 39.5);
+        tl.fromTo('#s5-marker', { scale: 1, svgOrigin: "240 482" },
+          { scale: 1.07, duration: 0.85, ease: 'sine.inOut', yoyo: true, repeat: 7,
+            svgOrigin: "240 482" }, 40.2);
+        /* GENTLE / week-pips synced to the VO's own "start gentle" and
+           "two to three nights a week" phrases */
+        tl.fromTo('#s5-gentle', { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 42.15);
+        tl.fromTo('#s5-weekly', { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 43.3);
+        ['#s5-p1', '#s5-p2', '#s5-p3', '#s5-p4', '#s5-p5', '#s5-p6', '#s5-p7'].forEach(function (id, i) {
+          tl.fromTo(id, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.3,
+            transformOrigin: '50% 50%' }, 43.8 + i * 0.13);
+        });
+        tl.fromTo('#s5-div', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 45.6);
+        tl.fromTo('#s5-flag', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 45.9);
+
+        /* ---- Scene 6 (48-56): rewritten ending - name lockup, word slams, underline,
+           pill pop (the one overshoot) + a closing pulse. Round 5: shifted -4s by the
+           S4 ripple delete; CTA cluster also moved up (top: 660px -> 370px in CSS) to
+           clear the Shorts bottom-UI safe area. */
+        tl.fromTo('#s6-name', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 48.15);
+        tl.fromTo('#s6-l1', { autoAlpha: 0, y: 70, scale: 1.06 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: 'power4.out',
+            transformOrigin: '50% 50%' }, 48.4);
+        tl.fromTo('#s6-l2', { autoAlpha: 0, y: 70, scale: 1.06 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.55, ease: 'power4.out',
+            transformOrigin: '50% 50%' }, 48.75);
+        tl.fromTo('#s6-underline', { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power3.out' }, 49.35);
+        tl.fromTo('#s6-pill', { autoAlpha: 0, scale: 0.6 },
+          { autoAlpha: 1, scale: 1, duration: 0.65, ease: 'back.out(1.4)', transformOrigin: '50% 50%' }, 50.5);
+        tl.fromTo('#s6-tag', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 51.3);
+        tl.fromTo('#s6-pill', { scale: 1 }, { scale: 1.045, duration: 0.5, ease: 'sine.inOut',
+          yoyo: true, repeat: 3, transformOrigin: '50% 50%' }, 53.0);
+        /* hold to 56 so the last frame is the composed CTA */
+        tl.set({}, {}, 56);
+
+        window.__timelines['main'] = tl;
+      })();
+    </script>
+  </body>
+</html>

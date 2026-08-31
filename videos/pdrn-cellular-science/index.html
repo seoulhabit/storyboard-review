@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #F7F5F0; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      /* Burned-in VO captions (external review): whisper word-timed cues, one phrase per
+         clip. Anchored to the top band (y≈196–330) — the only strip clear of scene
+         content in all six beats — inside the safe area (below the top-10% search/camera
+         chrome, above every card/hero, clear of the right-15% rail via max-width). */
+      .clip { position: absolute; }
+      .vo-caption { top: 196px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
+      .vo-caption span { display: inline-block; max-width: 720px; background: rgba(19,21,22,0.92); color: #F7F5F0;
+        font-family: 'Inter', 'Helvetica Neue', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.3;
+        text-align: center; padding: 12px 26px; border-radius: 16px; box-shadow: 0 4px 18px rgba(19,21,22,0.22); }
+    </style>
+  </head>
+  <body>
+    <!--
+      Timing note: beat durations below are each real generated VO length + a settle tail.
+      Re-timed for the v2 punchy VO rewrite (see SCRIPT-v2.md). All six voice/0N.wav
+      regenerated with the same Kimberly voice; v1 Kimberly takes kept in
+      assets/voice/_v1-kimberly-backup/, pre-Kimberly Kokoro set in _pre-kimberly-backup/.
+      Every beat's internal GSAP timeline was proportionally re-stretched by its own VO
+      ratio, and every inner .clip data-duration synced to the beat total (the defect
+      recorded in BRIEF.md render QA).
+      Beat 2 carries a 1.173s tail rather than 1.0s: its ambient fragment drift, scaled
+      proportionally, ends at 12.793s and would be clipped by a 12.677s beat.
+      S1=0 S2=6.551 S3=17.511 S4=28.026 S5=43.033 S6=52.033, total=60.757s.
+      Blocks 2 and 5 replaced after transcript QA: block 2 spoke its em-dashes aloud as
+      "slash"; block 5 mispronounced "fibroblasts" and was swapped for the operator-supplied
+      take. Beat 2 is back to a 1.0s tail — the shorter VO brings its ambient drift inside
+      the beat again.
+    -->
+    <div data-hf-id="hf-vi5y" id="root" data-composition-id="main" data-start="0.000" data-duration="62.160" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-2y3z" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="5.470" data-track-index="0"></div>
+      <audio data-hf-id="hf-ix46" id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="4.970" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-hxz3" id="el-02-identity" class="scene" data-composition-id="02-identity" data-composition-src="compositions/frames/02-identity.html" data-start="5.470" data-duration="12.261" data-track-index="1"></div>
+      <audio data-hf-id="hf-479g" id="el-02-voice" src="assets/voice/02.wav" data-start="5.470" data-duration="11.190" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-9s1l" id="el-03-history" class="scene" data-composition-id="03-history" data-composition-src="compositions/frames/03-history.html" data-start="17.731" data-duration="10.600" data-track-index="0"></div>
+      <audio data-hf-id="hf-uzw0" id="el-03-voice" src="assets/voice/03.wav" data-start="17.731" data-duration="8.239" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-6gcf" id="el-04-mechanism" class="scene" data-composition-id="04-mechanism" data-composition-src="compositions/frames/04-mechanism.html" data-start="28.331" data-duration="13.319" data-track-index="1"></div>
+      <audio data-hf-id="hf-tlqb" id="el-04-voice" src="assets/voice/04.wav" data-start="28.331" data-duration="12.319" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-cu4w" id="el-05-fibroblast" class="scene" data-composition-id="05-fibroblast" data-composition-src="compositions/frames/05-fibroblast.html" data-start="41.650" data-duration="8.500" data-track-index="0"></div>
+      <audio data-hf-id="hf-4m8a" id="el-05-voice" src="assets/voice/05.wav" data-start="41.650" data-duration="7.159" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-07nv" id="el-06-cta" class="scene" data-composition-id="06-cta" data-composition-src="compositions/frames/06-cta.html" data-start="50.150" data-duration="12.010" data-track-index="1"></div>
+      <audio data-hf-id="hf-46yz" id="el-06-voice" src="assets/voice/06.wav" data-start="50.150" data-duration="8.195" data-track-index="10" data-volume="1"></audio>
+
+      <audio data-hf-id="hf-folw2" id="el-06b-voice" src="assets/voice/07-follow.wav" data-start="58.700" data-duration="2.608" data-track-index="10" data-volume="1"></audio>
+
+      <!-- Burned-in captions (external review) — whisper word-timed against the installed
+           processed takes (assets/voice/0N.wav), offset by each block's data-start. One
+           phrase per clip; ends extended to the next cue's start so cues never flicker. -->
+      <div data-hf-id="hf-cap01" id="el-cap-01" class="clip vo-caption" data-start="0.070" data-duration="1.670" data-track-index="5"><span>People are applying salmon DNA</span></div>
+      <div data-hf-id="hf-cap02" id="el-cap-02" class="clip vo-caption" data-start="1.740" data-duration="0.720" data-track-index="5"><span>to their skin —</span></div>
+      <div data-hf-id="hf-cap03" id="el-cap-03" class="clip vo-caption" data-start="2.460" data-duration="1.670" data-track-index="5"><span>and it isn't a beauty trend,</span></div>
+      <div data-hf-id="hf-cap04" id="el-cap-04" class="clip vo-caption" data-start="4.130" data-duration="1.170" data-track-index="5"><span>it's medicine.</span></div>
+      <div data-hf-id="hf-cap05" id="el-cap-05" class="clip vo-caption" data-start="5.520" data-duration="1.350" data-track-index="5"><span>It's called PDRN,</span></div>
+      <div data-hf-id="hf-cap06" id="el-cap-06" class="clip vo-caption" data-start="6.870" data-duration="2.530" data-track-index="5"><span>or polydeoxyribonucleotide.</span></div>
+      <div data-hf-id="hf-cap07" id="el-cap-07" class="clip vo-caption" data-start="9.400" data-duration="1.560" data-track-index="5"><span>Whew, that was a mouthful!</span></div>
+      <div data-hf-id="hf-cap08" id="el-cap-08" class="clip vo-caption" data-start="10.960" data-duration="2.170" data-track-index="5"><span>Purified DNA fragments from salmon,</span></div>
+      <div data-hf-id="hf-cap09" id="el-cap-09" class="clip vo-caption" data-start="13.130" data-duration="1.870" data-track-index="5"><span>highly biocompatible with humans,</span></div>
+      <div data-hf-id="hf-cap10" id="el-cap-10" class="clip vo-caption" data-start="15.000" data-duration="2.100" data-track-index="5"><span>so they won't trigger an allergic response.</span></div>
+      <div data-hf-id="hf-cap11" id="el-cap-11" class="clip vo-caption" data-start="17.800" data-duration="1.390" data-track-index="5"><span>Hospitals used it first.</span></div>
+      <div data-hf-id="hf-cap12" id="el-cap-12" class="clip vo-caption" data-start="19.190" data-duration="2.270" data-track-index="5"><span>It's safe. It triggers rapid cell growth.</span></div>
+      <div data-hf-id="hf-cap13" id="el-cap-13" class="clip vo-caption" data-start="21.460" data-duration="1.690" data-track-index="5"><span>So it became regenerative medicine</span></div>
+      <div data-hf-id="hf-cap14" id="el-cap-14" class="clip vo-caption" data-start="23.150" data-duration="2.950" data-track-index="5"><span>for severe burns, skin grafts, and diabetic ulcers.</span></div>
+      <div data-hf-id="hf-cap15" id="el-cap-15" class="clip vo-caption" data-start="28.380" data-duration="0.900" data-track-index="5"><span>Here's how it works:</span></div>
+      <div data-hf-id="hf-cap16" id="el-cap-16" class="clip vo-caption" data-start="29.280" data-duration="1.740" data-track-index="5"><span>your cells carry surface proteins</span></div>
+      <div data-hf-id="hf-cap17" id="el-cap-17" class="clip vo-caption" data-start="31.020" data-duration="2.160" data-track-index="5"><span>called A2A receptors —</span></div>
+      <div data-hf-id="hf-cap18" id="el-cap-18" class="clip vo-caption" data-start="33.180" data-duration="2.200" data-track-index="5"><span>locks that control tissue repair.</span></div>
+      <div data-hf-id="hf-cap19" id="el-cap-19" class="clip vo-caption" data-start="35.380" data-duration="1.600" data-track-index="5"><span>PDRN is the key.</span></div>
+      <div data-hf-id="hf-cap20" id="el-cap-20" class="clip vo-caption" data-start="36.980" data-duration="0.880" data-track-index="5"><span>And when it turns,</span></div>
+      <div data-hf-id="hf-cap21" id="el-cap-21" class="clip vo-caption" data-start="37.860" data-duration="1.680" data-track-index="5"><span>inflammation shuts down instantly</span></div>
+      <div data-hf-id="hf-cap22" id="el-cap-22" class="clip vo-caption" data-start="39.540" data-duration="1.560" data-track-index="5"><span>and blood flow goes up.</span></div>
+      <div data-hf-id="hf-cap23" id="el-cap-23" class="clip vo-caption" data-start="41.750" data-duration="1.860" data-track-index="5"><span>It also wakes up your fibroblasts,</span></div>
+      <div data-hf-id="hf-cap24" id="el-cap-24" class="clip vo-caption" data-start="43.610" data-duration="1.240" data-track-index="5"><span>the cellular factories building</span></div>
+      <div data-hf-id="hf-cap25" id="el-cap-25" class="clip vo-caption" data-start="44.850" data-duration="1.900" data-track-index="5"><span>brand new collagen, elastin,</span></div>
+      <div data-hf-id="hf-cap26" id="el-cap-26" class="clip vo-caption" data-start="46.750" data-duration="0.960" data-track-index="5"><span>and hyaluronic acid</span></div>
+      <div data-hf-id="hf-cap27" id="el-cap-27" class="clip vo-caption" data-start="47.710" data-duration="1.390" data-track-index="5"><span>from the inside out.</span></div>
+      <div data-hf-id="hf-cap28" id="el-cap-28" class="clip vo-caption" data-start="50.290" data-duration="0.980" data-track-index="5"><span>It hacks your cells</span></div>
+      <div data-hf-id="hf-cap29" id="el-cap-29" class="clip vo-caption" data-start="51.270" data-duration="2.250" data-track-index="5"><span>to repair damage at record speed.</span></div>
+      <div data-hf-id="hf-cap30" id="el-cap-30" class="clip vo-caption" data-start="53.520" data-duration="2.140" data-track-index="5"><span>So would you inject fish DNA into your face —</span></div>
+      <div data-hf-id="hf-cap31" id="el-cap-31" class="clip vo-caption" data-start="55.660" data-duration="2.740" data-track-index="5"><span>or is this skincare trend a step too far?</span></div>
+      <div data-hf-id="hf-cap32" id="el-cap-32" class="clip vo-caption" data-start="58.760" data-duration="1.940" data-track-index="5"><span>Let me know your thoughts below</span></div>
+      <div data-hf-id="hf-cap33" id="el-cap-33" class="clip vo-caption" data-start="60.700" data-duration="1.100" data-track-index="5"><span>and follow for more!</span></div>
+
+      <!-- BGM — quiet bed under the full runtime, ducked well beneath narration -->
+      <audio data-hf-id="hf-swmq" id="el-bgm" src="assets/bgm/track-pulse.wav" data-start="0.000" data-duration="62.160" data-track-index="11" data-volume="0.1"></audio>
+
+      <!-- SFX — translated from the script's cue list onto this repo's existing asset vocabulary (see BRIEF.md) -->
+      <audio data-hf-id="hf-kw1j" id="el-sfx-1a" src="assets/sfx/impact-bass-1.mp3" data-start="0.000" data-duration="2.116" data-track-index="20" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-wzuu" id="el-sfx-2" src="assets/sfx/whoosh-short.mp3" data-start="5.770" data-duration="0.575" data-track-index="22" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-329y" id="el-sfx-3a" src="assets/sfx/click-soft.mp3" data-start="21.631" data-duration="0.366" data-track-index="23" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-l1ck" id="el-sfx-3b" src="assets/sfx/whoosh-short.mp3" data-start="24.831" data-duration="0.575" data-track-index="24" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-7gza" id="el-sfx-4" src="assets/sfx/click-soft.mp3" data-start="37.500" data-duration="0.366" data-track-index="25" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-l808" id="el-sfx-5" src="assets/sfx/sparkle.mp3" data-start="45.200" data-duration="1.802" data-track-index="26" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-gm4w" id="el-sfx-6a" src="assets/sfx/chime.mp3" data-start="52.750" data-duration="2.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-sur7" id="el-sfx-6b" src="assets/sfx/whoosh-short.mp3" data-start="61.440" data-duration="0.575" data-track-index="28" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-sfx3c" id="el-sfx-3c" src="assets/sfx/click-soft.mp3" data-start="17.831" data-duration="0.366" data-track-index="29" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-sfx4b" id="el-sfx-4b" src="assets/sfx/whoosh-short.mp3" data-start="37.881" data-duration="0.575" data-track-index="30" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sfx5a" id="el-sfx-5a" src="assets/sfx/click-soft.mp3" data-start="41.830" data-duration="0.366" data-track-index="31" data-volume="0.32"></audio>
+      <audio data-hf-id="hf-sfx6c" id="el-sfx-6c" src="assets/sfx/whoosh-short.mp3" data-start="53.950" data-duration="0.575" data-track-index="32" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sfx3d" id="el-sfx-3d" src="assets/sfx/click-soft.mp3" data-start="19.230" data-duration="0.366" data-track-index="33" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sfx3e" id="el-sfx-3e" src="assets/sfx/click-soft.mp3" data-start="23.780" data-duration="0.366" data-track-index="34" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sfx4c" id="el-sfx-4c" src="assets/sfx/click-soft.mp3" data-start="28.450" data-duration="0.366" data-track-index="35" data-volume="0.25"></audio>
+      <audio data-hf-id="hf-sfx4d" id="el-sfx-4d" src="assets/sfx/click-soft.mp3" data-start="39.330" data-duration="0.366" data-track-index="36" data-volume="0.22"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var tl = window.__timelines["main"];
+
+        // 1 -> 2 : cut (glitch SFX removed per audio-cleanup directive; the hard cut stands alone)
+
+        // 2 -> 3 : crossfade
+        tl.to("#el-02-identity", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 17.731);
+        tl.fromTo("#el-03-history", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 17.731);
+
+        // 3 -> 4 : crossfade (continuous "just under the surface" world)
+        tl.to("#el-03-history", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 28.331);
+        tl.fromTo("#el-04-mechanism", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 28.331);
+
+        // 4 -> 5 : crossfade
+        tl.to("#el-04-mechanism", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 41.650);
+        tl.fromTo("#el-05-fibroblast", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 41.650);
+
+        // 5 -> 6 : cut (matches the CTA's "pop" SFX hard-cut open)
+
+        tl.to({}, { duration: 62.160 }, 0); // full-span anchor — main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

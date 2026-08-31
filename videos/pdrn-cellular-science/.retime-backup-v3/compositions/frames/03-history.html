@@ -1,0 +1,142 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+
+  .hist-cell-field { top:0; left:0; width:100%; height:1920px; }
+  .hist-cell { opacity:0; }
+
+  /* Round 4: FRAME/CLAIM/ROUTE/STUDY/Note + the S001 coda merged into ONE card, sized to sit
+     inside the 15%-top/25%-bottom safe zone (y in [288,1440]); Inter replaces JetBrains Mono for
+     every label/row; a reusable celadon citation pill replaces the plain bracket text line. */
+  .uc-card { position:absolute; left:96px; top:322px; width:888px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:44px 56px; }
+
+  .uc-row { padding:14px 0; border-bottom:1px solid rgba(19,21,22,0.1); opacity:0; }
+  .uc-row:first-child { padding-top:0; }
+  .uc-row:last-child { border-bottom:none; padding-bottom:0; }
+  .uc-row .uc-row-label { display:block; font-family:'Inter',sans-serif; font-weight:700; font-size:2.3cqw; letter-spacing:0.05em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:5px; }
+  .uc-row .uc-row-text { display:block; font-family:'Inter',sans-serif; font-size:2.8cqw; line-height:1.4; }
+  .uc-row.claim .uc-row-text { font-weight:700; }
+  .uc-row.note .uc-row-label, .uc-row.note .uc-row-text { color:rgba(19,21,22,0.62); }
+  .uc-row.frame .uc-row-text { font-family:'EB Garamond',serif; font-style:italic; font-size:3.6cqw; line-height:1.2; letter-spacing:-0.008em; color:#131516; }
+
+  .uc-marker-block { margin-top:14px; display:flex; flex-direction:column; align-items:flex-start; gap:12px; opacity:0; }
+  .uc-citation-pill { display:inline-flex; align-items:center; gap:10px; background:rgba(111,143,114,0.12); border:1.5px solid #6F8F72; border-radius:999px; padding:13px 26px; font-family:'Inter',sans-serif; font-weight:700; font-size:2.8cqw; }
+  .uc-citation-pill .lead { color:#131516; }
+  .uc-citation-pill .accent { color:#9F6149; }
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+
+  /* S001 coda: same card, condensed footer row. Checkpoint nodes stay celadon-only (never red) —
+     a 4/4 must never read as a "grade" any differently than a 2/4 would. */
+  .hist-coda { margin-top:24px; padding-top:20px; border-top:1px solid rgba(19,21,22,0.12); opacity:0; }
+  .hist-coda-claim { font-family:'Inter',sans-serif; font-weight:700; font-size:2.6cqw; line-height:1.35; margin-bottom:16px; }
+  .hist-coda-row { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  .hist-coda-nodes { display:flex; align-items:center; gap:10px; }
+  .hist-coda-node { width:30px; height:30px; border-radius:50%; background:transparent; border:1.5px solid rgba(19,21,22,0.32); }
+  .hist-coda-status { font-family:'Inter',sans-serif; font-weight:700; font-size:2.0cqw; letter-spacing:0.03em; text-transform:uppercase; color:rgba(19,21,22,0.62); }
+  .hist-coda-status b { color:#131516; }
+</style>
+<div data-hf-id="hf-9jww" data-composition-id="03-history" id="root" data-width="1080" data-height="1920" data-duration="10.515">
+
+  <div data-hf-id="hf-bklj" id="hist-cell-field" class="clip hist-cell-field" data-start="0" data-duration="10.515" data-track-index="0">
+    <svg data-hf-id="hf-hcs8" viewBox="0 0 1080 1920" width="1080" height="1920" style="position:absolute; inset:0;" aria-hidden="true">
+      <g data-hf-id="hf-g65c" id="hist-cell-0" class="hist-cell" transform="translate(150,220)"><circle data-hf-id="hf-4tfj" id="hist-cell-0a" cx="0" cy="0" r="26" fill="rgba(111,143,114,0.22)" /><circle data-hf-id="hf-ivie" id="hist-cell-0b" cx="0" cy="0" r="26" fill="rgba(111,143,114,0.22)" /></g>
+      <g data-hf-id="hf-e3wr" id="hist-cell-1" class="hist-cell" transform="translate(920,180)"><circle data-hf-id="hf-13jj" id="hist-cell-1a" cx="0" cy="0" r="20" fill="rgba(111,143,114,0.18)" /><circle data-hf-id="hf-ix6q" id="hist-cell-1b" cx="0" cy="0" r="20" fill="rgba(111,143,114,0.18)" /></g>
+      <g data-hf-id="hf-y2oq" id="hist-cell-2" class="hist-cell" transform="translate(80,1560)"><circle data-hf-id="hf-cr5r" id="hist-cell-2a" cx="0" cy="0" r="18" fill="rgba(111,143,114,0.16)" /><circle data-hf-id="hf-lguq" id="hist-cell-2b" cx="0" cy="0" r="18" fill="rgba(111,143,114,0.16)" /></g>
+      <g data-hf-id="hf-xtz1" id="hist-cell-3" class="hist-cell" transform="translate(960,1720)"><circle data-hf-id="hf-oxy0" id="hist-cell-3a" cx="0" cy="0" r="24" fill="rgba(111,143,114,0.2)" /><circle data-hf-id="hf-jo7d" id="hist-cell-3b" cx="0" cy="0" r="24" fill="rgba(111,143,114,0.2)" /></g>
+      <g data-hf-id="hf-eauu" id="hist-cell-4" class="hist-cell" transform="translate(700,1780)"><circle data-hf-id="hf-gioh" id="hist-cell-4a" cx="0" cy="0" r="16" fill="rgba(111,143,114,0.14)" /><circle data-hf-id="hf-5nxg" id="hist-cell-4b" cx="0" cy="0" r="16" fill="rgba(111,143,114,0.14)" /></g>
+    </svg>
+  </div>
+
+  <div data-hf-id="hf-2iww" id="hist-content" class="clip" data-start="0" data-duration="10.515" data-track-index="1">
+    <div data-hf-id="hf-xbdy" class="uc-card" id="hist-panel">
+      <div data-hf-id="hf-kt8p" class="uc-row frame" id="hist-row-frame"><div data-hf-id="hf-qzzv" class="uc-row-label">FRAME:</div><div data-hf-id="hf-ywkb" class="uc-row-text">This was medicine before it was skincare.</div></div>
+      <div data-hf-id="hf-2iqt" class="uc-row claim" id="hist-row-claim"><div data-hf-id="hf-l1u4" class="uc-row-label">CLAIM:</div><div data-hf-id="hf-in4w" class="uc-row-text">So safe and effective at triggering rapid cell growth that it was developed for hospitals as a regenerative medicine — to heal severe burns, skin grafts, and diabetic ulcers.</div></div>
+      <div data-hf-id="hf-zkae" class="uc-row" id="hist-row-route"><div data-hf-id="hf-1ux7" class="uc-row-label">ROUTE:</div><div data-hf-id="hf-ed3f" class="uc-row-text">Injected — clinical / hospital setting</div></div>
+      <div data-hf-id="hf-rj8m" class="uc-row" id="hist-row-study"><div data-hf-id="hf-cov3" class="uc-row-label">STUDY:</div><div data-hf-id="hf-vb2r" class="uc-row-text">Placebo-controlled, randomized human trial — diabetic foot ulcers</div></div>
+      <div data-hf-id="hf-aw1x" class="uc-row note" id="hist-row-note"><div data-hf-id="hf-fwb0" class="uc-row-label">Note:</div><div data-hf-id="hf-pylr" class="uc-row-text">This route and population is not facial skin, and does not cover burns or skin grafts specifically.</div></div>
+
+      <div data-hf-id="hf-1gun" class="uc-marker-block" id="hist-markers">
+        <div data-hf-id="hf-w4mq" class="uc-citation-pill"><span data-hf-id="hf-uone" class="lead">CITATION — </span><span data-hf-id="hf-obia" class="accent">⌞ ING-pdrn-S003 ⌟</span></div>
+        <div data-hf-id="hf-icig" class="uc-unsourced">○ UNSOURCED — burns &amp; grafts not in this system's records</div>
+      </div>
+
+      <div data-hf-id="hf-gxvw" class="hist-coda" id="hist-coda">
+        <div data-hf-id="hf-s8uk" class="hist-coda-claim">Reduces visible transepidermal water loss</div>
+        <div data-hf-id="hf-hcr1" class="hist-coda-row">
+          <div data-hf-id="hf-hyzw" class="hist-coda-nodes">
+            <div data-hf-id="hf-0tj1" class="hist-coda-node" id="hist-em-n1"></div>
+            <div data-hf-id="hf-4rn2" class="hist-coda-node" id="hist-em-n2"></div>
+            <div data-hf-id="hf-8pr3" class="hist-coda-node" id="hist-em-n3"></div>
+            <div data-hf-id="hf-evgw" class="hist-coda-node" id="hist-em-n4"></div>
+            <span data-hf-id="hf-bcxt" class="hist-coda-status">04/04 · <b data-hf-id="hf-l4ek">KNOWN</b></span>
+          </div>
+          <div data-hf-id="hf-x2ev" class="uc-citation-pill"><span data-hf-id="hf-x2evl" class="lead">CITATION — </span><span data-hf-id="hf-x2eva" class="accent">⌞ ING-pdrn-S001 ⌟</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var panel = document.getElementById('hist-panel');
+  var rowFrame = document.getElementById('hist-row-frame');
+  var rowClaim = document.getElementById('hist-row-claim');
+  var rowRoute = document.getElementById('hist-row-route');
+  var rowStudy = document.getElementById('hist-row-study');
+  var rowNote = document.getElementById('hist-row-note');
+  var markers = document.getElementById('hist-markers');
+  var cells = document.querySelectorAll('.hist-cell');
+  var coda = document.getElementById('hist-coda');
+  var emNodes = ['hist-em-n1','hist-em-n2','hist-em-n3','hist-em-n4'].map(function(id){ return document.getElementById(id); });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Timeline re-stretched ×1.052875 on top of the prior pass, for the new Kimberly VO
+  // (12.987s, was 12.335s). Claim panel content and sourcing untouched — only timing shifted.
+
+  // Scene 1: cell-multiplication field establishes, then each pair splits (mitosis), staggered.
+  tl.to(cells, { opacity: 1, duration: 0.611, stagger: 0.061 }, 0.051);
+  [0,1,2,3,4].forEach(function (i, idx) {
+    var a = document.getElementById('hist-cell-' + i + 'a');
+    var b = document.getElementById('hist-cell-' + i + 'b');
+    var dist = 20 + idx * 3;
+    tl.to(a, { x: -dist, duration: 0.917, ease: 'power2.out' }, 0.306 + idx * 0.153);
+    tl.to(b, { x: dist, duration: 0.917, ease: 'power2.out' }, 0.306 + idx * 0.153);
+  });
+
+  // Scene 2: panel border-in, FRAME reveals.
+  tl.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.561 }, 1.019);
+  tl.to(rowFrame, { opacity: 1, duration: 0.407 }, 1.325);
+
+  // Scene 3: CLAIM.
+  tl.to(rowClaim, { opacity: 1, duration: 0.458 }, 2.547);
+
+  // Scene 4: ROUTE then STUDY.
+  tl.to(rowRoute, { opacity: 1, duration: 0.407 }, 4.584);
+  tl.to(rowStudy, { opacity: 1, duration: 0.407 }, 5.195);
+
+  // Scene 5: Note, then CITATION + UNSOURCED pairing (one voltage moment).
+  tl.to(rowNote, { opacity: 1, duration: 0.458 }, 6.825);
+  tl.fromTo(markers, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.458 }, 7.334);
+
+  // Scene 6: coda blooms in, checkpoints lock celadon in sequence (never red — a
+  // 4/4 reads exactly as honestly as a 2/4 would).
+  tl.fromTo(coda, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.509 }, 7.945);
+  emNodes.forEach(function (node, i) {
+    tl.fromTo(node, { scale: 0.85 }, { backgroundColor: '#6F8F72', borderColor: '#6F8F72', scale: 1, duration: 0.183, ease: 'power3.out' }, 8.353 + i * 0.143);
+  });
+
+  // Scene 7: held read into the crossfade.
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['03-history'] = tl;
+})();
+</script>
+</template>

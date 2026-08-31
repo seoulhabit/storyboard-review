@@ -1,0 +1,137 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+
+  .id-fragment-field { top:0; left:0; width:100%; height:900px; }
+  .id-fragment { position:absolute; opacity:0; }
+
+  /* Round 4: one merged card (identity fields + claim), Inter throughout instead of mono labels,
+     sized and positioned to sit inside the 15%-top/25%-bottom safe zone (y in [288,1440]). */
+  .uc-card { position:absolute; left:96px; top:494px; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:56px 64px; }
+  .uc-kicker { font-family:'Inter',sans-serif; font-weight:700; font-size:2.4cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:22px; opacity:0; }
+  .id-name { font-family:'EB Garamond',serif; font-size:5.6cqw; line-height:1.1; margin-bottom:32px; opacity:0; }
+
+  .uc-field { padding:20px 0; border-bottom:1px solid rgba(19,21,22,0.1); opacity:0; }
+  .uc-field:last-of-type { border-bottom:none; }
+  .uc-field .uc-field-label { display:block; font-family:'Inter',sans-serif; font-weight:700; font-size:2.3cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:8px; }
+  .uc-field .uc-field-value { display:block; font-family:'Inter',sans-serif; font-size:2.8cqw; font-weight:500; line-height:1.35; }
+
+  .id-badge { position:absolute; top:48px; right:48px; width:84px; height:84px; border-radius:50%; background:rgba(19,21,22,0.04); border:1px solid rgba(19,21,22,0.14); display:flex; align-items:center; justify-content:center; opacity:0; }
+  .id-badge svg { width:52px; height:26px; }
+
+  .id-claim-block { margin-top:28px; opacity:0; }
+  .uc-claim { font-family:'Inter',sans-serif; font-size:3.3cqw; line-height:1.45; font-weight:600; margin-bottom:20px; }
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+</style>
+<div data-hf-id="hf-mam5" data-composition-id="02-identity" id="root" data-width="1080" data-height="1920" data-duration="13.600">
+
+  <div data-hf-id="hf-rxff" id="id-fragment-field" class="clip id-fragment-field" data-start="0" data-duration="13.600" data-track-index="0">
+    <svg data-hf-id="hf-7fck" id="id-fragments-svg" viewBox="0 0 1080 900" width="1080" height="900" style="position:absolute; inset:0;" aria-hidden="true">
+      <!-- five short double-helix fragments, matte ink strokes, no rotation -->
+      <g data-hf-id="hf-jwfz" id="id-frag-0" class="id-fragment" transform="translate(120,120) scale(0.9)">
+        <path data-hf-id="hf-1o6l" d="M0,0 C10,14 -6,26 4,40 C14,54 -2,66 8,80" stroke="rgba(19,21,22,0.18)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-nuvs" d="M22,0 C12,14 28,26 18,40 C8,54 24,66 14,80" stroke="rgba(19,21,22,0.18)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-b3hp" d="M2,10 L20,10 M0,26 L22,26 M4,40 L18,40 M2,54 L20,54 M6,70 L16,70" stroke="rgba(19,21,22,0.14)" stroke-width="2" />
+      </g>
+      <g data-hf-id="hf-hr2v" id="id-frag-1" class="id-fragment" transform="translate(860,180) scale(0.7)">
+        <circle data-hf-id="hf-fragring" cx="11" cy="40" r="55" fill="none" stroke="rgba(89,184,174,0.35)" stroke-width="2" stroke-dasharray="4 6" />
+        <path data-hf-id="hf-zh7s" d="M0,0 C10,14 -6,26 4,40 C14,54 -2,66 8,80" stroke="rgba(89,184,174,0.32)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-0wjl" d="M22,0 C12,14 28,26 18,40 C8,54 24,66 14,80" stroke="rgba(89,184,174,0.32)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-kegj" d="M2,10 L20,10 M0,26 L22,26 M4,40 L18,40 M2,54 L20,54 M6,70 L16,70" stroke="rgba(89,184,174,0.22)" stroke-width="2" />
+      </g>
+      <g data-hf-id="hf-z5s2" id="id-frag-2" class="id-fragment" transform="translate(180,560) scale(0.6)">
+        <path data-hf-id="hf-zxox" d="M0,0 C10,14 -6,26 4,40 C14,54 -2,66 8,80" stroke="rgba(19,21,22,0.14)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-zjh8" d="M22,0 C12,14 28,26 18,40 C8,54 24,66 14,80" stroke="rgba(19,21,22,0.14)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-bce5" d="M2,10 L20,10 M0,26 L22,26 M4,40 L18,40 M2,54 L20,54 M6,70 L16,70" stroke="rgba(19,21,22,0.1)" stroke-width="2" />
+      </g>
+      <g data-hf-id="hf-2in0" id="id-frag-3" class="id-fragment" transform="translate(920,600) scale(0.85) rotate(18)">
+        <path data-hf-id="hf-bjo7" d="M0,0 C10,14 -6,26 4,40 C14,54 -2,66 8,80" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-9fpe" d="M22,0 C12,14 28,26 18,40 C8,54 24,66 14,80" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-73of" d="M2,10 L20,10 M0,26 L22,26 M4,40 L18,40 M2,54 L20,54 M6,70 L16,70" stroke="rgba(19,21,22,0.12)" stroke-width="2" />
+      </g>
+      <g data-hf-id="hf-7np8" id="id-frag-4" class="id-fragment" transform="translate(540,60) scale(0.5) rotate(-12)">
+        <path data-hf-id="hf-p44p" d="M0,0 C10,14 -6,26 4,40 C14,54 -2,66 8,80" stroke="rgba(89,184,174,0.24)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-ph5o" d="M22,0 C12,14 28,26 18,40 C8,54 24,66 14,80" stroke="rgba(89,184,174,0.24)" stroke-width="2.4" fill="none" />
+        <path data-hf-id="hf-99xm" d="M2,10 L20,10 M0,26 L22,26 M4,40 L18,40 M2,54 L20,54 M6,70 L16,70" stroke="rgba(89,184,174,0.16)" stroke-width="2" />
+      </g>
+    </svg>
+  </div>
+
+  <div data-hf-id="hf-knyb" id="id-content" class="clip" data-start="0" data-duration="13.600" data-track-index="1">
+    <div data-hf-id="hf-b6iq" class="uc-card" id="id-card">
+      <div data-hf-id="hf-zhr9" class="uc-kicker" id="id-eyebrow">Ingredient identity</div>
+      <div data-hf-id="hf-gpxg" class="id-name" id="id-name">PDRN <span data-hf-id="hf-lf9n" style="color:rgba(19,21,22,0.5); font-size:0.6em;">· Polydeoxyribonucleotide</span></div>
+
+      <div data-hf-id="hf-idbdg" class="id-badge" id="id-badge">
+        <svg data-hf-id="hf-idbdgs" viewBox="0 0 400 200" aria-hidden="true">
+          <path data-hf-id="hf-idbdgbody" d="M380,100 C340,58 292,50 250,54 C192,60 130,68 90,80 L58,58 L96,100 L58,142 L90,120 C130,150 192,152 250,150 C292,154 340,146 380,100 Z" fill="rgba(19,21,22,0.5)" />
+          <path data-hf-id="hf-idbdgdorsal" d="M228,53 L246,16 L263,52 Z" fill="rgba(19,21,22,0.5)" />
+        </svg>
+      </div>
+
+      <div data-hf-id="hf-2pe5" class="uc-field" id="id-f1"><span data-hf-id="hf-zxgi" class="uc-field-label">INCI</span><span data-hf-id="hf-2sv6" class="uc-field-value">Polydeoxyribonucleotide (Salmon)</span></div>
+      <div data-hf-id="hf-apha" class="uc-field" id="id-f2"><span data-hf-id="hf-3qog" class="uc-field-label">Source</span><span data-hf-id="hf-w04d" class="uc-field-value">Salmon (Oncorhynchus keta) DNA fragments</span></div>
+      <div data-hf-id="hf-enlb" class="uc-field" id="id-f3"><span data-hf-id="hf-1p2w" class="uc-field-label">What it is</span><span data-hf-id="hf-b6jn" class="uc-field-value">Purified, fragmented DNA — not an intact strand</span></div>
+
+      <div data-hf-id="hf-mikq" class="id-claim-block" id="id-claim-block">
+        <div data-hf-id="hf-1tj4" class="uc-claim">Highly biocompatible with humans — won't trigger an allergic immune response.</div>
+        <div data-hf-id="hf-8ivl" class="uc-unsourced">○ UNSOURCED — no record in this system</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var frags = document.querySelectorAll('.id-fragment');
+  var card = document.getElementById('id-card');
+  var eyebrow = document.getElementById('id-eyebrow');
+  var name = document.getElementById('id-name');
+  var f1 = document.getElementById('id-f1');
+  var f2 = document.getElementById('id-f2');
+  var f3 = document.getElementById('id-f3');
+  var badge = document.getElementById('id-badge');
+  var claimBlock = document.getElementById('id-claim-block');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Round-5 retime, set against the installed 12.60s "mouthful" take's own transcript:
+  // "PDRN" 0.93-1.35 · "polydeoxyribonucleotide" 1.73-4.30 · "Whew, that was a mouthful"
+  // 4.36-5.5 · "Purified..." 6.14 on · "highly biocompatible" 8.64-9.67 · ends 12.3.
+
+  // Scene 1: DNA-fragment field drifts in, low opacity.
+  tl.to(frags, { opacity: 1, duration: 0.9, stagger: 0.08 }, 0.10);
+
+  // Scene 2: card border + eyebrow, then the name lands with the spoken "PDRN".
+  tl.fromTo(card, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6 }, 0.35);
+  tl.to(eyebrow, { opacity: 1, duration: 0.4 }, 0.70);
+  tl.to(name, { opacity: 1, duration: 0.55 }, 0.95);
+
+  // "Whew, that was a mouthful" (4.36-5.5): the card deliberately holds — only the small
+  // round badge lands, a quiet clinical wink, nothing that undercuts the identity beat.
+  tl.fromTo(badge, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4 }, 4.65);
+
+  // Scene 3: three nominal fields ride "Purified DNA fragments from salmon" (6.14-8.2).
+  tl.to(f1, { opacity: 1, duration: 0.42 }, 6.15);
+  tl.to(f2, { opacity: 1, duration: 0.42 }, 6.95);
+  tl.to(f3, { opacity: 1, duration: 0.42 }, 7.75);
+
+  // Scene 4: CLAIM row + UNSOURCED flag on "highly biocompatible..." (8.64 on).
+  tl.fromTo(claimBlock, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.65 }, 8.65);
+
+  // Ambient fragment drift — bounded, slow, settles (never continuous spin).
+  frags.forEach(function (el, i) {
+    tl.to(el, { y: '+=' + (10 + i * 4), duration: 12.6, ease: 'sine.inOut' }, 0.35);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-identity'] = tl;
+})();
+</script>
+</template>

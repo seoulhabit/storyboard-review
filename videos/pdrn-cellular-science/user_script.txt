@@ -1,0 +1,37 @@
+"The Cellular Science of PDRN" (Final Cut) — 60-Second Script, as supplied by the user verbatim.
+
+0:00–0:08
+Visuals & Hyperframes: [0.5s Cuts] 1. Macro shot of glowing skin. 2. Text pop: "SALMON DNA?!" (Flash yellow). 3. Medical dropper in slow-mo.
+VO: "People are applying Salmon DNA to their skin, but this isn't just a weird trend—it's actually a medical breakthrough."
+SFX: Bass drop → Tech glitch
+
+0:08–0:18
+Visuals & Hyperframes: [0.5s Cuts] 1. 3D DNA helix spinning rapidly. 2. Text pop: P. D. R. N. 3. Glowing green shield blocking red allergy particles.
+VO: "It's called PDRN, or Polydeoxyribonucleotide. It's extracted and highly purified from salmon because these specific DNA fragments are highly biocompatible with humans—meaning they won't trigger an allergic immune response."
+SFX: Sci-fi scanner sweep → Forcefield hum
+
+0:18–0:28
+Visuals & Hyperframes: [0.5s Cuts] 1. Black-and-white hospital footage or medical cross icon. 2. Graphic of cells multiplying rapidly. 3. Kinetic text: REGENERATIVE MEDICINE.
+VO: "Because it is so safe and brilliant at triggering rapid cell growth, it wasn't originally for beauty. It was developed for hospitals as a regenerative medicine to heal severe burns, skin grafts, and diabetic ulcers."
+SFX: Heartbeat monitor beep → Whoosh
+
+0:28–0:42
+Visuals & Hyperframes: [0.5s & 1.0s Cuts] 1. Zoom into a 3D cell surface. 2. A glowing lock-and-key animation connecting to the cell. 3. Kinetic text: MASTER SWITCH FLIPPED. 4. Red cellular background turning cool blue.
+VO: "Here is how it works. Your cells have surface proteins called A2A receptors. Think of them as master control switches for tissue repair. When PDRN binds to them, it flips the switch—instantly shutting down inflammation and boosting blood flow."
+SFX: Microscopic zoom → Heavy mechanical switch clicking
+
+0:42–0:52
+Visuals & Hyperframes: [1.0s Cuts] 1. 3D animation of a cellular "factory" pumping out glowing structures. 2. Text pop: FIBROBLASTS = COLLAGEN.
+VO: "This also wakes up your fibroblasts—the cellular factories responsible for creating brand new collagen, elastin, and hyaluronic acid from the inside out."
+SFX: Fast mechanical clicking → Sparkle
+
+0:52–0:60
+Visuals & Hyperframes: [0.5s Cuts] 1. Split screen: damaged cellular grid turning into a strong, glowing structure. 2. Kinetic text: WOULD YOU TRY IT?
+VO: "It essentially hacks your cells to repair damaged tissue at record speed. Would you try fish DNA for science? Let me know below!"
+SFX: Pop sound → Swoosh out
+
+---
+Handling notes (see BRIEF.md for full detail):
+- Claim sourcing: kept as written per explicit decision; unsourced lines flagged on-screen (see BRIEF.md §Intent and STORYBOARD.md per-frame CITATION/UNSOURCED lines). Only ING-pdrn-S001, ING-pdrn-S003, and ING-pdrn-S004 exist as real source records for this ingredient anywhere in this system.
+- Audio: full voiceover throughout per explicit decision (VO_MODE: verbatim — wording adapted minimally for on-screen/caption legibility, not restructured in substance).
+- Visual language translated from the literal shock-aesthetic cues (flash yellow, bass drop, rotating 3D helix) to this lane's established restrained/matte grammar — see BRIEF.md Customizations.

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --coral: #C97A5C;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --t-figure: 60px; --t-label: 24px; --t-chip: 22px; --t-floor: 20px;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --cap-band-top: 1360px;  /* mirrors captions.html:34 -- rail must clear this */
+          --e-out: cubic-bezier(0.215,0.61,0.355,1);
+          --d-snap: 180ms; --d-fast: 400ms;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* leaf plate, full-bleed, dark scrim under it so a coral/paper text
+           stack reads clean -- this frame's only accent is coral (frame.md
+           § Palette: "Coral is the single voltage moment for the whole
+           video" -- no aqua anywhere in this frame, including the rail below). */
+        .hero-media { background: var(--ink); overflow: hidden; }
+        .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ink-scrim { background: linear-gradient(180deg, rgba(19,21,22,0.55) 0%, rgba(19,21,22,0.72) 55%, rgba(19,21,22,0.55) 100%); }
+
+        /* cream wipe -- adapts the storyboard's "cream swipes over" beat into a
+           single satisfying horizontal reveal band rather than a literal
+           second product shot, since the twist's real payoff is the chip.
+           Full-bleed (not a cropped mid-frame band) with feathered leading/
+           trailing edges via mask-image, so the swipe reads as a soft pass
+           of cream over the leaf rather than a hard-edged opaque panel --
+           the original 45%/26% band showed only the flat top of the source
+           image and read as a stray layer, not an intentional wipe. */
+        .cream-wipe { background: var(--paper); overflow: hidden;
+          transform: translateX(-110%);
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%); }
+        .cream-wipe img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.88; }
+
+        /* equivalence reveal -- reused directly from kbeauty-one-percent-line's
+           .cta-chip-hb / .cta-chip-eq pattern (frame.md § Component reuse),
+           recolored coral for this frame's one voltage moment instead of aqua. */
+        .reveal-zone { display: flex; flex-direction: column; align-items: center; justify-content: center;
+          gap: 24px; padding: 0 var(--safe-right) 0 var(--safe-left); }
+        .eq-chip { display: flex; align-items: center; gap: 20px; background: rgba(201,122,92,0.10);
+          border-left: 4px solid var(--coral); border-radius: 4px 14px 14px 4px; padding: 20px 28px;
+          box-shadow: var(--elev-2); --p: 0; opacity: var(--p); transform: scale(calc(0.92 + var(--p) * 0.08)); }
+        .eq-thumb { width: 96px; height: 96px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .eq-text { font-family: var(--font-body); font-weight: 800; font-size: 42px; line-height: 1.15;
+          letter-spacing: -0.01em; color: var(--paper); }
+        .eq-sign { color: var(--coral); padding: 0 8px; }
+        .qualifier { font-family: var(--font-mono); font-size: var(--t-chip); letter-spacing: 0.02em;
+          color: var(--paper); opacity: 0; text-align: center; max-width: 760px; }
+
+        /* verdict rail, both rows settled -- de-emphasized and recolored to a
+           neutral ink-bordered pill for this frame ONLY, since the aqua chip
+           fill used everywhere else would break the "no aqua in Frame 4" law. */
+        .verdict-rail { position: absolute; left: var(--safe-left); right: var(--safe-right);
+          top: calc(var(--cap-band-top) - 180px); bottom: auto; display: flex; flex-direction: column; gap: 14px; opacity: 0.7; }
+        .v-row { display: flex; align-items: center; gap: 14px; }
+        .v-from { font-family: var(--font-body); font-weight: 800; font-size: 40px;
+          letter-spacing: -0.01em; color: var(--paper); }
+        .v-arrow { font-family: var(--font-mono); font-size: 24px; color: var(--paper); opacity: 0.5; }
+        .v-to { font-family: var(--font-mono); font-weight: 500; font-size: var(--t-chip);
+          letter-spacing: 0.06em; color: var(--paper); background: transparent;
+          border: 1.5px solid rgba(247,245,240,0.55); padding: 7px 16px; border-radius: 6px; }
+
+      </style>
+
+      <div data-hf-id="hf-x30q" id="root" data-composition-id="04-twist" data-width="1080" data-height="1920" data-duration="5.660">
+
+        <div data-hf-id="hf-vz2p" class="clip hero-media"><img data-hf-id="hf-4qzm" src="assets/images/twist-centella-leaf.png" alt="" width="1400" height="1400" loading="eager" decoding="sync"></div>
+        <div data-hf-id="hf-bmcz" class="clip ink-scrim"></div>
+
+        <div data-hf-id="hf-8gvk" class="clip cream-wipe" id="f4-cream" data-layout-allow-overflow="true"><img data-hf-id="hf-vjng" src="assets/images/twist-cream-swirl.png" alt="" width="781" height="1400" loading="eager" decoding="sync"></div>
+
+        <div data-hf-id="hf-ga7s" class="clip reveal-zone">
+          <div data-hf-id="hf-ffdg" class="eq-chip" id="f4-chip">
+            <img data-hf-id="hf-qnqs" class="eq-thumb" src="assets/images/twist-centella-leaf.png" alt="" width="1400" height="1400" loading="eager" decoding="sync">
+            <div data-hf-id="hf-v5iv" class="eq-text">CICA<span data-hf-id="hf-6adu" class="eq-sign">=</span>CENTELLA ASIATICA</div>
+          </div>
+          <div data-hf-id="hf-ub2v" class="qualifier" id="f4-qualifier">“Cica” is a marketing word, not an INCI. Check the label.</div>
+        </div>
+
+        <div data-hf-id="hf-il16" class="clip verdict-rail">
+          <div data-hf-id="hf-sbip" class="v-row"><div data-hf-id="hf-4epk" class="v-from">SNAIL</div><div data-hf-id="hf-qcoo" class="v-arrow">→</div><div data-hf-id="hf-atn1" class="v-to">GLOW</div></div>
+          <div data-hf-id="hf-oeyt" class="v-row"><div data-hf-id="hf-svcv" class="v-from">CENTELLA</div><div data-hf-id="hf-quts" class="v-arrow">→</div><div data-hf-id="hf-ltu7" class="v-to">CALM</div></div>
+        </div>
+
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // frame zero: leaf plate + rail already composed and settled (mandatory
+        // rule 4) -- the cream wipe and chip are the beat that follows, timed to
+        // land on "Cica is just Centella" inside the VO line, not at t=0.
+        // #f4-cream is hit by two tweens at different timeline positions
+        // (fromTo below, then `to` back off-screen) -- a bare CSS transform
+        // is not evaluated on an arbitrary seek, so it needs an explicit
+        // t=0 baseline registered on the timeline itself (same fix already
+        // applied at 03-dropper.html for #f3-row-centella).
+        tl.set("#f4-cream", { x: "-110%" }, 0);
+        tl.fromTo("#f4-cream", { x: "-110%" }, { x: "0%", duration: 0.45, ease: "power2.inOut" }, 0.3);
+        tl.to("#f4-cream", { x: "110%", duration: 0.45, ease: "power2.inOut" }, 1.15);
+
+        tl.fromTo("#f4-chip", { "--p": 0 }, { "--p": 1, duration: 0.3, ease: "power3.out" }, 2.6);
+        tl.to("#f4-qualifier", { opacity: 1, duration: 0.35, ease: "power2.out" }, 2.95);
+
+        tl.to({}, { duration: 5.660 }, 0);
+        window.__timelines["04-twist"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

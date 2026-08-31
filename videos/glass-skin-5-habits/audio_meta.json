@@ -1,0 +1,122 @@
+{
+ "tts_provider": "higgsfield",
+ "tts_model": "seed_audio",
+ "voice_id": "674b71b8-1d2e-4087-8567-d1f53c0b9f3c",
+ "voice_name": "Kimberly",
+ "voice_type": "element",
+ "voice_lines": [
+  {
+   "id": "01",
+   "file": "assets/voice/01.wav",
+   "duration_s": 6.485
+  },
+  {
+   "id": "02",
+   "file": "assets/voice/02.wav",
+   "duration_s": 5.391
+  },
+  {
+   "id": "03",
+   "file": "assets/voice/03.wav",
+   "duration_s": 7.0
+  },
+  {
+   "id": "04",
+   "file": "assets/voice/04.wav",
+   "duration_s": 8.6
+  },
+  {
+   "id": "05",
+   "file": "assets/voice/05.wav",
+   "duration_s": 5.05
+  },
+  {
+   "id": "06",
+   "file": "assets/voice/06.wav",
+   "duration_s": 7.8,
+   "note": "re-recorded 2026-08-30 (QC #2) -- original take had no trailing silence at all; this take leaves real room for the fade. See assets/MANIFEST.md."
+  }
+ ],
+ "bgm": {
+  "path": "assets/bgm/track.mp3",
+  "reused_from": "videos/retinol-patch-test/assets/bgm/track.mp3",
+  "reason": "no music-generation/stock-retrieval tool available this session; near-identical BGM query to the source project -- see assets/MANIFEST.md \u00a7 BGM",
+  "volume": 0.12,
+  "duration_s": 41.526
+ },
+ "sfx": [
+  {
+   "cue": "hook hit",
+   "file": "assets/sfx/hook-hit.mp3",
+   "reused_from": "retinol-patch-test",
+   "exact_match": true
+  },
+  {
+   "cue": "buzzer",
+   "file": "assets/sfx/buzzer.mp3",
+   "reused_from": "retinol-patch-test",
+   "exact_match": true
+  },
+  {
+   "cue": "glass clink",
+   "file": "assets/sfx/glass-clink.mp3",
+   "reused_from": "retinol-patch-test/pop.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "soft whoosh",
+   "file": "assets/sfx/soft-whoosh.mp3",
+   "reused_from": "retinol-patch-test",
+   "exact_match": true
+  },
+  {
+   "cue": "chime",
+   "file": "assets/sfx/chime.mp3",
+   "reused_from": "retinol-patch-test",
+   "exact_match": true
+  },
+  {
+   "cue": "jar unscrew",
+   "file": "assets/sfx/jar-unscrew.mp3",
+   "reused_from": "retinol-patch-test/soft-click.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "water pour",
+   "file": "assets/sfx/water-pour.mp3",
+   "reused_from": "retinol-patch-test/soft-whoosh.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "droplet tick",
+   "file": "assets/sfx/droplet-tick.mp3",
+   "reused_from": "retinol-patch-test/pop.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "cream swoosh",
+   "file": "assets/sfx/cream-swoosh.mp3",
+   "reused_from": "kbeauty-one-percent-line/whoosh-thud.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "pump click",
+   "file": "assets/sfx/pump-click.mp3",
+   "reused_from": "retinol-patch-test/soft-click.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "soft squeeze",
+   "file": "assets/sfx/soft-squeeze.mp3",
+   "reused_from": "kbeauty-one-percent-line/marker-squeak.mp3",
+   "exact_match": false
+  },
+  {
+   "cue": "chime triple",
+   "file": "assets/sfx/chime-triple.mp3",
+   "reused_from": "kbeauty-one-percent-line",
+   "exact_match": true
+  }
+ ],
+ "note": "See assets/MANIFEST.md for the full honest-gap writeup: no water-splash/jar-unscrew/cream-application SFX exists anywhere on this channel yet; three cues above are the closest available stand-ins, not accurate matches."
+}

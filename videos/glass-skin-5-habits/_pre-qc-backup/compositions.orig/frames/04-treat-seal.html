@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --leaf: #6F8F72; --coral: #C97A5C;
+          --highlighter: #E0A32B; --ink-2: #6B6B6B; --ink-3: #9C978D; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082;
+          --white: #FCFBF9;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", sans-serif;
+          --t-hero: 96px; --t-figure: 60px; --t-frame: 50px; --t-body: 32px; --t-label: 24px; --t-chip: 22px; --t-floor: 20px;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --e-out: cubic-bezier(0.215,0.61,0.355,1); --e-in: cubic-bezier(0.55,0.055,0.675,0.19); --e-inout: cubic-bezier(0.455,0.03,0.515,0.955);
+          --d-snap: 180ms; --d-fast: 400ms; --d-base: 500ms;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+          --capsule-dark: rgba(19,21,22,0.80); --capsule-pad-y: 12px; --capsule-pad-x: 20px; --capsule-radius: 6px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-mono);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* full-bleed macro plate -- the presenter for this video (frame.md § Faceless) */
+        .hero-media { position: absolute; inset: 0; background: var(--paper); overflow: hidden; }
+        .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-scrim { position: absolute; inset: 0; pointer-events: none; }
+
+.hero-scrim { background: rgba(19,21,22,0.44); }
+        /* Persistent 5-habit tracker, center-left safe column, per the user's own brief
+           ("bold, aesthetic font in the center-left"). Progress read via weight/contrast,
+           not color proliferation -- only the ACTIVE row uses aqua, matching the system's
+           "one aqua-family highlight per frame" law and "no success colour" rule (a done
+           row is marked by a checkmark + full-opacity text, never green). Compact sizing so
+           the stack, every frame's own accent content, and the caption band (top:1360,
+           frame.md § Captions) all fit inside the safe-top/safe-bottom bounds together --
+           the original larger sizing collided with the caption band on Frame 6, the
+           densest layout. */
+        .habit-stack { top: 170px; left: var(--safe-left); width: 560px;
+          display: flex; flex-direction: column; gap: 10px; }
+        .habit-row { display: flex; align-items: center; gap: 12px;
+          background: var(--capsule-dark); padding: 8px 16px;
+          border-radius: var(--capsule-radius); transform-origin: 0% 50%; }
+        .habit-badge { width: 30px; height: 30px; border-radius: 50%; flex: none;
+          display: flex; align-items: center; justify-content: center;
+          font-family: var(--font-mono); font-size: 18px; font-weight: 500; }
+        .habit-word { font-family: var(--font-body); font-weight: 800; letter-spacing: 0.01em;
+          font-size: 26px; }
+        /* pending: dimmed via a paper-tinted (not ink-3) glyph colour -- ink-3 is a
+           secondary-text token designed for LIGHT backgrounds; using it directly on this
+           dark capsule measured 2.6:1 against WCAG's 4.5:1 floor. A translucent paper
+           tone reads exactly as "de-emphasized" while actually passing on a dark ground. */
+        .habit-row[data-state="pending"] .habit-badge { border: 2px solid rgba(247,245,240,0.55); color: rgba(247,245,240,0.72); }
+        .habit-row[data-state="pending"] .habit-word { color: rgba(247,245,240,0.72); }
+        .habit-row[data-state="done"] .habit-badge { background: var(--white); color: var(--ink); }
+        .habit-row[data-state="done"] .habit-word { color: var(--white); }
+        /* active: a slightly denser capsule behind the aqua text -- aqua-on-capsule-dark
+           measured 4.25:1 against a 4.5:1 floor; darkening the backdrop (not the token
+           colour itself, which is the system's own official --aqua value used channel-wide)
+           closes the gap without inventing a new accent. */
+        .habit-row[data-state="active"] { background: rgba(19,21,22,0.92); }
+        .habit-row[data-state="active"] .habit-badge { border: 2px solid var(--aqua); color: var(--aqua); }
+        .habit-row[data-state="active"] .habit-word { color: var(--aqua); }
+        /* both glyphs always in the DOM; CSS (driven by the same data-state attribute the
+           JS already sets via tl.set({attr:...})) decides which one paints -- no JS text
+           update needed, so a mid-file state transition can never leave a stale digit. */
+        .badge-check { display: none; }
+        .habit-row[data-state="done"] .badge-num { display: none; }
+        .habit-row[data-state="done"] .badge-check { display: inline; }
+
+        .treat-chip { top: 900px; left: var(--safe-left); font-family: var(--font-mono);
+          font-size: var(--t-chip); letter-spacing: 0.08em; color: var(--paper);
+          background: rgba(19,21,22,0.85); padding: 10px 20px; border-radius: var(--r-2, 6px); }
+
+      </style>
+
+      <div id="root" data-composition-id="04-treat-seal" data-width="1080" data-height="1920" data-duration="9.400">
+
+        <div class="clip hero-media" id="f4-hero-a"><img src="assets/images/treat-droplet.png" alt="" width="781" height="1400" loading="eager" decoding="sync"></div>
+        <div class="clip hero-media" id="f4-hero-b"><img src="assets/images/seal-cream-swirl.png" alt="" width="781" height="1400" loading="eager" decoding="sync"></div>
+        <div class="clip hero-scrim"></div>
+        <div class="clip habit-stack" id="f4-stack" data-layout-allow-overlap>
+          <div class="habit-row" data-state="done" id="f4-row-1"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>1</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>CLEANSE</span></div>
+          <div class="habit-row" data-state="done" id="f4-row-2"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>2</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>HYDRATE</span></div>
+          <div class="habit-row" data-state="active" id="f4-row-3"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>3</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>TREAT</span></div>
+          <div class="habit-row" data-state="pending" id="f4-row-4"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>4</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>SEAL</span></div>
+          <div class="habit-row" data-state="pending" id="f4-row-5"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>5</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>PROTECT</span></div>
+        </div>
+        <div class="clip treat-chip" id="f4-chip">JUST ONE ACTIVE</div>
+
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // CLEANSE + HYDRATE already done at this file's own t=0 -- composed directly, not
+        // re-animated (those transitions already happened in Frame 3's own timeline).
+        gsap.set("#f4-hero-b", { opacity: 0 });
+        gsap.set("#f4-chip", { opacity: 0, y: 10 });
+        tl.fromTo("#f4-hero-a img", { scale: 1.05 }, { scale: 1.0, duration: 4.3, ease: "none" }, 0);
+        // mid-beat content chip -- Beat A (0-4.3s) measured a 3.5s flat stretch on the
+        // static-hold check (faceless-video-craft's cadence ceiling for shorts is 2-3s);
+        // this isn't decorative filler, it reinforces the VO's actual point ("Pick just
+        // one active serum") at the moment that clause lands.
+        tl.to("#f4-chip", { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 2.0);
+        tl.to("#f4-chip", { opacity: 0, duration: 0.2, ease: "power2.in" }, 4.1);
+
+        // Beat B -- "Four: Seal" -- hard cut to the cream-swirl plate, TREAT settles to
+        // done, SEAL becomes the frame's one aqua accent.
+        tl.to("#f4-hero-b", { opacity: 1, duration: 0.08, ease: "power2.out" }, 4.3);
+        tl.fromTo("#f4-hero-b img", { scale: 1.05 }, { scale: 1.0, duration: 5.0, ease: "none" }, 4.3);
+        tl.set("#f4-row-3", { attr: { "data-state": "done" } }, 4.3);
+        tl.set("#f4-row-4", { attr: { "data-state": "active" } }, 4.3);
+        tl.to(["#f4-row-3", "#f4-row-4"], { scale: 1.04, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, 4.3);
+
+        tl.to({}, { duration: 9.400 }, 0);
+        window.__timelines["04-treat-seal"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

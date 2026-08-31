@@ -1,0 +1,16 @@
+{
+  "provider": "heygen",
+  "lang": "en",
+  "lines": [
+    { "id": "01", "text": "Stop doing a 10-step skincare routine. Stacking that many actives is how barriers get wrecked.", "sfx": ["hook hit", "buzzer", "glass clink"] },
+    { "id": "02", "text": "Korean glass skin doesn't come from hoarding products. It comes from these 5 simple habits.", "sfx": ["soft whoosh", "chime"] },
+    { "id": "03", "text": "One: Cleanse. Melt the SPF off. Two: Hydrate. Press toner into damp skin.", "sfx": ["jar unscrew", "water pour"] },
+    { "id": "04", "text": "Three: Treat. Pick just one active serum. Four: Seal. Lock it all in with a barrier cream.", "sfx": ["droplet tick", "cream swoosh"] },
+    { "id": "05", "text": "And Five: Protect. Two fingers of SPF 50, every single morning.", "sfx": ["pump click", "soft squeeze"] },
+    { "id": "06", "text": "That's it. 5 habits. Hit subscribe because tomorrow we're fixing your damaged skin barrier.", "sfx": ["chime triple"] }
+  ],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "calm, warm, aesthetic educational skincare background bed, gentle and reassuring, low presence under narration"
+  }
+}

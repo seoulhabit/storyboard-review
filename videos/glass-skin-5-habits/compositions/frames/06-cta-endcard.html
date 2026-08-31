@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --leaf: #6F8F72; --coral: #C97A5C;
+          --highlighter: #E0A32B; --ink-2: #6B6B6B; --ink-3: #9C978D; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082;
+          --white: #FCFBF9;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", sans-serif;
+          --t-hero: 96px; --t-figure: 60px; --t-frame: 50px; --t-body: 32px; --t-label: 24px; --t-chip: 22px; --t-floor: 20px;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --e-out: cubic-bezier(0.215,0.61,0.355,1); --e-in: cubic-bezier(0.55,0.055,0.675,0.19); --e-inout: cubic-bezier(0.455,0.03,0.515,0.955);
+          --d-snap: 180ms; --d-fast: 400ms; --d-base: 500ms;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+          --capsule-dark: rgba(19,21,22,0.80); --capsule-pad-y: 12px; --capsule-pad-x: 20px; --capsule-radius: 6px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-mono);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* full-bleed macro plate -- the presenter for this video (frame.md § Faceless) */
+        .hero-media { position: absolute; inset: 0; background: var(--paper); overflow: hidden; }
+        .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-scrim { position: absolute; inset: 0; pointer-events: none; }
+
+.hero-scrim { background: rgba(247,245,240,0.14); }
+        /* Persistent 5-habit tracker, center-left safe column, per the user's own brief
+           ("bold, aesthetic font in the center-left"). Progress read via weight/contrast,
+           not color proliferation -- only the ACTIVE row uses aqua, matching the system's
+           "one aqua-family highlight per frame" law and "no success colour" rule (a done
+           row is marked by a checkmark + full-opacity text, never green). Compact sizing so
+           the stack, every frame's own accent content, and the caption band (top:1360,
+           frame.md § Captions) all fit inside the safe-top/safe-bottom bounds together --
+           the original larger sizing collided with the caption band on Frame 6, the
+           densest layout. */
+        .habit-stack { top: 1160px; left: var(--safe-left); width: 560px; bottom: auto;
+          display: flex; flex-direction: column; gap: 10px; }
+        .habit-row { display: flex; align-items: center; gap: 12px;
+          background: var(--capsule-dark); padding: 8px 16px;
+          border-radius: var(--capsule-radius); transform-origin: 0% 50%; }
+        .habit-badge { width: 30px; height: 30px; border-radius: 50%; flex: none;
+          display: flex; align-items: center; justify-content: center;
+          font-family: var(--font-mono); font-size: 18px; font-weight: 500; }
+        .habit-word { font-family: var(--font-body); font-weight: 800; letter-spacing: 0.01em;
+          font-size: 26px; }
+        /* pending: dimmed via a paper-tinted (not ink-3) glyph colour -- ink-3 is a
+           secondary-text token designed for LIGHT backgrounds; using it directly on this
+           dark capsule measured 2.6:1 against WCAG's 4.5:1 floor. A translucent paper
+           tone reads exactly as "de-emphasized" while actually passing on a dark ground. */
+        .habit-row[data-state="pending"] .habit-badge { border: 2px solid rgba(247,245,240,0.55); color: rgba(247,245,240,0.72); }
+        .habit-row[data-state="pending"] .habit-word { color: rgba(247,245,240,0.72); }
+        .habit-row[data-state="done"] .habit-badge { background: var(--white); color: var(--ink); }
+        .habit-row[data-state="done"] .habit-word { color: var(--white); }
+        /* active: a slightly denser capsule behind the aqua text -- aqua-on-capsule-dark
+           measured 4.25:1 against a 4.5:1 floor; darkening the backdrop (not the token
+           colour itself, which is the system's own official --aqua value used channel-wide)
+           closes the gap without inventing a new accent. */
+        .habit-row[data-state="active"] { background: rgba(19,21,22,0.92); }
+        .habit-row[data-state="active"] .habit-badge { border: 2px solid var(--aqua); color: var(--aqua); }
+        .habit-row[data-state="active"] .habit-word { color: var(--aqua); }
+        /* both glyphs always in the DOM; CSS (driven by the same data-state attribute the
+           JS already sets via tl.set({attr:...})) decides which one paints -- no JS text
+           update needed, so a mid-file state transition can never leave a stale digit. */
+        .badge-check { display: none; }
+        .habit-row[data-state="done"] .badge-num { display: none; }
+        .habit-row[data-state="done"] .badge-check { display: inline; }
+
+        /* the one structurally different layout: a full-width horizontal product band
+           instead of a full-bleed vertical macro plate (faceless-video-craft's
+           layout-variety rule). QC #1 moved the caption band from 1360 to 960-1110,
+           which landed squarely on this frame's old sub-kicker (940) and habit stack
+           (1030-1300) -- the densest layout in the video, and the one QC flagged as a
+           "major" collision. Reflowed to split around the new band instead of colliding
+           with it: product band, headline, sub-kicker all above it; habit stack and
+           brand mark below it. Every block that only sets top (not height) also gets
+           bottom:auto -- see Frame 4/5's chip comments for why that inherited inset:0
+           bottom/right matters for elements that DO carry a background; these are plain
+           centered text with no background, so it's hygiene, not a visible fix. */
+        .product-band { top: 150px; left: 0; width: 100%; height: 500px;
+          background: var(--paper); display: flex; align-items: center; justify-content: center;
+          overflow: hidden; }
+        .product-band img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .f6-headline { top: 700px; left: 0; width: 100%; text-align: center; bottom: auto;
+          font-family: var(--font-display); font-size: 56px; color: var(--ink); }
+        .f6-sub { top: 790px; left: 0; width: 100%; text-align: center; bottom: auto;
+          font-family: var(--font-mono); font-size: var(--t-label); letter-spacing: 0.06em;
+          color: var(--ink-2); }
+        .f6-sub .f6-subscribe-word { color: var(--ink); font-weight: 600; display: inline-block; }
+        /* QC #3's fix: the frame's only new on-screen content, not decorative filler --
+           it's the burned-in form of the VO's own promise ("because tomorrow we're
+           fixing your damaged skin barrier"), timed to land on that clause. It's the
+           frame's one aqua accent (every habit row is already done/white by now),
+           matching the one-aqua-per-frame law. Same safe pattern as .ghost-kicker
+           (full-width wrapper, text-align:center, inline-block pill child) rather than
+           a background directly on a .clip-derived block, sidestepping the inset:0 box
+           bug entirely instead of needing an explicit-width patch. */
+        .f6-next-chip { top: 860px; left: 0; width: 100%; text-align: center; bottom: auto; }
+        .f6-next-chip span { display: inline-block; background: rgba(19,21,22,0.85);
+          color: var(--aqua); font-family: var(--font-mono); font-size: 28px; font-weight: 600;
+          letter-spacing: 0.08em; padding: 14px 28px; border-radius: var(--r-2, 6px); }
+        .f6-brand { top: 1480px; left: 0; width: 100%; text-align: center; bottom: auto;
+          font-family: var(--font-kr); font-size: 22px; color: var(--ink-2); }
+
+      </style>
+
+      <div id="root" data-composition-id="06-cta-endcard" data-width="1080" data-height="1920" data-duration="7.500">
+
+        <div class="clip product-band" id="f6-band"><img src="assets/images/cta-five-products.png" alt="" width="1400" height="1024" loading="eager" decoding="sync"></div>
+        <div class="clip f6-headline" id="f6-headline">That's it.</div>
+        <div class="clip f6-sub" id="f6-sub">5 HABITS. <span class="f6-subscribe-word" id="f6-subscribe-word">HIT SUBSCRIBE.</span></div>
+        <div class="clip f6-next-chip" id="f6-next-chip"><span>NEXT: BARRIER REPAIR</span></div>
+        <div class="clip habit-stack" id="f6-stack" data-layout-allow-overlap>
+          <div class="habit-row" data-state="done" id="f6-row-1"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>1</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>CLEANSE</span></div>
+          <div class="habit-row" data-state="done" id="f6-row-2"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>2</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>HYDRATE</span></div>
+          <div class="habit-row" data-state="done" id="f6-row-3"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>3</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>TREAT</span></div>
+          <div class="habit-row" data-state="done" id="f6-row-4"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>4</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>SEAL</span></div>
+          <div class="habit-row" data-state="done" id="f6-row-5"><span class="habit-badge"><span class="badge-num" data-layout-allow-overlap>5</span><span class="badge-check" data-layout-allow-overlap>&#10003;</span></span><span class="habit-word" data-layout-allow-overlap>PROTECT</span></div>
+        </div>
+        <div class="clip f6-brand" id="f6-brand-mark">습 SeoulHabit</div>
+
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // QC #3: this frame measured 5.0s of frozen imagery (local ~2.06-7.5, PSNR ~70dB
+        // between 0.5s samples) against the shorts 2-3s cadence ceiling -- every beat
+        // below is new, each landing on a real clause of this scene's own VO (re-timed
+        // 2026-08-30 after QC #2 required a fresh take of line 06 -- word times below
+        // come from that take's real transcript, not the original).
+        //
+        // all five habits already settle to done -- the completed ladder, composed
+        // directly (the last transition already happened in Frame 5's own timeline).
+        gsap.set("#f6-headline", { opacity: 0, y: 10 });
+        gsap.set("#f6-sub", { opacity: 0, y: 10 });
+        gsap.set("#f6-next-chip", { opacity: 0, y: 10 });
+        gsap.set("#f6-brand-mark", { opacity: 0 });
+
+        // continuous Ken Burns across the WHOLE frame (every other scene has this; this
+        // was the one that stopped cold at 1.2s, which is most of why the freeze read as
+        // static even with the discrete beats below added) -- quick settle first for the
+        // hero product shot, then a slow drift for the remainder.
+        tl.fromTo("#f6-band img", { scale: 1.03 }, { scale: 1.0, duration: 1.2, ease: "power2.out" }, 0);
+        tl.to("#f6-band img", { scale: 1.02, duration: 6.3, ease: "none" }, 1.2);
+
+        tl.to("#f6-headline", { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.2);
+        tl.to("#f6-sub", { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.9);
+
+        // habit stack's landing pop on "Five habits." (2.00-3.00) -- the stack is already
+        // visible/done from t=0 (frame-zero-composed, not faded in from nothing), this is
+        // just the beat that makes the completed ladder register as an event, not wallpaper.
+        tl.to("#f6-row-1, #f6-row-2, #f6-row-3, #f6-row-4, #f6-row-5",
+          { scale: 1.04, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1, stagger: 0.09 }, 2.05);
+
+        // finger-tap micro-interaction landing on the real "subscribe" word (3.25-3.68).
+        tl.to("#f6-subscribe-word", { scale: 1.08, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1 }, 3.25);
+
+        // brand mark arrives on "because" (3.68-3.98).
+        tl.to("#f6-brand-mark", { opacity: 1, duration: 0.3, ease: "power2.out" }, 3.70);
+
+        // bounded product-band drift on "tomorrow we're fixing your" (4.10-4.99) -- finite,
+        // resolves inside its own beat (frame.md § Motion), not an infinite idle.
+        tl.fromTo("#f6-band", { x: 0 }, { x: -8, duration: 0.45, ease: "power1.inOut", yoyo: true, repeat: 1 }, 4.10);
+
+        // the next-video handoff chip -- the actual fix for the freeze, not decorative
+        // filler: it's the VO's own promise ("...we're fixing your damaged skin barrier")
+        // rendered as on-screen text, landing on "damaged" (4.99-5.31) and clearing before
+        // the loop-hold settle.
+        tl.to("#f6-next-chip", { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 5.00);
+        tl.to("#f6-next-chip", { opacity: 0, duration: 0.25, ease: "power2.in" }, 6.30);
+
+        // held, settled through the loop-hold tail -- last frame hands back to Frame 1's
+        // cold-open paper ground, same product-photography grammar.
+
+        tl.to({}, { duration: 7.500 }, 0);
+        window.__timelines["06-cta-endcard"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

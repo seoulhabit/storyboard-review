@@ -1,0 +1,824 @@
+{
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "start": 0.24,
+      "end": 1.66,
+      "text": "Stop doing a 10-step",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "Stop",
+          "start": 0.24,
+          "end": 0.32,
+          "habit": false
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "doing",
+          "start": 0.45,
+          "end": 0.62,
+          "habit": false
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "a",
+          "start": 0.62,
+          "end": 0.8,
+          "habit": false
+        },
+        {
+          "id": "caption-word-0-3",
+          "text": "10-step",
+          "start": 0.8,
+          "end": 1.66,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "start": 1.66,
+      "end": 3.93,
+      "text": "skincare routine. Stacking that",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "skincare",
+          "start": 1.66,
+          "end": 2.28,
+          "habit": false
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "routine.",
+          "start": 2.28,
+          "end": 3.14,
+          "habit": false
+        },
+        {
+          "id": "caption-word-1-2",
+          "text": "Stacking",
+          "start": 3.32,
+          "end": 3.8,
+          "habit": false
+        },
+        {
+          "id": "caption-word-1-3",
+          "text": "that",
+          "start": 3.8,
+          "end": 3.93,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "start": 4.12,
+      "end": 5.07,
+      "text": "many actives is how",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "many",
+          "start": 4.12,
+          "end": 4.28,
+          "habit": false
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "actives",
+          "start": 4.28,
+          "end": 4.72,
+          "habit": false
+        },
+        {
+          "id": "caption-word-2-2",
+          "text": "is",
+          "start": 4.72,
+          "end": 4.81,
+          "habit": false
+        },
+        {
+          "id": "caption-word-2-3",
+          "text": "how",
+          "start": 4.96,
+          "end": 5.07,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "start": 5.23,
+      "end": 6.485,
+      "text": "barriers get wrecked.",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "barriers",
+          "start": 5.23,
+          "end": 5.68,
+          "habit": false
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "get",
+          "start": 5.68,
+          "end": 5.77,
+          "habit": false
+        },
+        {
+          "id": "caption-word-3-2",
+          "text": "wrecked.",
+          "start": 5.83,
+          "end": 6.485,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "start": 7.175,
+      "end": 8.165,
+      "text": "Korean glass skin doesn't",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "Korean",
+          "start": 7.175,
+          "end": 7.255,
+          "habit": false
+        },
+        {
+          "id": "caption-word-4-1",
+          "text": "glass",
+          "start": 7.255,
+          "end": 7.475,
+          "habit": false
+        },
+        {
+          "id": "caption-word-4-2",
+          "text": "skin",
+          "start": 7.505,
+          "end": 7.685,
+          "habit": false
+        },
+        {
+          "id": "caption-word-4-3",
+          "text": "doesn't",
+          "start": 7.855,
+          "end": 8.165,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "start": 8.215,
+      "end": 9.805,
+      "text": "come from hoarding products.",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "come",
+          "start": 8.215,
+          "end": 8.465,
+          "habit": false
+        },
+        {
+          "id": "caption-word-5-1",
+          "text": "from",
+          "start": 8.465,
+          "end": 8.725,
+          "habit": false
+        },
+        {
+          "id": "caption-word-5-2",
+          "text": "hoarding",
+          "start": 8.725,
+          "end": 9.195,
+          "habit": false
+        },
+        {
+          "id": "caption-word-5-3",
+          "text": "products.",
+          "start": 9.295,
+          "end": 9.805,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "start": 9.855,
+      "end": 10.955,
+      "text": "It comes from these",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "It",
+          "start": 9.855,
+          "end": 9.945,
+          "habit": false
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "comes",
+          "start": 10.215,
+          "end": 10.305,
+          "habit": false
+        },
+        {
+          "id": "caption-word-6-2",
+          "text": "from",
+          "start": 10.305,
+          "end": 10.595,
+          "habit": false
+        },
+        {
+          "id": "caption-word-6-3",
+          "text": "these",
+          "start": 10.595,
+          "end": 10.955,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "start": 10.955,
+      "end": 12.176,
+      "text": "five simple habits.",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "five",
+          "start": 10.955,
+          "end": 11.245,
+          "habit": false
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "simple",
+          "start": 11.245,
+          "end": 11.685,
+          "habit": false
+        },
+        {
+          "id": "caption-word-7-2",
+          "text": "habits.",
+          "start": 11.685,
+          "end": 12.176,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "start": 12.606,
+      "end": 14.896,
+      "text": "One, cleanse. Melt the",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "One,",
+          "start": 12.606,
+          "end": 13.036,
+          "habit": false
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "cleanse.",
+          "start": 13.036,
+          "end": 14.236,
+          "habit": true
+        },
+        {
+          "id": "caption-word-8-2",
+          "text": "Melt",
+          "start": 14.236,
+          "end": 14.616,
+          "habit": false
+        },
+        {
+          "id": "caption-word-8-3",
+          "text": "the",
+          "start": 14.616,
+          "end": 14.896,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "start": 14.896,
+      "end": 15.516,
+      "text": "SPF off.",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "SPF",
+          "start": 14.896,
+          "end": 15.176,
+          "habit": false
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "off.",
+          "start": 15.176,
+          "end": 15.516,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "start": 15.926,
+      "end": 17.036,
+      "text": "Two, hydrate.",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "Two,",
+          "start": 15.926,
+          "end": 16.156,
+          "habit": false
+        },
+        {
+          "id": "caption-word-10-1",
+          "text": "hydrate.",
+          "start": 16.446,
+          "end": 17.036,
+          "habit": true
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "start": 17.576,
+      "end": 18.666,
+      "text": "Press toner into damp",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "Press",
+          "start": 17.576,
+          "end": 17.696,
+          "habit": false
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "toner",
+          "start": 17.696,
+          "end": 18.066,
+          "habit": false
+        },
+        {
+          "id": "caption-word-11-2",
+          "text": "into",
+          "start": 18.066,
+          "end": 18.366,
+          "habit": false
+        },
+        {
+          "id": "caption-word-11-3",
+          "text": "damp",
+          "start": 18.366,
+          "end": 18.666,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "start": 18.666,
+      "end": 19.216,
+      "text": "skin.",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "skin.",
+          "start": 18.666,
+          "end": 19.216,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "start": 20.256,
+      "end": 20.986,
+      "text": "Three,",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "Three,",
+          "start": 20.256,
+          "end": 20.986,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "start": 21.366,
+      "end": 22.796,
+      "text": "treat. Pick",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "treat.",
+          "start": 21.366,
+          "end": 22.736,
+          "habit": true
+        },
+        {
+          "id": "caption-word-14-1",
+          "text": "Pick",
+          "start": 22.776,
+          "end": 22.796,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "start": 23.226,
+      "end": 23.536,
+      "text": "just one",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "just",
+          "start": 23.226,
+          "end": 23.516,
+          "habit": false
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "one",
+          "start": 23.516,
+          "end": 23.536,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "start": 24.326,
+      "end": 25.176,
+      "text": "active serum.",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "active",
+          "start": 24.326,
+          "end": 24.386,
+          "habit": false
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "serum.",
+          "start": 24.386,
+          "end": 25.176,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "start": 25.656,
+      "end": 26.986,
+      "text": "Four, seal. Lock it",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "Four,",
+          "start": 25.656,
+          "end": 25.886,
+          "habit": false
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "seal.",
+          "start": 25.886,
+          "end": 26.736,
+          "habit": true
+        },
+        {
+          "id": "caption-word-17-2",
+          "text": "Lock",
+          "start": 26.776,
+          "end": 26.956,
+          "habit": false
+        },
+        {
+          "id": "caption-word-17-3",
+          "text": "it",
+          "start": 26.956,
+          "end": 26.986,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "start": 27.226,
+      "end": 27.916,
+      "text": "all in with a",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "all",
+          "start": 27.226,
+          "end": 27.246,
+          "habit": false
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "in",
+          "start": 27.246,
+          "end": 27.356,
+          "habit": false
+        },
+        {
+          "id": "caption-word-18-2",
+          "text": "with",
+          "start": 27.356,
+          "end": 27.506,
+          "habit": false
+        },
+        {
+          "id": "caption-word-18-3",
+          "text": "a",
+          "start": 27.506,
+          "end": 27.916,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "start": 27.916,
+      "end": 28.376,
+      "text": "barrier cream.",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "barrier",
+          "start": 27.916,
+          "end": 28.326,
+          "habit": false
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "cream.",
+          "start": 28.326,
+          "end": 28.376,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "start": 28.926,
+      "end": 30.956,
+      "text": "and five protect two",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "and",
+          "start": 28.926,
+          "end": 29.096,
+          "habit": false
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "five",
+          "start": 29.096,
+          "end": 29.426,
+          "habit": false
+        },
+        {
+          "id": "caption-word-20-2",
+          "text": "protect",
+          "start": 29.706,
+          "end": 30.066,
+          "habit": true
+        },
+        {
+          "id": "caption-word-20-3",
+          "text": "two",
+          "start": 30.066,
+          "end": 30.956,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "start": 31.136,
+      "end": 32.656,
+      "text": "fingers of SPF 50",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "fingers",
+          "start": 31.136,
+          "end": 31.606,
+          "habit": false
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "of",
+          "start": 31.636,
+          "end": 31.796,
+          "habit": false
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "SPF",
+          "start": 31.826,
+          "end": 32.086,
+          "habit": false
+        },
+        {
+          "id": "caption-word-21-3",
+          "text": "50",
+          "start": 32.086,
+          "end": 32.656,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "start": 33.006,
+      "end": 33.726,
+      "text": "every single morning",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "every",
+          "start": 33.006,
+          "end": 33.496,
+          "habit": false
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "single",
+          "start": 33.496,
+          "end": 33.716,
+          "habit": false
+        },
+        {
+          "id": "caption-word-22-2",
+          "text": "morning",
+          "start": 33.716,
+          "end": 33.726,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "start": 34.026,
+      "end": 36.026,
+      "text": "That's it. Five habits.",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "That's",
+          "start": 34.026,
+          "end": 34.566,
+          "habit": false
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "it.",
+          "start": 34.566,
+          "end": 35.026,
+          "habit": false
+        },
+        {
+          "id": "caption-word-23-2",
+          "text": "Five",
+          "start": 35.026,
+          "end": 35.256,
+          "habit": false
+        },
+        {
+          "id": "caption-word-23-3",
+          "text": "habits.",
+          "start": 35.316,
+          "end": 36.026,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "start": 36.026,
+      "end": 36.256,
+      "text": "Hit subscribe",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "Hit",
+          "start": 36.026,
+          "end": 36.246,
+          "habit": false
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "subscribe",
+          "start": 36.246,
+          "end": 36.256,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "start": 36.946,
+      "end": 37.546,
+      "text": "because tomorrow",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "because",
+          "start": 36.946,
+          "end": 37.386,
+          "habit": false
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "tomorrow",
+          "start": 37.386,
+          "end": 37.546,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "start": 38.116,
+      "end": 38.866,
+      "text": "we're fixing your",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "we're",
+          "start": 38.116,
+          "end": 38.386,
+          "habit": false
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "fixing",
+          "start": 38.486,
+          "end": 38.816,
+          "habit": false
+        },
+        {
+          "id": "caption-word-26-2",
+          "text": "your",
+          "start": 38.816,
+          "end": 38.866,
+          "habit": false
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "start": 39.386,
+      "end": 40.506,
+      "text": "damaged skin barrier.",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "damaged",
+          "start": 39.386,
+          "end": 39.636,
+          "habit": false
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "skin",
+          "start": 39.786,
+          "end": 39.926,
+          "habit": false
+        },
+        {
+          "id": "caption-word-27-2",
+          "text": "barrier.",
+          "start": 39.926,
+          "end": 40.506,
+          "habit": false
+        }
+      ]
+    }
+  ],
+  "duration": 41.526
+}

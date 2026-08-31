@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --t-figure: 60px; --t-label: 24px;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --cap-band-top: 1360px;  /* mirrors captions.html:34 -- rail must clear this */
+          --d-fast: 400ms;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .hero-video { position: absolute; inset: 0; background: var(--paper); overflow: hidden; }
+        .hero-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .rail-scrim { background: linear-gradient(to top, rgba(247,245,240,0.85) 0%, rgba(247,245,240,0.60) 40%, rgba(247,245,240,0) 65%); }
+
+        /* verdict rail -- Row 1 (SNAIL/GLOW) carries over from Frame 2, already
+           settled; Row 2 (CENTELLA/CALM) is this frame's new arrival. Not
+           RoutineLadder -- a two-row verdict, not a six-rung routine sequence
+           (frame.md § Component reuse). */
+        .verdict-rail { position: absolute; left: var(--safe-left); right: var(--safe-right);
+          top: calc(var(--cap-band-top) - 180px); bottom: auto; display: flex; flex-direction: column; gap: 18px; }
+        .v-row { display: flex; align-items: center; gap: 16px; --p: 1; opacity: var(--p);
+          transform: translateX(calc((1 - var(--p)) * -28px)); }
+        .v-from { font-family: var(--font-body); font-weight: 800; font-size: var(--t-figure);
+          letter-spacing: -0.01em; color: var(--ink); }
+        .v-arrow { font-family: var(--font-mono); font-size: 32px; color: var(--ink); opacity: 0.4; }
+        .v-to { font-family: var(--font-mono); font-weight: 500; font-size: var(--t-label);
+          letter-spacing: 0.06em; color: var(--ink); background: var(--aqua);
+          padding: 10px 20px; border-radius: 6px; box-shadow: var(--elev-2); }
+
+      </style>
+
+      <div data-hf-id="hf-rn3a" id="root" data-composition-id="03-dropper" data-width="1080" data-height="1920" data-duration="4.780">
+
+        <div data-hf-id="hf-td8c" class="clip hero-video"><video data-hf-id="hf-ruza" id="f3-video" class="clip" src="assets/broll/03-dropper.mp4" width="1076" height="1928" data-start="0" data-duration="4.780" data-track-index="0" muted playsinline></video></div>
+        <div data-hf-id="hf-cwov" class="clip rail-scrim"></div>
+
+        <div data-hf-id="hf-il16" class="clip verdict-rail">
+          <div data-hf-id="hf-jsct" class="v-row" id="f3-row-snail">
+            <div data-hf-id="hf-4epk" class="v-from">SNAIL</div>
+            <div data-hf-id="hf-qcoo" class="v-arrow">→</div>
+            <div data-hf-id="hf-atn1" class="v-to">GLOW</div>
+          </div>
+          <div data-hf-id="hf-1nra" class="v-row" id="f3-row-centella">
+            <div data-hf-id="hf-svcv" class="v-from">CENTELLA</div>
+            <div data-hf-id="hf-quts" class="v-arrow">→</div>
+            <div data-hf-id="hf-ltu7" class="v-to">CALM</div>
+          </div>
+        </div>
+
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Row 1 is already settled at frame zero (carried over from Frame 2's
+        // hard cut, mandatory rule 4) -- register its baseline as a real timeline
+        // tween (tl.set at t=0), not a bare gsap.set, per the skill's documented
+        // bleed-through defect for elements the engine can seek to arbitrarily.
+        tl.set("#f3-row-snail", { "--p": 1 }, 0);
+        tl.fromTo("#f3-row-centella", { "--p": 0 }, { "--p": 1, duration: 0.4, ease: "power3.out" }, 0.3);
+
+        tl.to({}, { duration: 4.780 }, 0);
+        window.__timelines["03-dropper"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

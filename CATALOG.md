@@ -8,6 +8,56 @@ live under `videos/<slug>/` as self-contained HyperFrames projects
 
 ## 2026-08-30 session
 
+- **New video: `glass-skin-5-habits`** — 41.5s SeoulHabit Short built from a
+  user-supplied A/V script ("5-Habit K-Beauty Routine"), the first project on
+  this channel where **macro photography is the primary presenter across
+  every scene**, not typography (a deliberate departure from the channel's
+  usual typographic-first house style, driven by the user's own tactile/ASMR
+  brief). Audited the whole channel first for real inheritance (tokens,
+  audio bus, caption mechanism) rather than assuming a shared catalog folder
+  implied consistency — found real drift (VO bus and tokens.css each exist
+  in only 2 of 10 prior projects; the only real caption mechanism lives in
+  the snail-mucin projects under an unrelated palette) and copied from the
+  right sources rather than the majority pattern. Five reused
+  `catalog/product-photography` stills + four newly generated plates (two
+  catalog-table assumptions were wrong until the files were actually
+  opened — see `assets/MANIFEST.md`). Three real bugs found via pixel-level
+  snapshot inspection, not from a clean `check` output: a habit-tracker
+  badge that kept its digit instead of showing a checkmark after a
+  mid-timeline state change, a blank dark box at Frame 2's own hard-cut
+  frame-zero, and a 3.5s flat stretch past the shorts cadence ceiling — all
+  fixed and re-verified. Full envelope shipped: real word-level-transcript
+  captions (re-tokened from the channel's one existing caption mechanism),
+  `.srt`, two-pass loudness mastering (-14 LUFS/-1.5dBTP), and a scored
+  thumbnail set. See `videos/glass-skin-5-habits/frame.md` § Verification.
+- **New video: `centella-cica-vs-snail-mucin`** — 30.3s SeoulHabit Short
+  ("Snail Mucin or Centella?") comparing the two ingredients and correcting
+  the K-beauty "Cica = same ingredient" claim to "same plant, different
+  label." Built across two sessions: an initial build (five frames, two
+  generated `<video>` macro clips for the string-test/dropper hook per a
+  filed media-exception record, closing verdict split), then a review-fix
+  pass this session against an external QC report. The report's four
+  findings were reproduced against actual pixels before fixing anything, not
+  applied verbatim — two of the four misdiagnosed the cause: "captions in
+  the kill zone" was actually the **verdict rail** buried at 92% down in
+  Frame 4 (captions themselves measured clear); a "stray video layer" at
+  0:15–0:17 was actually the authored cream-wipe beat, just built as a hard-
+  edged opaque panel with no swirl visible — rebuilt full-bleed with
+  feathered mask edges instead of deleted. The literal "extend the ending"
+  instruction would have made a bigger pre-existing defect worse (Frame 5
+  was already frozen 6.3s before the fix); fixed with an extended scene, a
+  continuous Ken Burns, and an earlier caption release together. Verified
+  by re-measuring the new render at the same pixel level that caught the
+  original defects, not by re-running lint. See
+  `videos/centella-cica-vs-snail-mucin/frame.md` § Post-render review fixes.
+- **SplitCompare harvested into `catalog/visual-components/`** — generalized
+  from `centella-cica-vs-snail-mucin`'s closing verdict split: a vertical
+  bisector, two independently-targetable fields, a tint flood on the
+  interrogated side only (no success color, never both fields at once).
+  Mechanism adapted from `SplitFaceProtocol` with the clinical/facial skin
+  dropped — applies to any two-thing comparison where one side is the
+  "answer" (an ingredient comparison, a before/after, a competitor split).
+  See `catalog/visual-components/split-compare/README.md`.
 - **SeoulHabitSkin channel branding** — `brand/channel/` now ships real,
   pixel-exact PNG exports (`avatar-800.png`, `banner-2560.png`,
   `watermark-150.png`), not just HTML source — see that folder's own README
@@ -106,8 +156,9 @@ before generating or licensing new plates (see root [CLAUDE.md](CLAUDE.md)):
 - `product-photography/` — fictional K-beauty product photography (see that folder's own manifest + README for the generation/verification log)
 - `visual-components/` — reusable HyperFrames components: `evidence-meter/`,
   `graded-scale/`, `split-face-protocol/`, `dawn-to-dusk-routine/`,
-  `routine-ladder/`, `celestial-arc/`, `term-definition/`, `threshold-list/`
-  — see `catalog/README.md` for what each one is and its provenance
+  `routine-ladder/`, `celestial-arc/`, `term-definition/`, `threshold-list/`,
+  `split-compare/` — see `catalog/README.md` for what each one is and its
+  provenance
 - `marks/` — standalone graphic marks
 - `ingredients/one-percent-line/` — production record for the kbeauty-one-percent-line video (render history, catalog-imagery usage, authorizations)
 

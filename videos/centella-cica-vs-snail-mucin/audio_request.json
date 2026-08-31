@@ -1,0 +1,20 @@
+{
+  "provider": "higgsfield",
+  "model": "text2speech_v2",
+  "variant": "elevenlabs",
+  "voice_type": "element",
+  "voice_id": "674b71b8-1d2e-4087-8567-d1f53c0b9f3c",
+  "voice_name": "Kimberly",
+  "lang": "en",
+  "lines": [
+    { "id": "01", "text": "Snail mucin or Centella? If your skin is red and angry, stop guessing.", "sfx": ["glass clink", "curious chime"] },
+    { "id": "02", "text": "Snail mucin is incredible for deep hydration and that glass skin glow.", "sfx": ["sticky tack-tack"] },
+    { "id": "03", "text": "But for redness and stinging, Centella Asiatica is the better-studied pick.", "sfx": ["wet dispense splash"] },
+    { "id": "04", "text": "Spoiler: K-beauty's Cica is just Centella — same plant, different label.", "sfx": ["cream swoosh", "reveal chime"] },
+    { "id": "05", "text": "So: Snail for glow. Centella for repair. Subscribe and let's simplify your skincare habits.", "sfx": ["chime triple"] }
+  ],
+  "bgm": {
+    "mode": "reuse",
+    "source": "retinol-patch-test/assets/bgm/track.mp3"
+  }
+}

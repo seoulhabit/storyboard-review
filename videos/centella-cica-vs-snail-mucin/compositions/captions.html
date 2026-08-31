@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        /*
+          Burned-in karaoke captions -- mechanism REUSED VERBATIM from
+          videos/snail-mucin-truth/.hyperframes/caption-skin.html (the channel's only
+          real caption implementation; see frame.md § Channel audit), re-tokened from
+          that project's unrelated "Editorial Forest" preset to THIS project's own
+          tokens.css palette. Structure, .is-active/.is-spoken state machine, and the
+          gsap.set-not-tl.call discipline are unchanged -- only colors/fonts/position
+          differ.
+
+          Accent choice: the "current word" panel uses --highlighter (amber), not
+          --aqua -- aqua is already this video's one-per-frame highlight (the habit
+          stack's active row); using it again on every spoken word would put two aqua
+          accents in the same frame, violating that law. The habit-word underline
+          (CLEANSE/HYDRATE/TREAT/SEAL/PROTECT) uses --leaf, the system's
+          "evidence/confirm" accent -- reinforcement of the stack's highlight, not a
+          duplicate mechanism.
+        */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --highlighter: #E0A32B; --leaf: #6F8F72;
+          --font-body: "Inter", "Noto Sans KR Video", system-ui, sans-serif;
+          position: absolute; inset: 0; pointer-events: none;
+        }
+        .caption-stage { position: absolute; left: 0; right: 0; top: 1360px; height: 150px;
+          display: flex; align-items: center; justify-content: center; }
+        .caption-group { position: absolute; inset: 0; display: flex; align-items: center;
+          justify-content: center; opacity: 0; }
+        .caption-pill { max-width: 88%; padding: 16px 32px; background: rgba(19,21,22,0.80);
+          border-radius: 10px; }
+        .caption-line { display: flex; flex-wrap: wrap; justify-content: center;
+          gap: 0.08em 0.3em; font-family: var(--font-body); font-weight: 700;
+          font-size: 38px; line-height: 1.2; }
+        .caption-word { display: inline-block; padding: 0 0.05em; color: rgba(247,245,240,0.62); }
+        .caption-word.is-active { color: var(--ink); background: var(--highlighter);
+          border-radius: 6px; }
+        .caption-word.is-spoken { color: var(--paper); background: transparent; }
+        .caption-word.cap-habit { text-decoration: underline; text-decoration-thickness: 2px;
+          text-decoration-color: var(--leaf); text-underline-offset: 0.14em; }
+      </style>
+
+      <div data-hf-id="hf-wj18" id="root" data-composition-id="captions" data-start="0" data-duration="30.28" data-width="1080" data-height="1920">
+        <div data-hf-id="hf-ajrg" class="caption-stage" id="caption-stage"></div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        var GROUPS = [{"id": "caption-group-0", "start": 0.17, "end": 2.22, "text": "Snail mucin or Centella?", "words": [{"id": "caption-word-0-0", "text": "Snail", "start": 0.17, "end": 0.49, "habit": true}, {"id": "caption-word-0-1", "text": "mucin", "start": 0.49, "end": 0.94, "habit": true}, {"id": "caption-word-0-2", "text": "or", "start": 0.99, "end": 1.14, "habit": false}, {"id": "caption-word-0-3", "text": "Centella?", "start": 1.25, "end": 2.22, "habit": true}]}, {"id": "caption-group-1", "start": 2.28, "end": 3.02, "text": "If your skin is", "words": [{"id": "caption-word-1-0", "text": "If", "start": 2.28, "end": 2.37, "habit": false}, {"id": "caption-word-1-1", "text": "your", "start": 2.37, "end": 2.63, "habit": false}, {"id": "caption-word-1-2", "text": "skin", "start": 2.63, "end": 2.88, "habit": false}, {"id": "caption-word-1-3", "text": "is", "start": 2.92, "end": 3.02, "habit": false}]}, {"id": "caption-group-2", "start": 3.02, "end": 4.16, "text": "red and angry, stop", "words": [{"id": "caption-word-2-0", "text": "red", "start": 3.02, "end": 3.2, "habit": false}, {"id": "caption-word-2-1", "text": "and", "start": 3.2, "end": 3.4, "habit": false}, {"id": "caption-word-2-2", "text": "angry,", "start": 3.4, "end": 3.9, "habit": false}, {"id": "caption-word-2-3", "text": "stop", "start": 3.98, "end": 4.16, "habit": false}]}, {"id": "caption-group-3", "start": 4.16, "end": 4.82, "text": "guessing.", "words": [{"id": "caption-word-3-0", "text": "guessing.", "start": 4.16, "end": 4.82, "habit": false}]}, {"id": "caption-group-4", "start": 5.4, "end": 6.91, "text": "Snail mucin is incredible", "words": [{"id": "caption-word-4-0", "text": "Snail", "start": 5.4, "end": 5.64, "habit": true}, {"id": "caption-word-4-1", "text": "mucin", "start": 5.64, "end": 6.02, "habit": true}, {"id": "caption-word-4-2", "text": "is", "start": 6.02, "end": 6.16, "habit": false}, {"id": "caption-word-4-3", "text": "incredible", "start": 6.17, "end": 6.91, "habit": false}]}, {"id": "caption-group-5", "start": 6.93, "end": 8.41, "text": "for deep hydration and", "words": [{"id": "caption-word-5-0", "text": "for", "start": 6.93, "end": 7.17, "habit": false}, {"id": "caption-word-5-1", "text": "deep", "start": 7.17, "end": 7.48, "habit": false}, {"id": "caption-word-5-2", "text": "hydration", "start": 7.48, "end": 8.11, "habit": false}, {"id": "caption-word-5-3", "text": "and", "start": 8.26, "end": 8.41, "habit": false}]}, {"id": "caption-group-6", "start": 8.41, "end": 9.7, "text": "that glass skin glow.", "words": [{"id": "caption-word-6-0", "text": "that", "start": 8.41, "end": 8.67, "habit": false}, {"id": "caption-word-6-1", "text": "glass", "start": 8.67, "end": 8.87, "habit": false}, {"id": "caption-word-6-2", "text": "skin", "start": 9.02, "end": 9.27, "habit": false}, {"id": "caption-word-6-3", "text": "glow.", "start": 9.27, "end": 9.7, "habit": false}]}, {"id": "caption-group-7", "start": 10.3, "end": 11.25, "text": "But for redness and", "words": [{"id": "caption-word-7-0", "text": "But", "start": 10.3, "end": 10.4, "habit": false}, {"id": "caption-word-7-1", "text": "for", "start": 10.4, "end": 10.6, "habit": false}, {"id": "caption-word-7-2", "text": "redness", "start": 10.6, "end": 11.03, "habit": false}, {"id": "caption-word-7-3", "text": "and", "start": 11.14, "end": 11.25, "habit": false}]}, {"id": "caption-group-8", "start": 11.4, "end": 13.37, "text": "stinging, Centella Asiatica is", "words": [{"id": "caption-word-8-0", "text": "stinging,", "start": 11.4, "end": 11.96, "habit": false}, {"id": "caption-word-8-1", "text": "Centella", "start": 11.96, "end": 12.59, "habit": true}, {"id": "caption-word-8-2", "text": "Asiatica", "start": 12.59, "end": 13.23, "habit": true}, {"id": "caption-word-8-3", "text": "is", "start": 13.24, "end": 13.37, "habit": false}]}, {"id": "caption-group-9", "start": 13.49, "end": 14.67, "text": "the better studied pick.", "words": [{"id": "caption-word-9-0", "text": "the", "start": 13.49, "end": 13.55, "habit": false}, {"id": "caption-word-9-1", "text": "better", "start": 13.62, "end": 13.87, "habit": false}, {"id": "caption-word-9-2", "text": "studied", "start": 13.88, "end": 14.2, "habit": false}, {"id": "caption-word-9-3", "text": "pick.", "start": 14.2, "end": 14.67, "habit": false}]}, {"id": "caption-group-10", "start": 15.22, "end": 17.37, "text": "Spoiler: K-beauty's Cica is", "words": [{"id": "caption-word-10-0", "text": "Spoiler:", "start": 15.22, "end": 15.75, "habit": false}, {"id": "caption-word-10-1", "text": "K-beauty's", "start": 16.07, "end": 16.83, "habit": false}, {"id": "caption-word-10-2", "text": "Cica", "start": 16.91, "end": 17.19, "habit": true}, {"id": "caption-word-10-3", "text": "is", "start": 17.19, "end": 17.37, "habit": false}]}, {"id": "caption-group-11", "start": 17.37, "end": 19.34, "text": "just Centella same plant,", "words": [{"id": "caption-word-11-0", "text": "just", "start": 17.37, "end": 17.73, "habit": false}, {"id": "caption-word-11-1", "text": "Centella", "start": 17.73, "end": 18.62, "habit": true}, {"id": "caption-word-11-2", "text": "same", "start": 18.62, "end": 18.84, "habit": false}, {"id": "caption-word-11-3", "text": "plant,", "start": 18.91, "end": 19.34, "habit": false}]}, {"id": "caption-group-12", "start": 19.37, "end": 20.14, "text": "different label.", "words": [{"id": "caption-word-12-0", "text": "different", "start": 19.37, "end": 19.8, "habit": false}, {"id": "caption-word-12-1", "text": "label.", "start": 19.8, "end": 20.14, "habit": false}]}, {"id": "caption-group-13", "start": 20.78, "end": 20.97, "text": "So:", "words": [{"id": "caption-word-13-0", "text": "So:", "start": 20.78, "end": 20.97, "habit": false}]}, {"id": "caption-group-14", "start": 21.46, "end": 23.58, "text": "Snail for glow. Centella", "words": [{"id": "caption-word-14-0", "text": "Snail", "start": 21.46, "end": 21.68, "habit": true}, {"id": "caption-word-14-1", "text": "for", "start": 21.78, "end": 22.03, "habit": false}, {"id": "caption-word-14-2", "text": "glow.", "start": 22.03, "end": 22.72, "habit": false}, {"id": "caption-word-14-3", "text": "Centella", "start": 22.72, "end": 23.58, "habit": true}]}, {"id": "caption-group-15", "start": 23.64, "end": 23.92, "text": "for", "words": [{"id": "caption-word-15-0", "text": "for", "start": 23.64, "end": 23.92, "habit": false}]}, {"id": "caption-group-16", "start": 24.72, "end": 25.14, "text": "repair. Subscribe", "words": [{"id": "caption-word-16-0", "text": "repair.", "start": 24.72, "end": 24.8, "habit": false}, {"id": "caption-word-16-1", "text": "Subscribe", "start": 24.94, "end": 25.14, "habit": false}]}, {"id": "caption-group-17", "start": 25.53, "end": 26.82, "text": "and let's simplify your", "words": [{"id": "caption-word-17-0", "text": "and", "start": 25.53, "end": 25.57, "habit": false}, {"id": "caption-word-17-1", "text": "let's", "start": 25.62, "end": 25.83, "habit": false}, {"id": "caption-word-17-2", "text": "simplify", "start": 25.94, "end": 26.35, "habit": false}, {"id": "caption-word-17-3", "text": "your", "start": 26.35, "end": 26.82, "habit": false}]}, {"id": "caption-group-18", "start": 26.82, "end": 27.66, "text": "skincare habits.", "words": [{"id": "caption-word-18-0", "text": "skincare", "start": 26.82, "end": 27.2, "habit": false}, {"id": "caption-word-18-1", "text": "habits.", "start": 27.2, "end": 27.66, "habit": false}]}];
+        var DURATION = 30.28;
+
+        (function () {
+          var stage = document.getElementById("caption-stage");
+          GROUPS.forEach(function (group, g) {
+            var groupEl = document.createElement("div");
+            groupEl.className = "caption-group";
+            groupEl.id = "caption-group-" + g;
+            var pill = document.createElement("div");
+            pill.className = "caption-pill";
+            var line = document.createElement("div");
+            line.className = "caption-line";
+            (group.words || []).forEach(function (w, i) {
+              var span = document.createElement("span");
+              span.className = "caption-word" + (w.habit ? " cap-habit" : "");
+              span.id = "caption-word-" + g + "-" + i;
+              span.textContent = String(w.text);
+              line.appendChild(span);
+            });
+            pill.appendChild(line);
+            groupEl.appendChild(pill);
+            stage.appendChild(groupEl);
+          });
+
+          window.__timelines = window.__timelines || {};
+          var tl = gsap.timeline({ paused: true });
+
+          GROUPS.forEach(function (group, g) {
+            var groupEl = document.getElementById("caption-group-" + g);
+            var words = group.words || [];
+            var next = GROUPS[g + 1];
+            var isLast = g === GROUPS.length - 1;
+            var start = Math.max(0, Number(group.start));
+            var end = isLast ? Math.min(DURATION, Number(group.end) + 0.3) : Math.min(Number(next.start), Number(group.end) + 0.3);
+            if (end <= start) end = start + 0.01;
+
+            tl.set(groupEl, { opacity: 1 }, start);
+            tl.set(groupEl, { opacity: 0 }, end);
+
+            words.forEach(function (w, i) {
+              var el = document.getElementById("caption-word-" + g + "-" + i);
+              var at = Math.max(start, Number(w.start));
+              var baseClass = "caption-word" + (w.habit ? " cap-habit" : "");
+              tl.set(el, { className: baseClass }, start);
+              tl.set(el, { className: baseClass + " is-active" }, at);
+              tl.fromTo(el, { scale: 0.985 }, { scale: 1, duration: 0.18, ease: "power1.out" }, at);
+              if (i + 1 < words.length) {
+                var nextAt = Math.max(start, Number(words[i + 1].start));
+                tl.set(el, { className: baseClass + " is-spoken" }, nextAt);
+              }
+            });
+            if (words.length) {
+              var lastEl = document.getElementById("caption-word-" + g + "-" + (words.length - 1));
+              var lastBaseClass = "caption-word" + (words[words.length - 1].habit ? " cap-habit" : "");
+              var lastSpoken = Math.min(end, Number(words[words.length - 1].end) + 0.1);
+              tl.set(lastEl, { className: lastBaseClass + " is-spoken" }, lastSpoken);
+            }
+          });
+
+          tl.to({}, { duration: DURATION }, 0);
+          window.__timelines["captions"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

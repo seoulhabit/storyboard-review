@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SplitCompare — harvested component</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* Tokens copied verbatim from the source composition (see README). Not
+     re-verified live against DesignSync this session (unavailable,
+     non-interactive) — matches shipped code. */
+  :root {
+    --ink: #131516;
+    --paper: #F7F5F0;
+    --aqua: #59B8AE;
+    --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+  #root {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--paper); font-family: var(--font-body);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  .sc-stage { top: 620px; bottom: 620px; left: 0; right: 0; display: flex; }
+  .sc-field { position: relative; flex: 1 1 50%; height: 100%; overflow: hidden; }
+  #sc-field-left { background: #E7E3D8; }
+  #sc-field-right { background: #DCEAE8; }
+  .sc-flood { position: absolute; inset: 0; background: var(--aqua); opacity: 0; mix-blend-mode: multiply; }
+  .sc-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+    background: var(--ink); opacity: 0.25; transform: scaleY(0); transform-origin: top center; }
+  .sc-label { position: absolute; top: 32px; left: 0; right: 0; text-align: center;
+    font-weight: 800; font-size: 36px; color: var(--ink); opacity: 0; }
+
+  .debug-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(19,21,22,.92); color: var(--paper); font-family: ui-monospace, monospace; font-size: 13px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .debug-bar input[type="range"] { flex: 1; }
+  .debug-bar button { font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid #9C978D; background: transparent; color: var(--paper); cursor: pointer; }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div class="clip sc-stage">
+      <div class="sc-field" id="sc-field-left">
+        <div class="sc-label" id="sc-label-left"></div>
+      </div>
+      <div class="sc-field" id="sc-field-right">
+        <div class="sc-flood" id="sc-flood"></div>
+        <div class="sc-label" id="sc-label-right"></div>
+      </div>
+      <div class="sc-divider" id="sc-divider"></div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  // Field contract — generalized from the source's Snail/Centella verdict
+  // split. `left`/`right` are free-text labels; `interrogated` picks which
+  // field the flood washes over (never both — see README). Demo data
+  // invented for this spike, not the real ingredient content (that stays in
+  // videos/centella-cica-vs-snail-mucin/, see README).
+  var DATA = {
+    left: { label: "CONTROL" },
+    right: { label: "VARIANT" },
+    interrogated: "right"
+  };
+
+  document.getElementById("sc-label-left").textContent = DATA.left.label;
+  document.getElementById("sc-label-right").textContent = DATA.right.label;
+  var floodTarget = DATA.interrogated === "left" ? "#sc-field-left" : "#sc-field-right";
+  var otherField = DATA.interrogated === "left" ? "#sc-field-right" : "#sc-field-left";
+  if (DATA.interrogated === "left") {
+    // Move the flood div into the left field so it sits over that content
+    // instead — the markup above wires it to the right field by default.
+    document.getElementById("sc-field-left").appendChild(document.getElementById("sc-flood"));
+  }
+
+  var TOTAL = 3.0;
+  var tl = gsap.timeline({ paused: true });
+
+  // Divider first — the claim "these are being split apart" lands before
+  // either side does anything else.
+  tl.fromTo("#sc-divider", { scaleY: 0 }, { scaleY: 1, duration: 0.4, ease: "power3.out" }, 0);
+
+  // Labels next, independently — never a single shared label.
+  tl.fromTo("#sc-label-left", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.25);
+  tl.fromTo("#sc-label-right", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.35);
+
+  // The un-interrogated field reads as "the control" — mild desaturation,
+  // optional polish, not the mechanism's core claim.
+  tl.set(otherField, { filter: "grayscale(0.15) brightness(0.97)" }, 0);
+
+  // The flood — this component's one voltage moment. Never both fields at
+  // once (README § Motion).
+  tl.fromTo(floodTarget + " .sc-flood, " + floodTarget + " > .sc-flood",
+    { opacity: 0 }, { opacity: 0.32, duration: 0.45, ease: "power2.out" }, 0.7);
+
+  tl.to({}, { duration: TOTAL }, 0);
+
+  function renderFrame(t) { if (t === 0) tl.progress(0); else tl.time(t); }
+  window.renderFrame = renderFrame;
+  window.__splitCompareTimeline = tl;
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement("div");
+    bar.className = "debug-bar";
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector("#dbg-range"), label = bar.querySelector("#dbg-t");
+    range.addEventListener("input", function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector("#dbg-0").addEventListener("click", function () { range.value = 0; renderFrame(0); label.textContent = "0.00"; });
+    bar.querySelector("#dbg-end").addEventListener("click", function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

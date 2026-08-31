@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE;
+          --font-body: "Inter", "Noto Sans KR Video", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", sans-serif;
+          --t-figure: 60px; --t-label: 24px; --t-chip: 22px;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --cap-band-top: 1360px;  /* mirrors captions.html:34 -- rail/cta must clear this */
+          --d-fast: 400ms;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        .kicker-zone { top: var(--safe-top); bottom: auto; left: 0; right: 0; display: flex; justify-content: center; }
+        .kicker { font-family: var(--font-mono); font-weight: 500; font-size: var(--t-label);
+          letter-spacing: 0.14em; color: var(--ink); opacity: 0.7; }
+
+        /* split-compare -- mechanism adapted from catalog/visual-components/
+           split-face-protocol (bisector, two independently-targetable fields,
+           one t-driven timeline, tint flooding ONE side only, no success
+           color). Skin dropped -- no facial geometry, no clinical arms
+           (frame.md § Component reuse). */
+        .split-stage { top: 220px; bottom: 1020px; left: 0; right: 0; display: flex; }
+        .split-field { position: relative; flex: 1 1 50%; height: 100%; overflow: hidden; background: var(--paper); }
+        .split-field img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        #f5-snail-field img { filter: grayscale(0.15) brightness(0.97); }
+        .split-flood { position: absolute; inset: 0; background: var(--aqua); opacity: 0; mix-blend-mode: multiply; }
+        .split-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+          background: var(--ink); opacity: 0.18; transform: translateX(-1px); }
+        .field-label { position: absolute; top: 28px; left: 0; right: 0; text-align: center;
+          font-family: var(--font-body); font-weight: 800; font-size: 34px; letter-spacing: -0.01em; }
+        #f5-snail-field .field-label { color: var(--ink); }
+        #f5-centella-field .field-label { color: var(--ink); }
+
+        /* verdict rail, both rows held complete beneath the split -- recolored
+           neutral here (frame.md § Palette): the split's own aqua flood is
+           this frame's one accent, so the rail chips stay ink-bordered rather
+           than aqua-filled to avoid a second aqua accent in the same frame.
+           Top-anchored (not bottom-anchored) with an explicit gap above the
+           global caption band (captions.html's .caption-stage sits at
+           top:1360/height:150) -- the original bottom:400px placement put
+           this rail's own box directly inside that band, caught by `check`'s
+           layout pass as real, not cosmetic, overlap. */
+        .verdict-rail { top: calc(var(--cap-band-top) - 400px); bottom: auto; left: var(--safe-left); right: var(--safe-right); height: auto;
+          display: flex; flex-direction: column; gap: 14px; }
+        .v-row { display: flex; align-items: center; justify-content: center; gap: 14px; }
+        .v-from { font-family: var(--font-body); font-weight: 800; font-size: 38px; color: var(--ink); }
+        .v-arrow { font-family: var(--font-mono); font-size: 22px; color: var(--ink); opacity: 0.45; }
+        /* opaque-enough paper fill, not a bare border on transparent: a
+           transparent chip measured 1:1 contrast once anything darker (the
+           caption pill) sat behind it -- this keeps the chip legible on its
+           own regardless of what's behind it. */
+        .v-to { font-family: var(--font-mono); font-weight: 500; font-size: var(--t-chip); letter-spacing: 0.06em;
+          color: var(--ink); background: rgba(247,245,240,0.92); border: 1.5px solid rgba(19,21,22,0.35);
+          padding: 7px 16px; border-radius: 6px; }
+
+        /* CTA row -- ink-filled neutral pill (not accent-colored): coral is
+           reserved solely for Frame 4's one voltage moment for the whole
+           video, and aqua is already spent on the split flood above -- a
+           second accent-colored element here would break both laws.
+           Top-anchored, same reasoning as the rail above: ends well before
+           the caption band starts, not stacked underneath it. */
+        .cta-row { top: calc(var(--cap-band-top) - 220px); bottom: auto; left: 0; right: 0; display: flex; flex-direction: column;
+          align-items: center; gap: 28px; }
+        .subscribe-pill { display: flex; align-items: center; gap: 12px; background: var(--ink); color: var(--paper);
+          font-family: var(--font-body); font-weight: 800; font-size: 30px; letter-spacing: -0.005em;
+          padding: 18px 40px; border-radius: 999px; box-shadow: var(--elev-2);
+          --p: 0; opacity: var(--p); transform: scale(calc(0.9 + var(--p) * 0.1)); }
+        .kr-lockup { font-family: var(--font-kr); font-weight: 500; font-size: 30px; color: var(--ink);
+          opacity: 0; letter-spacing: 0.04em; }
+
+      </style>
+
+      <div data-hf-id="hf-fwc7" id="root" data-composition-id="05-cta" data-width="1080" data-height="1920" data-duration="9.640">
+
+        <div data-hf-id="hf-pmkc" class="clip kicker-zone"><div data-hf-id="hf-r0wr" class="kicker">THE VERDICT</div></div>
+
+        <div data-hf-id="hf-jrnj" class="clip split-stage">
+          <div data-hf-id="hf-0y6t" class="split-field" id="f5-snail-field">
+            <img data-hf-id="hf-t6go" src="assets/images/cta-snail-pour.png" alt="" width="1400" height="1400" loading="eager" decoding="sync" data-layout-allow-overflow="true">
+            <div data-hf-id="hf-pbcm" class="field-label">SNAIL</div>
+          </div>
+          <div data-hf-id="hf-9r30" class="split-field" id="f5-centella-field">
+            <img data-hf-id="hf-4qzm" src="assets/images/twist-centella-leaf.png" alt="" width="1400" height="1400" loading="eager" decoding="sync" data-layout-allow-overflow="true">
+            <div data-hf-id="hf-kzgd" class="split-flood" id="f5-flood"></div>
+            <div data-hf-id="hf-0ka9" class="field-label">CENTELLA</div>
+          </div>
+          <div data-hf-id="hf-yq1w" class="split-divider"></div>
+        </div>
+
+        <div data-hf-id="hf-il16" class="clip verdict-rail">
+          <div data-hf-id="hf-sbip" class="v-row"><div data-hf-id="hf-4epk" class="v-from">SNAIL</div><div data-hf-id="hf-qcoo" class="v-arrow">→</div><div data-hf-id="hf-atn1" class="v-to">GLOW</div></div>
+          <div data-hf-id="hf-oeyt" class="v-row"><div data-hf-id="hf-svcv" class="v-from">CENTELLA</div><div data-hf-id="hf-quts" class="v-arrow">→</div><div data-hf-id="hf-ltu7" class="v-to">CALM</div></div>
+        </div>
+
+        <div data-hf-id="hf-nzpv" class="clip cta-row">
+          <div data-hf-id="hf-w9vu" class="subscribe-pill" id="f5-subscribe">SUBSCRIBE</div>
+          <div data-hf-id="hf-6cwg" class="kr-lockup" id="f5-kr">습 SeoulHabit</div>
+        </div>
+
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // frame zero: split diagram, both field images, and the completed
+        // verdict rail are already composed and settled (mandatory rule 4) --
+        // the flood and CTA are the beats that follow. A slow continuous Ken
+        // Burns on both split-field images (identity at t=0, same idiom as
+        // 01-hook.html) keeps the scene alive through its long loop-hold tail
+        // instead of freezing once the CTA beats finish at ~2.3s.
+        tl.fromTo(".split-field img", { scale: 1.0 }, { scale: 1.045, duration: 9.640, ease: "none" }, 0);
+        tl.fromTo("#f5-flood", { opacity: 0 }, { opacity: 0.32, duration: 0.4, ease: "power2.out" }, 0.3);
+        tl.fromTo("#f5-subscribe", { "--p": 0 }, { "--p": 1, duration: 0.35, ease: "power3.out" }, 1.0);
+        tl.to("#f5-kr", { opacity: 1, duration: 0.4, ease: "power2.out" }, 1.3);
+
+        // this is the video's final scene; the last built frame (composed,
+        // paper ground, product imagery held) is the deliberate loop target
+        // back to Frame 1's cold open (frame.md § Motion / STORYBOARD.md).
+        tl.to({}, { duration: 9.640 }, 0);
+        window.__timelines["05-cta"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

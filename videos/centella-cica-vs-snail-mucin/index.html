@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #F7F5F0; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Hard cuts only (frame.md § Motion): all four boundaries change ground
+      (paper/ink/paper/ink/paper), and per faceless-video-craft's cuts-vs-
+      crossfades rule -- confirmed as a real defect once already on this
+      channel (kbeauty-one-percent-line round 1) -- a crossfade across a
+      ground change produces a muddy near-blank transition midpoint. Native
+      data-start/data-duration visibility switching gives a hard cut with no
+      JS tween needed.
+
+      All scene/VO/SFX timing is derived from MEASURED voice clip durations
+      (assets/MANIFEST.md § Voice), not the pre-generation estimates in
+      STORYBOARD.md. Each scene holds 0.3s past its VO's end before the next
+      hard-cuts in; Frame 5 carries an extra 1.0s tail past its own VO for
+      the loop-hold back to Frame 1 (frame.md's designed loop).
+    -->
+    <div data-hf-id="hf-u6by" id="root" data-composition-id="main" data-start="0" data-duration="30.280" data-width="1080" data-height="1920">
+      <!-- Voiceover bus: channel-level chain, copied verbatim from
+           kbeauty-one-percent-line/index.html (itself from seoulhabit-launch)
+           per frame.md § Channel audit -- not re-derived. -->
+      <hf-audio-group data-hf-id="hf-bden" id="voiceover" data-label="Voiceover" data-volume="1" data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Remove Rumble&quot;,&quot;params&quot;:{&quot;frequency&quot;:90,&quot;q&quot;:0.707,&quot;poles&quot;:&quot;2&quot;}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Add Weight&quot;,&quot;params&quot;:{&quot;frequency&quot;:150,&quot;gain&quot;:0.8,&quot;q&quot;:1.2}},{&quot;type&quot;:&quot;compressor&quot;,&quot;id&quot;:&quot;n3&quot;,&quot;label&quot;:&quot;Even Out Loudness&quot;,&quot;params&quot;:{&quot;threshold&quot;:-24,&quot;ratio&quot;:4,&quot;attack&quot;:5,&quot;release&quot;:140,&quot;knee&quot;:2,&quot;makeup&quot;:3,&quot;mix&quot;:1}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n4&quot;,&quot;label&quot;:&quot;Add Clarity&quot;,&quot;params&quot;:{&quot;frequency&quot;:3000,&quot;gain&quot;:2.5,&quot;q&quot;:1}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n5&quot;,&quot;label&quot;:&quot;De-ess (fallback)&quot;,&quot;params&quot;:{&quot;frequency&quot;:6500,&quot;gain&quot;:-4,&quot;q&quot;:3.5}},{&quot;type&quot;:&quot;limiter&quot;,&quot;id&quot;:&quot;n6&quot;,&quot;label&quot;:&quot;Peak Ceiling&quot;,&quot;params&quot;:{&quot;limit&quot;:-9,&quot;attack&quot;:0.05,&quot;release&quot;:40,&quot;level_out&quot;:0}}]}"></hf-audio-group>
+
+      <!-- Frame 1 -- hook (0.000-4.960, tail to 5.260) -->
+      <div data-hf-id="hf-h5nx" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0" data-duration="5.260" data-track-index="0"></div>
+      <audio data-hf-id="hf-5u3m" id="el-01-voice" src="assets/voice/01.wav" data-start="0" data-duration="4.960" data-track-index="10" data-volume="1" data-audio-group="voiceover" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:1},{&quot;t&quot;:4.88,&quot;v&quot;:1},{&quot;t&quot;:4.96,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-j9xv" id="el-sfx-01a" src="assets/sfx/glass-clink.mp3" data-start="0.3" data-duration="0.312" data-track-index="20" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.05,&quot;v&quot;:0.3},{&quot;t&quot;:0.26,&quot;v&quot;:0.3},{&quot;t&quot;:0.312,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-hztm" id="el-sfx-01b" src="assets/sfx/chime.mp3" data-start="4.5" data-duration="0.72" data-track-index="21" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:0.3},{&quot;t&quot;:0.64,&quot;v&quot;:0.3},{&quot;t&quot;:0.72,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- Frame 2 -- the snail texture / string test (5.260-10.200, video B-roll -- see frame.md § Media exception) -->
+      <div data-hf-id="hf-hqy1" id="el-02-string-test" class="scene" data-composition-id="02-string-test" data-composition-src="compositions/frames/02-string-test.html" data-start="5.260" data-duration="4.940" data-track-index="1"></div>
+      <audio data-hf-id="hf-lx92" id="el-02-voice" src="assets/voice/02.wav" data-start="5.260" data-duration="4.640" data-track-index="10" data-volume="1" data-audio-group="voiceover" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:1},{&quot;t&quot;:4.56,&quot;v&quot;:1},{&quot;t&quot;:4.64,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-lapm" id="el-sfx-02a" src="assets/sfx/droplet-tick.mp3" data-start="7.86" data-duration="0.312" data-track-index="22" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.05,&quot;v&quot;:0.3},{&quot;t&quot;:0.26,&quot;v&quot;:0.3},{&quot;t&quot;:0.312,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-q0b2" id="el-sfx-02b" src="assets/sfx/droplet-tick.mp3" data-start="8.56" data-duration="0.312" data-track-index="23" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.05,&quot;v&quot;:0.3},{&quot;t&quot;:0.26,&quot;v&quot;:0.3},{&quot;t&quot;:0.312,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- Frame 3 -- the centella texture / dropper (10.200-14.980, video B-roll) -->
+      <div data-hf-id="hf-d6wd" id="el-03-dropper" class="scene" data-composition-id="03-dropper" data-composition-src="compositions/frames/03-dropper.html" data-start="10.200" data-duration="4.780" data-track-index="0"></div>
+      <audio data-hf-id="hf-s24x" id="el-03-voice" src="assets/voice/03.wav" data-start="10.200" data-duration="4.480" data-track-index="10" data-volume="1" data-audio-group="voiceover" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:1},{&quot;t&quot;:4.40,&quot;v&quot;:1},{&quot;t&quot;:4.48,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-mrgf" id="el-sfx-03a" src="assets/sfx/water-pour.mp3" data-start="12.2" data-duration="0.6" data-track-index="24" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:0.3},{&quot;t&quot;:0.5,&quot;v&quot;:0.3},{&quot;t&quot;:0.6,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- Frame 4 -- the twist / CICA = CENTELLA reveal (14.980-20.640) -->
+      <div data-hf-id="hf-tvop" id="el-04-twist" class="scene" data-composition-id="04-twist" data-composition-src="compositions/frames/04-twist.html" data-start="14.980" data-duration="5.660" data-track-index="1"></div>
+      <audio data-hf-id="hf-8tvj" id="el-04-voice" src="assets/voice/04.wav" data-start="14.980" data-duration="5.360" data-track-index="10" data-volume="1" data-audio-group="voiceover" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:1},{&quot;t&quot;:5.28,&quot;v&quot;:1},{&quot;t&quot;:5.36,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-8ubx" id="el-sfx-04a" src="assets/sfx/cream-swoosh.mp3" data-start="15.28" data-duration="0.575" data-track-index="25" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.05,&quot;v&quot;:0.3},{&quot;t&quot;:0.5,&quot;v&quot;:0.3},{&quot;t&quot;:0.575,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-5ba9" id="el-sfx-04b" src="assets/sfx/chime.mp3" data-start="17.88" data-duration="0.72" data-track-index="26" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:0.3},{&quot;t&quot;:0.64,&quot;v&quot;:0.3},{&quot;t&quot;:0.72,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- Frame 5 -- the CTA / verdict split (14.980+5.660=20.640-30.280, extended tail -- final frame, holds ~2.6s past VO with a continuous Ken Burns for the loop) -->
+      <div data-hf-id="hf-0cub" id="el-05-cta" class="scene" data-composition-id="05-cta" data-composition-src="compositions/frames/05-cta.html" data-start="20.640" data-duration="9.640" data-track-index="0"></div>
+      <audio data-hf-id="hf-tuqj" id="el-05-voice" src="assets/voice/05.wav" data-start="20.640" data-duration="7.040" data-track-index="10" data-volume="1" data-audio-group="voiceover" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.08,&quot;v&quot;:1},{&quot;t&quot;:6.96,&quot;v&quot;:1},{&quot;t&quot;:7.04,&quot;v&quot;:0}]}]}"></audio>
+      <audio data-hf-id="hf-2qxb" id="el-sfx-05a" src="assets/sfx/chime-triple.mp3" data-start="20.940" data-duration="2.5" data-track-index="27" data-volume="0.3" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.1,&quot;v&quot;:0.3},{&quot;t&quot;:2.4,&quot;v&quot;:0.3},{&quot;t&quot;:2.5,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- BGM bed -- reused verbatim from retinol-patch-test/assets/bgm/track.mp3
+           (assets/MANIFEST.md § BGM). Native length 57s, trimmed to this
+           video's 30.280s total via data-duration + a fade-out automation
+           lane rather than a hard stop. Volume-automation-replaces-data-volume
+           trap (frame.md § Audio mix): plateau value IS the real level. -->
+      <audio data-hf-id="hf-eh1s" id="el-bgm" src="assets/bgm/track.mp3" data-start="0" data-duration="30.280" data-track-index="11" data-volume="0.12" data-fx-carve="{&quot;sources&quot;:[&quot;voiceover&quot;],&quot;strength&quot;:0.25}" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0},{&quot;t&quot;:0.4,&quot;v&quot;:0.12},{&quot;t&quot;:29.78,&quot;v&quot;:0.12},{&quot;t&quot;:30.28,&quot;v&quot;:0}]}]}"></audio>
+
+      <!-- Burned-in captions -- own sub-composition, own timeline, spans the whole
+           video and painted last (highest DOM order) so it sits above every frame.
+           Built from the real word-level transcript of the final mixed VO
+           (assets/voice/*.words.json via `hyperframes transcribe`), not estimated. -->
+      <div data-hf-id="hf-6sf1" id="el-captions" class="scene" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="30.280" data-track-index="2"></div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // Hard cuts only (frame.md § Motion) -- native data-start/data-duration
+      // visibility switching on each .scene already gives a hard cut with no
+      // JS tween needed. This timeline carries only the full-span anchor.
+      (function () { var tl = window.__timelines["main"];
+        tl.to({}, { duration: 30.280 }, 0); // full-span anchor -- main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

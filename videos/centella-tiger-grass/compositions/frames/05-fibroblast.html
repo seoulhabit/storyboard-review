@@ -1,0 +1,166 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; color:#131516; font-family:'Helvetica Neue','Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  .fib-kicker { position:absolute; top:400px; left:96px; font-weight:700; font-size:32px;
+    letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  .uc-card { position:absolute; left:96px; top:470px; width:822px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:48px 56px 38px; opacity:0; }
+
+  .fib-label { font-weight:700; font-size:3.0cqw; letter-spacing:0.08em; text-transform:uppercase;
+    color:rgba(19,21,22,0.62); margin-bottom:26px; position:relative; height:1.4em; }
+  .fib-label span { position:absolute; left:0; top:0; white-space:nowrap; }
+  #fib-lab-active { opacity:0; color:#3E5641; font-size:2.5cqw; top:0.2em; }
+
+  .fib-grid { display:block; width:100%; height:310px; }
+  .fib-cell { fill:none; stroke:rgba(19,21,22,0.28); stroke-width:2.5; }
+  .fib-core { fill:#93B896; opacity:0; }
+  .fib-thread { stroke:#6F8F72; stroke-width:2.5; stroke-dasharray:140; stroke-dashoffset:140; }
+
+  .fib-barwrap { margin-top:22px; }
+  .fib-barlabel { font-weight:700; font-size:2.6cqw; letter-spacing:0.06em; text-transform:uppercase;
+    color:rgba(19,21,22,0.62); margin-bottom:10px; }
+  .fib-bar { width:100%; height:34px; border:1px solid rgba(19,21,22,0.16); border-radius:8px; overflow:hidden; }
+  .fib-bar-fill { width:100%; height:100%; background:#6F8F72; transform:scaleY(0.22); transform-origin:50% 100%; }
+
+  .fib-tag { position:absolute; left:0; width:100%; text-align:center; top:1075px; font-weight:600; font-size:31px;
+    color:rgba(247,245,240,0.62); opacity:0; }
+</style>
+<div data-composition-id="05-fibroblast" id="root" data-width="1080" data-height="1920" data-duration="10.667">
+
+  <!-- G1 botanical underlay: dimmed slow b-roll behind the cards (wrapper non-timed; video carries timing) -->
+  <div id="fib-underlay" class="clip" style="z-index:0;">
+    <video id="fib-uvid" src="assets/plates/under-1.mp4" muted playsinline data-start="0" data-duration="10.667" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05);"></video>
+    <div style="position:absolute;inset:0;background:rgba(16,19,20,0.80);"></div>
+  </div>
+
+
+  <div id="fib-all" class="clip" data-start="0" data-duration="10.667" data-track-index="0">
+    <div class="fib-kicker" id="fib-kicker">Mechanism · claimed</div>
+
+    <div class="uc-card" id="fib-card">
+      <div class="fib-label">
+        <span id="fib-lab-dormant">Fibroblasts · dormant</span>
+        <span id="fib-lab-active">Fibroblasts · active — rebuilding barrier</span>
+      </div>
+      <svg class="fib-grid" id="fib-grid" viewBox="0 0 710 310" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      <div class="fib-barwrap">
+        <div class="fib-barlabel">Barrier cross-section</div>
+        <div class="fib-bar"><div class="fib-bar-fill" id="fib-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="fib-tag" id="fib-tag">[Authored, illustrative — not a claim]</div>
+  </div>
+
+</div>
+<script>
+(function () {
+  // Deterministic grid build — fixed geometry, no randomness.
+  var svg = document.getElementById('fib-grid');
+  var NS = 'http://www.w3.org/2000/svg';
+  var cols = 6, rows = 4, x0 = 70, y0 = 46, dx = 114, dy = 72.7;
+  var defs = document.createElementNS(NS, 'defs');
+  defs.innerHTML = '<filter id="fib-bloom" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="6"/></filter>' +
+    '<filter id="fib-grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 0.07 0 0 0 0 0.08 0 0 0 0 0.08 0 0 0 0.05 0"/></filter>';
+  svg.appendChild(defs);
+  var grain = document.createElementNS(NS, 'rect');
+  grain.setAttribute('x', 0); grain.setAttribute('y', 0);
+  grain.setAttribute('width', 710); grain.setAttribute('height', 310);
+  grain.setAttribute('filter', 'url(#fib-grain)');
+  svg.appendChild(grain);
+  var cells = [], cores = [], threads = [], halos = [];
+  var r, c;
+  for (r = 0; r < rows; r++) {
+    for (c = 0; c < cols; c++) {
+      var cx = x0 + c * dx, cy = y0 + r * dy;
+      var cell = document.createElementNS(NS, 'circle');
+      cell.setAttribute('cx', cx); cell.setAttribute('cy', cy); cell.setAttribute('r', 15);
+      cell.setAttribute('class', 'fib-cell');
+      svg.appendChild(cell); cells.push(cell);
+      var halo = document.createElementNS(NS, 'circle');
+      halo.setAttribute('cx', cx); halo.setAttribute('cy', cy); halo.setAttribute('r', 15);
+      halo.setAttribute('fill', '#93B896'); halo.setAttribute('opacity', '0');
+      halo.setAttribute('filter', 'url(#fib-bloom)');
+      svg.appendChild(halo); halos.push(halo);
+      var core = document.createElementNS(NS, 'circle');
+      core.setAttribute('cx', cx); core.setAttribute('cy', cy); core.setAttribute('r', 8);
+      core.setAttribute('class', 'fib-core');
+      svg.appendChild(core); cores.push(core);
+    }
+  }
+  // Lattice threads: horizontal + vertical neighbors.
+  for (r = 0; r < rows; r++) {
+    for (c = 0; c < cols; c++) {
+      var ax = x0 + c * dx, ay = y0 + r * dy;
+      if (c < cols - 1) threads.push([ax + 15, ay, ax + dx - 15, ay]);
+      if (r < rows - 1) threads.push([ax, ay + 15, ax, ay + dy - 15]);
+    }
+  }
+  var threadEls = threads.map(function (t) {
+    var ln = document.createElementNS(NS, 'line');
+    ln.setAttribute('x1', t[0]); ln.setAttribute('y1', t[1]);
+    ln.setAttribute('x2', t[2]); ln.setAttribute('y2', t[3]);
+    ln.setAttribute('class', 'fib-thread');
+    svg.appendChild(ln);
+    return ln;
+  });
+
+  var kicker = document.getElementById('fib-kicker');
+  var card = document.getElementById('fib-card');
+  var labD = document.getElementById('fib-lab-dormant');
+  var labA = document.getElementById('fib-lab-active');
+  var fill = document.getElementById('fib-fill');
+  var tag = document.getElementById('fib-tag');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(kicker, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 0.15);
+  tl.fromTo(card, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6 }, 0.45);
+
+  // "wakes up" (local 1.96): activation sweep — cores light in reading order (sparkle SFX).
+  cores.forEach(function (el, i) {
+    tl.to(el, { opacity: 1, duration: 0.18 }, 2.00 + i * 0.04);
+    // One bounded bloom per activation (explicit rework direction; settles, never ambient).
+    tl.to(halos[i], { opacity: 0.55, duration: 0.15 }, 2.00 + i * 0.04);
+    tl.to(halos[i], { opacity: 0, duration: 0.35 }, 2.15 + i * 0.04);
+  });
+
+  // "manufacture collagen" (5.6): lattice threads weave in.
+  threadEls.forEach(function (el, i) {
+    tl.to(el, { strokeDashoffset: 0, duration: 0.2, ease: 'power2.out' }, 5.45 + i * 0.02);
+  });
+
+  tl.to(tag, { opacity: 1, duration: 0.4 }, 6.60);
+
+  // "rebuilding your skin barrier" (8.1): label swap.
+  tl.to(labD, { opacity: 0, duration: 0.3 }, 8.05);
+  tl.to(labA, { opacity: 1, duration: 0.4 }, 8.15);
+
+  // "brick by brick" (9.4 / 10.1): the cross-section thickens in two steps.
+  tl.to(fill, { scaleY: 0.5, duration: 0.2, ease: 'power4.out' }, 9.30);
+  tl.to(fill, { scaleY: 0.75, duration: 0.2, ease: 'power4.out' }, 9.70);
+  tl.to(fill, { scaleY: 1.0, duration: 0.2, ease: 'power4.out' }, 10.05);
+
+
+  // G1 underlay drift + G2 push-in (rework brief) — seek-safe, one direction per scene.
+  var uvid = document.getElementById('fib-uvid');
+  tl.fromTo(uvid, { scale: 1.06, xPercent: 2 }, { scale: 1.12, xPercent: -2, duration: 10.667, ease: 'none', immediateRender: true }, 0);
+  ['fib-all'].forEach(function (id) {
+    var el = document.getElementById(id);
+    gsap.set(el, { transformOrigin: '50% 45%' });
+    tl.fromTo(el, { scale: 1.0 }, { scale: 1.05, duration: 10.667, ease: 'power1.inOut', immediateRender: false }, 0);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['05-fibroblast'] = tl;
+})();
+</script>
+</template>

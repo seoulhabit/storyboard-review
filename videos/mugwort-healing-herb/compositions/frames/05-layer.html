@@ -1,0 +1,120 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+  .lz-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .lz-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.12; mix-blend-mode:multiply; }
+
+  .lz-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:26px; padding:0 90px; text-align:center; }
+  .lz-caption { font-weight:800; font-size:4.6cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.1; opacity:0; }
+  .lz-caption .accent { color:#3A7871; }
+
+  .lz-field { position:relative; width:640px; height:520px; border:1px solid rgba(19,21,22,0.14); border-radius:32px; background:transparent; overflow:hidden; }
+  .lz-tag { position:absolute; bottom:24px; left:36px; font-weight:700; font-size:1.8cqw; letter-spacing:0.06em; color:#555555; text-align:left; }
+
+  .lz-row { display:flex; gap:16px; opacity:0; }
+  .lz-pill { font-weight:700; font-size:2.1cqw; letter-spacing:0.05em; text-transform:uppercase; color:rgba(19,21,22,0.68);
+    border:1px solid rgba(19,21,22,0.16); border-radius:999px; padding:12px 26px; opacity:0; }
+
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.8cqw; color:rgba(19,21,22,0.85);
+    border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:10px 24px; background:rgba(19,21,22,0.05); opacity:0; }
+</style>
+<div data-composition-id="05-layer" id="root" data-width="1080" data-height="1920" data-duration="8.534">
+  <div id="lz-bg" class="clip lz-bg" data-start="0" data-duration="8.534" data-track-index="0"></div>
+  <div id="lz-grain" class="clip lz-grain" data-start="0" data-duration="8.534" data-track-index="1"></div>
+
+  <div id="lz-stage" class="clip lz-stage" data-start="0" data-duration="8.534" data-track-index="2">
+    <div class="lz-caption" id="lz-caption">Layer <span class="accent">zero</span></div>
+
+    <div class="lz-field" id="lz-field">
+      <svg id="lz-svg" viewBox="0 0 640 520" width="640" height="520" aria-hidden="true">
+        <!-- skin baseline -->
+        <path d="M100,452 H540" stroke="#131516" stroke-width="5" stroke-linecap="round" />
+        <text x="516" y="440" text-anchor="end" font-family="Inter" font-weight="700" font-size="18" fill="rgba(19,21,22,0.68)" letter-spacing="2">SKIN</text>
+        <!-- routine slabs, top-down: cream / serum / essence -->
+        <g id="lz-cream">
+          <rect x="140" y="120" width="360" height="72" rx="14" fill="none" stroke="rgba(19,21,22,0.45)" stroke-width="3.5" />
+          <text x="320" y="164" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" fill="rgba(19,21,22,0.68)" letter-spacing="2">2 · CREAM</text>
+        </g>
+        <g id="lz-serum">
+          <rect x="140" y="228" width="360" height="72" rx="14" fill="none" stroke="rgba(19,21,22,0.45)" stroke-width="3.5" />
+          <text x="320" y="272" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" fill="rgba(19,21,22,0.68)" letter-spacing="2">1 · SERUM</text>
+        </g>
+        <g id="lz-essence" opacity="0">
+          <rect x="140" y="336" width="360" height="72" rx="14" fill="rgba(89,184,174,0.14)" stroke="#59B8AE" stroke-width="4" />
+          <text x="320" y="380" text-anchor="middle" font-family="Inter" font-weight="700" font-size="22" fill="#3A7871" letter-spacing="2">0 · ESSENCE</text>
+        </g>
+        <!-- droplet bloom rings, from the essence layer into the skin line -->
+        <g id="lz-bloom" data-layout-allow-overflow="true">
+          <circle id="lz-b1" cx="320" cy="430" r="10" fill="none" stroke="rgba(89,184,174,0.6)" stroke-width="3" opacity="0" />
+          <circle id="lz-b2" cx="320" cy="430" r="10" fill="none" stroke="rgba(89,184,174,0.45)" stroke-width="2.5" opacity="0" />
+          <circle id="lz-b3" cx="320" cy="430" r="10" fill="none" stroke="rgba(89,184,174,0.3)" stroke-width="2" opacity="0" />
+        </g>
+      </svg>
+      <div class="lz-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div class="lz-row" id="lz-row">
+      <div class="lz-pill" id="lz-p1">No sting</div>
+      <div class="lz-pill" id="lz-p2">No flush</div>
+      <div class="lz-pill" id="lz-p3">No fight</div>
+    </div>
+
+    <div class="uc-unsourced" id="lz-unsourced">○ UNSOURCED — no record in this system</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var caption = document.getElementById('lz-caption');
+  var field = document.getElementById('lz-field');
+  var essence = document.getElementById('lz-essence');
+  var row = document.getElementById('lz-row');
+  var pills = [document.getElementById('lz-p1'), document.getElementById('lz-p2'), document.getElementById('lz-p3')];
+  var blooms = [document.getElementById('lz-b1'), document.getElementById('lz-b2'), document.getElementById('lz-b3')];
+  var unsourced = document.getElementById('lz-unsourced');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  gsap.set(field, { scale: 1.04 });
+
+  // Cues (tightened take): first@0.50 · placement@1.20-1.76 · floods@2.07-2.39 ·
+  // No sting@5.92-6.53 · no flush@6.71-7.46 · no fight@7.46-8.38.
+
+  tl.fromTo(caption, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4 }, 0.10);
+
+  // "first layer placement": the essence slab slides in beneath the routine, nearest the skin.
+  gsap.set(essence, { x: -420 });
+  tl.to(essence, { opacity: 1, duration: 0.2 }, 0.50);
+  tl.to(essence, { x: 0, duration: 1.1, ease: 'power3.out' }, 0.50);
+
+  // The absorption framing has no record in this system — flagged on screen while it is said.
+  tl.to(unsourced, { opacity: 1, duration: 0.4 }, 1.20);
+
+  // "floods": bloom rings expand from the essence layer through the skin line.
+  blooms.forEach(function (b, i) {
+    tl.to(b, { opacity: 1, duration: 0.2 }, 2.07 + i * 0.45);
+    tl.to(b, { attr: { r: 90 + i * 30 }, duration: 1.6, ease: 'power2.out' }, 2.07 + i * 0.45);
+    tl.to(b, { opacity: 0, duration: 0.5 }, 3.17 + i * 0.45);
+  });
+
+  // "No sting, no flush, no fight": three pills land on the beat.
+  tl.to(row, { opacity: 1, duration: 0.2 }, 5.85);
+  tl.fromTo(pills[0], { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 5.92);
+  tl.fromTo(pills[1], { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 6.71);
+  tl.fromTo(pills[2], { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 7.46);
+
+  // slow camera pull.
+  tl.to(field, { scale: 1.0, duration: 5.5, ease: 'power1.inOut' }, 0.8);
+
+  tl.to({}, { duration: 8.534 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['05-layer'] = tl;
+})();
+</script>
+</template>

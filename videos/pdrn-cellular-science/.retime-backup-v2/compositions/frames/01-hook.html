@@ -1,0 +1,138 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  .hook-bg { background:
+      radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .hook-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  /* Round 4: safe zone is explicit — 15% top / 25% bottom (y in [288,1440]) — rather than
+     relying on full-canvas flex-centering happening to land inside it. */
+  .hook-stage { top:288px; left:0; width:1080px; height:1152px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px; padding:0 90px; text-align:center; }
+
+  .hook-caption { font-family:'Inter',sans-serif; font-weight:700; font-size:5.6cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.05; }
+  .hook-caption .w { display:inline-block; opacity:0; margin:0 0.12em; }
+
+  .hook-stage-box { position:relative; width:640px; height:640px; background:#131516; border-radius:40px; display:flex; align-items:center; justify-content:center; opacity:0; overflow:hidden; }
+  .hook-salmon { position:absolute; width:420px; height:210px; opacity:0;
+    filter: drop-shadow(0 0 8px rgba(89,184,174,0.9)) drop-shadow(0 0 40px rgba(89,184,174,0.7)) drop-shadow(0 0 100px rgba(89,184,174,0.5)); }
+  .hook-vial { position:absolute; opacity:0; filter: drop-shadow(0 0 40px rgba(89,184,174,0.7)); }
+  .hook-drop { position:absolute; width:60px; height:80px; top:120px; left:440px; opacity:0; filter: drop-shadow(0 0 22px rgba(89,184,174,0.5)); }
+
+  .hook-sub-wrap { position:relative; display:inline-block; }
+  .hook-sub { font-family:'Inter',sans-serif; font-weight:600; font-size:4.2cqw; color:rgba(19,21,22,0.78); opacity:0; }
+  .hook-underline { position:absolute; left:0; bottom:-10px; height:4px; width:100%; background:#C97A5C; transform:scaleX(0); transform-origin:left center; }
+</style>
+<div data-hf-id="hf-4kil" data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="8.175">
+  <div data-hf-id="hf-9mue" id="hook-bg" class="clip hook-bg" data-start="0" data-duration="8.175" data-track-index="0"></div>
+  <div data-hf-id="hf-lfzd" id="hook-grain" class="clip hook-grain" data-start="0" data-duration="8.175" data-track-index="1"></div>
+
+  <div data-hf-id="hf-w8oy" id="hook-stage" class="clip hook-stage" data-start="0" data-duration="8.175" data-track-index="2">
+    <div data-hf-id="hf-cap1" class="hook-caption" id="hook-caption">
+      <span data-hf-id="hf-lc1i" class="w">SALMON</span><span data-hf-id="hf-u1mu" class="w">DNA?</span>
+    </div>
+
+    <div data-hf-id="hf-sbx1" class="hook-stage-box" id="hook-stage-box">
+      <svg data-hf-id="hf-slm1" class="hook-salmon" id="hook-salmon" viewBox="0 0 400 200" width="420" height="210" aria-hidden="true">
+        <defs data-hf-id="hf-slmd">
+          <linearGradient data-hf-id="hf-slmg" id="hook-salmon-gradient" x1="0" y1="0" x2="1" y2="1">
+            <stop data-hf-id="hf-slmg1" offset="0%" stop-color="#EAF6F3" />
+            <stop data-hf-id="hf-slmg2" offset="35%" stop-color="#BFE3DC" />
+            <stop data-hf-id="hf-slmg3" offset="70%" stop-color="#7FC8BC" />
+            <stop data-hf-id="hf-slmg4" offset="100%" stop-color="#4FA79A" />
+          </linearGradient>
+        </defs>
+        <path data-hf-id="hf-slmbody" d="M380,100 C340,58 292,50 250,54 C192,60 130,68 90,80 L58,58 L96,100 L58,142 L90,120 C130,150 192,152 250,150 C292,154 340,146 380,100 Z" fill="url(#hook-salmon-gradient)" />
+        <path data-hf-id="hf-slmdorsal" d="M228,53 L246,16 L263,52 Z" fill="#4FA79A" />
+        <path data-hf-id="hf-slmpec" d="M300,108 L322,146 L280,122 Z" fill="#4FA79A" opacity="0.9" />
+        <path data-hf-id="hf-slmgill" d="M330,72 Q322,90 330,110" stroke="rgba(19,21,22,0.3)" stroke-width="3" fill="none" />
+        <circle data-hf-id="hf-slmeyeo" cx="345" cy="90" r="8" fill="#F7F5F0" />
+        <circle data-hf-id="hf-slmeyei" cx="345" cy="90" r="3.5" fill="#131516" />
+      </svg>
+      <svg data-hf-id="hf-vil1" class="hook-vial" id="hook-vial" viewBox="0 0 200 340" width="200" height="340" aria-hidden="true">
+        <defs data-hf-id="hf-vild">
+          <linearGradient data-hf-id="hf-vilg" id="hook-vial-liquid-gradient" x1="0" y1="1" x2="0" y2="0">
+            <stop data-hf-id="hf-vilg1" offset="0%" stop-color="#59B8AE" />
+            <stop data-hf-id="hf-vilg2" offset="100%" stop-color="#EAF6F3" />
+          </linearGradient>
+          <clipPath data-hf-id="hf-vilc" id="hook-vial-clip">
+            <path data-hf-id="hf-vilcp" d="M52,150 V280 C52,304 74,324 100,324 C126,324 148,304 148,280 V150 Z" />
+          </clipPath>
+        </defs>
+        <path data-hf-id="hf-vilbody" d="M70,20 H130 V70 C130,80 150,90 150,140 V280 C150,306 128,326 100,326 C72,326 50,306 50,280 V140 C50,90 70,80 70,70 Z"
+          fill="rgba(247,245,240,0.08)" stroke="rgba(247,245,240,0.55)" stroke-width="3" />
+        <rect data-hf-id="hf-villiq" id="hook-vial-liquid" x="50" y="150" width="100" height="180" fill="url(#hook-vial-liquid-gradient)" clip-path="url(#hook-vial-clip)" />
+        <rect data-hf-id="hf-vilcap" x="66" y="10" width="68" height="16" rx="4" fill="rgba(247,245,240,0.7)" />
+        <line data-hf-id="hf-vilmen" id="hook-vial-meniscus" x1="52" y1="190" x2="148" y2="190" stroke="#EAF6F3" stroke-width="3" />
+      </svg>
+      <svg data-hf-id="hf-drp1" class="hook-drop" id="hook-serum-drop" viewBox="0 0 60 80" width="60" height="80" aria-hidden="true">
+        <defs data-hf-id="hf-drpd">
+          <linearGradient data-hf-id="hf-drpg" id="hook-drop-gradient" x1="0" y1="1" x2="0" y2="0">
+            <stop data-hf-id="hf-drpg1" offset="0%" stop-color="#59B8AE" />
+            <stop data-hf-id="hf-drpg2" offset="100%" stop-color="#EAF6F3" />
+          </linearGradient>
+        </defs>
+        <path data-hf-id="hf-drpbody" d="M30,4 C42,26 54,44 54,58 C54,71 43,79 30,79 C17,79 6,71 6,58 C6,44 18,26 30,4 Z" fill="url(#hook-drop-gradient)" />
+      </svg>
+    </div>
+
+    <div data-hf-id="hf-sb49" class="hook-sub-wrap">
+      <div data-hf-id="hf-kh2o" class="hook-sub" id="hook-sub">—it's actually a medical breakthrough.</div>
+      <div data-hf-id="hf-4x7m" class="hook-underline" id="hook-underline"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var captionWords = document.querySelectorAll('#hook-caption .w');
+  var stageBox = document.getElementById('hook-stage-box');
+  var salmon = document.getElementById('hook-salmon');
+  var vial = document.getElementById('hook-vial');
+  var drop = document.getElementById('hook-serum-drop');
+  var sub = document.getElementById('hook-sub');
+  var underline = document.getElementById('hook-underline');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Scene 1 (0.0-1.2s): bg is present from t=0 (CSS), nothing to animate yet — VO opening beat.
+
+  // Retimed ×0.978219 for the new Kimberly VO (6.903s, was 7.057s).
+  // Scene 2: dark stage arrives, salmon blooms in; "SALMON DNA?" caption reveals per-word above it.
+  tl.fromTo(stageBox, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.587 }, 1.174);
+  tl.fromTo(salmon, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.685, ease: 'power2.out' }, 1.291);
+  tl.fromTo(captionWords, { y: 16 }, { opacity: 1, y: 0, duration: 0.391, stagger: 0.176 }, 1.467);
+
+  // Ambient salmon breathe — bounded, slow, settles (never continuous spin).
+  tl.to(salmon, { filter: 'drop-shadow(0 0 10px rgba(89,184,174,0.95)) drop-shadow(0 0 60px rgba(89,184,174,0.8)) drop-shadow(0 0 160px rgba(89,184,174,0.65))', duration: 0.978, ease: 'sine.inOut' }, 1.956);
+
+  // Scene 3: the quick cut — salmon drops out, sleek lab vial cuts in.
+  tl.to(salmon, { opacity: 0, scale: 0.85, duration: 0.147 }, 3.228);
+  tl.fromTo(vial, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.196 }, 3.277);
+  tl.to(vial, { filter: 'drop-shadow(0 0 58px rgba(89,184,174,0.85))', duration: 0.978, ease: 'sine.inOut' }, 3.522);
+  tl.fromTo(drop, { opacity: 0, y: -14, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.391 }, 3.815);
+
+  // Scene 4: headline settles into the sub-line beat.
+  tl.to(stageBox, { scale: 0.96, duration: 0.587 }, 3.522);
+  tl.fromTo(sub, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.489 }, 5.576);
+  tl.to(underline, { scaleX: 1, duration: 0.489, ease: 'power2.out' }, 5.869);
+
+  // Scene 5: held, subtle jitter only.
+  (function () {
+    var jitter = { p: 0 };
+    tl.to(jitter, { p: Math.PI * 2 * 0.5, duration: 0.783, ease: 'none', onUpdate: function () {
+      document.getElementById('root').style.transform = 'translateY(' + (Math.sin(jitter.p) * 1.5) + 'px)';
+    } }, 7.043);
+  })();
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['01-hook'] = tl;
+})();
+</script>
+</template>

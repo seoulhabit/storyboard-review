@@ -1,0 +1,268 @@
+<template>
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  /* Paper ground + grain — full-bleed clips, never painted on #root (frame.md v3). */
+  .mtx-ground { background:radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .mtx-grain { opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* Ambient HA-polymer glyph field — ink only. The one-aqua-per-frame slot is spent on the
+     water dots inside the schematic, so no aqua-tinted ambient glyph in this frame. */
+  .mtx-glyph { fill:none; stroke-width:2; }
+
+  /* Light schematic card (frame.md "Light schematic card" recipe — flat register, no glow;
+     shadow is elevation only). */
+  .mtx-card { position:absolute; left:96px; top:318px; width:822px; background:#FBF9F5;
+    border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:48px 56px 46px; overflow:hidden; }
+  .mtx-kicker { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:2.4cqw;
+    letter-spacing:0.08em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:10px; }
+  .mtx-tag { font-family:'Inter',sans-serif; font-weight:600; font-size:2.2cqw;
+    letter-spacing:0.02em; color:rgba(19,21,22,0.66); margin-bottom:22px; }
+
+  .mtx-diagram { position:relative; width:710px; height:640px; }
+  .mtx-wash { position:absolute; inset:0; border-radius:20px;
+    background:
+      radial-gradient(240px 190px at 22% 26%, rgba(89,184,174,0.10) 0%, transparent 70%),
+      radial-gradient(280px 200px at 78% 22%, rgba(111,143,114,0.08) 0%, transparent 72%),
+      radial-gradient(260px 200px at 26% 76%, rgba(111,143,114,0.08) 0%, transparent 72%),
+      radial-gradient(300px 220px at 80% 72%, rgba(89,184,174,0.10) 0%, transparent 70%),
+      radial-gradient(220px 170px at 52% 48%, rgba(111,143,114,0.06) 0%, transparent 65%),
+      #FBF9F5; }
+  .mtx-wash-grain { position:absolute; inset:0; border-radius:20px; opacity:0.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* Textbook line art: thin geometric ink strokes only. */
+  .mtx-stratum { fill:none; stroke:rgba(19,21,22,0.45); stroke-width:1.5; }
+  .mtx-rod { fill:none; stroke:rgba(19,21,22,0.8); stroke-width:10; stroke-linecap:round; }
+  .mtx-coil { fill:none; stroke:rgba(19,21,22,0.82); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .mtx-fibro { fill:none; stroke:rgba(19,21,22,0.85); stroke-width:2.2; stroke-linejoin:round; }
+  .mtx-fibro-nucleus { fill:none; stroke:rgba(19,21,22,0.7); stroke-width:2; }
+  .mtx-leader { fill:none; stroke:rgba(19,21,22,0.5); stroke-width:1.5; }
+  .mtx-fibro-label { position:absolute; left:304px; top:592px; font-family:'JetBrains Mono',monospace;
+    font-weight:500; font-size:1.5cqw; letter-spacing:0.12em; text-transform:uppercase;
+    color:rgba(19,21,22,0.62); line-height:1; }
+  .mtx-dot { fill:#59B8AE; opacity:0.95; }           /* this frame's ONE aqua */
+  .mtx-glint { fill:none; stroke:#59B8AE; stroke-width:2; opacity:0; }
+
+  /* Sourced decline row, below the card on paper. */
+  .mtx-claim-row { position:absolute; left:96px; top:1170px; width:872px; display:flex; align-items:center; gap:32px; }
+  .mtx-claim { flex:0 0 540px; font-family:'Inter',sans-serif; font-weight:600; font-size:3.3cqw; line-height:1.45; color:#131516; }
+  .mtx-spark-base { fill:none; stroke:rgba(19,21,22,0.18); stroke-width:1.5; }
+  .mtx-spark-step { fill:none; stroke:rgba(19,21,22,0.85); stroke-width:3; stroke-linejoin:miter; }
+
+  /* Citation pill (frame.md spec — celadon sourced tint, coral-text bracket id). */
+  /* v5 safe-area fix: lifted clear of the Shorts bottom-overlay collision band. */
+  .mtx-pill { position:absolute; left:96px; top:1310px; display:inline-flex; align-items:center; gap:10px;
+    background:rgba(111,143,114,0.10); border:1.5px solid rgba(111,143,114,0.45); border-radius:999px;
+    padding:14px 28px; font-size:2.8cqw; }
+  .mtx-pill .mtx-pill-lead { font-family:'Inter',sans-serif; font-weight:700; color:#131516; }
+  .mtx-pill .mtx-pill-id { font-family:'JetBrains Mono',monospace; font-weight:500; color:#9F6149; }
+</style>
+<div data-composition-id="04-matrix" id="root" data-width="1080" data-height="1920" data-duration="9.641">
+  <div id="mtx-ground" class="clip mtx-ground" data-start="0" data-duration="9.641" data-track-index="0"></div>
+  <div id="mtx-grain" class="clip mtx-grain" data-start="0" data-duration="9.641" data-track-index="1"></div>
+
+  <div id="mtx-ambient" class="clip" data-start="0" data-duration="9.641" data-track-index="2">
+    <svg viewBox="0 0 1080 1920" width="1080" height="1920" style="position:absolute; inset:0;" aria-hidden="true">
+      <g id="mtx-glyph-0" class="mtx-glyph" stroke="rgba(19,21,22,0.16)" transform="translate(150,150) scale(0.95)">
+        <polygon points="10,-17.3 20,0 10,17.3 -10,17.3 -20,0 -10,-17.3" />
+        <line x1="20" y1="0" x2="32" y2="12" />
+        <polygon points="62,-5.3 72,12 62,29.3 42,29.3 32,12 42,-5.3" />
+        <line x1="72" y1="12" x2="84" y2="0" />
+        <polygon points="114,-17.3 124,0 114,17.3 94,17.3 84,0 94,-17.3" />
+      </g>
+      <g id="mtx-glyph-1" class="mtx-glyph" stroke="rgba(19,21,22,0.14)" transform="translate(778,108) scale(0.7)">
+        <polygon points="10,-17.3 20,0 10,17.3 -10,17.3 -20,0 -10,-17.3" />
+        <line x1="20" y1="0" x2="30" y2="-10" />
+        <polygon points="60,-27.3 70,-10 60,7.3 40,7.3 30,-10 40,-27.3" />
+      </g>
+      <g id="mtx-glyph-2" class="mtx-glyph" stroke="rgba(19,21,22,0.18)" transform="translate(958,470) scale(0.55)">
+        <polygon points="10,-17.3 20,0 10,17.3 -10,17.3 -20,0 -10,-17.3" />
+        <line x1="20" y1="0" x2="30" y2="-10" />
+        <polygon points="60,-27.3 70,-10 60,7.3 40,7.3 30,-10 40,-27.3" />
+      </g>
+      <g id="mtx-glyph-3" class="mtx-glyph" stroke="rgba(19,21,22,0.15)" transform="translate(942,930) scale(0.6)">
+        <polygon points="10,-17.3 20,0 10,17.3 -10,17.3 -20,0 -10,-17.3" />
+        <line x1="20" y1="0" x2="32" y2="12" />
+        <polygon points="62,-5.3 72,12 62,29.3 42,29.3 32,12 42,-5.3" />
+        <line x1="72" y1="12" x2="84" y2="0" />
+        <polygon points="114,-17.3 124,0 114,17.3 94,17.3 84,0 94,-17.3" />
+      </g>
+    </svg>
+  </div>
+
+  <div id="mtx-content" class="clip" data-start="0" data-duration="9.641" data-track-index="3">
+    <div class="mtx-card" id="mtx-card">
+      <div class="mtx-kicker" id="mtx-kicker">Extracellular Matrix</div>
+      <div class="mtx-tag" id="mtx-tag">[Authored, illustrative — not a claim]</div>
+
+      <div class="mtx-diagram" id="mtx-diagram">
+        <div class="mtx-wash" aria-hidden="true"></div>
+        <div class="mtx-wash-grain" aria-hidden="true"></div>
+        <svg id="mtx-svg" viewBox="0 0 710 640" width="710" height="640" style="position:absolute; inset:0; display:block;" aria-hidden="true">
+          <!-- two dermal strata hairlines -->
+          <line id="mtx-stratum-top" class="mtx-stratum" x1="18" y1="64" x2="692" y2="64" />
+          <line id="mtx-stratum-bot" class="mtx-stratum" x1="18" y1="576" x2="692" y2="576" />
+
+          <!-- collagen rods: three loose parallel fiber rows (textbook layering) -->
+          <line class="mtx-rod" x1="58"  y1="136" x2="220" y2="128" />
+          <line class="mtx-rod" x1="268" y1="132" x2="430" y2="124" />
+          <line class="mtx-rod" x1="478" y1="128" x2="640" y2="136" />
+          <line class="mtx-rod" x1="96"  y1="306" x2="258" y2="298" />
+          <line class="mtx-rod" x1="306" y1="302" x2="468" y2="294" />
+          <line class="mtx-rod" x1="516" y1="298" x2="662" y2="306" />
+          <line class="mtx-rod" x1="120" y1="452" x2="282" y2="444" />
+          <line class="mtx-rod" x1="330" y1="448" x2="492" y2="440" />
+          <line class="mtx-rod" x1="540" y1="444" x2="686" y2="452" />
+
+          <!-- three HA coil chains (deterministic cycloid paths, d set at build) -->
+          <path id="mtx-coil-0" class="mtx-coil" d="M 0 0" />
+          <path id="mtx-coil-1" class="mtx-coil" d="M 0 0" />
+          <path id="mtx-coil-2" class="mtx-coil" d="M 0 0" />
+
+          <!-- geometric spindle fibroblast, lower-left, on the lower stratum -->
+          <path id="mtx-fibro-body" class="mtx-fibro" d="M 57 556 Q 152 489 247 534 Q 152 601 57 556 Z" />
+          <ellipse id="mtx-fibro-nucleus" class="mtx-fibro-nucleus" cx="150" cy="545" rx="25" ry="14" transform="rotate(-7 150 545)" />
+          <polyline id="mtx-leader" class="mtx-leader" points="216,558 262,600 296,600" />
+
+          <!-- water dots docking onto the coils (positions computed from the same coil math) -->
+          <g id="mtx-dots">
+            <circle class="mtx-dot" r="7.5" /><circle class="mtx-dot" r="7.5" /><circle class="mtx-dot" r="7.5" />
+            <circle class="mtx-dot" r="7.5" /><circle class="mtx-dot" r="7.5" /><circle class="mtx-dot" r="7.5" />
+            <circle class="mtx-dot" r="7.5" /><circle class="mtx-dot" r="7.5" /><circle class="mtx-dot" r="7.5" />
+          </g>
+          <circle id="mtx-glint" class="mtx-glint" r="9" />
+        </svg>
+        <div class="mtx-fibro-label" id="mtx-fibro-label">Fibroblast</div>
+      </div>
+    </div>
+
+    <div class="mtx-claim-row" id="mtx-claim-row">
+      <div class="mtx-claim" id="mtx-claim">Skin HA output falls ≈6% per decade past the twenties</div>
+      <svg id="mtx-spark" viewBox="0 0 300 120" width="300" height="120" aria-hidden="true">
+        <line id="mtx-spark-base" class="mtx-spark-base" x1="8" y1="112" x2="292" y2="112" />
+        <path id="mtx-spark-step" class="mtx-spark-step" d="M 8 12 H 56 V 30 H 102 V 48 H 148 V 66 H 194 V 84 H 240 V 102 H 292" />
+      </svg>
+    </div>
+
+    <div class="mtx-pill" id="mtx-pill"><span class="mtx-pill-lead">CITATION — </span><span class="mtx-pill-id">⌞ ING-hyaluronic-acid-S002 ⌟</span></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  // ---- deterministic coil geometry (pure math, fixed constants) ----
+  // Coils thread the gaps BETWEEN the rod rows — scaffold layering, not scatter.
+  var COILS = [
+    { el: 'mtx-coil-0', x: 70,  y: 218, deg: 2,  loops: 5, adv: 64, R: 15, dots: [1, 2, 4] },
+    { el: 'mtx-coil-1', x: 408, y: 222, deg: -2, loops: 4, adv: 64, R: 15, dots: [1, 2, 3] },
+    { el: 'mtx-coil-2', x: 205, y: 372, deg: 1,  loops: 6, adv: 64, R: 15, dots: [1, 3, 5] }
+  ];
+  function coilD(c) {
+    var th = c.deg * Math.PI / 180, ct = Math.cos(th), st = Math.sin(th);
+    var A = c.adv / (2 * Math.PI), T1 = c.loops * 2 * Math.PI + 1.35, d = '';
+    for (var t = -1.35; t <= T1; t += 0.12) {
+      var lx = A * t + c.R * Math.sin(t), ly = -c.R * Math.cos(t);
+      d += (d ? ' L ' : 'M ') + (c.x + lx * ct - ly * st).toFixed(1) + ' ' + (c.y + lx * st + ly * ct).toFixed(1);
+    }
+    return d;
+  }
+  function apex(c, k) {
+    var th = c.deg * Math.PI / 180, lx = c.adv * k;
+    return { x: c.x + lx * Math.cos(th) + c.R * Math.sin(th),
+             y: c.y + lx * Math.sin(th) - c.R * Math.cos(th) };
+  }
+
+  var coilEls = [], dotSeats = [];
+  COILS.forEach(function (c) {
+    var p = document.getElementById(c.el);
+    p.setAttribute('d', coilD(c));
+    coilEls.push(p);
+    c.dots.forEach(function (k) { dotSeats.push(apex(c, k)); });
+  });
+
+  var dots = document.querySelectorAll('.mtx-dot');
+  dots.forEach(function (dot, i) {
+    dot.setAttribute('cx', dotSeats[i].x.toFixed(1));
+    dot.setAttribute('cy', dotSeats[i].y.toFixed(1));
+  });
+  var heroDot = dots[4]; // middle chain — Scene 5's one bounded glint lives here
+  var glint = document.getElementById('mtx-glint');
+  glint.setAttribute('cx', dotSeats[4].x.toFixed(1));
+  glint.setAttribute('cy', dotSeats[4].y.toFixed(1));
+  gsap.set(glint, { scale: 0.35, transformOrigin: '50% 50%' });
+
+  // ---- svg-path-draw setup: measured lengths, dash = offset = length ----
+  var stratumTop = document.getElementById('mtx-stratum-top'),
+      stratumBot = document.getElementById('mtx-stratum-bot'),
+      rods = document.querySelectorAll('.mtx-rod'),
+      fibroBody = document.getElementById('mtx-fibro-body'),
+      fibroNucleus = document.getElementById('mtx-fibro-nucleus'),
+      leader = document.getElementById('mtx-leader'),
+      sparkBase = document.getElementById('mtx-spark-base'),
+      sparkStep = document.getElementById('mtx-spark-step');
+
+  var drawables = [stratumTop, stratumBot, fibroBody, fibroNucleus, leader, sparkBase, sparkStep];
+  rods.forEach(function (r) { drawables.push(r); });
+  coilEls.forEach(function (p) { drawables.push(p); });
+  drawables.forEach(function (el) {
+    var len = el.getTotalLength() * 1.02;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Scene 1 (0.0–1.4): card + kicker + tag settle; the two strata hairlines rule across.
+  tl.fromTo('#mtx-card', { opacity: 0, scale: 1.045 }, { opacity: 1, scale: 1, duration: 0.6 }, 0.05);
+  tl.fromTo('.mtx-glyph', { opacity: 0 }, { opacity: 1, duration: 0.8, stagger: 0.09, ease: 'power1.out' }, 0.10);
+  tl.fromTo('#mtx-kicker', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, 0.30);
+  tl.fromTo('#mtx-tag', { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power1.out' }, 0.45);
+  tl.to(stratumTop, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 0.55);
+  tl.to(stratumBot, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 0.70);
+
+  // Ambient drift — bounded slow sine settle, never a loop.
+  document.querySelectorAll('.mtx-glyph').forEach(function (el, i) {
+    tl.to(el, { y: '+=' + (10 + i * 4), duration: 8.3, ease: 'sine.inOut' }, 0.30);
+  });
+
+  // Scene 2 (1.4–4.2) "structures the extracellular matrix": collagen rods stagger in,
+  // then the three HA coil chains self-draw between them (svg dash draw, constant pen trace).
+  tl.to(rods, { strokeDashoffset: 0, duration: 0.28, stagger: 0.08, ease: 'power2.out' }, 1.05);
+  tl.to(coilEls[0], { strokeDashoffset: 0, duration: 1.00, ease: 'none' }, 1.55);
+  tl.to(coilEls[1], { strokeDashoffset: 0, duration: 1.00, ease: 'none' }, 1.85);
+  tl.to(coilEls[2], { strokeDashoffset: 0, duration: 0.95, ease: 'none' }, 2.15);
+
+  // Scene 3 (3.4–5.4) "the scaffold your fibroblasts build": spindle outline draws lower-left,
+  // leader + mono label land; water dots dock onto the coils with a capped stagger.
+  tl.to(fibroBody, { strokeDashoffset: 0, duration: 0.65, ease: 'power2.out' }, 2.75);
+  tl.to(fibroNucleus, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, 3.35);
+  tl.to(leader, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, 3.60);
+  tl.fromTo('#mtx-fibro-label', { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power1.out' }, 3.80);
+  tl.fromTo(dots, { opacity: 0, y: -26, scale: 0.4, transformOrigin: '50% 50%' },
+    { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.07 }, 3.05);
+
+  // Scene 4 (6.6–10.2) "past your twenties, output falls": the sourced decline row reveals
+  // beneath the card; stepped sparkline ticks down left→right; citation pill lands ~9.6s.
+  tl.fromTo('#mtx-claim', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 4.45);
+  tl.to(sparkBase, { strokeDashoffset: 0, duration: 0.3, ease: 'power2.out' }, 5.35);
+  tl.to(sparkStep, { strokeDashoffset: 0, duration: 1.5, ease: 'none' }, 5.60);
+  tl.fromTo('#mtx-pill', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 7.90);
+
+  // Scene 5 (10.2–11.643): held read — one bounded dot-glint on the coils, nothing else.
+  // (No exit: frame 4 of 6 — the root crossfade is the exit.)
+  tl.to(heroDot, { scale: 1.28, duration: 0.3, ease: 'power2.out' }, 8.55);
+  tl.to(heroDot, { scale: 1, duration: 0.5 }, 8.88);
+  tl.to(glint, { opacity: 0.85, scale: 1, duration: 0.18, ease: 'power1.out' }, 8.55);
+  tl.to(glint, { opacity: 0, scale: 2.3, duration: 0.8, ease: 'power2.out' }, 8.73);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-matrix'] = tl;
+})();
+</script>
+</template>

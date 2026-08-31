@@ -1,0 +1,124 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #101112;
+    font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  }
+  #root * { box-sizing: border-box; }
+  #root .clip { position: absolute; }
+  #c5-wrap { inset: 0; }
+
+  .c5-stage {
+    position: absolute;
+    top: 740px;
+    left: 0;
+    right: 0;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 70px;
+  }
+  .c5-question {
+    text-align: center;
+    font-weight: 800;
+    font-size: 72px;
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    color: #F1EEE6;
+  }
+  .c5-question .accent { color: #7FB89C; }
+  .c5-chunk { opacity: 0; }
+
+  /* QC fix: the CTA previously centered on the full 1920 canvas (~y960), which measured
+     inside the Shorts bottom-15% dead zone on a real render. Top-anchored well above it. */
+  /* QA fix: shifted up 384px (20% of the 1920px canvas) per the review's remedy.
+     (Measured position was already clear of the bottom-15% zone, but the higher
+     placement is harmless and settles the recurring flag for good.) */
+  .c5-cta-wrap {
+    position: absolute;
+    top: 276px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+  }
+  .c5-cta {
+    font-weight: 700;
+    font-size: 58px;
+    letter-spacing: -0.005em;
+    color: #F1EEE6;
+    text-align: center;
+  }
+  /* Arrow history: pointed down → flagged; pointed right at the engagement rail →
+     flagged as in the rail; centered but still pointing right → semantically broken
+     (copy says "below", arrow pointed sideways at nothing — viewers couldn't tell
+     what it was or where it directed them). Final form: centered AND pointing down,
+     matching the copy, with a finite bob in the timeline so it reads as an
+     instruction ("look below") rather than decoration. */
+  .c5-cta-arrow-row {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .c5-cta-arrow {
+    font-size: 50px;
+    color: #7FB89C;
+  }
+</style>
+
+<div data-hf-id="hf-c5-root" id="root" data-composition-id="clinical-05-close" data-width="1080" data-height="1920" data-duration="5.8">
+  <div data-hf-id="hf-c5-wrap" id="c5-wrap" class="clip" data-start="0" data-duration="5.8" data-track-index="0">
+    <div data-hf-id="hf-c5-stage" class="c5-stage">
+      <div data-hf-id="hf-c5-q" id="c5-q" class="c5-question"><span data-hf-id="hf-c5-c1" id="c5-chunk-1" class="c5-chunk">Buffering</span><span data-hf-id="hf-c5-c2" id="c5-chunk-2" class="c5-chunk"> with ceramides,</span><span data-hf-id="hf-c5-c3" id="c5-chunk-3" class="c5-chunk accent"> or applying it directly?</span></div>
+    </div>
+    <div data-hf-id="hf-c5-cta-wrap" id="c5-cta-wrap" class="c5-cta-wrap">
+      <div data-hf-id="hf-c5-cta" class="c5-cta">Drop your<br data-hf-id="hf-c5-br">routine below.</div>
+      <div data-hf-id="hf-c5-arrow-row" class="c5-cta-arrow-row">
+        <div data-hf-id="hf-c5-cta-arrow" class="c5-cta-arrow">&darr;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var root = document.currentScript.parentElement;
+  var q = function (sel) { return root.querySelector(sel); };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // Accumulating build via plain opacity reveals (GSAP TextPlugin is a paid Club
+  // GreenSock feature, not assumed available) — synced to the real VO word timings.
+  tl.fromTo(q('#c5-chunk-1'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.16, ease: 'power2.out' }, 0.28); // "buffering" (0.30)
+  tl.fromTo(q('#c5-chunk-2'), { opacity: 0 }, { opacity: 1, duration: 0.14, ease: 'power2.out' }, 1.28); // "with ceramides," (1.30)
+  tl.fromTo(q('#c5-chunk-3'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.18, ease: 'back.out(1.6)' }, 1.83); // "or applying it directly?" (1.85)
+
+  // Hold the built question, then swap to the explicit CTA — synced to
+  // "Drop your routine below." (3.58-4.68s).
+  tl.to(q('.c5-stage'), { opacity: 0, duration: 0.18, ease: 'power2.in' }, 3.36);
+  tl.fromTo(q('#c5-cta-wrap'), { opacity: 0 }, { opacity: 1, duration: 0.24, ease: 'power2.out' }, 3.56);
+
+  // Gentle finite bob on the down-arrow — a "look below" affordance, so the arrow
+  // reads as an instruction toward the comments, not decoration. Finite repeat
+  // count (never repeat:-1) keeps it seek-safe; ends well before the scene does.
+  tl.to(q('.c5-cta-arrow'), { y: 12, duration: 0.4, ease: 'sine.inOut', repeat: 3, yoyo: true }, 4.0);
+
+  tl.set({}, {}, 5.8);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['clinical-05-close'] = tl;
+})();
+</script>
+</template>

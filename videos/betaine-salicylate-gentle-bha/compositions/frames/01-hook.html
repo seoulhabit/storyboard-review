@@ -1,0 +1,118 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#131516; }
+  .clip { position:absolute; inset:0; }
+
+  /* Full-bleed redesign (QC BLOCKER): the dark stage IS the frame — background to the
+     screen edges, internals scaled up ~50%. Text stays inside the safe band. */
+  .hook-bg { position:absolute; inset:0; background:radial-gradient(circle at 50% 38%, #1c2021 0%, #131516 78%); }
+  .hook-zoom { position:absolute; inset:0; transform-origin:50% 42%; }
+
+  .hook-hero { position:absolute; top:200px; left:0; right:0; text-align:center; }
+  .hook-hero .hero-name { font-family:'Inter',sans-serif; font-weight:800; font-size:7.0cqw; line-height:1.05; letter-spacing:0.005em; text-transform:uppercase; color:#F7F5F0; }
+  .hook-hero .hero-benefit { margin-top:20px; font-family:'Inter',sans-serif; font-weight:700; font-size:3.4cqw; letter-spacing:0.14em; text-transform:uppercase; color:#4DFFF3; }
+
+  .hs-bisector { stroke:rgba(247,245,240,0.55); stroke-width:1.4; stroke-dasharray:3 5; stroke-linecap:round; }
+  .hs-halo-wire { fill:none; stroke:rgba(255,255,255,0.55); stroke-width:2.2; }
+  .hs-irritated-glow { fill:#FF4D4D; opacity:0; }
+  .hs-irritated-fill { fill:rgba(255,77,77,0.28); stroke:#FF4D4D; stroke-width:2.4; opacity:0; }
+  .hs-calm-glow { fill:#00E5D1; opacity:0; }
+  .hs-calm-fill { fill:rgba(0,229,209,0.28); stroke:#00E5D1; stroke-width:2.4; opacity:0; }
+  .hs-flake { fill:none; stroke:#FF4D4D; stroke-width:1.8; opacity:0; }
+  .hs-tag { font-family:'Inter',sans-serif; font-size:21px; font-weight:700; letter-spacing:0.04em; fill:#F7F5F0; opacity:0; }
+  .hs-sheen { fill:none; stroke:rgba(247,245,240,0.5); stroke-width:2.2; stroke-linecap:round; opacity:0; }
+</style>
+<div data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="9.363">
+  <div id="hook-content" class="clip" data-start="0" data-duration="9.363" data-track-index="0">
+    <div class="hook-bg"></div>
+    <div class="hook-zoom" id="hook-zoom">
+      <div class="hook-hero" id="hook-hero">
+        <div class="hero-name">BETAINE<br>SALICYLATE</div>
+        <div class="hero-benefit">GENTLE PORE-CLEARING</div>
+      </div>
+
+      <!-- split field, rendered full-width (internals +50% vs the boxed cut) -->
+      <svg viewBox="0 0 480 400" width="1080" height="680" style="position:absolute; top:470px; left:0;" aria-hidden="true">
+        <defs>
+          <filter id="filter-hook-glow" x="-120%" y="-120%" width="340%" height="340%">
+            <feGaussianBlur stdDeviation="15" />
+          </filter>
+        </defs>
+        <line class="hs-bisector" x1="240" y1="30" x2="240" y2="360" />
+
+        <!-- left: the fear — irritation on sensitive skin. Never a face. -->
+        <g id="hs-left">
+          <circle class="hs-irritated-glow" id="hs-irr-glow" cx="126" cy="180" r="60" filter="url(#filter-hook-glow)" />
+          <path class="hs-halo-wire" d="M126,152 l10,-16 l12,14 l16,-8 l6,16 l18,2 l-4,17 l14,10 l-12,12 l8,16 l-17,5 l-1,18 l-17,-6 l-9,15 l-13,-12 l-16,9 l-6,-17 l-18,-2 l4,-17 l-14,-11 l13,-11 l-8,-16 l17,-4 l2,-18 l15,4 Z" />
+          <path class="hs-irritated-fill" id="hs-irr-fill" d="M126,152 l10,-16 l12,14 l16,-8 l6,16 l18,2 l-4,17 l14,10 l-12,12 l8,16 l-17,5 l-1,18 l-17,-6 l-9,15 l-13,-12 l-16,9 l-6,-17 l-18,-2 l4,-17 l-14,-11 l13,-11 l-8,-16 l17,-4 l2,-18 l15,4 Z" />
+          <path class="hs-flake" id="hs-flake-1" d="M92,120 l14,-4 l4,10 l-13,6 Z" />
+          <path class="hs-flake" id="hs-flake-2" d="M172,116 l12,2 l-2,12 l-12,-3 Z" />
+          <path class="hs-flake" id="hs-flake-3" d="M80,206 l10,8 l-7,9 l-10,-7 Z" />
+          <text class="hs-tag" id="hs-tag-left" x="126" y="300" text-anchor="middle">SENSITIVE SKIN</text>
+        </g>
+
+        <!-- right: the want — pore-clearing power, calm. -->
+        <g id="hs-right">
+          <circle class="hs-calm-glow" id="hs-calm-glow" cx="352" cy="180" r="60" filter="url(#filter-hook-glow)" />
+          <circle class="hs-halo-wire" cx="352" cy="180" r="62" />
+          <circle class="hs-calm-fill" id="hs-calm-fill" cx="352" cy="180" r="62" />
+          <path class="hs-sheen" id="hs-sheen" d="M322,152 C330,138 348,130 364,134" />
+          <text class="hs-tag" id="hs-tag-right" x="352" y="300" text-anchor="middle">PORE POWER</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var zoom = document.getElementById('hook-zoom');
+  var hero = document.getElementById('hook-hero');
+  var irrFill = document.getElementById('hs-irr-fill');
+  var irrGlow = document.getElementById('hs-irr-glow');
+  var calmFill = document.getElementById('hs-calm-fill');
+  var calmGlow = document.getElementById('hs-calm-glow');
+  var sheen = document.getElementById('hs-sheen');
+  var flakes = [1,2,3].map(function(i){ return document.getElementById('hs-flake-'+i); });
+  var tagL = document.getElementById('hs-tag-left');
+  var tagR = document.getElementById('hs-tag-right');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Frame zero: full-bleed dark stage with the stacked hero name + benefit composed.
+  // Word timings, installed take: "sensitive skin" 0.61-1.7 · "pore clearing
+  // power...stronger" 2.32-4.7 · "Strong ingredients like BHA" 5.07-7.3 ·
+  // "way too harsh" 7.80-8.36.
+
+  // Continuous slow zoom across the whole beat.
+  tl.fromTo(zoom, { scale: 1 }, { scale: 1.08, duration: 9.363, ease: 'none' }, 0);
+
+  // Scene 1 (QC: 1.5x pacing — problem statement fully staged before 3s):
+  tl.to(irrFill, { opacity: 1, duration: 0.35 }, 0.45);
+  tl.to(irrGlow, { opacity: 0.6, duration: 0.35 }, 0.45);
+  tl.to(tagL, { opacity: 1, duration: 0.3 }, 0.62);
+  flakes.forEach(function (f, i) {
+    tl.to(f, { opacity: 1, duration: 0.18 }, 0.75 + i * 0.17);
+    tl.to(f, { y: 24 + i * 8, opacity: 0, duration: 0.85, ease: 'power2.in' }, 0.92 + i * 0.17);
+  });
+
+  // Scene 2: the right field blooms cyan on "pore-clearing power of a BHA".
+  tl.to(calmFill, { opacity: 1, duration: 0.4 }, 1.60);
+  tl.to(calmGlow, { opacity: 0.6, duration: 0.4 }, 1.60);
+  tl.to(sheen, { opacity: 1, duration: 0.35 }, 1.85);
+  tl.to(tagR, { opacity: 1, duration: 0.3 }, 1.85);
+
+  // Scene 3: hero pulse on the question turn; red re-pulse on "way too harsh".
+  tl.fromTo(hero, { scale: 1 }, { scale: 1.04, duration: 0.35, ease: 'power2.out' }, 4.30);
+  tl.to(hero, { scale: 1, duration: 0.45, ease: 'power2.inOut' }, 4.65);
+  tl.to(irrGlow, { opacity: 0.85, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 7.80);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['01-hook'] = tl;
+})();
+</script>
+</template>

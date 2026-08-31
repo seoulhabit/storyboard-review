@@ -1,0 +1,54 @@
+<template>
+<link data-hf-id="hf-h1l1" rel="preconnect" href="https://fonts.googleapis.com">
+<link data-hf-id="hf-h1l2" rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link data-hf-id="hf-h1l3" href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=EB+Garamond:ital@0;1&family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#1A1512; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .plate-wrap { overflow:hidden; background:#1A1512; }
+  .plate-wrap img { width:1080px; height:1920px; object-fit:cover; display:block; will-change:transform; }
+  .grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.07; mix-blend-mode:multiply; }
+  .lockup { top:auto; bottom:560px; left:72px; right:auto; width:auto; display:flex; }
+  .lockup-card { background:#16181A; color:#FFFFFF; border-radius:24px; padding:34px 44px 30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35); }
+  .lk-name { font-family:'EB Garamond',serif; font-size:92px; line-height:1.02; position:relative; display:inline-block; }
+  .lk-name::after { content:""; position:absolute; left:0; bottom:-8px; height:5px; width:100%; background:#59B8AE; }
+  .lk-kicker { margin-top:22px; font-family:'Noto Sans KR','Inter',sans-serif; font-weight:700; font-size:27px;
+    letter-spacing:0.14em; color:rgba(255,255,255,0.82); text-transform:uppercase; }
+  .idx-tag { top:auto; bottom:500px; left:auto; right:180px; width:auto; height:auto; font-weight:700; font-size:22px;
+    letter-spacing:0.1em; color:rgba(255,255,255,0.88); background:#16181A; padding:10px 20px; border-radius:999px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.3); }
+</style>
+<div data-hf-id="hf-h1rt" data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="6.482">
+  <div data-hf-id="hf-h1pw" id="h1-plate" class="clip plate-wrap" data-start="0" data-duration="6.482" data-track-index="0">
+    <img data-hf-id="hf-h1im" id="h1-img" src="assets/plates/01.png" alt="" width="1080" height="1920" loading="eager" decoding="sync" data-layout-allow-overflow="true">
+  </div>
+  <div data-hf-id="hf-h1gr" id="h1-grain" class="clip grain" data-start="0" data-duration="6.482" data-track-index="1"></div>
+  <div data-hf-id="hf-h1lk" id="h1-lockup" class="clip lockup" data-start="0" data-duration="6.482" data-track-index="2">
+    <div data-hf-id="hf-h1cd" class="lockup-card" id="h1-card">
+      <div data-hf-id="hf-h1nm" class="lk-name" id="h1-name">Red Ginseng</div>
+      <div data-hf-id="hf-h1kk" class="lk-kicker" id="h1-kicker">홍삼 · Panax ginseng root</div>
+    </div>
+  </div>
+  <div data-hf-id="hf-h1ix" id="h1-idx" class="clip idx-tag" data-start="0" data-duration="6.482" data-track-index="3">01 / 06</div>
+</div>
+
+<script data-hf-id="hf-h1s0" src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script data-hf-id="hf-h1s1">
+(function () {
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+
+  // Frame zero is the video's scroll-stop frame: plate, name lockup, Korean kicker and
+  // index tag all fully opaque and legible from t=0. Only the Ken Burns drift animates.
+  tl.fromTo('#h1-img', { scale: 1.03 }, { scale: 1.085, duration: 6.482, transformOrigin: '50% 45%' }, 0);
+  gsap.set('#h1-card', { scale: 0.985, transformOrigin: '0% 100%' });
+  tl.to('#h1-card', { scale: 1.0, duration: 0.7, ease: 'power2.out' }, 0.15);
+
+  tl.to({}, { duration: 6.482 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['01-hook'] = tl;
+})();
+</script>
+</template>

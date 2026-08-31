@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #F7F5F0; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .clip { position: absolute; }
+      .vo-caption { top: 240px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
+      .vo-caption span { display: inline-block; max-width: 760px; background: rgba(247,245,240,0.94); color: #131516;
+        border: 1px solid rgba(19,21,22,0.1); font-family: 'Inter', 'Helvetica Neue', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.3;
+        text-align: center; padding: 12px 26px; border-radius: 16px; box-shadow: 0 4px 18px rgba(19,21,22,0.12); }
+    </style>
+  </head>
+  <body>
+    <!--
+      Round 2 (review pass): tightened for <59.5s — internal VO silences >0.30s compressed to
+      0.22s, takes sped 5% (atempo, pitch-preserved), CTA's final sentence cut after
+      "breakdown.", inter-beat gaps 0.15s. Takes re-transcribed post-processing; captions and
+      all cues recomputed programmatically from the new word timings.
+      S1=0.000 S2=9.861 S3=18.403 S4=30.074 S5=42.738 S6=51.272, total=57.671s.
+    -->
+    <div id="root" data-composition-id="main" data-start="0.000" data-duration="57.671" data-width="1080" data-height="1920">
+      <div id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="9.861" data-track-index="0"></div>
+      <audio id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="9.711" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-02-file" class="scene" data-composition-id="02-file" data-composition-src="compositions/frames/02-file.html" data-start="9.861" data-duration="8.542" data-track-index="1"></div>
+      <audio id="el-02-voice" src="assets/voice/02.wav" data-start="9.861" data-duration="8.392" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-03-mechanism" class="scene" data-composition-id="03-mechanism" data-composition-src="compositions/frames/03-mechanism.html" data-start="18.403" data-duration="11.671" data-track-index="0"></div>
+      <audio id="el-03-voice" src="assets/voice/03.wav" data-start="18.403" data-duration="11.521" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-04-protocol" class="scene" data-composition-id="04-protocol" data-composition-src="compositions/frames/04-protocol.html" data-start="30.074" data-duration="12.664" data-track-index="1"></div>
+      <audio id="el-04-voice" src="assets/voice/04.wav" data-start="30.074" data-duration="12.514" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-05-layer" class="scene" data-composition-id="05-layer" data-composition-src="compositions/frames/05-layer.html" data-start="42.738" data-duration="8.534" data-track-index="0"></div>
+      <audio id="el-05-voice" src="assets/voice/05.wav" data-start="42.738" data-duration="8.384" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-06-cta" class="scene" data-composition-id="06-cta" data-composition-src="compositions/frames/06-cta.html" data-start="51.272" data-duration="6.399" data-track-index="1"></div>
+      <audio id="el-06-voice" src="assets/voice/06.wav" data-start="51.272" data-duration="5.899" data-track-index="10" data-volume="1"></audio>
+
+      <!-- Burned-in captions — authoritative script text paired positionally with whisper word
+           timings (word counts verified equal per beat); each cue extends to the next cue's start. -->
+      <div id="el-cap-01" class="clip vo-caption" data-start="0.230" data-duration="1.080" data-track-index="5"><span>What if the secret</span></div>
+      <div id="el-cap-02" class="clip vo-caption" data-start="1.310" data-duration="1.730" data-track-index="5"><span>to calm, resilient skin</span></div>
+      <div id="el-cap-03" class="clip vo-caption" data-start="3.040" data-duration="1.070" data-track-index="5"><span>was a bitter herb</span></div>
+      <div id="el-cap-04" class="clip vo-caption" data-start="4.110" data-duration="1.530" data-track-index="5"><span>Korean healers have trusted</span></div>
+      <div id="el-cap-05" class="clip vo-caption" data-start="5.640" data-duration="1.320" data-track-index="5"><span>for a thousand years?</span></div>
+      <div id="el-cap-06" class="clip vo-caption" data-start="6.960" data-duration="1.240" data-track-index="5"><span>The science behind this leaf</span></div>
+      <div id="el-cap-07" class="clip vo-caption" data-start="8.200" data-duration="1.661" data-track-index="5"><span>is sharper than the folklore.</span></div>
+      <div id="el-cap-08" class="clip vo-caption" data-start="9.971" data-duration="1.020" data-track-index="5"><span>If your skin flushes red</span></div>
+      <div id="el-cap-09" class="clip vo-caption" data-start="10.991" data-duration="1.690" data-track-index="5"><span>at everything, weather, stress,</span></div>
+      <div id="el-cap-10" class="clip vo-caption" data-start="12.681" data-duration="0.750" data-track-index="5"><span>new products,</span></div>
+      <div id="el-cap-11" class="clip vo-caption" data-start="13.431" data-duration="0.750" data-track-index="5"><span>this is what your routine</span></div>
+      <div id="el-cap-12" class="clip vo-caption" data-start="14.181" data-duration="0.690" data-track-index="5"><span>is missing.</span></div>
+      <div id="el-cap-13" class="clip vo-caption" data-start="14.871" data-duration="1.270" data-track-index="5"><span>Inside the leaf are dozens</span></div>
+      <div id="el-cap-14" class="clip vo-caption" data-start="16.141" data-duration="0.860" data-track-index="5"><span>of compounds,</span></div>
+      <div id="el-cap-15" class="clip vo-caption" data-start="17.001" data-duration="1.402" data-track-index="5"><span>but the star is Eupatilin.</span></div>
+      <div id="el-cap-16" class="clip vo-caption" data-start="18.563" data-duration="1.680" data-track-index="5"><span>In lab and animal studies,</span></div>
+      <div id="el-cap-17" class="clip vo-caption" data-start="20.243" data-duration="1.060" data-track-index="5"><span>Eupatilin quieted the</span></div>
+      <div id="el-cap-18" class="clip vo-caption" data-start="21.303" data-duration="1.490" data-track-index="5"><span>inflammatory alarm signals</span></div>
+      <div id="el-cap-19" class="clip vo-caption" data-start="22.793" data-duration="0.900" data-track-index="5"><span>that skin fires</span></div>
+      <div id="el-cap-20" class="clip vo-caption" data-start="23.693" data-duration="1.710" data-track-index="5"><span>when its barrier is under attack.</span></div>
+      <div id="el-cap-21" class="clip vo-caption" data-start="25.403" data-duration="1.360" data-track-index="5"><span>The alarm gets turned down,</span></div>
+      <div id="el-cap-22" class="clip vo-caption" data-start="26.763" data-duration="1.420" data-track-index="5"><span>and irritated skin finally</span></div>
+      <div id="el-cap-23" class="clip vo-caption" data-start="28.183" data-duration="1.891" data-track-index="5"><span>gets a chance to settle.</span></div>
+      <div id="el-cap-24" class="clip vo-caption" data-start="30.274" data-duration="1.330" data-track-index="5"><span>But here is the protocol.</span></div>
+      <div id="el-cap-25" class="clip vo-caption" data-start="31.604" data-duration="0.860" data-track-index="5"><span>If you are steeping raw</span></div>
+      <div id="el-cap-26" class="clip vo-caption" data-start="32.464" data-duration="0.890" data-track-index="5"><span>mugwort or steaming</span></div>
+      <div id="el-cap-27" class="clip vo-caption" data-start="33.354" data-duration="1.360" data-track-index="5"><span>your face with it, stop.</span></div>
+      <div id="el-cap-28" class="clip vo-caption" data-start="34.714" data-duration="1.440" data-track-index="5"><span>You are irritating the exact</span></div>
+      <div id="el-cap-29" class="clip vo-caption" data-start="36.154" data-duration="1.550" data-track-index="5"><span>skin you are trying to calm.</span></div>
+      <div id="el-cap-30" class="clip vo-caption" data-start="37.704" data-duration="1.420" data-track-index="5"><span>Instead, use a fermented</span></div>
+      <div id="el-cap-31" class="clip vo-caption" data-start="39.124" data-duration="1.010" data-track-index="5"><span>mugwort essence</span></div>
+      <div id="el-cap-32" class="clip vo-caption" data-start="40.134" data-duration="1.460" data-track-index="5"><span>as your very first layer,</span></div>
+      <div id="el-cap-33" class="clip vo-caption" data-start="41.594" data-duration="1.144" data-track-index="5"><span>on damp skin.</span></div>
+      <div id="el-cap-34" class="clip vo-caption" data-start="42.938" data-duration="1.870" data-track-index="5"><span>That first layer placement</span></div>
+      <div id="el-cap-35" class="clip vo-caption" data-start="44.808" data-duration="1.110" data-track-index="5"><span>floods reactive skin</span></div>
+      <div id="el-cap-36" class="clip vo-caption" data-start="45.918" data-duration="1.100" data-track-index="5"><span>with soothing compounds</span></div>
+      <div id="el-cap-37" class="clip vo-caption" data-start="47.018" data-duration="1.640" data-track-index="5"><span>before anything else touches it.</span></div>
+      <div id="el-cap-38" class="clip vo-caption" data-start="48.658" data-duration="2.614" data-track-index="5"><span>No sting, no flush, no fight.</span></div>
+      <div id="el-cap-39" class="clip vo-caption" data-start="51.532" data-duration="0.640" data-track-index="5"><span>Drop a leaf emoji</span></div>
+      <div id="el-cap-40" class="clip vo-caption" data-start="52.172" data-duration="0.860" data-track-index="5"><span>in the comments</span></div>
+      <div id="el-cap-41" class="clip vo-caption" data-start="53.032" data-duration="1.010" data-track-index="5"><span>if your skin overreacts</span></div>
+      <div id="el-cap-42" class="clip vo-caption" data-start="54.042" data-duration="0.710" data-track-index="5"><span>to everything,</span></div>
+      <div id="el-cap-43" class="clip vo-caption" data-start="54.752" data-duration="1.110" data-track-index="5"><span>and follow for the next</span></div>
+      <div id="el-cap-44" class="clip vo-caption" data-start="55.862" data-duration="1.170" data-track-index="5"><span>ingredient breakdown.</span></div>
+
+      <!-- BGM — quiet bed, trimmed+faded to the new runtime, ducked well beneath narration -->
+      <audio id="el-bgm" src="assets/bgm/track-pulse-58.wav" data-start="0.000" data-duration="57.671" data-track-index="11" data-volume="0.1"></audio>
+
+      <!-- SFX — lean 3-sound palette (click-soft / whoosh-short / chime) -->
+      <audio id="el-sfx-01" src="assets/sfx/whoosh-short.mp3" data-start="9.861" data-duration="0.575" data-track-index="20" data-volume="0.28"></audio>
+      <audio id="el-sfx-02" src="assets/sfx/click-soft.mp3" data-start="17.231" data-duration="0.366" data-track-index="21" data-volume="0.22"></audio>
+      <audio id="el-sfx-03" src="assets/sfx/click-soft.mp3" data-start="18.403" data-duration="0.366" data-track-index="22" data-volume="0.2"></audio>
+      <audio id="el-sfx-04" src="assets/sfx/chime.mp3" data-start="20.243" data-duration="2.5" data-track-index="23" data-volume="0.22"></audio>
+      <audio id="el-sfx-05" src="assets/sfx/click-soft.mp3" data-start="30.074" data-duration="0.366" data-track-index="24" data-volume="0.2"></audio>
+      <audio id="el-sfx-06" src="assets/sfx/click-soft.mp3" data-start="34.434" data-duration="0.366" data-track-index="25" data-volume="0.25"></audio>
+      <audio id="el-sfx-07" src="assets/sfx/chime.mp3" data-start="37.704" data-duration="2.5" data-track-index="26" data-volume="0.22"></audio>
+      <audio id="el-sfx-08" src="assets/sfx/whoosh-short.mp3" data-start="42.738" data-duration="0.575" data-track-index="27" data-volume="0.26"></audio>
+      <audio id="el-sfx-09" src="assets/sfx/chime.mp3" data-start="44.808" data-duration="2.5" data-track-index="28" data-volume="0.22"></audio>
+      <audio id="el-sfx-10" src="assets/sfx/whoosh-short.mp3" data-start="51.272" data-duration="0.575" data-track-index="29" data-volume="0.28"></audio>
+      <audio id="el-sfx-11" src="assets/sfx/click-soft.mp3" data-start="55.052" data-duration="0.366" data-track-index="30" data-volume="0.22"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var tl = window.__timelines["main"];
+        tl.to({}, { duration: 57.671 }, 0); // full-span anchor
+      })();
+    </script>
+  </body>
+</html>

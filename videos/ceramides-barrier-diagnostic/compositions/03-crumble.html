@@ -1,0 +1,276 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=IBM+Plex+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #17191A;
+    font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  }
+  #root * { box-sizing: border-box; }
+  #root .clip { position: absolute; }
+  #c3a-wrap, #c3b-wrap, #c3-broll-wrap { inset: 0; }
+
+  /* ── Beat A: age 20 vs age 30 bar chart ─────────────────── */
+  .c3a-inner { position: absolute; inset: 0; opacity: 1; }
+
+  .c3a-chart {
+    position: absolute;
+    top: 472px; /* QA: shifted up 288px (15% of canvas) with baseline+tag below */
+    left: 0;
+    right: 0;
+    height: 460px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 120px;
+  }
+  .c3a-bar-wrap { display: flex; flex-direction: column; align-items: center; }
+  .c3a-bar {
+    width: 148px;
+    background: #6C9BB8;
+    border-radius: 6px 6px 0 0;
+    transform-origin: bottom center;
+  }
+  .c3a-bar.age30 { background: #7FB89C; }
+  .c3a-bar-label {
+    margin-top: 16px;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 34px; /* QC: raised from 26px to match the "-40% Reserve Lost" tag */
+    letter-spacing: 0.06em;
+    color: #C7CAC3;
+  }
+  .c3a-baseline {
+    position: absolute;
+    top: 932px;
+    left: 220px;
+    right: 220px;
+    height: 2px;
+    background: #3A3D3B;
+  }
+  /* QC review asked for a 200px upward nudge, flagging this as too close to the
+     bottom safe area. Measured position (top:1300px on a 1920px canvas, ~68%) was
+     already clear of the 80% boundary. Tested the literal 200px move (top:1100px)
+     directly and confirmed by rendered snapshot that it collides with the Age 20
+     bar and sits above the axis labels instead of below them — a real regression.
+     Nudged up a smaller, layout-safe amount instead (baseline sits at top:1220px,
+     so this keeps a clear 40px gap above it). */
+  .c3a-tag-wrap {
+    position: absolute;
+    top: 972px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .c3a-tag {
+    opacity: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 700;
+    font-size: 34px;
+    letter-spacing: 0.03em;
+    color: #F1EEE6;
+    background: #232625;
+    border: 2px solid #7FB89C;
+    border-radius: 4px;
+    padding: 14px 28px;
+  }
+
+  /* ── Beat B: the same wall, now crumbling ───────────────── */
+  .c3b-inner { position: absolute; inset: 0; opacity: 0; }
+
+  .c3b-stage { position: absolute; top: 660px; left: 0; right: 0; display: flex; justify-content: center; }
+  .c3b-wall { position: relative; width: 952px; height: 480px; }
+  .c3b-grout { position: absolute; inset: 0; background: #4F7A68; border-radius: 10px; }
+  .c3b-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  .c3b-brick { background: #E7E4DA; border-radius: 6px; }
+
+  .c3b-label-wrap {
+    position: absolute;
+    top: 1300px;
+    left: 0;
+    right: 0;
+    height: 48px;
+  }
+  .c3b-label {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #A8ABA3;
+    text-align: center;
+  }
+  .c3b-label .warn { color: #6C9BB8; }
+
+  /* ── B-roll cutaway: live-action insert on "moisture escapes" ── */
+  .c3-broll-wrap {
+    opacity: 0;
+    background: #101112;
+  }
+  .c3-broll-wrap video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* QC: caption was 26px near the bottom band — scaled ~155% and moved to the
+     vertical center of the frame so no Shorts UI can cover it. */
+  .c3-broll-caption-wrap {
+    position: absolute;
+    top: 910px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .c3-broll-caption {
+    background: rgba(16,17,18,0.55);
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #F1EEE6;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.7);
+  }
+</style>
+
+<div data-hf-id="hf-c3-root" id="root" data-composition-id="clinical-03-crumble" data-width="1080" data-height="1920" data-duration="8.6">
+
+  <div data-hf-id="hf-c3a-wrap" id="c3a-wrap" class="clip" data-start="0" data-duration="8.6" data-track-index="0">
+    <div data-hf-id="hf-c3a-inner" id="c3a-inner" class="c3a-inner">
+      <div data-hf-id="hf-c3a-baseline" class="c3a-baseline"></div>
+      <div data-hf-id="hf-c3a-chart" class="c3a-chart">
+        <div data-hf-id="hf-c3a-w20" class="c3a-bar-wrap">
+          <div data-hf-id="hf-c3a-bar20" id="c3a-bar20" class="c3a-bar age20" style="height:420px;"></div>
+          <div data-hf-id="hf-c3a-l20" class="c3a-bar-label">Age 20</div>
+        </div>
+        <div data-hf-id="hf-c3a-w30" class="c3a-bar-wrap">
+          <div data-hf-id="hf-c3a-bar30" id="c3a-bar30" class="c3a-bar age30" style="height:252px;"></div>
+          <div data-hf-id="hf-c3a-l30" class="c3a-bar-label">Age 30</div>
+        </div>
+      </div>
+      <div data-hf-id="hf-c3a-tag-wrap" class="c3a-tag-wrap">
+        <div data-hf-id="hf-c3a-tag" id="c3a-tag" class="c3a-tag">&minus;40% Reserve Lost</div>
+      </div>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-c3b-wrap" id="c3b-wrap" class="clip" data-start="0" data-duration="8.6" data-track-index="1">
+    <div data-hf-id="hf-c3b-inner" id="c3b-inner" class="c3b-inner">
+      <div data-hf-id="hf-c3b-stage" class="c3b-stage">
+        <div data-hf-id="hf-c3b-wall" class="c3b-wall">
+          <div data-hf-id="hf-c3b-grout" id="c3b-grout" class="c3b-grout"></div>
+          <div data-hf-id="hf-c3b-grid" class="c3b-grid">
+            <div data-hf-id="hf-c3b-b0" class="c3b-brick b0"></div>
+            <div data-hf-id="hf-c3b-b1" class="c3b-brick b1"></div>
+            <div data-hf-id="hf-c3b-b2" class="c3b-brick b2"></div>
+            <div data-hf-id="hf-c3b-b3" class="c3b-brick b3"></div>
+            <div data-hf-id="hf-c3b-b4" class="c3b-brick b4"></div>
+            <div data-hf-id="hf-c3b-b5" class="c3b-brick b5"></div>
+            <div data-hf-id="hf-c3b-b6" class="c3b-brick b6"></div>
+            <div data-hf-id="hf-c3b-b7" class="c3b-brick b7"></div>
+            <div data-hf-id="hf-c3b-b8" class="c3b-brick b8"></div>
+            <div data-hf-id="hf-c3b-b9" class="c3b-brick b9"></div>
+            <div data-hf-id="hf-c3b-b10" class="c3b-brick b10"></div>
+            <div data-hf-id="hf-c3b-b11" class="c3b-brick b11"></div>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-c3b-label-wrap" class="c3b-label-wrap">
+        <div data-hf-id="hf-c3b-label-actives" id="c3b-label-actives" class="c3b-label">Actives <span class="warn">leak out.</span></div>
+        <div data-hf-id="hf-c3b-label" id="c3b-label" class="c3b-label">Barrier <span class="warn">compromised</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-c3-broll-wrap" id="c3-broll-wrap" class="clip c3-broll-wrap" data-track-index="2">
+    <video data-hf-id="hf-c3-broll-video" id="c3-broll-video" src="assets/broll/serum-macro.mp4" data-start="0" data-duration="8.6" data-media-start="0.2" muted loop></video>
+    <div data-hf-id="hf-c3-broll-caption-wrap" class="c3-broll-caption-wrap">
+      <div data-hf-id="hf-c3-broll-caption" class="c3-broll-caption">Moisture &mdash; Escaping</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var root = document.currentScript.parentElement;
+  var q = function (sel) { return root.querySelector(sel); };
+  var BEAT_SPLIT = 2.95; // "reserve." ends 2.92s — "The wall crumbles" begins right after.
+
+  var tl = gsap.timeline({ paused: true });
+
+  // ── Beat A: bars grow from the baseline — synced to "lose 40% of this reserve" (0.93-2.92s) ──
+  tl.fromTo(q('#c3a-bar20'), { scaleY: 0 }, { scaleY: 1, duration: 0.32, ease: 'power2.out' }, 0.35);
+  tl.fromTo(q('#c3a-bar30'), { scaleY: 0 }, { scaleY: 1, duration: 0.32, ease: 'power2.out' }, 1.05);
+  tl.fromTo(q('#c3a-tag'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.28, ease: 'power2.out' }, 1.65);
+
+  // ── Beat transition: the chart dissolves straight into the (already-formed) wall ──
+  tl.to(q('#c3a-inner'), { opacity: 0, duration: 0.3, ease: 'power2.inOut' }, BEAT_SPLIT);
+  tl.fromTo(q('#c3b-inner'), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.inOut' }, BEAT_SPLIT);
+
+  // Fixed (non-random) per-brick collapse targets — rotation/x/y hand-varied so the
+  // crumble reads as debris, not a uniform fade.
+  var collapse = [
+    { r: -18, x: -22, y: 70 }, { r: 12, x: 10, y: 55 }, { r: -8, x: 26, y: 90 }, { r: 24, x: -14, y: 60 },
+    { r: 20, x: -30, y: 50 }, { r: -14, x: 4, y: 80 }, { r: 9, x: 22, y: 65 }, { r: -26, x: -8, y: 95 },
+    { r: -10, x: -18, y: 60 }, { r: 22, x: 16, y: 75 }, { r: -20, x: 28, y: 55 }, { r: 15, x: -24, y: 85 },
+  ];
+  var CRUMBLE_AT = 3.2; // "wall crumbles," (3.04-3.63s).
+  collapse.forEach(function (c, i) {
+    tl.to(q('.c3b-brick.b' + i), {
+      rotation: c.r, x: c.x, y: c.y, opacity: 0.35,
+      transformOrigin: '50% 50%',
+      duration: 0.5, ease: 'power2.in',
+    }, CRUMBLE_AT + i * 0.018);
+  });
+  tl.to(q('#c3b-grout'), { opacity: 0.18, duration: 0.45, ease: 'power2.in' }, CRUMBLE_AT);
+
+  // B-roll cutaway — serum macro, standing in for "moisture escapes," (3.75-4.72s).
+  // Crossfades over the settled rubble, then hands back to the graphic for the close.
+  // Extended hold (was 1.1s visible, now 1.8s) — 60s runway means it can actually breathe.
+  tl.fromTo(q('#c3-broll-wrap'), { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.inOut' }, 3.6);
+  tl.to(q('#c3-broll-wrap'), { opacity: 0, duration: 0.3, ease: 'power2.inOut' }, 5.1);
+
+  // Two-step label — synced to "expensive actives leak straight out." (4.88-6.68s).
+  // First states the specific claim (accessibility: this exact phrase had no on-screen
+  // text equivalent before, so a muted viewer missed it), then resolves to the general
+  // consequence. Both must be fully gone before the scene-level crossfade into Scene 4
+  // (off-white) begins at local 6.78 — these colors are tuned for a dark ground.
+  tl.fromTo(q('#c3b-label-actives'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: 'power2.out' }, 5.5);
+  tl.to(q('#c3b-label-actives'), { opacity: 0, duration: 0.15, ease: 'power2.in' }, 6.3);
+  // "Barrier compromised" is this scene's resting state — holds for ~6s (was ~0.65s)
+  // now that there's real runway, letting the diagnosis actually land before the cut.
+  tl.fromTo(q('#c3b-label'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.24, ease: 'power2.out' }, 6.5);
+  // Out before the crossfade into the light Scene 4 begins at local 8.3.
+  tl.to(q('#c3b-label'), { opacity: 0, duration: 0.15, ease: 'power2.in' }, 8.1);
+
+  tl.set({}, {}, 8.6);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['clinical-03-crumble'] = tl;
+})();
+</script>
+</template>

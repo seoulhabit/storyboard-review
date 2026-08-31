@@ -1,0 +1,149 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .so-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .so-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  /* Phase A: identity card fills the content band */
+  .uc-card { position:absolute; left:129px; top:470px; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:56px 64px; opacity:0; }
+  .uc-kicker { font-weight:700; font-size:2.4cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:22px; opacity:0; }
+  .so-name { font-family:'EB Garamond',serif; font-size:5.6cqw; line-height:1.1; margin-bottom:30px; opacity:0; }
+  .uc-field { padding:18px 0; border-bottom:1px solid rgba(19,21,22,0.1); opacity:0; }
+  .uc-field:last-of-type { border-bottom:none; }
+  .uc-field .uc-field-label { display:block; font-weight:700; font-size:2.3cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:8px; }
+  .uc-field .uc-field-value { display:block; font-size:2.8cqw; font-weight:500; line-height:1.35; }
+  .so-badge { position:absolute; top:48px; right:48px; width:84px; height:84px; border-radius:50%; background:rgba(19,21,22,0.04); border:1px solid rgba(19,21,22,0.14); display:flex; align-items:center; justify-content:center; opacity:0; }
+  .so-badge svg { width:48px; height:48px; }
+  .so-claim-block { margin-top:26px; opacity:0; }
+  .uc-claim { font-size:3.1cqw; line-height:1.42; font-weight:600; margin-bottom:16px; }
+  .uc-unsourced { font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+
+  /* Phase B: dark stage — dimmed tangle + aqua blueprint */
+  .so-stage-wrap { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px; padding:0 90px; text-align:center; opacity:0; }
+  .so-stage-box { position:relative; width:640px; height:660px; background:#0D1112; border-radius:40px; overflow:hidden; }
+  .so-hud-label { position:absolute; top:38px; left:44px; font-weight:700; font-size:2.0cqw; letter-spacing:0.14em; color:#59B8AE; text-transform:uppercase; opacity:0; }
+  .so-tag { position:absolute; bottom:26px; left:44px; font-weight:700; font-size:1.7cqw; letter-spacing:0.08em; color:rgba(236,233,226,0.5); text-align:left; }
+  .so-frame-line { font-family:'EB Garamond',serif; font-style:italic; font-size:4.2cqw; color:rgba(19,21,22,0.8); opacity:0; }
+</style>
+<div data-hf-id="hf-s4rt" data-composition-id="04-solution" id="root" data-width="1080" data-height="1920" data-duration="10.100">
+  <div data-hf-id="hf-s4bg" id="so-bg" class="clip so-bg" data-start="0" data-duration="10.100" data-track-index="0"></div>
+  <div data-hf-id="hf-s4gr" id="so-grain" class="clip so-grain" data-start="0" data-duration="10.100" data-track-index="1"></div>
+
+  <div data-hf-id="hf-s4ph1" id="so-phase-a" class="clip" data-start="0" data-duration="10.100" data-track-index="2">
+    <div data-hf-id="hf-s4cd" class="uc-card" id="so-card">
+      <div data-hf-id="hf-s4kk" class="uc-kicker" id="so-kicker">Ingredient identity</div>
+      <div data-hf-id="hf-s4nm" class="so-name" id="so-name">Madecassoside</div>
+      <div data-hf-id="hf-s4bd" class="so-badge" id="so-badge">
+        <svg data-hf-id="hf-s4bs" viewBox="0 0 60 60" aria-hidden="true">
+          <!-- centella leaf: rounded kidney-leaf silhouette + veins -->
+          <path data-hf-id="hf-s4lf" d="M30,52 C12,48 4,34 6,22 C8,12 18,6 30,6 C42,6 52,12 54,22 C56,34 48,48 30,52 Z" fill="rgba(19,21,22,0.5)" />
+          <path data-hf-id="hf-s4vn" d="M30,50 V14 M30,34 C22,30 16,24 14,18 M30,34 C38,30 44,24 46,18" stroke="#FBF9F5" stroke-width="2.4" fill="none" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-s4f1" class="uc-field" id="so-f1"><span data-hf-id="hf-s4l1" class="uc-field-label">INCI</span><span data-hf-id="hf-s4v1" class="uc-field-value">Madecassoside</span></div>
+      <div data-hf-id="hf-s4f2" class="uc-field" id="so-f2"><span data-hf-id="hf-s4l2" class="uc-field-label">Source</span><span data-hf-id="hf-s4v2" class="uc-field-value">Centella asiatica (tiger grass) extract</span></div>
+      <div data-hf-id="hf-s4f3" class="uc-field" id="so-f3"><span data-hf-id="hf-s4l3" class="uc-field-label">What it is</span><span data-hf-id="hf-s4v3" class="uc-field-value">One purified triterpenoid molecule, isolated from the plant</span></div>
+      <div data-hf-id="hf-s4cb" class="so-claim-block" id="so-claim-block">
+        <div data-hf-id="hf-s4cl" class="uc-claim">Doesn't just soothe — acts on how scar structure rebuilds.</div>
+        <div data-hf-id="hf-s4un" class="uc-unsourced">○ UNSOURCED — no record in this system</div>
+      </div>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-s4ph2" id="so-phase-b" class="clip so-stage-wrap" data-start="0" data-duration="10.100" data-track-index="3">
+    <div data-hf-id="hf-s4bx" class="so-stage-box" id="so-stage-box">
+      <div data-hf-id="hf-s4hd" class="so-hud-label" id="so-hud">Target structure</div>
+      <svg data-hf-id="hf-s4sv" id="so-svg" viewBox="0 0 640 660" width="640" height="660" aria-hidden="true">
+        <g data-hf-id="hf-s4kn" id="so-knot" opacity="0.85"></g>
+        <g data-hf-id="hf-s4bp" id="so-blueprint" opacity="0">
+          <path data-hf-id="hf-s4g1" d="M120,220 H520 M120,300 H520 M120,380 H520 M120,460 H520" stroke="#59B8AE" stroke-width="3" stroke-dasharray="12 10" fill="none" />
+          <path data-hf-id="hf-s4g2" d="M120,220 V460 M253,220 V460 M386,220 V460 M520,220 V460" stroke="rgba(89,184,174,0.55)" stroke-width="2.4" stroke-dasharray="8 8" fill="none" />
+          <path data-hf-id="hf-s4g3" d="M100,200 h28 M100,200 v28 M540,200 h-28 M540,200 v28 M100,480 h28 M100,480 v-28 M540,480 h-28 M540,480 v-28" stroke="#59B8AE" stroke-width="3" fill="none" />
+        </g>
+      </svg>
+      <div data-hf-id="hf-s4tg" class="so-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+    <div data-hf-id="hf-s4fl" class="so-frame-line" id="so-frame-line">"A biological architect."</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  // Same seed → same knot, dimmed, awaiting its blueprint.
+  function lcg(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  var rnd = lcg(20260829);
+  var NS = 'http://www.w3.org/2000/svg';
+  var knot = document.getElementById('so-knot');
+  var CX = 320, CY = 320;
+  for (var i = 0; i < 14; i++) {
+    var a0 = rnd() * Math.PI * 2, a1 = rnd() * Math.PI * 2, a2 = rnd() * Math.PI * 2;
+    var r0 = 26 + rnd() * 64, r1 = 20 + rnd() * 70, r2 = 24 + rnd() * 60;
+    var x0 = CX + Math.cos(a0) * r0, y0 = CY + Math.sin(a0) * r0 * 0.8;
+    var x1 = CX + Math.cos(a1) * (r1 + 40), y1 = CY + Math.sin(a1) * r1;
+    var x2 = CX + Math.cos(a2) * r2, y2 = CY + Math.sin(a2) * r2 * 0.85;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) +
+      ' Q' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' + x2.toFixed(1) + ',' + y2.toFixed(1));
+    p.setAttribute('stroke', i % 3 === 0 ? 'rgba(228,87,77,0.8)' : 'rgba(228,87,77,0.5)');
+    p.setAttribute('stroke-width', (2.6 + rnd() * 1.6).toFixed(1));
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    knot.appendChild(p);
+    rnd();
+  }
+
+  var card = document.getElementById('so-card');
+  var kicker = document.getElementById('so-kicker');
+  var name = document.getElementById('so-name');
+  var badge = document.getElementById('so-badge');
+  var f1 = document.getElementById('so-f1');
+  var f2 = document.getElementById('so-f2');
+  var f3 = document.getElementById('so-f3');
+  var claimBlock = document.getElementById('so-claim-block');
+  var phaseB = document.getElementById('so-phase-b');
+  var blueprint = document.getElementById('so-blueprint');
+  var hud = document.getElementById('so-hud');
+  var frameLine = document.getElementById('so-frame-line');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  gsap.set(document.getElementById('so-knot'), { y: 10, scale: 1.45, svgOrigin: '320 320' });
+
+  // Local cues: "Enter Madecassoside" 0.0-2.4 · isolated@2.56 · purified@3.84 ·
+  // molecule@4.32 · soothe@5.69 · skin@6.12 · acts@7.12 · biological architect@8.67-9.1.
+
+  // Phase A — the card lands with "Enter", name scan-wipes with the spoken name.
+  // QA round: fields moved earlier (1.2-2.2s) — synced to "isolated/purified" they left the
+  // card visibly empty for its first 2.5 seconds.
+  tl.fromTo(card, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55 }, 0.05);
+  tl.to(kicker, { opacity: 1, duration: 0.35 }, 0.35);
+  tl.fromTo(name, { opacity: 0, clipPath: 'inset(0 100% 0 0)' },
+    { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 0.6, ease: 'power2.inOut' }, 0.47);
+  tl.fromTo(badge, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4 }, 1.05);
+  tl.fromTo(f1, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, 1.20);
+  tl.fromTo(f2, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, 1.70);
+  tl.fromTo(f3, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, 2.20);
+  tl.to(claimBlock, { opacity: 1, duration: 0.5 }, 4.92);
+
+  // Phase B — cut to the dark stage on "It acts as…": blueprint projects over the tangle.
+  tl.to(card.parentElement, { opacity: 0, duration: 0.35, ease: 'power2.inOut' }, 6.90);
+  tl.to(phaseB, { opacity: 1, duration: 0.35, ease: 'power2.inOut' }, 6.95);
+  tl.to(hud, { opacity: 1, duration: 0.4 }, 7.35);
+  tl.fromTo(blueprint, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power2.inOut' }, 7.30);
+  tl.fromTo(blueprint, { scale: 1.05, transformOrigin: '320px 340px' }, { scale: 1.0, duration: 1.0 }, 7.30);
+  tl.fromTo(frameLine, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 8.67);
+
+  tl.to({}, { duration: 10.100 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-solution'] = tl;
+})();
+</script>
+</template>

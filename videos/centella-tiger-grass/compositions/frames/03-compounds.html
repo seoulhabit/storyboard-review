@@ -1,0 +1,88 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; color:#131516; font-family:'Helvetica Neue','Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  .cmp-kicker { position:absolute; top:400px; left:96px; font-weight:700; font-size:32px;
+    letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  .cmp-chip { position:absolute; left:96px; width:660px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:22px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:34px 44px; opacity:0; transform-origin:0% 50%; }
+  .cmp-chip .cmp-name { font-size:4.1cqw; font-weight:600; }
+  .cmp-1 { top:470px; }
+  .cmp-2 { top:610px; }
+  .cmp-3 { top:750px; }
+  .cmp-4 { top:890px; }
+  .cmp-1 { border-width:2px; }   /* highlight target — border recolors to aqua on "the star" */
+
+  .cmp-primary { position:absolute; left:96px; top:1046px; font-weight:700; font-size:31px;
+    letter-spacing:0.1em; text-transform:uppercase; color:rgba(19,21,22,0.62); opacity:0;
+    display:inline-block; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px); border:1px solid rgba(255,255,255,0.85);
+    border-radius:12px; padding:16px 28px; }
+
+  /* UNSOURCED flag: ○ prefix, no bracket, muted — never coral/celadon/aqua/red. */
+</style>
+<div data-composition-id="03-compounds" id="root" data-width="1080" data-height="1920" data-duration="8.653">
+
+  <!-- G1 botanical underlay: dimmed slow b-roll behind the cards (wrapper non-timed; video carries timing) -->
+  <div id="cmp-underlay" class="clip" style="z-index:0;">
+    <video id="cmp-uvid" src="assets/plates/under-3.mp4" muted playsinline data-start="0" data-duration="8.653" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05);"></video>
+    <div style="position:absolute;inset:0;background:rgba(16,19,20,0.80);"></div>
+  </div>
+
+
+  <div id="cmp-all" class="clip" data-start="0" data-duration="8.653" data-track-index="0">
+    <div class="cmp-kicker" id="cmp-kicker">Inside Tiger Grass:</div>
+
+    <div class="cmp-chip cmp-1" id="cmp-1"><span class="cmp-name">Madecassoside</span></div>
+    <div class="cmp-chip cmp-2" id="cmp-2"><span class="cmp-name">Asiaticoside</span></div>
+    <div class="cmp-chip cmp-3" id="cmp-3"><span class="cmp-name">Madecassic acid</span></div>
+    <div class="cmp-chip cmp-4" id="cmp-4"><span class="cmp-name">Asiatic acid</span></div>
+
+    <div class="cmp-primary" id="cmp-primary">Primary active — this video's framing</div>
+  </div>
+
+</div>
+<script>
+(function () {
+  var kicker = document.getElementById('cmp-kicker');
+  var chips = ['cmp-1','cmp-2','cmp-3','cmp-4'].map(function (i) { return document.getElementById(i); });
+  var primary = document.getElementById('cmp-primary');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(kicker, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 0.20);
+
+  // "four active compounds" (local ~1.05): chips pop on the SFX click grid.
+  chips.forEach(function (c, i) {
+    tl.fromTo(c, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4 }, 1.00 + i * 0.14);
+  });
+
+  // "The star is madecassoside" (2.92): chip 1 scales up, border goes aqua; others dim.
+  tl.to(chips[0], { scale: 1.06, borderColor: '#59B8AE', duration: 0.35, ease: 'power4.out' }, 2.90);
+  tl.to([chips[1], chips[2], chips[3]], { opacity: 0.58, duration: 0.5 }, 2.95);
+
+  // "a molecule your inflamed skin has been begging for" (5.17→): framing label + flag.
+  tl.to(primary, { opacity: 1, duration: 0.45 }, 5.20);
+
+
+  // G1 underlay drift + G2 push-in (rework brief) — seek-safe, one direction per scene.
+  var uvid = document.getElementById('cmp-uvid');
+  tl.fromTo(uvid, { scale: 1.06, xPercent: 2 }, { scale: 1.12, xPercent: -2, duration: 8.653, ease: 'none', immediateRender: true }, 0);
+  ['cmp-all'].forEach(function (id) {
+    var el = document.getElementById(id);
+    gsap.set(el, { transformOrigin: '50% 45%' });
+    tl.fromTo(el, { scale: 1.0 }, { scale: 1.05, duration: 8.653, ease: 'power1.inOut', immediateRender: false }, 0);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['03-compounds'] = tl;
+})();
+</script>
+</template>

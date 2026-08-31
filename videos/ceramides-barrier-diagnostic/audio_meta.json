@@ -1,0 +1,41 @@
+{
+  "tts_provider": null,
+  "voice_id": null,
+  "bgm": {
+    "path": "assets/bgm/track.mp3",
+    "volume": 0.9,
+    "query": "minimal ambient electronic pulse clinical technology sparse focus",
+    "mode": "retrieve",
+    "duration_s": 23
+  },
+  "bgm_pending": false,
+  "bgm_provider": "heygen",
+  "bgm_pid": null,
+  "bgm_log": null,
+  "bgm_mode": "retrieve",
+  "bgm_target_duration_s": null,
+  "bgm_seed_duration_s": null,
+  "bgm_loop_count": null,
+  "voices": [],
+  "sfx": [
+    {
+      "id": "c1",
+      "name": "sharp text stamp impact hit",
+      "file": "assets/sfx/sharp-text-stamp-impact-hit.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 3.603,
+      "volume": 0.35
+    },
+    {
+      "id": "c3",
+      "name": "wall crumble crack collapse",
+      "file": "assets/sfx/wall-crumble-crack-collapse.mp3",
+      "source": "heygen",
+      "offset_s": 0,
+      "duration_s": 5.387,
+      "volume": 0.35
+    }
+  ],
+  "total_duration_s": 0
+}

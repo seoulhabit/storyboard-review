@@ -1,0 +1,123 @@
+<template>
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  /* Paper radial ground + grain — cloned from the shipped PDRN hook (frame.md surface kit). */
+  .hook-bg { background:
+      radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .hook-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  /* Content window y ∈ [288, 1440] (frame.md's PDRN convention — no caption track). */
+  .hook-stage { top:288px; left:0; width:1080px; height:1152px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px; padding:0 60px; text-align:center; }
+
+  /* Retention hook: the ingredient NAME is the headline, on screen from frame zero. */
+  .hook-caption-wrap { position:relative; display:inline-block; }
+  .hook-caption { font-family:'Inter',sans-serif; font-weight:800; font-size:4.6cqw; letter-spacing:-0.01em; text-transform:uppercase; line-height:1.05; color:#131516; white-space:nowrap; }
+  .hook-w { display:inline-block; margin:0 0.13em; }
+  /* Coral voltage — drawn left→right on the "myth" clause; scaleX driven by fromTo only. */
+  .hook-underline { position:absolute; left:0; right:0; bottom:-16px; height:4px; background:#C97A5C; transform-origin:left center; }
+
+  /* Benefit subline — lands inside the first second, right under the name. */
+  .hook-sub { font-family:'JetBrains Mono',monospace; font-weight:500; font-size:2.15cqw; letter-spacing:0.14em; text-transform:uppercase; color:rgba(19,21,22,0.62); }
+
+  /* Dark stage panel — the ONE glow-permitted surface (frame.md). */
+  .hook-stage-box { position:relative; width:640px; height:700px; background:#131516; border-radius:40px; overflow:hidden; }
+
+  /* Sugar-polymer chain: 3 linked line-drawn hexagons, #6FE0D3 neon-glow register — the hero
+     visual, fully lit from frame zero (no slow build; retention pass removed the orb prelude). */
+  .hook-chain-wrap { position:absolute; top:50%; left:50%; width:520px; height:260px; margin:-130px 0 0 -260px; }
+  .hook-chain-glow { position:absolute; inset:-56px -64px; opacity:0.9;
+    background:radial-gradient(closest-side, rgba(89,184,174,0.42), rgba(89,184,174,0.14) 55%, rgba(89,184,174,0) 78%);
+    filter:blur(14px); }
+  .hook-chain { position:absolute; top:0; left:0;
+    filter:drop-shadow(0 0 8px rgba(111,224,211,0.9)) drop-shadow(0 0 24px rgba(89,184,174,0.65)) drop-shadow(0 0 64px rgba(89,184,174,0.4)); }
+</style>
+<div data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="4.780">
+  <div id="hook-bg" class="clip hook-bg" data-start="0" data-duration="4.780" data-track-index="0"></div>
+  <div id="hook-grain" class="clip hook-grain" data-start="0" data-duration="4.780" data-track-index="1"></div>
+
+  <div id="hook-stage" class="clip hook-stage" data-start="0" data-duration="4.780" data-track-index="2">
+    <div class="hook-caption-wrap">
+      <div class="hook-caption" id="hook-caption"><span class="hook-w" id="hook-w1">HYALURONIC</span><span class="hook-w" id="hook-w2">ACID</span></div>
+      <div class="hook-underline" id="hook-underline"></div>
+    </div>
+
+    <div class="hook-sub" id="hook-sub">YOUR SKIN'S BIGGEST DRINK OF WATER</div>
+
+    <div class="hook-stage-box" id="hook-stage-box">
+      <div class="hook-chain-wrap" id="hook-chain-wrap">
+        <div class="hook-chain-glow" id="hook-chain-glow"></div>
+        <svg class="hook-chain" id="hook-chain" viewBox="0 0 520 260" width="520" height="260" aria-hidden="true">
+          <!-- three pyranose-style hexagons, middle one dropped 46px — classic polymer zigzag -->
+          <polygon points="168,106 139,156.2 81,156.2 52,106 81,55.8 139,55.8"
+            fill="none" stroke="#6FE0D3" stroke-width="4.5" stroke-linejoin="round" />
+          <polygon points="318,152 289,202.2 231,202.2 202,152 231,101.8 289,101.8"
+            fill="none" stroke="#6FE0D3" stroke-width="4.5" stroke-linejoin="round" />
+          <polygon points="468,106 439,156.2 381,156.2 352,106 381,55.8 439,55.8"
+            fill="none" stroke="#6FE0D3" stroke-width="4.5" stroke-linejoin="round" />
+          <!-- glycosidic link strokes between rings -->
+          <line x1="168" y1="106" x2="202" y2="152" stroke="#6FE0D3" stroke-width="4.5" stroke-linecap="round" />
+          <line x1="318" y1="152" x2="352" y2="106" stroke="#6FE0D3" stroke-width="4.5" stroke-linecap="round" />
+          <!-- five water dots — dock on the "drink of water" phrase -->
+          <circle id="hook-dot-0" cx="81" cy="55.8" r="9" fill="#EAF6F3" />
+          <circle id="hook-dot-1" cx="185" cy="129" r="8" fill="#EAF6F3" />
+          <circle id="hook-dot-2" cx="260" cy="202.2" r="10" fill="#EAF6F3" />
+          <circle id="hook-dot-3" cx="335" cy="129" r="8" fill="#EAF6F3" />
+          <circle id="hook-dot-4" cx="439" cy="55.8" r="9" fill="#EAF6F3" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var w1 = document.getElementById('hook-w1');
+  var w2 = document.getElementById('hook-w2');
+  var sub = document.getElementById('hook-sub');
+  var chainWrap = document.getElementById('hook-chain-wrap');
+  var glow = document.getElementById('hook-chain-glow');
+  var underline = document.getElementById('hook-underline');
+  var dots = [0, 1, 2, 3, 4].map(function (i) { return document.getElementById('hook-dot-' + i); });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // ---- Retention hook (0.0–0.6s): the NAME is frame zero. Both headline words are visible at
+  // t=0 and snap-settle; the benefit subline lands at 0.35s — name + benefit both on screen
+  // well inside the first 2 seconds, with the glowing chain already lit behind them.
+  tl.fromTo(w1, { yPercent: 12 }, { yPercent: 0, duration: 0.34 }, 0);
+  tl.fromTo(w2, { yPercent: 12 }, { yPercent: 0, duration: 0.34 }, 0.07);
+  tl.fromTo(sub, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.32 }, 0.35);
+
+  // Chain arrival snap: already lit at t=0, one fast settle from 1.06 → 1.00 (no slow build).
+  tl.fromTo(chainWrap, { scale: 1.06 }, { scale: 1.0, duration: 0.5, ease: 'expo.out' }, 0);
+
+  // ---- "your skin's biggest drink of water" (≈1.4–3.0s): the five water dots dock onto the
+  // chain in a fast cascade — the benefit, made literal on its spoken cue.
+  // (v5 retention trim: VO stem runs at 1.08x, so every VO-synced cue below is ÷1.08.)
+  dots.forEach(function (d, i) {
+    tl.fromTo(d, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' },
+      { opacity: 1, scale: 1, duration: 0.22, ease: 'back.out(2)' }, 1.20 + i * 0.11);
+  });
+
+  // Bounded ambient drift on the chain — settled again before the hold.
+  tl.to(chainWrap, { y: 6, duration: 0.79, ease: 'sine.inOut' }, 2.13);
+  tl.to(chainWrap, { y: 0, duration: 0.79, ease: 'sine.inOut' }, 2.92);
+
+  // ---- "…is a myth" (≈3.7s): the frame's one coral moment — the underline strikes on
+  // beneath the name as the myth clause lands.
+  tl.fromTo(underline, { scaleX: 0, transformOrigin: 'left center' },
+    { scaleX: 1, duration: 0.5, ease: 'power3.out' }, 3.66);
+
+  // ---- Held read: settled; only the glow eases ±3% once. No exit — root cut is the exit.
+  tl.to(glow, { opacity: 0.93, duration: 0.3, ease: 'sine.inOut' }, 4.10);
+  tl.to(glow, { opacity: 0.90, duration: 0.3, ease: 'sine.inOut' }, 4.45);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['01-hook'] = tl;
+})();
+</script>
+</template>

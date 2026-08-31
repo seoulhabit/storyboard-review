@@ -1,0 +1,106 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+  .rs-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .rs-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.08; mix-blend-mode:multiply; }
+
+  .rs-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:30px; padding:0 90px; text-align:center; }
+
+  .rs-field { position:relative; width:640px; height:560px; border:1px solid rgba(19,21,22,0.14); border-radius:32px; background:transparent; overflow:hidden; }
+  .rs-tag { position:absolute; bottom:24px; left:36px; font-weight:700; font-size:1.5cqw; letter-spacing:0.06em; color:rgba(19,21,22,0.62); text-align:left; }
+  .rs-field-pair { display:flex; align-items:baseline; gap:16px; opacity:0; }
+  .rs-field-label { font-weight:700; font-size:2.2cqw; letter-spacing:0.08em; text-transform:uppercase; color:rgba(19,21,22,0.62); }
+  .rs-field-value { font-weight:600; font-size:2.6cqw; }
+  .rs-field-value .from { color:rgba(19,21,22,0.62); text-decoration: line-through; text-decoration-color: rgba(19,21,22,0.3); }
+  .rs-field-value .to { color:#131516; }
+  .rs-field-value .arrow { color:#59B8AE; margin:0 6px; }
+
+  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:32px 52px; text-align:left; opacity:0; }
+  .uc-claim { font-size:2.6cqw; line-height:1.42; font-weight:600; margin-bottom:14px; }
+  .uc-hl { background-color:rgba(255,224,61,0.68); padding:0.1em 0.05em; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+  .uc-cite { display:inline-block; font-family:'Inter',sans-serif; font-weight:700; font-size:2.2cqw; color:#9F6149; border:1px solid rgba(201,122,92,0.4); border-radius:999px; padding:5px 14px; background:rgba(201,122,92,0.06); }
+</style>
+<div data-hf-id="hf-r6rt" data-composition-id="06-result" id="root" data-width="1080" data-height="1920" data-duration="7.000">
+  <div data-hf-id="hf-r6bg" id="rs-bg" class="clip rs-bg" data-start="0" data-duration="7.000" data-track-index="0"></div>
+  <div data-hf-id="hf-r6gr" id="rs-grain" class="clip rs-grain" data-start="0" data-duration="7.000" data-track-index="1"></div>
+
+  <div data-hf-id="hf-r6st" id="rs-stage" class="clip rs-stage" data-start="0" data-duration="7.000" data-track-index="2">
+    <div data-hf-id="hf-r6fd" class="rs-field" id="rs-field">
+      <svg data-hf-id="hf-r6sv" id="rs-svg" viewBox="0 0 640 560" width="640" height="560" aria-hidden="true">
+        <path data-hf-id="hf-r6st2" d="M60,480 H580" stroke="rgba(19,21,22,0.14)" stroke-width="3" />
+        <!-- the beat-1/3 bump, reduced — not eliminated. Honest to what suppressed
+             fibroblast overactivity actually implies: less overgrowth, not a forced flatten. -->
+        <path data-hf-id="hf-r6bm" id="rs-bump"
+          d="M60,260 H210 C250,260 258,216 292,202 C312,194 328,194 348,202 C382,216 390,260 430,260 H580"
+          stroke="#131516" stroke-width="5" fill="none" stroke-linecap="round" />
+        <!-- new-synthesis marks carried over from the mechanism beat — the same aqua motif,
+             now settled in as part of the healed structure, not mid-transition -->
+        <g data-hf-id="hf-r6ns" id="rs-new" opacity="0" stroke="#59B8AE" stroke-width="3.2" fill="none" stroke-linecap="round">
+          <path data-hf-id="hf-r6n1" d="M250,300 Q280,286 310,298" />
+          <path data-hf-id="hf-r6n2" d="M330,308 Q360,294 390,304" />
+          <path data-hf-id="hf-r6n3" d="M290,320 Q320,308 350,318" />
+        </g>
+      </svg>
+      <div data-hf-id="hf-r6tg" class="rs-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div data-hf-id="hf-r6fp" class="rs-field-pair" id="rs-field-pair">
+      <span data-hf-id="hf-r6fl" class="rs-field-label">Surface profile</span>
+      <span data-hf-id="hf-r6fv" class="rs-field-value"><span data-hf-id="hf-r6fr" class="from">Raised</span><span data-hf-id="hf-r6ar" class="arrow">→</span><span data-hf-id="hf-r6to" class="to">Reduced</span></span>
+    </div>
+
+    <div data-hf-id="hf-r6cd" class="uc-card" id="rs-card">
+      <div data-hf-id="hf-r6cl" class="uc-claim"><span data-hf-id="hf-r6hl" class="uc-hl">Supports wound closure without feeding the fibroblast overactivity linked to raised scarring (in vitro).</span></div>
+      <span data-hf-id="hf-r6c1" class="uc-cite">Song et al. 2012 · PMID 22360962</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var field = document.getElementById('rs-field');
+  var bump = document.getElementById('rs-bump');
+  var newMarks = document.getElementById('rs-new');
+  var pair = document.getElementById('rs-field-pair');
+  var card = document.getElementById('rs-card');
+
+  var REDUCED = 'M60,260 H210 C250,260 258,240 292,234 C312,230 328,230 348,234 C382,240 390,260 430,260 H580';
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  gsap.set(field, { scale: 1.1 });
+
+  // Local cues (real take): instead@0.50-0.61 · fueling@0.85-1.05 · overgrowth@1.42-2.13 ·
+  // supports@2.57-3.07 · wound@3.19-3.56 · closes@3.82-4.10 · structural material@4.55-5.58.
+
+  // "fueling the overgrowth": one slow camera settle — the only camera move this beat.
+  tl.to(field, { scale: 1.0, duration: 0.7, ease: 'power3.out' }, 0.85);
+
+  // "supports ... closes": the bump eases down to a reduced (not flattened) profile.
+  tl.to(bump, { attr: { d: REDUCED }, duration: 1.1, ease: 'power2.inOut' }, 2.57);
+  // it settles aqua-tinted as the claim lands — the beat's one bounded bloom, then matte.
+  tl.to(bump, { stroke: '#59B8AE', duration: 0.8, ease: 'power1.inOut' }, 2.90);
+  tl.fromTo(bump, { filter: 'drop-shadow(0 0 0px rgba(89,184,174,0))' },
+    { filter: 'drop-shadow(0 0 18px rgba(89,184,174,0.7))', duration: 0.5, ease: 'power1.inOut' }, 3.60);
+  tl.to(bump, { filter: 'drop-shadow(0 0 5px rgba(89,184,174,0.2))', duration: 0.9, ease: 'power1.inOut' }, 4.20);
+  tl.to(newMarks, { opacity: 0.85, duration: 0.6 }, 3.60);
+
+  // field pair lands with "closes"
+  tl.fromTo(pair, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, 3.82);
+
+  // claim card, then the long dense pause-and-study settle.
+  tl.fromTo(card, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 4.55);
+
+  tl.to({}, { duration: 7.000 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['06-result'] = tl;
+})();
+</script>
+</template>

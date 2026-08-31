@@ -1,0 +1,451 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+  <style>
+    @import url("assets/tokens/tokens.css");
+
+    /* Self-hosted Korean face — only this frame renders the "습 SeoulHabit" endcard
+       lockup, so the @font-face lives here (font_family_without_font_face). Root-
+       relative path per dispatch: compositions are served with the project root as
+       their base URL, so "assets/fonts/..." resolves correctly (a "../../assets/..."
+       parent-traversal form would fail hyperframes lint's asset-path check). */
+    @font-face {
+      font-family: "Noto Sans KR Video";
+      font-weight: 500;
+      font-style: normal;
+      src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Noto Sans KR";
+      font-weight: 500;
+      font-style: normal;
+      src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+      font-display: block;
+    }
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--ink);
+    }
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+
+    /* Full-bleed ground — a dedicated clip, never a #root background. */
+    .cta06-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    /* ---- shared ink-linework kit styling (frame.md "Illustrated presenter kit") ---- */
+    .cta06-kit-fill {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .cta06-kit-crease {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    /* cream jar's inner rim — the kit's one "(stroke only)" deviation from kit-fill */
+    .cta06-jar-rim {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 7;
+    }
+    /* padlock shackle — stroke only, width 9, no fill (frame.md kit note).
+       transform-origin pinned to the shackle's own right-leg foot (115,75 in its
+       local viewBox) so it hinges there instead of at its bounding-box center —
+       matches 05-golden-rule.html's #fr05-droplet-dry technique of a pixel-value
+       transform-origin read directly in the SVG's own user-space units. */
+    .cta06-lock-shackle {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform-origin: 115px 75px;
+    }
+    .cta06-lock-keyhole {
+      fill: var(--ink);
+      stroke: none;
+    }
+
+    /* ---- Scene 1 (0.0-2.0s): quick recap glyphs — a fast callback to Frames 4-5,
+         not a full re-stage, so these are small invented icon glyphs (frame.md's
+         "supporting" elements built from atoms), not the verbatim presenter kit.
+         No text labels: the VO says "mist"/"serum" at this exact instant and the
+         caption pill already renders those words — a matching on-screen label
+         would double-print them. Base CSS position sits each icon off-canvas
+         left; GSAP only ever adds a positive x delta, so overflow:hidden on
+         #root does all the entry/exit clipping and no exit tween is needed. ---- */
+    .cta06-recap-icon {
+      position: absolute;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .cta06-recap-icon svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    #cta06-recap-mist {
+      left: -180px;
+      top: 630px;
+      width: 130px;
+      height: 130px;
+    }
+    #cta06-recap-serum {
+      left: -170px;
+      top: 780px;
+      width: 118px;
+      height: 118px;
+    }
+
+    /* ---- Scenes 2-4: presenter group (face profile + padlock) — this whole group
+         is the "outgoing" half of the scale-swap-transition at Scene 4's cut. ---- */
+    #cta06-presenter {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+      z-index: 1;
+    }
+
+    /* face profile (frame.md kit, verbatim path) — foreground subject, persists
+       through scenes 2-3 as the constant subject the fist/jar and padlock act on. */
+    .cta06-face {
+      position: absolute;
+      left: 300px;
+      top: 560px;
+      width: 480px;
+      height: 560px;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .cta06-face svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* padlock (frame.md kit, verbatim path) — supporting, spring-pops in over the
+       face and its shackle swings shut. Replaces the first build's abstract
+       seal-arc with a real, literal padlock icon per frame.md's revision note. */
+    .cta06-padlock {
+      position: absolute;
+      left: 388px;
+      top: 664px;
+      width: 304px;
+      height: 352px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .cta06-padlock svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* ---- Scene 2 (2.0-5.5s): fist gripping the cream jar (frame.md kit, verbatim
+         paths) — foreground subject, reaches in and dabs the jar against the cheek.
+         Base CSS left/top is the REST/CONTACT position (where the jar's rim meets
+         the cheek); GSAP x/y are relative deltas from there for the reach-in and
+         the pat/dab beats, never a static CSS transform (avoids
+         gsap_css_transform_conflict). Sits outside #cta06-presenter since it fully
+         exits before Scene 4's swap and never participates in that tween. ---- */
+    .cta06-fistjar {
+      position: absolute;
+      left: 420px;
+      top: 786px;
+      width: 380px;
+      height: 418px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .cta06-fistjar svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* ---- Scene 4 (7.3-10.397s): standing endcard lockup — the "incoming" half of
+         the scale-swap-transition; frame zero, holds fully settled to the end. ---- */
+    #cta06-endcard {
+      position: absolute;
+      left: 60px;
+      top: 820px;
+      width: 858px;
+      text-align: center;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+      z-index: 2;
+    }
+    .cta06-wordmark {
+      font-family: var(--font-kr);
+      font-weight: 500;
+      font-size: var(--t-hero);
+      line-height: var(--lh-tight);
+      letter-spacing: var(--tr-body);
+      color: var(--ink);
+    }
+    /* --ink-2 (#6B6B6B) on --paper measures ~4.98:1, clearing WCAG AA (4.5:1) —
+       --ink-3 here measured ~2.67:1 and failed, per dispatch. Own opacity:0 default
+       (independent of the parent's opacity) so it reveals only after the endcard
+       container itself has settled, not while the container is still fading in. */
+    .cta06-disclaimer {
+      margin-top: var(--s-6);
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: var(--font-mono);
+      font-weight: 400;
+      font-size: var(--t-caption);
+      line-height: var(--lh-body);
+      letter-spacing: var(--tr-mono);
+      color: var(--ink-2);
+      opacity: 0;
+      will-change: opacity, transform;
+    }
+  </style>
+
+  <div data-hf-id="hf-az7q" id="root" data-composition-id="06-cta" data-start="0" data-duration="10.397" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-iia4" class="clip cta06-bg" data-start="0" data-duration="10.397" data-track-index="0"></div>
+
+    <!-- Scene 1 (0.0-2.0s): mist + serum-drop glyphs cross left-to-right as the VO
+         says "so mist your face, smooth on the serum" — a fast callback, not a
+         full re-stage. -->
+    <div data-hf-id="hf-5vpg" class="clip" id="cta06-recap" data-start="0" data-duration="2.3" data-track-index="1">
+      <div data-hf-id="hf-1zti" class="cta06-recap-icon" id="cta06-recap-mist">
+        <svg data-hf-id="hf-vy0g" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle data-hf-id="hf-drxn" cx="65" cy="65" r="62" fill="var(--mist)" stroke="var(--ink)" stroke-width="2.5" />
+          <g data-hf-id="hf-sldm" fill="none" stroke="var(--aqua)" stroke-width="5.5" stroke-linecap="round">
+            <path data-hf-id="hf-1rvb" d="M38 48 L58 40" />
+            <path data-hf-id="hf-35g3" d="M36 65 L58 65" />
+            <path data-hf-id="hf-jqee" d="M38 82 L58 90" />
+          </g>
+          <circle data-hf-id="hf-nb53" cx="76" cy="40" r="4" fill="var(--aqua)" />
+          <circle data-hf-id="hf-kpmq" cx="82" cy="65" r="4.5" fill="var(--aqua)" />
+          <circle data-hf-id="hf-xmt6" cx="76" cy="90" r="4" fill="var(--aqua)" />
+        </svg>
+      </div>
+      <div data-hf-id="hf-hezb" class="cta06-recap-icon" id="cta06-recap-serum">
+        <svg data-hf-id="hf-h404" viewBox="0 0 118 118" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle data-hf-id="hf-633w" cx="59" cy="59" r="56" fill="var(--mist)" stroke="var(--ink)" stroke-width="2.5" />
+          <path data-hf-id="hf-7ozf" d="M59,30 C59,30 36,58 36,74 C36,87.3 46.2,98 59,98 C71.8,98 82,87.3 82,74 C82,58 59,30 59,30 Z" fill="var(--aqua)" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Scene 2 (2.0-5.5s): the fist holding the cream jar (frame.md kit) enters and
+         dabs it against the face profile's cheek — the script's literal "apply
+         cream moisturizer." -->
+    <div data-hf-id="hf-bbmg" class="clip cta06-fistjar" id="cta06-fistjar" data-start="0" data-duration="10.397" data-track-index="2">
+      <svg data-hf-id="hf-hgta" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- cream jar (prop): drawn first/behind, its lid + rim peeking out above
+             the grip, same convention as the kit's bottle prop. -->
+        <ellipse data-hf-id="hf-7teg" class="cta06-kit-fill" cx="100" cy="150" rx="65" ry="20" />
+        <rect data-hf-id="hf-417h" class="cta06-kit-fill" x="35" y="70" width="130" height="80" rx="10" />
+        <ellipse data-hf-id="hf-m8pb" class="cta06-kit-fill" cx="100" cy="70" rx="65" ry="20" />
+        <ellipse data-hf-id="hf-ol3n" class="cta06-jar-rim" cx="100" cy="68" rx="45" ry="12" />
+        <!-- fist + thumb (kit, verbatim): drawn on top, gripping the jar's lower half. -->
+        <path data-hf-id="hf-6555" class="cta06-kit-fill" d="M 55 200 C 35 200, 22 182, 22 158 L 22 122 C 22 108, 30 100, 40 104
+             C 44 92, 52 86, 60 92 C 62 80, 72 74, 80 82 C 84 70, 96 66, 102 76
+             C 106 66, 118 64, 124 74 C 130 66, 142 68, 144 80 C 154 78, 162 86, 160 98
+             C 172 100, 178 112, 172 122 L 172 160 C 172 184, 158 200, 138 200 Z" />
+        <path data-hf-id="hf-6vq6" class="cta06-kit-fill" d="M 40 130 C 20 128, 8 142, 12 160 C 15 174, 30 182, 45 178
+             C 52 176, 54 165, 50 152 C 48 143, 45 134, 40 130 Z" />
+        <path data-hf-id="hf-kf00" class="cta06-kit-crease" d="M 62 108 L 60 130" />
+        <path data-hf-id="hf-u73m" class="cta06-kit-crease" d="M 92 96 L 88 128" />
+        <path data-hf-id="hf-rh7i" class="cta06-kit-crease" d="M 122 92 L 116 128" />
+        <path data-hf-id="hf-kww1" class="cta06-kit-crease" d="M 150 100 L 142 130" />
+      </svg>
+    </div>
+
+    <!-- Scenes 2-4: presenter group. Face persists from Scene 2; padlock joins in
+         Scene 3; the whole group scale-swap-transitions out at Scene 4's cut. -->
+    <div data-hf-id="hf-fd7s" class="clip" id="cta06-presenter" data-start="0" data-duration="10.397" data-track-index="3">
+      <div data-hf-id="hf-iv2q" class="cta06-face" id="cta06-face">
+        <svg data-hf-id="hf-9mmc" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path data-hf-id="hf-tucq" class="cta06-kit-fill" d="M 88 20 C 138 14, 174 46, 178 92 C 179 103, 186 108, 196 113
+               C 203 117, 201 125, 192 128 C 184 131, 181 140, 186 152
+               C 190 163, 181 171, 169 167 C 165 182, 152 195, 134 199
+               C 130 214, 117 226, 98 224 C 82 222, 70 210, 67 194
+               C 49 187, 37 171, 34 151 C 29 121, 36 87, 56 60 C 65 40, 76 26, 88 20 Z" />
+        </svg>
+      </div>
+
+      <!-- Scene 3 (5.5-7.3s): the padlock spring-pops in over the face and its
+           shackle swings down to click shut — replacing the first build's abstract
+           seal-arc with a real padlock, per frame.md's revision. -->
+      <div data-hf-id="hf-qptc" class="cta06-padlock" id="cta06-padlock">
+        <svg data-hf-id="hf-nkox" viewBox="0 0 160 185" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect data-hf-id="hf-auav" class="cta06-kit-fill" x="30" y="75" width="100" height="85" rx="14" />
+          <path data-hf-id="hf-8j95" class="cta06-lock-shackle" id="cta06-lock-shackle" d="M45 75 L45 50 C45 25 115 25 115 50 L115 75" />
+          <circle data-hf-id="hf-a17a" class="cta06-lock-keyhole" cx="80" cy="112" r="9" />
+          <rect data-hf-id="hf-0oph" class="cta06-lock-keyhole" x="76" y="118" width="8" height="22" rx="4" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Scene 4 (7.3-10.397s): standing endcard lockup — frame zero, holds fully
+         settled with no motion in progress. -->
+    <div data-hf-id="hf-lrv4" class="clip" id="cta06-endcard" data-start="0" data-duration="10.397" data-track-index="4">
+      <div data-hf-id="hf-9c4d" class="cta06-wordmark">습 SeoulHabit</div>
+      <div data-hf-id="hf-wadl" class="cta06-disclaimer" id="cta06-disclaimer">
+        General skincare education — not sourced claims, not medical advice.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // frame.md Motion: "--e-out/--e-in/--e-inout only — no bounce/elastic/back
+      // easing." The scale-swap-transition rule recipe calls for back.out on its
+      // incoming pop; every sibling frame in this project maps that kind of
+      // "arrives with weight" beat to a plain power-out curve instead (see
+      // 05-golden-rule.html's spring-pop comment) — this file does the same for
+      // both the padlock's pop-in and the endcard's incoming swap. Token mapping:
+      //   --e-out cubic-bezier(0.215,0.61,0.355,1)   -> power2.out
+      //   --e-in  cubic-bezier(0.55,0.055,0.675,0.19) -> power2.in
+      var EASE_OUT = "power2.out";
+      var EASE_IN = "power2.in";
+
+      // ============================================================
+      // Setup — the padlock shackle starts OPEN (swung off its closed resting
+      // pose) from t=0, so the moment the padlock group pops in during Scene 3
+      // it already reads as unlocked, ready to swing shut.
+      // ============================================================
+      tl.set("#cta06-lock-shackle", { rotation: -42 }, 0);
+
+      // ============================================================
+      // Scene 1 (0.0-2.0s) — "so mist your face, smooth on the serum": two small
+      // recap glyphs sweep left-to-right. Off-canvas base position + #root's
+      // overflow:hidden handle entry/exit; only opacity needs its own quick ramp.
+      // ============================================================
+      tl.fromTo("#cta06-recap-mist", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, 0.1);
+      tl.fromTo("#cta06-recap-mist", { x: 0 }, { x: 1300, duration: 1.5, ease: "power1.inOut" }, 0.1);
+
+      tl.fromTo("#cta06-recap-serum", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, 0.35);
+      tl.fromTo("#cta06-recap-serum", { x: 0 }, { x: 1300, duration: 1.5, ease: "power1.inOut" }, 0.35);
+
+      // ============================================================
+      // Scene 2 (2.0-5.5s) — "then seal it with a moisturizer": the face settles,
+      // then the fist+jar reaches in and dabs the cheek twice before holding and
+      // retreating to clear the stage for the padlock.
+      // ============================================================
+      tl.fromTo(
+        "#cta06-face",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.5, ease: EASE_OUT },
+        2.0,
+      );
+
+      // Fist+jar reaches in from off-frame (lower right) to the rest position —
+      // CSS left/top (420,786) IS the contact point where the jar's rim meets the
+      // cheek, so x:0,y:0 is "on the cheek."
+      tl.fromTo(
+        "#cta06-fistjar",
+        { x: 520, y: 300, opacity: 0 },
+        { x: 0, y: 0, opacity: 1, duration: 0.55, ease: EASE_OUT },
+        2.15,
+      );
+      // Dab 1: press to the cheek, then a small release.
+      tl.to("#cta06-fistjar", { scale: 0.97, duration: 0.18, ease: EASE_OUT }, 2.7);
+      tl.to("#cta06-fistjar", { x: 35, y: 22, scale: 1, duration: 0.22, ease: "power2.inOut" }, 2.95);
+      // Dab 2: press again and hold, sealed in.
+      tl.to("#cta06-fistjar", { x: 0, y: 0, scale: 0.97, duration: 0.18, ease: EASE_OUT }, 3.25);
+      tl.to("#cta06-fistjar", { scale: 1, duration: 0.2, ease: "power1.out" }, 3.45);
+      // Holds in contact 3.65-5.0, then withdraws — a mid-shot action clearing the
+      // stage for Scene 3, not the frame's own exit.
+      tl.to(
+        "#cta06-fistjar",
+        { x: 560, y: -260, opacity: 0, duration: 0.5, ease: EASE_IN },
+        5.0,
+      );
+
+      // ============================================================
+      // Scene 3 (5.5-7.3s) — "so that hydration stays put": the padlock spring-
+      // pops in (oversized-settle entrance, no bounce — same convention as the
+      // ink-stamp badge), then its shackle swings from open to closed: the click.
+      // ============================================================
+      tl.fromTo(
+        "#cta06-padlock",
+        { scale: 1.3, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+        5.5,
+      );
+      tl.to("#cta06-lock-shackle", { rotation: 0, duration: 0.35, ease: EASE_IN }, 6.15);
+      // A tiny snap-scale pulse right as the shackle lands sells the "click."
+      tl.to(
+        "#cta06-padlock",
+        { scale: 1.05, duration: 0.08, ease: "power1.out", yoyo: true, repeat: 1 },
+        6.5,
+      );
+      // Holds locked, 6.66-7.3.
+
+      // ============================================================
+      // Scene 4 (7.3-10.397s) — "follow for more skincare, myths busted": the
+      // whole presenter group (face + padlock) scale-swap-transitions out as the
+      // standing endcard swaps in (adapted from the named rule: a multi-element
+      // outgoing group clearing for one incoming lockup, same coordinated-overlap
+      // mechanics — shared transform-origin, incoming z-index above outgoing,
+      // inner content revealed only after the container settles). This is the
+      // final frame: holds completely still after, frame zero, no exit tween.
+      // ============================================================
+      var TRIGGER = 7.3;
+      var EXIT_DUR = 0.4; // --d-fast
+      var ENTER_DUR = 0.6; // --d-fill
+      var OVERLAP = 0.15;
+      var EXIT_SCALE = 0.82;
+
+      tl.to(
+        "#cta06-presenter",
+        { scale: EXIT_SCALE, opacity: 0, duration: EXIT_DUR, ease: EASE_IN },
+        TRIGGER,
+      );
+      tl.fromTo(
+        "#cta06-endcard",
+        { opacity: 0, scale: EXIT_SCALE },
+        { opacity: 1, scale: 1, duration: ENTER_DUR, ease: EASE_OUT },
+        TRIGGER + EXIT_DUR - OVERLAP,
+      );
+
+      var enterEnd = TRIGGER + EXIT_DUR - OVERLAP + ENTER_DUR; // 8.15
+      var SUB_REVEAL_DELAY = 0.25;
+      tl.fromTo(
+        "#cta06-disclaimer",
+        { opacity: 0, y: 48 },
+        { opacity: 1, y: 0, duration: 0.4, ease: EASE_OUT },
+        enterEnd + SUB_REVEAL_DELAY,
+      );
+
+      // Nothing scheduled after ~8.8s: the endcard holds fully settled, motionless,
+      // through the remaining ~1.6s of the 10.397s duration — frame zero.
+
+      window.__timelines["06-cta"] = tl;
+    })();
+  </script>
+</template>

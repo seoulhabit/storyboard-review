@@ -1,0 +1,78 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; font-family:'Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  /* Full-bleed plate — the one sanctioned absolute stack. Constant grade across the beat
+     (single unified grade rule): slight green-lift + contrast, identical at every cut. */
+  .hook-plate-wrap { overflow:hidden; background:#1A1A1A; }
+  .hook-plate-wrap video { width:100%; height:100%; object-fit:cover; display:block;
+    filter:saturate(1.12) contrast(1.05) brightness(0.98); transform-origin:50% 45%; }
+
+  /* Legibility scrim for the headline zone only — not a decorative glow. */
+  .hook-scrim { background:linear-gradient(to bottom, rgba(16,19,20,0.55) 0%, rgba(16,19,20,0.32) 30%, rgba(16,19,20,0) 52%); pointer-events:none; }
+
+  /* Headline: content band (y≥384), left column, clear of the right rail. */
+  .hook-head { top:462px; left:96px; width:800px; }
+  .hook-head .w { display:block; font-weight:800; font-size:108px; line-height:1.04;
+    letter-spacing:-0.01em; text-transform:uppercase; color:#F7F5F0;
+    text-shadow:0 2px 14px rgba(16,19,20,0.55); }
+  .hook-head .w em { font-style:normal; color:#93B896; }
+  .hook-sub { display:block; margin-top:18px; font-weight:700; font-size:44px; letter-spacing:0.1em;
+    text-transform:uppercase; color:rgba(247,245,240,0.92); text-shadow:0 1px 10px rgba(16,19,20,0.6); }
+
+  .hook-kicker { top:396px; left:98px; font-weight:700; font-size:26px; letter-spacing:0.14em;
+    text-transform:uppercase; color:rgba(247,245,240,0.85); text-shadow:0 1px 8px rgba(16,19,20,0.6); }
+</style>
+<div data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="5.000">
+
+  <!-- Wrapper is a non-timed visual container (punch-in scale target); the video itself
+       carries the timing — never both (video_nested_in_timed_element). -->
+  <div id="hook-plate" class="clip hook-plate-wrap">
+    <video id="hook-video" src="assets/plates/tiger-2k.mp4" muted playsinline data-start="0" data-duration="5.000" data-track-index="0"></video>
+  </div>
+
+  <div id="hook-scrim" class="clip hook-scrim" data-start="0" data-duration="5.000" data-track-index="1"></div>
+
+  <div id="hook-text" class="clip" data-start="0" data-duration="5.000" data-track-index="2">
+    <div class="hook-kicker" id="hook-kicker" style="position:absolute;">THE TIGER GRASS LEGEND</div>
+    <h1 class="hook-head" id="hook-head" style="position:absolute;">
+      <span class="w" id="hw-1">Why tigers</span>
+      <span class="w" id="hw-2">roll in</span>
+      <span class="w" id="hw-3"><em>this plant.</em></span>
+      <span class="hook-sub" id="hw-sub">Centella Asiatica</span>
+    </h1>
+  </div>
+
+</div>
+<script>
+(function () {
+  // Frame zero is the scroll-stop: plate + kicker + full headline are all built in the
+  // DOM's resting state. Tweens below only run for t>0 (immediateRender:false), so a
+  // cold seek(0) shows the composed hook.
+  var wrap = document.getElementById('hook-plate');
+  var words = [document.getElementById('hw-1'), document.getElementById('hw-2'), document.getElementById('hw-3'), document.getElementById('hw-sub')];
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Word micro-slam: a fast settle pulse right after frame zero (kinetic register).
+  words.forEach(function (w, i) {
+    tl.fromTo(w, { y: 14, opacity: 0.0 }, { y: 0, opacity: 1, duration: 0.28, immediateRender: false }, 0.12 + i * 0.14);
+  });
+
+  // Two punch-ins on the plate read as jump cuts (scale snaps, hard in, no bounce).
+  tl.to(wrap, { scale: 1.07, duration: 0.14, ease: 'power4.in' }, 1.70);
+  tl.to(wrap, { scale: 1.0,  duration: 0.12, ease: 'power4.in' }, 3.30);
+
+  // Pivot prep: the last 0.25s darkens the plate edge so the hard cut to the dark
+  // clinical ground lands as intentional, not as a glitch.
+  tl.to(wrap, { filter: 'saturate(1.12) contrast(1.05) brightness(0.72)', duration: 0.25, ease: 'power2.in' }, 4.75);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['01-hook'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,134 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+
+  /* Full-bleed redesign (QC BLOCKER): paper to the screen edges; internals +50%;
+     identity labels dark (#333) and enlarged per accessibility fix. */
+  .id-bg { position:absolute; inset:0; background:#F7F5F0; }
+  .frame-zoom { position:absolute; inset:0; transform-origin:50% 0%; }
+
+  .id-headline { position:absolute; top:230px; left:0; right:0; text-align:center;
+    font-family:'EB Garamond',serif; font-size:8.0cqw; line-height:1.05; opacity:0; }
+
+  .id-mol { position:absolute; top:380px; left:0; width:1080px; height:230px; }
+  .mol-line { fill:none; stroke:rgba(19,21,22,0.6); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+  .mol-fill { fill:rgba(19,21,22,0.06); }
+  .mol-node { fill:rgba(19,21,22,0.5); }
+  .mol-label { font-family:'Inter',sans-serif; font-size:28px; font-weight:700; letter-spacing:0.05em; fill:#333333; }
+  .mol-bond { stroke:#59B8AE; stroke-width:4; stroke-linecap:round; opacity:0; }
+  .mol-flash { fill:none; stroke:#59B8AE; stroke-width:3; opacity:0; }
+
+  .id-rows { position:absolute; top:640px; left:72px; width:936px; }
+  .uc-field { padding:8px 0; border-bottom:1px solid rgba(19,21,22,0.14); opacity:0; }
+  .uc-field:last-of-type { border-bottom:none; }
+  .uc-field .uc-field-label { display:block; font-family:'Inter',sans-serif; font-weight:700; font-size:4.8cqw; letter-spacing:0.05em; text-transform:uppercase; color:#333333; margin-bottom:6px; }
+  .uc-field .uc-field-value { display:block; font-family:'Inter',sans-serif; font-size:6.0cqw; font-weight:600; line-height:1.25; }
+
+  .id-claim-block { margin-top:18px; opacity:0; }
+  .uc-claim { font-family:'Inter',sans-serif; font-size:4.0cqw; line-height:1.4; font-weight:600; }
+  .uc-claim-line { display:block; opacity:0; transform:translateY(10px); }
+</style>
+<div data-composition-id="03-identity" id="root" data-width="1080" data-height="1920" data-duration="10.700">
+  <div id="id-content" class="clip" data-start="0" data-duration="10.700" data-track-index="0">
+    <div class="id-bg"></div>
+    <div class="frame-zoom" id="id-zoom">
+
+      <div class="id-headline" id="id-headline">Betaine Salicylate</div>
+
+      <!-- two molecular icons snap together on spoken "attached" — full-width render -->
+      <div class="id-mol" id="id-mol">
+        <svg viewBox="0 0 822 230" width="1080" height="230" aria-hidden="true">
+          <g id="mol-left">
+            <path class="mol-fill mol-line" d="M230,40 l52,30 v60 l-52,30 l-52,-30 v-60 Z" />
+            <path class="mol-line" d="M230,58 l36,21 v42 l-36,21 l-36,-21 v-42 Z" opacity="0.35" />
+            <path class="mol-line" d="M282,100 h44" />
+            <circle class="mol-node" cx="334" cy="100" r="10" />
+            <text class="mol-label" x="230" y="208" text-anchor="middle">SALICYLIC ACID</text>
+          </g>
+          <g id="mol-right">
+            <circle class="mol-fill mol-line" cx="592" cy="100" r="34" />
+            <path class="mol-line" d="M592,66 v-26 M563,118 l-22,16 M621,118 l22,16" />
+            <circle class="mol-node" cx="592" cy="32" r="9" />
+            <circle class="mol-node" cx="534" cy="141" r="9" />
+            <circle class="mol-node" cx="650" cy="141" r="9" />
+            <path class="mol-line" d="M558,100 h-44" />
+            <circle class="mol-node" cx="506" cy="100" r="10" />
+            <text class="mol-label" x="592" y="208" text-anchor="middle">BETAINE</text>
+          </g>
+          <line class="mol-bond" id="mol-bond" x1="392" y1="100" x2="448" y2="100" />
+          <circle class="mol-flash" id="mol-flash" cx="420" cy="100" r="18" />
+        </svg>
+      </div>
+
+      <div class="id-rows">
+        <div class="uc-field" id="id-f1"><span class="uc-field-label">INCI</span><span class="uc-field-value">Betaine Salicylate</span></div>
+        <div class="uc-field" id="id-f2"><span class="uc-field-label">Structure</span><span class="uc-field-value">Salicylic acid + betaine</span></div>
+        <div class="uc-field" id="id-f3"><span class="uc-field-label">Class</span><span class="uc-field-value">Beta-hydroxy-acid derivative</span></div>
+
+        <div class="id-claim-block" id="id-claim-block">
+          <div class="uc-claim">
+            <span class="uc-claim-line" id="id-claim-l1">Salicylic acid attached to a hydrating amino acid &mdash;</span>
+            <span class="uc-claim-line" id="id-claim-l2">the ultimate gentle alternative.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var zoom = document.getElementById('id-zoom');
+  var molLeft = document.getElementById('mol-left');
+  var molRight = document.getElementById('mol-right');
+  var molBond = document.getElementById('mol-bond');
+  var molFlash = document.getElementById('mol-flash');
+  var headline = document.getElementById('id-headline');
+  var f1 = document.getElementById('id-f1');
+  var f2 = document.getElementById('id-f2');
+  var f3 = document.getElementById('id-f3');
+  var claimBlock = document.getElementById('id-claim-block');
+  var cl1 = document.getElementById('id-claim-l1');
+  var cl2 = document.getElementById('id-claim-l2');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Word timings, spliced take (halting gap at "betaine ... the" removed):
+  // "literally salicylic acid" 0.38-2.5 · "attached" 2.56 · "hydrating amino acid"
+  // 3.33-4.7 · "called betaine" 5.06-6.0 · "the ultimate...alternative" 6.06-9.5.
+
+  // Continuous slow zoom across the whole beat.
+  tl.fromTo(zoom, { scale: 1 }, { scale: 1.05, duration: 10.70, ease: 'none' }, 0);
+
+  // Scene 1: headline immediately; both molecular icons on stage, apart.
+  tl.to(headline, { opacity: 1, duration: 0.5 }, 0.10);
+  gsap.set(molLeft, { x: -58 });
+  gsap.set(molRight, { x: 58 });
+
+  // Scene 1b: THE SNAP — timed to spoken "attached" (2.56s); aqua flash + bond.
+  tl.to(molLeft, { x: 58, duration: 0.5, ease: 'power3.out' }, 2.45);
+  tl.to(molRight, { x: -58, duration: 0.5, ease: 'power3.out' }, 2.45);
+  tl.to(molFlash, { opacity: 0.9, duration: 0.12 }, 2.92);
+  tl.to(molFlash, { attr: { r: 44 }, opacity: 0, duration: 0.55, ease: 'power2.out' }, 3.04);
+  tl.to(molBond, { opacity: 1, duration: 0.3 }, 2.95);
+
+  // Scene 2: identity rows ride the chemistry explanation.
+  tl.to(f1, { opacity: 1, duration: 0.42 }, 1.30);
+  tl.to(f2, { opacity: 1, duration: 0.42 }, 2.70);
+  tl.to(f3, { opacity: 1, duration: 0.42 }, 4.10);
+
+  // Scene 3: CLAIM lands on "the ultimate gentle salicylic acid alternative."
+  tl.fromTo(claimBlock, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 6.00);
+  tl.to(cl1, { opacity: 1, y: 0, duration: 0.45 }, 6.10);
+  tl.to(cl2, { opacity: 1, y: 0, duration: 0.45 }, 7.00);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['03-identity'] = tl;
+})();
+</script>
+</template>

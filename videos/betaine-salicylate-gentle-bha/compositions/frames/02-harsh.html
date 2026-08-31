@@ -1,0 +1,130 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+
+  /* Full-bleed redesign (QC BLOCKER): paper to the screen edges, no floating card;
+     internals scaled up ~50%; labels dark (#333) and larger per accessibility fix. */
+  .harsh-bg { position:absolute; inset:0; background:#F7F5F0; }
+  .frame-zoom { position:absolute; inset:0; transform-origin:50% 0%; }
+
+  .uc-kicker { position:absolute; top:252px; left:72px; right:162px; font-family:'Inter',sans-serif; font-weight:700; font-size:3.4cqw; letter-spacing:0.06em; text-transform:uppercase; color:#333333; opacity:0; }
+  .uc-kicker .coral-tick { display:inline-block; width:34px; height:7px; background:#C97A5C; border-radius:4px; margin-right:16px; vertical-align:middle; }
+  .harsh-frameline { position:absolute; top:330px; left:72px; width:840px; font-family:'EB Garamond',serif; font-style:italic; font-size:4.4cqw; line-height:1.2; color:#131516; opacity:0; }
+
+  .harsh-diagram { position:absolute; top:440px; left:0; width:1080px; height:560px; }
+  .hd-brick { fill:rgba(19,21,22,0.06); stroke:rgba(19,21,22,0.4); stroke-width:2.2; }
+  .hd-brick-top { fill:rgba(19,21,22,0.06); stroke:rgba(19,21,22,0.4); stroke-width:2.2; }
+  .hd-wash { fill:rgba(201,122,92,0.22); opacity:0; }
+  .hd-wash-line { stroke:#C97A5C; stroke-width:2.4; stroke-dasharray:6 6; opacity:0; }
+  .hd-chip { fill:rgba(19,21,22,0.10); stroke:rgba(19,21,22,0.4); stroke-width:2; opacity:0; }
+  .hd-label { font-family:'Inter',sans-serif; font-size:26px; font-weight:700; letter-spacing:0.04em; fill:#333333; opacity:0; }
+
+  .uc-claim { position:absolute; top:1040px; left:72px; width:840px; font-family:'Inter',sans-serif; font-size:4.4cqw; line-height:1.4; font-weight:600; }
+  .uc-claim-line { display:block; opacity:0; transform:translateY(10px); }
+</style>
+<div data-composition-id="02-harsh" id="root" data-width="1080" data-height="1920" data-duration="7.530">
+  <div id="harsh-content" class="clip" data-start="0" data-duration="7.530" data-track-index="0">
+    <div class="harsh-bg"></div>
+    <div class="frame-zoom" id="harsh-zoom">
+      <div class="uc-kicker" id="harsh-kicker"><span class="coral-tick"></span>THE PROBLEM</div>
+      <div class="harsh-frameline" id="harsh-frameline">Clear skin shouldn&rsquo;t cost you your barrier.</div>
+
+      <div class="harsh-diagram" id="harsh-diagram">
+        <svg viewBox="0 0 700 430" width="1080" height="560" aria-hidden="true">
+          <g id="hd-wash-group" data-layout-allow-overflow>
+            <rect class="hd-wash" id="hd-wash" x="40" y="0" width="620" height="120" rx="10" />
+            <line class="hd-wash-line" id="hd-wash-line" x1="40" y1="120" x2="660" y2="120" />
+          </g>
+          <g id="hd-wall">
+            <g id="hd-course-top">
+              <rect class="hd-brick-top" id="hd-bt-1" x="40"  y="170" width="140" height="62" rx="10" />
+              <rect class="hd-brick-top" id="hd-bt-2" x="196" y="170" width="140" height="62" rx="10" />
+              <rect class="hd-brick-top" id="hd-bt-3" x="352" y="170" width="140" height="62" rx="10" />
+              <rect class="hd-brick-top" id="hd-bt-4" x="508" y="170" width="152" height="62" rx="10" />
+            </g>
+            <g id="hd-course-mid">
+              <rect class="hd-brick" x="40"  y="248" width="76"  height="62" rx="10" />
+              <rect class="hd-brick" x="132" y="248" width="140" height="62" rx="10" />
+              <rect class="hd-brick" x="288" y="248" width="140" height="62" rx="10" />
+              <rect class="hd-brick" x="444" y="248" width="140" height="62" rx="10" />
+              <rect class="hd-brick" x="600" y="248" width="60"  height="62" rx="10" />
+            </g>
+            <g id="hd-course-bot">
+              <rect class="hd-brick" x="40"  y="326" width="140" height="62" rx="10" />
+              <rect class="hd-brick" x="196" y="326" width="140" height="62" rx="10" />
+              <rect class="hd-brick" x="352" y="326" width="140" height="62" rx="10" />
+              <rect class="hd-brick" x="508" y="326" width="152" height="62" rx="10" />
+            </g>
+          </g>
+          <path class="hd-chip" id="hd-chip-1" d="M120,158 l30,-8 l8,20 l-28,10 Z" />
+          <path class="hd-chip" id="hd-chip-2" d="M330,152 l26,4 l-4,22 l-26,-6 Z" />
+          <path class="hd-chip" id="hd-chip-3" d="M540,156 l28,-4 l6,20 l-30,6 Z" />
+          <text class="hd-label" id="hd-label" x="350" y="420" text-anchor="middle">SKIN BARRIER</text>
+        </svg>
+      </div>
+
+      <div class="uc-claim">
+        <span class="uc-claim-line" id="harsh-claim-l1">Famous for clearing pores &mdash;</span>
+        <span class="uc-claim-line" id="harsh-claim-l2">but gentle? It is not.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var zoom = document.getElementById('harsh-zoom');
+  var kicker = document.getElementById('harsh-kicker');
+  var frameline = document.getElementById('harsh-frameline');
+  var bricksTop = [1,2,3,4].map(function(i){ return document.getElementById('hd-bt-'+i); });
+  var wall = document.getElementById('hd-wall');
+  var wash = document.getElementById('hd-wash');
+  var washLine = document.getElementById('hd-wash-line');
+  var chips = [1,2,3].map(function(i){ return document.getElementById('hd-chip-'+i); });
+  var label = document.getElementById('hd-label');
+  var cl1 = document.getElementById('harsh-claim-l1');
+  var cl2 = document.getElementById('harsh-claim-l2');
+
+  gsap.set(wash, { y: -120 });
+  gsap.set(washLine, { y: -120 });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Word timings, crisp-"But" retake: "famous for clearing pores" 0.25-1.9 ·
+  // "But gentle? It is not." 1.98-3.1 · "destroy your skin barrier" 3.93-5.2 · "breakouts" 5.87.
+
+  // Continuous slow zoom across the whole beat.
+  tl.fromTo(zoom, { scale: 1 }, { scale: 1.06, duration: 7.530, ease: 'none' }, 0);
+
+  // Scene 1: wall assembles.
+  tl.fromTo(wall, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.30);
+  tl.to(label, { opacity: 1, duration: 0.4 }, 0.70);
+
+  // Scene 2: kicker + FRAME line ride "famous for clearing pores".
+  tl.to(kicker, { opacity: 1, duration: 0.4 }, 0.55);
+  tl.to(frameline, { opacity: 1, duration: 0.5 }, 0.95);
+
+  // Scene 3: the acid wash descends on "gentle, it is not"; chips detach and drift.
+  tl.to([wash, washLine], { y: 0, opacity: 1, duration: 0.7, ease: 'power2.inOut' }, 2.00);
+  chips.forEach(function (c, i) {
+    tl.to(c, { opacity: 1, duration: 0.25 }, 2.55 + i * 0.28);
+    tl.to(c, { y: 34 + i * 10, rotation: 8 - i * 6, opacity: 0, duration: 1.1, ease: 'power2.in' }, 2.82 + i * 0.28);
+  });
+  bricksTop.forEach(function (b, i) {
+    tl.to(b, { opacity: 0.45, duration: 0.6 }, 2.75 + i * 0.15);
+  });
+
+  // Scene 4: CLAIM line-by-line on "destroy your skin barrier".
+  tl.to(cl1, { opacity: 1, y: 0, duration: 0.45 }, 3.85);
+  tl.to(cl2, { opacity: 1, y: 0, duration: 0.45 }, 4.55);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-harsh'] = tl;
+})();
+</script>
+</template>

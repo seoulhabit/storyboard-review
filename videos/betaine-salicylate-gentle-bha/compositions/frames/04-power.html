@@ -1,0 +1,159 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+
+  /* Full-bleed redesign (QC BLOCKER): paper to the screen edges; the cross-section
+     rendered at full width (+54%); labels dark and larger. */
+  .power-bg { position:absolute; inset:0; background:#F7F5F0; }
+  .frame-zoom { position:absolute; inset:0; transform-origin:50% 0%; }
+
+  .uc-kicker { position:absolute; top:252px; left:72px; right:162px; font-family:'Inter',sans-serif; font-weight:700; font-size:3.4cqw; letter-spacing:0.06em; text-transform:uppercase; color:#333333; opacity:0; }
+  .uc-kicker .coral-tick { display:inline-block; width:34px; height:7px; background:#C97A5C; border-radius:4px; margin-right:16px; vertical-align:middle; }
+
+  .power-diagram { position:absolute; top:310px; left:0; width:1080px; height:580px; }
+  .pd-label { font-family:'Inter',sans-serif; font-size:26px; font-weight:700; letter-spacing:0.04em; fill:#333333; opacity:0; }
+  .pd-ring { fill:none; stroke:rgba(89,184,174,0.5); stroke-width:2; opacity:0; }
+  .pd-flow-dot { fill:#59B8AE; opacity:0; }
+
+  .uc-claim { position:absolute; top:920px; left:72px; width:846px; font-family:'Inter',sans-serif; font-size:4.4cqw; line-height:1.4; font-weight:600; }
+  .uc-claim-line { display:block; opacity:0; transform:translateY(10px); }
+</style>
+<div data-composition-id="04-power" id="root" data-width="1080" data-height="1920" data-duration="9.395">
+  <div id="power-content" class="clip" data-start="0" data-duration="9.395" data-track-index="0">
+    <div class="power-bg"></div>
+    <div class="frame-zoom" id="power-zoom">
+      <div class="uc-kicker" id="power-kicker"><span class="coral-tick"></span>THE TRADE-OFF, DELETED</div>
+
+      <div class="power-diagram">
+        <svg viewBox="0 0 700 440" width="1080" height="580" aria-hidden="true">
+          <defs>
+            <linearGradient id="pd-skin-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#F2E7DB" />
+              <stop offset="0.45" stop-color="#EBDCC9" />
+              <stop offset="1" stop-color="#E0CDB4" />
+            </linearGradient>
+            <linearGradient id="pd-channel-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#C9B79C" />
+              <stop offset="1" stop-color="#D8C9B1" />
+            </linearGradient>
+            <radialGradient id="pd-plug-grad" cx="0.35" cy="0.3" r="0.9">
+              <stop offset="0" stop-color="#6A6E70" />
+              <stop offset="0.55" stop-color="#3C4042" />
+              <stop offset="1" stop-color="#26292A" />
+            </radialGradient>
+            <linearGradient id="pd-drop-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#8FDDD2" />
+              <stop offset="1" stop-color="#4CA89E" />
+            </linearGradient>
+            <linearGradient id="pd-clear-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="rgba(127,212,201,0.75)" />
+              <stop offset="1" stop-color="rgba(89,184,174,0.35)" />
+            </linearGradient>
+          </defs>
+
+          <g id="pd-drop-1" opacity="0">
+            <path d="M150,40 c14,22 22,34 22,46 a22,22 0 1 1 -44,0 c0,-12 8,-24 22,-46 Z" fill="url(#pd-drop-grad)" />
+            <ellipse cx="142" cy="76" rx="6" ry="9" fill="rgba(255,255,255,0.55)" transform="rotate(-18 142 76)" />
+          </g>
+          <g id="pd-drop-2" opacity="0">
+            <path d="M350,26 c14,22 22,34 22,46 a22,22 0 1 1 -44,0 c0,-12 8,-24 22,-46 Z" fill="url(#pd-drop-grad)" />
+            <ellipse cx="342" cy="62" rx="6" ry="9" fill="rgba(255,255,255,0.55)" transform="rotate(-18 342 62)" />
+          </g>
+          <g id="pd-drop-3" opacity="0">
+            <path d="M550,44 c14,22 22,34 22,46 a22,22 0 1 1 -44,0 c0,-12 8,-24 22,-46 Z" fill="url(#pd-drop-grad)" />
+            <ellipse cx="542" cy="80" rx="6" ry="9" fill="rgba(255,255,255,0.55)" transform="rotate(-18 542 80)" />
+          </g>
+
+          <rect x="30" y="190" width="640" height="220" rx="22" fill="url(#pd-skin-grad)" />
+          <rect x="30" y="190" width="640" height="26" rx="13" fill="rgba(19,21,22,0.06)" />
+          <path d="M30,190 H670" stroke="rgba(19,21,22,0.45)" stroke-width="3" stroke-linecap="round" fill="none" />
+
+          <rect x="303" y="196" width="94" height="180" rx="20" fill="url(#pd-channel-grad)" />
+          <rect x="303" y="196" width="16" height="180" rx="8" fill="rgba(19,21,22,0.10)" />
+          <rect x="381" y="196" width="16" height="180" rx="8" fill="rgba(255,255,255,0.22)" />
+          <rect x="303" y="196" width="94" height="180" rx="20" fill="none" stroke="rgba(19,21,22,0.35)" stroke-width="2.4" />
+
+          <rect id="pd-channel-clear" x="306" y="199" width="88" height="174" rx="18" fill="url(#pd-clear-grad)" opacity="0" />
+          <circle class="pd-flow-dot" id="pd-flow-1" cx="330" cy="360" r="5" />
+          <circle class="pd-flow-dot" id="pd-flow-2" cx="352" cy="372" r="4" />
+          <circle class="pd-flow-dot" id="pd-flow-3" cx="372" cy="352" r="4.5" />
+
+          <g id="pd-plug">
+            <path d="M318,206 q32,-16 64,0 q6,34 0,72 q-32,14 -64,0 q-6,-38 0,-72 Z" fill="url(#pd-plug-grad)" />
+            <ellipse cx="336" cy="222" rx="10" ry="6" fill="rgba(255,255,255,0.28)" transform="rotate(-14 336 222)" />
+            <path d="M318,206 q32,-16 64,0" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" />
+          </g>
+
+          <circle class="pd-ring" id="pd-ring-1" cx="150" cy="240" r="14" />
+          <circle class="pd-ring" id="pd-ring-2" cx="350" cy="410" r="14" />
+          <circle class="pd-ring" id="pd-ring-3" cx="550" cy="240" r="14" />
+
+          <text class="pd-label" id="pd-label" x="350" y="434" text-anchor="middle">PORE, CLEARED &middot; WATER, HELD</text>
+        </svg>
+      </div>
+
+      <div class="uc-claim">
+        <span class="uc-claim-line" id="power-claim-l1">The pore-unclogging power of a BHA &mdash; with built-in hydration.</span>
+        <span class="uc-claim-line" id="power-claim-l2">Hands-down the best exfoliant for sensitive skin.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var zoom = document.getElementById('power-zoom');
+  var kicker = document.getElementById('power-kicker');
+  var plug = document.getElementById('pd-plug');
+  var channelClear = document.getElementById('pd-channel-clear');
+  var drops = [1,2,3].map(function(i){ return document.getElementById('pd-drop-'+i); });
+  var rings = [1,2,3].map(function(i){ return document.getElementById('pd-ring-'+i); });
+  var flows = [1,2,3].map(function(i){ return document.getElementById('pd-flow-'+i); });
+  var label = document.getElementById('pd-label');
+  var cl1 = document.getElementById('power-claim-l1');
+  var cl2 = document.getElementById('power-claim-l2');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Word timings, installed take 04: "blackhead busting, pore unclogging power"
+  // 0.85-3.3 · "built-in hydration" 4.26-5.4 · "hands down ... skin" 5.41-8.1.
+
+  // Continuous slow zoom across the whole beat.
+  tl.fromTo(zoom, { scale: 1 }, { scale: 1.06, duration: 9.395, ease: 'none' }, 0);
+
+  // Scene 1: kicker.
+  tl.to(kicker, { opacity: 1, duration: 0.4 }, 0.40);
+
+  // Scene 2 (1.5x speed): the plug lifts out on "pore-unclogging"; aqua flow + particles.
+  tl.to(plug, { y: -90, opacity: 0, duration: 0.6, ease: 'power2.inOut' }, 1.95);
+  tl.to(channelClear, { opacity: 1, duration: 0.4 }, 2.40);
+  flows.forEach(function (f, i) {
+    tl.to(f, { opacity: 0.9, duration: 0.17 }, 2.65 + i * 0.13);
+    tl.to(f, { y: -130 - i * 14, opacity: 0, duration: 0.8, ease: 'power1.out' }, 2.80 + i * 0.13);
+  });
+
+  // Scene 3 (1.5x speed): droplets descend and settle; rings radiate once.
+  drops.forEach(function (d, i) {
+    tl.to(d, { opacity: 1, duration: 0.2 }, 4.10 + i * 0.15);
+    tl.to(d, { y: 120, duration: 0.57, ease: 'power2.inOut' }, 4.24 + i * 0.15);
+  });
+  rings.forEach(function (r, i) {
+    tl.to(r, { opacity: 0.7, duration: 0.17 }, 4.85 + i * 0.15);
+    tl.to(r, { attr: { r: 34 }, opacity: 0, duration: 0.53, ease: 'power2.out' }, 4.99 + i * 0.15);
+  });
+  tl.to(label, { opacity: 1, duration: 0.45 }, 5.05);
+
+  // Scene 4: CLAIM line-by-line on "hands-down the best exfoliant".
+  tl.to(cl1, { opacity: 1, y: 0, duration: 0.45 }, 5.55);
+  tl.to(cl2, { opacity: 1, y: 0, duration: 0.45 }, 6.45);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-power'] = tl;
+})();
+</script>
+</template>

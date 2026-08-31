@@ -1,0 +1,137 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .pr-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .pr-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  .pr-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:30px; padding:0 90px; text-align:center; }
+  .pr-caption { font-weight:800; font-size:4.8cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.08; opacity:0; }
+  .pr-sub { font-weight:700; font-size:2.6cqw; letter-spacing:0.1em; text-transform:uppercase; color:rgba(19,21,22,0.62); opacity:0; }
+
+  .pr-stage-box { position:relative; width:640px; height:600px; background:#0D1112; border-radius:40px; overflow:hidden; transform:scale(1.06); }
+  .pr-tag { position:absolute; bottom:26px; left:44px; font-weight:700; font-size:1.7cqw; letter-spacing:0.08em; color:rgba(236,233,226,0.5); text-align:left; }
+
+  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:34px 52px; text-align:left; opacity:0; }
+  .uc-claim { font-size:2.9cqw; line-height:1.4; font-weight:600; margin-bottom:12px; }
+  .uc-unsourced { font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+</style>
+<div data-hf-id="hf-p3rt" data-composition-id="03-problem" id="root" data-width="1080" data-height="1920" data-duration="9.300">
+  <div data-hf-id="hf-p3bg" id="pr-bg" class="clip pr-bg" data-start="0" data-duration="9.300" data-track-index="0"></div>
+  <div data-hf-id="hf-p3gr" id="pr-grain" class="clip pr-grain" data-start="0" data-duration="9.300" data-track-index="1"></div>
+
+  <div data-hf-id="hf-p3st" id="pr-stage" class="clip pr-stage" data-start="0" data-duration="9.300" data-track-index="2">
+    <div data-hf-id="hf-p3cp" class="pr-caption" id="pr-caption">HYPERTROPHIC SCAR</div>
+
+    <div data-hf-id="hf-p3bx" class="pr-stage-box" id="pr-stage-box">
+      <svg data-hf-id="hf-p3sv" id="pr-svg" viewBox="0 0 640 600" width="640" height="600" aria-hidden="true">
+        <path data-hf-id="hf-p3s1" d="M60,300 H580" stroke="rgba(236,233,226,0.35)" stroke-width="4" />
+        <path data-hf-id="hf-p3s2" d="M60,400 H580" stroke="rgba(236,233,226,0.18)" stroke-width="3" />
+        <path data-hf-id="hf-p3s3" d="M60,480 H580" stroke="rgba(236,233,226,0.18)" stroke-width="3" />
+        <g data-hf-id="hf-p3kn" id="pr-knot"></g>
+        <!-- height bracket, unruled (no numbers — a measured height would be a size claim) -->
+        <g data-hf-id="hf-p3bk" id="pr-bracket" opacity="0">
+          <path data-hf-id="hf-p3bk1" d="M545,300 V152 M533,300 h24 M533,152 h24" stroke="rgba(236,233,226,0.6)" stroke-width="3" fill="none" />
+        </g>
+        <!-- occlusion film: dashed arc over the knot; structure beneath stays tangled -->
+        <path data-hf-id="hf-p3oc" id="pr-occlusion" d="M120,296 Q320,104 520,296" stroke="rgba(236,233,226,0.55)"
+          stroke-width="4" stroke-dasharray="14 12" fill="none" opacity="0" />
+        <!-- three generic unlabeled jars (kept clear of the bottom-left tag row) -->
+        <g data-hf-id="hf-p3js" id="pr-jars" opacity="0">
+          <g data-hf-id="hf-p3j1"><rect x="150" y="452" width="90" height="64" rx="12" fill="none" stroke="rgba(236,233,226,0.45)" stroke-width="3"/><rect x="166" y="438" width="58" height="14" rx="5" fill="none" stroke="rgba(236,233,226,0.45)" stroke-width="3"/></g>
+          <g data-hf-id="hf-p3j2"><rect x="276" y="452" width="90" height="64" rx="12" fill="none" stroke="rgba(236,233,226,0.45)" stroke-width="3"/><rect x="292" y="438" width="58" height="14" rx="5" fill="none" stroke="rgba(236,233,226,0.45)" stroke-width="3"/></g>
+          <g data-hf-id="hf-p3j3"><rect x="402" y="452" width="90" height="64" rx="12" fill="none" stroke="rgba(236,233,226,0.45)" stroke-width="3"/><rect x="418" y="438" width="58" height="14" rx="5" fill="none" stroke="rgba(236,233,226,0.45)" stroke-width="3"/></g>
+        </g>
+        <!-- the coral strike — this frame's one voltage moment -->
+        <path data-hf-id="hf-p3sk" id="pr-strike" d="M138,484 H506" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" />
+      </svg>
+      <div data-hf-id="hf-p3tg" class="pr-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div data-hf-id="hf-p3sb" class="pr-sub" id="pr-sub">Occlusion ≠ structure</div>
+
+    <div data-hf-id="hf-p3cd" class="uc-card" id="pr-card">
+      <div data-hf-id="hf-p3c1" class="uc-claim">A disorganized rebuild can heal raised. Occlusives hold moisture — they do not reorganize collagen.</div>
+      <div data-hf-id="hf-p3un" class="uc-unsourced">○ UNSOURCED — no record in this system</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  // Same seed as 02-setup → the identical knot, carried over already crested.
+  function lcg(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  var rnd = lcg(20260829);
+  var NS = 'http://www.w3.org/2000/svg';
+  var knot = document.getElementById('pr-knot');
+  var CX = 320, CY = 320;
+  for (var i = 0; i < 14; i++) {
+    var a0 = rnd() * Math.PI * 2, a1 = rnd() * Math.PI * 2, a2 = rnd() * Math.PI * 2;
+    var r0 = 26 + rnd() * 64, r1 = 20 + rnd() * 70, r2 = 24 + rnd() * 60;
+    var x0 = CX + Math.cos(a0) * r0, y0 = CY + Math.sin(a0) * r0 * 0.8;
+    var x1 = CX + Math.cos(a1) * (r1 + 40), y1 = CY + Math.sin(a1) * r1;
+    var x2 = CX + Math.cos(a2) * r2, y2 = CY + Math.sin(a2) * r2 * 0.85;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) +
+      ' Q' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' + x2.toFixed(1) + ',' + y2.toFixed(1));
+    p.setAttribute('stroke', i % 3 === 0 ? '#E4574D' : 'rgba(228,87,77,0.72)');
+    p.setAttribute('stroke-width', (2.6 + rnd() * 1.6).toFixed(1));
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    knot.appendChild(p);
+    rnd(); // consume the entry-angle draw so the sequence matches 02-setup exactly
+  }
+
+  var box = document.getElementById('pr-stage-box');
+  var caption = document.getElementById('pr-caption');
+  var bracket = document.getElementById('pr-bracket');
+  var occl = document.getElementById('pr-occlusion');
+  var jars = document.getElementById('pr-jars');
+  var strike = document.getElementById('pr-strike');
+  var sub = document.getElementById('pr-sub');
+  var card = document.getElementById('pr-card');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Local cues: raised@1.77 · hypertrophic@2.31 · scar@3.17 · generic@3.76 ·
+  // ointments@4.68 · lock@5.52 · moisture@6.07 · don't@6.83 · structure@7.74.
+  gsap.set(strike, { scaleX: 0, transformOrigin: '138px 484px' });
+  gsap.set(document.getElementById('pr-knot'), { y: -46, scale: 1.45, svgOrigin: '320 320' });
+
+  // camera continuity: holds 02-setup's 1.06 push, releases slightly.
+  tl.to(box, { scale: 1.03, duration: 1.2, ease: 'power1.inOut' }, 0);
+
+  // "raised": bracket rises from the surface to the knot apex.
+  tl.to(bracket, { opacity: 1, duration: 0.4 }, 1.77);
+  tl.fromTo(bracket, { y: 30 }, { y: 0, duration: 0.6, ease: 'power2.out' }, 1.77);
+
+  // "hypertrophic scar": label slams over the stage.
+  tl.fromTo(caption, { opacity: 0, scale: 1.15 }, { opacity: 1, scale: 1, duration: 0.5 }, 2.31);
+
+  // "generic healing ointments": jar shelf appears.
+  tl.fromTo(jars, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55 }, 3.76);
+
+  // "lock in moisture": occlusion film draws over the knot — tangle unchanged beneath.
+  tl.fromTo(occl, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 5.52);
+  tl.fromTo(occl, { attr: { 'stroke-dashoffset': 520 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 1.0, ease: 'power2.inOut' }, 5.52);
+
+  // "don't fix the structure": coral strike sweeps the jar row; sub-line lands.
+  tl.to(strike, { scaleX: 1, duration: 0.35, ease: 'power2.out' }, 6.83);
+  tl.to(sub, { opacity: 1, duration: 0.4 }, 6.95);
+
+  // claim card
+  tl.fromTo(card, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 4.20);
+
+  tl.to({}, { duration: 9.300 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['03-problem'] = tl;
+})();
+</script>
+</template>

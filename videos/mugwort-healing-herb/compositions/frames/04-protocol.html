@@ -1,0 +1,98 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+  .pr-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .pr-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.12; mix-blend-mode:multiply; }
+
+  .pr-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:40px; padding:0 90px; text-align:center; }
+  .pr-kicker { font-weight:700; font-size:2.3cqw; letter-spacing:0.12em; text-transform:uppercase; color:rgba(19,21,22,0.68); opacity:0; }
+
+  .pr-choice { display:flex; width:822px; border:1px solid rgba(19,21,22,0.14); border-radius:28px; overflow:hidden; opacity:0; background:#FBF9F5; box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); }
+  .pr-opt { flex:1; padding:44px 28px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .pr-opt.dim { color:rgba(19,21,22,0.62); }
+  .pr-opt.live { color:#131516; border-left:1px solid rgba(19,21,22,0.12); }
+  .pr-opt-label { font-weight:700; font-size:2.7cqw; letter-spacing:0.02em; text-transform:uppercase; line-height:1.25; }
+  .pr-opt-sub { font-weight:600; font-size:2.0cqw; color:rgba(19,21,22,0.62); line-height:1.3; }
+  .pr-mark { width:64px; height:64px; }
+
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.8cqw; color:rgba(19,21,22,0.85);
+    border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:10px 24px; background:rgba(19,21,22,0.05); opacity:0; }
+</style>
+<div data-composition-id="04-protocol" id="root" data-width="1080" data-height="1920" data-duration="12.664">
+  <div id="pr-bg" class="clip pr-bg" data-start="0" data-duration="12.664" data-track-index="0"></div>
+  <div id="pr-grain" class="clip pr-grain" data-start="0" data-duration="12.664" data-track-index="1"></div>
+
+  <div id="pr-stage" class="clip pr-stage" data-start="0" data-duration="12.664" data-track-index="2">
+    <div class="pr-kicker" id="pr-kicker">The protocol</div>
+
+    <div class="pr-choice" id="pr-choice">
+      <div class="pr-opt dim">
+        <svg class="pr-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path id="pr-x1" d="M18,18 L46,46" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" fill="none" />
+          <path id="pr-x2" d="M46,18 L18,46" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" fill="none" />
+        </svg>
+        <div class="pr-opt-label">Raw herb<br>DIY steam</div>
+        <div class="pr-opt-sub">irritates the skin<br>you are trying to calm</div>
+      </div>
+      <div class="pr-opt live">
+        <svg class="pr-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path id="pr-check" d="M16,34 L28,46 L50,20" stroke="#59B8AE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        </svg>
+        <div class="pr-opt-label">Fermented<br>essence</div>
+        <div class="pr-opt-sub">your very first layer,<br>on damp skin</div>
+      </div>
+    </div>
+
+    <div class="uc-unsourced" id="pr-unsourced">○ UNSOURCED — no record in this system</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var kicker = document.getElementById('pr-kicker');
+  var choice = document.getElementById('pr-choice');
+  var x1 = document.getElementById('pr-x1');
+  var x2 = document.getElementById('pr-x2');
+  var check = document.getElementById('pr-check');
+  var unsourced = document.getElementById('pr-unsourced');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Cues (tightened take): protocol.@0.80-1.49 · stop.@4.36-4.64 · calm.@7.16-7.63 ·
+  // Instead,@7.63-8.08 · first layer@10.78-11.52 · damp skin@11.66-12.40.
+
+  // Hard cut open — both columns present together (a comparison reads instantly, never builds).
+  tl.fromTo(choice, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5 }, 0.0);
+  tl.to(kicker, { opacity: 1, duration: 0.4 }, 0.80);
+
+  // The usage guidance on this panel has no record in this system — flagged, never asserted silently.
+  tl.to(unsourced, { opacity: 1, duration: 0.4 }, 0.6);
+
+  // "stop.": the frame's one coral voltage moment — the ✕ strokes draw across the wrong column.
+  var len1 = x1.getTotalLength();
+  // opacity-gate the marks: with round linecaps a fully-offset dash still paints a dot.
+  gsap.set([x1, x2], { strokeDasharray: len1, strokeDashoffset: len1, opacity: 0 });
+  tl.to(x1, { opacity: 1, duration: 0.02 }, 4.36);
+  tl.to(x1, { strokeDashoffset: 0, duration: 0.25, ease: 'power2.out' }, 4.36);
+  tl.to(x2, { opacity: 1, duration: 0.02 }, 4.62);
+  tl.to(x2, { strokeDashoffset: 0, duration: 0.25, ease: 'power2.out' }, 4.62);
+
+  // "Instead": the aqua check draws on the right column — the frame's one aqua accent.
+  var lenC = check.getTotalLength();
+  gsap.set(check, { strokeDasharray: lenC, strokeDashoffset: lenC, opacity: 0 });
+  tl.to(check, { opacity: 1, duration: 0.02 }, 7.63);
+  tl.to(check, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 7.63);
+
+  tl.to({}, { duration: 12.664 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-protocol'] = tl;
+})();
+</script>
+</template>

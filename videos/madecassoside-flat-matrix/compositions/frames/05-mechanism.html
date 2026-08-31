@@ -1,0 +1,154 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .mx-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .mx-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  .mx-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:30px; padding:0 90px; text-align:center; }
+  .mx-caption { font-weight:800; font-size:4.8cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.08; }
+  .mx-caption .w1 { opacity:0; display:inline-block; }
+  .mx-caption .w2 { opacity:0; display:inline-block; color:#59B8AE; }
+
+  .mx-stage-box { position:relative; width:640px; height:600px; background:#0D1112; border-radius:40px; overflow:hidden; transform:scale(1.06); }
+  .mx-tag { position:absolute; bottom:26px; left:44px; font-weight:700; font-size:1.7cqw; letter-spacing:0.08em; color:rgba(236,233,226,0.5); text-align:left; }
+
+  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:34px 52px; text-align:left; opacity:0; }
+  .uc-claim { font-size:2.9cqw; line-height:1.4; font-weight:600; margin-bottom:12px; }
+  .uc-unsourced { font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+</style>
+<div data-hf-id="hf-m5rt" data-composition-id="05-mechanism" id="root" data-width="1080" data-height="1920" data-duration="8.000">
+  <div data-hf-id="hf-m5bg" id="mx-bg" class="clip mx-bg" data-start="0" data-duration="8.000" data-track-index="0"></div>
+  <div data-hf-id="hf-m5gr" id="mx-grain" class="clip mx-grain" data-start="0" data-duration="8.000" data-track-index="1"></div>
+
+  <div data-hf-id="hf-m5st" id="mx-stage" class="clip mx-stage" data-start="0" data-duration="8.000" data-track-index="2">
+    <div data-hf-id="hf-m5cp" class="mx-caption" id="mx-caption">
+      <span data-hf-id="hf-m5w1" class="w1" id="mx-w1">REBUILT&nbsp;IN&nbsp;</span><span data-hf-id="hf-m5w2" class="w2" id="mx-w2">PARALLEL</span>
+    </div>
+
+    <div data-hf-id="hf-m5bx" class="mx-stage-box" id="mx-stage-box">
+      <svg data-hf-id="hf-m5sv" id="mx-svg" viewBox="0 0 640 600" width="640" height="600" aria-hidden="true">
+        <g data-hf-id="hf-m5bp" id="mx-blueprint" opacity="0.8">
+          <path data-hf-id="hf-m5g2" d="M120,180 V460 M253,180 V460 M386,180 V460 M520,180 V460" stroke="rgba(89,184,174,0.4)" stroke-width="2" stroke-dasharray="8 8" fill="none" />
+          <path data-hf-id="hf-m5g3" d="M100,160 h28 M100,160 v28 M540,160 h-28 M540,160 v28 M100,480 h28 M100,480 v-28 M540,480 h-28 M540,480 v-28" stroke="#59B8AE" stroke-width="3" fill="none" />
+        </g>
+        <g data-hf-id="hf-m5kn" id="mx-knot"></g>
+        <g data-hf-id="hf-m5gd" id="mx-grid"></g>
+      </svg>
+      <div data-hf-id="hf-m5tg" class="mx-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div data-hf-id="hf-m5cd" class="uc-card" id="mx-card">
+      <div data-hf-id="hf-m5cl" class="uc-claim">Intercepts inflammatory signaling · directs parallel collagen alignment.</div>
+      <div data-hf-id="hf-m5un" class="uc-unsourced">○ UNSOURCED — no record in this system</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  function lcg(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  var rnd = lcg(20260829);
+  var NS = 'http://www.w3.org/2000/svg';
+  var knot = document.getElementById('mx-knot');
+  var CX = 320, CY = 320;
+  var strandEls = [];
+  for (var i = 0; i < 14; i++) {
+    var a0 = rnd() * Math.PI * 2, a1 = rnd() * Math.PI * 2, a2 = rnd() * Math.PI * 2;
+    var r0 = 26 + rnd() * 64, r1 = 20 + rnd() * 70, r2 = 24 + rnd() * 60;
+    var x0 = CX + Math.cos(a0) * r0, y0 = CY + Math.sin(a0) * r0 * 0.8;
+    var x1 = CX + Math.cos(a1) * (r1 + 40), y1 = CY + Math.sin(a1) * r1;
+    var x2 = CX + Math.cos(a2) * r2, y2 = CY + Math.sin(a2) * r2 * 0.85;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) +
+      ' Q' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' + x2.toFixed(1) + ',' + y2.toFixed(1));
+    p.setAttribute('stroke', i % 3 === 0 ? '#E4574D' : 'rgba(228,87,77,0.72)');
+    p.setAttribute('stroke-width', (2.6 + rnd() * 1.6).toFixed(1));
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    knot.appendChild(p);
+    strandEls.push(p);
+    rnd();
+  }
+
+  // Eight parallel target lines between the blueprint rails.
+  var grid = document.getElementById('mx-grid');
+  var gridLines = [];
+  for (var k = 0; k < 8; k++) {
+    var y = 200 + k * 34.3;
+    var ln = document.createElementNS(NS, 'path');
+    ln.setAttribute('d', 'M120,' + y.toFixed(1) + ' H520');
+    ln.setAttribute('stroke', '#59B8AE');
+    ln.setAttribute('stroke-width', '5');
+    ln.setAttribute('stroke-linecap', 'round');
+    ln.setAttribute('fill', 'none');
+    grid.appendChild(ln);
+    gridLines.push(ln);
+  }
+  gsap.set(gridLines, { scaleX: 0, transformOrigin: '120px 0px' });
+
+  var box = document.getElementById('mx-stage-box');
+  var blueprint = document.getElementById('mx-blueprint');
+  var w1 = document.getElementById('mx-w1');
+  var w2 = document.getElementById('mx-w2');
+  var card = document.getElementById('mx-card');
+  var knotG = document.getElementById('mx-knot');
+  var gridG = document.getElementById('mx-grid');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  gsap.set(knotG, { y: 10, scale: 1.45, svgOrigin: '320 320' });
+
+  // Local cues: intercepts@0.25 · panic signals@1.0-1.8 · forces@2.09 · fibers@3.0 ·
+  // rebuild@3.52 · perfect@4.24 · organized@5.02 · parallel@6.02 · lines@6.43.
+
+  // "intercepts the panic signals": the knot's agitation is damped — strands calm slightly.
+  tl.to(knotG, { opacity: 0.9, duration: 0.6 }, 0.25);
+
+  // Wave 1 on "forces" (slots 0-3): chaos yields to order, back.out snap.
+  strandEls.slice(0, 7).forEach(function (s, i) {
+    tl.to(s, { opacity: 0, y: (200 + i * 34.3) - 320, duration: 0.5, ease: 'power2.in' }, 2.09 + i * 0.07);
+  });
+  gridLines.slice(0, 4).forEach(function (ln, i) {
+    tl.to(ln, { scaleX: 1, duration: 0.55, ease: 'back.out(1.4)' }, 2.30 + i * 0.12);
+  });
+  tl.to(w1, { opacity: 1, y: 0, duration: 0.4, startAt: { y: 14 } }, 2.30);
+
+  // Wave 2 on "organized" (slots 4-7).
+  strandEls.slice(7).forEach(function (s, i) {
+    tl.to(s, { opacity: 0, y: (337 + i * 34.3) - 320, duration: 0.5, ease: 'power2.in' }, 5.02 + i * 0.06);
+  });
+  gridLines.slice(4).forEach(function (ln, i) {
+    tl.to(ln, { scaleX: 1, duration: 0.55, ease: 'back.out(1.4)' }, 5.20 + i * 0.12);
+  });
+
+  // "parallel lines": the word lands aqua; blueprint dashes recede — plan became structure.
+  tl.to(w2, { opacity: 1, y: 0, duration: 0.4, startAt: { y: 14 } }, 6.02);
+  tl.to(blueprint, { opacity: 0.3, duration: 0.8, ease: 'power1.inOut' }, 6.02);
+
+  // Final lock: one bounded residual jiggle that settles (the licensed overshoot's tail).
+  (function () {
+    var j = { p: 0 };
+    tl.to(j, { p: Math.PI * 2.5, duration: 0.8, ease: 'power1.out', onUpdate: function () {
+      gsap.set(gridG, { y: Math.sin(j.p) * 3 * (1 - j.p / (Math.PI * 2.5)) });
+    } }, 6.30);
+    tl.set(gridG, { y: 0 }, 7.15);
+  })();
+
+  // claim card + slow camera pull as order emerges.
+  tl.fromTo(card, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 3.60);
+  tl.to(box, { scale: 1.0, duration: 6.0, ease: 'power1.inOut' }, 1.5);
+
+  tl.to({}, { duration: 8.000 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['05-mechanism'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #F7F5F0; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      /* Captions removed per QC (the floating text boxes read as distracting). */
+      .clip { position: absolute; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Rework-round beat map (crisp-"But" retake; safe-area lifts; sparkle -9dB):
+      F1 hook      0.000 -  9.363   VO 8.363  (1.5x intro pacing)
+      F2 harsh     9.363 - 16.893   VO 6.530
+      F3 identity 16.893 - 27.593   VO 9.700
+      F4 power    27.593 - 36.988   VO 8.395
+      F5 cta      36.988 - 46.988   VO 10.000
+    -->
+    <div id="root" data-composition-id="main" data-start="0.000" data-duration="46.988" data-width="1080" data-height="1920">
+      <div id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="9.363" data-track-index="0"></div>
+      <audio id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="8.363" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-02-harsh" class="scene" data-composition-id="02-harsh" data-composition-src="compositions/frames/02-harsh.html" data-start="9.363" data-duration="7.530" data-track-index="1"></div>
+      <audio id="el-02-voice" src="assets/voice/02.wav" data-start="9.363" data-duration="6.530" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-03-identity" class="scene" data-composition-id="03-identity" data-composition-src="compositions/frames/03-identity.html" data-start="16.893" data-duration="10.700" data-track-index="0"></div>
+      <audio id="el-03-voice" src="assets/voice/03.wav" data-start="16.893" data-duration="9.700" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-04-power" class="scene" data-composition-id="04-power" data-composition-src="compositions/frames/04-power.html" data-start="27.593" data-duration="9.395" data-track-index="1"></div>
+      <audio id="el-04-voice" src="assets/voice/04.wav" data-start="27.593" data-duration="8.395" data-track-index="10" data-volume="1"></audio>
+
+      <div id="el-05-cta" class="scene" data-composition-id="05-cta" data-composition-src="compositions/frames/05-cta.html" data-start="36.988" data-duration="10.000" data-track-index="0"></div>
+      <audio id="el-05-voice" src="assets/voice/05.wav" data-start="36.988" data-duration="10.000" data-track-index="10" data-volume="1"></audio>
+
+      <!-- BGM — royalty-free in-repo lo-fi bed baked to length, -25 dB under the VO -->
+      <audio id="el-bgm" src="assets/bgm/bed.wav" data-start="0.000" data-duration="46.988" data-track-index="11" data-volume="0.12"></audio>
+
+      <!-- SFX — re-anchored to the retention-round beat map -->
+      <audio id="el-sfx-1a" src="assets/sfx/impact-bass-1.mp3" data-start="0.000" data-duration="2.116" data-track-index="20" data-volume="0.35"></audio>
+      <audio id="el-sfx-1b" src="assets/sfx/click-soft.mp3" data-start="4.300" data-duration="0.366" data-track-index="21" data-volume="0.3"></audio>
+      <audio id="el-sfx-2a" src="assets/sfx/whoosh-short.mp3" data-start="9.513" data-duration="0.575" data-track-index="22" data-volume="0.3"></audio>
+      <audio id="el-sfx-2b" src="assets/sfx/click-soft.mp3" data-start="13.213" data-duration="0.366" data-track-index="23" data-volume="0.25"></audio>
+      <audio id="el-sfx-3a" src="assets/sfx/whoosh-short.mp3" data-start="17.693" data-duration="0.575" data-track-index="24" data-volume="0.25"></audio>
+      <audio id="el-sfx-3b" src="assets/sfx/click-soft.mp3" data-start="19.813" data-duration="0.366" data-track-index="25" data-volume="0.25"></audio>
+      <audio id="el-sfx-4a" src="assets/sfx/click-soft.mp3" data-start="29.543" data-duration="0.366" data-track-index="26" data-volume="0.3"></audio>
+      <audio id="el-sfx-4b" src="assets/sfx/sparkle.mp3" data-start="31.833" data-duration="1.802" data-track-index="27" data-volume="0.12"></audio>
+      <audio id="el-sfx-4c" src="assets/sfx/click-soft.mp3" data-start="33.143" data-duration="0.366" data-track-index="28" data-volume="0.22"></audio>
+      <audio id="el-sfx-5a" src="assets/sfx/chime.mp3" data-start="38.438" data-duration="2.5" data-track-index="29" data-volume="0.3"></audio>
+      <audio id="el-sfx-5b" src="assets/sfx/whoosh-short.mp3" data-start="46.200" data-duration="0.575" data-track-index="30" data-volume="0.3"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var tl = window.__timelines["main"];
+
+        // 1 -> 2 : hard cut
+
+        // 2 -> 3 : crossfade
+        tl.to("#el-02-harsh", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 16.893);
+        tl.fromTo("#el-03-identity", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 16.893);
+
+        // 3 -> 4 : crossfade
+        tl.to("#el-03-identity", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 27.593);
+        tl.fromTo("#el-04-power", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 27.593);
+
+        // 4 -> 5 : hard cut (matches the CTA's chime open)
+
+        tl.to({}, { duration: 46.988 }, 0); // full-span anchor — main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

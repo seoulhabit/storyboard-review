@@ -1,0 +1,67 @@
+[
+  {
+    "text": "Barrier",
+    "start": 0.25,
+    "end": 0.48
+  },
+  {
+    "text": "Integrity",
+    "start": 0.48,
+    "end": 1.1
+  },
+  {
+    "text": "is",
+    "start": 1.1,
+    "end": 1.21
+  },
+  {
+    "text": "the",
+    "start": 1.24,
+    "end": 1.43
+  },
+  {
+    "text": "baseline",
+    "start": 1.43,
+    "end": 2
+  },
+  {
+    "text": "every",
+    "start": 2.16,
+    "end": 2.43
+  },
+  {
+    "text": "other",
+    "start": 2.43,
+    "end": 2.86
+  },
+  {
+    "text": "step",
+    "start": 2.86,
+    "end": 3.2
+  },
+  {
+    "text": "depends",
+    "start": 3.2,
+    "end": 3.63
+  },
+  {
+    "text": "on.",
+    "start": 3.71,
+    "end": 4
+  },
+  {
+    "text": "Verify",
+    "start": 4.25,
+    "end": 4.46
+  },
+  {
+    "text": "it",
+    "start": 4.46,
+    "end": 4.61
+  },
+  {
+    "text": "first.",
+    "start": 4.61,
+    "end": 5
+  }
+]

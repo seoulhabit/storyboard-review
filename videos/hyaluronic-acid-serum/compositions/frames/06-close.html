@@ -1,0 +1,150 @@
+<template>
+<style>
+  /* 06-close — Protocol & close. v3 PDRN-mirror: dark protocol panel, neon question,
+     citation pill + follow + disclaimer on paper. Hexes hardcoded from frame.md. */
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  /* ---- paper ground (full-bleed clip layer, never on #root) ---- */
+  .cls-ground { background:radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .cls-grain { opacity:0.05; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* ---- dark protocol panel ---- */
+  .cls-panel { position:absolute; left:200px; top:288px; width:680px; height:920px; background:#131516; border-radius:40px; overflow:hidden; }
+
+  .cls-kicker { position:absolute; top:56px; left:0; right:0; text-align:center; font-family:'JetBrains Mono',monospace; font-weight:600; font-size:22px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,245,240,0.62); }
+
+  /* protocol rows — mono paper, hairline separators, aqua tick at left */
+  .cls-rows { position:absolute; top:150px; left:64px; right:64px; }
+  .cls-row { display:flex; align-items:center; gap:18px; padding:28px 0; border-bottom:1px solid rgba(247,245,240,0.14); font-family:'JetBrains Mono',monospace; font-size:30px; letter-spacing:0.04em; text-transform:uppercase; opacity:0; }
+  .cls-tick { width:24px; height:2px; background:#6FE0D3; border-radius:1px; box-shadow:0 0 10px rgba(111,224,211,0.6), 0 0 22px rgba(89,184,174,0.35); transform-origin:left center; }
+  .cls-idx { font-weight:500; color:rgba(247,245,240,0.62); }
+  .cls-sep { font-weight:500; color:rgba(247,245,240,0.35); }
+  .cls-lbl { font-weight:600; color:#F7F5F0; }
+
+  /* thin divider that draws on "or the pull reverses" */
+  .cls-divider { position:absolute; top:490px; left:64px; right:64px; height:1.5px; background:rgba(247,245,240,0.25); transform-origin:center center; }
+
+  /* neon question — the frame's aqua voltage, panel lower half */
+  .cls-neon { position:absolute; left:40px; right:40px; top:560px; height:340px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; }
+  .cls-neon-line { text-align:center; font-family:'Inter',sans-serif; font-weight:800; font-size:48px; line-height:1.25; letter-spacing:-0.01em; text-transform:uppercase; color:#6FE0D3; }
+  .cls-neon-line2 { font-size:36px; }
+  .cls-neon-line .cls-w { display:inline-block; margin:0 0.11em; opacity:0; text-shadow:0 0 8px rgba(111,224,211,0.9), 0 0 24px rgba(89,184,174,0.65), 0 0 64px rgba(89,184,174,0.4); }
+
+  /* ---- paper stack below the panel — flat, no glow ---- */
+  /* v5 safe-area fix: pill + disclaimer lifted inside the y ∈ [288,1440] content window.
+     The disclaimer sat at 1486 — under the Shorts title/progress UI, i.e. unreadable. */
+  .cls-cite-wrap { position:absolute; top:1224px; left:0; right:0; display:flex; justify-content:center; opacity:0; }
+  .cls-cite-pill { display:inline-flex; align-items:center; gap:10px; background:rgba(111,143,114,0.10); border:1.5px solid rgba(111,143,114,0.45); border-radius:999px; padding:14px 28px; }
+  .cls-cite-lead { font-family:'Inter',sans-serif; font-weight:700; font-size:30px; color:#131516; }
+  .cls-cite-id { font-family:'JetBrains Mono',monospace; font-weight:500; font-size:28px; color:#9F6149; }
+
+
+  .cls-disclaimer { position:absolute; top:1356px; left:0; right:0; text-align:center; font-family:'JetBrains Mono',monospace; font-weight:500; font-size:20px; letter-spacing:0.01em; color:rgba(19,21,22,0.5); opacity:0; }
+</style>
+
+<div data-composition-id="06-close" id="root" data-width="1080" data-height="1920" data-duration="10.720">
+
+  <div id="cls-ground" class="clip cls-ground" data-start="0" data-duration="10.720" data-track-index="0"></div>
+  <div id="cls-grain" class="clip cls-grain" data-start="0" data-duration="10.720" data-track-index="1"></div>
+
+  <div id="cls-stage" class="clip" data-start="0" data-duration="10.720" data-track-index="2">
+
+    <div class="cls-panel" id="cls-panel">
+      <div class="cls-kicker" id="cls-kicker">Application Protocol &middot; Topical</div>
+
+      <div class="cls-rows" id="cls-rows">
+        <div class="cls-row" id="cls-row-1">
+          <div class="cls-tick" id="cls-tick-1"></div>
+          <span class="cls-idx">01</span><span class="cls-sep">&middot;</span><span class="cls-lbl">Damp Skin</span>
+        </div>
+        <div class="cls-row" id="cls-row-2">
+          <div class="cls-tick" id="cls-tick-2"></div>
+          <span class="cls-idx">02</span><span class="cls-sep">&middot;</span><span class="cls-lbl">Serum</span>
+        </div>
+        <div class="cls-row" id="cls-row-3">
+          <div class="cls-tick" id="cls-tick-3"></div>
+          <span class="cls-idx">03</span><span class="cls-sep">&middot;</span><span class="cls-lbl">Moisturizer</span>
+        </div>
+      </div>
+
+      <div class="cls-divider" id="cls-divider"></div>
+
+      <!-- v6 QA fix: no directional arrow — the Shorts comments button is mid-right, so a
+           down arrow pointed at the description strip. Copy now matches the spoken VO line. -->
+      <div class="cls-neon" id="cls-neon">
+        <div class="cls-neon-line">
+          <span class="cls-w" id="cls-w-1">Tell Me In</span><span class="cls-w" id="cls-w-2">The Comments</span>
+        </div>
+        <div class="cls-neon-line cls-neon-line2">
+          <span class="cls-w" id="cls-w-3">+ Follow</span><span class="cls-w" id="cls-w-4">&mdash; Ingredient Series</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cls-cite-wrap" id="cls-cite-wrap">
+      <div class="cls-cite-pill">
+        <span class="cls-cite-lead">CITATION &mdash;&nbsp;</span><span class="cls-cite-id">&#8990; ING-hyaluronic-acid-S003 &#8991;</span>
+      </div>
+    </div>
+
+    
+    <div class="cls-disclaimer" id="cls-disclaimer">General skincare education &mdash; not sourced claims, not medical advice.</div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var rows = [
+    document.getElementById('cls-row-1'),
+    document.getElementById('cls-row-2'),
+    document.getElementById('cls-row-3')
+  ];
+  var ticks = [
+    document.getElementById('cls-tick-1'),
+    document.getElementById('cls-tick-2'),
+    document.getElementById('cls-tick-3')
+  ];
+  var rowsWrap = document.getElementById('cls-rows');
+  var divider = document.getElementById('cls-divider');
+  var w1 = document.getElementById('cls-w-1');
+  var w2 = document.getElementById('cls-w-2');
+  var w3 = document.getElementById('cls-w-3');
+  var w4 = document.getElementById('cls-w-4');
+  var citeWrap = document.getElementById('cls-cite-wrap');
+  var disclaimer = document.getElementById('cls-disclaimer');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Scene 1 (0.0–0.9s): hard cut in — panel + kicker already composed; held stillness.
+  // (Nothing fires: dense frame zero, no entrance.)
+
+  // Scene 2 (0.9–3.6s): protocol rows land on their spoken cues —
+  // "damp skin" ~1.3s / "serum" ~2.1s / "then an occlusive seal" ~2.9s.
+  var rowCues = [1.2, 1.9, 2.55];
+  for (var i = 0; i < 3; i++) {
+    tl.fromTo(rows[i], { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, rowCues[i]);
+    tl.fromTo(ticks[i], { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power2.out' }, rowCues[i] + 0.1);
+  }
+
+  // Scene 3 (3.9–5.2s): on "or the pull reverses" — rows dim to 0.55; a thin divider draws.
+  tl.to(rowsWrap, { opacity: 0.55, duration: 0.5, ease: 'power2.inOut' }, 4.45);
+  tl.fromTo(divider, { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power2.inOut' }, 4.55);
+
+  // Scene 4 (5.4–9.2s): the neon question burns in per-word —
+  // "HYDRATING —" ~6.0s, then "OR DEHYDRATING?" ~8.2s.
+  tl.fromTo([w1, w2], { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.18 }, 5.80);
+  tl.fromTo([w3, w4], { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.16 }, 7.15);
+
+  // Scene 5 (9.2–11.974s): the paper stack below — citation pill, follow line, disclaimer.
+  tl.fromTo(citeWrap, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45 }, 8.55);
+  tl.fromTo(disclaimer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 9.05);
+  // Last tween ends at 10.45s — fully resolved, completely still for the final ~1.5s hold.
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['06-close'] = tl;
+})();
+</script>
+</template>

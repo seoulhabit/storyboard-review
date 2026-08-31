@@ -1,0 +1,104 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .rs-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .rs-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  .rs-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:30px; padding:0 90px; text-align:center; }
+  .rs-caption { font-weight:800; font-size:5.2cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.1; }
+  .rs-caption .l1 { display:block; opacity:0; }
+  .rs-caption .l2 { display:block; opacity:0; color:#59B8AE; text-shadow:0 0 24px rgba(89,184,174,0.5); }
+
+  .rs-stage-box { position:relative; width:640px; height:600px; background:#0D1112; border-radius:40px; overflow:hidden; }
+  .rs-tag { position:absolute; bottom:26px; left:44px; font-weight:700; font-size:1.7cqw; letter-spacing:0.08em; color:rgba(236,233,226,0.5); text-align:left; }
+  .rs-hud-label { position:absolute; top:38px; left:44px; font-weight:700; font-size:2.0cqw; letter-spacing:0.14em; color:rgba(236,233,226,0.55); text-transform:uppercase; }
+
+  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:34px 52px; text-align:left; opacity:0; }
+  .uc-claim { font-size:2.9cqw; line-height:1.4; font-weight:600; margin-bottom:12px; }
+  .uc-unsourced { font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+</style>
+<div data-hf-id="hf-r6rt" data-composition-id="06-result" id="root" data-width="1080" data-height="1920" data-duration="7.800">
+  <div data-hf-id="hf-r6bg" id="rs-bg" class="clip rs-bg" data-start="0" data-duration="7.800" data-track-index="0"></div>
+  <div data-hf-id="hf-r6gr" id="rs-grain" class="clip rs-grain" data-start="0" data-duration="7.800" data-track-index="1"></div>
+
+  <div data-hf-id="hf-r6st" id="rs-stage" class="clip rs-stage" data-start="0" data-duration="7.800" data-track-index="2">
+    <div data-hf-id="hf-r6cp" class="rs-caption" id="rs-caption">
+      <span data-hf-id="hf-r6l1" class="l1" id="rs-l1">FLAT MATRIX</span>
+      <span data-hf-id="hf-r6l2" class="l2" id="rs-l2">= NO BUMPS</span>
+    </div>
+
+    <div data-hf-id="hf-r6bx" class="rs-stage-box" id="rs-stage-box">
+      <div data-hf-id="hf-r6hd" class="rs-hud-label">Scar site · Rebuilt</div>
+      <svg data-hf-id="hf-r6sv" id="rs-svg" viewBox="0 0 640 600" width="640" height="600" aria-hidden="true">
+        <path data-hf-id="hf-r6tk" d="M44,110 h26 M44,110 v26 M596,110 h-26 M596,110 v26" stroke="rgba(236,233,226,0.4)" stroke-width="3" fill="none" />
+        <path data-hf-id="hf-r6st2" d="M60,560 H580" stroke="rgba(236,233,226,0.18)" stroke-width="3" />
+        <!-- the Beat 1 bump, about to be argued flat -->
+        <path data-hf-id="hf-r6bm" id="rs-bump"
+          d="M60,300 H210 C250,300 258,256 292,242 C312,234 328,234 348,242 C382,256 390,300 430,300 H580"
+          stroke="#E4574D" stroke-width="6" fill="none" stroke-linecap="round" />
+        <!-- the organized matrix beneath, carried in from the mechanism beat -->
+        <g data-hf-id="hf-r6gd" id="rs-grid">
+          <path data-hf-id="hf-r6g1" d="M120,352 H520" stroke="#59B8AE" stroke-width="5" stroke-linecap="round" />
+          <path data-hf-id="hf-r6g2" d="M120,390 H520" stroke="#59B8AE" stroke-width="5" stroke-linecap="round" />
+          <path data-hf-id="hf-r6g3" d="M120,428 H520" stroke="#59B8AE" stroke-width="5" stroke-linecap="round" />
+          <path data-hf-id="hf-r6g4" d="M120,466 H520" stroke="rgba(89,184,174,0.7)" stroke-width="4" stroke-linecap="round" />
+          <path data-hf-id="hf-r6g5" d="M120,504 H520" stroke="rgba(89,184,174,0.5)" stroke-width="4" stroke-linecap="round" />
+        </g>
+      </svg>
+      <div data-hf-id="hf-r6tg" class="rs-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div data-hf-id="hf-r6cd" class="uc-card" id="rs-card">
+      <div data-hf-id="hf-r6cl" class="uc-claim">A flat, organized rebuild while the wound closes.</div>
+      <div data-hf-id="hf-r6un" class="uc-unsourced">○ UNSOURCED — no record in this system</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var box = document.getElementById('rs-stage-box');
+  var bump = document.getElementById('rs-bump');
+  var l1 = document.getElementById('rs-l1');
+  var l2 = document.getElementById('rs-l2');
+  var card = document.getElementById('rs-card');
+
+  var FLAT = 'M60,300 H210 C250,300 258,300 292,300 C312,300 328,300 348,300 C382,300 390,300 430,300 H580';
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Local cues: instead@0.24 · messy bump@1.08-2.0 · forces@2.48 · perfectly flat@3.22-4.1 ·
+  // smooth surface@4.18-4.8 · wound closes@5.20-6.0.
+
+  // "it forces": the one fast camera move of the video — zoom out to the full section.
+  tl.fromTo(box, { scale: 1.18 }, { scale: 1.0, duration: 0.6, ease: 'power3.out' }, 2.48);
+
+  // "perfectly flat": the bump path tweens dead flat.
+  tl.to(bump, { attr: { d: FLAT }, duration: 1.3, ease: 'power2.inOut' }, 3.22);
+  // the surface line turns aqua as it flattens — the beat's one bounded bloom, then matte.
+  tl.to(bump, { stroke: '#59B8AE', duration: 0.8, ease: 'power1.inOut' }, 3.60);
+  tl.fromTo(bump, { filter: 'drop-shadow(0 0 0px rgba(89,184,174,0))' },
+    { filter: 'drop-shadow(0 0 22px rgba(89,184,174,0.85))', duration: 0.5, ease: 'power1.inOut' }, 4.36);
+  tl.to(bump, { filter: 'drop-shadow(0 0 6px rgba(89,184,174,0.25))', duration: 0.9, ease: 'power1.inOut' }, 4.96);
+
+  // lockup
+  tl.fromTo(l1, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, 3.22);
+  tl.fromTo(l2, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, 4.90);
+
+  // claim card, then the long dense pause-and-study settle.
+  tl.fromTo(card, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 5.20);
+
+  tl.to({}, { duration: 7.800 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['06-result'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:#131516; }
+  #root { position:relative; width:1080px; height:1920px; font-family:'Inter',sans-serif;
+    background:radial-gradient(820px 1100px at 50% 42%, #1B1E1F 0%, #131516 62%, #0D0F10 100%); }
+  .grain { position:absolute; inset:0; opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* everything critical lives in the center 1080x1350 zone (y 285–1635) */
+  .stack { position:absolute; left:0; right:0; top:285px; height:1350px; display:flex;
+    flex-direction:column; align-items:center; justify-content:center; gap:44px; text-align:center; }
+  .kicker { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:36px; letter-spacing:0.18em;
+    text-transform:uppercase; color:rgba(247,245,240,0.62); }
+  .figwrap { position:relative; display:inline-block; }
+  .fig { font-weight:800; font-size:230px; line-height:0.95; letter-spacing:-0.02em; color:#F7F5F0;
+    font-variant-numeric:tabular-nums; }
+  .strike { position:absolute; left:-4%; top:47%; width:108%; height:16px; background:#E05252;
+    border-radius:8px; transform:rotate(-4deg); box-shadow:0 0 24px rgba(224,82,82,0.55); }
+  .myth { font-weight:800; font-size:110px; line-height:1; letter-spacing:-0.01em; text-transform:uppercase; color:#F7F5F0; }
+  .myth em { font-style:normal; color:#E05252; }
+
+  .chain { margin-top:18px;
+    filter:drop-shadow(0 0 8px rgba(111,224,211,0.9)) drop-shadow(0 0 24px rgba(89,184,174,0.6)); }
+
+  .truth { margin-top:10px; }
+  .truth-fig { font-weight:800; font-size:120px; line-height:1; letter-spacing:-0.01em; color:#6FE0D3;
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 10px rgba(111,224,211,0.9), 0 0 30px rgba(89,184,174,0.65), 0 0 80px rgba(89,184,174,0.4); }
+  .truth-tag { margin-top:14px; font-family:'JetBrains Mono',monospace; font-weight:500; font-size:30px;
+    letter-spacing:0.16em; text-transform:uppercase; color:rgba(247,245,240,0.62); }
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="grain"></div>
+  <div class="stack">
+    <div class="kicker">Hyaluronic Acid</div>
+    <div class="figwrap">
+      <div class="fig">1,000&times;</div>
+      <div class="strike"></div>
+    </div>
+    <div class="myth">Is a <em>myth</em></div>
+
+    <svg class="chain" viewBox="0 0 390 195" width="440" height="220" aria-hidden="true">
+      <polygon points="126,79.5 104.25,117.15 60.75,117.15 39,79.5 60.75,41.85 104.25,41.85"
+        fill="none" stroke="#6FE0D3" stroke-width="4" stroke-linejoin="round"/>
+      <polygon points="238.5,114 216.75,151.65 173.25,151.65 151.5,114 173.25,76.35 216.75,76.35"
+        fill="none" stroke="#6FE0D3" stroke-width="4" stroke-linejoin="round"/>
+      <polygon points="351,79.5 329.25,117.15 285.75,117.15 264,79.5 285.75,41.85 329.25,41.85"
+        fill="none" stroke="#6FE0D3" stroke-width="4" stroke-linejoin="round"/>
+      <line x1="126" y1="79.5" x2="151.5" y2="114" stroke="#6FE0D3" stroke-width="4" stroke-linecap="round"/>
+      <line x1="238.5" y1="114" x2="264" y2="79.5" stroke="#6FE0D3" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+
+    <div class="truth">
+      <div class="truth-fig">10&ndash;100&times;</div>
+      <div class="truth-tag">Measured</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

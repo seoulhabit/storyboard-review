@@ -1,0 +1,107 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+  .cta-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .cta-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.08; mix-blend-mode:multiply; }
+  .cta-ghost { top:384px; left:0; width:1080px; height:1056px; display:flex; align-items:center; justify-content:center; opacity:0; }
+  .cta-ghost svg { width:640px; height:200px; }
+
+  .cta-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:44px; padding:0 90px; text-align:center; }
+  .cta-kicker { font-weight:700; font-size:2.3cqw; letter-spacing:0.12em; text-transform:uppercase; color:rgba(19,21,22,0.68); opacity:0; }
+
+  .cta-choice { display:flex; width:822px; border:1px solid rgba(19,21,22,0.14); border-radius:28px; overflow:hidden; opacity:0; background:#FBF9F5; box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); }
+  .cta-opt { flex:1; padding:44px 28px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .cta-opt.dim { color:rgba(19,21,22,0.62); }
+  .cta-opt.live { color:#131516; border-left:1px solid rgba(19,21,22,0.12); position:relative; }
+  .cta-opt-label { font-weight:700; font-size:2.7cqw; letter-spacing:0.02em; text-transform:uppercase; line-height:1.25; }
+  .cta-opt.live .cta-opt-label { position:relative; display:inline-block; }
+  .cta-underline { position:absolute; left:0; bottom:-8px; height:4px; width:100%; background:#C97A5C; transform-origin:0% 50%; transform:scaleX(0); }
+  .cta-icon { width:56px; height:44px; }
+
+  .cta-prompt { display:inline-flex; align-items:center; gap:10px; padding:14px 28px; border:1px solid rgba(19,21,22,0.16); border-radius:999px; font-weight:700; font-size:2.1cqw; letter-spacing:0.05em; text-transform:uppercase; color:rgba(19,21,22,0.65); opacity:0; }
+
+  .cta-follow { font-weight:700; font-size:1.9cqw; letter-spacing:0.08em; text-transform:uppercase; color:rgba(19,21,22,0.62); opacity:0; }
+</style>
+<div data-hf-id="hf-c7rt" data-composition-id="07-cta" id="root" data-width="1080" data-height="1920" data-duration="9.400">
+  <div data-hf-id="hf-c7bg" id="cta-bg" class="clip cta-bg" data-start="0" data-duration="9.400" data-track-index="0"></div>
+  <div data-hf-id="hf-c7gr" id="cta-grain" class="clip cta-grain" data-start="0" data-duration="9.400" data-track-index="1"></div>
+
+  <!-- ghost echo of beat 6's flat line — a closing visual rhyme, not a hard audio loop -->
+  <div data-hf-id="hf-c7gh" id="cta-ghost" class="clip cta-ghost" data-start="0" data-duration="9.400" data-track-index="2">
+    <svg viewBox="0 0 640 200" aria-hidden="true">
+      <path data-hf-id="hf-c7gp" d="M20,100 H620" stroke="#59B8AE" stroke-width="5" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <div data-hf-id="hf-c7st" id="cta-stage" class="clip cta-stage" data-start="0" data-duration="9.400" data-track-index="3">
+    <div data-hf-id="hf-c7kk" class="cta-kicker" id="cta-kicker">Structural review — decision point</div>
+
+    <div data-hf-id="hf-c7ch" class="cta-choice" id="cta-choice">
+      <div data-hf-id="hf-c7o1" class="cta-opt dim">
+        <svg data-hf-id="hf-c7i1" class="cta-icon" viewBox="0 0 56 44" aria-hidden="true">
+          <rect data-hf-id="hf-c7r1" x="14" y="16" width="28" height="24" rx="5" fill="none" stroke="rgba(19,21,22,0.4)" stroke-width="2.5"/>
+          <rect data-hf-id="hf-c7r2" x="20" y="8" width="16" height="8" rx="3" fill="none" stroke="rgba(19,21,22,0.4)" stroke-width="2.5"/>
+        </svg>
+        <div data-hf-id="hf-c7l1" class="cta-opt-label">Generic<br data-hf-id="hf-c7b1">Ointment</div>
+      </div>
+      <div data-hf-id="hf-c7o2" class="cta-opt live">
+        <svg data-hf-id="hf-c7i2" class="cta-icon" viewBox="0 0 56 44" aria-hidden="true">
+          <path data-hf-id="hf-c7pl1" d="M8,14 H48" stroke="#131516" stroke-width="3" stroke-linecap="round"/>
+          <path data-hf-id="hf-c7pl2" d="M8,22 H48" stroke="#131516" stroke-width="3" stroke-linecap="round"/>
+          <path data-hf-id="hf-c7pl3" d="M8,30 H48" stroke="#59B8AE" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <div data-hf-id="hf-c7l2" class="cta-opt-label" id="cta-live-label">Structural<br data-hf-id="hf-c7b2">Repair<span data-hf-id="hf-c7ul" class="cta-underline" id="cta-underline"></span></div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-c7pr" class="cta-prompt" id="cta-prompt">▾ Your thoughts below</div>
+
+    <div data-hf-id="hf-c7fl" class="cta-follow" id="cta-follow">Follow for more</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var ghost = document.getElementById('cta-ghost');
+  var kicker = document.getElementById('cta-kicker');
+  var choice = document.getElementById('cta-choice');
+  var underline = document.getElementById('cta-underline');
+  var prompt = document.getElementById('cta-prompt');
+  var follow = document.getElementById('cta-follow');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  gsap.set(underline, { scaleX: 0 });
+
+  // Local cues (real take): So@0.06 · still@0.84 · relying@1.21 · generic@1.76 · time@3.42 ·
+  // upgrade@3.84-4.27 · repair@5.08-5.88 · Let@5.94 · thoughts@6.72 · follow@7.33 · more@7.78.
+
+  // Hard cut open — both columns present together (a comparison reads instantly, never builds).
+  tl.fromTo(choice, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5 }, 0.0);
+  tl.to(kicker, { opacity: 1, duration: 0.4 }, 0.2);
+
+  // "time to upgrade": the frame's one voltage moment — a coral underline lands on Structural Repair.
+  tl.to(underline, { scaleX: 1, duration: 0.4, ease: 'power2.out' }, 3.84);
+
+  // "Let me know your thoughts": prompt chip arrives.
+  tl.fromTo(prompt, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, 5.94);
+
+  // "follow for more": the follow tag lands, bottom-left, clear of the button rail.
+  tl.fromTo(follow, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 7.33);
+
+  // the flat line from the result beat ghosts in slowly across the whole frame — a closing
+  // visual echo, not a hard audio loop (this beat is a real CTA sentence, not a fragment).
+  tl.to(ghost, { opacity: 0.16, duration: 8.5, ease: 'power1.inOut' }, 0.5);
+
+  tl.to({}, { duration: 9.400 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['07-cta'] = tl;
+})();
+</script>
+</template>

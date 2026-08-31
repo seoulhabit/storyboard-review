@@ -1,0 +1,10 @@
+{
+  "lines": [
+    { "id": "c1", "sfx": ["sharp text stamp impact hit"] },
+    { "id": "c3", "sfx": ["wall crumble crack collapse"] }
+  ],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "minimal ambient electronic pulse clinical technology sparse focus"
+  }
+}

@@ -1,0 +1,9 @@
+Topic: Betaine Salicylate — the gentle alternative to salicylic acid (BHA).
+Source: user-supplied 60s script "The Gentle Alternative" (see user_script.txt, verbatim).
+Key points, per the script:
+- Traditional salicylic acid clears blackheads but can leave skin red and peeling.
+- BHA is famous for clearing pores but can be too harsh; you don't have to destroy the skin barrier to clear breakouts.
+- Betaine Salicylate = salicylic acid attached to betaine (described in the script as a hydrating amino acid).
+- Claimed: the pore-unclogging power of a BHA with built-in hydration; "the best exfoliant for sensitive skin."
+- CTA: glow without the burn; check your ingredient list; comment + subscribe.
+Sourcing status in this system: ZERO Betaine Salicylate study records exist (repo-wide search). Every efficacy/gentleness claim renders with the UNSOURCED flag; no citation id is invented.

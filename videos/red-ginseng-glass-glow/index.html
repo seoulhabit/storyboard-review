@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #1A1512; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .clip { position: absolute; }
+      /* Rework item 3: dark caption card (white-on-ink) so cues hold contrast over bright skin plates */
+      .vo-caption { top: 196px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
+      .vo-caption span { display: inline-block; max-width: 760px; background: rgba(22,24,26,0.88); color: #FFFFFF;
+        border: 1px solid rgba(255,255,255,0.14); font-family: 'Inter', 'Helvetica Neue', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.3;
+        text-align: center; padding: 12px 26px; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.35); }
+    </style>
+  </head>
+  <body>
+    <!--
+      Rework round 2 (review 2026-08-30): (1) take 05 rebuilt without the inserted 0.5s pause
+      (review supersedes the original micro-pause note) — dur 8.930->8.430, S6 41.897->41.397,
+      total 50.782->50.282; beats 1-4 untouched. (2) CTA stack raised 384px clear of the Shorts
+      bottom UI. (3) captions now ink cards. (4) UNSOURCED circulation flag replaced with a real
+      oral-RCT citation (PMID 25284751). (5) plate 03 regenerated as a hard split (no ghosting).
+      S1=0.000 S2=6.482 S3=13.439 S4=20.644 S5=31.167 S6=41.397, total=50.282s.
+    -->
+    <div data-hf-id="hf-rg00" id="root" data-composition-id="main" data-start="0.000" data-duration="50.282" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-sc01" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="6.482" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo01" id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="5.482" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc02" id="el-02-problem" class="scene" data-composition-id="02-problem" data-composition-src="compositions/frames/02-problem.html" data-start="6.482" data-duration="6.957" data-track-index="1"></div>
+      <audio data-hf-id="hf-vo02" id="el-02-voice" src="assets/voice/02.wav" data-start="6.482" data-duration="6.157" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc03" id="el-03-heritage" class="scene" data-composition-id="03-heritage" data-composition-src="compositions/frames/03-heritage.html" data-start="13.439" data-duration="7.205" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo03" id="el-03-voice" src="assets/voice/03.wav" data-start="13.439" data-duration="6.405" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc04" id="el-04-mechanism" class="scene" data-composition-id="04-mechanism" data-composition-src="compositions/frames/04-mechanism.html" data-start="20.644" data-duration="10.523" data-track-index="1"></div>
+      <audio data-hf-id="hf-vo04" id="el-04-voice" src="assets/voice/04.wav" data-start="20.644" data-duration="8.923" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc05" id="el-05-result" class="scene" data-composition-id="05-result" data-composition-src="compositions/frames/05-result.html" data-start="31.167" data-duration="10.230" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo05" id="el-05-voice" src="assets/voice/05.wav" data-start="31.167" data-duration="8.430" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc06" id="el-06-cta" class="scene" data-composition-id="06-cta" data-composition-src="compositions/frames/06-cta.html" data-start="41.397" data-duration="8.885" data-track-index="1"></div>
+      <audio data-hf-id="hf-vo06" id="el-06-voice" src="assets/voice/06.wav" data-start="41.397" data-duration="6.385" data-track-index="10" data-volume="1"></audio>
+
+      <!-- Burned-in captions — script-authoritative text, whisper word-timed against the
+           installed takes, offset by each block's data-start; cues extend to the next cue. -->
+      <div data-hf-id="hf-cp01" id="el-cap-01" class="clip vo-caption" data-start="0.250" data-duration="0.940" data-track-index="5"><span>Want to know why Korean</span></div>
+      <div data-hf-id="hf-cp02" id="el-cap-02" class="clip vo-caption" data-start="1.190" data-duration="2.510" data-track-index="5"><span>skincare routines are absolutely obsessed</span></div>
+      <div data-hf-id="hf-cp03" id="el-cap-03" class="clip vo-caption" data-start="3.700" data-duration="1.782" data-track-index="5"><span>with this strange-looking root?</span></div>
+      <div data-hf-id="hf-cp04" id="el-cap-04" class="clip vo-caption" data-start="6.492" data-duration="0.980" data-track-index="5"><span>If you want to fight</span></div>
+      <div data-hf-id="hf-cp05" id="el-cap-05" class="clip vo-caption" data-start="7.472" data-duration="2.010" data-track-index="5"><span>wrinkles, but retinol is destroying</span></div>
+      <div data-hf-id="hf-cp06" id="el-cap-06" class="clip vo-caption" data-start="9.482" data-duration="1.160" data-track-index="5"><span>your skin barrier,</span></div>
+      <div data-hf-id="hf-cp07" id="el-cap-07" class="clip vo-caption" data-start="10.642" data-duration="1.240" data-track-index="5"><span>you need to know about</span></div>
+      <div data-hf-id="hf-cp08" id="el-cap-08" class="clip vo-caption" data-start="11.882" data-duration="0.757" data-track-index="5"><span>Ginseng.</span></div>
+      <div data-hf-id="hf-cp09" id="el-cap-09" class="clip vo-caption" data-start="13.809" data-duration="1.750" data-track-index="5"><span>Traditional medicine used this for</span></div>
+      <div data-hf-id="hf-cp10" id="el-cap-10" class="clip vo-caption" data-start="15.559" data-duration="2.210" data-track-index="5"><span>centuries, but modern science shows</span></div>
+      <div data-hf-id="hf-cp11" id="el-cap-11" class="clip vo-caption" data-start="17.769" data-duration="1.390" data-track-index="5"><span>it&#x27;s a powerhouse for your</span></div>
+      <div data-hf-id="hf-cp12" id="el-cap-12" class="clip vo-caption" data-start="19.159" data-duration="0.685" data-track-index="5"><span>face.</span></div>
+      <div data-hf-id="hf-cp13" id="el-cap-13" class="clip vo-caption" data-start="20.664" data-duration="1.610" data-track-index="5"><span>It&#x27;s packed with active compounds</span></div>
+      <div data-hf-id="hf-cp14" id="el-cap-14" class="clip vo-caption" data-start="22.274" data-duration="3.730" data-track-index="5"><span>called ginsenosides. Think of them</span></div>
+      <div data-hf-id="hf-cp15" id="el-cap-15" class="clip vo-caption" data-start="26.004" data-duration="1.390" data-track-index="5"><span>as bodyguards for your skin</span></div>
+      <div data-hf-id="hf-cp16" id="el-cap-16" class="clip vo-caption" data-start="27.394" data-duration="2.173" data-track-index="5"><span>cells, neutralizing free radicals.</span></div>
+      <div data-hf-id="hf-cp17" id="el-cap-17" class="clip vo-caption" data-start="31.667" data-duration="1.530" data-track-index="5"><span>The real magic?</span></div>
+      <div data-hf-id="hf-cp18" id="el-cap-18" class="clip vo-caption" data-start="33.197" data-duration="0.970" data-track-index="5"><span>Ginseng boosts blood circulation,</span></div>
+      <div data-hf-id="hf-cp19" id="el-cap-19" class="clip vo-caption" data-start="34.167" data-duration="1.640" data-track-index="5"><span>ramping up collagen,</span></div>
+      <div data-hf-id="hf-cp20" id="el-cap-20" class="clip vo-caption" data-start="35.807" data-duration="1.560" data-track-index="5"><span>giving you that insane,</span></div>
+      <div data-hf-id="hf-cp21" id="el-cap-21" class="clip vo-caption" data-start="37.367" data-duration="2.230" data-track-index="5"><span>natural glass-skin glow.</span></div>
+      <div data-hf-id="hf-cp22" id="el-cap-22" class="clip vo-caption" data-start="41.707" data-duration="1.620" data-track-index="5"><span>You don&#x27;t need to eat</span></div>
+      <div data-hf-id="hf-cp23" id="el-cap-23" class="clip vo-caption" data-start="43.327" data-duration="0.710" data-track-index="5"><span>it. Just add a red</span></div>
+      <div data-hf-id="hf-cp24" id="el-cap-24" class="clip vo-caption" data-start="44.037" data-duration="2.620" data-track-index="5"><span>ginseng serum to your routine.</span></div>
+      <div data-hf-id="hf-cp25" id="el-cap-25" class="clip vo-caption" data-start="46.657" data-duration="1.125" data-track-index="5"><span>Subscribe for more secrets!</span></div>
+
+      <!-- BGM — quiet bed under the full runtime, well beneath narration -->
+      <audio data-hf-id="hf-bgm1" id="el-bgm" src="assets/bgm/track-pulse.wav" data-start="0.000" data-duration="49.800" data-track-index="11" data-volume="0.1"></audio>
+
+      <!-- SFX — series 3-sound palette; beat-5/6 cues recomputed for the tightened take 05 -->
+      <audio data-hf-id="hf-sx01" id="el-sfx-01" src="assets/sfx/whoosh-short.mp3" data-start="6.482" data-duration="0.575" data-track-index="20" data-volume="0.26"></audio>
+      <audio data-hf-id="hf-sx02" id="el-sfx-02" src="assets/sfx/click-soft.mp3" data-start="13.439" data-duration="0.366" data-track-index="21" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sx03" id="el-sfx-03" src="assets/sfx/whoosh-short.mp3" data-start="20.644" data-duration="0.575" data-track-index="22" data-volume="0.26"></audio>
+      <audio data-hf-id="hf-sx04" id="el-sfx-04" src="assets/sfx/chime.mp3" data-start="22.544" data-duration="2.5" data-track-index="23" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sx05" id="el-sfx-05" src="assets/sfx/click-soft.mp3" data-start="31.167" data-duration="0.366" data-track-index="24" data-volume="0.20"></audio>
+      <audio data-hf-id="hf-sx06" id="el-sfx-06" src="assets/sfx/chime.mp3" data-start="34.267" data-duration="2.5" data-track-index="25" data-volume="0.24"></audio>
+      <audio data-hf-id="hf-sx07" id="el-sfx-07" src="assets/sfx/whoosh-short.mp3" data-start="41.397" data-duration="0.575" data-track-index="26" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sx08" id="el-sfx-08" src="assets/sfx/chime.mp3" data-start="45.597" data-duration="2.5" data-track-index="27" data-volume="0.20"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var tl = window.__timelines["main"];
+        tl.to({}, { duration: 50.282 }, 0); // full-span anchor — main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

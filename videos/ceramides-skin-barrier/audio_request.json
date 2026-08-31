@@ -1,0 +1,35 @@
+{
+  "provider": "heygen",
+  "lang": "en",
+  "lines": [
+    {
+      "id": "01",
+      "text": "Stop using Retinol until you do this one thing. It might be destroying your skin barrier.",
+      "sfx": ["cinematic sub bass impact hit"]
+    },
+    {
+      "id": "02",
+      "text": "You're spending a fortune on serums, but if your barrier is cracked, that hydration literally just evaporates.",
+      "sfx": ["soft air whoosh transition"]
+    },
+    {
+      "id": "03",
+      "text": "Enter Ceramides. They make up fifty percent of your skin's outer layer, the protective grout holding your skin-cell bricks together. But by age 30, you've lost 40% of them.",
+      "sfx": ["bright glass chime"]
+    },
+    {
+      "id": "04",
+      "text": "To fix the cracks, we have to put them back. Skincare ceramides are usually plant-derived from wheat or rice, or lab-made to match your skin perfectly.",
+      "sfx": []
+    },
+    {
+      "id": "05",
+      "text": "They lock moisture in and block irritants out. Fix your barrier first. Subscribe for more skincare science!",
+      "sfx": ["subtle bell notification"]
+    }
+  ],
+  "bgm": {
+    "mode": "retrieve",
+    "query": "lo-fi chill upbeat electronic synth beauty skincare focus"
+  }
+}

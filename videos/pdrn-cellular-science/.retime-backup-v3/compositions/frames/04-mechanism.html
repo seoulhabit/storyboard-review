@@ -1,0 +1,152 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  .mech-bg-warm { background:#F7F5F0; }
+  .mech-bg-cool { background:#EEF3F0; opacity:0; }
+
+  /* Round 4: the diagram and the claim now live in ONE card (matching the other frames), sized
+     to sit inside the 15%-top/25%-bottom safe zone (y in [288,1440]); Inter replaces JetBrains
+     Mono for the tag/label. */
+  .uc-card { position:absolute; left:96px; top:322px; width:888px; background:#F7F5F0; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:44px 56px; overflow:hidden; }
+
+  .mech-tag { font-family:'Inter',sans-serif; font-weight:600; font-size:2.3cqw; letter-spacing:0.04em; color:rgba(19,21,22,0.55); margin-bottom:16px; opacity:0; }
+  .mech-label { font-family:'Inter',sans-serif; font-weight:700; font-size:2.5cqw; letter-spacing:0.04em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:24px; opacity:0; }
+
+  .mech-diagram-wrap { position:relative; width:100%; height:620px; margin-bottom:32px; }
+  .mech-stroke { fill:none; stroke:#131516; stroke-width:2.5; }
+
+  /* Dermal cellular texture, browser-drawn (radial-gradient wash + feTurbulence grain) — sits
+     behind the receptor/key line art, never competing with it. */
+  .mech-dermal-bg { position:absolute; inset:0; border-radius:20px; opacity:0.4;
+    background:
+      radial-gradient(180px 140px at 15% 20%, rgba(111,143,114,0.14) 0%, transparent 70%),
+      radial-gradient(220px 170px at 80% 18%, rgba(111,143,114,0.11) 0%, transparent 70%),
+      radial-gradient(200px 160px at 22% 82%, rgba(111,143,114,0.12) 0%, transparent 70%),
+      radial-gradient(240px 180px at 85% 78%, rgba(111,143,114,0.1) 0%, transparent 70%),
+      radial-gradient(170px 140px at 52% 50%, rgba(111,143,114,0.08) 0%, transparent 65%); }
+  .mech-dermal-grain { position:absolute; inset:0; border-radius:20px; opacity:0.16; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"); }
+
+  .uc-claim { font-family:'Inter',sans-serif; font-size:3.3cqw; font-weight:600; line-height:1.45; margin-bottom:20px; opacity:0; }
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); opacity:0; }
+</style>
+<div data-hf-id="hf-8b3c" data-composition-id="04-mechanism" id="root" data-width="1080" data-height="1920" data-duration="15.007">
+  <div data-hf-id="hf-8luf" id="mech-bg-warm" class="clip mech-bg-warm" data-start="0" data-duration="15.007" data-track-index="0"></div>
+  <div data-hf-id="hf-ndi2" class="clip mech-bg-cool" id="mech-bg-cool" data-start="0" data-duration="15.007" data-track-index="1"></div>
+
+  <div data-hf-id="hf-content" id="mech-content" class="clip" data-start="0" data-duration="15.007" data-track-index="2">
+    <div data-hf-id="hf-6opn" class="uc-card" id="mech-card">
+      <div data-hf-id="hf-4myt" class="mech-tag" id="mech-tag">[Authored, illustrative — not a claim]</div>
+      <div data-hf-id="hf-we3p" class="mech-label" id="mech-label">A2A receptors</div>
+
+      <div data-hf-id="hf-8uca" class="mech-diagram-wrap" id="mech-diagram-wrap">
+        <div data-hf-id="hf-mderm" class="mech-dermal-bg" aria-hidden="true"></div>
+        <div data-hf-id="hf-mgrain" class="mech-dermal-grain" aria-hidden="true"></div>
+        <svg data-hf-id="hf-r6se" id="mech-svg" viewBox="0 0 960 620" width="100%" height="620" style="position:absolute; inset:0;" aria-hidden="true">
+          <defs data-hf-id="hf-mechdefs">
+            <filter data-hf-id="hf-mechf1" id="filter-mech-glow" x="-120%" y="-120%" width="340%" height="340%">
+              <feGaussianBlur data-hf-id="hf-mechf1b" stdDeviation="26" />
+            </filter>
+          </defs>
+
+          <!-- membrane cross-section -->
+          <line data-hf-id="hf-mem1" class="mech-stroke" x1="60" y1="320" x2="900" y2="320" />
+          <line data-hf-id="hf-mem2" class="mech-stroke" x1="60" y1="334" x2="900" y2="334" />
+
+          <!-- receptor: stem crossing the membrane, binding pocket above -->
+          <rect data-hf-id="hf-recstem" class="mech-stroke" id="mech-receptor-stem" x="458" y="224" width="44" height="150" rx="5" />
+          <circle data-hf-id="hf-recpocket" class="mech-stroke" id="mech-receptor-pocket" cx="480" cy="180" r="44" />
+
+          <!-- gate: closed at rest, opens once the key turns -->
+          <line data-hf-id="hf-gatel" class="mech-stroke" id="mech-gate-left" x1="480" y1="374" x2="438" y2="374" />
+          <line data-hf-id="hf-gater" class="mech-stroke" id="mech-gate-right" x1="480" y1="374" x2="522" y2="374" />
+
+          <!-- key: teeth tip is the group's local origin, so the turn pivots there, as a real key does -->
+          <g data-hf-id="hf-keygrp" id="mech-key">
+            <circle data-hf-id="hf-keybow" class="mech-stroke" cx="0" cy="-128" r="36" />
+            <line data-hf-id="hf-keyshaft" class="mech-stroke" x1="0" y1="-95" x2="0" y2="0" />
+            <line data-hf-id="hf-keytooth1" class="mech-stroke" x1="0" y1="-15" x2="12" y2="-15" />
+            <line data-hf-id="hf-keytooth2" class="mech-stroke" x1="0" y1="-5" x2="12" y2="-5" />
+          </g>
+        </svg>
+      </div>
+
+      <div data-hf-id="hf-yj7h" class="uc-claim" id="mech-claim">When PDRN binds to A2A receptors, it flips the switch — instantly shutting down inflammation and boosting blood flow.</div>
+      <div data-hf-id="hf-wwkx" class="uc-unsourced" id="mech-unsourced">○ UNSOURCED — no record in this system</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var bgCool = document.getElementById('mech-bg-cool');
+  var tag = document.getElementById('mech-tag');
+  var label = document.getElementById('mech-label');
+  var diagramWrap = document.getElementById('mech-diagram-wrap');
+  var stem = document.getElementById('mech-receptor-stem');
+  var pocket = document.getElementById('mech-receptor-pocket');
+  var gateLeft = document.getElementById('mech-gate-left');
+  var gateRight = document.getElementById('mech-gate-right');
+  var key = document.getElementById('mech-key');
+  var claim = document.getElementById('mech-claim');
+  var unsourced = document.getElementById('mech-unsourced');
+
+  [stem, pocket].forEach(function (el) {
+    var len = el.getTotalLength ? el.getTotalLength() : 400;
+    gsap.set(el, { strokeDasharray: len, strokeDashoffset: len });
+  });
+  gsap.set([gateLeft, gateRight], { opacity: 0 });
+  gsap.set(key, { x: 480, y: 30, opacity: 0, rotation: 0, transformOrigin: '0px 0px' });
+  gsap.set(diagramWrap, { opacity: 0 });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Timeline re-stretched ×1.088462 on top of the prior pass, for the new Kimberly VO
+  // (17.78s, was 16.335s). Key/receptor geometry and claim/UNSOURCED text untouched.
+
+  // Scene 1: the card arrives.
+  tl.fromTo('#mech-card', { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 1.512 }, 0.108);
+
+  // Scene 2: tag, label, then the receptor line-draws on.
+  tl.to(tag, { opacity: 1, duration: 0.432 }, 1.887);
+  tl.to(label, { opacity: 1, duration: 0.432 }, 2.144);
+  tl.to(diagramWrap, { opacity: 1, duration: 0.258 }, 2.401);
+  tl.to(stem, { strokeDashoffset: 0, duration: 0.514 }, 2.487);
+  tl.to(pocket, { strokeDashoffset: 0, duration: 0.600 }, 2.744);
+  tl.to([gateLeft, gateRight], { opacity: 1, duration: 0.343 }, 3.344);
+
+  // Scene 3: the key fades in and travels down toward the binding pocket — a slow,
+  // deliberate approach, not an urgent one; this is an explainer beat, not a jump-scare.
+  tl.to(key, { opacity: 1, duration: 0.258 }, 3.944);
+  tl.to(key, { y: 180, duration: 3.430, ease: 'power2.inOut' }, 4.116);
+
+  // Scene 4: THE TURN — one precise, decisive snap. No overshoot: this is a clean
+  // instrument, not a toy. Pivots at the teeth tip (local 0,0), not the key's own bounding-box
+  // center, exactly as a key turns about the point sitting in the lock.
+  tl.to(key, { rotation: 35, duration: 0.514, ease: 'power3.out' }, 7.668);
+
+  // Scene 5: the gate opens in direct response; the pocket takes this frame's one aqua
+  // accent, marking it as the interrogated element; bg shifts warm->cool alongside it.
+  tl.to(gateLeft, { attr: { x2: 398, y2: 424 }, duration: 0.514 }, 7.889);
+  tl.to(gateRight, { attr: { x2: 562, y2: 424 }, duration: 0.514 }, 7.889);
+  tl.to(pocket, { stroke: '#59B8AE', duration: 0.514 }, 7.889);
+  tl.to(bgCool, { opacity: 1, duration: 0.864 }, 7.889);
+
+  // Scene 6: CLAIM + UNSOURCED land within the same card.
+  tl.to(claim, { opacity: 1, duration: 0.594 }, 12.639);
+  tl.to(unsourced, { opacity: 1, duration: 0.429 }, 13.034);
+
+  // Scene 7: held read into the crossfade.
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-mechanism'] = tl;
+})();
+</script>
+</template>

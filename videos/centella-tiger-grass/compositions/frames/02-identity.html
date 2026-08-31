@@ -1,0 +1,137 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; color:#131516; font-family:'Helvetica Neue','Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  /* Sterile ruled grid on the dark ground — hairlines only. */
+  .id-grid line { stroke:rgba(247,245,240,0.14); stroke-width:1; }
+
+  .id-kicker { position:absolute; top:400px; left:96px; font-weight:700; font-size:32px;
+    letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  /* The white "Ingredient Identity" UI card. position:absolute on the rule (PDRN Round-4 bug class). */
+  .uc-card { position:absolute; left:96px; top:470px; width:822px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:44px 56px 34px; opacity:0; }
+  .uc-kicker { font-weight:700; font-size:2.9cqw; letter-spacing:0.06em; text-transform:uppercase;
+    color:rgba(19,21,22,0.62); margin-bottom:24px; opacity:0; }
+  .id-name { font-family:'EB Garamond',serif; font-size:5.6cqw; line-height:1.08; opacity:0; }
+  .id-kr { font-family:'Noto Sans KR',sans-serif; font-weight:700; font-size:3.6cqw;
+    color:rgba(19,21,22,0.72); margin:8px 0 14px; opacity:0; }
+
+  .uc-field { padding:8px 0; border-bottom:1px solid rgba(19,21,22,0.1); opacity:0; }
+  .uc-field:last-of-type { border-bottom:none; }
+  .uc-field-label { display:block; font-weight:700; font-size:2.8cqw; letter-spacing:0.06em;
+    text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:8px; }
+  .uc-field-value { display:block; font-size:3.2cqw; font-weight:500; line-height:1.35; }
+
+  /* Leaf badge — this frame's single aqua accent. */
+  .id-badge { position:absolute; top:48px; right:48px; width:96px; height:96px; border-radius:50%;
+    background:rgba(19,21,22,0.04); border:1px solid rgba(19,21,22,0.14);
+    display:flex; align-items:center; justify-content:center; opacity:0; }
+</style>
+<div data-composition-id="02-identity" id="root" data-width="1080" data-height="1920" data-duration="11.348">
+
+  <!-- G1 botanical underlay: dimmed slow b-roll behind the cards (wrapper non-timed; video carries timing) -->
+  <div id="id-underlay" class="clip" style="z-index:0;">
+    <video id="id-uvid" src="assets/plates/under-2.mp4" muted playsinline data-start="0" data-duration="11.348" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05) blur(5px);"></video>
+    <div style="position:absolute;inset:0;background:rgba(16,19,20,0.80);"></div>
+  </div>
+
+
+  <div id="id-gridwrap" class="clip" data-start="0" data-duration="11.348" data-track-index="0">
+    <svg class="id-grid" viewBox="0 0 1080 1920" width="1080" height="1920" style="position:absolute; inset:0;" aria-hidden="true">
+      <line id="id-g1" x1="96"  y1="0" x2="96"  y2="1920" />
+      <line id="id-g2" x1="918" y1="0" x2="918" y2="1920" />
+      <line id="id-g3" x1="0" y1="384"  x2="1080" y2="384" />
+      <line id="id-g4" x1="0" y1="1440" x2="1080" y2="1440" />
+    </svg>
+    <div class="id-kicker" id="id-kicker">The clinical file</div>
+  </div>
+
+  <div id="id-cardwrap" class="clip" data-start="0" data-duration="11.348" data-track-index="1">
+    <div class="uc-card" id="id-card">
+      <div class="id-badge" id="id-badge">
+        <svg viewBox="0 0 24 24" width="52" height="52" fill="none" stroke="#59B8AE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+      </div>
+      <div class="uc-kicker" id="id-eyebrow">Ingredient identity</div>
+      <h2 class="id-name" id="id-name">Centella Asiatica</h2>
+      <div class="id-kr" id="id-kr">병풀 · Tiger Grass</div>
+      <div class="uc-field" id="id-f1">
+        <span class="uc-field-label">Also known as — one plant, three names</span>
+        <span class="uc-field-value" id="id-f1-value">Cica = Centella Asiatica = Tiger Grass</span>
+      </div>
+      <div class="uc-field" id="id-f2">
+        <span class="uc-field-label">Category</span>
+        <span class="uc-field-value">Botanical extract</span>
+      </div>
+      <div class="uc-field" id="id-f3">
+        <span class="uc-field-label">Source</span>
+        <span class="uc-field-value">Centella asiatica herb — Asian wetlands</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function () {
+  var g = ['id-g1','id-g2','id-g3','id-g4'].map(function (i) { return document.getElementById(i); });
+  var kicker = document.getElementById('id-kicker');
+  var card = document.getElementById('id-card');
+  var eyebrow = document.getElementById('id-eyebrow');
+  var name = document.getElementById('id-name');
+  var kr = document.getElementById('id-kr');
+  var badge = document.getElementById('id-badge');
+  var f1 = document.getElementById('id-f1'), f2 = document.getElementById('id-f2'), f3 = document.getElementById('id-f3');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // 0–2.3 local: VO-01's "science underneath is very real" tail plays over the pivot —
+  // the register change carries it: hairline grid draws on, kicker lands, quiet hold.
+  g.forEach(function (el, i) { tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.7, immediateRender: true }, 0.15 + i * 0.1); });
+  tl.fromTo(kicker, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 }, 0.7);
+
+  // VO-02 "This is Centella Asiatica" (local 2.99–3.84): card, then the name on the word.
+  tl.fromTo(card, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6 }, 0.90);
+  gsap.set(card, { transformOrigin: '50% 50%' });
+  tl.fromTo(card, { scale: 0.9 }, { scale: 1.0, duration: 0.17, ease: 'power2.out', immediateRender: false }, 0.90);
+  tl.to(eyebrow, { opacity: 1, duration: 0.4 }, 1.15);
+  tl.fromTo(name, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.55 }, 1.30);
+  tl.to(kr, { opacity: 1, duration: 0.45 }, 1.70);
+  tl.fromTo(badge, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4 }, 2.10);
+
+  // "K-beauty calls it Cica" (6.66) → aka field; category + source follow the sentence.
+  tl.to(f1, { opacity: 1, duration: 0.42 }, 4.20);
+  // Equivalence emphasis on the spoken "Cica": the aka row pulses and its value flashes
+  // celadon so Tiger Grass = Centella = Cica reads as one plant, not a pivot.
+  var f1val = document.getElementById('id-f1-value');
+  gsap.set(f1, { transformOrigin: '0% 50%' });
+  tl.to(f1, { scale: 1.05, duration: 0.22, ease: 'power4.out' }, 6.55);
+  tl.to(f1, { scale: 1.0, duration: 0.35 }, 6.80);
+  tl.fromTo(f1val, { color: '#131516' }, { color: '#4F6B52', duration: 0.22, immediateRender: false }, 6.55);
+  tl.to(f1val, { color: '#131516', duration: 0.6 }, 7.60);
+  tl.to(f2, { opacity: 1, duration: 0.42 }, 5.10);
+  tl.to(f3, { opacity: 1, duration: 0.42 }, 6.20);
+
+
+  // G1 underlay drift + G2 push-in (rework brief) — seek-safe, one direction per scene.
+  var uvid = document.getElementById('id-uvid');
+  tl.fromTo(uvid, { scale: 1.06, xPercent: -2 }, { scale: 1.12, xPercent: 2, duration: 11.348, ease: 'none', immediateRender: true }, 0);
+  ['id-cardwrap','id-gridwrap'].forEach(function (id) {
+    var el = document.getElementById(id);
+    gsap.set(el, { transformOrigin: '50% 45%' });
+    tl.fromTo(el, { scale: 1.0 }, { scale: 1.05, duration: 11.348, ease: 'power1.inOut', immediateRender: false }, 0);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-identity'] = tl;
+})();
+</script>
+</template>

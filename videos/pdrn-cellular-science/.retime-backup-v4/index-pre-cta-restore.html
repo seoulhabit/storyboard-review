@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #F7F5F0; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <!--
+      Timing note: beat durations below are each real generated VO length + a settle tail.
+      Re-timed for the v2 punchy VO rewrite (see SCRIPT-v2.md). All six voice/0N.wav
+      regenerated with the same Kimberly voice; v1 Kimberly takes kept in
+      assets/voice/_v1-kimberly-backup/, pre-Kimberly Kokoro set in _pre-kimberly-backup/.
+      Every beat's internal GSAP timeline was proportionally re-stretched by its own VO
+      ratio, and every inner .clip data-duration synced to the beat total (the defect
+      recorded in BRIEF.md render QA).
+      Beat 2 carries a 1.173s tail rather than 1.0s: its ambient fragment drift, scaled
+      proportionally, ends at 12.793s and would be clipped by a 12.677s beat.
+      S1=0 S2=6.551 S3=17.511 S4=28.026 S5=43.033 S6=52.033, total=60.757s.
+      Blocks 2 and 5 replaced after transcript QA: block 2 spoke its em-dashes aloud as
+      "slash"; block 5 mispronounced "fibroblasts" and was swapped for the operator-supplied
+      take. Beat 2 is back to a 1.0s tail — the shorter VO brings its ambient drift inside
+      the beat again.
+    -->
+    <div data-hf-id="hf-vi5y" id="root" data-composition-id="main" data-start="0" data-duration="61.000" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-2y3z" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="5.970" data-track-index="0"></div>
+      <audio data-hf-id="hf-ix46" id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="4.970" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-hxz3" id="el-02-identity" class="scene" data-composition-id="02-identity" data-composition-src="compositions/frames/02-identity.html" data-start="5.970" data-duration="12.261" data-track-index="1"></div>
+      <audio data-hf-id="hf-479g" id="el-02-voice" src="assets/voice/02.wav" data-start="5.970" data-duration="11.190" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-9s1l" id="el-03-history" class="scene" data-composition-id="03-history" data-composition-src="compositions/frames/03-history.html" data-start="18.231" data-duration="10.600" data-track-index="0"></div>
+      <audio data-hf-id="hf-uzw0" id="el-03-voice" src="assets/voice/03.wav" data-start="18.231" data-duration="8.239" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-6gcf" id="el-04-mechanism" class="scene" data-composition-id="04-mechanism" data-composition-src="compositions/frames/04-mechanism.html" data-start="28.831" data-duration="13.319" data-track-index="1"></div>
+      <audio data-hf-id="hf-tlqb" id="el-04-voice" src="assets/voice/04.wav" data-start="28.831" data-duration="12.319" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-cu4w" id="el-05-fibroblast" class="scene" data-composition-id="05-fibroblast" data-composition-src="compositions/frames/05-fibroblast.html" data-start="42.150" data-duration="8.500" data-track-index="0"></div>
+      <audio data-hf-id="hf-4m8a" id="el-05-voice" src="assets/voice/05.wav" data-start="42.150" data-duration="7.159" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-07nv" id="el-06-cta" class="scene" data-composition-id="06-cta" data-composition-src="compositions/frames/06-cta.html" data-start="50.650" data-duration="10.350" data-track-index="1"></div>
+      <audio data-hf-id="hf-46yz" id="el-06-voice" src="assets/voice/06.wav" data-start="50.650" data-duration="8.195" data-track-index="10" data-volume="1"></audio>
+
+      <audio data-hf-id="hf-folw2" id="el-06b-voice" src="assets/voice/08-loop.wav" data-start="59.250" data-duration="0.980" data-track-index="10" data-volume="1"></audio>
+
+      <!-- BGM — quiet bed under the full runtime, ducked well beneath narration -->
+      <audio data-hf-id="hf-swmq" id="el-bgm" src="assets/bgm/track-pulse.wav" data-start="0" data-duration="61.000" data-track-index="11" data-volume="0.1"></audio>
+
+      <!-- SFX — translated from the script's cue list onto this repo's existing asset vocabulary (see BRIEF.md) -->
+      <audio data-hf-id="hf-kw1j" id="el-sfx-1a" src="assets/sfx/impact-bass-1.mp3" data-start="0.000" data-duration="2.116" data-track-index="20" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-wzuu" id="el-sfx-2" src="assets/sfx/whoosh-short.mp3" data-start="6.270" data-duration="0.575" data-track-index="22" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-329y" id="el-sfx-3a" src="assets/sfx/click-soft.mp3" data-start="22.131" data-duration="0.366" data-track-index="23" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-l1ck" id="el-sfx-3b" src="assets/sfx/whoosh-short.mp3" data-start="25.331" data-duration="0.575" data-track-index="24" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-7gza" id="el-sfx-4" src="assets/sfx/click-soft.mp3" data-start="38.000" data-duration="0.366" data-track-index="25" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-l808" id="el-sfx-5" src="assets/sfx/sparkle.mp3" data-start="45.700" data-duration="1.802" data-track-index="26" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-gm4w" id="el-sfx-6a" src="assets/sfx/chime.mp3" data-start="53.250" data-duration="2.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-sur7" id="el-sfx-6b" src="assets/sfx/whoosh-short.mp3" data-start="60.280" data-duration="0.575" data-track-index="28" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-sfx3c" id="el-sfx-3c" src="assets/sfx/click-soft.mp3" data-start="18.331" data-duration="0.366" data-track-index="29" data-volume="0.3"></audio>
+      <audio data-hf-id="hf-sfx4b" id="el-sfx-4b" src="assets/sfx/whoosh-short.mp3" data-start="38.381" data-duration="0.575" data-track-index="30" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sfx5a" id="el-sfx-5a" src="assets/sfx/click-soft.mp3" data-start="42.330" data-duration="0.366" data-track-index="31" data-volume="0.32"></audio>
+      <audio data-hf-id="hf-sfx6c" id="el-sfx-6c" src="assets/sfx/whoosh-short.mp3" data-start="54.450" data-duration="0.575" data-track-index="32" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sfx3d" id="el-sfx-3d" src="assets/sfx/click-soft.mp3" data-start="19.730" data-duration="0.366" data-track-index="33" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sfx3e" id="el-sfx-3e" src="assets/sfx/click-soft.mp3" data-start="24.280" data-duration="0.366" data-track-index="34" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sfx4c" id="el-sfx-4c" src="assets/sfx/click-soft.mp3" data-start="28.950" data-duration="0.366" data-track-index="35" data-volume="0.25"></audio>
+      <audio data-hf-id="hf-sfx4d" id="el-sfx-4d" src="assets/sfx/click-soft.mp3" data-start="39.830" data-duration="0.366" data-track-index="36" data-volume="0.22"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var tl = window.__timelines["main"];
+
+        // 1 -> 2 : cut (glitch SFX removed per audio-cleanup directive; the hard cut stands alone)
+
+        // 2 -> 3 : crossfade
+        tl.to("#el-02-identity", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 18.231);
+        tl.fromTo("#el-03-history", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 18.231);
+
+        // 3 -> 4 : crossfade (continuous "just under the surface" world)
+        tl.to("#el-03-history", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 28.831);
+        tl.fromTo("#el-04-mechanism", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 28.831);
+
+        // 4 -> 5 : crossfade
+        tl.to("#el-04-mechanism", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 42.150);
+        tl.fromTo("#el-05-fibroblast", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 42.150);
+
+        // 5 -> 6 : cut (matches the CTA's "pop" SFX hard-cut open)
+
+        tl.to({}, { duration: 61.000 }, 0); // full-span anchor — main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+
+  /* Round 4: everything now lives in ONE card (this frame previously had no card at all —
+     the spec names fibroblast summaries explicitly), sized to sit inside the 15%-top/25%-bottom
+     safe zone (y in [288,1440]); Inter throughout, sizes floor at ~24px-equivalent. */
+  .uc-card { position:absolute; left:96px; top:322px; width:888px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:44px 56px 48px; display:flex; flex-direction:column; align-items:center; opacity:0; }
+
+  .fib-tag { font-family:'Inter',sans-serif; font-weight:600; font-size:2.3cqw; letter-spacing:0.04em; color:rgba(19,21,22,0.55); margin-bottom:20px; opacity:0; }
+  .fib-kinetic { font-family:'Inter',sans-serif; font-weight:700; font-size:5.0cqw; letter-spacing:-0.005em; text-transform:uppercase; margin-bottom:36px; opacity:0; }
+
+  .fib-matrix-wrap { position:relative; width:400px; height:400px; margin-bottom:32px; perspective:900px; }
+
+  /* Dermal cellular texture, browser-drawn (radial-gradient wash + feTurbulence grain) — sits
+     behind the collagen matrix, never competing with it. Matches 04-mechanism's treatment. */
+  .fib-dermal-bg { position:absolute; inset:0; border-radius:24px; opacity:0.4;
+    background:
+      radial-gradient(150px 120px at 18% 22%, rgba(111,143,114,0.14) 0%, transparent 70%),
+      radial-gradient(170px 140px at 82% 20%, rgba(111,143,114,0.11) 0%, transparent 70%),
+      radial-gradient(160px 130px at 20% 80%, rgba(111,143,114,0.12) 0%, transparent 70%),
+      radial-gradient(180px 150px at 80% 82%, rgba(111,143,114,0.1) 0%, transparent 70%),
+      radial-gradient(140px 120px at 50% 50%, rgba(111,143,114,0.08) 0%, transparent 65%); }
+  .fib-dermal-grain { position:absolute; inset:0; border-radius:24px; opacity:0.16; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"); }
+  .fib-matrix-scene { position:relative; width:320px; height:320px; margin:40px auto 0; transform-style:preserve-3d; transform:rotateX(26deg) rotateZ(-4deg); }
+  .fib-fiber { position:absolute; border-radius:999px;
+    background:linear-gradient(135deg, #F2B6A0 0%, #C97A5C 55%, #9F6149 100%);
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.5), inset 0 -4px 8px rgba(0,0,0,0.22), 0 10px 18px rgba(0,0,0,0.16);
+    opacity:0; }
+  .fib-fiber-h { left:0; width:320px; height:24px; z-index:2; }
+  .fib-fiber-v { top:0; width:24px; height:320px; z-index:1; }
+
+  .fib-outputs { display:flex; gap:56px; margin-bottom:32px; }
+  .fib-output { display:flex; flex-direction:column; align-items:center; gap:12px; opacity:0; transform:translateY(14px); }
+  .fib-output-icon { width:82px; height:82px; }
+  .fib-output-label { font-family:'Inter',sans-serif; font-weight:600; font-size:2.3cqw; letter-spacing:0.01em; color:rgba(19,21,22,0.62); }
+
+  .uc-claim { font-family:'Inter',sans-serif; font-size:3.3cqw; font-weight:600; line-height:1.45; margin-bottom:18px; text-align:center; opacity:0; }
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); text-align:center; opacity:0; }
+</style>
+<div data-hf-id="hf-uyxh" data-composition-id="05-fibroblast" id="root" data-width="1080" data-height="1920" data-duration="7.506">
+  <div data-hf-id="hf-rp2x" id="fib-stage" class="clip" data-start="0" data-duration="7.506" data-track-index="0">
+
+    <div data-hf-id="hf-crd1" class="uc-card" id="fib-card">
+      <div data-hf-id="hf-keyc" class="fib-tag" id="fib-tag">[Authored, illustrative — not a claim]</div>
+      <div data-hf-id="hf-a2fx" class="fib-kinetic" id="fib-kinetic">Fibroblasts</div>
+
+      <div data-hf-id="hf-dvp5" class="fib-matrix-wrap" id="fib-matrix">
+        <div data-hf-id="hf-fderm" class="fib-dermal-bg" aria-hidden="true"></div>
+        <div data-hf-id="hf-fgrain" class="fib-dermal-grain" aria-hidden="true"></div>
+        <div data-hf-id="hf-mxsc" class="fib-matrix-scene" id="fib-matrix-scene">
+          <div data-hf-id="hf-fh0" class="fib-fiber fib-fiber-h" id="fib-h0" style="top:16px;"></div>
+          <div data-hf-id="hf-fh1" class="fib-fiber fib-fiber-h" id="fib-h1" style="top:88px;"></div>
+          <div data-hf-id="hf-fh2" class="fib-fiber fib-fiber-h" id="fib-h2" style="top:148px;"></div>
+          <div data-hf-id="hf-fh3" class="fib-fiber fib-fiber-h" id="fib-h3" style="top:208px;"></div>
+          <div data-hf-id="hf-fh4" class="fib-fiber fib-fiber-h" id="fib-h4" style="top:280px;"></div>
+          <div data-hf-id="hf-fv0" class="fib-fiber fib-fiber-v" id="fib-v0" style="left:16px;"></div>
+          <div data-hf-id="hf-fv1" class="fib-fiber fib-fiber-v" id="fib-v1" style="left:88px;"></div>
+          <div data-hf-id="hf-fv2" class="fib-fiber fib-fiber-v" id="fib-v2" style="left:148px;"></div>
+          <div data-hf-id="hf-fv3" class="fib-fiber fib-fiber-v" id="fib-v3" style="left:208px;"></div>
+          <div data-hf-id="hf-fv4" class="fib-fiber fib-fiber-v" id="fib-v4" style="left:280px;"></div>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-k0gq" class="fib-outputs">
+        <div data-hf-id="hf-h1x7" class="fib-output" id="fib-out-collagen">
+          <svg data-hf-id="hf-5js8" class="fib-output-icon" viewBox="0 0 86 86" aria-hidden="true"><path data-hf-id="hf-iabn" d="M10,60 C20,30 30,70 40,40 C50,10 60,50 70,30" stroke="#6F8F72" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
+          <span data-hf-id="hf-besm" class="fib-output-label">Collagen</span>
+        </div>
+        <div data-hf-id="hf-rq6k" class="fib-output" id="fib-out-elastin">
+          <svg data-hf-id="hf-m6hs" class="fib-output-icon" viewBox="0 0 86 86" aria-hidden="true"><path data-hf-id="hf-9hdb" d="M14,43 Q28,20 43,43 Q58,66 72,43" stroke="#93B896" stroke-width="4" fill="none" stroke-linecap="round" /><path data-hf-id="hf-dpvy" d="M14,43 Q28,66 43,43 Q58,20 72,43" stroke="#93B896" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.5" /></svg>
+          <span data-hf-id="hf-xj4h" class="fib-output-label">Elastin</span>
+        </div>
+        <div data-hf-id="hf-0xk1" class="fib-output" id="fib-out-ha">
+          <svg data-hf-id="hf-kzkp" class="fib-output-icon" viewBox="0 0 86 86" aria-hidden="true"><path data-hf-id="hf-redu" d="M43,14 C55,34 68,44 68,58 C68,71 56,78 43,78 C30,78 18,71 18,58 C18,44 31,34 43,14 Z" stroke="#59B8AE" stroke-width="4" fill="none" /></svg>
+          <span data-hf-id="hf-o53g" class="fib-output-label">Hyaluronic acid</span>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-uro4" class="uc-claim" id="fib-claim">Wakes up fibroblasts — the cellular factories that create new collagen, elastin, and hyaluronic acid.</div>
+      <div data-hf-id="hf-sb4l" class="uc-unsourced" id="fib-unsourced">○ UNSOURCED — no record in this system</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var card = document.getElementById('fib-card');
+  var tag = document.getElementById('fib-tag');
+  var kinetic = document.getElementById('fib-kinetic');
+  var fibers = document.querySelectorAll('.fib-fiber');
+  var outs = ['fib-out-collagen', 'fib-out-elastin', 'fib-out-ha'].map(function (id) { return document.getElementById(id); });
+  var claim = document.getElementById('fib-claim');
+  var unsourced = document.getElementById('fib-unsourced');
+
+  // Hand-authored scatter offsets (deterministic, not Math.random) — each fiber starts flung
+  // off its resting slot, then snaps home.
+  var starts = {
+    'fib-h0': { x: -170, y: -130, rotate: -35, scale: 0.5 },
+    'fib-h1': { x: 190, y: -85, rotate: 28, scale: 0.45 },
+    'fib-h2': { x: -150, y: 120, rotate: -20, scale: 0.55 },
+    'fib-h3': { x: 180, y: 100, rotate: 32, scale: 0.4 },
+    'fib-h4': { x: -95, y: -170, rotate: 15, scale: 0.5 },
+    'fib-v0': { x: -140, y: 150, rotate: 40, scale: 0.45 },
+    'fib-v1': { x: 160, y: -140, rotate: -30, scale: 0.5 },
+    'fib-v2': { x: -180, y: -95, rotate: 22, scale: 0.4 },
+    'fib-v3': { x: 130, y: 160, rotate: -18, scale: 0.55 },
+    'fib-v4': { x: -115, y: -150, rotate: 33, scale: 0.45 }
+  };
+  fibers.forEach(function (el) {
+    var s = starts[el.id];
+    gsap.set(el, { x: s.x, y: s.y, rotate: s.rotate, scale: s.scale, opacity: 0 });
+  });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Retimed ×0.965484 for the new Kimberly VO (8.0s, was 8.286s).
+  // Scene 0: the card arrives.
+  tl.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.393 }, 0.079);
+
+  // Scene 1: the plump collagen matrix snaps into place — each fiber flies to its
+  // woven slot with a bouncy overshoot, then settles with one residual jiggle (bounded, not a
+  // continuous wobble).
+  tl.to(fibers, { x: 0, y: 0, rotate: 0, scale: 1, opacity: 1, duration: 0.511, stagger: 0.035, ease: 'back.out(2.4)' }, 0.157);
+  tl.to(fibers, { scaleY: 1.06, scaleX: 0.97, duration: 0.125, yoyo: true, repeat: 3, ease: 'sine.inOut' }, 0.903);
+
+  // Scene 2: kinetic label + illustrative tag.
+  tl.to(tag, { opacity: 1, duration: 0.314 }, 1.335);
+  tl.to(kinetic, { opacity: 1, y: 0, duration: 0.393 }, 1.570);
+
+  // Scene 3: three glyphs reveal in sequence, timed to "collagen, elastin, hyaluronic acid."
+  var starts2 = [3.219, 4.161, 5.104];
+  outs.forEach(function (out, i) {
+    tl.fromTo(out, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.314, ease: 'power2.out' }, starts2[i]);
+  });
+
+  // Scene 4: CLAIM + UNSOURCED.
+  tl.to(claim, { opacity: 1, duration: 0.432 }, 5.889);
+  tl.to(unsourced, { opacity: 1, duration: 0.314 }, 6.203);
+
+  // Scene 5: held read into the hard cut.
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['05-fibroblast'] = tl;
+})();
+</script>
+</template>

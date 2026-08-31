@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #F7F5F0; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .clip { position: absolute; }
+      .vo-caption { top: 196px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
+      .vo-caption span { display: inline-block; max-width: 760px; background: rgba(247,245,240,0.94); color: #131516;
+        border: 1px solid rgba(19,21,22,0.1); font-family: 'Inter', 'Helvetica Neue', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.3;
+        text-align: center; padding: 12px 26px; border-radius: 16px; box-shadow: 0 4px 18px rgba(19,21,22,0.12); }
+    </style>
+  </head>
+  <body>
+    <!--
+      Round 3b: beats 05/06 VO rewritten to match verified real citations (Song et al. 2012,
+      Burns, PMID 22360962; Bonté et al. 1995, Ann Pharm Fr, PMID 7741425) instead of the
+      unsupported "parallel alignment" framing. New takes shifted S6/S7 slightly (dur5
+      8.500->8.600, dur6 7.300->7.000); S1-S4 untouched. Total 63.150 -> 62.950s.
+      Takes 05/06 regenerated and gated fresh this round (05 fixed for a tail run-on with the
+      same 40ms-fade+0.25s-pad remedy used before; 06 was clean).
+      S1=0.000 S2=6.700 S3=16.300 S4=25.700 S5=37.950 S6=46.550 S7=53.550, total=62.950s.
+    -->
+    <div data-hf-id="hf-mcc0" id="root" data-composition-id="main" data-start="0.000" data-duration="62.950" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-sc01" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="6.700" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo01" id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="6.160" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc02" id="el-02-setup" class="scene" data-composition-id="02-setup" data-composition-src="compositions/frames/02-setup.html" data-start="6.700" data-duration="9.600" data-track-index="1"></div>
+      <audio data-hf-id="hf-vo02" id="el-02-voice" src="assets/voice/02.wav" data-start="6.700" data-duration="8.634" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc03" id="el-03-problem" class="scene" data-composition-id="03-problem" data-composition-src="compositions/frames/03-problem.html" data-start="16.300" data-duration="9.400" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo03" id="el-03-voice" src="assets/voice/03.wav" data-start="16.300" data-duration="8.371" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc04" id="el-04-solution" class="scene" data-composition-id="04-solution" data-composition-src="compositions/frames/04-solution.html" data-start="25.700" data-duration="12.250" data-track-index="1"></div>
+      <audio data-hf-id="hf-vo04" id="el-04-voice" src="assets/voice/04.wav" data-start="25.700" data-duration="11.350" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc05" id="el-05-mechanism" class="scene" data-composition-id="05-mechanism" data-composition-src="compositions/frames/05-mechanism.html" data-start="37.950" data-duration="8.600" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo05" id="el-05-voice" src="assets/voice/05.wav" data-start="37.950" data-duration="7.938" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc06" id="el-06-result" class="scene" data-composition-id="06-result" data-composition-src="compositions/frames/06-result.html" data-start="46.550" data-duration="7.000" data-track-index="1"></div>
+      <audio data-hf-id="hf-vo06" id="el-06-voice" src="assets/voice/06.wav" data-start="46.550" data-duration="5.932" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-sc07" id="el-07-cta" class="scene" data-composition-id="07-cta" data-composition-src="compositions/frames/07-cta.html" data-start="53.550" data-duration="9.400" data-track-index="0"></div>
+      <audio data-hf-id="hf-vo07" id="el-07-voice" src="assets/voice/07.wav" data-start="53.550" data-duration="8.340" data-track-index="10" data-volume="1"></audio>
+
+      <!-- Burned-in captions — whisper word-timed against the installed takes, offset by
+           each block's data-start; each cue extends to the next cue's start (no flicker). -->
+      <div data-hf-id="hf-cp01" id="el-cap-01" class="clip vo-caption" data-start="0.000" data-duration="3.350" data-track-index="5"><span>Why do scars stay bumpy,</span></div>
+      <div data-hf-id="hf-cp02" id="el-cap-02" class="clip vo-caption" data-start="3.350" data-duration="2.290" data-track-index="5"><span>and how does Madecassoside flatten</span></div>
+      <div data-hf-id="hf-cp03" id="el-cap-03" class="clip vo-caption" data-start="5.640" data-duration="1.060" data-track-index="5"><span>them?</span></div>
+      <div data-hf-id="hf-cp04" id="el-cap-04" class="clip vo-caption" data-start="6.700" data-duration="1.230" data-track-index="5"><span>When your skin tears,</span></div>
+      <div data-hf-id="hf-cp05" id="el-cap-05" class="clip vo-caption" data-start="7.930" data-duration="1.450" data-track-index="5"><span>or you pop a pimple,</span></div>
+      <div data-hf-id="hf-cp06" id="el-cap-06" class="clip vo-caption" data-start="9.380" data-duration="1.130" data-track-index="5"><span>your body panics.</span></div>
+      <div data-hf-id="hf-cp07" id="el-cap-07" class="clip vo-caption" data-start="10.510" data-duration="2.190" data-track-index="5"><span>It rapidly dumps chaotic,</span></div>
+      <div data-hf-id="hf-cp08" id="el-cap-08" class="clip vo-caption" data-start="12.700" data-duration="1.850" data-track-index="5"><span>unorganized collagen to plug the</span></div>
+      <div data-hf-id="hf-cp09" id="el-cap-09" class="clip vo-caption" data-start="14.550" data-duration="1.750" data-track-index="5"><span>hole.</span></div>
+      <div data-hf-id="hf-cp10" id="el-cap-10" class="clip vo-caption" data-start="16.300" data-duration="1.560" data-track-index="5"><span>This tangled mess creates a</span></div>
+      <div data-hf-id="hf-cp11" id="el-cap-11" class="clip vo-caption" data-start="17.860" data-duration="0.440" data-track-index="5"><span>raised,</span></div>
+      <div data-hf-id="hf-cp12" id="el-cap-12" class="clip vo-caption" data-start="18.300" data-duration="2.190" data-track-index="5"><span>hypertrophic scar.</span></div>
+      <div data-hf-id="hf-cp13" id="el-cap-13" class="clip vo-caption" data-start="20.490" data-duration="2.360" data-track-index="5"><span>Generic healing ointments just lock</span></div>
+      <div data-hf-id="hf-cp14" id="el-cap-14" class="clip vo-caption" data-start="22.850" data-duration="0.860" data-track-index="5"><span>in moisture,</span></div>
+      <div data-hf-id="hf-cp15" id="el-cap-15" class="clip vo-caption" data-start="23.710" data-duration="1.680" data-track-index="5"><span>but they don&#x27;t fix the</span></div>
+      <div data-hf-id="hf-cp16" id="el-cap-16" class="clip vo-caption" data-start="25.390" data-duration="0.310" data-track-index="5"><span>structure.</span></div>
+      <div data-hf-id="hf-cp17" id="el-cap-17" class="clip vo-caption" data-start="25.700" data-duration="4.110" data-track-index="5"><span>Enter Madecassoside.</span></div>
+      <div data-hf-id="hf-cp18" id="el-cap-18" class="clip vo-caption" data-start="29.810" data-duration="0.940" data-track-index="5"><span>This isolated,</span></div>
+      <div data-hf-id="hf-cp19" id="el-cap-19" class="clip vo-caption" data-start="30.750" data-duration="2.300" data-track-index="5"><span>highly purified molecule doesn&#x27;t just</span></div>
+      <div data-hf-id="hf-cp20" id="el-cap-20" class="clip vo-caption" data-start="33.050" data-duration="1.530" data-track-index="5"><span>soothe the skin.</span></div>
+      <div data-hf-id="hf-cp21" id="el-cap-21" class="clip vo-caption" data-start="34.580" data-duration="1.680" data-track-index="5"><span>It acts as a biological</span></div>
+      <div data-hf-id="hf-cp22" id="el-cap-22" class="clip vo-caption" data-start="36.260" data-duration="1.830" data-track-index="5"><span>architect.</span></div>
+      <div data-hf-id="hf-cp23" id="el-cap-23" class="clip vo-caption" data-start="38.110" data-duration="1.880" data-track-index="5"><span>It calms the fibroblast cells</span></div>
+      <div data-hf-id="hf-cp24" id="el-cap-24" class="clip vo-caption" data-start="39.990" data-duration="1.800" data-track-index="5"><span>behind that overgrowth,</span></div>
+      <div data-hf-id="hf-cp25" id="el-cap-25" class="clip vo-caption" data-start="41.790" data-duration="1.200" data-track-index="5"><span>and prompts the skin to</span></div>
+      <div data-hf-id="hf-cp26" id="el-cap-26" class="clip vo-caption" data-start="42.990" data-duration="1.190" data-track-index="5"><span>synthesize fresh,</span></div>
+      <div data-hf-id="hf-cp27" id="el-cap-27" class="clip vo-caption" data-start="44.180" data-duration="2.420" data-track-index="5"><span>structural collagen.</span></div>
+      <div data-hf-id="hf-cp28" id="el-cap-28" class="clip vo-caption" data-start="46.600" data-duration="1.370" data-track-index="5"><span>So instead of fueling the</span></div>
+      <div data-hf-id="hf-cp29" id="el-cap-29" class="clip vo-caption" data-start="47.970" data-duration="0.950" data-track-index="5"><span>overgrowth,</span></div>
+      <div data-hf-id="hf-cp30" id="el-cap-30" class="clip vo-caption" data-start="48.920" data-duration="1.450" data-track-index="5"><span>it supports a wound that</span></div>
+      <div data-hf-id="hf-cp31" id="el-cap-31" class="clip vo-caption" data-start="50.370" data-duration="2.060" data-track-index="5"><span>closes with real structural material.</span></div>
+      <div data-hf-id="hf-cp32" id="el-cap-32" class="clip vo-caption" data-start="53.610" data-duration="0.280" data-track-index="5"><span>So,</span></div>
+      <div data-hf-id="hf-cp33" id="el-cap-33" class="clip vo-caption" data-start="53.890" data-duration="1.420" data-track-index="5"><span>are you still relying on</span></div>
+      <div data-hf-id="hf-cp34" id="el-cap-34" class="clip vo-caption" data-start="55.310" data-duration="1.280" data-track-index="5"><span>generic ointments,</span></div>
+      <div data-hf-id="hf-cp35" id="el-cap-35" class="clip vo-caption" data-start="56.590" data-duration="0.800" data-track-index="5"><span>or is it time to</span></div>
+      <div data-hf-id="hf-cp36" id="el-cap-36" class="clip vo-caption" data-start="57.390" data-duration="2.100" data-track-index="5"><span>upgrade your skin repair?</span></div>
+      <div data-hf-id="hf-cp37" id="el-cap-37" class="clip vo-caption" data-start="59.490" data-duration="0.990" data-track-index="5"><span>Let me know your thoughts</span></div>
+      <div data-hf-id="hf-cp38" id="el-cap-38" class="clip vo-caption" data-start="60.480" data-duration="1.410" data-track-index="5"><span>below and follow for more!</span></div>
+
+      <!-- BGM — quiet bed under the full runtime, ducked well beneath narration -->
+      <audio data-hf-id="hf-bgm1" id="el-bgm" src="assets/bgm/track-pulse.wav" data-start="0.000" data-duration="62.160" data-track-index="11" data-volume="0.1"></audio>
+
+      <!-- SFX — lean 3-sound palette (click-soft / whoosh-short / chime). Beats 05/06 cues
+           were redesigned (not just shifted) to match the new content: no more snap-wave
+           clicks (there's no snap), a chime marks the new-synthesis strands and the
+           reduced-bump bloom instead. -->
+      <audio data-hf-id="hf-sx01" id="el-sfx-01" src="assets/sfx/whoosh-short.mp3" data-start="6.700" data-duration="0.575" data-track-index="20" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sx02" id="el-sfx-02" src="assets/sfx/click-soft.mp3" data-start="7.570" data-duration="0.366" data-track-index="21" data-volume="0.25"></audio>
+      <audio data-hf-id="hf-sx03" id="el-sfx-03" src="assets/sfx/click-soft.mp3" data-start="16.300" data-duration="0.366" data-track-index="22" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sx04" id="el-sfx-04" src="assets/sfx/click-soft.mp3" data-start="24.380" data-duration="0.366" data-track-index="23" data-volume="0.18"></audio>
+      <audio data-hf-id="hf-sx05" id="el-sfx-05" src="assets/sfx/chime.mp3" data-start="25.700" data-duration="2.5" data-track-index="24" data-volume="0.25"></audio>
+      <audio data-hf-id="hf-sx06" id="el-sfx-06" src="assets/sfx/whoosh-short.mp3" data-start="34.650" data-duration="0.575" data-track-index="25" data-volume="0.26"></audio>
+      <audio data-hf-id="hf-sx07" id="el-sfx-07" src="assets/sfx/click-soft.mp3" data-start="37.950" data-duration="0.366" data-track-index="26" data-volume="0.20"></audio>
+      <audio data-hf-id="hf-sx08" id="el-sfx-08" src="assets/sfx/chime.mp3" data-start="42.990" data-duration="2.5" data-track-index="27" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sx09" id="el-sfx-09" src="assets/sfx/click-soft.mp3" data-start="46.550" data-duration="0.366" data-track-index="28" data-volume="0.20"></audio>
+      <audio data-hf-id="hf-sx10" id="el-sfx-10" src="assets/sfx/chime.mp3" data-start="50.150" data-duration="2.5" data-track-index="29" data-volume="0.26"></audio>
+      <audio data-hf-id="hf-sx11" id="el-sfx-11" src="assets/sfx/whoosh-short.mp3" data-start="53.550" data-duration="0.575" data-track-index="30" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-sx12" id="el-sfx-12" src="assets/sfx/click-soft.mp3" data-start="57.390" data-duration="0.366" data-track-index="31" data-volume="0.22"></audio>
+      <audio data-hf-id="hf-sx13" id="el-sfx-13" src="assets/sfx/chime.mp3" data-start="59.490" data-duration="2.5" data-track-index="32" data-volume="0.20"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      (function () {
+        var tl = window.__timelines["main"];
+        tl.to({}, { duration: 62.950 }, 0); // full-span anchor — main.duration() == composition total
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; color:#131516; font-family:'Helvetica Neue','Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  .cta-card { position:absolute; left:96px; top:470px; width:822px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:64px; text-align:center; opacity:0; }
+  .cta-q { font-family:'EB Garamond',serif; font-size:6.2cqw; line-height:1.12; margin-bottom:34px; }
+  .cta-row { display:flex; align-items:center; justify-content:center; gap:18px;
+    font-weight:700; font-size:4.2cqw; opacity:0; }
+  .cta-row .emoji { font-size:5.2cqw; }
+  .cta-bubble { display:inline-flex; align-items:center; gap:14px; margin-top:30px;
+    font-weight:600; font-size:3.0cqw; color:rgba(19,21,22,0.62); opacity:0; }
+  .cta-bubble svg { stroke:#59B8AE; }
+
+  .cta-pill { position:absolute; left:96px; top:1130px; width:822px; box-sizing:border-box;
+    background:rgba(247,245,240,0.72); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); border:1px solid rgba(255,255,255,0.85); color:#131516; font-weight:700; font-size:38px; letter-spacing:0.06em;
+    text-transform:uppercase; padding:24px 0; border-radius:999px; white-space:nowrap; text-align:center;
+    box-shadow:0 4px 18px rgba(19,21,22,0.28); opacity:0; }
+
+  /* Loop-out: a leaf-green field sweeps in so the last frame hands back to frame zero's
+     tiger foliage. Flat fill — no glow, no gradient accent. */
+</style>
+<div data-composition-id="07-cta" id="root" data-width="1080" data-height="1920" data-duration="10.983">
+
+  <!-- G1 botanical underlay: dimmed slow b-roll behind the cards (wrapper non-timed; video carries timing) -->
+  <div id="cta-underlay" class="clip" style="z-index:0;">
+    <video id="cta-uvid" src="assets/plates/under-2b.mp4" muted playsinline data-start="0" data-duration="10.983" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05);"></video>
+    <div style="position:absolute;inset:0;background:rgba(16,19,20,0.80);"></div>
+  </div>
+
+
+  <div id="cta-all" class="clip" data-start="0" data-duration="10.983" data-track-index="0">
+    <div class="cta-card" id="cta-card">
+      <div class="cta-q" id="cta-q">Is your barrier damaged?</div>
+      <div class="cta-row" id="cta-row"><span class="emoji">🐅</span><span>= yes, in the comments</span></div>
+      <div class="cta-bubble" id="cta-bubble">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>your barrier story below</span>
+      </div>
+    </div>
+
+    <div class="cta-pill" id="cta-pill">Follow · next ingredient</div>
+
+  </div>
+
+</div>
+<script>
+(function () {
+  var card = document.getElementById('cta-card');
+  var row = document.getElementById('cta-row');
+  var bubble = document.getElementById('cta-bubble');
+  var pill = document.getElementById('cta-pill');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(card, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6 }, 0.30);
+  // "Drop a tiger emoji in the comments" (local 0.43–2.3).
+  tl.to(row, { opacity: 1, duration: 0.45 }, 1.00);
+  tl.to(bubble, { opacity: 1, duration: 0.45 }, 1.90);
+
+  // "and follow for the next ingredient breakdown" (4.9): pill pops — one bounded pulse, settles.
+  tl.fromTo(pill, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1.05, duration: 0.3, ease: 'power4.out' }, 4.85);
+  tl.to(pill, { scale: 1.0, duration: 0.35 }, 5.15);
+
+
+
+  // G1 underlay drift + G2 push-in (rework brief) — seek-safe, one direction per scene.
+  var uvid = document.getElementById('cta-uvid');
+  tl.fromTo(uvid, { scale: 1.06, xPercent: 2 }, { scale: 1.12, xPercent: -2, duration: 10.983, ease: 'none', immediateRender: true }, 0);
+  ['cta-card','cta-pill'].forEach(function (id) {
+    var el = document.getElementById(id);
+    gsap.set(el, { transformOrigin: '50% 45%' });
+    tl.fromTo(el, { scale: 1.0 }, { scale: 1.05, duration: 10.983, ease: 'power1.inOut', immediateRender: false }, 0);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['07-cta'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,157 @@
+<template>
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  /* Paper ground — full-bleed radial + grain, on its own clip layer (never on #root). */
+  .idn-bg { background:radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .idn-grain { position:absolute; inset:0; opacity:0.05; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* Ambient polymer-glyph field (the reference's fragment-field pattern, HA hexagon chains). */
+  .idn-glyphs { top:0; left:0; width:100%; height:900px; }
+
+  /* Identity card — frame.md "Identity card" spec, field for field. */
+  .idn-card { position:absolute; left:96px; top:494px; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:56px 64px; }
+  .idn-kicker { font-family:'Inter',sans-serif; font-weight:700; font-size:2.4cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:22px; }
+  .idn-name { font-family:'EB Garamond',serif; font-size:5.6cqw; line-height:1.1; margin-bottom:32px; }
+  .idn-name-sub { color:rgba(19,21,22,0.5); font-size:0.6em; }
+
+  .idn-badge { position:absolute; top:48px; right:48px; width:84px; height:84px; border-radius:50%; background:rgba(19,21,22,0.04); border:1px solid rgba(19,21,22,0.14); display:flex; align-items:center; justify-content:center; }
+  .idn-badge svg { width:56px; height:25px; }
+
+  .idn-row { padding:20px 0; border-bottom:1px solid rgba(19,21,22,0.1); }
+  .idn-row:last-of-type { border-bottom:none; }
+  .idn-row-label { display:block; font-family:'Inter',sans-serif; font-weight:700; font-size:2.3cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:8px; }
+  .idn-row-value { display:block; font-family:'Inter',sans-serif; font-weight:500; font-size:2.8cqw; line-height:1.35; color:#131516; }
+
+  .idn-claim-block { margin-top:28px; }
+  .idn-claim { font-family:'Inter',sans-serif; font-weight:600; font-size:3.3cqw; line-height:1.45; margin-bottom:20px; }
+  .idn-claim-line { display:block; }
+
+  /* Citation pill — frame.md pill spec (sourced claim: bracket pill, celadon fill, coral-text id). */
+  .idn-cite { display:inline-block; border-radius:999px; padding:14px 28px; background:rgba(111,143,114,0.10); border:1.5px solid rgba(111,143,114,0.45); }
+  .idn-cite-label { font-family:'Inter',sans-serif; font-weight:700; font-size:2.2cqw; color:#131516; }
+  .idn-cite-id { font-family:'JetBrains Mono',monospace; font-weight:500; font-size:2.2cqw; color:#995D46; }
+</style>
+<div data-composition-id="02-identity" id="root" data-width="1080" data-height="1920" data-duration="7.242">
+
+  <div id="idn-bg" class="clip idn-bg" data-start="0" data-duration="7.242" data-track-index="0">
+    <div class="idn-grain"></div>
+  </div>
+
+  <div id="idn-glyph-field" class="clip idn-glyphs" data-start="0" data-duration="7.242" data-track-index="1">
+    <svg id="idn-glyphs-svg" viewBox="0 0 1080 900" width="1080" height="900" style="position:absolute; inset:0;" aria-hidden="true">
+      <!-- five HA polymer glyphs: chains of 2-3 line-drawn hexagons with short link strokes; one aqua in a dashed circle -->
+      <g id="idn-glyph-0" class="idn-glyph" transform="translate(110,110) scale(1)">
+        <polygon points="32,30 24.5,43 9.5,43 2,30 9.5,17 24.5,17" fill="none" stroke="rgba(19,21,22,0.18)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="73,22 65.5,35 50.5,35 43,22 50.5,9 65.5,9" fill="none" stroke="rgba(19,21,22,0.18)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="114,30 106.5,43 91.5,43 84,30 91.5,17 106.5,17" fill="none" stroke="rgba(19,21,22,0.18)" stroke-width="2.4" stroke-linejoin="round" />
+        <path d="M32,30 L43,22 M73,22 L84,30" stroke="rgba(19,21,22,0.14)" stroke-width="2" fill="none" />
+      </g>
+      <g id="idn-glyph-1" class="idn-glyph" transform="translate(830,150) scale(0.85)">
+        <circle cx="58" cy="26" r="72" fill="none" stroke="rgba(89,184,174,0.35)" stroke-width="2" stroke-dasharray="4 6" />
+        <polygon points="32,30 24.5,43 9.5,43 2,30 9.5,17 24.5,17" fill="none" stroke="rgba(89,184,174,0.32)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="73,22 65.5,35 50.5,35 43,22 50.5,9 65.5,9" fill="none" stroke="rgba(89,184,174,0.32)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="114,30 106.5,43 91.5,43 84,30 91.5,17 106.5,17" fill="none" stroke="rgba(89,184,174,0.32)" stroke-width="2.4" stroke-linejoin="round" />
+        <path d="M32,30 L43,22 M73,22 L84,30" stroke="rgba(89,184,174,0.24)" stroke-width="2" fill="none" />
+      </g>
+      <g id="idn-glyph-2" class="idn-glyph" transform="translate(170,540) scale(0.7)">
+        <polygon points="32,30 24.5,43 9.5,43 2,30 9.5,17 24.5,17" fill="none" stroke="rgba(19,21,22,0.14)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="73,22 65.5,35 50.5,35 43,22 50.5,9 65.5,9" fill="none" stroke="rgba(19,21,22,0.14)" stroke-width="2.4" stroke-linejoin="round" />
+        <path d="M32,30 L43,22" stroke="rgba(19,21,22,0.14)" stroke-width="2" fill="none" />
+      </g>
+      <g id="idn-glyph-3" class="idn-glyph" transform="translate(895,585) scale(0.9) rotate(14)">
+        <polygon points="32,30 24.5,43 9.5,43 2,30 9.5,17 24.5,17" fill="none" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="73,22 65.5,35 50.5,35 43,22 50.5,9 65.5,9" fill="none" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="114,30 106.5,43 91.5,43 84,30 91.5,17 106.5,17" fill="none" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" stroke-linejoin="round" />
+        <path d="M32,30 L43,22 M73,22 L84,30" stroke="rgba(19,21,22,0.14)" stroke-width="2" fill="none" />
+      </g>
+      <g id="idn-glyph-4" class="idn-glyph" transform="translate(520,55) scale(0.6) rotate(-10)">
+        <polygon points="32,30 24.5,43 9.5,43 2,30 9.5,17 24.5,17" fill="none" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" stroke-linejoin="round" />
+        <polygon points="73,22 65.5,35 50.5,35 43,22 50.5,9 65.5,9" fill="none" stroke="rgba(19,21,22,0.16)" stroke-width="2.4" stroke-linejoin="round" />
+        <path d="M32,30 L43,22" stroke="rgba(19,21,22,0.14)" stroke-width="2" fill="none" />
+      </g>
+    </svg>
+  </div>
+
+  <div id="idn-content" class="clip" data-start="0" data-duration="7.242" data-track-index="2">
+    <div class="idn-card" id="idn-card">
+      <div class="idn-kicker" id="idn-kicker">Ingredient identity</div>
+      <div class="idn-name" id="idn-name">HA <span class="idn-name-sub">· Hyaluronic acid</span></div>
+
+      <div class="idn-badge" id="idn-badge">
+        <!-- three line-drawn linked hexagons, ink-gray at 0.5 -->
+        <svg viewBox="0 0 116 52" aria-hidden="true">
+          <polygon points="32,30 24.5,43 9.5,43 2,30 9.5,17 24.5,17" fill="none" stroke="rgba(19,21,22,0.5)" stroke-width="4.5" stroke-linejoin="round" />
+          <polygon points="73,22 65.5,35 50.5,35 43,22 50.5,9 65.5,9" fill="none" stroke="rgba(19,21,22,0.5)" stroke-width="4.5" stroke-linejoin="round" />
+          <polygon points="114,30 106.5,43 91.5,43 84,30 91.5,17 106.5,17" fill="none" stroke="rgba(19,21,22,0.5)" stroke-width="4.5" stroke-linejoin="round" />
+          <path d="M32,30 L43,22 M73,22 L84,30" stroke="rgba(19,21,22,0.5)" stroke-width="3.5" fill="none" />
+        </svg>
+      </div>
+
+      <div class="idn-row" id="idn-row-inci"><span class="idn-row-label">INCI</span><span class="idn-row-value">Sodium Hyaluronate</span></div>
+      <div class="idn-row" id="idn-row-mw"><span class="idn-row-label">Molecular weight</span><span class="idn-row-value">Light → heavy chains (10 kDa – 2 MDa)</span></div>
+      <div class="idn-row" id="idn-row-source"><span class="idn-row-label">Source</span><span class="idn-row-value">Microbial fermentation (Streptococcus strains)</span></div>
+
+      <div class="idn-claim-block" id="idn-claim-block">
+        <div class="idn-claim"><span class="idn-claim-line" id="idn-claim-l1">Water-binding humectant —</span> <span class="idn-claim-line" id="idn-claim-l2">how much it holds depends on chain size.</span></div>
+        <div class="idn-cite" id="idn-cite"><span class="idn-cite-label">CITATION —</span> <span class="idn-cite-id">&#x231E; ING-hyaluronic-acid-S001 &#x231F;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var glyphs = document.querySelectorAll('.idn-glyph');
+  var card = document.getElementById('idn-card');
+  var kicker = document.getElementById('idn-kicker');
+  var name = document.getElementById('idn-name');
+  var badge = document.getElementById('idn-badge');
+  var rowInci = document.getElementById('idn-row-inci');
+  var rowMw = document.getElementById('idn-row-mw');
+  var rowSource = document.getElementById('idn-row-source');
+  var claimBlock = document.getElementById('idn-claim-block');
+  var claimL1 = document.getElementById('idn-claim-l1');
+  var claimL2 = document.getElementById('idn-claim-l2');
+  var cite = document.getElementById('idn-cite');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // VO cues (11.002s take): "sodium hyaluronate" ~0.9 · "a single chain of sugar units" ~2.8
+  // · "built by bacterial fermentation" ~5.2 · "spanning ten kilodaltons..." ~6.8.
+
+  // Scene 1 (0.0-0.9): polymer-glyph field fades in on the paper ground; card rises with the kicker.
+  tl.fromTo(glyphs, { opacity: 0 }, { opacity: 1, duration: 0.7, stagger: 0.08 }, 0.05);
+  tl.fromTo(card, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6 }, 0.12);
+  tl.fromTo(kicker, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.5);
+
+  // Scene 2 (0.9-1.6): name row lands with the spoken "sodium hyaluronate"; badge chip pops at 1.4.
+  tl.fromTo(name, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0.85);
+  tl.fromTo(badge, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4 }, 1.3);
+
+  // Retention fix: rows reveal strictly TOP-TO-BOTTOM (INCI -> MW -> SOURCE) so nothing pops
+  // in above an already-visible row; cadence tightened to the v4 take.
+  tl.fromTo(rowInci, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 1.5);
+  tl.fromTo(rowMw, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 2.4);
+  tl.fromTo(rowSource, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 3.2);
+
+  // Scene 4 (8.2-10.0): claim block line by line, then the citation pill (sourced claim).
+  tl.fromTo(claimBlock, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, 3.95);
+  tl.fromTo(claimL1, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 4.0);
+  tl.fromTo(claimL2, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 4.5);
+  tl.fromTo(cite, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4 }, 5.25);
+
+  // Scene 5 (10.0-11.002): held read — the bounded ambient drift below carries through it.
+  // Bounded slow sine drift on the glyph field (never rotation loops). No exit: root cut is the exit.
+  glyphs.forEach(function (el, i) {
+    tl.to(el, { y: '+=' + (10 + i * 4), duration: 5.9, ease: 'sine.inOut' }, 0.3);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-identity'] = tl;
+})();
+</script>
+</template>

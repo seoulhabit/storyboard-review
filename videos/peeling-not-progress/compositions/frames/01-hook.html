@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --e-out: cubic-bezier(0.215,0.61,0.355,1);
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed ink #root, one flex column, justify-content:center, holds the
+              surface panel and the text stack as two stacked flex children.
+           2. The surface panel is a fixed-size square, centered by the flex column --
+              not an independent absolute top/left.
+           3. Droplet + ripples + cracks are layered inside one SVG covering the panel;
+              nothing in the panel gets its own separate absolute position. */
+        /* Padding is asymmetric (left 60 / right 162) to honour --safe-right, the
+           Shorts like/comment/share action-rail reserve -- previously declared but
+           never consumed here (pre-render gate item 7). Content column is 858px,
+           not the full 960px between symmetric 60/60 margins. */
+        .stage { display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; height: 100%; gap: 56px;
+                 padding: 0 var(--safe-right) 0 var(--safe-left); }
+
+        .surface-panel { width: 858px; height: 858px; border-radius: 28px; overflow: hidden;
+                          background: #E7E1D3; }
+        .surface-panel svg { display: block; width: 100%; height: 100%; }
+
+        /* Height raised 220->320: --t-hero (96px, was 72px per the skill's raised type
+           floor) wraps both lines to 2 lines at the 858px safe-column width; each .line
+           is independently vertically centered in this box via the parent flex
+           align-items -- see the absolute-position-in-flex note this comment replaces. */
+        .text-stack { position: relative; width: 858px; height: 320px;
+                      display: flex; align-items: center; justify-content: center; text-align: center; }
+        /* Plain opacity/transform, not a --p custom property: frame-exact ffmpeg
+           verification of Frame 2's identical --p pattern found it render fully
+           opaque from local t=0 in the actual MP4 (confirmed via indexed frame
+           extraction), even though its GSAP tween didn't start until local 1.2 --
+           plain opacity is the pattern proven correct everywhere else in this
+           project (Frames 3-6) and by bottle-1/2/3 in Frame 2 itself. */
+        .line { position: absolute; left: 0; right: 0; font-family: var(--font-display);
+                font-size: 96px; line-height: 1.12; color: var(--paper);
+                opacity: 0; transform: translateY(18px); }
+
+        .droplet { fill: url(#dropGrad); }
+        .ripple { fill: none; stroke: rgba(19,21,22,0.35); stroke-width: 3; }
+        .crack { fill: none; stroke: #131516; stroke-width: 3.5; stroke-linecap: round;
+                 stroke-linejoin: round; opacity: 0.82; }
+      </style>
+
+      <div data-hf-id="hf-cgud" id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="3.000">
+        <div data-hf-id="hf-q6os" class="clip stage">
+          <div data-hf-id="hf-42i8" class="surface-panel">
+            <svg data-hf-id="hf-i2r0" viewBox="0 0 640 640" aria-hidden="true">
+              <defs data-hf-id="hf-mh0t">
+                <radialgradient data-hf-id="hf-jobc" id="dropGrad" cx="38%" cy="32%" r="70%">
+                  <stop data-hf-id="hf-65n5" offset="0%" stop-color="#FCFBF9" />
+                  <stop data-hf-id="hf-llo9" offset="55%" stop-color="#DCE9E6" />
+                  <stop data-hf-id="hf-5kx5" offset="100%" stop-color="#8FA9A4" />
+                </radialgradient>
+              </defs>
+
+              <g data-hf-id="hf-mfal" id="crack-group">
+                <path data-hf-id="hf-e6jh" class="crack" id="crack-1" d="M320,320 L372,266 L360,206 L398,158 L388,104" />
+                <path data-hf-id="hf-0vod" class="crack" id="crack-2" d="M320,320 L392,300 L452,318 L512,286" />
+                <path data-hf-id="hf-lqrv" class="crack" id="crack-3" d="M320,320 L378,368 L410,428 L392,492" />
+                <path data-hf-id="hf-qjf7" class="crack" id="crack-4" d="M320,320 L262,362 L214,346 L156,388 L116,372" />
+                <path data-hf-id="hf-pw18" class="crack" id="crack-5" d="M320,320 L268,278 L232,222 L172,196" />
+                <path data-hf-id="hf-kyea" class="crack" id="crack-6" d="M320,320 L298,392 L246,414 L212,468" />
+              </g>
+
+              <g data-hf-id="hf-3eh1" id="droplet-group">
+                <circle data-hf-id="hf-9dlf" class="ripple" id="ripple-1" cx="320" cy="320" r="60" />
+                <circle data-hf-id="hf-d9qe" class="ripple" id="ripple-2" cx="320" cy="320" r="60" />
+                <path data-hf-id="hf-y5cn" class="droplet" id="droplet" d="M320,262 C360,262 392,296 392,334 C392,372 360,398 320,398
+                         C280,398 248,372 248,334 C248,296 280,262 320,262 Z" />
+              </g>
+            </svg>
+          </div>
+
+          <div data-hf-id="hf-15lm" class="text-stack">
+            <div data-hf-id="hf-l0eo" class="line" id="line-1">Your skin is peeling…</div>
+            <div data-hf-id="hf-o4ej" class="line" id="line-2">Does that mean it’s working?</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out" } });
+
+        const cracks = [1,2,3,4,5,6].map(i => document.getElementById('crack-'+i));
+        cracks.forEach(function (c) {
+          const len = c.getTotalLength();
+          gsap.set(c, { strokeDasharray: len, strokeDashoffset: len });
+        });
+
+        // Frame zero: the droplet is visible and each ripple's fromTo "from" value
+        // (scale 1, opacity 0.7/0.5) IS what renders at t=0 -- already settled, not
+        // fading in from nothing, per mandatory rule 4. Single fromTo per target, so
+        // no multi-burst bleed-through risk (see SKILL.md's tl.set(...,0) failure mode
+        // -- that applies to a target hit by more than one fromTo at different times).
+        gsap.set(['#ripple-1', '#ripple-2'], { transformOrigin: '50% 50%' });
+        tl.fromTo('#ripple-1', { scale: 1, opacity: 0.7 }, { scale: 2.6, opacity: 0, duration: 0.8, ease: "power1.out" }, 0);
+        tl.fromTo('#ripple-2', { scale: 1, opacity: 0.5 }, { scale: 3.4, opacity: 0, duration: 0.95, ease: "power1.out" }, 0.12);
+
+        tl.to('#line-1', { opacity: 1, y: 0, duration: 0.3 }, 0.1);
+
+        // Cracks draw outward, staggered; droplet dries into the surface.
+        cracks.forEach(function (c, i) {
+          tl.to(c, { strokeDashoffset: 0, duration: 0.42, ease: "power2.inOut" }, 0.9 + i * 0.11);
+        });
+        tl.to('#droplet-group', { opacity: 0, duration: 0.5, ease: "power2.in" }, 1.15);
+
+        tl.to('#line-1', { opacity: 0, y: 18, duration: 0.22 }, 1.62);
+        tl.to('#line-2', { opacity: 1, y: 0, duration: 0.35 }, 1.85);
+
+        tl.to({}, { duration: 3.000 }, 0);
+        window.__timelines["01-hook"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

@@ -116,6 +116,7 @@ live under `videos/<slug>/` as self-contained HyperFrames projects
 
 | Project | Current render | This session |
 |---|---|---|
+| [peeling-not-progress](videos/peeling-not-progress/) | `renders/peeling-not-progress_FINAL_mastered.mp4` | New project — first genuinely silent (no VO) video on the channel; 30s claim-audit short (peeling ≠ progress), real PubMed/CFR/FDA sourcing corrected two lines that said the opposite of the regulator, barrier-wall SVG harvested to `catalog/visual-components/barrier-wall/` as its third independent build in this repo, real `--p`-custom-property render bug found and fixed via frame-exact pixel verification |
 | [kbeauty-one-percent-line](videos/kbeauty-one-percent-line/) | `renders/kbeauty-one-percent-line_2026-08-29_21-40-00.mp4` | Hard-cut scene transitions, VO-synced cadence fixes across Frames 4-8, retimed hook payoff, ingredient macro-shot interlude (Frame 4b), first YouTube thumbnail set |
 | [retinol-patch-test](videos/retinol-patch-test/) | `renders/retinol-patch-test_2026-08-29_23-00-57.mp4` | YouTube feedback round 2 (bottle bounce-in, camera-punch on "Stop!", spring-pop callouts, compressed ladder draw), frame-zero + img-attribute skill-compliance fixes, YouTube thumbnail set |
 | [seoulhabit-launch](videos/seoulhabit-launch/) | (render unchanged this session) | YouTube thumbnail set; QA verification snapshots from retiming/hook-check rounds kept as working history |

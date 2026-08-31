@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --ink-2: #9C978D;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed ink #root, one flex column: headline zone (top-safe) / SVG
+              diagram zone (flex:1, centered) / qualifier+chip zone (bottom-safe).
+           2. The barrier-wall diagram is one self-contained SVG with internal groups
+              (wall / wash / shards / label) -- nothing outside the SVG gets its own
+              independent absolute position.
+           3. A single .frame-zoom wrapper carries the whole column's continuous slow
+              scale (Ken-Burns-as-pure-function-of-t), covering the settle tail so no
+              stretch of this 6s scene is genuinely pixel-static. */
+        .frame-zoom { position: absolute; inset: 0; transform-origin: 50% 40%; }
+        /* Right/left now asymmetric (--safe-right/--safe-left, was a single --safe-left
+           applied to both sides) -- honours the Shorts action-rail reserve, pre-render
+           gate item 7. */
+        /* +45px beyond --safe-bottom: absorbs this scene's own Ken-Burns drift (max
+           scale 1.045, origin 50%/40%) at the bottom edge -- see the file-level note
+           above dated 2026-08-31 for the measured root cause and the math. Confirmed
+           on the actual render, not assumed: unscaled foot-zone content already sat
+           at the safe-bottom boundary with zero margin: the zoom alone pushed the
+           citation chip to y1595 by the scene's own end, 35px past y1560. */
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: calc(var(--safe-top) + 20px) var(--safe-right) calc(var(--safe-bottom) + 45px) var(--safe-left); }
+
+        /* Height raised 260->340 (not 420 -- see post-render note): --t-hero (96px,
+           was 64px) needed room for a 2-line wrap that never actually happened at the
+           858px safe-column width (both lines fit on one line each, measured on the
+           actual render); 420 left ~200px of dead slack above the diagram and pushed
+           the foot-zone chip to y1595, 35px past the y1560 safe-bottom boundary --
+           re-measured and trimmed post-render, not left at the pre-render estimate. */
+        .headline-zone { height: 340px; text-align: center; }
+        .h-line { display: block; font-family: var(--font-display); font-size: 96px;
+                  line-height: 1.12; color: var(--paper); opacity: 0; transform: translateY(12px); }
+
+        .diagram-zone { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .diagram-zone svg { width: 858px; height: 592px; display: block; }
+
+        /* Bricks default to visible -- opacity 0 lives on the course <g> wrapper only.
+           Individual bricks are later dimmed (not hidden) by the top-course animation;
+           putting opacity:0 on both the group AND its children would multiply to 0
+           even after the group fades in. */
+        .wall-brick { fill: rgba(247,245,240,0.07); stroke: rgba(247,245,240,0.55); stroke-width: 2.4; }
+        #course-top, #course-mid, #course-bot { opacity: 0; }
+        .wash { fill: rgba(247,245,240,0.16); opacity: 0; }
+        .wash-line { stroke: var(--aqua); stroke-width: 2.4; stroke-dasharray: 6 6; opacity: 0; }
+        .shard { fill: rgba(247,245,240,0.14); stroke: rgba(247,245,240,0.55); stroke-width: 2; opacity: 0; }
+        .wall-label { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
+                      letter-spacing: 0.08em; fill: rgba(247,245,240,0.7); opacity: 0; }
+
+        .foot-zone { display: flex; flex-direction: column; align-items: center; gap: 24px;
+                     text-align: center; padding-top: 12px; }
+        .qualifier { font-family: var(--font-mono); font-size: 40px; line-height: 1.35;
+                     color: rgba(247,245,240,0.75); max-width: 858px; opacity: 0; }
+        .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: rgba(247,245,240,0.85); border: 1.5px solid rgba(247,245,240,0.35);
+                border-radius: 999px; padding: 8px 20px; opacity: 0; }
+      </style>
+
+      <div data-hf-id="hf-dtqg" id="root" data-composition-id="03-truth" data-width="1080" data-height="1920" data-duration="6.000">
+        <div data-hf-id="hf-oclc" class="clip frame-zoom" id="zoom">
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-o22v" class="headline-zone">
+              <span data-hf-id="hf-lew8" class="h-line" id="h1">Peeling is a side effect —</span>
+              <span data-hf-id="hf-i64y" class="h-line" id="h2">not a scorecard.</span>
+            </div>
+
+            <div data-hf-id="hf-fq8q" class="diagram-zone">
+              <svg data-hf-id="hf-zj8v" viewBox="0 0 700 480" aria-hidden="true">
+                <g data-hf-id="hf-xf7k" id="wash-group">
+                  <rect data-hf-id="hf-k3yo" class="wash" id="wash" x="60" y="-30" width="580" height="110" rx="10" />
+                  <line data-hf-id="hf-q9bd" class="wash-line" id="wash-line" x1="60" y1="80" x2="640" y2="80" />
+                </g>
+                <g data-hf-id="hf-dfjb" id="wall">
+                  <g data-hf-id="hf-rdd6" id="course-top">
+                    <rect data-hf-id="hf-zbkb" class="wall-brick wall-brick-top" id="bt-1" x="60" y="120" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-b3d8" class="wall-brick wall-brick-top" id="bt-2" x="206" y="120" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-5n49" class="wall-brick wall-brick-top" id="bt-3" x="352" y="120" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-eqsq" class="wall-brick wall-brick-top" id="bt-4" x="498" y="120" width="142" height="58" rx="9" />
+                  </g>
+                  <g data-hf-id="hf-730p" id="course-mid">
+                    <rect data-hf-id="hf-3ixr" class="wall-brick" x="60" y="192" width="70" height="58" rx="9" />
+                    <rect data-hf-id="hf-dng3" class="wall-brick" x="146" y="192" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-jv4r" class="wall-brick" x="292" y="192" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-o9k1" class="wall-brick" x="438" y="192" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-7ziy" class="wall-brick" x="584" y="192" width="56" height="58" rx="9" />
+                  </g>
+                  <g data-hf-id="hf-3i24" id="course-bot">
+                    <rect data-hf-id="hf-jsyi" class="wall-brick" x="60" y="264" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-gfdo" class="wall-brick" x="206" y="264" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-2cwu" class="wall-brick" x="352" y="264" width="130" height="58" rx="9" />
+                    <rect data-hf-id="hf-7s1g" class="wall-brick" x="498" y="264" width="142" height="58" rx="9" />
+                  </g>
+                </g>
+                <path data-hf-id="hf-erhq" class="shard" id="shard-1" d="M112,108 l28,-8 l7,18 l-26,9 Z" />
+                <path data-hf-id="hf-o9k8" class="shard" id="shard-2" d="M320,102 l24,4 l-4,20 l-24,-6 Z" />
+                <path data-hf-id="hf-vrrx" class="shard" id="shard-3" d="M528,106 l26,-4 l6,18 l-28,6 Z" />
+                <text data-hf-id="hf-2juo" class="wall-label" id="wall-label" x="350" y="392" text-anchor="middle">SKIN BARRIER</text>
+              </svg>
+            </div>
+
+            <div data-hf-id="hf-juqj" class="foot-zone">
+              <div data-hf-id="hf-kiq9" class="qualifier" id="qualifier">In trials, more irritation didn’t mean better results.</div>
+              <div data-hf-id="hf-cx9o" class="chip" id="chip">Arch Dermatol · 1995</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        const bricksTop = ['bt-1','bt-2','bt-3','bt-4'].map(id => document.getElementById(id));
+        const shards = ['shard-1','shard-2','shard-3'].map(id => document.getElementById(id));
+
+        gsap.set('#wash', { y: -110 });
+        gsap.set('#wash-line', { y: -110 });
+
+        // Continuous slow push across the entire scene -- covers the settle tail so
+        // no stretch reads as a static hold, same technique betaine-salicylate's own
+        // 02-harsh.html uses on its zoom wrapper.
+        tl.fromTo('#zoom', { scale: 1 }, { scale: 1.045, duration: 6.000, ease: "none" }, 0);
+
+        // Quick settle, not a slow fade -- blank-frame scan flagged the old 0.1-0.6
+        // slow fade-in as a near-empty ink canvas right after the hard cut. The wall
+        // is this scene's hero content and reads as the resting state we cut TO
+        // (per frame.md: "aftermath," not a fresh assembly), so it needs to assert
+        // fast, not ease in.
+        tl.to(['#course-top', '#course-mid', '#course-bot'], { opacity: 1, duration: 0.2 }, 0);
+        tl.to('#wall-label', { opacity: 1, duration: 0.3 }, 0.25);
+
+        tl.to('#h1', { opacity: 1, y: 0, duration: 0.35 }, 0.3);
+        tl.to('#h2', { opacity: 1, y: 0, duration: 0.35 }, 0.85);
+
+        // The barrier separates: wash descends, shards detach and drift.
+        tl.to(['#wash', '#wash-line'], { y: 0, opacity: 1, duration: 0.65, ease: "power2.inOut" }, 2.0);
+        shards.forEach(function (s, i) {
+          tl.to(s, { opacity: 1, duration: 0.22 }, 2.55 + i * 0.28);
+          tl.to(s, { y: 30 + i * 8, rotation: 7 - i * 5, opacity: 0, duration: 1.0, ease: "power2.in" }, 2.8 + i * 0.28);
+        });
+        bricksTop.forEach(function (b, i) {
+          tl.to(b, { opacity: 0.5, duration: 0.55 }, 2.75 + i * 0.13);
+        });
+
+        tl.to('#qualifier', { opacity: 1, duration: 0.4 }, 3.6);
+        tl.to('#chip', { opacity: 1, duration: 0.3 }, 4.3);
+
+        tl.to({}, { duration: 6.000 }, 0);
+        window.__timelines["03-truth"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

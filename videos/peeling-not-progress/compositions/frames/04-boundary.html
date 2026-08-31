@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --ink-3: #9C978D;
+          --aqua: #59B8AE; --aqua-text: #4B9B93; --rule: #E3E3E3; --rule-strong: #D9D3C6;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed paper #root, one .frame-zoom wrapper (continuous slow scale,
+              covers the tail after the dot-pulse ends) holding a flex column: kicker
+              zone (top-safe) / cards row (flex:1, centered).
+           2. Cards row is a flex row with three children -- left card, divider, right
+              card -- laid out by flex gap, not by independent absolute offsets.
+           3. Each card's internal kicker/body/chip stack is a plain flex column, normal
+              document flow inside the card. */
+        .frame-zoom { position: absolute; inset: 0; transform-origin: 50% 45%; }
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: calc(var(--safe-top) + 40px) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .kicker-zone { height: 140px; text-align: center; }
+        .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+                  letter-spacing: 0.08em; color: var(--ink-2); opacity: 0; }
+
+        /* Two 420px cards + 28px gaps + a 3px divider (899px) no longer fit the 858px
+           safe column (--safe-right honoured, was symmetric --safe-left both sides) --
+           card max-width and the row gap both trimmed to hold the pair at 858px total. */
+        .cards-row { flex: 1; display: flex; align-items: center; justify-content: center;
+                     gap: 24px; }
+        .divider { width: 3px; height: 0%; background: var(--rule-strong); border-radius: 2px;
+                   align-self: center; }
+
+        .card { flex: 1; max-width: 400px; padding: 40px 32px; border-radius: 14px;
+                display: flex; flex-direction: column; gap: 20px; opacity: 0; }
+        .card-normal { border: 2px solid var(--rule); background: transparent;
+                       transform: translateX(-24px); }
+        .card-stop { border: 3px solid var(--ink); background: rgba(19,21,22,0.04);
+                     transform: translateX(24px); }
+
+        .card-kicker-row { display: flex; align-items: center; gap: 14px; }
+        .dot { width: 20px; height: 20px; border-radius: 50%; }
+        .card-normal .dot { background: var(--aqua); }
+        .card-stop .dot { background: var(--ink); }
+        .card-kicker { font-family: var(--font-mono); font-weight: 700; font-size: 34px;
+                       letter-spacing: 0.06em; }
+        /* var(--aqua) text against the paper ground measured 2.17:1 (checker target:
+           3:1) -- swapped to a darker text-only variant, same hue family. The dot stays
+           the brighter --aqua since it's a filled shape, not text-on-paper contrast. */
+        .card-normal .card-kicker { color: var(--aqua-text); }
+        .card-stop .card-kicker { color: var(--ink); }
+
+        .card-body { font-family: var(--font-body); font-size: 42px; line-height: 1.35;
+                     font-weight: 600; color: var(--ink); }
+        .card-normal .card-body { color: var(--ink-2); }
+
+        .card-chip { align-self: flex-start; font-family: var(--font-mono); font-size: 32px;
+                     letter-spacing: 0.04em; color: var(--ink-2); border: 1.5px solid rgba(19,21,22,0.2);
+                     border-radius: 999px; padding: 7px 18px; opacity: 0; }
+      </style>
+
+      <div data-hf-id="hf-2rvm" id="root" data-composition-id="04-boundary" data-width="1080" data-height="1920" data-duration="6.000">
+        <div data-hf-id="hf-zoom4" class="clip frame-zoom" id="zoom">
+          <div data-hf-id="hf-q6os" class="stage">
+            <div data-hf-id="hf-w01q" class="kicker-zone">
+              <div data-hf-id="hf-q1zh" class="kicker" id="kicker">WHERE’S THE LINE?</div>
+            </div>
+
+            <div data-hf-id="hf-62wu" class="cards-row">
+              <div data-hf-id="hf-wf6g" class="card card-normal" id="card-normal">
+                <div data-hf-id="hf-07yn" class="card-kicker-row"><div data-hf-id="hf-lu65" class="dot"></div><div data-hf-id="hf-ourn" class="card-kicker">NORMAL</div></div>
+                <div data-hf-id="hf-exjc" class="card-body">Temporary dryness can happen.</div>
+                <div data-hf-id="hf-08lv" class="card-chip" id="chip-normal">Cutis · 2010</div>
+              </div>
+
+              <div data-hf-id="hf-8l98" class="divider" id="divider"></div>
+
+              <div data-hf-id="hf-i6xm" class="card card-stop" id="card-stop">
+                <div data-hf-id="hf-h3sf" class="card-kicker-row"><div data-hf-id="hf-argl" class="dot" id="stop-dot"></div><div data-hf-id="hf-p0go" class="card-kicker">STOP</div></div>
+                <div data-hf-id="hf-64jz" class="card-body">Severe burning or swelling? Stop and ask a doctor.</div>
+                <div data-hf-id="hf-wfyk" class="card-chip" id="chip-stop">FDA · 21 CFR 333.350</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Continuous slow push across the entire scene -- the dot-pulse (below) ends
+        // at local 3.8s, and static-hold scan flagged the resulting 3.8-6.0s tail as
+        // 2.5s frozen (over the shorts cadence ceiling). Same technique as Frames 3/5.
+        tl.fromTo('#zoom', { scale: 1 }, { scale: 1.025, duration: 6.000, ease: "none" }, 0);
+
+        // Compressed from the original 0.4/1.6-start stagger -- blank-frame scan
+        // flagged 14.0-15.67s (1.67s) as near-empty paper, since only a small kicker
+        // line was on screen while both cards were still mostly transparent. Cards now
+        // settle by local ~0.85s instead of ~2.1s so real canvas coverage arrives fast.
+        tl.to('#kicker', { opacity: 1, duration: 0.3 }, 0);
+
+        tl.to('#card-normal', { opacity: 1, x: 0, duration: 0.35 }, 0.15);
+        tl.to('#chip-normal', { opacity: 1, duration: 0.25 }, 0.55);
+
+        tl.to('#card-stop', { opacity: 1, x: 0, duration: 0.35 }, 0.5);
+        tl.to('#chip-stop', { opacity: 1, duration: 0.25 }, 0.9);
+
+        tl.to('#divider', { height: '68%', duration: 0.5, ease: "power2.inOut" }, 1.3);
+
+        // Bounded pulse (2 cycles, resolves inside this scene) keeps the tail from
+        // reading as a static hold.
+        tl.to('#stop-dot', { scale: 1.35, duration: 0.4, yoyo: true, repeat: 3,
+                              ease: "power1.inOut", transformOrigin: "50% 50%" }, 2.2);
+
+        tl.to({}, { duration: 6.000 }, 0);
+        window.__timelines["04-boundary"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

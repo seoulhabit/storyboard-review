@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BarrierWall — Skin Barrier Diagram Spike</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Inter:wght@500;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+<style>
+  /* ================================================================
+     BarrierWall -- spike, rev. 1. Not wired to build.mjs.
+
+     Third independent build of this mechanism in this repo -- see
+     README.md for the other two. Sourced from the pure-SVG original in
+     videos/betaine-salicylate-gentle-bha/compositions/frames/02-harsh.html,
+     generalized here: real claim copy and the coral wash tint (spent
+     for that project's own one-voltage-moment rule) both removed.
+
+     Philosophy: a running-bond brick wall is legible as "protective
+     layered barrier" without needing a medical cross-section illustration
+     license or photography. The wash+shard-detach beat is the one
+     mechanism worth keeping generic -- everything else (courses, the
+     wall's exact brick layout) is decorative scaffolding around it.
+     ================================================================ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; font-family: 'Inter', sans-serif; }
+
+  #stage-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px; }
+  #root {
+    --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --ink-2: #9C978D;
+    --font-display: "EB Garamond", Georgia, serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--ink); font-family: var(--font-body);
+    transform: scale(0.4); transform-origin: top center;
+  }
+  .clip { position: absolute; inset: 0; }
+  /* Field contract update, 2026-08-31: type sizes below now match
+     faceless-video-craft SKILL.md's raised floors (hero 96px, label/chip
+     32px) and asymmetric safe-left(60)/safe-right(162) padding for the
+     Shorts action-rail reserve -- both found missing in this mechanism's
+     first consuming video (videos/peeling-not-progress) by that project's
+     own post-render reconciliation pass. If the wrapping composition adds
+     its own continuous Ken-Burns zoom (a common pattern on this channel,
+     used to avoid a static-hold flag), verify the foot-zone chip still
+     clears the safe-bottom boundary AFTER the zoom's max displacement, not
+     just in the static/unscaled layout -- that scene's own zoom-origin
+     math can push bottom content past the boundary even when the static
+     layout looks correct. See videos/peeling-not-progress/frame.md's
+     round-5 note for the measured cause and fix pattern. */
+  .stage { display: flex; flex-direction: column; height: 100%;
+           padding: 140px 162px 360px 60px; }
+
+  .headline-zone { height: 340px; text-align: center; }
+  .h-line { display: block; font-family: var(--font-display); font-size: 96px;
+            line-height: 1.12; color: var(--paper); opacity: 0; transform: translateY(12px); }
+
+  .diagram-zone { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .diagram-zone svg { width: 858px; height: 592px; display: block; }
+
+  /* Bricks default to visible -- opacity 0 lives on the course <g> wrapper
+     only. Putting opacity:0 on both the group AND its children multiplies
+     to 0 even after the group fades in -- a real bug found building this
+     the first time (see videos/peeling-not-progress/compositions/frames/
+     03-truth.html's own comment on this). */
+  .wall-brick { fill: rgba(247,245,240,0.07); stroke: rgba(247,245,240,0.55); stroke-width: 2.4; }
+  #course-top, #course-mid, #course-bot { opacity: 0; }
+  /* Wash defaults to a neutral ink tint, NOT coral -- recolor to --coral
+     only if this wash beat is the video's one spent voltage moment. */
+  .wash { fill: rgba(247,245,240,0.16); opacity: 0; }
+  .wash-line { stroke: var(--aqua); stroke-width: 2.4; stroke-dasharray: 6 6; opacity: 0; }
+  .shard { fill: rgba(247,245,240,0.14); stroke: rgba(247,245,240,0.55); stroke-width: 2; opacity: 0; }
+  .wall-label { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
+                letter-spacing: 0.08em; fill: rgba(247,245,240,0.7); opacity: 0; }
+
+  .foot-zone { display: flex; flex-direction: column; align-items: center; gap: 24px;
+               text-align: center; padding-top: 12px; }
+  .qualifier { font-family: var(--font-mono); font-size: 40px; line-height: 1.35;
+               color: rgba(247,245,240,0.75); max-width: 858px; opacity: 0; }
+  /* Human-readable citation only -- "Journal · Year" or equivalent, never a raw
+     catalog/lookup ID (a PMID, an ING-* key). faceless-video-craft SKILL.md bans
+     internal record IDs from rendered frames; the ID that looked the source up
+     belongs in the consuming video's own description, not this chip. */
+  .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+          color: rgba(247,245,240,0.85); border: 1.5px solid rgba(247,245,240,0.35);
+          border-radius: 999px; padding: 8px 20px; opacity: 0; }
+
+  #controls { display: flex; align-items: center; gap: 12px; font-family: monospace;
+              color: #ccc; font-size: 13px; }
+  #bw-scrubber { width: 400px; }
+</style>
+</head>
+<body>
+<div id="stage-wrap">
+  <div id="root">
+    <div class="clip stage">
+      <div class="headline-zone">
+        <span class="h-line" id="h1">[Claim headline line one] &mdash;</span>
+        <span class="h-line" id="h2">[claim headline line two.]</span>
+      </div>
+
+      <div class="diagram-zone">
+        <svg viewBox="0 0 700 480" aria-hidden="true">
+          <g id="wash-group">
+            <rect class="wash" id="wash" x="60" y="-30" width="580" height="110" rx="10" />
+            <line class="wash-line" id="wash-line" x1="60" y1="80" x2="640" y2="80" />
+          </g>
+          <g id="wall">
+            <g id="course-top">
+              <rect class="wall-brick" id="bt-1" x="60"  y="120" width="130" height="58" rx="9" />
+              <rect class="wall-brick" id="bt-2" x="206" y="120" width="130" height="58" rx="9" />
+              <rect class="wall-brick" id="bt-3" x="352" y="120" width="130" height="58" rx="9" />
+              <rect class="wall-brick" id="bt-4" x="498" y="120" width="142" height="58" rx="9" />
+            </g>
+            <g id="course-mid">
+              <rect class="wall-brick" x="60"  y="192" width="70"  height="58" rx="9" />
+              <rect class="wall-brick" x="146" y="192" width="130" height="58" rx="9" />
+              <rect class="wall-brick" x="292" y="192" width="130" height="58" rx="9" />
+              <rect class="wall-brick" x="438" y="192" width="130" height="58" rx="9" />
+              <rect class="wall-brick" x="584" y="192" width="56"  height="58" rx="9" />
+            </g>
+            <g id="course-bot">
+              <rect class="wall-brick" x="60"  y="264" width="130" height="58" rx="9" />
+              <rect class="wall-brick" x="206" y="264" width="130" height="58" rx="9" />
+              <rect class="wall-brick" x="352" y="264" width="130" height="58" rx="9" />
+              <rect class="wall-brick" x="498" y="264" width="142" height="58" rx="9" />
+            </g>
+          </g>
+          <path class="shard" id="shard-1" d="M112,108 l28,-8 l7,18 l-26,9 Z" />
+          <path class="shard" id="shard-2" d="M320,102 l24,4 l-4,20 l-24,-6 Z" />
+          <path class="shard" id="shard-3" d="M528,106 l26,-4 l6,18 l-28,6 Z" />
+          <text class="wall-label" id="wall-label" x="350" y="392" text-anchor="middle">SKIN BARRIER</text>
+        </svg>
+      </div>
+
+      <div class="foot-zone">
+        <div class="qualifier" id="qualifier">[Mono qualifier line -- the precision the headline doesn't state.]</div>
+        <div class="chip" id="chip">[Journal · Year]</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button id="bw-play">Play</button>
+    <input type="range" id="bw-scrubber" min="0" value="0" step="0.001">
+    <span id="bw-time">0.00 / 6.00</span>
+  </div>
+</div>
+
+<script>
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  const DURATION = 6.000;
+
+  const bricksTop = ['bt-1','bt-2','bt-3','bt-4'].map(id => document.getElementById(id));
+  const shards = ['shard-1','shard-2','shard-3'].map(id => document.getElementById(id));
+
+  tl.to(['#course-top', '#course-mid', '#course-bot'], { opacity: 1, duration: 0.2 }, 0);
+  tl.to('#wall-label', { opacity: 1, duration: 0.3 }, 0.25);
+
+  tl.to('#h1', { opacity: 1, y: 0, duration: 0.35 }, 0.3);
+  tl.to('#h2', { opacity: 1, y: 0, duration: 0.35 }, 0.85);
+
+  // The barrier separates: wash descends, shards detach and drift.
+  tl.to(['#wash', '#wash-line'], { y: 0, opacity: 1, duration: 0.65, ease: "power2.inOut" }, 2.0);
+  shards.forEach(function (s, i) {
+    tl.to(s, { opacity: 1, duration: 0.22 }, 2.55 + i * 0.28);
+    tl.to(s, { y: 30 + i * 8, rotation: 7 - i * 5, opacity: 0, duration: 1.0, ease: "power2.in" }, 2.8 + i * 0.28);
+  });
+  bricksTop.forEach(function (b, i) {
+    tl.to(b, { opacity: 0.5, duration: 0.55 }, 2.75 + i * 0.13);
+  });
+
+  tl.to('#qualifier', { opacity: 1, duration: 0.4 }, 3.6);
+  tl.to('#chip', { opacity: 1, duration: 0.3 }, 4.3);
+
+  tl.to({}, { duration: DURATION }, 0);
+
+  // Debug scrubber -- same convention as this catalog's other spikes.
+  gsap.set('#wash', { y: -110 });
+  gsap.set('#wash-line', { y: -110 });
+  const scrubber = document.getElementById('bw-scrubber');
+  const timeLabel = document.getElementById('bw-time');
+  const playBtn = document.getElementById('bw-play');
+  scrubber.max = DURATION;
+  function paint(t) {
+    tl.seek(t);
+    timeLabel.textContent = t.toFixed(2) + ' / ' + DURATION.toFixed(2);
+  }
+  scrubber.addEventListener('input', () => paint(parseFloat(scrubber.value)));
+  let playing = false, raf = null, startWall = 0, startT = 0;
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) {
+      startWall = performance.now(); startT = parseFloat(scrubber.value);
+      const step = () => {
+        if (!playing) return;
+        const t = Math.min(DURATION, startT + (performance.now() - startWall) / 1000);
+        scrubber.value = t; paint(t);
+        if (t >= DURATION) { playing = false; playBtn.textContent = 'Play'; return; }
+        raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    } else if (raf) cancelAnimationFrame(raf);
+  });
+  paint(0);
+</script>
+</body>
+</html>

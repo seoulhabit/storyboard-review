@@ -14,6 +14,12 @@ palettes, and component rosters belong to a **project skill**, not here. If a
 project skill is in play, its constraints win on content; this skill still governs
 craft. Never carry one project's constraints into another project's work — a rule
 that exists because a specific record set had defects is not a general rule.
+**This repo currently has no project skill holding those truth/claim rules** —
+don't go looking for one that doesn't exist, and don't treat its absence as
+license to skip citation discipline. What this file *does* own, because it's
+presentation rather than domain truth, is what form a citation takes on screen
+and what must never render at all — see *What must never reach a rendered
+frame* below.
 
 ## Read order
 
@@ -67,6 +73,44 @@ convenience in every case.
    a debug overlay the operator can toggle without editing anything first (see
    *Layout validation and debug strategy* below for the concrete pattern in
    this engine).
+
+## What must never reach a rendered frame
+
+Distinct from the mandatory rules above, which govern how markup renders —
+this governs what content is allowed to render at all. Confirmed shipped
+defects, not hypotheticals:
+
+- **Internal record/citation IDs.**
+  `videos/pdrn-cellular-science/compositions/frames/03-history.html` renders
+  "CITATION — ⌞ ING-pdrn-S003 ⌟" directly on screen — a raw catalog key,
+  meaningless to a viewer — in a citation-pill pattern repeated across
+  `retinal-clinical-dossier` and others. A citation pill reads `Journal ·
+  Year` (or an equivalent human-readable form); it never carries the internal
+  ID that looked the source up. The full source name, DOI, or URL belongs in
+  the video description (see *The delivery manifest*), not the frame.
+- **Placeholder strings, TODO text, and unfinished copy.** The same class of
+  defect as a draft-only remote image URL (*Asset protocol* below) or a
+  debug overlay left on (*Layout validation* below) — something authored for
+  a working session that was never meant to survive to the export.
+- **Absolute claim language the source doesn't back.** "...is useless
+  without one specific ingredient" renders verbatim in
+  `videos/ceramides-barrier-diagnostic/compositions/01-hook.html` — a hook
+  line, not a cited claim, but it reads as one to a viewer. Superlatives and
+  absolutes ("guaranteed," "instantly," "proven," "always," "useless")
+  deserve the same scrutiny a cited efficacy claim gets, citation pill
+  attached or not.
+- **A drawn mechanism dressed as data.** An illustration of an unmeasured
+  process must not borrow chart grammar — axes, gridlines, a plotted line or
+  point — that implies a real measurement sits behind it. Label a diagram as
+  a diagram when it isn't a rendering of actual study data.
+
+This is the craft half of research integrity: presentation, not whether the
+underlying claim is true. Whether a claim is defensible — a real source
+exists, the cited population/product-type/route actually matches, injected
+clinical treatments are distinguished from topical cosmetics — is
+domain-truth work, and as the note above says, no project skill in this repo
+currently holds it. Don't let that missing home become an excuse to skip the
+presentation half this section does own.
 
 ## The five things that actually break work
 
@@ -393,6 +437,36 @@ async decode are both wall-clock behaviours in a renderer that does not wait.
 Font loading is normally handled by the engine's own injection (see *Canonical
 patterns*) — confirm it in the check log rather than hand-rolling `@font-face`.
 
+Beyond the four dimension rules above, four more rules govern content and
+treatment, not just markup correctness:
+
+5. **No raw static plate.** Every image gets a restrained treatment — a zoom,
+   reframe, depth shift, reveal, or parallax (see the Ken Burns pattern in
+   *Consuming `--p` in CSS* above) — never left motionless for its full
+   on-screen duration. A still image with zero applied motion is the same
+   defect class as a frozen scene, the thing the *Verification loop*'s
+   static-hold check exists to catch.
+6. **A real tactile/photographic anchor early, not a fixed quota.** At least
+   one real photographic or tactile plate — skin, texture, a product, the
+   actual ingredient — lands in an early beat, not only in late B-roll. When
+   a topic genuinely has nothing to photograph and the video is fully
+   illustrated instead, that's a legitimate call, but record the reason in
+   the beat sheet; an all-illustrated video that never considered the
+   alternative is what makes faceless content read as an animated report
+   rather than a video. A fixed percentage-of-beats quota doesn't survive
+   contact with a real topic mix — the reason-recorded exception does the
+   same job without an arbitrary number.
+7. **One mechanism per diagram, three important labels max.** A diagram
+   explains a single mechanism per beat and carries at most three important
+   labels. A dense, multi-label dossier-style diagram is unreadable at phone
+   scale before it's even a content problem — see the *Phone-scale
+   legibility check* below.
+8. **A diagram is not a chart unless it plots real data.** Chart grammar —
+   axes, gridlines, a plotted line or point — implies a measurement behind
+   it. An illustrated mechanism borrowing that grammar without real data
+   reads as a fabricated result; keep illustrations visually distinct from
+   data visualization (see *What must never reach a rendered frame* above).
+
 ## Audio is a first-class composition layer
 
 The composition is **not silent by default** — narrated faceless video is the
@@ -497,6 +571,13 @@ Rules:
   brand name stressed incorrectly), fix it by respelling the *TTS prompt*
   phonetically, not by changing the on-screen text — the two can and should
   diverge (VO says "en-see-eye", on-screen still reads "INCI").
+- **A fade cannot fix a clip with no tail.** Before lengthening a fade-out to
+  smooth an abrupt cutoff, run `ffmpeg silencedetect` on the raw clip and
+  confirm real trailing silence actually exists past the last word. If the
+  file's last sample is still mid-word, the take itself needs to be
+  re-recorded with room to decay into — a longer automation fade applied to
+  audio that's still live at end-of-file just mutes an active word faster,
+  which reads as a different flavor of abrupt, not as a fix.
 
 ### Re-timing cascade — what one VO change actually touches
 
@@ -513,6 +594,14 @@ one new short scene — cascades further than it looks:
    re-derive its timing table from the actual `index.html`, don't hand-edit
    estimates. A drifted storyboard stops being useful as a spec the moment one
    real timing changes and the doc isn't re-synced.
+7. Any in-scene motion beat hand-timed against a *specific VO word's*
+   timestamp — a chip that appears on "because," a stagger that lands on a
+   clause. A new take's word timings rarely fall at the same offsets as the
+   old ones, even when the scene's own start/duration don't change (a
+   re-recorded final line changes nothing upstream but still desyncs every
+   beat inside that one scene). Re-derive each beat's trigger time from the
+   new transcript; don't assume the old relative offsets still land on the
+   same words.
 
 Treat a mid-build script edit as "this touches N files," not "this touches one
 line," and budget for it.
@@ -653,7 +742,13 @@ Follow this order; skipping ahead is what produces expensive rework.
 2. **Beat sheet before markup.** Duration, aspect, fps, and a numbered list of
    beats with a one-line intent each. A beat is a visual state, not a sentence.
    Read the YouTube delivery section first — hook, chapters, end-screen scene,
-   cadence targets, and caption timing are beat-sheet inputs.
+   cadence targets, and caption timing are beat-sheet inputs. **Default a
+   short's duration to 28-45s.** Past 50s, record the storyboard reason in
+   this beat sheet — a runaway duration is almost always VO-driven timing
+   letting the script sprawl past its own structure (see the *re-timing
+   cascade* section above), not a deliberate choice, and 14 of this
+   channel's 23 shipped shorts already run past 50s with no such reason on
+   record.
 3. **Choose the presenter.** With no face and (often) live narration, something
    has to carry attention: type, a moving diagram, a photographic plate, or a
    data object. Pick one per video. Videos that switch presenter mid-way read
@@ -710,7 +805,46 @@ Follow this order; skipping ahead is what produces expensive rework.
     thumbnail* and *The captions*). All of these are part of the video, not
     afterthoughts, and none is optional: a finished render with no captions or
     no thumbnail is not a done project, the same way a render with no audio
-    mix would not be considered done.
+    mix would not be considered done. Close this step by reporting *The
+    delivery manifest* — every asset above, by its real path, not left for
+    the operator to go find.
+
+## Pre-render gate
+
+A binary checklist, run before calling a render final. A passing lint/check
+and a rendered file are necessary but answer none of these — a clean
+`npm run check` and a "no" on any item below is still a reject, not a note
+for next time:
+
+1. **Is the hook legible from a single silent frame at ~0:01?** See *The
+   hook* below — frame zero is the hook, already composed.
+2. **Is every important label readable at phone scale?** Run the
+   *Phone-scale legibility check* below, not a full-size eyeball pass.
+3. **Does every scene have one dominant focal point?** Not two competing
+   ones — see *9:16-native composition*'s depth-roles rule below.
+4. **Does the motion explain something** — a relationship, a
+   transformation, a comparison, a cause — rather than decorate? See
+   *Posture*'s "motion that means something."
+5. **Is there a real photographic, tactile, or product-specific visual
+   early in the video**, rather than a fully illustrated/typographic open
+   by default? See the tactile-anchor rule in *Asset protocol* above.
+6. **Are palette, type, captions, and any channel mark consistent** with
+   the rest of the channel? See *Consistency across a channel's videos*.
+7. **Are safe-area tokens actually consumed by every scene**, not declared
+   in one file and hardcoded elsewhere? Measured gap on this channel: only
+   6 of 24 shipped projects reference `--safe-*` tokens at all. See
+   *9:16-native composition* below.
+8. **Does a real sidecar caption file exist** — not a same-named but
+   unrelated file (see *The captions*' naming note below) — alongside the
+   burned-in track? Measured gap: only 4 of 24 shipped projects ship one.
+9. **Are all on-screen citations real and human-readable, with no internal
+   IDs?** See *What must never reach a rendered frame* above.
+10. **Are there no placeholders, unfinished text, or debug-overlay
+    artifacts in frame?** Same section as above.
+11. **Is the closing beat one specific, lesson-tied action**, not a
+    generic subscribe card? See *The hook* below and production-loop
+    step 2.
+12. **Does the video still make sense with the sound off?**
 
 ## Verification loop
 
@@ -731,6 +865,23 @@ scene that lands all its beats in the first two seconds and then sits frozen
 for the rest of its VO — a very common failure mode once VO-driven timing
 makes scenes longer than their choreography.
 
+A blankness scanner (luma stddev, catches an *empty* frame) and a static-hold
+scanner (frame-to-frame diff or PSNR, catches a *frozen* one) are two
+different tools that happen to sound alike — confirm which one a project's
+own checker script actually implements before citing its clean output as
+evidence in a doc. A project shipped with only the blankness variant can
+truthfully report "0 findings" on a scene that's been frozen for five
+seconds, because that's a defect class the tool was never built to see.
+
+If the composition burns in captions or any other always-repainting overlay,
+**crop that layer out before diffing.** A caption track's own word changes
+register as constant motion and will mask a completely frozen scene
+underneath it — the diff reads "alive" because *something* in the frame
+changed, even though the actual content (the hero plate, the graphic, the
+thing the scene is about) has been static the whole time. This is exactly
+how a static-hold bug survives a human scrubbing the render, too: a person
+watching sees the captions updating and reads the whole frame as in motion.
+
 **Transition midpoint check.** Extract a frame at the exact midpoint of every
 scene-to-scene transition, not just before and after it. A crossfade between
 two different background colours produces a genuinely muddy, near-blank frame
@@ -740,6 +891,15 @@ crossfades* below for when a crossfade is and isn't safe.
 Also always check: frame zero (must be composed, not mid-fade — see mandatory
 rule 4), and, for a short, that the last frame hands back toward the first if
 a loop was promised (see *The hook* below).
+
+**Phone-scale legibility check.** Downscale an extracted frame to roughly 25%
+size — the same "phone-viewing-simulation habit" *The thumbnail* section
+already invokes for judging grid-size legibility. That habit is what
+pre-render gate item 2 above actually runs: any headline, caption, label, or
+citation that stops being legible at that scale is a reject, not a style
+note. See *9:16-native composition* below for the type floors and *Asset
+protocol* above for the diagram label budget — the thresholds it's checking
+against.
 
 **Publish-envelope completeness check.** A clean render says nothing about
 whether captions or a thumbnail exist — those are separate files a check
@@ -758,6 +918,23 @@ catalog per step 12, not just that the step was considered. This is the check
 that catches a component built cleanly, used correctly in this one video, and
 then left invisible to the next one — the same failure mode that produced
 five independent rebuilds of the same card before anyone thought to check.
+
+**An external QC report is a claim, not a diagnosis — verify its fix against
+the actual pixels before applying it.** A report can correctly name a real
+symptom while misdiagnosing the cause, and its proposed fix can be wrong even
+when the underlying complaint is legitimate. Two shapes this takes in
+practice: a report calling two chips "low-contrast" and "too small" when
+pixel inspection shows one CSS bug (an unboxed capsule stretched into a
+1000px+ slab by an inherited `inset:0`) producing both symptoms — the
+colour/size tweak the report asks for is real and worth doing, but it isn't
+*the* fix; and a report prescribing "trim the outro to 2s" for a static-hold
+complaint when the outro's full duration carries narration that a literal
+trim would cut off mid-sentence — the complaint (frozen imagery) is real, the
+literal instruction (shorten the scene) would have broken something the
+report never looked at. Reproduce every finding against the render before
+building a fix plan from the report's own wording, and where the report's
+named fix and the measured root cause diverge, fix the root cause and say so
+— don't silently apply the literal instruction because it's what was asked.
 
 ## Cuts vs crossfades
 
@@ -803,6 +980,18 @@ produces is content anchored to the top of a 1920px-tall column with the
 bottom half empty, which reads to a viewer as "small fonts" even when the type
 size itself is reasonable.
 
+- **Depth roles, every designed scene.** Background, midground, and
+  foreground each carry a distinct role rather than everything painted flat
+  on one plane. In practice: a hero visual (a photographic plate, a product,
+  a dominant graphic) plus at least one clearly separated supporting layer
+  (a headline, a data point, a caption band). This is the concrete version
+  of "one dominant focal point" (pre-render gate above) — the hero reads
+  first, the supporting layer reads second, and nothing competes for first
+  read.
+- **Anchor to an edge or a structural grid.** A small card floating centered
+  in open canvas is the failure this rule names — anchor content to a grid
+  column, a full-bleed edge, or a safe-area boundary instead of letting it
+  drift free in empty space.
 - **Fill the safe column.** Active content — not incidental background — should
   occupy roughly 65-80% of the vertical safe area's height in a settled frame,
   not a single centered line floating in a mostly-empty canvas. If a scene's
@@ -811,10 +1000,25 @@ size itself is reasonable.
   negative space should be a composed choice (breathing room around a
   deliberately minimal beat), not a byproduct of not filling the frame.
 - **Type floor for phone viewing.** Hero/headline text: roughly 96-160px at
-  1080 width depending on line count. Reading/body text: 40px minimum. This is
-  higher than a 16:9 desktop-first floor because the composition is watched at
-  arm's length, often at partial screen brightness, often with the platform's
-  own UI cropping into the frame edges.
+  1080 width depending on line count. Reading/body text: 40px minimum.
+  Burned-in captions: 42-56px. Labels and secondary chrome (a citation pill,
+  a source tag): 26-32px, and 32px is the absolute floor for anything a
+  viewer is meant to actually read — smaller than that is decoration, not
+  content. These floors sit intentionally higher than some outside guidance
+  for the format (one external production review set the headline floor at
+  72-110px and body at 34-48px) — real scenes across 14 of this channel's 24
+  shipped projects already run type as small as 18-33px, which is a
+  legibility failure, not evidence the lower floor is workable. Keep the
+  tighter numbers above rather than relaxing them to match a looser outside
+  spec. This is higher than a 16:9 desktop-first floor because the
+  composition is watched at arm's length, often at partial screen
+  brightness, often with the platform's own UI cropping into the frame
+  edges.
+- **Hero copy occupies 60-80% of the available width.** Distinct from the
+  vertical-fill rule above — this is a horizontal-occupancy check on the
+  headline/hero text block itself, not the scene's overall vertical fill.
+  Copy set narrow in a wide safe column reads as under-scaled even when the
+  font size technically clears the type floor.
 - **Layout variety.** A vertical canvas still supports asymmetry — a split
   background, an off-center hero element, a full-bleed image with an
   overlaid caption band, a two-tier stack. Nine scenes that are all "one
@@ -857,6 +1061,14 @@ Structural consequences:
   feels seamless rather than requiring the viewer to notice a hard reset.
   Replays count as retention; a static, unrelated endcard as the true final
   frame wastes this for free.
+- **Every beat past the value delivery earns its place.** Once the second
+  beat has delivered the central value, each later beat must carry
+  evidence, explanation, or an action supporting it — not runtime filler.
+- **The closing beat is one specific, lesson-tied action** — "patch-test
+  before you use retinal," "check the label for the real percentage" —
+  never a generic subscribe/like card. A generic close is the default this
+  whole category falls into; see *Posture* below for the same principle
+  applied to motion and layout.
 
 ### Chapters map to the beat sheet
 
@@ -933,6 +1145,16 @@ Two outputs, and most projects need both:
   the platform's own UI chrome, which does not surface an uploaded `.srt` the
   way the desktop player does.
 
+**Line and word discipline, regardless of skin.** Maximum two lines on
+screen at once, roughly 3-6 words per line — a caption is a glance, not a
+paragraph. Don't let a caption repeat verbatim what a decorative on-screen
+label already says in the same beat unless the repetition changes meaning
+(the label names a category, the caption carries the actual sentence);
+otherwise it's the same phrase read twice for no reason, spending the one
+frame that could have carried new information. A `.vtt` export is an
+accepted alternative or addition to `.srt` where the publish target wants
+one.
+
 Production order:
 
 1. Generate a word-level transcript of the **final mixed VO**, not a draft
@@ -952,6 +1174,9 @@ Production order:
 4. Export the `.srt` from the same corrected transcript — one source of
    truth for both outputs, not two independently-timed passes that can drift
    from each other.
+5. Proofread every caption line for broken fragments and transcription
+   errors — a hand-corrected proper noun (step 2) doesn't guarantee the rest
+   of the sentence around it reads cleanly.
 
 **Competitive research, the same way the thumbnail section uses one.** Before
 committing to a caption style, `vidiq_video_transcript` against a handful of
@@ -1029,6 +1254,49 @@ Rules that apply to either path:
   testing (a moment, a crop, a grade) plus one clear final — so a later round
   can see what was already tried instead of starting over.
 
+### The delivery manifest
+
+The publish envelope isn't done when every asset exists on disk — it's done
+when whoever asked for the video can find each one without going and
+listing the project directory themselves. A rendered MP4 sitting next to an
+`.srt` sitting next to three thumbnail candidates is not a *delivered* video
+if the response that ships it just says "done."
+
+Before calling a project done, report a manifest — in the handoff message
+itself, or as a `DELIVERY.md` alongside the project for anything with more
+than a couple of scenes — naming every deliverable by its **real path**, not
+a description of what it is:
+
+- **Render.** The exact filename and folder (`renders/<name>.mp4` or
+  equivalent), duration, resolution, and which mastering pass it carries
+  (loudness-normalized? to what target?). If more than one render sits in
+  the folder — iterations, a pre-mastered pass — say which one is the
+  publish candidate; don't make the reader infer it from timestamps.
+- **Captions.** Confirm the burned-in composition shipped inside the render
+  (nothing separate to attach) *and* give the sidecar `.srt`'s path.
+  Produce the `.srt` even for a short once the transcript exists — it's
+  cheap, and gives the operator something to paste into YouTube's upload
+  flow regardless of whether the platform surfaces it in-player the same
+  way it does for long-form. See *The captions* above for why it must carry
+  the corrected transcript's real word timing, never an estimate.
+- **Thumbnail.** The finalized file's path (see *The thumbnail*'s file
+  convention above) — not "candidates exist in `assets/thumbnail/`."
+- **Full source list.** Journal names, DOIs, or URLs for every on-screen
+  citation, ready to paste into the description — see *What must never
+  reach a rendered frame* above for why the frame itself only ever carries
+  the short human-readable form.
+- **Chapters** (long-form) — the actual timestamp list, ready to paste into
+  the description, not "derived from the beat sheet, see STORYBOARD.md."
+- **Pinned comment / description copy**, if drafted this session.
+- **End-screen / next-video target**, if this piece is part of a branching
+  set (see *What "interactive" can actually be*).
+
+This is a reporting discipline, not new production work — every item above
+should already exist by the time production-loop step 13 is reached. What a
+missing manifest costs isn't the asset; it's the ten minutes the person on
+the other end spends re-deriving where everything is, or publishing without
+one of them because they didn't know to look.
+
 ## Posture: what makes faceless content not look generic
 
 The default output of this whole category — AI voice, stock B-roll, centered sans
@@ -1046,6 +1314,12 @@ actually differentiate:
 - **Type as the performer.** Typography carries the performance even when there
   is narration — weight, rhythm, and when a word arrives are doing real work
   alongside the voice, not just captioning it.
+- **Not every element gets the same entrance.** A shared fade-and-rise on
+  every beat in every scene reads as one template no matter how varied the
+  content is. This file's own canonical `.beat` pattern (*Consuming `--p` in
+  CSS* above) is a starting shape to build variants from — a scale pop, a
+  wipe, a stagger on a different curve — not the one entrance every element
+  in a project should use.
 - **Cuts over transitions.** Hard cuts on a timing grid outperform crossfades in
   retention and are far cheaper to render — see *Cuts vs crossfades* for exactly
   when a crossfade is still safe.
@@ -1202,6 +1476,19 @@ either pattern as "the" approach, and the majority of projects had neither.
   blows every wrapped child up to fill it — small label chips render as
   giant ovals with text pinned to one edge. Redeclare `bottom: auto` (or an
   explicit height) on any clip-derived element that wraps flex children.
+- The same `inset:0` inheritance has a second, more common shape: a plain
+  (non-flex) `.clip`-derived element that sets `top` and `left` but never an
+  explicit `width` — a one-off label chip, a badge, a pill. `left` being set
+  doesn't neutralize the inherited `right: 0` the way it does when `width`
+  is *also* explicit (over-constraint only kicks in when both are given);
+  with only `left` set, the box's width resolves by stretching from `left`
+  to the container's right edge. On an element with a background this reads
+  as a full-width slab with the text pinned to its top-left corner — easy to
+  misdiagnose as a colour or font-size problem (that's genuinely what it
+  looks like from outside the box) rather than the layout bug it is. Fix:
+  `right: auto; width: max-content;` (or an explicit width) on any
+  `.clip`-derived element carrying its own background that isn't meant to
+  span the full canvas.
 - Making a text container `display:flex` purely to vertically-center its
   content, when that content mixes raw text with a child element (an inline
   `<span>` accent, an icon). Flex splits mixed inline content into separate
@@ -1268,3 +1555,29 @@ either pattern as "the" approach, and the majority of projects had neither.
   the shared catalog — treating catalog contribution as optional cleanup
   instead of a required closing step, the same way a finished render with no
   captions isn't actually a finished project.
+- Applying an external QC/bug report's literally-worded fix without first
+  reproducing its finding against the actual render — a report's named
+  symptom can be real while its diagnosis and proposed fix are wrong (see
+  *Verification loop*'s own note on this).
+- Calling a project "delivered" without a manifest of what shipped and
+  where — a render, an `.srt`, and a thumbnail sitting in three different
+  folders is not the same as the person who asked for them being able to
+  find them (see *The delivery manifest*).
+- An internal record/citation ID rendered on screen instead of a
+  human-readable citation — a raw catalog key means nothing to a viewer and
+  belongs in the description, not the frame.
+- Every beat using the identical fade-and-rise entrance regardless of
+  content — see *Posture*'s note on this file's own canonical example.
+- A diagram carrying more than three important labels, or explaining more
+  than one mechanism per beat — unreadable at phone scale before it's even
+  a content problem.
+- A caption repeating a decorative label's exact phrase in the same beat
+  with no change in meaning — the same words read twice instead of one new
+  piece of information.
+- A static plate left with zero applied motion for its full on-screen
+  duration — the same defect class as a frozen scene, just on an image
+  instead of a whole frame.
+- A generic subscribe/like card as the closing beat instead of one
+  specific, lesson-tied action.
+- A short running past 50s with no storyboard reason recorded — almost
+  always VO-driven timing left unchecked, not a deliberate call.

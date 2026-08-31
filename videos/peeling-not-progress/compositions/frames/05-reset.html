@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --aqua: #59B8AE; --mist: #F0EBE1;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed paper #root, one .frame-zoom wrapper (continuous slow scale)
+              holding a flex column: header zone / objects row (flex:1) / chips zone.
+           2. Objects row is a flex row of 3 equal columns; each column is a plain flex
+              column (icon circle over label), normal document flow, not absolute.
+           3. Chips zone is a flex row of 2 chips, centered by flex gap. */
+        .frame-zoom { position: absolute; inset: 0; transform-origin: 50% 45%; }
+        /* +35px beyond --safe-bottom: absorbs this scene's own Ken-Burns drift (max
+           scale 1.03, origin 50%/45%) at the bottom edge. Re-measured on the actual
+           render: the earlier "trim the extra top offset" edit had ZERO effect on the
+           chips-zone's rendered position (objects-row's flex:1 absorbs any change to
+           the space above it -- the unscaled layout was already exactly at the
+           safe-bottom boundary with no margin); the real cause is this scene's own
+           continuous zoom pushing bottom content further down as scale grows through
+           the scene -- see 03-truth.html's file-level note for the measured math this
+           mirrors. Reverted the ineffective top-offset change back to +30px. */
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: calc(var(--safe-top) + 30px) var(--safe-right) calc(var(--safe-bottom) + 35px) var(--safe-left); }
+
+        .header-zone { text-align: center; display: flex; flex-direction: column; gap: 18px; }
+        .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+                  letter-spacing: 0.08em; color: var(--ink-2); opacity: 0; }
+        /* --t-hero, was 54px -- wraps across several lines at the 858px safe column;
+           header-zone has no fixed height (see markup: <br> removed so the phrase
+           reflows naturally instead of forcing an awkward mid-clause break), and
+           objects-row below is flex:1 so it simply absorbs whatever space remains. */
+        .headline { font-family: var(--font-display); font-size: 96px; line-height: 1.18;
+                    color: var(--ink); opacity: 0; }
+
+        /* 3*220 + 2*44 = 748px already clears the 858px safe column with room to
+           spare -- unlike Frames 2/4, this row needed no re-fit for --safe-right. */
+        .objects-row { flex: 1; display: flex; align-items: center; justify-content: center;
+                        gap: 44px; }
+        .object-col { display: flex; flex-direction: column; align-items: center; gap: 24px;
+                      opacity: 0; transform: scale(0.85); }
+        .icon-circle { width: 220px; height: 220px; border-radius: 50%; background: var(--mist);
+                       box-shadow: var(--elev-2); display: flex; align-items: center; justify-content: center; }
+        .icon-circle svg { width: 108px; height: 108px; stroke: var(--ink); stroke-width: 1.7;
+                           fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .object-label { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+                        letter-spacing: 0.05em; color: var(--ink); text-align: center; }
+
+        .chips-zone { display: flex; justify-content: center; gap: 20px; padding-top: 8px; }
+        .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: var(--ink-2); border: 1.5px solid rgba(19,21,22,0.25); border-radius: 999px;
+                padding: 8px 20px; opacity: 0; }
+      </style>
+
+      <div data-hf-id="hf-46q0" id="root" data-composition-id="05-reset" data-width="1080" data-height="1920" data-duration="6.000">
+        <div data-hf-id="hf-oclc" class="clip frame-zoom" id="zoom">
+          <div data-hf-id="hf-tan6" class="stage">
+            <div data-hf-id="hf-wmea" class="header-zone">
+              <div data-hf-id="hf-fasa" class="kicker" id="kicker">THE RESET</div>
+              <div data-hf-id="hf-jzjc" class="headline" id="headline">Start slowly. Follow directions. Protect the barrier.</div>
+            </div>
+
+            <div data-hf-id="hf-vtrn" class="objects-row">
+              <div data-hf-id="hf-r6az" class="object-col" id="obj-1">
+                <div data-hf-id="hf-exbs" class="icon-circle">
+                  <svg data-hf-id="hf-cku8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path data-hf-id="hf-yi3z" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                  </svg>
+                </div>
+                <div data-hf-id="hf-4fi2" class="object-label">ONE ACTIVE</div>
+              </div>
+              <div data-hf-id="hf-iif4" class="object-col" id="obj-2">
+                <div data-hf-id="hf-b0gg" class="icon-circle">
+                  <svg data-hf-id="hf-0whk" viewBox="0 0 24 24" aria-hidden="true">
+                    <path data-hf-id="hf-b1h6" d="M10 2v7.3" />
+                    <path data-hf-id="hf-gaxk" d="M14 9.3V2" />
+                    <path data-hf-id="hf-modb" d="M8.5 2h7" />
+                    <path data-hf-id="hf-y8ks" d="M14 9.3a6.5 6.5 0 1 1-4 0" />
+                    <path data-hf-id="hf-08og" d="M5.5 16h13" />
+                  </svg>
+                </div>
+                <div data-hf-id="hf-6p1b" class="object-label">MOISTURIZER</div>
+              </div>
+              <div data-hf-id="hf-ja2x" class="object-col" id="obj-3">
+                <div data-hf-id="hf-9tjd" class="icon-circle">
+                  <svg data-hf-id="hf-zpkh" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle data-hf-id="hf-kysq" cx="12" cy="12" r="4" />
+                    <path data-hf-id="hf-tplc" d="M12 2v2" /><path data-hf-id="hf-ysdk" d="M12 20v2" />
+                    <path data-hf-id="hf-d1np" d="m4.93 4.93 1.41 1.41" /><path data-hf-id="hf-8s75" d="m17.66 17.66 1.41 1.41" />
+                    <path data-hf-id="hf-msdq" d="M2 12h2" /><path data-hf-id="hf-bfo8" d="M20 12h2" />
+                    <path data-hf-id="hf-14cr" d="m6.34 17.66-1.41 1.41" /><path data-hf-id="hf-6d4n" d="m19.07 4.93-1.41 1.41" />
+                  </svg>
+                </div>
+                <div data-hf-id="hf-h5u0" class="object-label">DAYTIME SPF</div>
+              </div>
+            </div>
+
+            <div data-hf-id="hf-m7y4" class="chips-zone">
+              <div data-hf-id="hf-xttd" class="chip" id="chip-1">Cutis · 2006</div>
+              <div data-hf-id="hf-wj20" class="chip" id="chip-2">FDA guidance · 2005</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Continuous slow push across the entire scene -- covers the tail after the
+        // last chip lands so nothing sits truly static.
+        tl.fromTo('#zoom', { scale: 1 }, { scale: 1.03, duration: 6.000, ease: "none" }, 0);
+
+        // Kicker+headline tightened (blank-frame scan flagged a 0.4s near-empty
+        // opening at the old 0/0.2 start) so the header block resolves faster.
+        tl.to('#kicker', { opacity: 1, duration: 0.22 }, 0);
+        tl.to('#headline', { opacity: 1, duration: 0.32 }, 0.1);
+
+        tl.to('#obj-1', { opacity: 1, scale: 1, duration: 0.42 }, 0.55);
+        tl.to('#obj-2', { opacity: 1, scale: 1, duration: 0.42 }, 1.35);
+        tl.to('#obj-3', { opacity: 1, scale: 1, duration: 0.42 }, 2.15);
+
+        tl.to('#chip-1', { opacity: 1, duration: 0.3 }, 2.95);
+        tl.to('#chip-2', { opacity: 1, duration: 0.3 }, 3.55);
+
+        tl.to({}, { duration: 6.000 }, 0);
+        window.__timelines["05-reset"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

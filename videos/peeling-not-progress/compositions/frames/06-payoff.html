@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #9C978D;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", sans-serif;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed ink #root, one flex column, justify-content:center -- the
+              lockup zone sits at the SAME vertical center Frame 1's droplet panel
+              occupies, so the hard cut back to Frame 1 (the loop) matches hero position.
+           2. Converging glyphs, lockup, and text lines are stacked flex children of one
+              column -- not independent absolute blocks.
+           3. The three glyph echoes are one small flex row, positioned by the column's
+              own centering, not by their own absolute top/left. */
+        /* Gap widened 40->48 and .line/.line-brand raised to hero size (below) --
+           the stacked block was previously only ~35% of the safe column's height
+           ("fill the safe column" / depth-roles); centered across the full canvas
+           (not the safe window) intentionally, matching Frame 1's droplet panel so
+           the hard-cut loop hand-off lands on a matched hero position -- do not
+           switch this to safe-top/safe-bottom-anchored padding without re-verifying
+           that match frame-by-frame against Frame 1's own centered panel. */
+        .stage { display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; height: 100%; gap: 48px;
+                 padding: 0 var(--safe-right) 0 var(--safe-left); }
+
+        .echo-row { display: flex; gap: 28px; height: 60px; align-items: center; }
+        .echo { width: 52px; height: 52px; }
+        .echo svg { width: 100%; height: 100%; stroke: rgba(247,245,240,0.68); stroke-width: 1.9;
+                    fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* margin-top pushes the lockup down within its centered stack -- measured
+           post-render: at font-size 96 (was 52), the raised type grew text-stack/prompt
+           enough to shift the group's centered lockup 52px ABOVE Frame 1's droplet-panel
+           center (y720 vs y772), breaking the "matched hero position" loop hand-off
+           STORYBOARD.md requires. Centering math: shifting a flex child down by d needs
+           2d of margin added before it (the group recenters and eats half). */
+        .lockup { font-family: var(--font-kr); font-weight: 500; font-size: 96px;
+                  color: var(--paper); opacity: 0; transform: scale(0.85); margin-top: 100px; }
+
+        .text-stack { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+        .line { font-family: var(--font-display); font-size: 96px; color: var(--paper); opacity: 0; }
+        .line-brand { font-family: var(--font-body); font-weight: 800; font-size: 88px;
+                      letter-spacing: -0.01em; color: var(--paper); opacity: 0; }
+
+        /* Reading/body role (40px floor), not hero -- this is supporting copy under
+           the brand lockup, not the scene's own headline claim. Copy itself changed
+           (see markup): the generic engagement prompt moved to the pinned comment
+           only (DELIVERY.md); the on-screen close is now one specific, lesson-tied
+           action per pre-render gate item 11, sourced from this video's own beats
+           (21 CFR 333.350(c)(1)(ii)'s one-active-at-a-time instruction + the 1-2
+           week improvement window PMID 21284283 cites) rather than left unsourced. */
+        .prompt { font-family: var(--font-mono); font-size: 40px; line-height: 1.35;
+                  color: rgba(247,245,240,0.78); text-align: center; max-width: 858px; opacity: 0; }
+      </style>
+
+      <div data-hf-id="hf-htqz" id="root" data-composition-id="06-payoff" data-width="1080" data-height="1920" data-duration="4.000">
+        <div data-hf-id="hf-q6os" class="clip stage">
+
+          <div data-hf-id="hf-n0ze" class="echo-row" id="echo-row">
+            <div data-hf-id="hf-xtk8" class="echo" id="echo-1"><svg data-hf-id="hf-y9f5" viewBox="0 0 24 24"><path data-hf-id="hf-yi3z" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg></div>
+            <div data-hf-id="hf-6hg3" class="echo" id="echo-2"><svg data-hf-id="hf-svtx" viewBox="0 0 24 24"><path data-hf-id="hf-b1h6" d="M10 2v7.3" /><path data-hf-id="hf-gaxk" d="M14 9.3V2" /><path data-hf-id="hf-modb" d="M8.5 2h7" /><path data-hf-id="hf-y8ks" d="M14 9.3a6.5 6.5 0 1 1-4 0" /><path data-hf-id="hf-08og" d="M5.5 16h13" /></svg></div>
+            <div data-hf-id="hf-2jc2" class="echo" id="echo-3"><svg data-hf-id="hf-u2r0" viewBox="0 0 24 24"><circle data-hf-id="hf-kysq" cx="12" cy="12" r="4" /><path data-hf-id="hf-tplc" d="M12 2v2" /><path data-hf-id="hf-ysdk" d="M12 20v2" /><path data-hf-id="hf-msdq" d="M2 12h2" /><path data-hf-id="hf-bfo8" d="M20 12h2" /></svg></div>
+          </div>
+
+          <div data-hf-id="hf-028d" class="lockup" id="lockup">습 SeoulHabit</div>
+
+          <div data-hf-id="hf-15lm" class="text-stack">
+            <div data-hf-id="hf-kapu" class="line" id="line-1">One claim.</div>
+            <div data-hf-id="hf-8e8x" class="line" id="line-2">One boundary.</div>
+            <div data-hf-id="hf-w17i" class="line-brand" id="line-brand">SeoulHabit.</div>
+          </div>
+
+          <div data-hf-id="hf-u4b8" class="prompt" id="prompt">Peeling? Drop to one active for two weeks.</div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame-zero-for-this-cut: the three glyph echoes are already visible and
+        // spread at this scene's own t=0 (a hard cut lands here, so the frame must not
+        // open blank), then converge toward center before resolving into the lockup.
+        // Lockup brought in sooner (was 0.35) -- blank-frame scan flagged the old
+        // faint-echoes-only opening as near-empty ink; bigger/brighter echoes (see
+        // CSS) plus an earlier lockup both add real content-area coverage faster.
+        tl.to('#echo-1', { x: 26, duration: 0.26, ease: "power2.in" }, 0);
+        tl.to('#echo-3', { x: -26, duration: 0.26, ease: "power2.in" }, 0);
+        tl.to('#echo-row', { opacity: 0, duration: 0.22 }, 0.24);
+
+        tl.to('#lockup', { opacity: 1, scale: 1, duration: 0.38 }, 0.22);
+
+        tl.to('#line-1', { opacity: 1, duration: 0.3 }, 0.7);
+        tl.to('#line-2', { opacity: 1, duration: 0.3 }, 1.3);
+        tl.to('#line-brand', { opacity: 1, duration: 0.3 }, 1.9);
+
+        tl.to('#prompt', { opacity: 1, duration: 0.4 }, 2.5);
+
+        tl.to({}, { duration: 4.000 }, 0);
+        window.__timelines["06-payoff"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

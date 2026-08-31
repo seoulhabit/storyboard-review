@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --coral: #C97A5C;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed paper #root, one flex column: headline zone (top-safe) / bottle
+              row (flex:1, centered) / resolution zone (bottom-safe) -- three stacked
+              flex children, not independent absolute blocks.
+           2. Bottle row is a flex row of 3 equal columns; each column is `position:
+              relative` and its own label chip is absolute *within that column* --
+              scoped to one bottle, never a bare top/left against the whole canvas.
+           3. The strike + resolved copy sit in the headline zone as layered clip
+              children (a text layer + a coral rect layer), matching the
+              .clip{inset:0} stacking idiom, not two elements faking a relationship. */
+        /* Padding-bottom was a literal 0 here -- the F1 defect: the resolution-zone's
+           citation chip rendered inside the Shorts title/CTA overlay (measured on the
+           prior render at y~1700-1743, past the y1560 safe-bottom boundary). Now uses
+           --safe-bottom like every other scene, and left/right honour --safe-right
+           (pre-render gate item 7) instead of the old symmetric --safe-left pair. */
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: calc(var(--safe-top) + 40px) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        /* Height raised 320->480: --t-hero (96px, was 66px) wraps "MORE IRRITATION.
+           NOT MORE PROGRESS." across up to 3 lines at the 858px safe-column width. */
+        .headline-zone { position: relative; height: 480px; display: flex;
+                          align-items: center; justify-content: center; text-align: center; }
+        /* Plain opacity/transform, not a --p custom property -- frame-exact ffmpeg
+           verification found #headline-q rendering fully opaque from local t=0 in
+           the actual MP4 even though its entrance tween didn't start until local
+           1.2 (confirmed via indexed frame extraction, n90/n105 vs authored intent).
+           Plain opacity is the pattern already proven correct for bottle-1/2/3 in
+           this same file and every other scene in this project. */
+        .headline { position: absolute; left: 0; right: 0; font-family: var(--font-display);
+                    font-size: 96px; line-height: 1.12; color: var(--ink);
+                    opacity: 0; transform: translateY(14px); }
+        .strike-rect { position: absolute; left: 50%; top: 54%; height: 14px; width: 780px;
+                       background: var(--coral); border-radius: 7px; transform: translate(-50%, -50%) scaleX(0);
+                       transform-origin: center; }
+        .noise-tag { position: absolute; font-family: var(--font-mono); font-size: 26px;
+                     font-weight: 500; letter-spacing: 0.04em; color: rgba(19,21,22,0.55);
+                     background: rgba(19,21,22,0.06); padding: 8px 16px; border-radius: 6px;
+                     opacity: 0; }
+        #tag-glycolic { top: -18px; left: 40px; transform: rotate(-6deg); }
+        #tag-salicylic { top: -6px; right: 24px; transform: rotate(5deg); }
+
+        /* Row width re-budgeted for the 858px safe column (was sized for the old
+           symmetric-960px content box): col 280->250, gap 36->20. 250*3+20*2=790,
+           comfortably inside 858 with room for the overlapping label chips below. */
+        .bottle-row { flex: 1; display: flex; align-items: center; justify-content: center;
+                      gap: 20px; padding-bottom: 40px; }
+        .bottle-col { position: relative; width: 250px; display: flex; flex-direction: column;
+                      align-items: center; opacity: 0; transform: scale(0.9); }
+        .bottle-col svg { width: 180px; height: 288px; display: block; }
+        .bottle-body { fill: rgba(19,21,22,0.05); stroke: var(--ink); stroke-width: 3; }
+        .bottle-fill-line { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 5 5; opacity: 0.5; }
+
+        /* Offsets dialled back from -30/-40/-18 to -18/-22/-12 -- the old values were
+           tuned against 280px columns with 36px gaps; at the tighter 858px-safe-column
+           row above, the old chip-3 offset alone would have poked past --safe-right. */
+        .label-chip { position: absolute; font-family: var(--font-mono); font-size: 32px;
+                      font-weight: 500; color: var(--paper); background: var(--ink);
+                      padding: 8px 14px; border-radius: 5px; opacity: 0; white-space: nowrap; }
+        #chip-1 { top: 32px; right: -18px; transform: rotate(-4deg); }
+        #chip-2 { top: 84px; left: -12px; transform: rotate(3deg); }
+        #chip-3 { top: 32px; right: -22px; transform: rotate(-3deg); }
+
+        .resolution-zone { position: relative; height: 140px; display: flex;
+                            flex-direction: column; align-items: center; justify-content: flex-start;
+                            gap: 22px; text-align: center; }
+        .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: var(--ink-2); border: 1.5px solid rgba(19,21,22,0.25); border-radius: 999px;
+                padding: 8px 20px; opacity: 0; }
+      </style>
+
+      <div data-hf-id="hf-6qet" id="root" data-composition-id="02-overload" data-width="1080" data-height="1920" data-duration="5.000">
+        <div data-hf-id="hf-q6os" class="clip stage">
+
+          <div data-hf-id="hf-o22v" class="headline-zone">
+            <div data-hf-id="hf-8ewm" class="headline" id="headline-q">More exfoliants.<br data-hf-id="hf-x5px">More results?</div>
+            <div data-hf-id="hf-okmz" class="headline" id="headline-a">MORE IRRITATION.<br data-hf-id="hf-rsrt">NOT MORE PROGRESS.</div>
+            <div data-hf-id="hf-2i1h" class="strike-rect" id="strike"></div>
+            <div data-hf-id="hf-e716" class="noise-tag" id="tag-glycolic">GLYCOLIC</div>
+            <div data-hf-id="hf-wziq" class="noise-tag" id="tag-salicylic">SALICYLIC</div>
+          </div>
+
+          <div data-hf-id="hf-wpcn" class="bottle-row">
+            <div data-hf-id="hf-abyt" class="bottle-col" id="bottle-1">
+              <svg data-hf-id="hf-osyp" viewBox="0 0 140 220" aria-hidden="true">
+                <rect data-hf-id="hf-50an" class="bottle-body" x="20" y="70" width="100" height="140" rx="14" />
+                <path data-hf-id="hf-w50x" class="bottle-body" d="M50,70 L50,42 L90,42 L90,70 Z" />
+                <rect data-hf-id="hf-rlso" class="bottle-body" x="56" y="18" width="28" height="26" rx="5" />
+                <line data-hf-id="hf-j3fo" class="bottle-fill-line" x1="24" y1="120" x2="116" y2="120" />
+              </svg>
+              <div data-hf-id="hf-1q8m" class="label-chip" id="chip-1">RETINOL</div>
+            </div>
+            <div data-hf-id="hf-ea2u" class="bottle-col" id="bottle-2">
+              <svg data-hf-id="hf-jc8l" viewBox="0 0 140 220" aria-hidden="true">
+                <rect data-hf-id="hf-ndnm" class="bottle-body" x="24" y="52" width="92" height="158" rx="18" />
+                <ellipse data-hf-id="hf-2l8n" class="bottle-body" cx="70" cy="52" rx="46" ry="14" />
+              </svg>
+              <div data-hf-id="hf-r9f8" class="label-chip" id="chip-2">AHA · BHA</div>
+            </div>
+            <div data-hf-id="hf-i86v" class="bottle-col" id="bottle-3">
+              <svg data-hf-id="hf-kj5o" viewBox="0 0 140 220" aria-hidden="true">
+                <rect data-hf-id="hf-pj5e" class="bottle-body" x="30" y="64" width="80" height="146" rx="10" />
+                <rect data-hf-id="hf-djy3" class="bottle-body" x="46" y="30" width="48" height="38" rx="8" />
+                <line data-hf-id="hf-p7bw" class="bottle-fill-line" x1="34" y1="150" x2="106" y2="150" />
+              </svg>
+              <div data-hf-id="hf-hsjp" class="label-chip" id="chip-3">TONER</div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-jkt1" class="resolution-zone">
+            <div data-hf-id="hf-oh4g" class="chip" id="source-chip">FDA · 21 CFR 333.350</div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Bottles stack in, staggered; bottle 1 is already essentially settled at the
+        // scene's own t=0 so the hard cut into this scene doesn't land on empty paper.
+        // Tightened from 0.32/0.68 -- blank-frame scan flagged the true (now that the
+        // --p bug no longer masks it) 3.00-3.40s window as sparse with only 1-2
+        // bottles on screen; all 3 now land sooner, before the headline arrives.
+        tl.to('#bottle-1', { opacity: 1, scale: 1, duration: 0.24 }, 0);
+        tl.to('#bottle-2', { opacity: 1, scale: 1, duration: 0.28 }, 0.2);
+        tl.to('#bottle-3', { opacity: 1, scale: 1, duration: 0.28 }, 0.42);
+
+        tl.to('#chip-1', { opacity: 1, duration: 0.22 }, 0.24);
+        tl.to('#chip-2', { opacity: 1, duration: 0.22 }, 0.5);
+        tl.to('#chip-3', { opacity: 1, duration: 0.22 }, 0.78);
+
+        tl.to('#headline-q', { opacity: 1, y: 0, duration: 0.4 }, 1.2);
+
+        // Clutter peaks -- two more tags fan in overlapping the headline itself.
+        tl.to('#tag-glycolic', { opacity: 1, duration: 0.22 }, 1.8);
+        tl.to('#tag-salicylic', { opacity: 1, duration: 0.22 }, 2.05);
+
+        // The video's one coral moment.
+        tl.to('#strike', { scaleX: 1, duration: 0.34, ease: "power2.inOut" }, 2.6);
+        tl.to(['#headline-q', '#tag-glycolic', '#tag-salicylic'], { opacity: 0, duration: 0.3 }, 2.95);
+
+        tl.to('#headline-a', { opacity: 1, y: 0, duration: 0.4 }, 3.15);
+        tl.to('#strike', { opacity: 0, duration: 0.3 }, 3.15);
+        tl.to('#source-chip', { opacity: 1, duration: 0.3 }, 3.75);
+
+        tl.to({}, { duration: 5.000 }, 0);
+        window.__timelines["02-overload"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

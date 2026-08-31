@@ -19,7 +19,13 @@
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
           --font-kr: "Noto Sans KR Video", sans-serif;
-          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --safe-top: 120px; --safe-bottom: 384px; --safe-left: 60px; --safe-right: 162px;
+          /* Value kept in sync with the project's other scenes for audit purposes
+             (see 03-truth.html for the round-6 safe-area fix) -- this scene doesn't
+             actually consume --safe-top/--safe-bottom: it's centered across the full
+             canvas on purpose, matched to the other loop endpoint's hero position
+             (see the .stage comment below). Both endpoints measured well inside the
+             real safe lines (ymax 1477 / 1420 vs the 1536 bottom line). */
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
           background: var(--ink); font-family: var(--font-body);

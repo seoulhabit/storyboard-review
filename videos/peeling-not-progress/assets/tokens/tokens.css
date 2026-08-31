@@ -130,10 +130,36 @@
   --canvas-w: 1080px;
   --canvas-h: 1920px;
   --canvas-fps: 30;
-  --safe-top: 120px;
-  --safe-bottom: 360px;
+  --safe-top: 120px;      /* 6.25% -- deliberate deviation from the skill's 10% (192px);
+                             see frame.md Post-render review fixes round 6. Shorts' top
+                             chrome (search/camera icons) is minimal, and every scene's
+                             headline already starts at y134-164 -- a 192px reserve would
+                             push four scenes' headlines down 60px with no real UI there. */
+  --safe-bottom: 384px;   /* 20% -- title / channel / progress bar. Raised from 360px
+                             (18.75%, under-reserved vs the skill's stated 20%). */
   --safe-left: 60px;
-  --safe-right: 162px;
+  --safe-right: 162px;    /* 15% -- like/dislike/comment/share rail */
+  --safe-margin: 4px;     /* guard band for antialiasing / subpixel rounding at a
+                             computed safe-edge boundary */
+
+  /* Zoom-aware safe box -- neutral defaults; a scene with no Ken Burns overrides
+     nothing and these reduce to the plain tokens above. */
+  --zoom-max: 1;
+  --zoom-origin-x: 540px;
+  --zoom-origin-y: 960px;
+
+  /* A transform: scale() applied OUTSIDE a padded box maps the padded edge outward --
+     padding constrains the layout box, not the box's final on-screen position once a
+     transform sits between it and the canvas. These invert that map, so the box's edge
+     lands ON the safe line after the scene's own max scale, as a function of the
+     scene's actual zoom/origin rather than a hand-tuned +Npx constant that goes stale
+     the moment either changes. See frame.md Post-render review fixes round 6 for the
+     defect this replaces (03-truth/05-reset overshot the real safe line by 7-10px
+     using a fixed allowance computed against the old, under-reserved token). */
+  --safe-bottom-zoomed: calc(var(--canvas-h) - (var(--zoom-origin-y)
+    + (var(--canvas-h) - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+  --safe-right-zoomed: calc(var(--canvas-w) - (var(--zoom-origin-x)
+    + (var(--canvas-w) - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
 
   /* ---- elevation: shadow only, never glow ---- */
   --elev-1: 0 2px 4px rgba(19, 21, 22, 0.08);

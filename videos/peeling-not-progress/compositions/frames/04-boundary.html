@@ -14,7 +14,20 @@
           --aqua: #59B8AE; --aqua-text: #4B9B93; --rule: #E3E3E3; --rule-strong: #D9D3C6;
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --safe-top: 120px; --safe-bottom: 384px; --safe-left: 60px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* This scene's own Ken-Burns wrapper (see .frame-zoom below) maps the padded
+             box's edge outward by the same factor it scales the box -- derives the
+             padded edge that lands ON --safe-bottom/--safe-right AFTER that scale, as a
+             function of this scene's actual scale/origin rather than a flat token.
+             See frame.md Post-render review fixes round 6: the flat --safe-right (162px)
+             let the STOP card's right edge drift to x923, 5px past the real 15% line,
+             growing across the scene as the zoom advanced. */
+          --zoom-max: 1.025; --zoom-origin-x: 540px; --zoom-origin-y: 864px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
           background: var(--paper); font-family: var(--font-body);
@@ -29,23 +42,23 @@
               card -- laid out by flex gap, not by independent absolute offsets.
            3. Each card's internal kicker/body/chip stack is a plain flex column, normal
               document flow inside the card. */
-        .frame-zoom { position: absolute; inset: 0; transform-origin: 50% 45%; }
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
         .stage { display: flex; flex-direction: column; height: 100%;
-                 padding: calc(var(--safe-top) + 40px) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+                 padding: calc(var(--safe-top) + 40px) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
 
         .kicker-zone { height: 140px; text-align: center; }
         .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
                   letter-spacing: 0.08em; color: var(--ink-2); opacity: 0; }
 
-        /* Two 420px cards + 28px gaps + a 3px divider (899px) no longer fit the 858px
-           safe column (--safe-right honoured, was symmetric --safe-left both sides) --
-           card max-width and the row gap both trimmed to hold the pair at 858px total. */
+        /* Column narrowed again (~845px, was 858px) once --safe-right-zoomed replaced
+           the flat --safe-right -- two 400px cards + 2*24px gaps + a 3px divider (851px)
+           no longer fit; card max-width trimmed 400->396 to hold the pair at 843px. */
         .cards-row { flex: 1; display: flex; align-items: center; justify-content: center;
                      gap: 24px; }
         .divider { width: 3px; height: 0%; background: var(--rule-strong); border-radius: 2px;
                    align-self: center; }
 
-        .card { flex: 1; max-width: 400px; padding: 40px 32px; border-radius: 14px;
+        .card { flex: 1; max-width: 396px; padding: 40px 32px; border-radius: 14px;
                 display: flex; flex-direction: column; gap: 20px; opacity: 0; }
         .card-normal { border: 2px solid var(--rule); background: transparent;
                        transform: translateX(-24px); }

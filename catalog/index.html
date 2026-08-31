@@ -51,6 +51,7 @@
   .card.k-static{border-left-color:var(--text-faint);}
   .card.k-mark{border-left-color:var(--mauve);}
   .card.k-linked{border-left-color:var(--sky);}
+  .card.k-tooling{border-left-color:var(--violet);}
   .card.k-gap{border-left-color:var(--card-edge);}
 
   .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
@@ -64,6 +65,7 @@
   .badge.status-linked{color:var(--sky);border-color:var(--sky-dim);}
   .badge.status-gap{color:var(--text-faint);border-color:var(--card-edge);}
   .badge.status-mark{color:var(--mauve);border-color:var(--mauve-dim);}
+  .badge.status-tooling{color:var(--violet);border-color:var(--violet-dim);}
   .badge.ctl-clock{color:var(--teal);border-color:var(--teal-dim);background:rgba(79,155,142,0.08);}
   .badge.ctl-select{color:var(--violet);border-color:var(--violet-dim);background:rgba(155,138,196,0.08);}
   .badge.ctl-none{color:var(--warn);border-color:var(--warn-dim);background:rgba(217,118,74,0.08);}
@@ -117,6 +119,7 @@
       <span class="badge" style="display:inline-flex;border-color:var(--card-edge-hi);">static composition</span>
       <span class="badge status-mark" style="display:inline-flex;">mark</span>
       <span class="badge status-linked" style="display:inline-flex;">photography / linked</span>
+      <span class="badge status-tooling" style="display:inline-flex;">tooling</span>
     </div>
     <div class="legend-row">
       <b>Control</b> (components only) — how you drive it, not just how finished it is:
@@ -166,6 +169,12 @@
     <div class="sec-head"><h2>Linked projects</h2><span class="sec-count" id="count-linked"></span></div>
     <p class="sec-sub">No file lives under <span class="mono">catalog/</span> — content already has a proper home in <span class="mono">videos/</span> and isn't duplicated here.</p>
     <div class="grid" id="grid-linked"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Verification tooling</h2><span class="sec-count" id="count-tooling"></span></div>
+    <p class="sec-sub">Shared scripts, not imagery or components — built once for a real project, worth reusing before the next one rebuilds the same check.</p>
+    <div class="grid" id="grid-tooling"></div>
   </section>
 
   <section>
@@ -252,6 +261,11 @@ const ITEMS = {
     { title: "Skincare Ingredient Glossary", file: "→ videos/skincare-ingredient-glossary/", src: null,
       status: "linked", desc: "76s, 20 ingredients (AHA/BHA → Vitamin C), one card each. Already rendered — and the real source TermDefinition was harvested from, see Components above." },
   ],
+  "grid-tooling": [
+    { title: "check-safe-area.py", file: "check-safe-area.py", src: "tooling/check-safe-area.py",
+      status: "tooling", desc: "Scans a rendered MP4 for content inside YouTube Shorts' reserved UI zones on transformed, RENDERED pixels — catches an overshoot a source-level \"are the --safe-* tokens consumed\" audit structurally cannot see (a transform between a safe-padded box and the canvas moves ink past the line without the source ever being wrong). Harvested from peeling-not-progress's round-6 safe-area fix.",
+      contract: "<span class=\"k\">python3 check-safe-area.py &lt;project_root&gt; [render_path] --safe-top &lt;px&gt; --safe-bottom &lt;px&gt; --safe-right &lt;px&gt;</span> — a hard gate (non-zero exit on intrusion), unlike this catalog's other check-*.py scripts" },
+  ],
   "grid-gap": [
     { title: "Retinal vs. Retinol", file: "no file yet", src: null,
       status: "gap", desc: "“What the Research Actually Compared.” Validated script exists, but no poster/spike/video project lives in this repo yet." },
@@ -302,6 +316,7 @@ const KIND_BY_GRID = {
   "grid-static": "static",
   "grid-marks": "mark",
   "grid-linked": "linked",
+  "grid-tooling": "tooling",
   "grid-gap": "gap",
 };
 

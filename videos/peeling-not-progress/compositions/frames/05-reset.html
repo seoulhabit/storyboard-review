@@ -16,7 +16,21 @@
           --font-display: "EB Garamond", Georgia, serif;
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --safe-top: 120px; --safe-bottom: 384px; --safe-left: 60px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* This scene's own Ken-Burns wrapper (see .frame-zoom below) maps the padded
+             box's edge outward by the same factor it scales the box -- derives the
+             padded edge that lands ON --safe-bottom AFTER that scale, as a function of
+             this scene's actual scale/origin. Replaces the old hand-tuned "+35px"
+             allowance, which was sized against the pre-2026-08-31 --safe-bottom (360px)
+             and still overshot the real (20%) line by 7px -- see 03-truth.html's
+             file-level note for the measured math this mirrors, and frame.md Post-render
+             review fixes round 6. */
+          --zoom-max: 1.03; --zoom-origin-x: 540px; --zoom-origin-y: 864px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
           --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
@@ -30,18 +44,14 @@
            2. Objects row is a flex row of 3 equal columns; each column is a plain flex
               column (icon circle over label), normal document flow, not absolute.
            3. Chips zone is a flex row of 2 chips, centered by flex gap. */
-        .frame-zoom { position: absolute; inset: 0; transform-origin: 50% 45%; }
-        /* +35px beyond --safe-bottom: absorbs this scene's own Ken-Burns drift (max
-           scale 1.03, origin 50%/45%) at the bottom edge. Re-measured on the actual
-           render: the earlier "trim the extra top offset" edit had ZERO effect on the
-           chips-zone's rendered position (objects-row's flex:1 absorbs any change to
-           the space above it -- the unscaled layout was already exactly at the
-           safe-bottom boundary with no margin); the real cause is this scene's own
-           continuous zoom pushing bottom content further down as scale grows through
-           the scene -- see 03-truth.html's file-level note for the measured math this
-           mirrors. Reverted the ineffective top-offset change back to +30px. */
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
+        /* Bottom (and right) padding now use the zoom-derived safe edges (see the
+           --safe-*-zoomed tokens above) instead of the flat "+35px" allowance --
+           objects-row's flex:1 still absorbs whatever space the header block leaves
+           above it, so the top offset (+30px, unrelated to this scene's safe-area bug)
+           is unchanged. */
         .stage { display: flex; flex-direction: column; height: 100%;
-                 padding: calc(var(--safe-top) + 30px) var(--safe-right) calc(var(--safe-bottom) + 35px) var(--safe-left); }
+                 padding: calc(var(--safe-top) + 30px) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
 
         .header-zone { text-align: center; display: flex; flex-direction: column; gap: 18px; }
         .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
@@ -53,8 +63,9 @@
         .headline { font-family: var(--font-display); font-size: 96px; line-height: 1.18;
                     color: var(--ink); opacity: 0; }
 
-        /* 3*220 + 2*44 = 748px already clears the 858px safe column with room to
-           spare -- unlike Frames 2/4, this row needed no re-fit for --safe-right. */
+        /* 3*220 + 2*44 = 748px already clears the narrowed ~845px safe column (was
+           858px) with room to spare -- unlike Frames 3/4, this row needed no re-fit
+           once --safe-right-zoomed replaced the flat --safe-right. */
         .objects-row { flex: 1; display: flex; align-items: center; justify-content: center;
                         gap: 44px; }
         .object-col { display: flex; flex-direction: column; align-items: center; gap: 24px;

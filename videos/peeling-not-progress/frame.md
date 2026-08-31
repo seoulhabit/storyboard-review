@@ -372,3 +372,131 @@ headline, label, and pill legible; `check-blank-frames.py` unchanged (same five
 267–533ms scene-opening windows, unrelated to this pass); `check-static-hold.py`
 zero findings on the full frame. See `DELIVERY.md`'s pre-render gate for the full
 12-item record.
+
+**Round 6 (2026-08-31) — external QC report, and the checker this project didn't
+have.** A QC report on the round-5 render returned "fix-then-ship": one BLOCKER
+(the outro instruction blocked by the Shorts UI, "move above y1530"), two MAJORs
+(the outro's ~4s static hold; Frame 3's citation "too low," move up 15-20%), and two
+MINORs (Frame 4's right card into the action rail; no captions for this VO-less
+video). Per this skill's own rule ("an external QC report is a claim, not a
+diagnosis"), every finding was reproduced against the actual render before touching
+anything, by extracting frames at 2fps/4fps and measuring ink extents directly:
+
+| # | Report | Measured | Verdict |
+|---|---|---|---|
+| 1 | BLOCKER: outro text at extreme bottom edge, move above y1530 | Prompt bottom = y1420 — 116px clear of the line, already past the report's own target | **False** |
+| 2 | MAJOR: ~4s static outro, trim to 1s | Longest static run at the end = 1.25s (28.75-30.0s); under the skill's 2-3s ceiling | **False on duration** |
+| 3 | MAJOR: citation too low, move up 15-20% (288-384px) | Real. Frame 3 ink reached y1546 — 10px past the real line, not 288-384px | **Real, misquantified ~30x** |
+| 4 | MINOR: right card into the action rail, shift 100-150px | Real. Frame 4 ink reached x923 — 5px past the line, not 100-150px | **Real, misquantified ~25x** |
+| 5 | MINOR: no captions, no VO | Correct premise: zero speech, 100% of the language on-screen | **Real** |
+
+A third violation the report missed entirely: **Frame 5** reached y1543 (7px past)
+from the identical cause. Applying the report's literal fixes would have broken
+working things — item 1's ~384px shift would have pushed Frame 6's outro out of the
+loop-matched hero position this file's own round-5 note describes; item 4's
+100-150px shift would have thrown the two-card row far off its centered layout.
+
+**Root cause — one bug, three scenes, and it's the mechanism round 5's own fix
+already named without generalizing.** Round 5's "wrong first fix" note above already
+diagnosed that a scene's continuous Ken-Burns `#zoom` transform displaces content
+below its transform-origin further down as scale grows — and fixed it there with a
+hand-computed `+45px`/`+35px` allowance on Frames 3/5. That allowance was correct
+against the boundary in effect when it was measured (`--safe-bottom: 360px`, 18.75%
+— itself under the skill's stated 20%) and silently wrong once corrected: raising
+`--safe-bottom` to the real 384px (20%) without re-deriving the allowance left both
+scenes still 7-10px short of the new line. The math, confirmed against measured
+pixels:
+
+| Scene | origin | max scale | unscaled box edge | → after scale | measured overshoot |
+|---|---|---|---|---|---|
+| `03-truth` | y768 | 1.045 | y1515 | y1548.8 | y1546 |
+| `05-reset` | y864 | 1.030 | y1525 | y1544.8 | y1543 |
+| `04-boundary` | x540 | 1.025 | x918 | x927.5 | x923 |
+
+`padding` constrains the layout box; a `transform: scale()` applied outside that box
+(the Ken Burns wrapper, mandatory for every scene per the anti-static-hold rule) maps
+the padded edge outward by the same factor — every one of the six scenes declared and
+consumed every `--safe-*` token (gate item 7 as it read before this round), and the
+pixels still overshot, because token-consumption is a source-code question and this
+defect only exists once the render is measured.
+
+**A fourth, previously undetected violation — caught only because the new checker
+samples the whole render at 4fps, not just settle frames.** After fixing the three
+scenes above and building `scripts/check-safe-area.py` (see below), a first run of
+that script against the *fixed* render still failed, flagging Frame 1 — a scene
+neither the QC report nor any prior round's spot-checks had named. Frame-exact
+inspection found `#line-2` ("Does that mean it's working?") transiently overshooting
+the bottom line by ~10px during its own entrance, between local t=1.85s and ~2.0s,
+before easing back to a compliant resting position (y1531, a real but thin 5px
+margin) by t≈2.17s. Cause: `.line`'s base state carried `transform:
+translateY(18px)`, and the entrance tween's `power2.out` ease spends most of its
+first ~150ms still close to that full offset while opacity is still low — exactly
+the kind of transient a 1-2fps spot-check (what every prior round, and the external
+report, effectively used) reliably lands outside of. Fixed by removing the
+`translateY` from both `.line`'s entrance/exit (opacity-only cross-fade now,
+matching the pattern already proven correct everywhere else in this project per
+round 3's own note) — the settled position is unchanged, the transient is gone.
+
+**A regression caught by re-measuring the fix, not by assuming it was safe.** A
+first attempt also trimmed Frame 1's `.stage` `gap` (56→32px) for extra headroom.
+Re-measuring the surface-panel's own center after that change showed it had moved
+~12px (772→784), because the panel and the text-stack are both centered as one flex
+group — reducing the gap doesn't just shrink space between them, it shifts the whole
+group. That broke the round-5-era loop hand-off `06-payoff.html`'s own `.lockup`
+`margin-top` is hand-tuned against (Frame 1's panel center is the target Frame 6's
+lockup matches for the hard-cut loop). Reverted — the `translateY` removal alone was
+sufficient and didn't touch panel position at all. Re-verified: 771.5 vs 770.5,
+within 1px.
+
+**Fix: replace the hand-tuned allowance with a derived safe box.** `--safe-bottom`
+raised 360→384px (the real 20%); `--safe-top` deliberately kept at 120px (6.25%,
+not the skill's 192px) with the reason recorded — Shorts' top chrome is minimal and
+every scene's headline already starts at y134-164, so the full reserve would push
+four headlines down 60px for no real UI there. Added `--zoom-max`/`--zoom-origin-x`/
+`--zoom-origin-y` (per-scene, matching each scene's own `fromTo('#zoom', ...)` call)
+and `--safe-bottom-zoomed`/`--safe-right-zoomed`, which invert the scale-then-measure
+math above so the *padded* edge lands on the real line *after* the scene's own max
+scale — a function of the scene's actual zoom, not a constant that silently drifts
+the next time either the token or the scale changes. Frames 3/4/5 (the zoomed
+scenes) now consume the `-zoomed` tokens in `.stage`'s padding; Frame 3's diagram SVG
+and Frame 4's two cards were re-fit to the ~15-20px narrower resulting column (Frame
+5's objects-row already had slack and needed no re-fit). Frame 2 (no scene zoom)
+switched to the same `-zoomed` spelling at neutral `--zoom-max: 1` defaults purely
+for consistency — identical resulting values, one spelling project-wide. Frames 1/6
+keep their deliberate full-canvas centering (no vertical safe padding) unchanged,
+per the loop-match reasoning above.
+
+**The durable fix: `scripts/check-safe-area.py`, a hard gate.** Modeled on the
+existing `check-static-hold.py`'s CLI shape, sampling the render at 4fps and flagging
+any frame with real ink (antialiasing-tolerant) inside a reserved zone — the check
+this project never had, and the only pre-render gate item (7) with no corresponding
+entry in the Verification loop before this round. Unlike the blank-frame/static-hold
+scripts, this one is a **hard gate** (non-zero exit), wired into `postrender`
+alongside them. Harvested into `catalog/tooling/` as the first verification-tooling
+entry — see `catalog/README.md`.
+
+**Captions.** `DELIVERY.md`'s prior "no captions — deliberate" note was a correct
+read of the skill's transcript-predicated caption workflow (no VO, nothing to run
+ASR on) but an incomplete read of the actual requirement — 100% of this video's
+language is on-screen kinetic type, and a captions/screen-reader user got nothing
+without a sidecar. Hand-authored `captions/peeling-not-progress.srt` and `.vtt`
+directly from `STORYBOARD.md`'s copy deck and `index.html`'s scene timings (no ASR
+involved or needed, since the text and its exact timing were already authored
+artifacts) — 21 SDH-style cues, every citation included, bracketed cues for the two
+narratively meaningful SFX (`[wall crumbles]`, `[chime]`); routine UI clicks
+omitted. Every cue verified to land inside the scene whose text it transcribes.
+
+**Re-verified end to end on the corrected, re-mastered render** (independent 4fps
+ink-extent scan, not just the new script's own output): zero frames with ink in any
+reserved zone across all six scenes (previously 3-10px over on Frames 3/4/5, plus the
+newly found Frame 1 transient). Real per-scene margins: Frame 1 y1531 (5px) / x917
+(1px, by design — the safe column's own full width, confirmed not new), Frame 3
+y1530 (6px), Frame 4 x912 (6px), Frame 5 y1531 (5px), Frames 2/6 comfortably clear
+(84px/116px). Frame 1↔6 loop hero-position match: 771.5 vs 770.5 (within 1px,
+unchanged from round 5). `check-static-hold.py`: zero findings, unchanged.
+`check-blank-frames.py`: same five 200-533ms scene-opening windows as round 5,
+unrelated to this pass. Phone-scale (25%) downscale confirms Frame 1/3/4's affected
+text still legible. Re-mastered: two-pass `ffmpeg loudnorm`, −14.04 LUFS integrated /
+−1.60 dBTP (matching round 5's figures — the audio layer wasn't touched), independent
+`astats` peak check −1.20 dB, safely under 0 dBFS. See `DELIVERY.md` for the full
+manifest.

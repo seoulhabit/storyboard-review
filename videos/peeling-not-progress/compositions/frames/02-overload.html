@@ -16,7 +16,17 @@
           --font-display: "EB Garamond", Georgia, serif;
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --safe-top: 120px; --safe-bottom: 384px; --safe-left: 60px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* No scene-wide Ken Burns here, so these reduce exactly to the plain tokens
+             above -- used anyway so every scene (zoomed or not) reads the same
+             --safe-*-zoomed spelling in .stage's padding. See 03-truth.html's
+             file-level note for what these correct on the scenes that DO zoom. */
+          --zoom-max: 1; --zoom-origin-x: 540px; --zoom-origin-y: 960px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
           background: var(--paper); font-family: var(--font-body);
@@ -39,7 +49,7 @@
            --safe-bottom like every other scene, and left/right honour --safe-right
            (pre-render gate item 7) instead of the old symmetric --safe-left pair. */
         .stage { display: flex; flex-direction: column; height: 100%;
-                 padding: calc(var(--safe-top) + 40px) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+                 padding: calc(var(--safe-top) + 40px) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
 
         /* Height raised 320->480: --t-hero (96px, was 66px) wraps "MORE IRRITATION.
            NOT MORE PROGRESS." across up to 3 lines at the 858px safe-column width. */

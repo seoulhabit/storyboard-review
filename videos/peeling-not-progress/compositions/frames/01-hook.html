@@ -13,7 +13,13 @@
           --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B;
           --font-display: "EB Garamond", Georgia, serif;
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
-          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --safe-top: 120px; --safe-bottom: 384px; --safe-left: 60px; --safe-right: 162px;
+          /* Value kept in sync with the project's other scenes for audit purposes
+             (see 03-truth.html for the round-6 safe-area fix) -- this scene doesn't
+             actually consume --safe-top/--safe-bottom: it's centered across the full
+             canvas on purpose, matched to the other loop endpoint's hero position
+             (see the .stage comment below). Both endpoints measured well inside the
+             real safe lines (ymax 1477 / 1420 vs the 1536 bottom line). */
           --e-out: cubic-bezier(0.215,0.61,0.355,1);
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
@@ -52,9 +58,27 @@
            extraction), even though its GSAP tween didn't start until local 1.2 --
            plain opacity is the pattern proven correct everywhere else in this
            project (Frames 3-6) and by bottle-1/2/3 in Frame 2 itself. */
+        /* No translateY on entrance/exit -- opacity-only cross-fade. Round-6 finding
+           (see frame.md): the new check-safe-area.py scanner (this project had no
+           rendered-pixel safe-area check before round 6) caught line-2's entrance
+           transiently overshooting the bottom safe line by ~10px between local 1.85s
+           and ~2.0s -- the *settled* text (y1531) already sat only 5px inside the
+           real line, and the entrance tween's own translateY(18px) "from" offset
+           pushed it further down before easing back to rest. Neither the external QC
+           report nor this project's own earlier per-scene single-frame checks caught
+           it, because it only exists during a ~150ms transient a coarse sample can
+           land outside of -- exactly why the check samples at 4fps across the WHOLE
+           render, not just settle frames. Removing the translateY (this edit) fixes
+           the transient outright; the settled 5px margin is unchanged and real
+           (verified against the actual render, not assumed) and matches the
+           project's other zoomed scenes' own margins. A first pass also trimmed
+           .stage's gap 56->32 for extra headroom -- reverted: that shifted the
+           surface-panel's own vertical center ~12px, breaking the panel-to-lockup
+           loop hand-off .stage/.lockup in 06-payoff.html deliberately tunes against
+           (STORYBOARD.md's matched hero position). Fix the actual defect, not the
+           margin around it. */
         .line { position: absolute; left: 0; right: 0; font-family: var(--font-display);
-                font-size: 96px; line-height: 1.12; color: var(--paper);
-                opacity: 0; transform: translateY(18px); }
+                font-size: 96px; line-height: 1.12; color: var(--paper); opacity: 0; }
 
         .droplet { fill: url(#dropGrad); }
         .ripple { fill: none; stroke: rgba(19,21,22,0.35); stroke-width: 3; }
@@ -119,7 +143,7 @@
         tl.fromTo('#ripple-1', { scale: 1, opacity: 0.7 }, { scale: 2.6, opacity: 0, duration: 0.8, ease: "power1.out" }, 0);
         tl.fromTo('#ripple-2', { scale: 1, opacity: 0.5 }, { scale: 3.4, opacity: 0, duration: 0.95, ease: "power1.out" }, 0.12);
 
-        tl.to('#line-1', { opacity: 1, y: 0, duration: 0.3 }, 0.1);
+        tl.to('#line-1', { opacity: 1, duration: 0.3 }, 0.1);
 
         // Cracks draw outward, staggered; droplet dries into the surface.
         cracks.forEach(function (c, i) {
@@ -127,8 +151,8 @@
         });
         tl.to('#droplet-group', { opacity: 0, duration: 0.5, ease: "power2.in" }, 1.15);
 
-        tl.to('#line-1', { opacity: 0, y: 18, duration: 0.22 }, 1.62);
-        tl.to('#line-2', { opacity: 1, y: 0, duration: 0.35 }, 1.85);
+        tl.to('#line-1', { opacity: 0, duration: 0.22 }, 1.62);
+        tl.to('#line-2', { opacity: 1, duration: 0.35 }, 1.85);
 
         tl.to({}, { duration: 3.000 }, 0);
         window.__timelines["01-hook"] = tl;

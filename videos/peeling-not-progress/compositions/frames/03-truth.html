@@ -16,7 +16,20 @@
           --font-display: "EB Garamond", Georgia, serif;
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
-          --safe-top: 120px; --safe-bottom: 360px; --safe-left: 60px; --safe-right: 162px;
+          --safe-top: 120px; --safe-bottom: 384px; --safe-left: 60px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* This scene's own Ken-Burns wrapper (see .frame-zoom below) maps the padded
+             box's edge outward by the same factor it scales the box -- these derive the
+             padded edge that lands ON --safe-bottom/--safe-right AFTER that scale, as a
+             function of this scene's actual scale/origin. Replaces the old hand-tuned
+             "+45px" allowance, which was sized against the pre-2026-08-31 --safe-bottom
+             (360px) and consequently still overshot the real (20%) line by 10px --
+             see frame.md Post-render review fixes round 6. */
+          --zoom-max: 1.045; --zoom-origin-x: 540px; --zoom-origin-y: 768px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
           background: var(--ink); font-family: var(--font-body);
@@ -32,18 +45,18 @@
            3. A single .frame-zoom wrapper carries the whole column's continuous slow
               scale (Ken-Burns-as-pure-function-of-t), covering the settle tail so no
               stretch of this 6s scene is genuinely pixel-static. */
-        .frame-zoom { position: absolute; inset: 0; transform-origin: 50% 40%; }
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
         /* Right/left now asymmetric (--safe-right/--safe-left, was a single --safe-left
            applied to both sides) -- honours the Shorts action-rail reserve, pre-render
            gate item 7. */
-        /* +45px beyond --safe-bottom: absorbs this scene's own Ken-Burns drift (max
-           scale 1.045, origin 50%/40%) at the bottom edge -- see the file-level note
-           above dated 2026-08-31 for the measured root cause and the math. Confirmed
-           on the actual render, not assumed: unscaled foot-zone content already sat
-           at the safe-bottom boundary with zero margin: the zoom alone pushed the
-           citation chip to y1595 by the scene's own end, 35px past y1560. */
+        /* Right and bottom padding now use the zoom-derived safe edges (see the
+           --safe-*-zoomed tokens above) instead of a hand-tuned "+45px" allowance --
+           the allowance was computed against the boundary in effect on 2026-08-31 and
+           silently drifted 10px past the real 20%-of-1920 line once --safe-bottom was
+           corrected in round 6. The derived value moves WITH the token and WITH this
+           scene's own scale/origin if either changes later. */
         .stage { display: flex; flex-direction: column; height: 100%;
-                 padding: calc(var(--safe-top) + 20px) var(--safe-right) calc(var(--safe-bottom) + 45px) var(--safe-left); }
+                 padding: calc(var(--safe-top) + 20px) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
 
         /* Height raised 260->340 (not 420 -- see post-render note): --t-hero (96px,
            was 64px) needed room for a 2-line wrap that never actually happened at the
@@ -56,7 +69,10 @@
                   line-height: 1.12; color: var(--paper); opacity: 0; transform: translateY(12px); }
 
         .diagram-zone { flex: 1; display: flex; align-items: center; justify-content: center; }
-        .diagram-zone svg { width: 858px; height: 592px; display: block; }
+        /* 838x578 (was 858x592) -- the safe column narrowed ~20px once --safe-right-zoomed
+           (derived, ~182px at this scene's 1.045x max scale) replaced the flat 162px
+           --safe-right; scaled down proportionally, same effective aspect. */
+        .diagram-zone svg { width: 838px; height: 578px; display: block; }
 
         /* Bricks default to visible -- opacity 0 lives on the course <g> wrapper only.
            Individual bricks are later dimmed (not hidden) by the top-course animation;
@@ -73,7 +89,7 @@
         .foot-zone { display: flex; flex-direction: column; align-items: center; gap: 24px;
                      text-align: center; padding-top: 12px; }
         .qualifier { font-family: var(--font-mono); font-size: 40px; line-height: 1.35;
-                     color: rgba(247,245,240,0.75); max-width: 858px; opacity: 0; }
+                     color: rgba(247,245,240,0.75); max-width: 838px; opacity: 0; }
         .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
                 color: rgba(247,245,240,0.85); border: 1.5px solid rgba(247,245,240,0.35);
                 border-radius: 999px; padding: 8px 20px; opacity: 0; }

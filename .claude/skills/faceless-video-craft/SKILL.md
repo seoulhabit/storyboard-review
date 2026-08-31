@@ -830,10 +830,20 @@ for next time:
    by default? See the tactile-anchor rule in *Asset protocol* above.
 6. **Are palette, type, captions, and any channel mark consistent** with
    the rest of the channel? See *Consistency across a channel's videos*.
-7. **Are safe-area tokens actually consumed by every scene**, not declared
-   in one file and hardcoded elsewhere? Measured gap on this channel: only
-   6 of 24 shipped projects reference `--safe-*` tokens at all. See
-   *9:16-native composition* below.
+7a. **Are safe-area tokens actually consumed by every scene**, not declared
+    in one file and hardcoded elsewhere? Measured gap on this channel: only
+    6 of 24 shipped projects reference `--safe-*` tokens at all. See
+    *9:16-native composition* below.
+7b. **Is there no RENDERED pixel inside a reserved zone**, measured against
+    the actual output rather than inferred from 7a? A scene can pass 7a in
+    full — every token declared, consumed, individually correct — and still
+    ship ink past the real line once a transform (a Ken Burns scale, an
+    entrance transform's transient) sits between the padded box and the
+    canvas; 7a is a source-code question and structurally cannot see this.
+    Run the *Verification loop*'s safe-area intrusion scan against the real
+    render, not a visual scrub — the confirmed case that made this its own
+    gate item overshot by only 5-10px, well under what a human eyeballing
+    the preview reliably catches.
 8. **Does a real sidecar caption file exist** — not a same-named but
    unrelated file (see *The captions*' naming note below) — alongside the
    burned-in track? Measured gap: only 4 of 24 shipped projects ship one.
@@ -900,6 +910,30 @@ citation that stops being legible at that scale is a reject, not a style
 note. See *9:16-native composition* below for the type floors and *Asset
 protocol* above for the diagram label budget — the thresholds it's checking
 against.
+
+**Safe-area intrusion scan.** A source-level audit ("does every scene consume
+`--safe-*`?" — pre-render gate item 7a below) cannot see this class of defect,
+because the source is genuinely correct; only the transformed, rendered pixel
+isn't (see *9:16-native composition*'s safe-areas bullet for the mechanism
+and the derived-token fix). Sample the actual render at a fixed fps (4fps —
+finer than the static-hold check's 2fps, since a fast Ken Burns drift or an
+entrance-transform transient can cross the line between two coarser samples
+and self-correct before the next one), build an ink mask per frame
+(`|luma - background| ` over a threshold, requiring a minimum run of masked
+pixels in a row/column so stray antialiasing doesn't count as an edge), and
+flag any frame with ink inside a reserved zone. This is a **hard gate**, not
+advisory like the static-hold/blank-frame checks — a rendered pixel inside a
+reserved zone will be covered by the platform's own UI on a real device,
+which isn't a judgment call the way a static hold's cadence sometimes is.
+Confirmed necessary, not theoretical: on `videos/peeling-not-progress`'s
+round-6 render, three scenes passed gate item 7a (tokens declared and
+consumed everywhere) while overshooting the real line by 5-10px once each
+scene's own Ken Burns scale was accounted for, and a fourth scene's overshoot
+existed only for a ~150ms entrance transient a 1-2fps spot-check reliably
+lands outside of — a defect an external QC report and this project's own
+prior single-frame checks both missed, and only a full-render, fixed-interval
+pixel scan catches. See `scripts/check-safe-area.py` (harvested to the shared
+catalog) for a reference implementation.
 
 **Publish-envelope completeness check.** A clean render says nothing about
 whether captions or a thumbnail exist — those are separate files a check
@@ -1031,10 +1065,14 @@ size itself is reasonable.
   `--safe-left`, `--safe-right`) *and every scene must actually read them* in
   its layout — declaring the tokens in one file while eight others hardcode
   raw pixel offsets is the gap that lets content drift into a reserved zone
-  unnoticed. Approximate reserved zones (verify against a current device):
-  - **Right edge ~15%** — like/dislike/comment/share rail.
-  - **Bottom ~20%** — title, channel, audio attribution.
-  - **Top ~10%** — search and camera icons.
+  unnoticed. Approximate reserved zones, given both as a percentage and as
+  the literal pixel value at the canonical 1080×1920 canvas — a project's
+  tokens should equal the pixel figures below, or the deviation should be
+  recorded with a reason (verify the percentages themselves against a
+  current device):
+  - **Right edge ~15% (162px)** — like/dislike/comment/share rail.
+  - **Bottom ~20% (384px)** — title, channel, audio attribution.
+  - **Top ~10% (192px)** — search and camera icons.
 
   The center-left column is the only zone guaranteed clear. Debug-overlay the
   zones (see *Layout validation* above) rather than eyeballing pixel math per
@@ -1042,6 +1080,50 @@ size itself is reasonable.
   or `justify-content`, since a spacing fix in one scene silently regressing a
   *different* scene's safe-area compliance is the single most common way
   a violation ships (fixed elsewhere, never re-verified where it originated).
+
+  **The safe area binds transformed, rendered pixels — not the CSS box the
+  padding was written against.** `padding` constrains a box's *layout*; it
+  says nothing about where that box ends up once a `transform:
+  scale()`/`translate()` sits between it and the canvas. A Ken Burns wrapper
+  around a safe-padded `.stage` (`.frame-zoom { transform-origin: 50% 40%; }`
+  scaling toward 1.045 over the scene) maps the padded edge outward by the
+  same factor it scales the box — a scene where every token is declared,
+  consumed, and individually correct can still ship ink past the real line,
+  because the *source* is correct and only the *rendered result* isn't.
+  Confirmed on `videos/peeling-not-progress`'s 2026-08-31 round-6 render:
+  three zoomed scenes each overshot the real line by 5-10px this way despite
+  passing gate item 7a below, and a fourth, non-zoomed scene overshot by a
+  different mechanism — a text element's own entrance `transform:
+  translateY()` pushing it past the line for a ~150ms transient before
+  easing back to a compliant resting position. Two fixes, matched to the
+  mechanism: for a scene-wide zoom, derive the padded edge from the scene's
+  own max scale and origin rather than reserving a flat token —
+
+  ```css
+  /* Neutral defaults so an unzoomed scene's math reduces to the plain token. */
+  --zoom-max: 1; --zoom-origin-x: 540px; --zoom-origin-y: 960px;
+  --safe-margin: 4px;  /* guard band for antialiasing / subpixel rounding */
+
+  --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+    + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+  --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+    + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
+  ```
+
+  Use the `-zoomed` value in `.stage`'s padding in place of the flat token,
+  with `--zoom-max`/`--zoom-origin-*` set to the scene's own `fromTo('#zoom',
+  {scale:1}, {scale:N, ...})` values. This *replaces* a hand-tuned `+Npx`
+  allowance, which is sized against whatever `--safe-bottom` happened to be
+  when it was measured and goes silently wrong the moment the token or the
+  scene's own scale/origin changes later — exactly what happened here (an
+  allowance computed against a pre-correction token undershot the corrected
+  line by 5-10px, with nothing to flag it). For a transient caused by an
+  element's own entrance transform, don't paper over it with more margin —
+  fix the mechanism: drop the position-changing part of the entrance (keep an
+  opacity-only cross-fade) so there is no transient offset to overshoot with
+  in the first place. A margin increase hides the symptom on this render and
+  reappears the next time the settled position happens to sit close to the
+  line.
 
 ### The hook
 
@@ -1126,6 +1208,24 @@ A project can have a full set of per-clip word-level transcripts and still
 ship with no on-screen captions and no sidecar file, because nothing turned
 that data into either — a real, observed gap in this project's own catalog
 (see *Consistency across a channel's videos* below), not a hypothetical.
+
+**A silent, type-carried video still ships a sidecar.** The production order
+below (steps 1-5) is entirely transcript-predicated — it starts from ASR on a
+mixed VO, which is the right call for the common case but leaves a gap for a
+project with no voiceover at all, where 100% of the video's language is
+already on-screen kinetic type (a legitimate, deliberate choice — see
+*Audio is a first-class composition layer*'s note on silence). "No speech to
+transcribe" correctly rules out ASR; it does not rule out the caption
+deliverable itself, because a captions or screen-reader user watching that
+video gets nothing without one. Hand-author the sidecar `.srt`/`.vtt`
+directly from the storyboard's copy deck and the composition's own scene
+timings (`data-start` + each beat's entrance offset) instead — no transcript
+step needed, since the text and its exact timing are already authored
+artifacts, not something that has to be extracted from audio. `videos/
+peeling-not-progress` shipped with zero captions under a defensible reading
+of the transcript-predicated rule above (correctly no VO, incorrectly
+concluded therefore no captions) until this gap was named; the fix took one
+hand-authored `.srt`/`.vtt` pair, no ASR involved.
 
 Two outputs, and most projects need both:
 
@@ -1581,3 +1681,27 @@ either pattern as "the" approach, and the majority of projects had neither.
   specific, lesson-tied action.
 - A short running past 50s with no storyboard reason recorded — almost
   always VO-driven timing left unchecked, not a deliberate call.
+- Safe-area padding computed against the pre-transform box instead of the
+  scene's own final rendered position — every scene consumes `--safe-*`
+  correctly and the render still ships ink past the line, because a Ken
+  Burns `transform: scale()` (or an entrance transform's own transient) sits
+  between the padded box and the canvas and the padding math never accounted
+  for it. See *9:16-native composition*'s safe-areas bullet for the fix.
+- A hand-tuned `+Npx` safe-area allowance sized against whatever the token
+  happened to be at measurement time, instead of derived from the scene's
+  own scale/origin — it silently goes wrong the moment the token or the
+  scene's zoom changes later, with nothing to flag it (confirmed: a
+  correction to `--safe-bottom` left two scenes' own allowances undershooting
+  the new line by 5-10px, computed correctly against a boundary that no
+  longer applied).
+- A QC report whose named symptom is real but whose prescribed fix is off by
+  an order of magnitude from the measured overshoot, or whose top-severity
+  finding doesn't reproduce at all — applying either literally would have
+  moved a compliant element out of compliance (see *Verification loop*'s
+  note on this same failure shape, and reproduce every finding against
+  actual pixels before building a fix plan from a report's wording).
+- Trying to fix a rendered-pixel safe-area overshoot by adding margin instead
+  of fixing what actually pushed the content past the line — an entrance
+  transform's transient overshoot needs the transform removed (or bounded),
+  not a bigger padding number that only shifts where the same bug resurfaces
+  next time a scene's resting position happens to sit close to the line.

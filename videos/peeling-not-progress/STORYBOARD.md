@@ -77,6 +77,26 @@ the type raise shifted it 52px off Frame 1's matched loop position; re-verified 
 1.5px after the fix. All five defects re-verified against the corrected final render,
 not re-assumed from the edits.
 
+**External QC report + a second safe-area round (2026-08-31, same day) — full
+account in `frame.md § Post-render review fixes` round 6.** A QC report's five
+findings were each reproduced against the actual render before acting: two (the
+outro's claimed position and the outro's claimed 4s hold) didn't reproduce at all;
+two (Frame 3's citation, Frame 4's right card) were real but misquantified 25-30x
+versus the report's own numbers; one (no captions) was real. The real safe-area
+findings turned out to be round 5's own "zoom-sized static margin" fix, computed
+correctly against the boundary in effect at the time and left 5-10px short once
+`--safe-bottom` was corrected to the skill's real 20% this same round (360px was
+18.75%, under the stated 20%) — plus a fourth violation the report never named
+(Frame 5) and a fifth found only by building a real rendered-pixel checker
+(`scripts/check-safe-area.py`) and running it at 4fps: a ~150ms entrance-transform
+transient in Frame 1 no prior spot-check (including this report) landed on. Fixed
+by deriving each zoomed scene's safe padding from its own scale/origin instead of a
+constant, and by removing Frame 1's entrance `translateY`. **No scene timing
+changed this round** — every `data-start`/duration below is still accurate. Also
+added this round: `captions/peeling-not-progress.srt` and `.vtt` (see DELIVERY.md),
+correcting a round-5-era reading of the skill's caption rule that was right about
+"no VO to transcribe" but incomplete about "so no captions deliverable."
+
 ## Frame 1 — hook
 
 - status: shipped
@@ -94,6 +114,11 @@ not re-assumed from the edits.
   the pattern-interrupt payoff, landing inside the shorts retention window.
   SFX: `droplet-tick` at the droplet's arrival, `whoosh-soft-myth-bust-cut` under the
   crack-draw.
+- correction (2026-08-31, round 6): "Does that mean it's working?"'s entrance carried
+  a `translateY(18px)` that transiently pushed it ~10px past the real safe-bottom line
+  for ~150ms before easing to its resting position (y1531, unchanged) — found by
+  `scripts/check-safe-area.py`'s 4fps scan, not by eye. Fixed to an opacity-only
+  cross-fade; beat timing and resting position both unchanged.
 
 ## Frame 2 — overload
 
@@ -142,6 +167,12 @@ not re-assumed from the edits.
   SFX: `wall-crumble-crack-collapse` (data-duration capped to ~2.2s, timed to the
   shard-detach beat only — the 5.39s source file is longer than this scene needs, see
   `frame.md § Audio mix`).
+- correction (2026-08-31, round 6): the qualifier/citation foot-zone measured 10px past
+  the real safe-bottom line at this scene's own max zoom — round 5's `+45px` allowance
+  was sized against the pre-correction `--safe-bottom` (360px) and undershot the real
+  20% line once that was corrected. Fixed with a derived safe box (function of this
+  scene's own scale/origin, not a constant); the diagram SVG narrowed 858×592→838×578
+  to fit the resulting column. Beat timing unchanged.
 
 ## Frame 4 — boundary
 
@@ -162,6 +193,12 @@ not re-assumed from the edits.
   vertical divider rule draws between the two cards, literalizing "the boundary."
   17.6–20.0s: a bounded (2-cycle, finite) pulse on the right card's alert dot keeps the
   tail from reading as a static hold. SFX: `click-soft-chip-pair-lands` on each chip.
+- correction (2026-08-31, round 6): the STOP card's right edge measured 5px past the
+  real safe-right line at this scene's own max zoom (same class of defect as Frame 3's
+  qualifier — a flat `--safe-right` token doesn't account for the scene's own
+  Ken-Burns scale). Fixed with the same derived safe box; both cards narrowed
+  400→396px max-width to hold the pair inside the resulting column. Beat timing
+  unchanged.
 
 ## Frame 5 — reset
 
@@ -184,6 +221,11 @@ not re-assumed from the edits.
   guidance document, not a binding rule — see BRIEF.md § Notes). 24.2–26.0s: a slow,
   continuous, seek-safe scale (1.0→1.03) across the full scene covers the tail so
   nothing sits frozen. SFX: `click-soft-3-each-step-arrives`, one hit per object.
+- correction (2026-08-31, round 6): the chips-zone measured 7px past the real
+  safe-bottom line at this scene's own max zoom, the same round-5-allowance-goes-stale
+  defect as Frame 3. Fixed with the same derived safe box; the three-object row
+  already had slack at the narrower resulting column and needed no re-fit. Beat
+  timing unchanged.
 
 ## Frame 6 — payoff
 

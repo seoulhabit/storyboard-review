@@ -1,7 +1,7 @@
 # Component catalog
 
 Everything built today, organized so it can be mixed and matched into videos
-instead of re-found by scrolling through file names. Four kinds of thing
+instead of re-found by scrolling through file names. Five kinds of thing
 live here:
 
 - **`ingredients/`** — substance-specific content: posters and explainers
@@ -24,6 +24,10 @@ live here:
   texture macros) rather than ingredients — 12 scenes for thumbnails,
   channel art, B-roll, and Shorts Studio inputs. Per-asset provenance and
   verification results live in [`manifest.json`](manifest.json).
+- **[`tooling/`](tooling/README.md)** — shared verification scripts, not
+  imagery or components. Currently one entry: a rendered-pixel safe-area
+  scanner harvested from `peeling-not-progress`'s round-6 fix, worth reusing
+  the same way a proven component is.
 
 A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
@@ -31,8 +35,8 @@ components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
 
 Open [index.html](index.html) for a browsable gallery — redesigned 2026-08-30
 to stop treating every entry as an image. Cards are grouped by **kind**
-(component / static composition / mark / photography / linked) and, for
-components specifically, by **control** — `⏱ clock` (deterministic,
+(component / static composition / mark / photography / linked / tooling) and,
+for components specifically, by **control** — `⏱ clock` (deterministic,
 seekable, safe for a real render), `◧ select` (a discrete prop, no time
 axis), or `⚠ none` (no scrub interface yet, or — flagged per-card — running
 on its own autoplaying clock and *not* render-safe, like Celestial Arc's
@@ -143,6 +147,17 @@ C2PA metadata). Not posters, not reusable UI patterns — just marks.
 `Fold & Spark` doesn't appear anywhere else in this repo yet — flagged in
 its own README as worth confirming with whoever's driving brand strategy
 before the name spreads further.
+
+## Verification tooling
+
+Not imagery or a design component — a shared script, catalogued for the
+same reason a component is: built once for a real project, worth finding
+before the next project rebuilds the same check from scratch. Full
+provenance and field contract in [`tooling/README.md`](tooling/README.md).
+
+| Item | File | What it is |
+|---|---|---|
+| [check-safe-area.py](tooling/check-safe-area.py) | `check-safe-area.py` | Scans a rendered MP4 for content inside YouTube Shorts' reserved UI zones on transformed, rendered pixels — catches an overshoot a source-level "are the tokens consumed" audit can't see. Harvested from `peeling-not-progress`'s round-6 safe-area fix. |
 
 ## Status legend
 

@@ -1,0 +1,190 @@
+<template>
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+
+  /* Paper ground + grain (PDRN surface kit, cloned) — own clip layers, never on #root. */
+  .corr-bg { background:radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .corr-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  /* FRAME line — EB Garamond italic, asserts-nothing layer above the panel. */
+  .corr-frameline { position:absolute; top:288px; left:90px; width:900px; text-align:center;
+    font-family:'EB Garamond',serif; font-style:italic; font-size:3.2cqw; line-height:1.4;
+    color:rgba(19,21,22,0.75); opacity:0; }
+
+  /* Dark stage panel — #131516 r40, ~680x1000, centered. The one glow-permitted surface. */
+  .corr-panel { position:absolute; top:380px; left:200px; width:680px; height:900px;
+    background:#131516; border-radius:40px; overflow:hidden; opacity:0; }
+
+  .corr-kicker { position:absolute; top:56px; left:0; right:0; text-align:center;
+    font-family:'JetBrains Mono',monospace; font-weight:500; font-size:1.62cqw;
+    letter-spacing:0.10em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  /* Log-scale axis: decade gridlines + labels (1x / 10x / 100x / 1,000x), one quiet group. */
+  .corr-grid { position:absolute; inset:0; opacity:0; }
+  .corr-gridline { position:absolute; top:140px; height:672px; width:1px; background:rgba(247,245,240,0.09); }
+  .corr-gridlabel { position:absolute; top:818px; transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace; font-weight:500; font-size:1.35cqw;
+    letter-spacing:0.06em; color:rgba(247,245,240,0.60); }
+
+  /* Claimed rows — big paper figure + dim mono tag, ghost outline bar beneath. */
+  .corr-row { position:absolute; left:56px; display:flex; align-items:baseline; gap:18px; opacity:0; }
+  .corr-row-1 { top:160px; }
+  .corr-row-2 { top:336px; }
+  .corr-fig-wrap { position:relative; display:inline-block; }
+  .corr-fig { font-weight:700; font-size:5.4cqw; line-height:1; letter-spacing:-0.01em;
+    color:#F7F5F0; font-variant-numeric:tabular-nums; }
+  .corr-tag { font-family:'JetBrains Mono',monospace; font-weight:500; font-size:1.5cqw;
+    letter-spacing:0.08em; color:rgba(247,245,240,0.55); opacity:0; }
+
+  /* Red strike — dark-panel negative register ONLY. One decisive stroke, ~3px, -2deg. */
+  .corr-strike { position:absolute; left:-3%; top:43%; width:106%; height:3px;
+    background:#E05252; border-radius:2px; box-shadow:0 0 10px rgba(224,82,82,0.55); }
+
+  .corr-bar { position:absolute; left:56px; height:20px; border-radius:10px;
+    border:1.5px solid rgba(247,245,240,0.35); background:rgba(247,245,240,0.04); }
+  .corr-bar-1 { top:250px; width:438px; }   /* log10(1000)=3.00 -> 438px */
+  .corr-bar-2 { top:426px; width:552px; }   /* log10(6000)=3.78 -> 552px */
+
+  .corr-divider { position:absolute; top:510px; left:56px; right:56px; height:1px;
+    background:rgba(247,245,240,0.14); }
+
+  /* Measured row — the frame's one aqua element: neon figure + solid glowing band. */
+  .corr-neon { position:absolute; top:552px; left:56px; font-weight:800; font-size:7.2cqw;
+    line-height:1; letter-spacing:-0.01em; text-transform:uppercase; color:#6FE0D3;
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 8px rgba(111,224,211,0.9), 0 0 24px rgba(89,184,174,0.65), 0 0 64px rgba(89,184,174,0.4);
+    opacity:0; }
+  .corr-band { position:absolute; top:668px; left:202px; width:146px; height:24px;   /* spans the 10x -> 100x decades */
+    border-radius:12px; background:linear-gradient(90deg, #59B8AE 0%, #6FE0D3 100%);
+    box-shadow:0 0 18px rgba(111,224,211,0.55), 0 0 44px rgba(89,184,174,0.35); }
+  .corr-subline { position:absolute; top:726px; left:56px;
+    font-family:'JetBrains Mono',monospace; font-weight:500; font-size:1.5cqw;
+    letter-spacing:0.10em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  /* Citation pill — on paper, below the panel (PDRN F6 pattern). */
+  /* v5 safe-area fix: pill sits inside the y ∈ [288,1440] content window (was 1432 —
+     under the Shorts title/channel overlay). Panel shed its ~100px of dead bottom space. */
+  .corr-pill-wrap { position:absolute; top:1296px; left:0; right:0; display:flex; justify-content:center; opacity:0; }
+  .corr-pill { display:inline-flex; align-items:center; gap:10px; white-space:nowrap;
+    background:rgba(111,143,114,0.10); border:1.5px solid rgba(111,143,114,0.45);
+    border-radius:999px; padding:14px 28px; font-size:2.4cqw; }
+  .corr-pill .corr-pill-lead { font-family:'Inter',sans-serif; font-weight:700; color:#131516; }
+  .corr-pill .corr-pill-src { font-family:'JetBrains Mono',monospace; font-weight:500; color:#9F6149; }
+</style>
+<div data-composition-id="03-correction" id="root" data-width="1080" data-height="1920" data-duration="13.205">
+  <div id="corr-bg" class="clip corr-bg" data-start="0" data-duration="13.205" data-track-index="0"></div>
+  <div id="corr-grain" class="clip corr-grain" data-start="0" data-duration="13.205" data-track-index="1"></div>
+
+  <div id="corr-stage" class="clip" data-start="0" data-duration="13.205" data-track-index="2">
+
+    <div class="corr-frameline" id="corr-frameline">The most repeated number in skincare has no measurement behind it.</div>
+
+    <div class="corr-panel" id="corr-panel">
+      <div class="corr-kicker" id="corr-kicker">WATER-BINDING CAPACITY &#183; CLAIMED VS MEASURED</div>
+
+      <div class="corr-grid" id="corr-grid">
+        <div class="corr-gridline" style="left:56px;"></div>
+        <div class="corr-gridline" style="left:202px;"></div>
+        <div class="corr-gridline" style="left:348px;"></div>
+        <div class="corr-gridline" style="left:494px;"></div>
+        <div class="corr-gridlabel" style="left:56px;">1&#215;</div>
+        <div class="corr-gridlabel" style="left:202px;">10&#215;</div>
+        <div class="corr-gridlabel" style="left:348px;">100&#215;</div>
+        <div class="corr-gridlabel" style="left:494px;">1,000&#215;</div>
+      </div>
+
+      <div class="corr-row corr-row-1" id="corr-row-1">
+        <span class="corr-fig-wrap"><span class="corr-fig" id="corr-fig-1">1,000&#215;</span><span class="corr-strike" id="corr-strike-1"></span></span>
+        <span class="corr-tag" id="corr-tag-1">&#8212; MARKETING</span>
+      </div>
+      <div class="corr-bar corr-bar-1" id="corr-bar-1"></div>
+
+      <div class="corr-row corr-row-2" id="corr-row-2">
+        <span class="corr-fig-wrap"><span class="corr-fig" id="corr-fig-2">6,000&#215;</span><span class="corr-strike" id="corr-strike-2"></span></span>
+        <span class="corr-tag" id="corr-tag-2">&#8212; MARKETING COPY</span>
+      </div>
+      <div class="corr-bar corr-bar-2" id="corr-bar-2"></div>
+
+      <div class="corr-divider" id="corr-divider"></div>
+
+      <div class="corr-neon" id="corr-neon">10&#8211;100&#215;</div>
+      <div class="corr-band" id="corr-band"></div>
+      <div class="corr-subline" id="corr-subline">MEASURED &#183; MOLECULAR-WEIGHT DEPENDENT</div>
+    </div>
+
+    <div class="corr-pill-wrap" id="corr-pill-wrap">
+      <div class="corr-pill"><span class="corr-pill-lead">CITATION &#8212;&nbsp;</span><span class="corr-pill-src">⌞ ING-hyaluronic-acid-S001 ⌟</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var frameline = document.getElementById('corr-frameline');
+  var panel = document.getElementById('corr-panel');
+  var kicker = document.getElementById('corr-kicker');
+  var grid = document.getElementById('corr-grid');
+  var row1 = document.getElementById('corr-row-1');
+  var row2 = document.getElementById('corr-row-2');
+  var fig1 = document.getElementById('corr-fig-1');
+  var fig2 = document.getElementById('corr-fig-2');
+  var tag1 = document.getElementById('corr-tag-1');
+  var tag2 = document.getElementById('corr-tag-2');
+  var strike1 = document.getElementById('corr-strike-1');
+  var strike2 = document.getElementById('corr-strike-2');
+  var bar1 = document.getElementById('corr-bar-1');
+  var bar2 = document.getElementById('corr-bar-2');
+  var divider = document.getElementById('corr-divider');
+  var neon = document.getElementById('corr-neon');
+  var band = document.getElementById('corr-band');
+  var subline = document.getElementById('corr-subline');
+  var pillWrap = document.getElementById('corr-pill-wrap');
+
+  gsap.set([bar1, bar2, band, divider], { scaleX: 0, transformOrigin: 'left center' });
+  gsap.set([strike1, strike2], { scaleX: 0, rotation: -2, transformOrigin: 'left center' });
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Scene 1 (0.0-0.8s): FRAME line settles above the panel; panel + kicker compose.
+  tl.fromTo(panel, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0);
+  tl.fromTo(frameline, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.65 }, 0.02);
+  tl.fromTo(kicker, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.45 }, 0.30);
+  tl.fromTo(grid, { opacity: 0 }, { opacity: 1, duration: 0.55 }, 0.45);
+
+  // Scene 2 (0.8-2.0s): row one on VO "a thousand times its weight" — figure, tag, ghost log-bar.
+  tl.fromTo(row1, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, 1.50);
+  tl.fromTo(tag1, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4 }, 1.75);
+  tl.to(bar1, { scaleX: 1, duration: 0.7 }, 1.90);
+
+  // Scene 3 (2.6-3.6s): row two on VO "six thousand" — longer ghost bar; then both red
+  // strikes draw through the figures on the em-dash beat (~3.6s), one decisive stroke each.
+  tl.fromTo(row2, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, 4.70);
+  tl.fromTo(tag2, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4 }, 4.90);
+  tl.to(bar2, { scaleX: 1, duration: 0.75 }, 5.00);
+  tl.to(strike1, { scaleX: 1, duration: 0.24, ease: 'power2.out' }, 5.95);
+  tl.to(fig1, { opacity: 0.62, duration: 0.3, ease: 'power2.out' }, 5.95);
+  tl.to(strike2, { scaleX: 1, duration: 0.24, ease: 'power2.out' }, 6.20);
+  tl.to(fig2, { opacity: 0.62, duration: 0.3, ease: 'power2.out' }, 6.20);
+
+  // Scene 4 (4.3-7.4s): on VO "measured" — divider, neon 10-100x, solid aqua band over the
+  // 10x->100x decades, mono sub-line on "set by molecular weight". Claimed bars recede.
+  tl.to(divider, { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }, 6.60);
+  tl.fromTo(neon, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55 }, 7.00);
+  tl.to(band, { scaleX: 1, duration: 0.6 }, 7.60);
+  tl.to([bar1, bar2], { opacity: 0.55, duration: 0.5 }, 7.60);
+  tl.fromTo(subline, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 9.45);
+
+  // Scene 5 (7.4-9.087s): CITATION pill lands below the panel on paper; held read to the cut.
+  tl.fromTo(pillWrap, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 }, 10.30);
+
+  tl.to({}, { duration: 12.705 }, 0); // full-span anchor — timeline duration == frame duration
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['03-correction'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,286 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+  <style>
+    @import url("assets/tokens/tokens.css");
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--ink);
+    }
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+
+    /* ---- background: full-bleed ground + faint static mist vignette (never on #root) ---- */
+    .hook-bg {
+      position: absolute;
+      inset: 0;
+      background-color: var(--paper);
+      background-image: radial-gradient(
+        ellipse 820px 820px at 50% 44%,
+        var(--mist) 0%,
+        rgba(240, 235, 225, 0) 72%
+      );
+    }
+
+    /* ---- hero: fist-holding-bottle group — frame.md shared presenter kit, path data
+       reused verbatim (bottle drawn first/behind, fist drawn on top so it visually grips
+       the bottle's lower third). foreground subject, enters first. ---- */
+    .hook-hero {
+      position: absolute;
+      left: 179px;
+      top: 700px;
+      width: 620px;
+      height: 775px;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .hook-hero-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .hook-kit-fill {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .hook-kit-line {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ---- shared row: centers content within the safe box (60 / 162 inset) ---- */
+    .hook-row {
+      position: absolute;
+      left: var(--safe-left);
+      right: var(--safe-right);
+      display: flex;
+      justify-content: center;
+    }
+    .hook-row--claim {
+      top: 220px;
+    }
+    .hook-row--stamp {
+      top: 400px;
+    }
+    .hook-row--chip {
+      top: 610px;
+    }
+
+    /* ---- claim: foreground subject, EB Garamond on paper ---- */
+    .hook-claim-wrap {
+      position: relative;
+    }
+    .hook-claim {
+      display: inline-block;
+      white-space: nowrap;
+      font-family: var(--font-display);
+      font-size: var(--t-frame);
+      line-height: var(--lh-snug);
+      color: var(--ink);
+      letter-spacing: var(--tr-display);
+    }
+    .hook-word {
+      display: inline-block;
+    }
+    /* the single interrogated-element accent for this frame: the specific
+       stat under scrutiny, before the verdict lands. */
+    .hook-word--stat {
+      border-bottom: 4px solid var(--aqua);
+      padding-bottom: 6px;
+    }
+    .hook-strike {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 20px;
+      transform: translateY(-50%);
+      display: block;
+    }
+    .hook-strike path {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    /* ---- MYTH stamp: ink-stamp badge component (frame.md), ink border on paper ---- */
+    .hook-stamp {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 44px;
+      border: 6px solid var(--ink);
+      border-radius: var(--r-3);
+      background: var(--paper);
+      box-shadow: var(--elev-2);
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+    .hook-stamp-text {
+      font-family: var(--font-display);
+      font-size: var(--t-hero);
+      font-weight: 700;
+      letter-spacing: var(--tr-display);
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    /* ---- source chip: mono pill, on mist — the lightweight per-claim citation device ---- */
+    .hook-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 26px;
+      background: var(--mist);
+      border-radius: var(--r-pill);
+      box-shadow: var(--elev-1);
+      will-change: transform, opacity;
+    }
+    .hook-chip-text {
+      font-family: var(--font-mono);
+      font-size: var(--t-chip);
+      letter-spacing: var(--tr-mono);
+      color: #6a6a6a; /* --ink-2 measures 4.49:1 on --mist, 0.01 under AA; 1 shade darker clears it */
+    }
+  </style>
+
+  <div data-hf-id="hf-5dmp" id="root" data-composition-id="01-hook" data-start="0" data-duration="8.885" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-87t6" class="clip hook-bg" data-start="0" data-duration="8.885" data-track-index="0"></div>
+
+    <!-- Scene 1 (0.0-1.6s): the fist-holding-bottle group (frame.md kit) spring-pops in,
+         close-up framing, bottle reading top-heavy in frame — "close-up holding the serum." -->
+    <div data-hf-id="hf-jrui" class="clip hook-hero" data-start="0" data-duration="8.885" data-track-index="1">
+      <svg data-hf-id="hf-0chb" class="hook-hero-svg" viewBox="-10 -30 200 250" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- bottle (prop): the fist wraps its lower third, so it is drawn first/behind. -->
+        <rect data-hf-id="hf-bdar" class="hook-kit-fill" x="98" y="-16" width="24" height="20" rx="4" />
+        <rect data-hf-id="hf-5ipl" class="hook-kit-fill" x="86" y="0" width="48" height="112" rx="12" />
+        <!-- fist: gripping the bottle's lower third, drawn on top of the bottle's base. -->
+        <path data-hf-id="hf-l6ao" class="hook-kit-fill" d="M 55 200 C 35 200, 22 182, 22 158 L 22 122 C 22 108, 30 100, 40 104
+             C 44 92, 52 86, 60 92 C 62 80, 72 74, 80 82 C 84 70, 96 66, 102 76
+             C 106 66, 118 64, 124 74 C 130 66, 142 68, 144 80 C 154 78, 162 86, 160 98
+             C 172 100, 178 112, 172 122 L 172 160 C 172 184, 158 200, 138 200 Z" />
+        <path data-hf-id="hf-vplb" class="hook-kit-fill" d="M 40 130 C 20 128, 8 142, 12 160 C 15 174, 30 182, 45 178
+             C 52 176, 54 165, 50 152 C 48 143, 45 134, 40 130 Z" />
+        <path data-hf-id="hf-h9so" class="hook-kit-line" d="M 62 108 L 60 130" />
+        <path data-hf-id="hf-blyi" class="hook-kit-line" d="M 92 96 L 88 128" />
+        <path data-hf-id="hf-bkau" class="hook-kit-line" d="M 122 92 L 116 128" />
+        <path data-hf-id="hf-2rtl" class="hook-kit-line" d="M 150 100 L 142 130" />
+      </svg>
+    </div>
+
+    <!-- Scene 2 (1.6-3.6s): the viral claim, per-word assembly above the bottle. -->
+    <div data-hf-id="hf-n4ah" class="clip hook-row hook-row--claim" data-start="0" data-duration="8.885" data-track-index="2">
+      <div data-hf-id="hf-arzr" class="hook-claim-wrap">
+        <span data-hf-id="hf-o35v" class="hook-claim" id="hook-claim">
+          <span data-hf-id="hf-7ign" class="hook-word hook-word--stat" id="hook-word-0">1,000x</span> <span data-hf-id="hf-4589" class="hook-word" id="hook-word-1">its</span> <span data-hf-id="hf-ptni" class="hook-word" id="hook-word-2">weight</span> <span data-hf-id="hf-7xsc" class="hook-word" id="hook-word-3">in</span> <span data-hf-id="hf-blyv" class="hook-word" id="hook-word-4">water</span>
+        </span>
+        <svg data-hf-id="hf-nnh4" class="hook-strike" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+          <path data-hf-id="hf-gcha" id="hook-strike-path" d="M2,10 L98,10" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Scene 3 (3.6-5.6s): ink-stamp verdict. -->
+    <div data-hf-id="hf-cqgp" class="clip hook-row hook-row--stamp" data-start="0" data-duration="8.885" data-track-index="3">
+      <div data-hf-id="hf-4tie" class="hook-stamp" id="hook-stamp">
+        <span data-hf-id="hf-d430" class="hook-stamp-text">MYTH</span>
+      </div>
+    </div>
+
+    <!-- Scene 3: source chip, the lightweight per-claim citation device. -->
+    <div data-hf-id="hf-3dfl" class="clip hook-row hook-row--chip" data-start="0" data-duration="8.885" data-track-index="4">
+      <div data-hf-id="hf-k5gi" class="hook-chip" id="hook-chip">
+        <span data-hf-id="hf-46i3" class="hook-chip-text">ING-hyaluronic-acid-S001</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      // Measure the strike path's real geometry — never a guessed length.
+      var strikePath = document.getElementById("hook-strike-path");
+      var strikeLen = strikePath.getTotalLength();
+      strikePath.style.strokeDasharray = String(strikeLen);
+      strikePath.style.strokeDashoffset = String(strikeLen);
+
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 1 (0.0-1.6s): fist-holding-bottle group (frame.md kit) spring-pops in —
+      // the primary subject, enters first, close-up framing. Lands fully by t=0.5s.
+      tl.fromTo(
+        ".hook-hero",
+        { scale: 0, opacity: 0, y: 24 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.48, ease: "power3.out" },
+        0.02,
+      );
+
+      // Scene 2 (1.6-3.6s): claim assembles word-by-word above the bottle
+      // (dynamic-content-sequencing's length-driven schedule, adapted from
+      // block-swap to cumulative per-word reveal — each word arrives and
+      // stays, rather than replacing the previous one).
+      var BASE = 0.15;
+      var SEC_PER_CHAR = 0.035;
+      var words = [
+        { sel: "#hook-word-0", chars: 6 }, // "1,000x"
+        { sel: "#hook-word-1", chars: 3 }, // "its"
+        { sel: "#hook-word-2", chars: 6 }, // "weight"
+        { sel: "#hook-word-3", chars: 2 }, // "in"
+        { sel: "#hook-word-4", chars: 5 }, // "water"
+      ];
+      var cursor = 1.65;
+      words.forEach(function (w) {
+        tl.fromTo(
+          w.sel,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+          cursor,
+        );
+        cursor += BASE + w.chars * SEC_PER_CHAR;
+      });
+
+      // Scene 3 (3.6-5.6s): on "actually a myth," the strike-line self-draws
+      // across the claim (svg-path-draw, measured geometry), the MYTH stamp
+      // spring-pops in at a fixed -6deg (rotation baked into both keyframes
+      // so GSAP owns the whole transform), and the source chip fades in
+      // beneath — three reveals paced across the window, not fired at once.
+      tl.to(strikePath, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, 3.7);
+
+      tl.fromTo(
+        "#hook-stamp",
+        { scale: 0, opacity: 0, rotation: -6 },
+        { scale: 1, opacity: 1, rotation: -6, duration: 0.55, ease: "power3.out" },
+        4.35,
+      );
+
+      tl.fromTo(
+        "#hook-chip",
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power1.out" },
+        4.95,
+      );
+
+      // Scene 4 (5.6-8.385s): hold, fully still — fist+bottle, struck claim,
+      // stamp, and chip all settled together in one frame. No exit tween
+      // (frame 1 of 6; the root "cut" transition is the exit).
+
+      window.__timelines["01-hook"] = tl;
+    })();
+  </script>
+</template>

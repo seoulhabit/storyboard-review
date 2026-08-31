@@ -1,0 +1,269 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+  <style>
+    @import url("assets/tokens/tokens.css");
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: var(--font-body);
+    }
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+
+    /* Full-bleed ground — a dedicated clip, never a #root background.
+       Explicit flat --paper per this frame's roles spec (no gradient). */
+    .sponge-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    /* The one foreground subject: the fist gripping the sponge from below.
+       Explicit width + height throughout (never auto) so the scaffold's
+       shared .clip{inset:0} rule can't stretch this box via a lingering
+       bottom/right constraint once top/left/width/height are all set. */
+    .sponge-hero {
+      position: absolute;
+      left: 99px;
+      top: 360px;
+      width: 780px;
+      height: 678px;
+      transform-origin: 50% 50%;
+    }
+    .sponge-hero svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Sponge — same outline rect throughout; ink retreats, aqua draws in. */
+    .sponge-outline-ink {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sponge-outline-aqua {
+      fill: none;
+      stroke: var(--aqua);
+      stroke-width: 9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+    }
+    .sponge-crack {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sponge-pore {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 5;
+    }
+
+    /* Fist + thumb — verbatim kit path data (frame.md), ink-linework. */
+    .sponge-fist-fill {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .sponge-fist-crease {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .sponge-thumb-fill {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    /* Supporting label — one pill, two stacked spans crossfade in place
+       (never two badges entering/exiting — a direct swap, per the roles). */
+    .sponge-badge {
+      position: absolute;
+      left: 377px;
+      top: 1120px;
+      width: 224px;
+      height: 64px;
+      border-radius: var(--r-pill);
+      background: var(--mist);
+      border: var(--rule-w-thin) solid var(--rule-strong);
+      box-shadow: var(--elev-1);
+      transform-origin: 50% 50%;
+    }
+    .sponge-badge-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--t-chip);
+      letter-spacing: var(--tr-mono-wide);
+      line-height: 1;
+      text-transform: uppercase;
+      color: #6a6a6a; /* --ink-2 measures 4.49:1 on --mist, 0.01 under AA; 1 shade darker clears it */
+    }
+    .sponge-badge-hydrated-text {
+      opacity: 0; /* revealed on cue by GSAP in Scene 3 — not an entrance, a scheduled reveal */
+    }
+  </style>
+
+  <div data-hf-id="hf-og48" id="root" data-composition-id="02-sponge" data-start="0" data-width="1080" data-height="1920" data-duration="8.154">
+    <div data-hf-id="hf-fmwk" class="clip sponge-bg" data-start="0" data-duration="8.154" data-track-index="0"></div>
+
+    <!-- The fist + sponge — one continuous subject for the whole shot. Paint
+         order (back to front): sponge outline(s) → surface detail (cracks,
+         pores) → fist group, so the fist visually grips the sponge's lower
+         third from in front, per the kit's construction note. -->
+    <div data-hf-id="hf-gr54" class="clip sponge-hero" data-start="0" data-duration="8.154" data-track-index="1">
+      <svg data-hf-id="hf-hkop" viewBox="0 0 460 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- Same outline rect for both states: ink retreats, aqua draws in. -->
+        <rect data-hf-id="hf-as97" class="sponge-outline-ink" x="100" y="20" width="260" height="240" rx="36" ry="36" />
+        <rect data-hf-id="hf-zdd5" class="sponge-outline-aqua" x="100" y="20" width="260" height="240" rx="36" ry="36" />
+
+        <!-- Dry-state cracks — clear away in Scene 3. -->
+        <path data-hf-id="hf-6btr" class="sponge-crack" d="M 150 20 L 165 68 L 145 108 L 160 165" />
+        <path data-hf-id="hf-4h2z" class="sponge-crack" d="M 230 25 L 214 78 L 236 122 L 216 168" />
+        <path data-hf-id="hf-qdwc" class="sponge-crack" d="M 300 45 L 284 92 L 304 132 L 288 160" />
+
+        <!-- Pores — same circles, radius grows in Scene 3 (data-r-hydrated
+             is the measured target the setup script reads, never guessed). -->
+        <circle data-hf-id="hf-qax2" class="sponge-pore" cx="140" cy="75" r="9" data-r-hydrated="15" />
+        <circle data-hf-id="hf-6476" class="sponge-pore" cx="200" cy="65" r="7" data-r-hydrated="13" />
+        <circle data-hf-id="hf-i6ym" class="sponge-pore" cx="270" cy="80" r="10" data-r-hydrated="17" />
+        <circle data-hf-id="hf-jopg" class="sponge-pore" cx="320" cy="110" r="8" data-r-hydrated="14" />
+        <circle data-hf-id="hf-twgk" class="sponge-pore" cx="130" cy="140" r="8" data-r-hydrated="14" />
+        <circle data-hf-id="hf-xigf" class="sponge-pore" cx="200" cy="150" r="11" data-r-hydrated="18" />
+        <circle data-hf-id="hf-6b95" class="sponge-pore" cx="300" cy="155" r="9" data-r-hydrated="15" />
+        <circle data-hf-id="hf-tohn" class="sponge-pore" cx="155" cy="210" r="9" data-r-hydrated="15" />
+        <circle data-hf-id="hf-nhmv" class="sponge-pore" cx="225" cy="205" r="8" data-r-hydrated="14" />
+        <circle data-hf-id="hf-v7es" class="sponge-pore" cx="290" cy="215" r="10" data-r-hydrated="17" />
+
+        <!-- Fist + thumb — verbatim kit path data, repositioned/scaled only
+             via this wrapping transform (never redrawn). Grip origin lands
+             on the sponge's lower third (y 180-260 of the 20-260 rect). -->
+        <g data-hf-id="hf-c9tc" class="sponge-fist-group" transform="translate(109,97) scale(1.3)">
+          <path data-hf-id="hf-55tb" class="sponge-fist-fill" d="M 55 200 C 35 200, 22 182, 22 158 L 22 122 C 22 108, 30 100, 40 104 C 44 92, 52 86, 60 92 C 62 80, 72 74, 80 82 C 84 70, 96 66, 102 76 C 106 66, 118 64, 124 74 C 130 66, 142 68, 144 80 C 154 78, 162 86, 160 98 C 172 100, 178 112, 172 122 L 172 160 C 172 184, 158 200, 138 200 Z" />
+          <path data-hf-id="hf-f4gm" class="sponge-fist-crease" d="M 62 108 L 60 130" />
+          <path data-hf-id="hf-r1w0" class="sponge-fist-crease" d="M 92 96 L 88 128" />
+          <path data-hf-id="hf-qris" class="sponge-fist-crease" d="M 122 92 L 116 128" />
+          <path data-hf-id="hf-rncn" class="sponge-fist-crease" d="M 150 100 L 142 130" />
+          <path data-hf-id="hf-knoe" class="sponge-thumb-fill" d="M 40 130 C 20 128, 8 142, 12 160 C 15 174, 30 182, 45 178 C 52 176, 54 165, 50 152 C 48 143, 45 134, 40 130 Z" />
+        </g>
+      </svg>
+    </div>
+
+    <!-- Supporting label — swaps in place, never re-enters. -->
+    <div data-hf-id="hf-adp8" class="clip sponge-badge" data-start="0" data-duration="8.154" data-track-index="2">
+      <span data-hf-id="hf-ra9s" class="sponge-badge-text sponge-badge-dry-text">DRY</span>
+      <span data-hf-id="hf-pmra" class="sponge-badge-text sponge-badge-hydrated-text">HYDRATED</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // Setup — measure the aqua (hydrated) outline once, synchronously
+      // (getTotalLength, never guessed), before any tween references it.
+      var aquaOutline = document.querySelector(".sponge-outline-aqua");
+      if (aquaOutline) {
+        var aquaLen = aquaOutline.getTotalLength();
+        aquaOutline.style.strokeDasharray = String(aquaLen);
+        aquaOutline.style.strokeDashoffset = String(aquaLen);
+      }
+
+      // Scene 1 (0.0-1.8s) — "Picture your skin cells like a sponge."
+      // The whole fist+sponge group pops in together, centered, close-up.
+      // Hero clearly visible well before t=0.5s.
+      tl.fromTo(
+        ".sponge-hero",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+        0.08
+      );
+
+      // "DRY" pill arrives just after, beside the hero.
+      tl.fromTo(
+        ".sponge-badge",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
+        0.45
+      );
+
+      // Scene 2 (1.8-4.0s) — "Dry, they shrivel." Deliberate stillness:
+      // cracks and pores hold static, nothing animates in this window.
+
+      // Scene 3 (4.0-6.3s) — "Add hyaluronic acid, and they bounce right
+      // back." The SAME fist/sponge transforms in place: cracks clear,
+      // pores enlarge, the outline redraws in aqua (svg-path-draw), and
+      // the label crossfades — a direct transformation, not a new object.
+      tl.to(".sponge-crack", { opacity: 0, duration: 0.5, ease: "power2.out" }, 4.0);
+
+      var pores = Array.prototype.slice.call(document.querySelectorAll(".sponge-pore"));
+      pores.forEach(function (pore, i) {
+        var targetR = parseFloat(pore.getAttribute("data-r-hydrated"));
+        tl.to(pore, { attr: { r: targetR }, duration: 0.7, ease: "power2.out" }, 4.1 + i * 0.03);
+      });
+
+      tl.to(".sponge-outline-ink", { opacity: 0, duration: 0.6, ease: "power2.out" }, 4.3);
+
+      if (aquaOutline) {
+        tl.to(aquaOutline, { strokeDashoffset: 0, duration: 0.8, ease: "power2.out" }, 4.2);
+      }
+
+      // Hard toggle, not a crossfade: both spans occupy the identical box (inset:0),
+      // so any temporal overlap between the two opacity fades reads as garbled
+      // double-printed text ("DRY"+"HYDRATED" stacked) — same fix as the caption
+      // pill's whole-group fade. Instant swap, no window where both are visible.
+      tl.set(".sponge-badge-dry-text", { opacity: 0 }, 4.6);
+      tl.set(".sponge-badge-hydrated-text", { opacity: 1 }, 4.6);
+
+      // Scene 4 (6.3-7.654s) — hold, fist + hydrated sponge fully settled.
+      // Only the aqua outline carries a low-amplitude sine jitter
+      // (sine-wave-loop) — nothing else moves.
+      var jitterPhase = { p: 0 };
+      var JITTER_START = 6.4;
+      var TOTAL_DURATION = 7.654;
+      var JITTER_DUR = TOTAL_DURATION - JITTER_START;
+      var CYCLES = 0.8; // period ≈ 1.57s, within range for a short idle window
+      var Y_AMP_PX = 2.5;
+      tl.to(
+        jitterPhase,
+        {
+          p: Math.PI * 2 * CYCLES,
+          duration: JITTER_DUR,
+          ease: "none",
+          onUpdate: function () {
+            if (!aquaOutline) return;
+            var s = Math.sin(jitterPhase.p);
+            aquaOutline.style.transform = "translateY(" + (s * Y_AMP_PX).toFixed(2) + "px)";
+          },
+        },
+        JITTER_START
+      );
+
+      window.__timelines["02-sponge"] = tl;
+    })();
+  </script>
+</template>

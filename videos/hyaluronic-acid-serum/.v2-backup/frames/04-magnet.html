@@ -1,0 +1,304 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+  <style>
+    @import url("assets/tokens/tokens.css");
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--ink);
+    }
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+
+    /* Full-bleed ground — a dedicated clip, never a #root background. */
+    .magnet-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    /* ---- shared ink-linework kit styling (frame.md "Illustrated presenter kit") ---- */
+    .magnet-kit-fill {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .magnet-kit-crease {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    /* ---- face profile (frame.md kit, verbatim path) — foreground subject ---- */
+    .magnet-face {
+      position: absolute;
+      left: 329px;
+      top: 404px;
+      width: 480px;
+      height: 560px;
+      transform-origin: 50% 50%;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .magnet-face svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* ---- fist (frame.md kit, verbatim path, no prop) — foreground subject, pats the cheek ---- */
+    .magnet-fist {
+      position: absolute;
+      left: 439px;
+      top: 516px;
+      width: 380px;
+      height: 418px;
+      transform-origin: 50% 50%;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .magnet-fist svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* Droplets converge toward a zero-size anchor planted at the fist's own contact point on the
+       cheek (629,664) — center-outward-expansion run in reverse: each starts at its
+       data-target-x/y edge offset and eases to 0,0, arriving (and being absorbed) at that point. */
+    .magnet-burst-anchor {
+      position: absolute;
+      left: 629px;
+      top: 664px;
+      width: 0;
+      height: 0;
+    }
+    .magnet-droplet {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    /* ---- fine line on the cheek — supporting; eases flat once the serum is pressed in ---- */
+    .magnet-fineline {
+      position: absolute;
+      left: 490px;
+      top: 572px;
+      width: 220px;
+      height: 55px;
+      transform-origin: 50% 50%;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .magnet-fineline svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .magnet-caption {
+      position: absolute;
+      left: 260px;
+      top: 1280px;
+      width: 560px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .magnet-caption-text {
+      font-family: var(--font-display);
+      font-size: var(--t-frame);
+      letter-spacing: var(--tr-display);
+      line-height: var(--lh-tight);
+      color: var(--ink);
+    }
+    .magnet-caption-cursor {
+      display: inline-block;
+      width: 4px;
+      height: 46px;
+      background: var(--ink);
+      vertical-align: -8px;
+      margin-left: 6px;
+      opacity: 0;
+    }
+  </style>
+
+  <div data-hf-id="hf-oezh" id="root" data-composition-id="04-magnet" data-width="1080" data-height="1920" data-duration="8.542">
+    <div data-hf-id="hf-5y4d" class="clip magnet-bg" data-start="0" data-duration="8.542" data-track-index="0"></div>
+
+    <!-- Scene 1 (0.0-2.0s): the face profile re-enters/settles centered as the VO says "that's
+         why topping it back up matters." Persists the full frame — the presenter's face is the
+         constant subject scenes 2-3 build on. Path data copied verbatim from frame.md's kit. -->
+    <div data-hf-id="hf-2vhm" class="clip magnet-face" data-start="0" data-duration="8.542" data-track-index="1">
+      <svg data-hf-id="hf-od4o" viewBox="0 0 240 280" aria-hidden="true">
+        <path data-hf-id="hf-dyps" class="magnet-kit-fill" d="M 88 20 C 138 14, 174 46, 178 92 C 179 103, 186 108, 196 113 C 203 117, 201 125, 192 128 C 184 131, 181 140, 186 152 C 190 163, 181 171, 169 167 C 165 182, 152 195, 134 199 C 130 214, 117 226, 98 224 C 82 222, 70 210, 67 194 C 49 187, 37 171, 34 151 C 29 121, 36 87, 56 60 C 65 40, 76 26, 88 20 Z" />
+      </svg>
+    </div>
+
+    <!-- Scene 2 (2.0-5.2s): as the VO says "it acts like a moisture magnet — pulling water into
+         the skin," 8 aqua droplets converge inward from the frame's edges onto the fist's contact
+         point on the cheek, tight-staggered so the group reads as one beat, and are absorbed
+         (shrink + fade) on arrival — the script's own magnet graphic, now landing on the face. -->
+    <div data-hf-id="hf-xhc5" class="clip magnet-droplets" data-start="2.0" data-duration="3.2" data-track-index="2">
+      <div data-hf-id="hf-nfpb" class="magnet-burst-anchor">
+        <svg data-hf-id="hf-syuc" class="magnet-droplet" data-target-x="0" data-target-y="-535" viewBox="0 0 32 40" width="30" height="37" aria-hidden="true"><path data-hf-id="hf-wypq" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-j8rm" class="magnet-droplet" data-target-x="300" data-target-y="-480" viewBox="0 0 32 40" width="26" height="32" aria-hidden="true"><path data-hf-id="hf-h8ki" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-mpal" class="magnet-droplet" data-target-x="400" data-target-y="-40" viewBox="0 0 32 40" width="32" height="40" aria-hidden="true"><path data-hf-id="hf-hmvj" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-h9nq" class="magnet-droplet" data-target-x="330" data-target-y="400" viewBox="0 0 32 40" width="24" height="30" aria-hidden="true"><path data-hf-id="hf-i16k" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-wtn3" class="magnet-droplet" data-target-x="0" data-target-y="570" viewBox="0 0 32 40" width="28" height="35" aria-hidden="true"><path data-hf-id="hf-ifhl" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-3i79" class="magnet-droplet" data-target-x="-360" data-target-y="360" viewBox="0 0 32 40" width="22" height="27" aria-hidden="true"><path data-hf-id="hf-itsm" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-026r" class="magnet-droplet" data-target-x="-540" data-target-y="-60" viewBox="0 0 32 40" width="30" height="37" aria-hidden="true"><path data-hf-id="hf-j83n" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+        <svg data-hf-id="hf-l3hr" class="magnet-droplet" data-target-x="-250" data-target-y="-440" viewBox="0 0 32 40" width="25" height="31" aria-hidden="true"><path data-hf-id="hf-jmeo" d="M16,3 C16,3 5,17 5,26 C5,32.9 9.9,38 16,38 C22.1,38 27,32.9 27,26 C27,17 16,3 16,3 Z" fill="var(--aqua)" /></svg>
+      </div>
+    </div>
+
+    <!-- Fist (frame.md kit, verbatim path, no prop — open patting motion), painted above the
+         droplets/face so it reads as the hand in front, pressed against the cheek. Enters and
+         pats the cheek twice in Scene 1, holds through Scene 2, withdraws at Scene 3's start. -->
+    <div data-hf-id="hf-1lht" class="clip magnet-fist" data-start="0" data-duration="8.542" data-track-index="3">
+      <svg data-hf-id="hf-5i7e" viewBox="0 0 200 220" aria-hidden="true">
+        <path data-hf-id="hf-pqqv" class="magnet-kit-fill" d="M 55 200 C 35 200, 22 182, 22 158 L 22 122 C 22 108, 30 100, 40 104 C 44 92, 52 86, 60 92 C 62 80, 72 74, 80 82 C 84 70, 96 66, 102 76 C 106 66, 118 64, 124 74 C 130 66, 142 68, 144 80 C 154 78, 162 86, 160 98 C 172 100, 178 112, 172 122 L 172 160 C 172 184, 158 200, 138 200 Z" />
+        <path data-hf-id="hf-u01m" class="magnet-kit-fill" d="M 40 130 C 20 128, 8 142, 12 160 C 15 174, 30 182, 45 178 C 52 176, 54 165, 50 152 C 48 143, 45 134, 40 130 Z" />
+        <path data-hf-id="hf-zk9a" class="magnet-kit-crease" d="M 62 108 L 60 130" />
+        <path data-hf-id="hf-yqrc" class="magnet-kit-crease" d="M 92 96 L 88 128" />
+        <path data-hf-id="hf-vrho" class="magnet-kit-crease" d="M 122 92 L 116 128" />
+        <path data-hf-id="hf-1aov" class="magnet-kit-crease" d="M 150 100 L 142 130" />
+      </svg>
+    </div>
+
+    <!-- Scene 3 (5.2-8.542s): as the VO says "softening the look of fine lines," the fine line
+         eases down in stroke-weight and flattens; "Moisture Magnet" types on beneath and holds. -->
+    <div data-hf-id="hf-23no" class="clip magnet-fineline" data-start="5.2" data-duration="3.342" data-track-index="4">
+      <svg data-hf-id="hf-nml0" viewBox="0 0 240 60" aria-hidden="true">
+        <path data-hf-id="hf-ny1f" class="magnet-fineline-path" d="M10,30 C50,5 70,55 120,30 C170,5 190,55 230,30" fill="none" stroke="var(--ink)" stroke-width="7" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+      </svg>
+    </div>
+
+    <div data-hf-id="hf-xion" class="clip magnet-caption" data-start="5.2" data-duration="3.342" data-track-index="5">
+      <span data-hf-id="hf-e0i6" class="magnet-caption-text"></span><span data-hf-id="hf-7lrl" class="magnet-caption-cursor"></span>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const TOTAL = 8.542;
+
+    const faceEl = document.querySelector(".magnet-face");
+    const fistEl = document.querySelector(".magnet-fist");
+    const dropletEls = document.querySelectorAll(".magnet-droplet");
+    const fineLineEl = document.querySelector(".magnet-fineline");
+    const fineLinePath = document.querySelector(".magnet-fineline-path");
+    const textEl = document.querySelector(".magnet-caption-text");
+    const cursorEl = document.querySelector(".magnet-caption-cursor");
+
+    // ---- Scene 1 (0.0-2.0s) ----
+    // Face settles centered — hero visible well before t=0.5s; opacity resolves fast while the
+    // position/scale settle continues a touch longer.
+    tl.fromTo(faceEl, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0);
+    tl.fromTo(faceEl, { y: -45, scale: 0.94 }, { y: 0, scale: 1, duration: 0.8, ease: "power2.out" }, 0);
+
+    // Fist enters to an "approach" position just off the cheek (also visible by t<=0.5s), then
+    // pats the cheek twice — press to contact, release, press again and HOLD in contact. That
+    // held contact point (x:0, y:0 — the fist's resting position) is what Scene 2's droplets
+    // converge onto and what Scene 3's fine line sits beside.
+    tl.fromTo(
+      fistEl,
+      { opacity: 0, x: 170, y: 250, scale: 0.94 },
+      { opacity: 1, x: 55, y: 70, scale: 1, duration: 0.4, ease: "power2.out" },
+      0.1
+    );
+    tl.to(fistEl, { x: 0, y: 0, scale: 0.97, duration: 0.2, ease: "power2.out" }, 0.55); // pat 1: press
+    tl.to(fistEl, { x: 55, y: 70, scale: 1, duration: 0.22, ease: "power2.inOut" }, 0.78); // pat 1: release
+    tl.to(fistEl, { x: 0, y: 0, scale: 0.97, duration: 0.2, ease: "power2.out" }, 1.25); // pat 2: press
+    tl.to(fistEl, { scale: 1, duration: 0.2, ease: "power1.out" }, 1.45); // pat 2: settle + hold
+
+    // ---- Scene 2 (2.0-5.2s) ----
+    // center-outward-expansion run in reverse: each droplet starts at its data-target-x/y edge
+    // offset and eases to 0,0 (the fist's contact point on the cheek), shrinking and fading as
+    // it's absorbed. Stagger capped tight (0.09s) so the group reads as one convergence beat.
+    const ENTRY_AT = 2.35;
+    const STAGGER = 0.09;
+    const DROP_DUR = 1.5;
+    dropletEls.forEach((el, i) => {
+      const tx = Number(el.dataset.targetX);
+      const ty = Number(el.dataset.targetY);
+      const start = ENTRY_AT + i * STAGGER;
+      tl.fromTo(
+        el,
+        { xPercent: -50, yPercent: -50, x: tx, y: ty, scale: 0.8, opacity: 0 },
+        { x: 0, y: 0, scale: 0.3, duration: DROP_DUR, ease: "power2.out" },
+        start
+      );
+      tl.to(el, { opacity: 1, duration: 0.15, ease: "power1.out" }, start);
+      tl.to(el, { opacity: 0, duration: 0.3, ease: "power1.in" }, start + DROP_DUR - 0.3);
+    });
+
+    // ---- Scene 3 (5.2-8.542s) ----
+    // The fist withdraws — a mid-shot action, not the frame's own exit (the root push-slide-up
+    // is the exit). Fine line eases down in stroke-weight and flattens; non-scaling-stroke keeps
+    // the drawn line crisp while scaleY alone does the flattening.
+    tl.to(fistEl, { x: 260, y: 300, opacity: 0, duration: 0.55, ease: "power2.in" }, 5.2);
+
+    tl.fromTo(fineLineEl, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power1.out" }, 5.3);
+    tl.to(fineLineEl, { scaleY: 0.22, duration: 1.4, ease: "power2.inOut" }, 5.7);
+    tl.to(fineLinePath, { attr: { "stroke-width": 2 }, duration: 1.4, ease: "power2.inOut" }, 5.7);
+
+    // "Moisture Magnet" — discrete-text-sequence: keystrokes, a word-break pause, one bulk
+    // finish, then holds with a blinking cursor.
+    const SEQUENCE = [
+      { t: 6.0, text: "" },
+      { t: 6.08, text: "M" },
+      { t: 6.16, text: "Mo" },
+      { t: 6.24, text: "Moi" },
+      { t: 6.32, text: "Mois" },
+      { t: 6.4, text: "Moist" },
+      { t: 6.48, text: "Moistu" },
+      { t: 6.56, text: "Moistur" },
+      { t: 6.64, text: "Moisture" },
+      { t: 7.04, text: "Moisture Magnet" },
+    ];
+    function textAt(time) {
+      for (let i = SEQUENCE.length - 1; i >= 0; i--) {
+        if (time >= SEQUENCE[i].t) return SEQUENCE[i].text;
+      }
+      return "";
+    }
+    const typeDriver = { t: 6.0 };
+    tl.to(typeDriver, {
+      t: TOTAL,
+      duration: TOTAL - 6.0,
+      ease: "none",
+      onUpdate: () => {
+        textEl.textContent = textAt(typeDriver.t);
+      },
+    }, 6.0);
+
+    // Cursor blink — deterministic sine square wave tied to timeline position, never wall clock.
+    const BLINK_START = 5.2;
+    const blink = { p: 0 };
+    tl.to(blink, {
+      p: Math.PI * 2 * 5,
+      duration: TOTAL - BLINK_START,
+      ease: "none",
+      onUpdate: () => {
+        cursorEl.style.opacity = Math.sin(blink.p) > 0 ? "1" : "0";
+      },
+    }, BLINK_START);
+
+    window.__timelines["04-magnet"] = tl;
+  </script>
+</template>

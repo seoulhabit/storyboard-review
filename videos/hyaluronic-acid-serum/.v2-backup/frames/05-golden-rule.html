@@ -1,0 +1,536 @@
+<template>
+  <style>
+    @import url("assets/tokens/tokens.css");
+
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: var(--font-body);
+    }
+
+    /* full-bleed ground — dedicated clip layer, never painted on #root */
+    .fr05-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    /* ================= Scene 1-2: spray-bottle-and-face opener (frame.md kit) =========
+       Literal action beat — "spray your face with a water mist" — the cold open this
+       frame was rejected for missing. Reuses frame.md's kit path data verbatim for the
+       spray bottle (body/collar/nozzle) and the face profile; only the wrapping <g>/
+       container transforms reposition and mirror them. Clears/shrinks aside in Scene 2
+       as the comparison stage (kept below) takes over. Plain overlay div (not class="clip")
+       — same convention .fr05-safe already uses — visibility governed entirely by GSAP. */
+    .fr05-opener {
+      position: absolute;
+      top: var(--safe-top);
+      left: var(--safe-left);
+      right: var(--safe-right);
+      bottom: var(--safe-bottom);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fr05-opener-inner {
+      position: relative;
+      width: 830px;
+      height: 560px;
+      transform-origin: 50% 50%;
+    }
+    .fr05-opener-bottle {
+      position: absolute;
+      left: 20px;
+      top: 180px;
+      width: 260px;
+      height: 283px;
+    }
+    .fr05-opener-bottle svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .fr05-opener-face {
+      position: absolute;
+      left: 470px;
+      top: 60px;
+      width: 340px;
+      height: 397px;
+    }
+    .fr05-opener-face svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    /* kit-wide ink-linework spec: fill var(--mist), stroke var(--ink) width 7, round joins/caps */
+    .fr05-kit-line {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    /* three short --aqua mist strokes fanning from the nozzle tip (kit-specified) */
+    .fr05-mist-fan {
+      fill: none;
+      stroke: var(--aqua);
+      stroke-width: 7;
+      stroke-linecap: round;
+    }
+    /* traveling mist droplets — nozzle-to-cheek anchor, matches the 04-magnet.html
+       center-anchor pattern (all droplets share one origin, tween x/y outward) */
+    .fr05-mist-anchor {
+      position: absolute;
+      left: 212px;
+      top: 215px;
+      width: 0;
+      height: 0;
+    }
+    .fr05-mist-drop {
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+      background: var(--aqua);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    #fr05-mist-drop-1 {
+      width: 18px;
+      height: 18px;
+    }
+    #fr05-mist-drop-2 {
+      width: 14px;
+      height: 14px;
+    }
+    #fr05-mist-drop-3 {
+      width: 16px;
+      height: 16px;
+    }
+    #fr05-mist-drop-4 {
+      width: 12px;
+      height: 12px;
+    }
+
+    .fr05-safe {
+      position: absolute;
+      top: var(--safe-top);
+      left: var(--safe-left);
+      right: var(--safe-right);
+      bottom: var(--safe-bottom);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    /* ---- golden-rule stamp (ink-stamp badge, coral variant) ---- */
+    .fr05-stamp-zone {
+      flex: 0 0 auto;
+      height: 170px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fr05-stamp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--s-4) var(--s-6);
+      background: var(--paper);
+      border: var(--rule-w-strong) solid var(--coral);
+      border-radius: var(--r-3);
+      box-shadow: var(--elev-2);
+      font-family: var(--font-display);
+      font-size: var(--t-frame);
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: var(--tr-display);
+      white-space: nowrap;
+      transform-origin: 50% 50%;
+    }
+
+    /* ---- split-tilt-cards stage (kept from prior build) ---- */
+    .fr05-stage-outer {
+      flex: 0 0 auto;
+      position: relative;
+      width: 808px;
+      height: 820px;
+      perspective: 1400px;
+    }
+    .fr05-divider {
+      position: absolute;
+      left: 403px;
+      top: 0;
+      width: var(--rule-w);
+      height: 820px;
+      background: var(--rule);
+    }
+    .fr05-stage {
+      display: flex;
+      gap: 96px;
+      transform-style: preserve-3d;
+    }
+    .fr05-card {
+      width: 356px;
+      height: 820px;
+      transform-style: preserve-3d;
+      will-change: transform;
+      background: var(--surface-raised);
+      border: var(--rule-w-thin) solid var(--rule-strong);
+      border-radius: var(--r-4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 70px;
+    }
+    /* shadow falls with the facing direction of each tilt */
+    .fr05-card-left {
+      box-shadow: 18px 26px 46px -14px rgba(19, 21, 22, 0.35);
+    }
+    .fr05-card-right {
+      box-shadow: -18px 26px 46px -14px rgba(19, 21, 22, 0.35);
+    }
+    .fr05-card-svg {
+      width: 200px;
+      height: 260px;
+      overflow: visible;
+    }
+    .fr05-surface-line {
+      fill: none;
+      stroke: var(--ink-3);
+      stroke-width: 5;
+      stroke-linecap: round;
+    }
+    .fr05-arrow-path {
+      fill: none;
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #fr05-arrow-dry {
+      stroke: var(--ink);
+    }
+    #fr05-arrow-damp {
+      stroke: var(--aqua);
+    }
+    #fr05-droplet-dry {
+      fill: var(--ink);
+      transform-origin: 100px 52px;
+    }
+    #fr05-droplet-damp {
+      fill: var(--aqua);
+      transform-origin: 100px 207px;
+    }
+
+    /* ---- inner-edge pill badges — parent-level, never nested in a card ---- */
+    .fr05-pill {
+      position: absolute;
+      top: 378px;
+      width: 200px;
+      height: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      background: var(--paper);
+      border: var(--rule-w) solid var(--ink);
+      border-radius: var(--r-pill);
+      box-shadow: var(--elev-1);
+      transform-origin: 50% 50%;
+      z-index: 3;
+    }
+    .fr05-pill-left {
+      left: 186px;
+    }
+    .fr05-pill-right {
+      left: 422px;
+    }
+    .fr05-pill-label {
+      font-family: var(--font-body);
+      font-size: var(--t-label);
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: var(--tr-body);
+      white-space: nowrap;
+    }
+    .fr05-underline {
+      width: 74px;
+      height: var(--rule-w-strong);
+      border-radius: var(--r-1);
+      background: var(--aqua);
+      transform-origin: left center;
+    }
+
+    /* ---- source chip ---- */
+    .fr05-chip {
+      flex: 0 0 auto;
+      display: inline-flex;
+      padding: var(--s-2) var(--s-4);
+      background: var(--mist);
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: var(--t-chip);
+      color: var(--ink-2);
+      letter-spacing: var(--tr-mono);
+    }
+  </style>
+
+  <div data-hf-id="hf-36op" id="root" data-composition-id="05-golden-rule" data-start="0" data-width="1080" data-height="1920" data-duration="9.382">
+    <div data-hf-id="hf-8f8b" class="clip fr05-bg" data-start="0" data-duration="9.382" data-track-index="0"></div>
+
+    <!-- Scene 1 (0.0-2.0s): the spray bottle mists the face profile — the script's literal
+         "spray your face with a water mist," now the frame's cold open. Bottle on the left
+         (kit orientation, nozzle jutting up-right, unmirrored); face profile on the right,
+         mirrored so it faces left toward the bottle (frame.md's own documented mirror use
+         case). 3-4 aqua droplet flecks travel from nozzle to cheek. -->
+    <div data-hf-id="hf-55pf" class="fr05-opener">
+      <div data-hf-id="hf-9u2y" class="fr05-opener-inner" id="fr05-opener-inner">
+        <div data-hf-id="hf-cvok" class="fr05-opener-bottle">
+          <svg data-hf-id="hf-fue1" viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg">
+            <rect data-hf-id="hf-xlnm" class="fr05-kit-line" x="70" y="80" width="70" height="150" rx="14" />
+            <rect data-hf-id="hf-yx3l" class="fr05-kit-line" x="85" y="40" width="20" height="45" rx="4" />
+            <path data-hf-id="hf-cnbg" class="fr05-kit-line" d="M105 45 L150 25 C158 22 165 27 163 36 L155 60 L105 65 Z" />
+            <path data-hf-id="hf-qayp" id="fr05-mist-fan-a" class="fr05-mist-fan" d="M172 18 L196 4" />
+            <path data-hf-id="hf-qecp" id="fr05-mist-fan-b" class="fr05-mist-fan" d="M178 30 L206 30" />
+            <path data-hf-id="hf-xvky" id="fr05-mist-fan-c" class="fr05-mist-fan" d="M172 44 L194 60" />
+          </svg>
+        </div>
+        <div data-hf-id="hf-d0w7" class="fr05-opener-face">
+          <svg data-hf-id="hf-t307" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- mirrored in-place (translate+scale) so the profile faces left, toward the bottle -->
+            <g data-hf-id="hf-i8hd" transform="translate(240,0) scale(-1,1)">
+              <path data-hf-id="hf-5j70" class="fr05-kit-line" d="M 88 20 C 138 14, 174 46, 178 92 C 179 103, 186 108, 196 113
+                   C 203 117, 201 125, 192 128 C 184 131, 181 140, 186 152
+                   C 190 163, 181 171, 169 167 C 165 182, 152 195, 134 199
+                   C 130 214, 117 226, 98 224 C 82 222, 70 210, 67 194
+                   C 49 187, 37 171, 34 151 C 29 121, 36 87, 56 60 C 65 40, 76 26, 88 20 Z" />
+            </g>
+          </svg>
+        </div>
+        <div data-hf-id="hf-pmel" class="fr05-mist-anchor">
+          <div data-hf-id="hf-2mxt" class="fr05-mist-drop" id="fr05-mist-drop-1" data-target-x="333" data-target-y="1"></div>
+          <div data-hf-id="hf-t5wn" class="fr05-mist-drop" id="fr05-mist-drop-2" data-target-x="322" data-target-y="-10"></div>
+          <div data-hf-id="hf-lz4d" class="fr05-mist-drop" id="fr05-mist-drop-3" data-target-x="340" data-target-y="14"></div>
+          <div data-hf-id="hf-8we7" class="fr05-mist-drop" id="fr05-mist-drop-4" data-target-x="328" data-target-y="6"></div>
+        </div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-lo89" class="fr05-safe">
+      <div data-hf-id="hf-6nxe" class="fr05-stamp-zone">
+        <div data-hf-id="hf-s1u3" class="fr05-stamp">THE GOLDEN RULE</div>
+      </div>
+
+      <div data-hf-id="hf-f7m6" class="fr05-stage-outer">
+        <div data-hf-id="hf-7gdt" class="fr05-divider"></div>
+
+        <div data-hf-id="hf-gkgw" class="fr05-stage">
+          <div data-hf-id="hf-ehma" class="fr05-card fr05-card-left">
+            <svg data-hf-id="hf-45un" class="fr05-card-svg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+              <path data-hf-id="hf-j82n" class="fr05-surface-line" d="M15,140 Q100,128 185,140" />
+              <path data-hf-id="hf-zpfv" id="fr05-arrow-dry" class="fr05-arrow-path" d="M100,220 L100,65 M78,90 L100,62 L122,90" />
+              <circle data-hf-id="hf-v9fv" id="fr05-droplet-dry" cx="100" cy="52" r="7" />
+            </svg>
+          </div>
+          <div data-hf-id="hf-9xr5" class="fr05-card fr05-card-right">
+            <svg data-hf-id="hf-8cgv" class="fr05-card-svg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+              <path data-hf-id="hf-iyan" class="fr05-surface-line" d="M15,140 Q100,128 185,140" />
+              <path data-hf-id="hf-tvjk" id="fr05-arrow-damp" class="fr05-arrow-path" d="M100,40 L100,195 M78,170 L100,198 L122,170" />
+              <circle data-hf-id="hf-xesy" id="fr05-droplet-damp" cx="100" cy="207" r="7" />
+            </svg>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-yqeu" class="fr05-pill fr05-pill-left">
+          <span data-hf-id="hf-5f4y" class="fr05-pill-label">✕ DRY SKIN</span>
+        </div>
+        <div data-hf-id="hf-3vd9" class="fr05-pill fr05-pill-right">
+          <span data-hf-id="hf-gw18" class="fr05-pill-label">DAMP SKIN</span>
+          <span data-hf-id="hf-idlj" class="fr05-underline"></span>
+        </div>
+      </div>
+
+      <div data-hf-id="hf-w2zs" class="fr05-chip">ING-hyaluronic-acid-S003</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      document.querySelectorAll(".fr05-arrow-path").forEach(function (p) {
+        var len = p.getTotalLength();
+        p.style.strokeDasharray = String(len);
+        p.style.strokeDashoffset = String(len);
+      });
+      document.querySelectorAll(".fr05-mist-fan").forEach(function (p) {
+        var len = p.getTotalLength();
+        p.style.strokeDasharray = String(len);
+        p.style.strokeDashoffset = String(len);
+      });
+
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      /* ================= Scene 1 (0.0-2.0s) =================
+         "But here's the part most people miss" — the spray bottle mists the face.
+         Hero (bottle+face group) visible well before t<=0.5s. */
+      tl.fromTo(
+        "#fr05-opener-inner",
+        { scale: 0.85, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.45, ease: "power2.out" },
+        0,
+      );
+
+      /* three fixed aqua mist-fan strokes at the nozzle tip self-draw in a tight stagger */
+      tl.to("#fr05-mist-fan-a", { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }, 0.4);
+      tl.to("#fr05-mist-fan-b", { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }, 0.52);
+      tl.to("#fr05-mist-fan-c", { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }, 0.64);
+
+      /* 4 aqua droplet flecks travel from the nozzle anchor out to the cheek, staggered so
+         they read as a continuous mist rather than one blob (center-anchor pattern, matching
+         04-magnet.html's droplet convention: fromTo the travel, layer opacity in/out on top). */
+      var mistDrops = document.querySelectorAll(".fr05-mist-drop");
+      var MIST_ENTRY_AT = 0.55;
+      var MIST_STAGGER = 0.25;
+      var MIST_DROP_DUR = 0.5;
+      mistDrops.forEach(function (el, i) {
+        var tx = Number(el.dataset.targetX);
+        var ty = Number(el.dataset.targetY);
+        var start = MIST_ENTRY_AT + i * MIST_STAGGER;
+        tl.fromTo(
+          el,
+          { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.7, opacity: 0 },
+          { x: tx, y: ty, scale: 0.85, duration: MIST_DROP_DUR, ease: "power2.out" },
+          start,
+        );
+        tl.to(el, { opacity: 1, duration: 0.12, ease: "power1.out" }, start);
+        tl.to(el, { opacity: 0, duration: 0.25, ease: "power1.in" }, start + MIST_DROP_DUR - 0.25);
+      });
+
+      /* ================= Scene 2 (2.0-2.9s) =================
+         The spray-bottle-and-face group clears/shrinks aside as the split-tilt-cards
+         comparison stage enters, both panels present but unlabeled. */
+      tl.to(
+        "#fr05-opener-inner",
+        { scale: 0.55, y: -40, opacity: 0, duration: 0.85, ease: "power2.in" },
+        2.0,
+      );
+      tl.fromTo(
+        ".fr05-card-left",
+        { x: -160, rotateY: 20, opacity: 0 },
+        { x: 0, rotateY: 13, opacity: 1, duration: 0.7, ease: "power3.out" },
+        2.0,
+      );
+      tl.fromTo(
+        ".fr05-card-right",
+        { x: 160, rotateY: -20, opacity: 0 },
+        { x: 0, rotateY: -13, opacity: 1, duration: 0.7, ease: "power3.out" },
+        2.15,
+      );
+      tl.fromTo(
+        ".fr05-divider",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: "power1.out" },
+        2.05,
+      );
+      /* counter-phase idle bob — opposite signs so the pair never conveyor-belts; eases
+         off before the golden-rule stamp lands so nothing competes with that beat */
+      tl.to(
+        ".fr05-card-left",
+        { y: -6, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 4 },
+        2.9,
+      );
+      tl.to(
+        ".fr05-card-right",
+        { y: 6, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 4 },
+        2.9,
+      );
+
+      /* ================= Scene 3 (2.9-5.6s) =================
+         "Apply it to damp skin, not dry" — RIGHT panel resolves. Spring-pop-entrance's
+         own default (power3.out, no overshoot) per its recipe — back.out overshoot is
+         reserved for an explicitly-playful register this house style doesn't use, and
+         frame.md's motion tokens ban back/elastic/bounce easing outright. */
+      tl.fromTo(
+        ".fr05-pill-right",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+        3.0,
+      );
+      tl.to(
+        "#fr05-arrow-damp",
+        { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" },
+        3.4,
+      );
+      tl.fromTo(
+        "#fr05-droplet-damp",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" },
+        4.15,
+      );
+      tl.fromTo(
+        ".fr05-pill-right .fr05-underline",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.35, ease: "power2.out" },
+        4.2,
+      );
+
+      /* ================= Scene 4 (5.6-7.4s) =================
+         "On dry skin, it can actually pull moisture out instead of in" — LEFT panel resolves. */
+      tl.fromTo(
+        ".fr05-pill-left",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
+        5.6,
+      );
+      tl.to(
+        "#fr05-arrow-dry",
+        { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" },
+        6.0,
+      );
+      tl.fromTo(
+        "#fr05-droplet-dry",
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 0.4, duration: 0.3, ease: "power2.out" },
+        6.75,
+      );
+
+      /* ================= Scene 5 (7.4-8.882s) =================
+         THE GOLDEN RULE stamp (ink-stamp badge, --coral border — the video's one spent
+         voltage moment) + source chip; holds. Only the stamp carries subtle jitter. */
+      tl.fromTo(
+        ".fr05-stamp",
+        { scale: 1.35, opacity: 0, rotation: -6 },
+        { scale: 1, opacity: 1, rotation: -6, duration: 0.65, ease: "power3.out" },
+        7.4,
+      );
+      tl.fromTo(
+        ".fr05-chip",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power1.out" },
+        8.1,
+      );
+      /* only the stamp carries subtle jitter through the hold — starts just after the
+         entrance settle ends (8.05s) so the two rotation tweens never touch the same instant */
+      tl.to(
+        ".fr05-stamp",
+        { rotation: -6.4, duration: 0.38, ease: "sine.inOut", yoyo: true, repeat: 1 },
+        8.1,
+      );
+
+      // Holds to 8.882s — no exit tween (frame 5 of 6; the root "cut" transition is the exit).
+
+      window.__timelines["05-golden-rule"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,13 @@
+Source: user-supplied UGC-style shot list for a 60-second skincare short about Hyaluronic Acid serum (see ../../user_script.txt for the verbatim original, preserved as-is).
+
+Topic: how hyaluronic acid actually works as a skincare ingredient, and the one application mistake that undoes it.
+
+Six beats in the original script:
+1. Hook — the ingredient "holds 1,000x its weight in water" (product bottle close-up)
+2. Mechanism analogy — dry sponge vs. wet/bouncy sponge = dehydrated vs. hydrated skin cells
+3. Where it comes from — naturally occurring in skin/joints, production declines with age
+4. What it does — "moisture magnet," pulls water in, softens the look of fine lines
+5. The golden rule — apply to DAMP skin, not dry; dry skin + HA can reverse the effect
+6. Lock it in — moisturizer seals the hydration in; subscribe CTA
+
+Fact-check finding (see BRIEF.md Notes for full sourcing): the opening "1,000x its weight in water" figure is a widely-repeated but debunked claim — no experimental support has been found for it, and measured hyaluronic acid water-binding capacity runs closer to 10x-100x depending on molecular weight. The other four factual beats (natural production declining with age, humectant "moisture magnet" mechanism, and the damp-skin application rule) check out against real sources. The video adapts beat 1 into a myth-correction hook rather than repeating the unsupported figure, and keeps the rest of the structure intact.

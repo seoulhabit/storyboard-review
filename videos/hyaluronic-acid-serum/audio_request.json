@@ -1,0 +1,49 @@
+{
+  "lines": [
+    {
+      "id": "01",
+      "sfx": [
+        "paper-stamp-thump (the MYTH stamp landing)",
+        "citation-tick (the chip fading in)"
+      ]
+    },
+    {
+      "id": "02",
+      "sfx": [
+        "whoosh-short (per panel tilt-in)"
+      ]
+    },
+    {
+      "id": "03",
+      "sfx": [
+        "tick-soft (per decade-dot)",
+        "a slightly weightier tick-soft on the final stat landing"
+      ]
+    },
+    {
+      "id": "04",
+      "sfx": [
+        "water-drop-soft (per droplet arrival",
+        "capped stagger)",
+        "soft-release (as the fine line softens)"
+      ]
+    },
+    {
+      "id": "05",
+      "sfx": [
+        "paper-stamp-thump (GOLDEN RULE landing — deliberate callback to Frame 1's stamp sound)",
+        "swish-soft (per arrow draw)"
+      ]
+    },
+    {
+      "id": "06",
+      "sfx": [
+        "tick-soft ×3 (each step icon landing)",
+        "seal-whoosh (the arc closing)"
+      ]
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

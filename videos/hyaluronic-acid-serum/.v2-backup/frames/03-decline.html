@@ -1,0 +1,420 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+  <style>
+    @import url("assets/tokens/tokens.css");
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--ink);
+    }
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+
+    /* ---- background (full-bleed clip, lowest track — flat --paper per roles, never on #root) ---- */
+    .decline-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    /* ---- presenter: face profile (frame.md shared kit, path data verbatim) — foreground subject ---- */
+    .decline-face {
+      position: absolute;
+      left: 140px;
+      top: 380px;
+      width: 400px;
+      height: 467px;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .decline-face svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .decline-face-path {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    /* ---- presenter: pointing-variant fist (frame.md shared kit) — foreground subject ----
+         Base position is the unmoved (0,0) anchor; GSAP drives x/y/opacity for the whole
+         enter -> touch cheek -> lift -> touch joint -> retreat-off-frame path, so no CSS
+         `transform` is ever set here (avoids gsap_css_transform_conflict). */
+    .decline-fist {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 200px;
+      height: 220px;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .decline-fist svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .decline-fist-body,
+    .decline-fist-thumb,
+    .decline-fist-point {
+      fill: var(--mist);
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .decline-fist-crease {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    /* ---- decade axis + staircase decline chart — supporting, resolves after the point ---- */
+    .decline-chart {
+      position: absolute;
+      inset: 0;
+    }
+    .decline-chart-svg {
+      display: block;
+      width: 1080px;
+      height: 1920px;
+    }
+    #decline-axis-line,
+    .decline-tick {
+      stroke: var(--ink);
+      stroke-width: 5;
+      stroke-linecap: round;
+      fill: none;
+    }
+    #decline-staircase {
+      stroke: var(--ink);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* ---- decade dots: center-outward-expansion, adapted to one axis (x only) ---- */
+    .decline-burst-wrap {
+      position: absolute;
+      left: 0;
+      top: 930px;
+      width: 1080px;
+      height: 0;
+    }
+    .decline-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    /* the frame's one aqua-family highlight: the final decade — where the story lands */
+    .decline-dot--final {
+      background: var(--aqua);
+    }
+
+    /* ---- landing stat: "−6% every decade" — EB Garamond stat/headline moment per frame.md ---- */
+    .decline-stat-row {
+      position: absolute;
+      left: var(--safe-left);
+      right: var(--safe-right);
+      top: 1250px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 16px;
+    }
+    .decline-stat-value {
+      display: inline-flex;
+      align-items: baseline;
+      font-family: var(--font-display);
+      font-size: var(--t-figure);
+      font-weight: 600;
+      letter-spacing: var(--tr-display);
+      line-height: var(--lh-tight);
+      color: var(--ink);
+      transform-origin: 50% 50%;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .decline-stat-num {
+      font-variant-numeric: tabular-nums;
+      display: inline-block;
+    }
+    .decline-stat-copy {
+      font-family: var(--font-display);
+      font-size: var(--t-body);
+      letter-spacing: var(--tr-display);
+      line-height: var(--lh-snug);
+      color: var(--ink);
+      opacity: 0;
+      will-change: opacity, transform;
+    }
+
+    /* ---- source chip: mono pill, ink-3 on mist — supporting ---- */
+    .decline-chip-row {
+      position: absolute;
+      left: var(--safe-left);
+      right: var(--safe-right);
+      top: 1400px;
+      display: flex;
+      justify-content: center;
+    }
+    .decline-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 26px;
+      background: var(--mist);
+      border-radius: var(--r-pill);
+      box-shadow: var(--elev-1);
+      opacity: 0;
+      will-change: opacity, transform;
+    }
+    .decline-chip-text {
+      font-family: var(--font-mono);
+      font-size: var(--t-chip);
+      letter-spacing: var(--tr-mono);
+      color: #6a6a6a; /* --ink-2 measures 4.49:1 on --mist, 0.01 under AA; 1 shade darker clears it */
+    }
+  </style>
+
+  <div data-hf-id="hf-vbqx" id="root" data-composition-id="03-decline" data-start="0" data-duration="11.785" data-width="1080" data-height="1920">
+    <div data-hf-id="hf-0ym2" class="clip decline-bg" data-start="0" data-duration="11.785" data-track-index="0"></div>
+
+    <!-- Scene 1 (0.0-2.5s): the face profile settles centered-left as the VO says
+         "here's the real story." No eyes/brows/mouth — a clean flat-icon silhouette, a prop
+         the presenter's hand acts on, not a character (frame.md kit, path data verbatim). -->
+    <div data-hf-id="hf-4qzp" class="clip decline-face" data-start="0" data-duration="11.785" data-track-index="1">
+      <svg data-hf-id="hf-jmff" viewBox="5 -5 210 245" aria-hidden="true">
+        <path data-hf-id="hf-5xsn" class="decline-face-path" d="M 88 20 C 138 14, 174 46, 178 92 C 179 103, 186 108, 196 113
+             C 203 117, 201 125, 192 128 C 184 131, 181 140, 186 152
+             C 190 163, 181 171, 169 167 C 165 182, 152 195, 134 199
+             C 130 214, 117 226, 98 224 C 82 222, 70 210, 67 194
+             C 49 187, 37 171, 34 151 C 29 121, 36 87, 56 60 C 65 40, 76 26, 88 20 Z" />
+      </svg>
+    </div>
+
+    <!-- Scenes 1-2 (0.0-4.5s): the pointing-variant fist enters from off-frame and touches the
+         cheek ("point to your own skin"), then lifts to touch a second, lower point implying a
+         joint ("point to... joints"), then retreats off-frame — clearing the stage for the
+         decade-axis explanation. Same fist body/thumb as the base kit; the four short
+         finger-crease strokes are replaced by one extended pointing finger (a rounded rect) with
+         three shortened creases keeping the other fingers implied. -->
+    <div data-hf-id="hf-x2g1" class="clip decline-fist" data-start="0" data-duration="11.785" data-track-index="2">
+      <svg data-hf-id="hf-5i7e" viewBox="0 0 200 220" aria-hidden="true">
+        <path data-hf-id="hf-nr6y" class="decline-fist-body" d="M 55 200 C 35 200, 22 182, 22 158 L 22 122 C 22 108, 30 100, 40 104
+             C 44 92, 52 86, 60 92 C 62 80, 72 74, 80 82 C 84 70, 96 66, 102 76
+             C 106 66, 118 64, 124 74 C 130 66, 142 68, 144 80 C 154 78, 162 86, 160 98
+             C 172 100, 178 112, 172 122 L 172 160 C 172 184, 158 200, 138 200 Z" />
+        <path data-hf-id="hf-oni9" class="decline-fist-thumb" d="M 40 130 C 20 128, 8 142, 12 160 C 15 174, 30 182, 45 178
+             C 52 176, 54 165, 50 152 C 48 143, 45 134, 40 130 Z" />
+        <path data-hf-id="hf-e5bc" class="decline-fist-crease" d="M 62 108 L 61 119" />
+        <path data-hf-id="hf-o97i" class="decline-fist-crease" d="M 122 92 L 119 110" />
+        <path data-hf-id="hf-l2kg" class="decline-fist-crease" d="M 150 100 L 146 115" />
+        <rect data-hf-id="hf-zb3l" class="decline-fist-point" x="78" y="8" width="20" height="90" rx="10" />
+      </svg>
+    </div>
+
+    <!-- Scene 3 (4.5-7.0s): a horizontal decade axis (5 tick marks, unlabeled) self-draws
+         beneath the face as the VO says "but that production drops as you age." -->
+    <div data-hf-id="hf-zbao" class="clip decline-chart" data-start="0" data-duration="11.785" data-track-index="3">
+      <svg data-hf-id="hf-d0rm" class="decline-chart-svg" viewBox="0 0 1080 1920" aria-hidden="true">
+        <line data-hf-id="hf-ttmc" id="decline-axis-line" x1="190" y1="930" x2="890" y2="930" />
+        <line data-hf-id="hf-vnfs" class="decline-tick" x1="190" y1="915" x2="190" y2="945" />
+        <line data-hf-id="hf-mnss" class="decline-tick" x1="365" y1="915" x2="365" y2="945" />
+        <line data-hf-id="hf-58ni" class="decline-tick" x1="540" y1="915" x2="540" y2="945" />
+        <line data-hf-id="hf-ckxm" class="decline-tick" x1="715" y1="915" x2="715" y2="945" />
+        <line data-hf-id="hf-1zmi" class="decline-tick" x1="890" y1="915" x2="890" y2="945" />
+        <path data-hf-id="hf-tjxs" id="decline-staircase" d="M190,930 L365,930 L365,995 L540,995 L540,1060 L715,1060 L715,1125 L890,1125 L890,1190" />
+      </svg>
+    </div>
+
+    <!-- Scene 4 (7.0-11.285s): small --ink dots land on each tick, staggered outward from
+         center, as the VO says "about 6% less, every decade." -->
+    <div data-hf-id="hf-2opk" class="clip decline-burst-wrap" data-start="0" data-duration="11.785" data-track-index="4">
+      <div data-hf-id="hf-b7v2" class="decline-dot" data-target-x="-350" data-target-y="0"></div>
+      <div data-hf-id="hf-58of" class="decline-dot" data-target-x="-175" data-target-y="0"></div>
+      <div data-hf-id="hf-qgjh" class="decline-dot" data-target-x="0" data-target-y="0"></div>
+      <div data-hf-id="hf-868w" class="decline-dot" data-target-x="175" data-target-y="0"></div>
+      <div data-hf-id="hf-hsyf" class="decline-dot decline-dot--final" data-target-x="350" data-target-y="0"></div>
+    </div>
+
+    <!-- Scene 4 continued: the landing stat — "−6% every decade" counts up as the stepped
+         decline line resolves, then the source chip fades in beside it. Holds to end. -->
+    <div data-hf-id="hf-lfvv" class="clip decline-stat-row" data-start="0" data-duration="11.785" data-track-index="5">
+      <span data-hf-id="hf-ot8z" class="decline-stat-value" id="decline-stat-value">
+        <span data-hf-id="hf-zwf4" class="decline-stat-sign">−</span><span data-hf-id="hf-cise" class="decline-stat-num" id="decline-counter">0</span><span data-hf-id="hf-69qd" class="decline-stat-pct">%</span>
+      </span>
+      <span data-hf-id="hf-ntcf" class="decline-stat-copy">every decade</span>
+    </div>
+
+    <div data-hf-id="hf-z5ow" class="clip decline-chip-row" data-start="0" data-duration="11.785" data-track-index="6">
+      <div data-hf-id="hf-g431" class="decline-chip">
+        <span data-hf-id="hf-dh4r" class="decline-chip-text">ING-hyaluronic-acid-S002</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+
+      // ---- SVG path draw setup: measure real geometry, never guessed. ----
+      var axisLine = document.getElementById("decline-axis-line");
+      var ticks = document.querySelectorAll(".decline-tick");
+      var staircase = document.getElementById("decline-staircase");
+
+      [axisLine, staircase].concat(Array.prototype.slice.call(ticks)).forEach(function (p) {
+        var len = p.getTotalLength();
+        p.style.strokeDasharray = String(len);
+        p.style.strokeDashoffset = String(len);
+      });
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ============================================================
+      // Scene 1 (0.0-2.5s) — face settles; fist enters and touches the cheek.
+      // ============================================================
+      tl.fromTo(
+        ".decline-face",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        0.05,
+      );
+
+      // Fist reaches in from off-frame (right) and its extended finger lands on the cheek.
+      // Container is anchored at (0,0); x/y below are the container's absolute screen
+      // position, chosen so the pointing fingertip (local ~88,8) lands on the cheek point
+      // (face container at left:140/top:380/400x467, viewBox "5 -5 210 245" -> local face
+      // point ~178,125 maps to screen ~470,628; minus the fingertip offset = 382,620).
+      tl.fromTo(
+        ".decline-fist",
+        { x: 1100, y: 480, opacity: 0 },
+        { x: 382, y: 620, opacity: 1, duration: 0.75, ease: "power2.out" },
+        0.2,
+      );
+      // Holds touching the cheek through the rest of Scene 1 ("point to your own skin").
+
+      // ============================================================
+      // Scene 2 (2.5-4.5s) — fist lifts to a second, lower point (implying a joint),
+      // then retreats off-frame.
+      // ============================================================
+      tl.to(".decline-fist", { x: 292, y: 892, duration: 0.8, ease: "power2.inOut" }, 2.5);
+      // Holds touching the lower point ("...to cushion skin and joints") before retreating.
+
+      tl.to(
+        ".decline-fist",
+        { x: -260, y: 1150, opacity: 0, duration: 0.5, ease: "power2.out" },
+        4.0,
+      );
+
+      // ============================================================
+      // Scene 3 (4.5-7.0s) — with the point made, the decade axis self-draws beneath the face.
+      // ============================================================
+      tl.to(axisLine, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, 4.9);
+
+      var TICK_START = 5.35;
+      var TICK_STAGGER = 0.08;
+      ticks.forEach(function (t, i) {
+        tl.to(
+          t,
+          { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" },
+          TICK_START + i * TICK_STAGGER,
+        );
+      });
+
+      // ============================================================
+      // Scene 4 (7.0-11.285s) — dots land on the ticks, the staircase draws and drops each
+      // dot onto its step, the stat counts up, and the source chip resolves. Holds to end.
+      // ============================================================
+      var dots = document.querySelectorAll(".decline-dot");
+      var ENTRY_AT = 7.0;
+      var STAGGER = 0.065;
+      var EXPAND_DUR = 0.85;
+      dots.forEach(function (el, i) {
+        var tx = Number(el.dataset.targetX);
+        var start = ENTRY_AT + i * STAGGER;
+        tl.fromTo(
+          el,
+          { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 0.6, opacity: 0 },
+          { x: tx, y: 0, scale: 1, opacity: 1, duration: EXPAND_DUR, ease: "power3.out" },
+          start,
+        );
+      });
+
+      // The staircase decline self-draws left to right at a constant rate. Each dot after the
+      // first (decade 0 is the "now" baseline, undisturbed) drops to the freshly-drawn step the
+      // instant the line reaches its x-position — the drop amounts match the staircase's own
+      // levels exactly.
+      tl.to(staircase, { strokeDashoffset: 0, duration: 1.0, ease: "none" }, 8.15);
+
+      var dropTargets = [65, 130, 195, 260]; // px drop for decades 1-4, mirrors the staircase levels
+      for (var i = 1; i < dots.length; i++) {
+        var dropStart = 8.15 + i * 0.25;
+        tl.to(dots[i], { y: dropTargets[i - 1], duration: 0.22, ease: "power2.inOut" }, dropStart);
+      }
+
+      // Landing stat — counting-dynamic-scale: the value counts 0 to 6 while the whole signed
+      // group grows to its final size on the same timing/ease. Kept small and clean (Adapt: a
+      // guest-star beat, not the video's climax) rather than an escalating hero number.
+      var counterEl = document.getElementById("decline-counter");
+      var counterState = { value: 0 };
+      tl.fromTo(
+        "#decline-stat-value",
+        { scale: 0.55, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1.15, ease: "power2.out" },
+        9.2,
+      );
+      tl.to(
+        counterState,
+        {
+          value: 6,
+          duration: 1.15,
+          ease: "power2.out",
+          onUpdate: function () {
+            counterEl.textContent = Math.round(counterState.value);
+          },
+        },
+        9.2,
+      );
+
+      tl.fromTo(
+        ".decline-stat-copy",
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+        10.35,
+      );
+
+      // Source chip fades in beside the landed stat.
+      tl.fromTo(
+        ".decline-chip",
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: "power1.out" },
+        10.55,
+      );
+
+      // Holds to 11.285s — no exit tween (frame 3 of 6; the root crossfade transition is the exit).
+
+      window.__timelines["03-decline"] = tl;
+    })();
+  </script>
+</template>

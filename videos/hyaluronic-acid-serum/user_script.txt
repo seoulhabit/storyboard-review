@@ -1,0 +1,7 @@
+Time,Visual / On-Screen Action,Audio (Spoken Script)
+0:00 - 0:05,"Close-up holding the Hyaluronic Acid serum. Text: Holds 1,000x its weight in water","""This one ingredient holds 1,000 times its weight in water—here's why your skin desperately needs it."""
+0:05 - 0:15,"Hold up a dry sponge, then swap for a wet, bouncy sponge. Text: Dry Skin vs. Hydrated Skin","""Think of your skin cells like a sponge. When dry, they shrivel. Add Hyaluronic Acid, and they bounce right back."""
+0:15 - 0:25,Point to your own skin/joints. Optional pop-up graphic of a scientific molecule or a baby's plump skin.,"""But where does it come from? Your own body! It's naturally found in our skin and joints to keep them lubricated. But we produce less of it as we age."""
+0:25 - 0:35,Applying the serum. Graphic: water droplets acting like magnets pulling into the skin.,"""That's why adding it back is crucial. It acts as a moisture magnet, pulling water in to plump up fine lines."""
+0:35 - 0:45,Crucial visual: Spray your face with a water mist. Big green checkmark appears. Text: Apply to DAMP skin!,"""But here is the golden rule: You must apply it to damp skin. If your face is dry, it can actually pull moisture out of your skin."""
+0:45 - 0:60,"Apply cream moisturizer. A little ""padlock"" animation appears. Point to the Subscribe button.","""Spritz, apply your serum, and lock it in with a moisturizer so hydration can't escape. Hit subscribe for more skincare science!"""

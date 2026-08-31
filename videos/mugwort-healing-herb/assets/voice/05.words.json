@@ -1,0 +1,107 @@
+[
+  {
+    "text": "That",
+    "start": 0.2,
+    "end": 0.34
+  },
+  {
+    "text": "first",
+    "start": 0.5,
+    "end": 0.62
+  },
+  {
+    "text": "layer",
+    "start": 0.79,
+    "end": 1.2
+  },
+  {
+    "text": "placement",
+    "start": 1.2,
+    "end": 1.76
+  },
+  {
+    "text": "floods",
+    "start": 2.07,
+    "end": 2.39
+  },
+  {
+    "text": "reactive",
+    "start": 2.39,
+    "end": 2.75
+  },
+  {
+    "text": "skin",
+    "start": 2.94,
+    "end": 3.18
+  },
+  {
+    "text": "with",
+    "start": 3.18,
+    "end": 3.67
+  },
+  {
+    "text": "soothing",
+    "start": 3.67,
+    "end": 3.79
+  },
+  {
+    "text": "compounds",
+    "start": 3.79,
+    "end": 4.28
+  },
+  {
+    "text": "before",
+    "start": 4.28,
+    "end": 4.64
+  },
+  {
+    "text": "anything",
+    "start": 4.64,
+    "end": 4.99
+  },
+  {
+    "text": "else",
+    "start": 5.25,
+    "end": 5.36
+  },
+  {
+    "text": "touches",
+    "start": 5.36,
+    "end": 5.75
+  },
+  {
+    "text": "it.",
+    "start": 5.87,
+    "end": 5.92
+  },
+  {
+    "text": "No",
+    "start": 5.92,
+    "end": 6.41
+  },
+  {
+    "text": "sting,",
+    "start": 6.41,
+    "end": 6.53
+  },
+  {
+    "text": "no",
+    "start": 6.71,
+    "end": 6.85
+  },
+  {
+    "text": "flush,",
+    "start": 6.98,
+    "end": 7.46
+  },
+  {
+    "text": "no",
+    "start": 7.46,
+    "end": 7.63
+  },
+  {
+    "text": "fight.",
+    "start": 7.63,
+    "end": 8.38
+  }
+]

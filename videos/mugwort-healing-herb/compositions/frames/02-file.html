@@ -1,0 +1,83 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  .clip { position:absolute; inset:0; }
+  .cf-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .cf-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.12; mix-blend-mode:multiply; }
+
+  .uc-card { position:absolute; left:129px; top:470px; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:56px 64px; opacity:0; }
+  .uc-kicker { font-weight:700; font-size:2.4cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:22px; }
+  .cf-name { font-family:'EB Garamond',serif; font-size:5.6cqw; line-height:1.1; margin-bottom:30px; }
+  .uc-field { padding:18px 0; border-bottom:1px solid rgba(19,21,22,0.1); }
+  .uc-field:last-of-type { border-bottom:none; }
+  .uc-field .uc-field-label { display:block; font-weight:700; font-size:2.3cqw; letter-spacing:0.06em; text-transform:uppercase; color:rgba(19,21,22,0.62); margin-bottom:8px; }
+  .uc-field .uc-field-value { display:block; font-size:2.8cqw; font-weight:500; line-height:1.35; }
+  .cf-star { font-weight:700; display:inline-block; }
+  .cf-badge { position:absolute; top:48px; right:48px; width:84px; height:84px; border-radius:50%; background:rgba(19,21,22,0.04); border:1px solid rgba(19,21,22,0.14); display:flex; align-items:center; justify-content:center; }
+  .cf-badge svg { width:48px; height:48px; }
+  .cf-claim-block { margin-top:26px; opacity:0; }
+  .uc-claim { font-size:3.1cqw; line-height:1.42; font-weight:600; }
+</style>
+<div data-composition-id="02-file" id="root" data-width="1080" data-height="1920" data-duration="8.542">
+  <div id="cf-bg" class="clip cf-bg" data-start="0" data-duration="8.542" data-track-index="0"></div>
+  <div id="cf-grain" class="clip cf-grain" data-start="0" data-duration="8.542" data-track-index="1"></div>
+
+  <div id="cf-phase" class="clip" data-start="0" data-duration="8.542" data-track-index="2">
+    <div class="uc-card" id="cf-card">
+      <div class="uc-kicker" id="cf-kicker">The clinical file</div>
+      <div class="cf-name" id="cf-name">Mugwort</div>
+      <div class="cf-badge" id="cf-badge">
+        <svg viewBox="0 0 60 60" aria-hidden="true">
+          <path d="M8,32 C22,30 38,30 52,31" stroke="rgba(19,21,22,0.5)" stroke-width="2.6" fill="none" stroke-linecap="round" />
+          <path d="M18,31 C20,22 26,15 32,12" stroke="rgba(19,21,22,0.5)" stroke-width="2.4" fill="none" stroke-linecap="round" />
+          <path d="M30,30 C33,23 39,18 45,16" stroke="rgba(19,21,22,0.5)" stroke-width="2.4" fill="none" stroke-linecap="round" />
+          <path d="M24,32 C27,39 33,44 39,46" stroke="rgba(19,21,22,0.5)" stroke-width="2.4" fill="none" stroke-linecap="round" />
+        </svg>
+      </div>
+      <div class="uc-field" id="cf-f1"><span class="uc-field-label">Botanical</span><span class="uc-field-value">Artemisia princeps — Korean mugwort (ssuk)</span></div>
+      <div class="uc-field" id="cf-f2"><span class="uc-field-label">Inside the leaf</span><span class="uc-field-value">Camphor · 1,8-cineole · flavones</span></div>
+      <div class="uc-field" id="cf-f3"><span class="uc-field-label">Studied flavone</span><span class="uc-field-value"><span class="cf-star" id="cf-star">Eupatilin</span></span></div>
+      <div class="cf-claim-block" id="cf-claim-block">
+        <div class="uc-claim">Dozens of compounds — one studied star.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  var card = document.getElementById('cf-card');
+  var name = document.getElementById('cf-name');
+  var star = document.getElementById('cf-star');
+  var claimBlock = document.getElementById('cf-claim-block');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Cues (tightened take): flushes red@0.59-1.13 · missing@4.55-5.01 ·
+  // dozens of compounds@5.93-6.94 · star is Eupatilin@7.37-8.64.
+
+  // Hard cut in — the intake document resolves at full density immediately.
+  tl.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 0.0);
+  tl.fromTo(name, { clipPath: 'inset(0 100% 0 0)' },
+    { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'power2.inOut' }, 0.2);
+
+  // "dozens of compounds": the closing claim line lands.
+  tl.to(claimBlock, { opacity: 1, duration: 0.5 }, 5.93);
+
+  // "the star is Eupatilin": the frame's one aqua accent — an underline draws beneath it.
+  gsap.set(star, { backgroundImage: 'linear-gradient(#59B8AE,#59B8AE)', backgroundRepeat: 'no-repeat', backgroundPosition: '0 100%', backgroundSize: '0% 4px' });
+  tl.to(star, { backgroundSize: '100% 4px', duration: 0.5, ease: 'power2.out' }, 7.37);
+
+  tl.to({}, { duration: 8.542 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-file'] = tl;
+})();
+</script>
+</template>

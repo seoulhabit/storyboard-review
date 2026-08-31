@@ -1,0 +1,230 @@
+{
+	"systeminfo": "WHISPER : COREML = 0 | OPENVINO = 0 | MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | SME = 1 | ACCELERATE = 1 | OPENMP = 1 | REPACK = 1 | ",
+	"model": {
+		"type": "medium",
+		"multilingual": false,
+		"vocab": 51864,
+		"audio": {
+			"ctx": 1500,
+			"state": 1024,
+			"head": 16,
+			"layer": 24
+		},
+		"text": {
+			"ctx": 448,
+			"state": 1024,
+			"head": 16,
+			"layer": 24
+		},
+		"mels": 80,
+		"ftype": 1
+	},
+	"params": {
+		"model": "/Users/korswedie/.cache/hyperframes/whisper/models/ggml-medium.en.bin",
+		"language": "en",
+		"translate": false
+	},
+	"result": {
+		"language": "en"
+	},
+	"transcription": [
+		{
+			"timestamps": {
+				"from": "00:00:00,000",
+				"to": "00:00:00,130"
+			},
+			"offsets": {
+				"from": 0,
+				"to": 130
+			},
+			"text": ""
+		},
+		{
+			"timestamps": {
+				"from": "00:00:00,130",
+				"to": "00:00:00,250"
+			},
+			"offsets": {
+				"from": 130,
+				"to": 250
+			},
+			"text": " It"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:00,250",
+				"to": "00:00:00,800"
+			},
+			"offsets": {
+				"from": 250,
+				"to": 800
+			},
+			"text": " intercepts"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:00,800",
+				"to": "00:00:01,000"
+			},
+			"offsets": {
+				"from": 800,
+				"to": 1000
+			},
+			"text": " the"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:01,000",
+				"to": "00:00:01,340"
+			},
+			"offsets": {
+				"from": 1000,
+				"to": 1340
+			},
+			"text": " panic"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:01,340",
+				"to": "00:00:01,830"
+			},
+			"offsets": {
+				"from": 1340,
+				"to": 1830
+			},
+			"text": " signals"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:01,830",
+				"to": "00:00:02,090"
+			},
+			"offsets": {
+				"from": 1830,
+				"to": 2090
+			},
+			"text": " and"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:02,090",
+				"to": "00:00:02,360"
+			},
+			"offsets": {
+				"from": 2090,
+				"to": 2360
+			},
+			"text": " forces"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:02,360",
+				"to": "00:00:02,590"
+			},
+			"offsets": {
+				"from": 2360,
+				"to": 2590
+			},
+			"text": " the"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:02,590",
+				"to": "00:00:03,000"
+			},
+			"offsets": {
+				"from": 2590,
+				"to": 3000
+			},
+			"text": " collagen"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,000",
+				"to": "00:00:03,490"
+			},
+			"offsets": {
+				"from": 3000,
+				"to": 3490
+			},
+			"text": " fibers"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,490",
+				"to": "00:00:03,520"
+			},
+			"offsets": {
+				"from": 3490,
+				"to": 3520
+			},
+			"text": " to"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,520",
+				"to": "00:00:04,110"
+			},
+			"offsets": {
+				"from": 3520,
+				"to": 4110
+			},
+			"text": " rebuild"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:04,110",
+				"to": "00:00:04,240"
+			},
+			"offsets": {
+				"from": 4110,
+				"to": 4240
+			},
+			"text": " in"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:04,240",
+				"to": "00:00:05,020"
+			},
+			"offsets": {
+				"from": 4240,
+				"to": 5020
+			},
+			"text": " perfect,"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:05,020",
+				"to": "00:00:06,020"
+			},
+			"offsets": {
+				"from": 5020,
+				"to": 6020
+			},
+			"text": " organized,"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:06,020",
+				"to": "00:00:06,430"
+			},
+			"offsets": {
+				"from": 6020,
+				"to": 6430
+			},
+			"text": " parallel"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:06,430",
+				"to": "00:00:06,840"
+			},
+			"offsets": {
+				"from": 6430,
+				"to": 6840
+			},
+			"text": " lines."
+		}
+	]
+}

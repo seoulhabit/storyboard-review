@@ -1,0 +1,148 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; }
+  .clip { position:absolute; inset:0; }
+  .st-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
+  .st-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:0.05; mix-blend-mode:multiply; }
+
+  .st-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:30px; padding:0 90px; text-align:center; }
+  .st-kicker { font-weight:700; font-size:2.4cqw; letter-spacing:0.14em; text-transform:uppercase; color:rgba(19,21,22,0.62); opacity:0; }
+  .st-caption { font-weight:800; font-size:4.8cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.08; opacity:0; }
+  .st-caption .hl { color:#E4574D; text-shadow:0 0 22px rgba(228,87,77,0.45); }
+
+  .st-stage-box { position:relative; width:640px; height:600px; background:#0D1112; border-radius:40px; overflow:hidden; }
+  .st-tag { position:absolute; bottom:26px; left:44px; font-weight:700; font-size:1.7cqw; letter-spacing:0.08em; color:rgba(236,233,226,0.5); text-align:left; }
+  .st-inflame { position:absolute; left:120px; top:100px; width:400px; height:400px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(closest-side, rgba(228,87,77,0.30), rgba(228,87,77,0) 70%); opacity:0; }
+
+  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:38px 52px; text-align:left; opacity:0; }
+  .uc-claim { font-size:3.3cqw; line-height:1.4; font-weight:600; margin-bottom:14px; }
+  .uc-unsourced { font-weight:600; font-size:2.6cqw; color:rgba(19,21,22,0.62); }
+</style>
+<div data-hf-id="hf-s2rt" data-composition-id="02-setup" id="root" data-width="1080" data-height="1920" data-duration="8.600">
+  <div data-hf-id="hf-s2bg" id="st-bg" class="clip st-bg" data-start="0" data-duration="8.600" data-track-index="0"></div>
+  <div data-hf-id="hf-s2gr" id="st-grain" class="clip st-grain" data-start="0" data-duration="8.600" data-track-index="1"></div>
+
+  <div data-hf-id="hf-s2st" id="st-stage" class="clip st-stage" data-start="0" data-duration="8.600" data-track-index="2">
+    <div data-hf-id="hf-s2kk" class="st-kicker" id="st-kicker">Wound response</div>
+    <div data-hf-id="hf-s2cp" class="st-caption" id="st-caption">CHAOTIC <span data-hf-id="hf-s2hl" class="hl">COLLAGEN</span></div>
+
+    <div data-hf-id="hf-s2bx" class="st-stage-box" id="st-stage-box">
+      <svg data-hf-id="hf-s2sv" id="st-svg" viewBox="0 0 640 600" width="640" height="600" aria-hidden="true">
+        <!-- skin surface: two halves that tear apart on VO "tears" -->
+        <path data-hf-id="hf-s2l1" id="st-surface-l" d="M60,300 H318" stroke="rgba(236,233,226,0.35)" stroke-width="4" />
+        <path data-hf-id="hf-s2r1" id="st-surface-r" d="M322,300 H580" stroke="rgba(236,233,226,0.35)" stroke-width="4" />
+        <path data-hf-id="hf-s2s2" d="M60,400 H580" stroke="rgba(236,233,226,0.18)" stroke-width="3" />
+        <path data-hf-id="hf-s2s3" d="M60,480 H580" stroke="rgba(236,233,226,0.18)" stroke-width="3" />
+        <path data-hf-id="hf-s2tl" id="st-tear-l" d="M286,300 h32" stroke="#E4574D" stroke-width="5" stroke-linecap="round" opacity="0" />
+        <path data-hf-id="hf-s2tr" id="st-tear-r" d="M322,300 h32" stroke="#E4574D" stroke-width="5" stroke-linecap="round" opacity="0" />
+        <g data-hf-id="hf-s2kn" id="st-knot"></g>
+      </svg>
+      <div data-hf-id="hf-s2if" class="st-inflame" id="st-inflame"></div>
+      <div data-hf-id="hf-s2tg" class="st-tag">[Authored, illustrative — not a claim]</div>
+    </div>
+
+    <div data-hf-id="hf-s2cd" class="uc-card" id="st-card">
+      <div data-hf-id="hf-s2cl" class="uc-claim">Wound repair dumps unorganized collagen to close the gap.</div>
+      <div data-hf-id="hf-s2un" class="uc-unsourced">○ UNSOURCED — no record in this system</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  // Deterministic seeded strand field — pure function of index, no Math.random().
+  function lcg(seed) { var s = seed >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  var rnd = lcg(20260829);
+  var NS = 'http://www.w3.org/2000/svg';
+  var knot = document.getElementById('st-knot');
+  var strands = [];
+  var CX = 320, CY = 320;
+  for (var i = 0; i < 14; i++) {
+    var a0 = rnd() * Math.PI * 2, a1 = rnd() * Math.PI * 2, a2 = rnd() * Math.PI * 2;
+    var r0 = 26 + rnd() * 64, r1 = 20 + rnd() * 70, r2 = 24 + rnd() * 60;
+    var x0 = CX + Math.cos(a0) * r0, y0 = CY + Math.sin(a0) * r0 * 0.8;
+    var x1 = CX + Math.cos(a1) * (r1 + 40), y1 = CY + Math.sin(a1) * r1;
+    var x2 = CX + Math.cos(a2) * r2, y2 = CY + Math.sin(a2) * r2 * 0.85;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) +
+      ' Q' + x1.toFixed(1) + ',' + y1.toFixed(1) + ' ' + x2.toFixed(1) + ',' + y2.toFixed(1));
+    p.setAttribute('stroke', i % 3 === 0 ? '#E4574D' : 'rgba(228,87,77,0.72)');
+    p.setAttribute('stroke-width', (2.6 + rnd() * 1.6).toFixed(1));
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke-linecap', 'round');
+    knot.appendChild(p);
+    // entry vector: fly in from outside the box toward final position
+    var ea = rnd() * Math.PI * 2;
+    strands.push({ el: p, fx: Math.cos(ea) * 420, fy: Math.sin(ea) * 420 - 160 });
+  }
+
+  var box = document.getElementById('st-stage-box');
+  var surfL = document.getElementById('st-surface-l');
+  var surfR = document.getElementById('st-surface-r');
+  var kicker = document.getElementById('st-kicker');
+  var caption = document.getElementById('st-caption');
+  var card = document.getElementById('st-card');
+  var knotG = document.getElementById('st-knot');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  // Local VO cues: tears@0.81 · pimple@1.74 · panics@2.97 · dumps@4.36 · chaotic@4.68 ·
+  // collagen@5.97 · plug-the-hole@6.68-7.78.
+  gsap.set(knotG, { scale: 1.45, svgOrigin: '320 320' }); // QA round: unscaled knot read too small at phone size
+  tl.fromTo(box, { scale: 1.02 }, { scale: 1.0, duration: 0.4 }, 0);
+
+  // "tears": the surface splits open — raw red edges + an inflammation bloom fill the
+  // stage until the collagen dump arrives (QA round: the first half read empty without them).
+  var tearL = document.getElementById('st-tear-l');
+  var tearR = document.getElementById('st-tear-r');
+  var inflame = document.getElementById('st-inflame');
+  tl.to(surfL, { x: -34, duration: 0.4, ease: 'power2.out' }, 0.81);
+  tl.to(surfR, { x: 34, duration: 0.4, ease: 'power2.out' }, 0.81);
+  tl.to(tearL, { x: -34, duration: 0.4, ease: 'power2.out' }, 0.81);
+  tl.to(tearR, { x: 34, duration: 0.4, ease: 'power2.out' }, 0.81);
+  tl.to([tearL, tearR], { opacity: 1, duration: 0.3 }, 0.85);
+  tl.to(inflame, { opacity: 1, duration: 0.7, ease: 'power1.inOut' }, 0.95);
+  // "panics": one bounded inflammation pulse, then it settles.
+  tl.to(inflame, { scale: 1.16, duration: 0.4, ease: 'power1.inOut' }, 2.97);
+  tl.to(inflame, { scale: 1.0, opacity: 0.75, duration: 0.6, ease: 'power1.inOut' }, 3.40);
+
+  // "panics": kicker lands, one bounded stage shudder.
+  tl.to(kicker, { opacity: 1, duration: 0.35 }, 2.97);
+  (function () {
+    var j = { p: 0 };
+    tl.to(j, { p: Math.PI * 3, duration: 0.42, ease: 'none', onUpdate: function () {
+      gsap.set(box, { x: Math.sin(j.p) * 4 });
+    } }, 2.97);
+    tl.set(box, { x: 0 }, 3.42);
+  })();
+
+  // "dumps ... chaotic unorganized collagen": strands pour in, staggered.
+  strands.forEach(function (s, i) {
+    var t0 = 4.36 + i * 0.11;
+    tl.fromTo(s.el, { x: s.fx, y: s.fy, opacity: 0 },
+      { x: 0, y: 0, opacity: 1, duration: 0.55, ease: 'power2.out' }, t0);
+  });
+  tl.fromTo(caption, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, 4.68);
+
+  // "plug the hole": the knot crests up through the tear.
+  tl.to(knotG, { y: -46, duration: 0.85, ease: 'power2.inOut' }, 6.68);
+  tl.to([surfL, surfR], { x: 0, duration: 0.9, ease: 'power2.inOut' }, 6.80);
+
+  // claim card rises; slow push-in across the tail.
+  tl.fromTo(card, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6 }, 5.60);
+  tl.to(box, { scale: 1.06, duration: 3.6, ease: 'power1.inOut' }, 5.00);
+
+  tl.to({}, { duration: 8.600 }, 0); // span anchor
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-setup'] = tl;
+})();
+</script>
+</template>

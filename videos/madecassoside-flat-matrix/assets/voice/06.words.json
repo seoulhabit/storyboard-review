@@ -1,0 +1,219 @@
+{
+	"systeminfo": "WHISPER : COREML = 0 | OPENVINO = 0 | MTL : EMBED_LIBRARY = 1 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | SME = 1 | ACCELERATE = 1 | OPENMP = 1 | REPACK = 1 | ",
+	"model": {
+		"type": "medium",
+		"multilingual": false,
+		"vocab": 51864,
+		"audio": {
+			"ctx": 1500,
+			"state": 1024,
+			"head": 16,
+			"layer": 24
+		},
+		"text": {
+			"ctx": 448,
+			"state": 1024,
+			"head": 16,
+			"layer": 24
+		},
+		"mels": 80,
+		"ftype": 1
+	},
+	"params": {
+		"model": "/Users/korswedie/.cache/hyperframes/whisper/models/ggml-medium.en.bin",
+		"language": "en",
+		"translate": false
+	},
+	"result": {
+		"language": "en"
+	},
+	"transcription": [
+		{
+			"timestamps": {
+				"from": "00:00:00,000",
+				"to": "00:00:00,240"
+			},
+			"offsets": {
+				"from": 0,
+				"to": 240
+			},
+			"text": ""
+		},
+		{
+			"timestamps": {
+				"from": "00:00:00,240",
+				"to": "00:00:00,360"
+			},
+			"offsets": {
+				"from": 240,
+				"to": 360
+			},
+			"text": " Instead"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:00,360",
+				"to": "00:00:01,040"
+			},
+			"offsets": {
+				"from": 360,
+				"to": 1040
+			},
+			"text": " of"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:01,040",
+				"to": "00:00:01,080"
+			},
+			"offsets": {
+				"from": 1040,
+				"to": 1080
+			},
+			"text": " a"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:01,080",
+				"to": "00:00:01,560"
+			},
+			"offsets": {
+				"from": 1080,
+				"to": 1560
+			},
+			"text": " messy"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:01,560",
+				"to": "00:00:02,390"
+			},
+			"offsets": {
+				"from": 1560,
+				"to": 2390
+			},
+			"text": " bump,"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:02,390",
+				"to": "00:00:02,480"
+			},
+			"offsets": {
+				"from": 2390,
+				"to": 2480
+			},
+			"text": " it"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:02,480",
+				"to": "00:00:03,000"
+			},
+			"offsets": {
+				"from": 2480,
+				"to": 3000
+			},
+			"text": " forces"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,000",
+				"to": "00:00:03,220"
+			},
+			"offsets": {
+				"from": 3000,
+				"to": 3220
+			},
+			"text": " a"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,220",
+				"to": "00:00:03,760"
+			},
+			"offsets": {
+				"from": 3220,
+				"to": 3760
+			},
+			"text": " perfectly"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:03,760",
+				"to": "00:00:04,180"
+			},
+			"offsets": {
+				"from": 3760,
+				"to": 4180
+			},
+			"text": " flat"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:04,180",
+				"to": "00:00:04,360"
+			},
+			"offsets": {
+				"from": 4180,
+				"to": 4360
+			},
+			"text": " smooth"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:04,360",
+				"to": "00:00:04,800"
+			},
+			"offsets": {
+				"from": 4360,
+				"to": 4800
+			},
+			"text": " surface"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:04,800",
+				"to": "00:00:05,040"
+			},
+			"offsets": {
+				"from": 4800,
+				"to": 5040
+			},
+			"text": " while"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:05,040",
+				"to": "00:00:05,200"
+			},
+			"offsets": {
+				"from": 5040,
+				"to": 5200
+			},
+			"text": " the"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:05,200",
+				"to": "00:00:05,580"
+			},
+			"offsets": {
+				"from": 5200,
+				"to": 5580
+			},
+			"text": " wound"
+		},
+		{
+			"timestamps": {
+				"from": "00:00:05,580",
+				"to": "00:00:06,000"
+			},
+			"offsets": {
+				"from": 5580,
+				"to": 6000
+			},
+			"text": " closes."
+		}
+	]
+}

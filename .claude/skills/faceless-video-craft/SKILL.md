@@ -545,6 +545,18 @@ Rules:
 - **BGM ducks under VO, not the reverse.** `data-fx-carve` (sidechain-style
   ducking against the voiceover group) is how BGM steps back during
   narration; set the strength low enough that music stays audible as texture.
+- **For a short's engineered loop (see *The hook*), the mix must be live at
+  both boundaries, not just the picture.** A stock BGM bed's own tail fade is
+  authored for that bed's original, longer running time — reused unmodified
+  under a shorter cut, its fade-out can land well before the video actually
+  ends, so the last second or two plays in near-silence even though the file
+  is technically still "the BGM track." Check by measuring RMS across the
+  final ~2s of the mix, not by trusting that a bed marked `.loop.` or a
+  filename implying it's loop-safe was cropped to this edit's actual length.
+  Re-cut the bed to the real duration with a short (~150-250ms) declick fade
+  at each end instead of inheriting whatever fade the source file shipped
+  with — confirmed necessary on a render where a stock bed's 4.5s tail fade
+  left the final 1.6s of a 34s short at true digital silence.
 - **SFX spotting is its own pass.** Trim every SFX file to its beat — a stock
   SFX that runs 1.5s longer than its visual beat will audibly drone into the
   next scene; this is caught only by listening past the cue, not by looking
@@ -822,9 +834,24 @@ for next time:
    *Phone-scale legibility check* below, not a full-size eyeball pass.
 3. **Does every scene have one dominant focal point?** Not two competing
    ones — see *9:16-native composition*'s depth-roles rule below.
-4. **Does the motion explain something** — a relationship, a
-   transformation, a comparison, a cause — rather than decorate? See
-   *Posture*'s "motion that means something."
+4a. **Does the motion explain something** — a relationship, a
+    transformation, a comparison, a cause — rather than decorate? See
+    *Posture*'s "motion that means something."
+4b. **Does every scene show measurable pixel change at the cadence target
+    across its WHOLE duration**, not just somewhere in it — checked with any
+    burned-in caption layer cropped out of the diff (see *Verification
+    loop*'s static-hold check)? Item 4a asks whether the motion that exists
+    means something; this asks whether motion exists for the full hold, not
+    just its opening beats. A source-level beat map or a clean
+    `npx hyperframes check` cannot answer this — an authored tween is not a
+    pixel change, and layout/motion linting has no cadence dimension.
+    Confirmed case: `videos/snail-mucin-recut-34s` passed `check` with 0
+    errors while 4 of its 6 scenes sat frozen for 2.0-7.5s at a stretch —
+    one scene (a 3-item list) was static for 7.5 of its 8 seconds, and the
+    project's own report had separately (and wrongly) claimed clean cadence
+    based on the source-level beat map alone. Run the render-level diff
+    before checking this item off; a passing 4a on an early beat says
+    nothing about second 6 of an 8-second scene.
 5. **Is there a real photographic, tactile, or product-specific visual
    early in the video**, rather than a fully illustrated/typographic open
    by default? See the tactile-anchor rule in *Asset protocol* above.
@@ -891,6 +918,23 @@ changed, even though the actual content (the hero plate, the graphic, the
 thing the scene is about) has been static the whole time. This is exactly
 how a static-hold bug survives a human scrubbing the render, too: a person
 watching sees the captions updating and reads the whole frame as in motion.
+
+**Source-level cadence measurement is an authoring-time aid, never a
+substitute for the check above.** Extracting every GSAP tween position from a
+scene's own `<script>` block is the fast way to get a rough cadence read
+*before* a render exists — but it measures authored beats, not pixels, and an
+authored beat is not the same thing as a pixel changing. A naive extraction
+also silently under-counts anything authored as a multi-line `fromTo()` call
+or via a named helper function (`ytCameraMove(tl, target, at, {...})`,
+`ytDefocusPulse(...)`) if it only pattern-matches single-line `tl.to()` calls.
+Confirmed doubly wrong in one real render (`videos/snail-mucin-recut-34s`):
+a source-level beat map reported "no gap over 3s anywhere," which was false
+in both directions — a `tl.to(el, {opacity: 0.85}, 5.6)` counted as a
+qualifying beat while moving 0.00 rendered pixels, and the same measurement
+separately missed real gaps by only matching single-line `tl.to()` syntax.
+If this kind of pre-render estimate is used at all, treat its output as a
+hypothesis to check, not a result to report — the post-render pixel diff
+above is the only thing that actually answers the static-hold question.
 
 **Transition midpoint check.** Extract a frame at the exact midpoint of every
 scene-to-scene transition, not just before and after it. A crossfade between
@@ -970,6 +1014,29 @@ building a fix plan from the report's own wording, and where the report's
 named fix and the measured root cause diverge, fix the root cause and say so
 — don't silently apply the literal instruction because it's what was asked.
 
+**A report can also name a symptom that does not exist at all — a distinct
+failure class from misdiagnosis, because there the reproduction step above
+finds nothing to fix rather than the wrong fix.** Confirmed in one QC pass
+where three of four findings were fabricated, all consistent with a
+vision/OCR-based reviewer's characteristic failure modes: a claimed on-screen
+typo that a native-resolution frame crop showed wasn't there (film grain
+under a letterform read as a different character to OCR); a claimed BLOCKER
+safe-area violation that row-measuring the actual caption band's pixels
+showed cleared the reserved zone by 48px (a downscaled or letterboxed
+preview made a mid-frame band look bottom-anchored); and a claimed 8s dead-air
+gap that per-250ms RMS measurement showed was actually two real ~3s
+narration-light spans with BGM present throughout, not silence. Each class
+has a cheap, specific disproof — don't reach for a full frame-by-frame
+re-render to check a single claim: a text claim gets a native-resolution crop
+of the specific timestamp; a safe-area or position claim gets a pixel-row
+measurement against the actual token/canvas math, not an eyeballed preview;
+an audio claim gets RMS-vs-time across the disputed window, not a listen-
+through. Treat a report's fourth, true finding with full weight even when
+the other three are fabricated — a report being wrong on magnitude or
+existence for most of its claims doesn't mean the one real finding isn't
+real; verify each claim independently rather than discounting the whole
+report once a couple of claims fail to reproduce.
+
 ## Cuts vs crossfades
 
 Hard cuts on a timing grid are the default and outperform transitions on
@@ -1048,6 +1115,24 @@ size itself is reasonable.
   composition is watched at arm's length, often at partial screen
   brightness, often with the platform's own UI cropping into the frame
   edges.
+- **Contrast floor: 4.5:1 for any text meant to be read, measured against
+  the actual pixels behind it, not the design token alone.** The type-size
+  floors above have no teeth without this — a headline can clear every size
+  rule and still be functionally invisible if its declared colour sits
+  close to the plate colour behind it. This is a real, confirmed gap: a
+  render shipped with pink (`#b9835a`) text directly over a light plate,
+  measuring 1.44:1 on the rendered frame (WCAG AA's own large-text floor is
+  3:1; this skill's bar is higher because the format's variable backgrounds
+  make a marginal pass on one frame a likely fail on the next), and the
+  engine's own automated contrast checker reported "13/13 checks pass" on
+  that exact render — an automated contrast pass evaluates the *declared*
+  foreground/background colours in the stylesheet, not what a plate, scrim,
+  or blend-mode layer actually puts behind the text at render time, so it
+  cannot see this class of failure either. When text sits over a photo or a
+  variable plate rather than a flat token colour, give it an opaque backing
+  (a pill, a scrim) rather than trusting a colour choice to stay legible
+  across whatever the plate turns out to be — verify by sampling the actual
+  rendered pixels at that timestamp, not the CSS.
 - **Hero copy occupies 60-80% of the available width.** Distinct from the
   vertical-fill rule above — this is a horizontal-occupancy check on the
   headline/hero text block itself, not the scene's overall vertical fill.
@@ -1142,7 +1227,15 @@ Structural consequences:
   first — matched background colour, matched hero position — so a replay
   feels seamless rather than requiring the viewer to notice a hard reset.
   Replays count as retention; a static, unrelated endcard as the true final
-  frame wastes this for free.
+  frame wastes this for free. **The loop is an audio event as much as a
+  visual one** — a mix that fades to silence before the cut (a BGM tail fade
+  left at its default length instead of trimmed for this shorter edit) hands
+  the replay a dead beat even when the picture matches perfectly. Check both
+  ends the same way: matched frame-diff for the picture (*Verification
+  loop*), matched RMS-vs-time for the mix (see *Audio is a first-class
+  composition layer*'s loop-boundary note) — confirmed necessary on a real
+  render where a frozen final scene and a BGM tail fading to true silence by
+  the last second combined into a loop that handed back nothing at all.
 - **Every beat past the value delivery earns its place.** Once the second
   beat has delivered the central value, each later beat must carry
   evidence, explanation, or an action supporting it — not runtime filler.
@@ -1659,6 +1752,12 @@ either pattern as "the" approach, and the majority of projects had neither.
   reproducing its finding against the actual render — a report's named
   symptom can be real while its diagnosis and proposed fix are wrong (see
   *Verification loop*'s own note on this).
+- Trusting an external QC report's finding count instead of reproducing each
+  one individually — a report can be right about magnitude on zero of its
+  four findings and still be worth reading in full, because the fabricated
+  ones and the real one require the same per-claim verification either way
+  (see *Verification loop*'s note on fabricated findings, distinct from
+  misdiagnosis).
 - Calling a project "delivered" without a manifest of what shipped and
   where — a render, an `.srt`, and a thumbnail sitting in three different
   folders is not the same as the person who asked for them being able to

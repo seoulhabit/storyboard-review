@@ -108,7 +108,7 @@ center).
 
 These PMIDs and the docket number are exactly where the skill's new citation rule says
 they belong — the on-screen pills now carry only the human-readable `Journal · Year`
-form (see the gate item 9 below); this description block is their one place to appear.
+form (see gate item 9a below); this description block is their one place to appear.
 
 **Pinned comment** — this round moved the video's own former closing line here, since
 the on-screen close (below) is now a specific action instead of a generic prompt:
@@ -233,9 +233,20 @@ final render, not the pre-fix draft:
    `captions/peeling-not-progress.srt` and `.vtt`, hand-authored from the storyboard
    and scene timings (no VO to transcribe, so no ASR step, but a sidecar exists all
    the same — see Captions above).
-9. **All on-screen citations real and human-readable, with no internal IDs?** Yes, as
-   of this round — every PMID/CFR/docket ID converted to `Journal · Year` form; the
-   IDs themselves moved to the description (above), never on screen.
+9a. **All on-screen citations real and human-readable, with no internal IDs?**
+    Yes, as of round 5 — every PMID/CFR/docket ID converted to `Journal · Year`
+    form; the IDs themselves moved to the description (above), never on screen.
+9b. **Does every on-screen claim/instruction stand on its own in plain language,
+    independent of the citation next to it?** Yes, checked directly against the
+    full current copy deck — every claim/instruction ("Severe burning or
+    swelling? Stop and ask a doctor.", "In trials, more irritation didn't mean
+    better results.", "Start slowly. Follow directions. Protect the barrier.")
+    is plain English on its own; the citation pills (`Arch Dermatol · 1995`,
+    `21 CFR 333.350`, `Cutis · 2006`, `FDA guidance · 2005`) do pure provenance
+    work beside already-understandable sentences, never carrying meaning the
+    viewer needs to decode. New gate item this round — see `faceless-video-craft`
+    SKILL.md's "untranslated clinical/technical register" entry; this project
+    is the worked passing example cited there.
 10. **No placeholders, unfinished text, or debug-overlay artifacts in frame?** Yes —
     grep-clean across all six composition files (TODO/FIXME/PLACEHOLDER/debug), both
     before and after this round's edits.

@@ -1,0 +1,143 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; color:#131516; font-family:'Helvetica Neue','Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  .mec-kicker { position:absolute; top:400px; left:96px; font-weight:700; font-size:32px;
+    letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  .uc-card { position:absolute; left:96px; top:470px; width:822px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:52px 56px 44px; opacity:0; }
+
+  .mec-label { font-weight:700; font-size:3.0cqw; letter-spacing:0.08em; text-transform:uppercase;
+    color:rgba(19,21,22,0.62); margin-bottom:26px; }
+  .mec-label .st-red { color:#993F3A; }      /* literal signal state only — never UI accent */
+  .mec-label .st-calm { color:#3E5641; opacity:0; }
+
+  .mec-svgwrap { position:relative; width:100%; height:260px; }
+  .mec-svgwrap svg { position:absolute; inset:0; }
+  /* Smooth (calmed) layer sweeps over the jagged layer left→right on its own card ground. */
+  .mec-calm-layer { position:absolute; inset:0; background:#F4F1EA;
+    clip-path:inset(0 100% 0 0); }
+
+  .mec-symptoms { display:flex; gap:20px; margin-top:24px; }
+  .mec-sym { font-weight:600; font-size:3.0cqw; color:rgba(19,21,22,0.85);
+    border:1px solid rgba(19,21,22,0.16); border-radius:999px; padding:12px 26px; opacity:0; position:relative; }
+  .mec-sym .sym-strike { position:absolute; left:10%; top:50%; width:0%; height:3px;
+    background:rgba(19,21,22,0.55); }
+
+  .mec-tag { position:absolute; left:0; width:100%; text-align:center; top:1020px; font-weight:600; font-size:31px;
+    color:rgba(247,245,240,0.62); opacity:0; }
+</style>
+<div data-composition-id="04-mechanism" id="root" data-width="1080" data-height="1920" data-duration="13.950">
+
+  <!-- G1 botanical underlay: dimmed slow b-roll behind the cards (wrapper non-timed; video carries timing) -->
+  <div id="mec-underlay" class="clip" style="z-index:0;">
+    <video id="mec-uvid" src="assets/plates/under-6.mp4" muted playsinline data-start="0" data-duration="13.95" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05);"></video>
+    <div style="position:absolute;inset:0;background:rgba(16,19,20,0.80);"></div>
+  </div>
+
+
+  <div id="mec-all" class="clip" data-start="0" data-duration="13.950" data-track-index="0">
+    <div class="mec-kicker" id="mec-kicker">Mechanism · claimed</div>
+
+    <div class="uc-card" id="mec-card">
+      <div class="mec-label" id="mec-label">
+        <span class="st-red" id="mec-lab-red">Inflammation signals</span>
+        <span class="st-calm" id="mec-lab-calm">→ Calmed</span>
+      </div>
+      <div class="mec-svgwrap">
+        <svg viewBox="0 0 700 320" width="100%" height="260" preserveAspectRatio="none" aria-hidden="true">
+          <polyline id="mec-jag" points="0,190 45,80 85,250 130,60 170,270 215,95 255,235 300,50 345,265 390,110 430,240 475,75 520,255 560,120 605,225 650,90 700,180"
+            fill="none" stroke="#C2504A" stroke-width="5" stroke-linejoin="round"
+            />
+          <!-- Aqua inflection marker: the single interrogated element of this frame. -->
+          <circle id="mec-dot" cx="8" cy="190" r="11" fill="none" stroke="#59B8AE" stroke-width="4" opacity="0" />
+        </svg>
+        <div class="mec-calm-layer" id="mec-calm">
+          <svg viewBox="0 0 700 320" width="100%" height="260" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,190 C120,178 220,168 350,164 C480,160 580,158 700,156"
+              fill="none" stroke="#6F8F72" stroke-width="5" />
+          </svg>
+        </div>
+      </div>
+      <div class="mec-symptoms">
+        <div class="mec-sym" id="mec-s1">Redness<span class="sym-strike" id="mec-k1"></span></div>
+        <div class="mec-sym" id="mec-s2">Stinging<span class="sym-strike" id="mec-k2"></span></div>
+        <div class="mec-sym" id="mec-s3">Hot · tight<span class="sym-strike" id="mec-k3"></span></div>
+      </div>
+    </div>
+
+    <div class="mec-tag" id="mec-tag">[Authored, illustrative — not a claim]</div>
+  </div>
+
+</div>
+<script>
+(function () {
+  var kicker = document.getElementById('mec-kicker');
+  var card = document.getElementById('mec-card');
+  var jag = document.getElementById('mec-jag');
+  var dot = document.getElementById('mec-dot');
+  var calm = document.getElementById('mec-calm');
+  var labCalm = document.getElementById('mec-lab-calm');
+  var syms = ['mec-s1','mec-s2','mec-s3'].map(function (i) { return document.getElementById(i); });
+  var strikes = ['mec-k1','mec-k2','mec-k3'].map(function (i) { return document.getElementById(i); });
+  var tag = document.getElementById('mec-tag');
+
+  // #6: measure the real path length so the draw starts moving on frame one
+  var jagLen = jag.getTotalLength();
+  jag.style.strokeDasharray = jagLen;
+  jag.style.strokeDashoffset = jagLen;
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(kicker, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 0.20);
+  tl.fromTo(card, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45 }, 0.55);
+
+  // "Here is the mechanism." → jagged red signal scrawls across (violent draw-on).
+  tl.to(jag, { strokeDashoffset: 0, duration: 0.85, ease: 'power1.out' }, 1.10);
+
+  // "shuts down" (local 3.76): the line freezes — aqua inflection dot marks the moment
+  // (glitch SFX lands here) — then the calm layer wipes left→right (3.9→5.6).
+  tl.to(dot, { opacity: 1, duration: 0.18 }, 3.70);
+  tl.to(calm, { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'power2.inOut' }, 3.95);
+  // Marker rides the wipe's leading edge (two segments approximate the inOut ease + path y).
+  tl.to(dot, { attr: { cx: 350, cy: 164 }, duration: 0.35, ease: 'power2.in' }, 3.95);
+  tl.to(dot, { attr: { cx: 684, cy: 157 }, duration: 0.35, ease: 'power2.out' }, 4.30);
+  tl.to(dot, { opacity: 0, duration: 0.3 }, 4.75);
+  tl.to(labCalm, { opacity: 1, duration: 0.4 }, 4.85);
+
+  // Tags land once the claim is on screen, before the symptom run.
+  tl.to(tag, { opacity: 1, duration: 0.4 }, 6.50);
+
+  // "Redness, stinging, that hot tight feeling" (8.25 / 9.0 / 9.95): chips appear…
+  tl.fromTo(syms[0], { y: 12 }, { opacity: 1, y: 0, duration: 0.35, immediateRender: false }, 8.10);
+  tl.fromTo(syms[1], { y: 12 }, { opacity: 1, y: 0, duration: 0.35, immediateRender: false }, 8.90);
+  tl.fromTo(syms[2], { y: 12 }, { opacity: 1, y: 0, duration: 0.35, immediateRender: false }, 9.85);
+
+  // "the alarm gets switched off" (12.6→13.5): each chip gets struck and dims.
+  strikes.forEach(function (k, i) {
+    tl.to(k, { width: '80%', duration: 0.15, ease: 'power4.in' }, 12.55 + i * 0.16);
+    tl.to(syms[i], { opacity: 0.52, duration: 0.3 }, 12.62 + i * 0.16);
+  });
+
+
+  // G1 underlay drift + G2 push-in (rework brief) — seek-safe, one direction per scene.
+  var uvid = document.getElementById('mec-uvid');
+  tl.fromTo(uvid, { scale: 1.06, xPercent: -2 }, { scale: 1.12, xPercent: 2, duration: 13.95, ease: 'none', immediateRender: true }, 0);
+  ['mec-all'].forEach(function (id) {
+    var el = document.getElementById(id);
+    gsap.set(el, { transformOrigin: '50% 45%' });
+    tl.fromTo(el, { scale: 1.0 }, { scale: 1.05, duration: 13.95, ease: 'power1.inOut', immediateRender: false }, 0);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['04-mechanism'] = tl;
+})();
+</script>
+</template>

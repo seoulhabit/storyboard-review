@@ -1,0 +1,118 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#101314; color:#131516; font-family:'Helvetica Neue','Inter',sans-serif; container-type:size; }
+  .clip { position:absolute; inset:0; }
+
+  .pro-kicker { position:absolute; top:400px; left:96px; font-weight:700; font-size:32px;
+    letter-spacing:0.14em; text-transform:uppercase; color:rgba(247,245,240,0.62); opacity:0; }
+
+  .pro-card { position:absolute; top:470px; width:390px; height:290px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:26px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:0 28px; text-align:center; opacity:0; box-sizing:border-box;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .pro-left  { left:96px; }
+  .pro-right { left:528px; transform-origin:50% 50%; }
+  .pro-card svg { display:block; margin:0 auto 22px; }
+  .pro-name { font-weight:700; font-size:3.1cqw; letter-spacing:0.04em; text-transform:uppercase; line-height:1.3; }
+
+  /* Coral strike — this frame's single voltage moment. Decorative strike, not text. */
+  .pro-strike { position:absolute; left:6%; top:52%; width:0%; height:7px; background:#C97A5C; border-radius:4px; transform:rotate(-7deg); transform-origin:0% 50%; }
+
+  .pro-check { stroke:#6F8F72; stroke-width:3.4; fill:none; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:60; stroke-dashoffset:60; }
+
+  .rx-card { position:absolute; left:96px; top:770px; width:822px; background:rgba(251,249,245,0.6); backdrop-filter:blur(25px) saturate(1.15); -webkit-backdrop-filter:blur(25px) saturate(1.15);
+    border:1px solid rgba(255,255,255,0.85); border-radius:26px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04);
+    padding:30px 48px; opacity:0; }
+  .rx-row { font-size:3.1cqw; font-weight:600; line-height:1.5; opacity:0; }
+  .rx-row + .rx-row { margin-top:18px; }
+  .rx-verb { font-weight:700; letter-spacing:0.06em; }
+
+</style>
+<div data-composition-id="06-protocol" id="root" data-width="1080" data-height="1920" data-duration="10.399">
+
+  <!-- G1 botanical underlay: dimmed slow b-roll behind the cards (wrapper non-timed; video carries timing) -->
+  <div id="pro-underlay" class="clip" style="z-index:0;">
+    <video id="pro-uvid" src="assets/plates/under-6.mp4" muted playsinline data-start="0" data-duration="10.399" style="width:100%;height:100%;object-fit:cover;filter:saturate(1.12) contrast(1.05);"></video>
+    <div style="position:absolute;inset:0;background:rgba(16,19,20,0.80);"></div>
+  </div>
+
+
+  <div id="pro-all" class="clip" data-start="0" data-duration="10.399" data-track-index="0">
+    <div class="pro-kicker" id="pro-kicker">The protocol · claimed</div>
+
+    <div class="pro-card pro-left" id="pro-left">
+      <svg viewBox="0 0 24 24" width="88" height="88" fill="none" stroke="#131516" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M9 2h6v3H9zM8 5h8v4l1.5 2v9a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-9L8 9z"/>
+        <path d="M7.5 14h9"/>
+      </svg>
+      <div class="pro-name">Harsh acid exfoliants</div>
+      <div class="pro-strike" id="pro-strike"></div>
+    </div>
+
+    <div class="pro-card pro-right" id="pro-right">
+      <svg viewBox="0 0 24 24" width="88" height="88" aria-hidden="true">
+        <path d="M12 2.7 C15.8 8.2 18 11.4 18 14.5 a6 6 0 0 1-12 0 C6 11.4 8.2 8.2 12 2.7 Z"
+          fill="none" stroke="#59B8AE" stroke-width="1.8" stroke-linejoin="round"/>
+        <path id="pro-checkpath" class="pro-check" d="M8.6 14.4 l2.3 2.4 l4.5 -5.2"/>
+      </svg>
+      <div class="pro-name">Cica · daily</div>
+    </div>
+
+    <div class="rx-card" id="rx-card">
+      <div class="rx-row" id="rx-1"><span class="rx-verb">STOP</span> — over-exfoliating. Two weeks off the harsh acids.</div>
+      <div class="rx-row" id="rx-2"><span class="rx-verb">START</span> — a Cica serum or cream, morning and night.</div>
+    </div>
+
+  </div>
+
+</div>
+<script>
+(function () {
+  var kicker = document.getElementById('pro-kicker');
+  var left = document.getElementById('pro-left');
+  var right = document.getElementById('pro-right');
+  var strike = document.getElementById('pro-strike');
+  var check = document.getElementById('pro-checkpath');
+  var rx = document.getElementById('rx-card');
+  var r1 = document.getElementById('rx-1'), r2 = document.getElementById('rx-2');
+
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+  tl.fromTo(kicker, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.45 }, 0.20);
+  tl.fromTo(left,  { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55 }, 0.90);
+  tl.fromTo(right, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55 }, 1.25);
+
+  // "stop." (local 3.87): the coral strike slams across the acids card, which dims.
+  tl.to(strike, { width: '88%', duration: 0.18, ease: 'power4.in' }, 3.85);
+  tl.to(left, { opacity: 0.42, rotation: -2, duration: 0.5 }, 4.10);
+
+  // "replace them with a Cica serum" (6.65): Cica card snaps forward, check draws.
+  tl.fromTo(right, { scale: 1.0 }, { scale: 1.05, duration: 0.22, ease: 'power4.out' }, 6.55);
+  tl.to(check, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 6.70);
+
+  // Prescription rows ride the sentence tail ("morning and night", 8.67).
+  tl.fromTo(rx, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 7.20);
+  tl.to(r1, { opacity: 1, duration: 0.4 }, 7.45);
+  tl.to(r2, { opacity: 1, duration: 0.4 }, 8.45);
+
+
+  // G1 underlay drift + G2 push-in (rework brief) — seek-safe, one direction per scene.
+  var uvid = document.getElementById('pro-uvid');
+  tl.fromTo(uvid, { scale: 1.06, xPercent: -2 }, { scale: 1.12, xPercent: 2, duration: 10.399, ease: 'none', immediateRender: true }, 0);
+  ['pro-all'].forEach(function (id) {
+    var el = document.getElementById(id);
+    gsap.set(el, { transformOrigin: '50% 45%' });
+    tl.fromTo(el, { scale: 1.0 }, { scale: 1.05, duration: 10.399, ease: 'power1.inOut', immediateRender: false }, 0);
+  });
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['06-protocol'] = tl;
+})();
+</script>
+</template>

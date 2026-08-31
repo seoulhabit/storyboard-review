@@ -70,8 +70,19 @@ see exactly what survives): the barrier-wall and "MORE IRRITATION" text-driven
 candidates both went illegible at that size, while the droplet's simple, high-contrast
 graphic shape read instantly. Rejected candidates kept alongside it, not deleted:
 `assets/thumbnail/candidate-barrier-wall-source.png`,
-`assets/thumbnail/candidate-more-irritation-source.png`. Unaffected by this round —
+`assets/thumbnail/candidate-more-irritation-source.png`. Unaffected by round 5 —
 Frame 1's droplet plate itself didn't change.
+
+**Re-confirmed for round 6, not just assumed carried-forward.** The shipped
+thumbnail is a frame from before any text is on screen at all (the panel and
+droplet only — no `.text-stack` content yet), and round 6's Frame 1 changes were
+both text-layer-only: removing `translateY` from `#line-1`/`#line-2`'s entrance
+(the panel and droplet markup/position are untouched), and a `.stage` `gap`
+experiment that was tried, found to shift the panel, and reverted back to its
+original value (see `frame.md` round 6's loop-match regression note) — so the
+panel ends this round in the exact same position it started in. Opened the actual
+file and visually confirmed: still the pale panel + droplet + finite ripple dots,
+no text, pixel-unaffected.
 
 ## Chapters / end screen
 

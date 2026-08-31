@@ -1,0 +1,207 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=IBM+Plex+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #17191A;
+    font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  }
+  #root * { box-sizing: border-box; }
+  #root .clip { position: absolute; }
+  #c2-wrap { inset: 0; }
+
+  .c2-stage { position: absolute; top: 660px; left: 0; right: 0; display: flex; justify-content: center; }
+
+  .c2-wall { position: relative; width: 952px; height: 480px; }
+  .c2-grout {
+    position: absolute;
+    inset: 0;
+    background: #4F7A68;
+    border-radius: 10px;
+    opacity: 0;
+  }
+  .c2-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+  .c2-brick {
+    background: #E7E4DA;
+    border-radius: 6px;
+    opacity: 0;
+  }
+
+  .c2-stat-wrap {
+    position: absolute;
+    top: 1260px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .c2-stat {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .c2-stat-num {
+    font-weight: 700;
+    font-size: 96px;
+    letter-spacing: -0.01em;
+    color: #7FB89C;
+    line-height: 1;
+  }
+  .c2-stat-label {
+    margin-top: 10px;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #A8ABA3;
+  }
+
+  /* QC rework: rapid-fire product B-roll replacing the static hold — synced to
+     "thick repair creams / hydrating serums / everyday drugstore cleansers".
+     Captions use the new 40px centered style (bottom-band placement was flagged). */
+  .c2-broll-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: #101112;
+  }
+  .c2-broll-wrap video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .c2-broll-caption-wrap {
+    position: absolute;
+    top: 910px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .c2-broll-caption {
+    background: rgba(16,17,18,0.55);
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 40px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #F1EEE6;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.7);
+  }
+</style>
+
+<div data-hf-id="hf-c2-root" id="root" data-composition-id="clinical-02-mortar" data-width="1080" data-height="1920" data-duration="10.1">
+  <div data-hf-id="hf-c2-wrap" id="c2-wrap" class="clip" data-start="0" data-duration="10.1" data-track-index="0">
+    <div data-hf-id="hf-c2-stage" class="c2-stage">
+      <div data-hf-id="hf-c2-wall" class="c2-wall">
+        <div data-hf-id="hf-c2-grout" id="c2-grout" class="c2-grout"></div>
+        <div data-hf-id="hf-c2-grid" class="c2-grid">
+          <div data-hf-id="hf-c2-b0" class="c2-brick b0"></div>
+          <div data-hf-id="hf-c2-b1" class="c2-brick b1"></div>
+          <div data-hf-id="hf-c2-b2" class="c2-brick b2"></div>
+          <div data-hf-id="hf-c2-b3" class="c2-brick b3"></div>
+          <div data-hf-id="hf-c2-b4" class="c2-brick b4"></div>
+          <div data-hf-id="hf-c2-b5" class="c2-brick b5"></div>
+          <div data-hf-id="hf-c2-b6" class="c2-brick b6"></div>
+          <div data-hf-id="hf-c2-b7" class="c2-brick b7"></div>
+          <div data-hf-id="hf-c2-b8" class="c2-brick b8"></div>
+          <div data-hf-id="hf-c2-b9" class="c2-brick b9"></div>
+          <div data-hf-id="hf-c2-b10" class="c2-brick b10"></div>
+          <div data-hf-id="hf-c2-b11" class="c2-brick b11"></div>
+        </div>
+      </div>
+    </div>
+    <div data-hf-id="hf-c2-stat-wrap" class="c2-stat-wrap">
+      <div data-hf-id="hf-c2-stat" id="c2-stat" class="c2-stat">
+        <div data-hf-id="hf-c2-stat-num" class="c2-stat-num">50%</div>
+        <div data-hf-id="hf-c2-stat-label" class="c2-stat-label">Of Your Outer Barrier</div>
+      </div>
+    </div>
+
+    <div data-hf-id="hf-c2-broll-cream" id="c2-broll-cream" class="c2-broll-wrap">
+      <video data-hf-id="hf-c2-vid-cream" id="c2-vid-cream" src="assets/broll/cream-jar.mp4" data-start="0" data-duration="10.1" data-media-start="0.2" muted loop></video>
+      <div data-hf-id="hf-c2-cap-cream-wrap" class="c2-broll-caption-wrap">
+        <div data-hf-id="hf-c2-cap-cream" class="c2-broll-caption">Repair Creams</div>
+      </div>
+    </div>
+    <div data-hf-id="hf-c2-broll-serum" id="c2-broll-serum" class="c2-broll-wrap">
+      <video data-hf-id="hf-c2-vid-serum" id="c2-vid-serum" src="assets/broll/serum-bottle.mp4" data-start="0" data-duration="10.1" data-media-start="0.2" muted loop></video>
+      <div data-hf-id="hf-c2-cap-serum-wrap" class="c2-broll-caption-wrap">
+        <div data-hf-id="hf-c2-cap-serum" class="c2-broll-caption">Hydrating Serums</div>
+      </div>
+    </div>
+    <div data-hf-id="hf-c2-broll-cleanser" id="c2-broll-cleanser" class="c2-broll-wrap">
+      <video data-hf-id="hf-c2-vid-cleanser" id="c2-vid-cleanser" src="assets/broll/cleanser-foam.mp4" data-start="0" data-duration="10.1" data-media-start="0.2" muted loop></video>
+      <div data-hf-id="hf-c2-cap-cleanser-wrap" class="c2-broll-caption-wrap">
+        <div data-hf-id="hf-c2-cap-cleanser" class="c2-broll-caption">Drugstore Cleansers</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var root = document.currentScript.parentElement;
+  var q = function (sel) { return root.querySelector(sel); };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // Grout first — synced to "the mortar" (0.47-0.74s), matching the VO's own word order.
+  tl.fromTo(q('#c2-grout'), { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 0.4);
+
+  // Bricks build in — synced to "holding your skin cells together" (0.74-2.20s).
+  var brickOrder = [0,1,2,3,4,5,6,7,8,9,10,11];
+  brickOrder.forEach(function (i, idx) {
+    tl.fromTo(q('.b' + i),
+      { opacity: 0, scale: 0.85 },
+      { opacity: 1, scale: 1, duration: 0.18, ease: 'back.out(1.5)' },
+      0.8 + idx * 0.09);
+  });
+
+  // Stat card — synced to "making up 50% of your outer barrier" (2.20-4.24s).
+  tl.fromTo(q('#c2-stat'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.32, ease: 'power2.out' }, 2.55);
+
+  // The graphic half is done once the stat has landed — fade it fully out BEFORE
+  // the product B-roll takes over, so no text ever sits occluded under the clips.
+  tl.to(q('.c2-stage'), { opacity: 0, duration: 0.18, ease: 'power2.in' }, 5.12);
+  tl.to(q('#c2-stat'), { opacity: 0, duration: 0.18, ease: 'power2.in' }, 5.12);
+
+  // Rapid-fire product B-roll — each clip lands on its own named product:
+  // "thick repair creams" (5.43-6.31), "hydrating serums" (6.43-7.52),
+  // "everyday drugstore cleansers" (7.87-9.20). Small gaps between clips (the
+  // scene's dark ground shows through) read as dip-cuts and keep consecutive
+  // captions from ever being co-visible.
+  tl.fromTo(q('#c2-broll-cream'), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power2.out' }, 5.35);
+  tl.to(q('#c2-broll-cream'), { opacity: 0, duration: 0.18, ease: 'power2.in' }, 6.25);
+  tl.fromTo(q('#c2-broll-serum'), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power2.out' }, 6.5);
+  tl.to(q('#c2-broll-serum'), { opacity: 0, duration: 0.18, ease: 'power2.in' }, 7.5);
+  tl.fromTo(q('#c2-broll-cleanser'), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: 'power2.out' }, 7.75);
+  tl.to(q('#c2-broll-cleanser'), { opacity: 0, duration: 0.25, ease: 'power2.in' }, 9.45);
+
+  tl.set({}, {}, 10.1);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['clinical-02-mortar'] = tl;
+})();
+</script>
+</template>

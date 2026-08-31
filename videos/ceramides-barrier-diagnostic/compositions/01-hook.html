@@ -1,0 +1,87 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700;800&family=IBM+Plex+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  #root {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #17191A;
+    font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  }
+  #root * { box-sizing: border-box; }
+  #root .clip { position: absolute; }
+  #c1-wrap { inset: 0; }
+
+  .c1-stage { position: absolute; top: 640px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; padding: 0 90px; }
+
+  /* QC fix: eyebrow was 36px / #8B8E86 (low contrast, too small on mobile).
+     Scaled 1.5x and set to pure white. */
+  .c1-kicker {
+    opacity: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 700;
+    font-size: 54px;
+    letter-spacing: 0.09em;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+  .c1-slam {
+    opacity: 0;
+    margin-top: 30px;
+    max-width: 940px;
+    font-weight: 700;
+    font-size: 74px;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: #C7CAC3;
+    text-align: center;
+  }
+  .c1-reveal {
+    opacity: 0;
+    margin-top: 26px;
+    font-weight: 800;
+    font-size: 128px;
+    line-height: 1;
+    letter-spacing: -0.015em;
+    color: #7FB89C;
+    text-align: center;
+  }
+</style>
+
+<div data-hf-id="hf-c1-root" id="root" data-composition-id="clinical-01-hook" data-width="1080" data-height="1920" data-duration="5.4">
+  <div data-hf-id="hf-c1-wrap" id="c1-wrap" class="clip" data-start="0" data-duration="5.4" data-track-index="0">
+    <div data-hf-id="hf-c1-stage" class="c1-stage">
+      <div data-hf-id="hf-c1-kicker" id="c1-kicker" class="c1-kicker">$80 Retinol</div>
+      <div data-hf-id="hf-c1-slam" id="c1-slam" class="c1-slam">is useless without one specific ingredient:</div>
+      <div data-hf-id="hf-c1-reveal" id="c1-reveal" class="c1-reveal">CERAMIDES.</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var root = document.currentScript.parentElement;
+  var q = function (sel) { return root.querySelector(sel); };
+
+  var tl = gsap.timeline({ paused: true });
+
+  // Kicker — synced to "Your $80 retinol" (0.05-1.12s).
+  tl.fromTo(q('.c1-kicker'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0.06);
+
+  // Setup line — synced to "is useless without one specific ingredient" (1.17-3.68s).
+  tl.fromTo(q('.c1-slam'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out' }, 1.08);
+
+  // The payoff — quick punch-in reveal synced to "ceramides." (3.72-4.05s).
+  tl.fromTo(q('.c1-reveal'), { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.8)' }, 3.6);
+
+  tl.set({}, {}, 5.4);
+
+  window.__timelines = window.__timelines || {};
+  window.__timelines['clinical-01-hook'] = tl;
+})();
+</script>
+</template>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700;800&family=IBM+Plex+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #17191A;
+    font-family: "IBM Plex Sans", -apple-system, sans-serif;
+  }
+
+  /* Faint brick/mortar texture — this project's own signature motif, kept
+     low-contrast so it reads as texture, not competing content. */
+  .brick-field {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 14px;
+    padding: 14px;
+    opacity: 0.05;
+  }
+  .brick-field div {
+    background: #E7E4DA;
+    border-radius: 5px;
+  }
+
+  /* Top-down vignette so the texture fades before it reaches the text band. */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #17191A 0%, rgba(23,25,26,0.55) 38%, rgba(23,25,26,0.55) 68%, #17191A 100%);
+  }
+
+  .stage {
+    position: absolute;
+    top: 700px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 64px;
+  }
+
+  .kicker {
+    width: 100%;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 700;
+    font-size: 62px;
+    letter-spacing: 0.08em;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .setup {
+    width: 100%;
+    margin-top: 34px;
+    font-weight: 700;
+    font-size: 84px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #C7CAC3;
+    text-align: center;
+  }
+
+  .reveal {
+    width: 100%;
+    margin-top: 30px;
+    font-weight: 800;
+    font-size: 146px;
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+    color: #7FB89C;
+    text-align: center;
+  }
+
+  .rule {
+    margin-top: 46px;
+    width: 120px;
+    height: 4px;
+    background: #4F7A68;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="brick-field">
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+  </div>
+  <div class="vignette"></div>
+
+  <div class="stage">
+    <div class="kicker">$80 Retinol</div>
+    <div class="setup">is useless without</div>
+    <div class="reveal">CERAMIDES.</div>
+    <div class="rule"></div>
+  </div>
+</body>
+</html>

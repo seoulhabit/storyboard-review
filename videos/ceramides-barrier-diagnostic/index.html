@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <!--
+      REVISION 11 — "rework" QC pass: the Rev 9 stretch created real dead air, and
+      the piece never said where to get ceramides or how to use them. Two new VO
+      lines (product sources in Scene 2, buffer/seal application advice in Scene 4)
+      fill the former holds; three product B-roll clips carry the sourcing beat;
+      captions rescaled/centered; CTA tightened to ~2s of read time.
+      Full rationale in this project's BRIEF.md.
+    -->
+    <div data-hf-id="hf-cu-root" id="root" data-composition-id="clinical-main" data-start="0" data-duration="41.4" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-cu-s1" id="cu-01-hook" class="scene" data-composition-id="clinical-01-hook" data-composition-src="compositions/01-hook.html" data-start="0" data-duration="5.4" data-track-index="0"></div>
+      <audio data-hf-id="hf-cu-v1" id="cu-01-voice" src="assets/voice/01.wav" data-start="0" data-duration="4.15" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-cu-s2" id="cu-02-mortar" class="scene" data-composition-id="clinical-02-mortar" data-composition-src="compositions/02-mortar.html" data-start="5.1" data-duration="10.1" data-track-index="1"></div>
+      <audio data-hf-id="hf-cu-v2" id="cu-02-voice" src="assets/voice/02.wav" data-start="5.1" data-duration="9.35" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-cu-s3" id="cu-03-crumble" class="scene" data-composition-id="clinical-03-crumble" data-composition-src="compositions/03-crumble.html" data-start="14.9" data-duration="8.6" data-track-index="0"></div>
+      <audio data-hf-id="hf-cu-v3" id="cu-03-voice" src="assets/voice/03.wav" data-start="14.9" data-duration="6.78" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-cu-s4" id="cu-04-solution" class="scene" data-composition-id="clinical-04-solution" data-composition-src="compositions/04-solution.html" data-start="23.2" data-duration="12.7" data-track-index="1"></div>
+      <audio data-hf-id="hf-cu-v4" id="cu-04-voice" src="assets/voice/04.wav" data-start="23.2" data-duration="11.95" data-track-index="10" data-volume="1"></audio>
+
+      <div data-hf-id="hf-cu-s5" id="cu-05-close" class="scene" data-composition-id="clinical-05-close" data-composition-src="compositions/05-close.html" data-start="35.6" data-duration="5.8" data-track-index="0"></div>
+      <audio data-hf-id="hf-cu-v5" id="cu-05-voice" src="assets/voice/05.wav" data-start="35.6" data-duration="4.56" data-track-index="10" data-volume="1"></audio>
+
+      <!-- BGM -->
+      <audio data-hf-id="hf-cu-bgm" id="cu-bgm" src="assets/bgm/track.loop.wav" data-start="0" data-duration="41.4" data-track-index="11" data-volume="0.12"></audio>
+
+      <!-- SFX -->
+      <audio data-hf-id="hf-cu-sfx-0" id="cu-sfx-stamp" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3" data-start="3.2" data-duration="1.1" data-track-index="20" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-cu-sfx-1" id="cu-sfx-blip" src="assets/sfx/soft-ui-data-blip.mp3" data-start="7.65" data-duration="0.576" data-track-index="21" data-volume="0.4"></audio>
+      <audio data-hf-id="hf-cu-sfx-2" id="cu-sfx-click" src="assets/sfx/subtle-mechanical-structural-click.mp3" data-start="17.85" data-duration="1.56" data-track-index="22" data-volume="0.35"></audio>
+      <audio data-hf-id="hf-cu-sfx-3" id="cu-sfx-crumble" src="assets/sfx/wall-crumble-crack-collapse.mp3" data-start="18.1" data-duration="5.387142" data-track-index="23" data-volume="0.28"></audio>
+      <audio data-hf-id="hf-cu-sfx-4" id="cu-sfx-chime1" src="assets/sfx/soft-confirmation-chime.mp3" data-start="34.8" data-duration="0.72" data-track-index="24" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-cu-sfx-5" id="cu-sfx-chime2" src="assets/sfx/soft-confirmation-chime.mp3" data-start="39.16" data-duration="0.72" data-track-index="25" data-volume="0.45"></audio>
+      <audio data-hf-id="hf-cu-sfx-6" id="cu-sfx-whoosh" src="assets/sfx/soft-low-riser-whoosh-transition-swell.mp3" data-start="20.4" data-duration="3.405" data-track-index="26" data-volume="0.3"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["clinical-main"] = gsap.timeline({ paused: true });
+      // ── scene transitions: 0.3s crossfades at each scene's own start ──
+      (function () { var tl = window.__timelines["clinical-main"];
+        tl.to("#cu-01-hook", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 5.1);
+        tl.fromTo("#cu-02-mortar", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 5.1);
+        tl.to("#cu-02-mortar", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 14.9);
+        tl.fromTo("#cu-03-crumble", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 14.9);
+        tl.to("#cu-03-crumble", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 23.2);
+        tl.fromTo("#cu-04-solution", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 23.2);
+        tl.to("#cu-04-solution", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 35.6);
+        tl.fromTo("#cu-05-close", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 35.6);
+        tl.to({}, { duration: 41.4 }, 0);
+      })();
+    </script>
+  </body>
+</html>

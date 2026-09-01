@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (split-compare's bisector, neutral no-flood mode -- the
+           callback to scene 02, now paid off with content instead of plain words):
+           1. Full-bleed paper #root, one flex column: split band (flex:1, two
+              equal fields divided by a bisector) over a flag row (bottom).
+           2. Each field is a plain flex column (icon over label over sub-line,
+              centered) -- no independent absolute siblings.
+           3. The bisector is the one element with its own absolute position
+              inside the split band's own stacking context, per the mandatory-
+              rule-2 exception -- not a stand-in for the two fields' own layout,
+              which is flex. */
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .split-band { flex: 1 1 auto; position: relative; display: flex; }
+        .field { flex: 1 1 50%; display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; gap: 20px; padding: 0 24px; }
+        .field-icon { width: 100px; height: 100px; }
+        .field-label { font-weight: 800; font-size: 42px; text-align: center; color: var(--ink); }
+        .field-sub { font-family: var(--font-mono); font-weight: 500; font-size: 28px;
+                     letter-spacing: 0.02em; text-align: center; color: var(--ink-2); opacity: 0; }
+        .divider { position: absolute; top: 8%; bottom: 8%; left: 50%; width: 3px;
+                   background: var(--ink); opacity: 0.3; transform: scaleY(0);
+                   transform-origin: top center; }
+
+        .flag-zone { flex: 0 0 auto; display: flex; justify-content: center; padding-top: 20px; }
+        .uf-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+                    font-size: 30px; color: rgba(19,21,22,0.85); border: 1px solid rgba(19,21,22,0.28);
+                    border-radius: 999px; padding: 12px 26px; background: rgba(19,21,22,0.05); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="06-clue" data-width="1080" data-height="1920" data-duration="3.200">
+        <div class="clip stage">
+          <div class="split-band">
+            <div class="field" id="field-left">
+              <svg class="field-icon" id="icon-flake" viewBox="0 0 100 100" aria-hidden="true">
+                <path d="M50,14 L64,40 L92,46 L70,64 L76,92 L50,76 L24,92 L30,64 L8,46 L36,40 Z"
+                      fill="none" stroke="#131516" stroke-width="3" stroke-linejoin="round"/>
+              </svg>
+              <p class="field-label" id="label-left">BARE SKIN</p>
+              <p class="field-sub" id="sub-left">Flakes? &rarr; Peeling.</p>
+            </div>
+            <div class="field" id="field-right">
+              <svg class="field-icon" id="icon-crumb" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="34" cy="40" r="14" fill="#131516"/>
+                <circle cx="66" cy="36" r="10" fill="#131516"/>
+                <circle cx="50" cy="66" r="12" fill="#131516"/>
+                <circle cx="76" cy="64" r="8" fill="#131516"/>
+              </svg>
+              <p class="field-label" id="label-right">AFTER LAYERING</p>
+              <p class="field-sub" id="sub-right">Crumbs? &rarr; Pilling.</p>
+            </div>
+            <div class="divider" id="divider"></div>
+          </div>
+          <div class="flag-zone">
+            <div class="uf-badge" id="flag">&#9675; A clue &mdash; not a diagnosis.</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Icons + labels already settled at frame zero (mandatory rule 4) -- the
+        // divider draw is this scene's one entrance beat, matching 02-split.html.
+        tl.fromTo('#divider', { scaleY: 0 }, { scaleY: 1, duration: 0.3 }, 0);
+
+        tl.to('#sub-left', { opacity: 1, duration: 0.3 }, 0.75);
+        tl.to('#sub-right', { opacity: 1, duration: 0.3 }, 0.95);
+
+        // UnsourcedFlag's own contract: fadeInAt 0.6, fadeInDuration 0.4.
+        tl.to('#flag', { opacity: 1, duration: 0.4 }, 0.6);
+
+        // t2.0-2.6: divider pulse -- the scene's continuous back-half motion.
+        tl.set('#divider', { transformOrigin: '50% 50%' }, 0);
+        tl.to('#divider', { scaleX: 1.6, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.0);
+
+        tl.to({}, { duration: 3.200 }, 0); // full-span anchor
+        window.__timelines["06-clue"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

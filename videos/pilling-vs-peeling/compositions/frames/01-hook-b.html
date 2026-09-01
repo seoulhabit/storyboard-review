@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Variant B: a TEASER split, deliberately unlabeled -- no "BARE SKIN" /
+           "AFTER LAYERING" verdict, because scene 05 (later in the shared body)
+           is where that comparison actually resolves. If this hook front-loaded
+           the labeled verdict, scene 05 would repeat instead of pay off. Same
+           base plate on both halves (F1 identity-by-construction) -- only the
+           right half carries a drawn residue overlay. One flex column: compare
+           band (flex, full-bleed) / headline zone, real --safe-* padding. */
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { display: flex; flex-direction: column; height: 1920px;
+                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .compare-band { flex: 0 0 1130px; position: relative; border-radius: 24px;
+                        overflow: hidden; background: #1A1A1A; margin-top: 40px; min-height: 0; }
+        /* Explicit fixed height, not flex-grow -- see 04-flaking.html's comment
+           for why a zone sized by measuring sibling text first is unsafe. */
+        .compare-band img { position: absolute; inset: 0; width: 100%; height: 100%;
+                            object-fit: cover; display: block; }
+        .overlay-mask { position: absolute; top: 0; right: 0; bottom: 0; width: 50%;
+                        background: rgba(19,21,22,0.06); }
+        .crumb { fill: rgba(19,21,22,0.55); opacity: 0; }
+        .divider { position: absolute; top: 6%; bottom: 6%; left: 50%; width: 3px;
+                  background: var(--ink); opacity: 0.35; transform: scaleY(0);
+                  transform-origin: top center; }
+
+        .headline-zone { flex: 0 0 168px; padding-top: 30px; text-align: center; min-height: 0; }
+        .headline { font-family: var(--font-mono); font-weight: 500; font-size: 48px;
+                   line-height: 1.25; color: var(--ink); max-width: 780px; margin: 0 auto; }
+      </style>
+
+      <div id="root" data-composition-id="01-hook-b" data-width="1080" data-height="1920" data-duration="2.600">
+        <div class="clip stage">
+          <div class="compare-band">
+            <img src="assets/plates/04-base-skin.png" alt=""
+                 width="1200" height="1200" loading="eager" decoding="sync">
+            <div class="overlay-mask">
+              <svg viewBox="0 0 540 900" preserveAspectRatio="xMidYMid slice"
+                   style="position:absolute; inset:0; width:100%; height:100%;">
+                <circle class="crumb" cx="180" cy="360" r="9"/>
+                <circle class="crumb" cx="260" cy="420" r="7"/>
+                <circle class="crumb" cx="220" cy="480" r="10"/>
+                <circle class="crumb" cx="320" cy="440" r="6"/>
+                <circle class="crumb" cx="290" cy="510" r="8"/>
+                <circle class="crumb" cx="200" cy="540" r="7"/>
+              </svg>
+            </div>
+            <div class="divider" id="h1b-divider"></div>
+          </div>
+          <div class="headline-zone">
+            <p class="headline" id="h1b-headline">Those flakes may be your skincare.</p>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero: headline already legible at rest (this variant's hook is
+        // the split image itself, not a delayed reveal). Divider and crumbs are
+        // a fast confirming beat, not the message.
+        tl.fromTo('#h1b-divider', { scaleY: 0 }, { scaleY: 1, duration: 0.3 }, 0);
+        gsap.utils.toArray('.crumb').forEach(function (el, i) {
+          tl.to(el, { opacity: 1, duration: 0.18 }, 0.40 + i * 0.10);
+        });
+
+        tl.to({}, { duration: 2.600 }, 0); // full-span anchor
+        window.__timelines["01-hook-b"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

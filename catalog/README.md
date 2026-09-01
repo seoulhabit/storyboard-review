@@ -24,10 +24,16 @@ live here:
   texture macros) rather than ingredients — 12 scenes for thumbnails,
   channel art, B-roll, and Shorts Studio inputs. Per-asset provenance and
   verification results live in [`manifest.json`](manifest.json).
+- **[`skin-macro-photography/`](skin-macro-photography/README.md)** — real-
+  looking (model-generated) macro skin/hand photography for tactile-proof
+  beats: pilling residue, layered product texture, flaking skin, bare
+  comparison skin. Harvested from `pilling-vs-peeling`'s 2026-09-01 recut,
+  currently 4 stills.
 - **[`tooling/`](tooling/README.md)** — shared verification scripts, not
-  imagery or components. Currently one entry: a rendered-pixel safe-area
-  scanner harvested from `peeling-not-progress`'s round-6 fix, worth reusing
-  the same way a proven component is.
+  imagery or components. Currently two entries: a rendered-pixel safe-area
+  scanner harvested from `peeling-not-progress`'s round-6 fix, and a
+  static-hold (frozen-content) scanner from `peeling-question-open` —
+  both worth reusing the same way a proven component is.
 
 A video is assembled by picking **one ingredient piece + one or more visual
 components** — e.g. "PDRN Renewal poster" (ingredient) driving into an
@@ -110,6 +116,7 @@ side; this folder is the design-reference side.
 | [UnsourcedFlag](visual-components/unsourced-flag/unsourcedflag-spike.html) | `unsourcedflag-spike.html` | Ink-toned pill badge disclosing authored/usage guidance with no record in the source system — deliberately never coral, never citation-pill typography, so it can't be mistaken for a real source | Unnumbered — the *concept* independently recurs across **six** shipped videos (`pdrn-cellular-science`, `madecassoside-flat-matrix`, `centella-tiger-grass`, `retinal-clinical-dossier`, `mugwort-healing-herb`, `red-ginseng-glass-glow` before it was replaced with a real citation), but only `mugwort-healing-herb` (round 3.1) resolved the *treatment* past bare unstyled text — this harvests that fixed version as the recommended shared shape, not a description of an existing consensus |
 | [FrostedPanel](visual-components/frosted-panel/frostedpanel-spike.html) | `frostedpanel-spike.html` | Translucent `backdrop-filter` glass card + an optional counter-translated peeling-film overlay (clip boundary and sheet move opposite directions so the sheet reads as stationary while it's "eaten away") | Unnumbered — the **second** independent implementation of the frosted-panel primitive in this repo (after `centella-tiger-grass`), harvested from `peeling-question-open` before a third rebuild happened; render-safety (a GPU-dependent CSS property) confirmed on two independent shipped projects now |
 | [StatReveal](visual-components/stat-reveal/statreveal-spike.html) | `statreveal-spike.html` | Single-statistic hero beat — numeral counts up (seek-safe, driven by tween progress via `onUpdate`), plain-language qualifier, human-readable citation chip, and a 100-unit tick-grid pictogram (never chart grammar) showing the same fraction as discrete units | Unnumbered — confirmed catalog gap: a discovery pass found no stat/percent/count-up component anywhere in this directory despite several prior videos (`kbeauty-one-percent-line`, `ceramides-barrier-diagnostic`, `hyaluronic-acid-serum`, others) each building one from scratch; harvested from `pilling-not-dead-skin` after its own implementation was fixed for a real layout-overlap defect and fully post-render-verified |
+| [FactorConverge](visual-components/factor-converge/factorconverge-spike.html) | `factorconverge-spike.html` | Several-inputs-converge-on-one-node diagram — 3 outer nodes each draw a connector line inward to a center node, which pulses once all three land; no node reads as more important than another | Unnumbered — confirmed catalog gap: a discovery pass across every existing component before build found nothing matching this shape (a many-to-one causal diagram, distinct from a comparison or a ranked list); harvested from `pilling-vs-peeling`'s SKIN/FORMULA/APPLICATION beat, fixed to exactly 3 nodes (a real N-node variant this spike doesn't build) |
 
 The in-page numbering (3/5, 4/5) is the components' own — slots 1, 2, and 5
 don't appear among today's files, so treat that as a hint about a larger

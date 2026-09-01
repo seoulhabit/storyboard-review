@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (loop-matched to scene 01 -- same ink ground, same
+           centered hero position, so the replay hands back cleanly; motion
+           budget is intentionally small here because it's the loop seam):
+           1. A low-opacity crop of the hook's own plate sits full-bleed
+              behind everything as a background layer, carrying a slow zoom
+              that continues the hook's own motion across the loop join --
+              this doubles as the scene's cadence carrier.
+           2. #root's stage is a flex column, centered, real --safe-* padding
+              (not centering alone). Takeaway / lockup / CTA are three
+              stacked flex children, no independent absolute siblings. */
+        /* Inset to the safe content box, not full-bleed edge-to-edge --
+           a full-bleed photographic plate reliably hard-fails the safe-area
+           gate even at low opacity: real macro texture blended over the ink
+           ground still reads as "ink" in the reserved zones under the
+           checker's luma-diff mask, confirmed on this exact scene (right-zone
+           violation, 7500+px masked). Insetting keeps the atmospheric backdrop
+           intent while guaranteeing the reserved zones stay clear by construction. */
+        .bg-plate { position: absolute; top: 192px; right: 162px; bottom: 384px; left: 72px;
+                   opacity: 0.18; overflow: hidden; }
+        .bg-plate img { width: 100%; height: 100%; object-fit: cover; display: block;
+                        transform-origin: 46% 42%; }
+
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { position: relative; display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; height: 1920px; gap: 34px;
+                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .takeaway { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .takeaway-line { font-weight: 800; font-size: 56px; line-height: 1.2; text-align: center;
+                          color: var(--paper); }
+
+        .lockup-zone { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .lockup { font-family: var(--font-kr, "Noto Sans KR Video"); font-weight: 500; font-size: 72px;
+                  color: var(--paper); opacity: 0; transform: scale(0.85); }
+        .underline { width: 0; height: 4px; background: var(--aqua); }
+
+        .secondary { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+                     line-height: 1.35; text-align: center; letter-spacing: 0.02em;
+                     color: rgba(247,245,240,0.7); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="08-close" data-width="1080" data-height="1920" data-duration="2.000">
+        <div class="bg-plate">
+          <img id="s8-bg-img" src="assets/plates/01-pilling-macro.png" alt=""
+               width="1200" height="1200" loading="eager" decoding="sync">
+        </div>
+        <div class="clip stage">
+          <div class="takeaway" id="s8-takeaway">
+            <p class="takeaway-line">BARE SKIN &rarr; PEELING</p>
+            <p class="takeaway-line">AFTER LAYERING &rarr; PILLING</p>
+          </div>
+          <div class="lockup-zone">
+            <div class="lockup" id="s8-lockup">습 SeoulHabit</div>
+            <div class="underline" id="s8-underline"></div>
+          </div>
+          <p class="secondary" id="s8-secondary">Save this test for<br>your next skincare routine.</p>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero: the takeaway is already the memorable rule at rest --
+        // this IS the loop endpoint, so it needs the same frame-zero
+        // discipline as scene 01's own hero (mandatory rule 4).
+        tl.fromTo('#s8-bg-img', { scale: 1.0 }, { scale: 1.02, duration: 2.0, ease: 'none' }, 0);
+
+        tl.fromTo('#s8-lockup', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 0.55);
+        tl.to('#s8-secondary', { opacity: 1, duration: 0.30 }, 1.15);
+        tl.to('#s8-underline', { width: 180, duration: 0.5, ease: 'power2.inOut' }, 0.90);
+
+        // t1.45-2.00: the takeaway drifts up 8px into the exact resting
+        // position scene 01's hero opens on, so the loop hand-back reads
+        // as continuous rather than a hard reset.
+        tl.to('#s8-takeaway', { y: -8, duration: 0.55, ease: 'power2.inOut' }, 1.45);
+
+        tl.to({}, { duration: 2.000 }, 0); // full-span anchor
+        window.__timelines["08-close"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

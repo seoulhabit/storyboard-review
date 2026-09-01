@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. #root is a single flex column, justify-content:center, real
+              --safe-* padding on all four sides (not centering alone --
+              this project's own V6 gap: the original hook consumed no
+              vertical safe token).
+           2. Question line (top) / plate panel (flex, dominant, the one
+              evidence beat) / payoff line (crossfades into the question
+              line's slot) are three stacked flex children -- no independent
+              absolute siblings except the press-highlight, which is an
+              absolute overlay INSIDE the panel's own clipped stacking
+              context (mandatory-rule-2 exception), not a stand-in for the
+              column layout.
+           3. The plate's Ken Burns zoom lives on an inner wrapper clipped by
+              the panel's own overflow:hidden, so it never moves the safe
+              box -- no --safe-*-zoomed math needed for a panel this size. */
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; height: 1920px; gap: 40px;
+                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .text-zone { position: relative; width: 100%; max-width: 800px; height: 190px;
+                     display: flex; align-items: center; justify-content: center; text-align: center; }
+        .text-line { position: absolute; left: 0; right: 0; }
+        #h1a-question { font-family: var(--font-mono); font-weight: 500; font-size: 52px;
+                    line-height: 1.2; color: rgba(247,245,240,0.9); }
+        #h1a-payoff { font-weight: 800; font-size: 84px; line-height: 1.08; color: var(--paper);
+                  opacity: 0; transform: scale(1.1); }
+
+        .media-plate { position: relative; width: 700px; height: 700px; border-radius: 28px;
+                       overflow: hidden; background: #1A1A1A; flex: 0 0 auto; }
+        .plate-zoom { position: absolute; inset: 0; transform-origin: 46% 42%; }
+        .plate-zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .press-highlight { position: absolute; width: 220px; height: 220px; border-radius: 50%;
+                           left: 40%; top: 34%; background: radial-gradient(circle,
+                           rgba(247,245,240,0.32) 0%, rgba(247,245,240,0) 70%);
+                           opacity: 0; transform: scale(0.6); pointer-events: none; }
+
+        .rule { width: 0; height: 4px; background: var(--aqua); }
+      </style>
+
+      <div data-hf-id="hf-jiky" id="root" data-composition-id="01-hook-a" data-width="1080" data-height="1920" data-duration="2.600">
+        <div data-hf-id="hf-q6os" class="clip stage">
+          <div data-hf-id="hf-p3af" class="media-plate">
+            <div data-hf-id="hf-e8yf" class="plate-zoom" id="h1a-zoom">
+              <img data-hf-id="hf-nyqs" src="assets/plates/01-pilling-macro.png" alt="" width="1200" height="1200" loading="eager" decoding="sync">
+            </div>
+            <div data-hf-id="hf-fd01" class="press-highlight" id="h1a-press"></div>
+          </div>
+          <div data-hf-id="hf-be5s" class="text-zone">
+            <p data-hf-id="hf-y95b" class="text-line" id="h1a-question">Peeling — or product pilling?</p>
+            <p data-hf-id="hf-8lsx" class="text-line" id="h1a-payoff">Those white flakes may not be your skin.</p>
+          </div>
+          <div data-hf-id="hf-u4he" class="rule" id="h1a-rule"></div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero composed: plate settled, question line already at rest
+        // (mandatory rule 4 -- the hook's payoff window starts at t=0, not
+        // after an entrance). Zoom begins immediately and runs the full scene.
+        tl.fromTo('#h1a-zoom', { scale: 1.0 }, { scale: 1.03, duration: 2.6, ease: 'none' }, 0);
+
+        // t0.55: fingertip-press beat -- a soft highlight blooms over the
+        // residue area, synced to the crumb-scatter SFX.
+        tl.to('#h1a-press', { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' }, 0.55);
+        tl.to('#h1a-press', { opacity: 0, duration: 0.35, ease: 'power2.in' }, 0.90);
+
+        // t1.20: the payoff crossfades into the question line's slot.
+        tl.to('#h1a-question', { opacity: 0, duration: 0.30 }, 1.20);
+        tl.fromTo('#h1a-payoff', { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2.2)' }, 1.20);
+
+        // t1.95-2.45: aqua rule draws under the payoff -- the scene's
+        // continuous back-half motion, resolved well before the cut.
+        tl.to('#h1a-rule', { width: 420, duration: 0.5, ease: 'power2.inOut' }, 1.95);
+
+        tl.to({}, { duration: 2.600 }, 0); // full-span anchor
+        window.__timelines["01-hook-a"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

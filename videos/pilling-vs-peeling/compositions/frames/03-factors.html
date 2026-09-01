@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (FactorConverge, harvested to catalog/visual-components/
+           factor-converge/ -- this project's own origin scene for it):
+           1. #root is a flex column: headline zone (top) / diagram zone (flex:1,
+              centered SVG). No caption zone this round -- the previous caption
+              ("Doesn't mean the product is bad.") restated the headline verbatim,
+              the exact redundancy the captions rule warns against; dropped.
+           2. The 3 outer nodes, 3 connectors, and center node are one
+              self-contained SVG; nothing outside it gets its own absolute
+              position. Own micro-scene (1.9s) rather than absorbed into a
+              neighbor, so its 3 named factors and their convergence mechanism
+              survive intact -- the substantive half of the source elaboration. */
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { display: flex; flex-direction: column; height: 1920px;
+                 padding: calc(var(--safe-top) + var(--safe-margin)) var(--safe-right)
+                          var(--safe-bottom) calc(var(--safe-left) + var(--safe-margin));
+                 justify-content: center; gap: 24px; }
+
+        .headline-zone { flex: 0 0 auto; }
+        .headline { font-weight: 800; font-size: 60px; line-height: 1.2; color: var(--ink);
+                    max-width: 800px; }
+
+        .diagram-zone { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
+        .diagram-zone svg { width: 780px; height: 560px; display: block; }
+        .connector { fill: none; stroke: var(--ink); stroke-width: 2.5; opacity: 0.5; }
+        .node-outer { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; }
+        .node-center { fill: var(--aqua); opacity: 0; }
+        .node-label { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
+                      letter-spacing: 0.05em; fill: var(--ink); text-anchor: middle; }
+      </style>
+
+      <div id="root" data-composition-id="03-factors" data-width="1080" data-height="1920" data-duration="1.900">
+        <div class="clip stage">
+          <div class="headline-zone">
+            <h2 class="headline">Not automatically the product&rsquo;s fault.</h2>
+          </div>
+          <div class="diagram-zone">
+            <svg viewBox="0 0 700 500">
+              <path class="connector" id="s3-line-skin" d="M180,140 L350,270"/>
+              <path class="connector" id="s3-line-formula" d="M520,140 L350,270"/>
+              <path class="connector" id="s3-line-app" d="M350,420 L350,270"/>
+
+              <g id="s3-group-skin">
+                <circle class="node-outer" cx="180" cy="140" r="64"/>
+                <text class="node-label" x="180" y="149">SKIN</text>
+              </g>
+              <g id="s3-group-formula">
+                <circle class="node-outer" cx="520" cy="140" r="64"/>
+                <text class="node-label" x="520" y="149">FORMULA</text>
+              </g>
+              <g id="s3-group-app">
+                <circle class="node-outer" cx="350" cy="420" r="64"/>
+                <text class="node-label" x="350" y="429">HOW YOU APPLY</text>
+              </g>
+
+              <circle class="node-center" id="s3-node-center" cx="350" cy="270" r="30"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        ['#s3-line-skin', '#s3-line-formula', '#s3-line-app'].forEach(function (id) {
+          var el = document.querySelector(id);
+          var len = el.getTotalLength();
+          gsap.set(id, { strokeDasharray: len, strokeDashoffset: len });
+        });
+
+        // Frame zero: headline + 3 outer nodes already settled (no pop-in --
+        // this scene is only 1.9s; the connectors drawing IS the entrance).
+        tl.to('#s3-line-skin', { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 0.15);
+        tl.to('#s3-line-formula', { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 0.30);
+        tl.to('#s3-line-app', { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 0.45);
+
+        tl.set('#s3-node-center', { transformOrigin: '50% 50%' }, 0);
+        tl.to('#s3-node-center', { opacity: 1, duration: 0.2 }, 1.00);
+        tl.to('#s3-node-center', { scale: 1.2, duration: 0.4, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.05);
+
+        // t1.35-1.85: the three factors travel inward along their own
+        // connectors toward the center -- the convergence payoff, not
+        // decoration; it's the mechanism the scene exists to show.
+        tl.to('#s3-group-skin', { x: 47.6, y: 36.4, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-group-formula', { x: -47.6, y: 36.4, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-group-app', { x: 0, y: -60, duration: 0.5, ease: "power2.inOut" }, 1.35);
+
+        tl.to({}, { duration: 1.900 }, 0); // full-span anchor
+        window.__timelines["03-factors"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (loop-matched to scene 01 -- same ink ground, same centered
+           flex-column hero position, so the replay hands back cleanly):
+           1. Full-bleed ink #root, one flex column, justify-content:center.
+           2. Two-line takeaway stack / lockup / secondary line -- three stacked
+              flex children, no independent absolute siblings.
+           3. The underline beneath the lockup is the scene's one continuous
+              motion element, drawn inside the lockup's own flex row, not an
+              absolute overlay. */
+        .stage { display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; height: 100%; gap: 36px;
+                 padding: 0 var(--safe-right) 0 var(--safe-left); }
+
+        .takeaway { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .takeaway-line { font-weight: 800; font-size: 56px; line-height: 1.2; text-align: center;
+                          color: var(--paper); }
+        #line2 { opacity: 0; }
+
+        .lockup-zone { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .lockup { font-family: var(--font-kr); font-weight: 500; font-size: 72px;
+                  color: var(--paper); opacity: 0; transform: scale(0.85); }
+        .underline { width: 0; height: 4px; background: var(--aqua); }
+
+        .secondary { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                     letter-spacing: 0.04em; color: rgba(247,245,240,0.65); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="09-close" data-width="1080" data-height="1920" data-duration="2.400">
+        <div class="clip stage">
+          <div class="takeaway">
+            <p class="takeaway-line" id="line1">BARE SKIN &rarr; PEELING</p>
+            <p class="takeaway-line" id="line2">AFTER LAYERING &rarr; PILLING</p>
+          </div>
+          <div class="lockup-zone">
+            <div class="lockup" id="lockup">습 SeoulHabit</div>
+            <div class="underline" id="underline"></div>
+          </div>
+          <p class="secondary" id="secondary">Save this.</p>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // line1 already settled at frame zero (mandatory rule 4 -- this is also
+        // the loop endpoint, so it needs the same frame-zero discipline as
+        // scene 01's own hero). line2 is this scene's entrance beat.
+        tl.to('#line2', { opacity: 1, duration: 0.30 }, 0.40);
+        tl.fromTo('#lockup', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, 0.90);
+        tl.to('#secondary', { opacity: 1, duration: 0.30 }, 1.40);
+
+        // t1.9-2.4: underline draws -- the scene's continuous back-half motion,
+        // still finishing right at the loop point so it hands back to scene 01
+        // cleanly (no motion left mid-flight at the cut).
+        tl.to('#underline', { width: 180, duration: 0.5, ease: "power2.inOut" }, 1.9);
+
+        tl.to({}, { duration: 2.400 }, 0); // full-span anchor
+        window.__timelines["09-close"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

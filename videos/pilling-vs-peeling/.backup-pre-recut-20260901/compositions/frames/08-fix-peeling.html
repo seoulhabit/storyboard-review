@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --mist: #F0EBE1;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --elev-2: 0 18px 32px -20px rgba(19,21,22,0.35);
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (adapted from peeling-not-progress/05-reset.html's header /
+           3-icon-row / 2-chip flex column, reframed per this brief's own direction --
+           the actives icon animates a "switch turns off" beat instead of all three
+           icons presenting as equally static):
+           1. Full-bleed paper #root, one flex column: header zone / objects row
+              (flex:1) / chips zone.
+           2. Objects row is a flex row of 3 equal columns; each column is a plain
+              flex column (icon circle over label), not absolute. */
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: calc(var(--safe-top) + 20px) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .header-zone { text-align: center; display: flex; flex-direction: column; gap: 14px; }
+        .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 30px;
+                  letter-spacing: 0.08em; color: var(--ink-2); }
+        .headline { font-family: var(--font-display); font-size: 68px; line-height: 1.2; color: var(--ink); }
+
+        .objects-row { flex: 1; display: flex; align-items: center; justify-content: center; gap: 40px; }
+        .object-col { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .icon-circle { position: relative; width: 220px; height: 220px; border-radius: 50%;
+                       background: var(--mist); box-shadow: var(--elev-2); display: flex;
+                       align-items: center; justify-content: center; }
+        .icon-circle svg { width: 100px; height: 100px; stroke: var(--ink); stroke-width: 1.8;
+                           fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .strike-line { position: absolute; left: 20%; right: 20%; top: 50%; height: 4px;
+                       background: var(--ink); transform: scaleX(0); transform-origin: left center; }
+        .object-label { font-family: var(--font-mono); font-weight: 500; font-size: 28px;
+                        letter-spacing: 0.04em; color: var(--ink); text-align: center; }
+
+        .chips-zone { display: flex; justify-content: center; gap: 20px; padding-top: 8px; }
+        .chip { font-family: var(--font-mono); font-size: 30px; letter-spacing: 0.04em;
+                color: var(--ink-2); border: 1.5px solid rgba(19,21,22,0.25); border-radius: 999px;
+                padding: 8px 20px; opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="08-fix-peeling" data-width="1080" data-height="1920" data-duration="2.800">
+        <div class="clip stage">
+          <div class="header-zone">
+            <div class="kicker">THE RESET</div>
+            <h2 class="headline" id="headline">Pause actives. Moisturize. Protect.</h2>
+          </div>
+
+          <div class="objects-row">
+            <div class="object-col" id="obj-actives">
+              <div class="icon-circle">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                </svg>
+                <div class="strike-line" id="strike"></div>
+              </div>
+              <div class="object-label">ACTIVES</div>
+            </div>
+            <div class="object-col" id="obj-moisture">
+              <div class="icon-circle" id="circle-moisture">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M10 2v7.3" /><path d="M14 9.3V2" /><path d="M8.5 2h7" />
+                  <path d="M14 9.3a6.5 6.5 0 1 1-4 0" /><path d="M5.5 16h13" />
+                </svg>
+              </div>
+              <div class="object-label">MOISTURIZER</div>
+            </div>
+            <div class="object-col" id="obj-spf">
+              <div class="icon-circle" id="circle-spf">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2" /><path d="M12 20v2" />
+                  <path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" />
+                  <path d="M2 12h2" /><path d="M20 12h2" />
+                  <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+              </div>
+              <div class="object-label">DAYTIME SPF</div>
+            </div>
+          </div>
+
+          <div class="chips-zone">
+            <div class="chip" id="chip-1">Cutis &middot; 2006</div>
+            <div class="chip" id="chip-2">FDA guidance &middot; 2005</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        tl.fromTo(['#obj-actives', '#obj-moisture', '#obj-spf'],
+          { opacity: 0, scale: 0.85 },
+          { opacity: 1, scale: 1, duration: 0.25, stagger: 0.1 }, 0.30);
+
+        // t0.9: actives icon dims and a strike line draws across it.
+        tl.set('#strike', { transformOrigin: 'left center' }, 0);
+        tl.to('#obj-actives .icon-circle svg', { opacity: 0.35, duration: 0.3 }, 0.90);
+        tl.to('#strike', { scaleX: 1, duration: 0.35, ease: "power2.inOut" }, 0.95);
+
+        // t1.3: moisturizer + SPF pulse -- "rebuilding."
+        tl.set(['#circle-moisture', '#circle-spf'], { transformOrigin: '50% 50%' }, 0);
+        tl.to('#circle-moisture', { scale: 1.08, duration: 0.4, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.30);
+        tl.to('#circle-spf', { scale: 1.08, duration: 0.4, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.45);
+
+        tl.to('#chip-1', { opacity: 1, duration: 0.3 }, 1.70);
+        tl.to('#chip-2', { opacity: 1, duration: 0.3 }, 2.00);
+
+        tl.to({}, { duration: 2.800 }, 0); // full-span anchor
+        window.__timelines["08-fix-peeling"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

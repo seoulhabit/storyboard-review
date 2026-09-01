@@ -69,7 +69,32 @@ convenience in every case.
    `top`/`left` values instead of a Grid/Flex relationship, that is the layout
    bug this rule exists to prevent — it will not survive a string-length
    change or an aspect-ratio flip.
-3. **Validation mode.** When asked to verify a layout or draft a skeleton, ship
+3. **`box-sizing: border-box` on every element, always** — `*, *::before,
+   *::after { box-sizing: border-box; }` as the first rule in every
+   composition's `<style>` block. Any element that combines an explicit
+   `height`/`width` with `padding` renders LARGER than declared under the
+   CSS default (`content-box`), because padding is added on top of the
+   declared size instead of reserved within it. Confirmed as the root
+   cause of a genuinely hard-to-diagnose defect: a `.stage { height:
+   1920px; padding: 192px ... 384px ...; }` rendered as an actual
+   **2496px** box (1920 + 576 top/bottom padding), silently pushing
+   bottom-anchored content — citation chips, a CTA — past the real canvas
+   edge and into, or entirely out of, the reserved safe zone. This
+   reproduced identically across renders regardless of `--safe-*` token
+   values, `justify-content` strategy, flex-grow vs. explicit flex-basis,
+   or sub-composition nesting depth, and is **invisible from source** — it
+   only shows up as a discrepancy between `getComputedStyle(el).height`
+   (reports the declared value, e.g. "1920px") and
+   `el.getBoundingClientRect().height` (reports the actual laid-out value,
+   e.g. 2496) on a real compiled render. A project missing this reset can
+   pass `npx hyperframes check`'s lint/runtime/motion/contrast passes
+   completely clean while still shipping this defect — check surfaces it
+   only as scattered `container_overflow`/`canvas_overflow` **info**-level
+   layout findings (non-blocking), not as an error, so a project that
+   doesn't investigate its own info findings will ship it. See *Failure
+   modes worth naming* below for the second half of this defect
+   (`min-height: auto` on flex children) and the fix for both.
+4. **Validation mode.** When asked to verify a layout or draft a skeleton, ship
    a debug overlay the operator can toggle without editing anything first (see
    *Layout validation and debug strategy* below for the concrete pattern in
    this engine).
@@ -650,6 +675,18 @@ one new short scene — cascades further than it looks:
 Treat a mid-build script edit as "this touches N files," not "this touches one
 line," and budget for it.
 
+**The cascade runs in the other direction too: a motion edit can orphan an
+SFX cue.** The list above starts from a script/VO change; the same
+dependency exists when a *visual* beat is removed or retimed with no
+script change at all — e.g. an entrance stagger deleted to fix a
+blank-frame finding. Confirmed case: three card-entrance SFX clicks kept
+firing at their original timestamps after the card entrances themselves
+were removed (all three cards changed to settle at frame zero instead),
+leaving three clicks with no corresponding visual event. Any pass that
+deletes, merges, or retimes a visual beat needs the same SFX-spotting
+re-check as a VO change — grep the scene's `data-start` audio cues against
+what actually still animates at each of those timestamps.
+
 ## Layout validation and debug strategy
 
 Layout cannot be verified by looking at the code, so the code has to be built in
@@ -883,7 +920,23 @@ for next time:
     project's own report had separately (and wrongly) claimed clean cadence
     based on the source-level beat map alone. Run the render-level diff
     before checking this item off; a passing 4a on an early beat says
-    nothing about second 6 of an 8-second scene.
+    nothing about second 6 of an 8-second scene. **"Not frozen" and
+    "adequately paced" are different questions, and a project's own
+    `check-static-hold.py` copy typically only answers the first** — its
+    `PSNR_FROZEN_DB` threshold (a project-specific value, commonly ~55dB)
+    only fires on near-pixel-identical consecutive samples; a scene can
+    report "0 findings" while 94% of its frame-to-frame steps carry no
+    meaningful change, because sub-perceptual drift keeps breaking the
+    "frozen" run before it reaches the cadence ceiling. Add a real cadence
+    check as a second, distinct metric: sample at ~8fps, compute mean
+    `|Δluma|` per step across the whole frame, and count what fraction of
+    steps clear a real-but-low threshold (~1.0 on a 0-255 scale is a
+    reasonable starting point — tune per project, but confirm it separates
+    real beats from hard cuts, since cuts alone can measure 100+ per step
+    and swamp a threshold set too low). A whole-video active-step share
+    under ~10-15% is worth a second look regardless of what `check`
+    reports; three consecutive scenes with near-zero internal motion is
+    the pattern that produced this rule.
 5. **Is there a real photographic, tactile, or product-specific visual
    early in the video**, rather than a fully illustrated/typographic open
    by default? See the tactile-anchor rule in *Asset protocol* above.
@@ -1015,6 +1068,19 @@ confirmed cases:
   `CAPTION_BAND_EXCLUDE`/crop constants against that project's own
   `index.html` — does a burned-in caption element actually exist at those
   coordinates? — rather than trusting the file's own inherited comment.
+  **This has now recurred a third time in the same lineage**, confirming
+  the pattern rather than being a one-off: a later project's own copy of
+  the file carried a docstring literally naming a *different* project
+  ("this project, peeling-question-open") even though the constants
+  themselves (`CAPTION_BAND_EXCLUDE = False`) happened to be correctly
+  re-derived for the new project. The provenance comment drifted; only
+  luck kept the actual constant right. Since a comment demonstrably does
+  not stop this, prefer a runtime assertion over documentation: have the
+  script check, at the top of its own run, whether an element actually
+  exists in the calling project's `index.html` at the configured caption-
+  band coordinates when `CAPTION_BAND_EXCLUDE` is `True` (and conversely
+  warn if a burned-in caption composition exists but the flag is `False`)
+  — fail loud rather than silently trusting inherited constants.
 
 **Source-level cadence measurement is an authoring-time aid, never a
 substitute for the check above.** Extracting every GSAP tween position from a
@@ -1273,6 +1339,35 @@ size itself is reasonable.
   (a pill, a scrim) rather than trusting a colour choice to stay legible
   across whatever the plate turns out to be — verify by sampling the actual
   rendered pixels at that timestamp, not the CSS.
+- **A colour token's own definition can carry a scope; using it off that
+  scope is a contrast bug an audit can miss.** When a secondary-ink token
+  is documented against one specific ground ("secondary text on paper —
+  4.89:1, passes"), that scope is a constraint, not just a comment — using
+  the same token on a *different* ground can fail outright while a
+  project's own record claims a clean pass. Confirmed case: a token
+  defined and scoped to paper (`#6B6B6B` at 4.89:1) was reused on an ink
+  ground at **3.44:1**, while the project's own verification notes said
+  "16/16 checked and passed" — the check had evaluated the token's
+  declared value in isolation, not against the specific ground each usage
+  site actually sat on. Contrast has to be re-evaluated per ground, per
+  usage site, not assumed to transfer because the token passed once
+  somewhere else. If a project's token set has both a light-ground and a
+  dark-ground variant of the same semantic role (e.g. `--ink-2` /
+  `--ink-2-dark`), that split exists for exactly this reason — use the
+  variant matching the actual ground under the text, not whichever name is
+  more familiar.
+- **Contrast applies to the hero visual, not only to text.** The rule above
+  is written around text-over-a-plate, but a purely decorative hero
+  element (an illustrated panel, a diagram's own background shape) can
+  fail the same way and is easy to miss because no contrast checker
+  evaluates it at all. Confirmed case: a hook scene's hero illustration sat
+  at **1.05:1** against its own ground (`#1A1A1A` panel on `#131516`
+  canvas) — technically present, but visually indistinguishable from its
+  background at any viewing size, and completely invisible once downscaled
+  to thumbnail/grid scale. This is a hook-legibility failure (gate item 1)
+  as much as a contrast failure — a hero visual with no real separation
+  from its ground reads as an empty frame, no matter how carefully its
+  *content* was drawn.
 - **Hero copy occupies 60-80% of the available width.** Distinct from the
   vertical-fill rule above — this is a horizontal-occupancy check on the
   headline/hero text block itself, not the scene's overall vertical fill.
@@ -1333,6 +1428,19 @@ size itself is reasonable.
     + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
   --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
     + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
+
+  /* The two above only cover the edges FARTHER from the zoom origin than
+     the origin itself (bottom/right, for the common case of an origin at
+     or below/right of canvas center). A zoom whose origin sits off-center
+     toward the top (e.g. 50% 40%, a common framing for a hero plate) maps
+     the NEARER edges -- top and left -- outward too, by the same inversion
+     in the other direction. Add these two whenever the origin isn't
+     centered, or a top/left overshoot ships silently the same way a
+     missing bottom/right derivation would have. */
+  --safe-top-zoomed: calc(var(--zoom-origin-y)
+    - (var(--zoom-origin-y) - var(--safe-top) - var(--safe-margin)) / var(--zoom-max));
+  --safe-left-zoomed: calc(var(--zoom-origin-x)
+    - (var(--zoom-origin-x) - var(--safe-left) - var(--safe-margin)) / var(--zoom-max));
   ```
 
   Use the `-zoomed` value in `.stage`'s padding in place of the flat token,
@@ -1428,6 +1536,18 @@ node — never promise in-video interactivity the player cannot deliver.
 - Master audio to YouTube's ~-14 LUFS integrated / -1.5 dBTP normalization
   target as a **post-render** step; louder than that is simply turned down by
   the platform.
+- **Measure true peak on the final encoded deliverable, not the PCM
+  intermediate `loudnorm` ran against.** Lossy encoding (AAC in particular)
+  raises intersample true peak — confirmed case: a two-pass `loudnorm`
+  correctly hit -1.50 dBTP on its PCM output, the project recorded that as
+  final, and the shipped MP4's AAC encode had actually pushed true peak up
+  to **+0.5 dBFS** — decoding the shipped file back to PCM and re-measuring
+  reproduced the overshoot exactly. Leave headroom for this: target
+  something like `TP=-2.5` (not `-1.5`) on the `loudnorm` pass specifically
+  so the post-encode file still lands under -1.0 dBTP, then re-measure
+  `ebur128` on the actual shipped file before calling mastering done — a
+  measurement against the intermediate is not evidence about the
+  deliverable.
 
 Captions are their own deliverable, with the same weight as the mix — see
 *The captions* below, not a bullet point here.
@@ -1487,6 +1607,19 @@ otherwise it's the same phrase read twice for no reason, spending the one
 frame that could have carried new information. A `.vtt` export is an
 accepted alternative or addition to `.srt` where the publish target wants
 one.
+
+**A hand-authored sidecar needs its own minimum cue duration — mirroring
+every on-screen element's own entrance timestamp is not the same as
+authoring readable cues.** When there's no VO to anchor cue timing against,
+it's tempting to derive each cue directly from the composition's own beat
+schedule (one cue per element, starting exactly when that element enters).
+Confirmed failure mode: doing this mechanically produced a sidecar where 10
+of 29 cues ran under 0.5 seconds, the shortest at 0.15s — nowhere near
+readable, let alone accessible. Enforce a real floor (~1.0s minimum
+on-screen time per cue) and merge co-occurring on-screen copy into one cue
+rather than one cue per element; a caption track's pacing is a distinct
+authoring decision from the visual beat schedule, not a direct mirror of
+it, even when both are hand-authored from the same source material.
 
 Production order:
 
@@ -1720,6 +1853,26 @@ declared but never referenced anywhere (a dead accent color, an unused
 elevation level) — that's a sign the token file and the compositions have
 already started to diverge.
 
+**A `tokens.css` that exists and is correct but is never actually loaded by
+anything is a worse version of the same trap, not a milder one** — it
+passes an "does a token file exist" audit while doing nothing. Confirmed
+case: a project's `tokens.css` had the correct type scale, the correct
+per-ground contrast-safe secondary-ink variants, and the derived
+Ken-Burns-aware safe-area math already worked out — and no scene actually
+referenced it; a `<link rel="stylesheet">` pointing at it did not reliably
+resolve custom properties through the render pipeline (confirmed by
+measuring `--safe-top` etc. as empty on a compiled render), so every scene
+had silently fallen back to re-declaring its own values inline, some of
+them wrong. Two fixes, in order of preference: (1) confirm a `<link>` or
+`@import` to the shared file actually resolves on a real compiled render
+(measure a token's value, don't assume the reference worked because
+`check` didn't complain), or (2) inline the token file's *values* into
+each composition's own `#root` block as the reliable fallback — the
+discipline that matters is having one source of truth to copy from, not
+necessarily a live runtime fetch. Either way, grep the compositions for the
+token file's own filename or its distinguishing values, not just for the
+file's presence on disk, before trusting a "tokens are centralized" claim.
+
 ## Consistency across a channel's videos
 
 *Design tokens across sub-compositions* (above) covers drift **within** one
@@ -1783,6 +1936,27 @@ either pattern as "the" approach, and the majority of projects had neither.
 
 ## Failure modes worth naming
 
+- **Missing `box-sizing: border-box` combined with a flex child's explicit
+  small `flex-basis`.** Two defects that compound: (1) without the
+  border-box reset (mandatory rule 3 above), an element with both an
+  explicit height and padding renders larger than declared, by exactly the
+  padding total — invisible from source, caught only by comparing
+  `getBoundingClientRect()` against `getComputedStyle().height` on a real
+  render. (2) Even after fixing (1), a flex child given a small explicit
+  `flex-basis` (e.g. `flex: 0 0 220px`) to keep a zone's size independent of
+  its content can still render far taller than that basis — confirmed at
+  332px against a declared 220px — because `min-height: auto` (the flex
+  item default) resolves to the content's min-content size and silently
+  overrides a smaller explicit basis unless `min-height: 0` is also set on
+  that child. Both defects reproduce identically across renders, don't
+  depend on `--safe-*` token values, and surface only as scattered
+  `info`-level (non-blocking) `container_overflow`/`canvas_overflow`
+  findings in `npx hyperframes check` — a project can ship with citation
+  chips or a CTA silently pushed into, or entirely out of, the reserved
+  safe zone while reporting a clean check. Fix both at once, project-wide:
+  `*, *::before, *::after { box-sizing: border-box; }` as the first rule in
+  every composition, plus `min-height: 0` on every flex child carrying an
+  explicit small basis.
 - Building the composition before the beat sheet, then re-timing everything.
 - Proof-scaling a component into a big empty canvas and calling it a scene —
   especially in 9:16, where the failure reads as "small fonts" even when the

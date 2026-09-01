@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --aqua: #59B8AE; --coral: #C97A5C;
+          /* --aqua (#59B8AE) on --ink measures under 3:1 as small text -- used here only
+             as the label-rule accent color, never for readable text (matches
+             pilling-not-dead-skin/06-protocol.html's own --aqua-text workaround note). */
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (adapted from pilling-not-dead-skin/06-protocol.html's
+           left-anchored numbered-step column, generalized to 3 rapid cards in a
+           row per this brief's own "three rapid cards"):
+           1. #root is a flex column: label row / 3-card row (flex, equal columns) /
+              sub-line / flag row.
+           2. The 3 cards are flex children of one row -- no independent absolute
+              positions. */
+        .stage { display: flex; flex-direction: column; justify-content: center;
+                 height: 100%;
+                 padding: calc(var(--safe-top) + var(--safe-margin)) var(--safe-right)
+                          var(--safe-bottom) calc(var(--safe-left) + var(--safe-margin)); }
+
+        .label-row { display: flex; align-items: center; gap: 20px; }
+        .label { font-family: var(--font-mono); font-weight: 500; font-size: 36px;
+                 letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); }
+        .label-rule { width: 0; height: 3px; background: var(--aqua); }
+
+        .card-row { display: flex; gap: 24px; margin-top: 52px; }
+        .card { flex: 1 1 0; display: flex; flex-direction: column; align-items: center;
+                gap: 16px; text-align: center; background: rgba(247,245,240,0.06);
+                border: 1.5px solid rgba(247,245,240,0.2); border-radius: 20px;
+                padding: 36px 16px; }
+        .card-glyph { width: 56px; height: 56px; }
+        .card-text { font-weight: 800; font-size: 34px; line-height: 1.2; color: var(--paper); }
+        .card-mark { fill: none; stroke: var(--coral); stroke-width: 5; stroke-linecap: round; opacity: 0; }
+
+        .sub-line { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                    color: rgba(247,245,240,0.75); margin-top: 48px; opacity: 0; }
+
+        .flag-zone { margin-top: 40px; }
+        .uf-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+                    font-size: 30px; color: rgba(247,245,240,0.85); border: 1px solid rgba(247,245,240,0.3);
+                    border-radius: 999px; padding: 12px 26px; background: rgba(247,245,240,0.06); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="07-fix-pilling" data-width="1080" data-height="1920" data-duration="3.200">
+        <div class="stage">
+          <div class="label-row">
+            <p class="label">Try this</p>
+            <div class="label-rule" id="labelRule"></div>
+          </div>
+
+          <div class="card-row">
+            <div class="card" id="card1">
+              <svg class="card-glyph" viewBox="0 0 56 56" aria-hidden="true">
+                <path d="M10,20 h36 M10,32 h24" stroke="#F7F5F0" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+              <p class="card-text">LESS PER LAYER</p>
+            </div>
+            <div class="card" id="card2">
+              <svg class="card-glyph" viewBox="0 0 56 56" aria-hidden="true">
+                <circle cx="28" cy="28" r="16" fill="none" stroke="#F7F5F0" stroke-width="4"/>
+                <path d="M28,20 v8 l6,4" stroke="#F7F5F0" stroke-width="4" stroke-linecap="round" fill="none"/>
+              </svg>
+              <p class="card-text">LET IT SETTLE</p>
+            </div>
+            <div class="card" id="card3">
+              <svg class="card-glyph" viewBox="0 0 56 56" aria-hidden="true">
+                <path class="card-mark" id="card-mark" d="M16,16 L40,40 M40,16 L16,40"/>
+              </svg>
+              <p class="card-text">PAT, DON&rsquo;T RUB</p>
+            </div>
+          </div>
+
+          <p class="sub-line" id="subLine">SPF? Two thin passes.</p>
+
+          <div class="flag-zone">
+            <div class="uf-badge" id="flag">&#9675; Advice, not a tested fix.</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // t0.0: "TRY THIS" label and card 1 already settled -- no entrance tween
+        // (mandatory rule 4 -- a lone label on a dark canvas reads near-blank on
+        // its own; card1 gives frame zero real content). Cards 2/3 stagger in.
+        // All 3 cards already settled at frame zero (mandatory rule 4) -- a
+        // staggered entrance left an early single-card frame that the post-render
+        // blank-frame scan flagged (17.60-18.00s local 0.0-0.4s): not literally
+        // empty, but a small element in an otherwise-empty canvas reads the same
+        // way. The coral X on card 3 -- this video's one coral spend -- carries
+        // the entrance beat instead, a scale-pop drawing the eye to it.
+        tl.set('#card-mark', { transformOrigin: '50% 50%' }, 0);
+        tl.fromTo('#card-mark', { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, 0.2);
+
+        tl.to('#subLine', { opacity: 1, duration: 0.3 }, 1.30);
+        tl.to('#flag', { opacity: 1, duration: 0.4 }, 1.70);
+
+        // t2.0-3.0: label rule draws, the scene's continuous back-half motion.
+        tl.to('#labelRule', { width: 64, duration: 1.0, ease: "power2.inOut" }, 2.0);
+
+        tl.to({}, { duration: 3.200 }, 0); // full-span anchor
+        window.__timelines["07-fix-pilling"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

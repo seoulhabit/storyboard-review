@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (adapted from pilling-not-dead-skin/06-protocol.html's
+           card row, now with each card demonstrating its own action instead of
+           sitting static -- feedback's "three fast real demonstrations", done
+           as diagram motion rather than fresh footage, per the imagery
+           decision: plates carry tactile proof, diagrams carry mechanism):
+           1. #root is a flex column: label row / 3-card row (flex, equal
+              columns) / sub-line / flag row. */
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { display: flex; flex-direction: column; justify-content: center;
+                 height: 1920px;
+                 padding: calc(var(--safe-top) + var(--safe-margin)) var(--safe-right)
+                          var(--safe-bottom) calc(var(--safe-left) + var(--safe-margin)); }
+
+        .label-row { display: flex; align-items: center; gap: 20px; }
+        .label { font-family: var(--font-mono); font-weight: 500; font-size: 36px;
+                 letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); }
+        .label-rule { width: 0; height: 3px; background: var(--aqua); }
+
+        .card-row { display: flex; gap: 24px; margin-top: 52px; }
+        .card { flex: 1 1 0; display: flex; flex-direction: column; align-items: center;
+                gap: 16px; text-align: center; background: rgba(247,245,240,0.06);
+                border: 1.5px solid rgba(247,245,240,0.2); border-radius: 20px;
+                padding: 36px 14px; }
+        .card-glyph { width: 56px; height: 56px; }
+        .card-text { font-weight: 800; font-size: 32px; line-height: 1.2; color: var(--paper); }
+        .card-mark { fill: none; stroke: var(--coral); stroke-width: 5; stroke-linecap: round; opacity: 0; }
+
+        .sub-line { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                    color: rgba(247,245,240,0.78); margin-top: 44px; opacity: 0; }
+
+        .flag-zone { margin-top: 36px; }
+        .uf-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+                    font-size: 32px; color: rgba(247,245,240,0.85); border: 1px solid rgba(247,245,240,0.3);
+                    border-radius: 999px; padding: 12px 26px; background: rgba(247,245,240,0.06); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="06-fix-pilling" data-width="1080" data-height="1920" data-duration="2.600">
+        <div class="clip stage">
+          <div class="label-row">
+            <p class="label">Try this</p>
+            <div class="label-rule" id="s6-labelRule"></div>
+          </div>
+
+          <div class="card-row">
+            <div class="card" id="s6-card1">
+              <svg class="card-glyph" viewBox="0 0 56 56" aria-hidden="true">
+                <path id="s6-line-top" d="M10,20 h36" stroke="#F7F5F0" stroke-width="4" stroke-linecap="round"/>
+                <path id="s6-line-bot" d="M10,32 h24" stroke="#F7F5F0" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+              <p class="card-text">THIN PASSES</p>
+            </div>
+            <div class="card" id="s6-card2">
+              <svg class="card-glyph" viewBox="0 0 56 56" aria-hidden="true">
+                <circle cx="28" cy="28" r="16" fill="none" stroke="#F7F5F0" stroke-width="4"/>
+                <path id="s6-clock-hand" d="M28,28 L28,16" stroke="#F7F5F0" stroke-width="4"
+                      stroke-linecap="round" fill="none"/>
+              </svg>
+              <p class="card-text">LET IT SETTLE</p>
+            </div>
+            <div class="card" id="s6-card3">
+              <svg class="card-glyph" viewBox="0 0 56 56" aria-hidden="true">
+                <path class="card-mark" id="s6-card-mark" d="M16,16 L40,40 M40,16 L16,40"/>
+              </svg>
+              <p class="card-text">PAT, DON&rsquo;T RUB</p>
+            </div>
+          </div>
+
+          <p class="sub-line" id="s6-subLine">Same total SPF &mdash; just thinner passes.</p>
+
+          <div class="flag-zone">
+            <div class="uf-badge" id="s6-flag">&#9675; Advice, not a tested fix.</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero: "TRY THIS" and all three cards settled -- each demo IS
+        // the entrance beat for its own card, so nothing pops in separately.
+        tl.set('#s6-clock-hand', { transformOrigin: '28px 28px' }, 0);
+        tl.set('#s6-card-mark', { transformOrigin: '50% 50%' }, 0);
+
+        // Demo 1 (t0.10-0.70): thinner passes -- the top line shrinks to the
+        // bottom line's length, echoing "less material per pass."
+        tl.to('#s6-line-top', { attr: { d: 'M10,20 h24' }, duration: 0.5, ease: 'power2.inOut' }, 0.10);
+
+        // Demo 2 (t0.75-1.30): let it settle -- the clock hand sweeps a
+        // near-full turn.
+        tl.to('#s6-clock-hand', { rotation: 300, duration: 0.55, ease: 'power2.inOut' }, 0.75);
+
+        // Demo 3 (t1.35-1.90): pat, don't rub -- two quick taps, then the
+        // coral mark (this video's one coral spend) pops.
+        tl.to('#s6-card3', { y: -6, duration: 0.14, yoyo: true, repeat: 3, ease: 'power1.inOut' }, 1.35);
+        tl.fromTo('#s6-card-mark', { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, 1.60);
+
+        tl.to('#s6-subLine', { opacity: 1, duration: 0.3 }, 1.95);
+        tl.to('#s6-flag', { opacity: 1, duration: 0.4 }, 2.20);
+
+        tl.to('#s6-labelRule', { width: 64, duration: 0.4, ease: "power2.inOut" }, 2.05);
+
+        tl.to({}, { duration: 2.600 }, 0); // full-span anchor
+        window.__timelines["06-fix-pilling"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

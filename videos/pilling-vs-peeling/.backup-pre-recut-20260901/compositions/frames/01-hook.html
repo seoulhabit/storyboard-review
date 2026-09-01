@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --aqua: #59B8AE;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed ink #root, one flex column, justify-content:center, holding a
+              fixed 858x858 surface-panel (the drawn fingertip/crumb diagram) and a
+              two-line text-stack beneath it as stacked flex children -- no scene
+              content gets its own independent absolute position outside that column.
+           2. The fingertip pad, texture band, and crumb cluster are one SVG inside the
+              panel; nothing inside the panel is positioned outside the SVG's own
+              coordinate space.
+           3. text-stack is a fixed-height box with both lines absolutely centered
+              inside it via flex align-items -- opacity-only cross-fade, no
+              translateY (peeling-not-progress/frame.md round-6 lesson: an entrance
+              translateY transiently overshoots the safe line before easing back,
+              invisible on a coarse sample; a plain opacity fade has no such risk). */
+        .stage { display: flex; flex-direction: column; align-items: center;
+                 justify-content: center; height: 100%; gap: 56px;
+                 padding: 0 var(--safe-right) 0 var(--safe-left); }
+
+        .surface-panel { width: 858px; height: 858px; border-radius: 28px; overflow: hidden;
+                          background: #1A1A1A; }
+        .surface-panel svg { display: block; width: 100%; height: 100%; }
+
+        .text-stack { position: relative; width: 858px; height: 320px;
+                      display: flex; align-items: center; justify-content: center; text-align: center; }
+        .line { position: absolute; left: 0; right: 0; font-family: var(--font-body);
+                font-weight: 800; line-height: 1.15; color: var(--paper); opacity: 0; }
+        #line-1 { font-size: 52px; font-weight: 500; font-family: var(--font-mono);
+                   letter-spacing: 0.01em; color: rgba(247,245,240,0.78); }
+        #line-2 { font-size: 96px; }
+
+        .pad { fill: rgba(247,245,240,0.14); }
+        .ridge { fill: none; stroke: rgba(247,245,240,0.4); stroke-width: 3; stroke-linecap: round; }
+        .band { fill: rgba(247,245,240,0.06); stroke: rgba(247,245,240,0.22); stroke-width: 2; }
+        .grain { fill: rgba(247,245,240,0.05); }
+        .crumb { fill: rgba(247,245,240,0.88); }
+      </style>
+
+      <div id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-duration="3.000">
+        <div class="clip stage">
+          <div class="surface-panel">
+            <svg viewBox="0 0 640 570" aria-hidden="true">
+              <!-- Skin-surface band, static macro texture -->
+              <rect class="band" x="60" y="360" width="520" height="150" rx="24"/>
+              <circle class="grain" cx="130" cy="400" r="5"/>
+              <circle class="grain" cx="210" cy="450" r="4"/>
+              <circle class="grain" cx="300" cy="410" r="6"/>
+              <circle class="grain" cx="390" cy="460" r="4"/>
+              <circle class="grain" cx="470" cy="405" r="5"/>
+              <circle class="grain" cx="540" cy="450" r="4"/>
+
+              <!-- Fingertip pad pressing down from above -->
+              <path class="pad" d="M220,60 C220,-10 420,-10 420,60 L440,300
+                        C440,360 200,360 200,300 Z"/>
+              <path class="ridge" d="M250,120 Q320,105 390,120"/>
+              <path class="ridge" d="M240,175 Q320,158 400,175"/>
+              <path class="ridge" d="M235,230 Q320,212 405,230"/>
+              <path class="ridge" d="M232,285 Q320,268 408,285"/>
+
+              <!-- Crumbs, already mid-scatter at rest (frame zero composed) -->
+              <circle class="crumb" id="crumb-1" cx="180" cy="430" r="10"/>
+              <circle class="crumb" id="crumb-2" cx="250" cy="455" r="7"/>
+              <circle class="crumb" id="crumb-3" cx="320" cy="425" r="11"/>
+              <circle class="crumb" id="crumb-4" cx="390" cy="452" r="8"/>
+              <circle class="crumb" id="crumb-5" cx="460" cy="428" r="9"/>
+              <circle class="crumb" id="crumb-6" cx="140" cy="405" r="6"/>
+            </svg>
+          </div>
+          <div class="text-stack">
+            <p class="line" id="line-1">Those little white flakes&hellip;</p>
+            <p class="line" id="line-2">YOUR SKIN ISN&rsquo;T ALWAYS PEELING</p>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        var crumbIds = ['#crumb-1','#crumb-2','#crumb-3','#crumb-4','#crumb-5','#crumb-6'];
+        crumbIds.forEach(function (id) { gsap.set(id, { transformOrigin: '50% 50%' }); });
+
+        // t0.05: setup line already carrying the scene's opening beat.
+        tl.to('#line-1', { opacity: 1, duration: 0.30 }, 0.05);
+
+        // t0.15-2.3: crumbs jiggle -- bounded (yoyo, repeat 2), staggered, the
+        // scene's continuous motion. Each crumb registers its own t=0 baseline via
+        // tl.set (inside the timeline) since it is hit by two tweens (set + jiggle).
+        crumbIds.forEach(function (id, i) {
+          tl.set(id, { x: 0, y: 0, rotation: 0 }, 0);
+          var t = 0.15 + i * 0.18;
+          tl.to(id, {
+            x: (i % 2 === 0 ? 1 : -1) * (6 + i * 2), y: -4 - i,
+            rotation: (i % 2 === 0 ? 1 : -1) * 14,
+            duration: 0.5, ease: "power1.inOut", yoyo: true, repeat: 2
+          }, t);
+        });
+
+        // t1.05: setup line clears before the payoff stamps in.
+        tl.to('#line-1', { opacity: 0, duration: 0.20 }, 1.05);
+
+        // t1.25: payoff stamps in hard -- well inside the ~2s shorts hook window.
+        tl.fromTo('#line-2', { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.30, ease: "back.out(2.2)" }, 1.25);
+
+        tl.to({}, { duration: 3.000 }, 0); // full-span anchor
+        window.__timelines["01-hook"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

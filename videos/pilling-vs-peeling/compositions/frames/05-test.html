@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (this project's signature moment -- the callback the
+           original 02-split/06-clue pair used to set up, now paid off with a
+           moving wipe instead of a static bisector):
+           1. #root is a flex column: panel zone (flex:1, one fixed-size panel)
+              / sub-line row / flag row.
+           2. Inside the panel: a base plate (bare skin, always visible) and a
+              wipe-mask (fixed-px width, overflow hidden) holding the SAME
+              plate plus a drawn residue overlay -- F1 identity-by-construction,
+              no second generation needed for consistency. Text labels sit
+              ABOVE both image layers as their own absolute children of the
+              panel (mandatory-rule-2 exception -- not a stand-in for the
+              layout, just the one class of element that legitimately needs
+              its own position), so they stay legible regardless of wipe state. */
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { display: flex; flex-direction: column; height: 1920px;
+                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+                 justify-content: center; gap: 32px; }
+
+        .panel-zone { display: flex; justify-content: center; }
+        .panel { position: relative; width: 840px; height: 900px; border-radius: 24px;
+                overflow: hidden; background: #1A1A1A; }
+        .base-layer, .layered-content { position: absolute; top: 0; left: 0;
+                                        width: 840px; height: 900px; }
+        .base-layer img, .layered-content img { width: 100%; height: 100%;
+                                                 object-fit: cover; display: block; }
+        .layered-content { position: relative; }
+        .layered-scrim { position: absolute; inset: 0; background: rgba(19,21,22,0.08); }
+        .crumb-overlay { position: absolute; inset: 0; }
+        .crumb { fill: rgba(19,21,22,0.55); }
+
+        .wipe-mask { position: absolute; top: 0; left: 0; height: 900px; width: 0px;
+                    overflow: hidden; }
+        .wipe-edge { position: absolute; top: 0; right: 0; width: 4px; height: 100%;
+                    background: var(--aqua); }
+
+        .label { position: absolute; top: 36px; font-weight: 800; font-size: 42px;
+                 color: var(--ink); text-shadow: 0 2px 12px rgba(247,245,240,0.85),
+                 0 0 24px rgba(247,245,240,0.85); z-index: 5; }
+        #s5-label-bare { right: 36px; text-align: right; opacity: 1; }
+        #s5-label-layered { left: 36px; opacity: 0; }
+
+        .sub-row { display: flex; justify-content: space-between; max-width: 840px;
+                  margin: 0 auto; width: 100%; }
+        .sub { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+              color: var(--ink-2); opacity: 0; }
+
+        .flag-zone { display: flex; justify-content: center; }
+        .uf-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+                    font-size: 32px; color: rgba(19,21,22,0.85); border: 1px solid rgba(19,21,22,0.28);
+                    border-radius: 999px; padding: 12px 26px; background: rgba(19,21,22,0.05); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="05-test" data-width="1080" data-height="1920" data-duration="3.000">
+        <div class="clip stage">
+          <div class="panel-zone">
+            <div class="panel">
+              <div class="base-layer">
+                <img src="assets/plates/04-base-skin.png" alt=""
+                     width="1200" height="1200" loading="eager" decoding="sync">
+              </div>
+              <div class="wipe-mask" id="s5-wipe">
+                <div class="layered-content">
+                  <img src="assets/plates/04-base-skin.png" alt=""
+                       width="1200" height="1200" loading="eager" decoding="sync">
+                  <div class="layered-scrim"></div>
+                  <svg class="crumb-overlay" viewBox="0 0 840 900" preserveAspectRatio="xMidYMid slice">
+                    <circle class="crumb" cx="220" cy="380" r="10"/>
+                    <circle class="crumb" cx="300" cy="440" r="8"/>
+                    <circle class="crumb" cx="260" cy="510" r="11"/>
+                    <circle class="crumb" cx="360" cy="470" r="7"/>
+                    <circle class="crumb" cx="330" cy="560" r="9"/>
+                    <circle class="crumb" cx="240" cy="600" r="8"/>
+                  </svg>
+                </div>
+                <div class="wipe-edge"></div>
+              </div>
+              <p class="label" id="s5-label-bare">BARE SKIN</p>
+              <p class="label" id="s5-label-layered">AFTER<br>LAYERING</p>
+            </div>
+          </div>
+
+          <div class="sub-row">
+            <p class="sub" id="s5-sub-bare">Flakes? &rarr; Peeling.</p>
+            <p class="sub" id="s5-sub-layered">Crumbs? &rarr; Pilling.</p>
+          </div>
+
+          <div class="flag-zone">
+            <div class="uf-badge" id="s5-flag">&#9675; A clue &mdash; not a diagnosis.</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // t0.35-1.05: the wipe travels left-to-right across the full panel,
+        // revealing the layered state.
+        tl.to('#s5-wipe', { width: 840, duration: 0.70, ease: "power2.inOut" }, 0.35);
+        tl.to('#s5-label-layered', { opacity: 1, duration: 0.3 }, 1.05);
+
+        tl.to('#s5-sub-bare', { opacity: 1, duration: 0.3 }, 1.30);
+        tl.to('#s5-sub-layered', { opacity: 1, duration: 0.3 }, 1.50);
+
+        // t1.75-2.35: the wipe travels back to ~40%, leaving a genuine
+        // side-by-side -- the comparison actually lands here.
+        tl.to('#s5-wipe', { width: 336, duration: 0.60, ease: "power2.inOut" }, 1.75);
+
+        tl.to('#s5-flag', { opacity: 1, duration: 0.4 }, 2.10);
+
+        tl.to({}, { duration: 3.000 }, 0); // full-span anchor
+        window.__timelines["05-test"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

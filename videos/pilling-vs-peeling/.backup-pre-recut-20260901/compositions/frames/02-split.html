@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-2: #6B6B6B; --aqua: #59B8AE;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan (catalog/visual-components/split-compare/, neutral no-flood
+           mode -- neither condition is "the answer" being interrogated, both are
+           equally real):
+           1. Full-bleed paper #root, one flex column: split band (flex:1, two equal
+              fields divided by a bisector) over a kicker row (bottom).
+           2. Each field is a plain flex column (icon-free at this scene, label
+              centered) -- no independent absolute siblings.
+           3. The bisector is the one element allowed its own absolute position
+              inside the split band's own stacking context (a layered motion plane,
+              per the mandatory-rule-2 exception), not a stand-in for a layout
+              relationship between the two fields (those are flex). */
+        .stage { display: flex; flex-direction: column; height: 100%;
+                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+        .split-band { flex: 1 1 auto; position: relative; display: flex; }
+        .field { flex: 1 1 50%; display: flex; align-items: center; justify-content: center; }
+        .field-label { font-weight: 800; font-size: 76px; letter-spacing: -0.01em;
+                        color: var(--ink); }
+        .divider { position: absolute; top: 8%; bottom: 8%; left: 50%; width: 3px;
+                   background: var(--ink); opacity: 0.3; transform: scaleY(0);
+                   transform-origin: top center; }
+
+        .kicker-zone { flex: 0 0 auto; text-align: center; padding-top: 32px; }
+        .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 36px;
+                  letter-spacing: 0.04em; color: var(--ink-2); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="02-split" data-width="1080" data-height="1920" data-duration="2.400">
+        <div class="clip stage">
+          <div class="split-band">
+            <div class="field" id="field-left">
+              <p class="field-label" id="label-left">PILLING</p>
+            </div>
+            <div class="field" id="field-right">
+              <p class="field-label" id="label-right">PEELING</p>
+            </div>
+            <div class="divider" id="divider"></div>
+          </div>
+          <div class="kicker-zone">
+            <p class="kicker" id="kicker">Tell them apart in seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Labels already settled at frame zero (mandatory rule 4 -- no scene's own
+        // opening frame should read blank). The divider draw is this scene's one
+        // entrance beat.
+        tl.fromTo('#divider', { scaleY: 0 }, { scaleY: 1, duration: 0.35 }, 0);
+
+        tl.to('#kicker', { opacity: 1, duration: 0.3 }, 0.90);
+
+        // t1.9-2.4: divider pulse -- the scene's continuous back-half motion.
+        tl.set('#divider', { transformOrigin: '50% 50%' }, 0);
+        tl.to('#divider', { scaleX: 1.6, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.9);
+
+        tl.to({}, { duration: 2.400 }, 0); // full-span anchor
+        window.__timelines["02-split"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

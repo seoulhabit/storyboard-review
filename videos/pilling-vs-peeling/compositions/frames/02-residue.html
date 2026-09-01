@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Root cause of the whole session's layout-overflow chase, finally
+           isolated by direct measurement: box-sizing defaults to content-box,
+           so any element combining an explicit height/width with padding
+           (every zone in this project) renders LARGER than declared -- e.g.
+           .stage's height:1920px + 192px/384px top/bottom padding rendered
+           as an actual 2496px box (1920+576), pushing bottom-anchored
+           content straight past the canvas and into the reserved safe zone.
+           This one reset fixes it project-wide. */
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
+          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 6px;
+          --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+          --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan: same-family reuse of the original 03-residue's 3-band
+           diagram, now paired with a real plate via an intra-scene match cut.
+           1. #root is a flex column: caption zone (top) / media zone (flex:1,
+              one fixed box holding the plate panel and the diagram stacked at
+              the SAME position/size, toggled by opacity -- the match cut) /
+              chip zone (bottom).
+           2. The plate panel and the diagram SVG never co-occupy the frame
+              with the citation chip (chip lands well after the plate has
+              left, per this project's "no chip beside a plate" rule). */
+        /* Explicit height in px, not 100% -- percentage height on an
+           absolutely positioned element resolves against its containing
+           block (#root) at the moment of layout, and #root's own height
+           was observed racing (measuring ~2500px before settling to the
+           correct 1920px a moment later) during a font/image load. A
+           hardcoded px height has nothing to resolve against, closing
+           that race everywhere it could otherwise recur. */
+        .stage { display: flex; flex-direction: column; height: 1920px;
+                 padding: calc(var(--safe-top) + var(--safe-margin)) var(--safe-right)
+                          var(--safe-bottom) calc(var(--safe-left) + var(--safe-margin)); }
+
+        .caption-zone { flex: 0 0 130px; display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+        /* Explicit fixed zone heights, not flex-grow -- see 04-flaking.html's
+           comment for why: a flex:1 media-zone sized by measuring sibling
+           text first is exactly the layout that can race a late font/image
+           settle and get captured mid-shift. */
+        .caption-line { font-weight: 800; font-size: 46px; line-height: 1.25; color: var(--paper);
+                        max-width: 780px; }
+        .caption-sub { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+                       color: var(--ink-2-dark); opacity: 0; }
+
+        .media-zone { flex: 0 0 1123px; display: flex; align-items: center; justify-content: center; min-height: 0; }
+        .media-box { position: relative; width: 820px; height: 500px; }
+
+        .media-plate { position: absolute; inset: 0; border-radius: 20px; overflow: hidden;
+                       background: #1A1A1A; }
+        .plate-zoom { position: absolute; inset: 0; transform-origin: 50% 45%; }
+        .plate-zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .diagram { position: absolute; inset: 0; opacity: 0; }
+        .diagram svg { width: 100%; height: 100%; display: block; }
+        .band { fill: none; stroke: var(--paper); stroke-width: 2.4; }
+        .band-fill-top { fill: rgba(247,245,240,0.10); }
+        .band-fill-mid { fill: rgba(247,245,240,0.075); }
+        .band-fill-bot { fill: rgba(247,245,240,0.05); }
+        .band-label { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
+                      letter-spacing: 0.08em; fill: rgba(247,245,240,0.72); }
+        .pill { fill: rgba(247,245,240,0.85); opacity: 0; }
+
+        .chip-zone { flex: 0 0 85px; padding-top: 12px; min-height: 0; }
+        .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: rgba(247,245,240,0.85); border: 1.5px solid rgba(247,245,240,0.3);
+                border-radius: 999px; padding: 8px 20px; display: inline-block; opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="02-residue" data-width="1080" data-height="1920" data-duration="2.900">
+        <div class="clip stage">
+          <div class="caption-zone">
+            <p class="caption-line" id="s2-cap-a">PRODUCT RESIDUE</p>
+            <p class="caption-sub" id="s2-cap-b">Rolls into balls while you layer.</p>
+          </div>
+
+          <div class="media-zone">
+            <div class="media-box">
+              <div class="media-plate" id="s2-plate">
+                <div class="plate-zoom" id="s2-zoom">
+                  <img src="assets/plates/02-layering-hand.png" alt=""
+                       width="1200" height="1200" loading="eager" decoding="sync">
+                </div>
+              </div>
+              <div class="diagram" id="s2-diagram">
+                <svg viewBox="0 0 820 500">
+                  <rect class="band band-fill-top" x="20" y="40" width="780" height="90" rx="10"/>
+                  <text class="band-label" x="40" y="93">SPF</text>
+                  <rect class="band band-fill-mid" x="20" y="200" width="780" height="90" rx="10"/>
+                  <text class="band-label" x="40" y="253">MOISTURIZER</text>
+                  <rect class="band band-fill-bot" x="20" y="360" width="780" height="90" rx="10"/>
+                  <text class="band-label" x="40" y="413">SERUM</text>
+
+                  <circle class="pill" id="s2-pillA0" cx="60" cy="145" r="8"/>
+                  <circle class="pill" id="s2-pillA1" cx="230" cy="145" r="10"/>
+                  <circle class="pill" id="s2-pillA2" cx="400" cy="145" r="7"/>
+                  <circle class="pill" id="s2-pillA3" cx="570" cy="145" r="9"/>
+                  <circle class="pill" id="s2-pillA4" cx="740" cy="145" r="8"/>
+
+                  <circle class="pill" id="s2-pillB0" cx="100" cy="305" r="9"/>
+                  <circle class="pill" id="s2-pillB1" cx="280" cy="305" r="7"/>
+                  <circle class="pill" id="s2-pillB2" cx="460" cy="305" r="10"/>
+                  <circle class="pill" id="s2-pillB3" cx="640" cy="305" r="8"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="chip-zone">
+            <div class="chip" id="s2-chip">Skin Res Technol &middot; 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero: plate settled, caption already at rest.
+        tl.fromTo('#s2-zoom', { scale: 1.0 }, { scale: 1.018, duration: 0.85, ease: 'none' }, 0);
+
+        // t0.85: MATCH CUT -- plate swaps for the diagram at the same box.
+        tl.to('#s2-plate', { opacity: 0, scale: 0.97, duration: 0.10, ease: 'power1.in' }, 0.85);
+        tl.to('#s2-diagram', { opacity: 1, duration: 0.10 }, 0.87);
+
+        // t1.30-2.55: pills detach from both seams, staggered.
+        var pillsA = ['#s2-pillA0','#s2-pillA1','#s2-pillA2','#s2-pillA3','#s2-pillA4'];
+        var pillsB = ['#s2-pillB0','#s2-pillB1','#s2-pillB2','#s2-pillB3'];
+        pillsA.forEach(function (id, i) {
+          var t = 1.30 + i * 0.16;
+          tl.set(id, { opacity: 1 }, t);
+          tl.to(id, { y: 38 + (i % 3) * 8, rotation: (i % 2 === 0 ? 1 : -1) * (16 + i * 3),
+                      opacity: 0, duration: 0.7, ease: 'power2.in' }, t);
+        });
+        pillsB.forEach(function (id, i) {
+          var t = 1.45 + i * 0.18;
+          tl.set(id, { opacity: 1 }, t);
+          tl.to(id, { y: 36 + (i % 3) * 8, rotation: (i % 2 === 0 ? -1 : 1) * (16 + i * 3),
+                      opacity: 0, duration: 0.7, ease: 'power2.in' }, t);
+        });
+
+        tl.to('#s2-cap-b', { opacity: 1, duration: 0.28 }, 1.60);
+        // t2.20: chip lands 1.35s after the plate left screen -- never
+        // co-resident with the photographic plate (this project's own rule).
+        tl.fromTo('#s2-chip', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 2.20);
+
+        tl.to({}, { duration: 2.900 }, 0); // full-span anchor
+        window.__timelines["02-residue"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

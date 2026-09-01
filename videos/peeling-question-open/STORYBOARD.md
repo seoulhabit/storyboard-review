@@ -89,6 +89,15 @@ window, which is why scene 1 is trimmed to 1.8s rather than the brief's clean
 2.0s. The bounded idle rotation drift from 1.2–3.2s is the gap-filler for this
 scene's back half — real, small, resolves inside the scene (never infinite).
 
+**ADDED 2026-09-01 (QC-verification round):** a continuous cadence-floor
+zoom (`#zoom`, scale 1→1.02 over the full 3.200s, `ease:"none"`), same
+derived-token pattern as scenes 4/5 — this scene's own per-region scan
+already measured only a 0.50s hold (under the 1.5s ceiling), so this is
+added hardening, not a fix for a measured defect, bringing scene 2 in line
+with the rest of the piece rather than leaving it the one scene with no
+ambient motion under its beats. No such addition was made to scene 6 — see
+that scene's own section for the documented reason.
+
 ## Scene 3 — `03-reaction` (5.000–10.000s, ground `--moss`)
 
 **Spatial plan:**
@@ -201,30 +210,50 @@ matched hero position — measured against scene 1's panel center, not assumed.
 
 **Beats:**
 
+*Re-derived 2026-09-01 (QC-verification round) directly from the shipped
+`06-open.html`, not from memory — this table had drifted from the actual
+composition (wrong element IDs, a stale lockup timestamp) well before this
+round touched anything; re-sync any other scene's table the same way before
+trusting it as a spec rather than history.*
+
 | t | element | property | dur | ease |
 |---|---|---|---|---|
-| 0.00 | `#q-line` ("The better question:") | opacity: 1 (composed by scene start, no fade-in — this scene opens on content, not another entrance) | — | — |
-| 0.00–5.00 | `#glow-drift` (behind lockup) | opacity 0.15→0.28→0.15 (bounded, resolves) | 5.00, `sine.inOut` yoyo repeat:4 |
-| 0.10 | `#q-line-2` ("What changed?") | opacity,y | 0.30 |
-| 0.60 | `#chip-ingredient` | opacity,scale | 0.20 |
-| 0.85 | `#chip-strength` | opacity,scale | 0.20 |
-| 1.10 | `#chip-frequency` | opacity,scale | 0.20 |
-| 1.35 | `#chip-combination` | opacity,scale | 0.20 |
-| 2.30 | `#close-line-1` ("Not the claim.") | opacity,y | 0.35 |
-| 2.85 | `#close-line-2` ("The question.") | opacity,y | 0.35 |
-| 3.60 | `#lockup` (습 SeoulHabit) | opacity,scale: 0,0.9→1,1 | 0.40, `power2.out` |
-| 3.60 | *(SFX)* | `glass-clink.mp3` (soft landing chime substitute) | — |
-| 4.00–5.00 | `#lockup` | scale 1→1.01→1 (bounded idle, resolves before cut) | yoyo, repeat:2 |
+| 0.00 | `#state-grid` baseline + `#w-1..4` baseline | `tl.set(...)`, not a bare `gsap.set()` — seek-bleed guard | — | — |
+| 0.20 | `#q-lead` ("The better question:") | opacity,y | 0.30 | — |
+| 0.60 | `#q-main` ("What changed?") | opacity,scale | 0.34 | `power3.out` |
+| 1.05 / 1.35 / 1.65 / 1.95 | `#w-1..4` (ingredient/strength/frequency/combination) | opacity,y in | 0.26 each | — |
+| 1.05 | `#q-lead`, `#q-main` | opacity out | 0.28 | — |
+| 2.35 / 2.40 / 2.45 / 2.50 | `#w-1..4` | opacity,y out | 0.30 each | `power2.in` |
+| 2.85 | `#state-grid` | opacity → 0 (container hide) | 0.01 | — |
+| 2.85 | `#h-line-1` ("Not the claim.") | opacity,y | 0.34 | — |
+| 3.15 | `.lockup` (습 SeoulHabit) | opacity,scale: 0,0.92→1,1 | 0.34 | `power3.out` |
+| 3.15 | *(SFX)* | `glass-clink.mp3`, retimed with the lockup (was 4.05 pre-fix) | — | — |
+| 3.30 | `#h-line-2` ("The question.") | opacity,y | 0.34 | — |
+| 3.60 | `.hangul` | scale 1→1.06→1 (bounded idle, resolves before cut) | 0.25, yoyo repeat:1 | `sine`-ish (unspecified ease) |
+
+**RETIMED 2026-09-01 (QC-verification round):** the panel sat empty from
+local 2.95–4.05 (measured on the render: 1.30s of zero rendered change in
+the panel box) between the word-grid's exit and the old lockup arrival at
+4.05 — an external QC report misdiagnosed this as the word-grid's own
+entrance being too slow (it wasn't: 0.30s apart, already tighter than the
+report's 0.5s suggestion). Pulled the lockup to 3.15; the true empty window
+measured on the fixed, mastered render is 0.40s (22.8s–23.1s absolute).
+Captions cue 21 (`captions/peeling-question-open.srt`/`.vtt`) retimed to
+match: 23.150–23.800, was 24.050–24.700.
 
 Gate 11 (closing beat = one specific, lesson-tied action, not a generic
 subscribe card) is satisfied by the chip row itself — "what changed" is
 actionable audit language, not a subscribe prompt — landing before the brand
 lockup, not instead of it.
 
-**Loop:** scene 6's resting frame (t≈4.5–5.0, `--moss` ground, centered
-lockup) must be measured against scene 1's frame 0 (`--moss` ground, centered
-panel) for hero-position match before this is called done — same discipline
-`06-payoff.html` applied (measured to within 1px against `01-hook.html`).
+**Loop:** scene 6's resting frame (from ~t=3.5 onward, `--moss` ground,
+centered lockup) must be measured against scene 1's frame 0 (`--moss`
+ground, centered panel) for hero-position match before this is called
+done — same discipline `06-payoff.html` applied (measured to within 1px
+against `01-hook.html`). No Ken Burns zoom was added to this scene despite
+this round adding one to scene 2: `06-open.html`'s own spatial-plan comment
+documents a deliberate reason — scene 1 never scales its content, so
+scene 6 doesn't either, so neither loop endpoint moves its own frame.
 
 Build note: the closing couplet was originally drafted as "Don't follow the
 claim." / "Follow the question." — at the required 108px (byte-identical to

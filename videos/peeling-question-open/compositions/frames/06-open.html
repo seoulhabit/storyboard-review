@@ -143,12 +143,20 @@
         });
 
         // State 3: the 습 SeoulHabit lockup settles in.
-        tl.fromTo('#state-grid', { opacity: 1 }, { opacity: 0, duration: 0.01 }, 2.95);
-        tl.fromTo('.lockup', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 4.05);
+        // RETIMED 2026-09-01 (QC verification round): the panel sat with zero
+        // rendered change from local 2.95-4.05 (measured on the actual render,
+        // not assumed from these numbers) -- state-grid hidden, lockup not yet
+        // arrived. An external QC report misdiagnosed this as the word-grid's
+        // ENTRANCE stagger being too slow (it wasn't -- 0.30s apart, tighter
+        // than the report's own 0.5s suggestion); the real gap was here, in the
+        // panel's dead EXIT-to-lockup handoff. Pulled the lockup forward from
+        // 4.05 to 3.15 so the empty-panel window drops to ~0.30s.
+        tl.fromTo('#state-grid', { opacity: 1 }, { opacity: 0, duration: 0.01 }, 2.85);
+        tl.fromTo('.lockup', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 3.15);
         // Bounded breath, resolves before the scene ends -- the lockup is at
         // rest (scale 1) for the final cut back to scene 1, matching its own
         // resting state, not mid-tween.
-        tl.to('.hangul', { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, 4.50);
+        tl.to('.hangul', { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, 3.60);
 
         // Closing couplet, in the same box scene 1's hero question occupies.
         tl.fromTo('#h-line-1', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.34 }, 2.85);

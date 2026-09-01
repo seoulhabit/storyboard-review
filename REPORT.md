@@ -499,3 +499,131 @@ root-causing it would mean checking other projects across the channel and possib
 engine's own internals, well past what this QC-fix pass was scoped for. Worked around for
 this video's own thumbnail (sourced from a later, fully-composed frame instead of literal
 frame 0) rather than blocked on it.
+
+**Update (2026-08-31) — root cause found, this video's own master not yet re-rendered.**
+`task_c3e11056` was completed: read `hyperframes@0.8.17`'s and `0.8.20`'s own bundled
+`dist/cli.js`, not just this project's markup. Root cause, source-confirmed in both
+versions: the render's capture mode is `"beginframe"` only when
+`headlessShell && process.platform === "linux"` — this master was rendered on that path
+(Linux/cloud). In `beginframe` mode, a `HeadlessExperimental.beginFrame` response with
+`hasDamage:false` makes the engine reuse the *previous* captured frame buffer
+(`beginFrameCapture`), and the composite-pending force-repaint workaround that plain
+`screenshot` mode (macOS, this workstation included) gets before every capture is
+explicitly skipped for `beginframe` mode. At frame 0 there is no previous buffer to reuse.
+Confirmed empirically, not just from source: 4 other locally-rendered masters in this repo
+using the identical `data-composition-src` + scale-only-settle entrance pattern
+(`madecassoside-clinical-cut`, `madecassoside-flat-matrix`, `red-ginseng-glass-glow`,
+`retinal-clinical-dossier`) all have a correctly composed frame 0, because macOS never
+takes the `beginframe` path — this is a capture-mode artifact, not something that
+reproduces on every render of this composition. Documented as a new *Verification loop*
+check (frame-index-to-timestamp, `beginframe` capture mode) and a rule-2 correction in
+`.claude/skills/faceless-video-craft/SKILL.md`, mirrored across every worktree's copy of
+that file. Re-checked against the current shipped master
+(`snail-mucin-recut-34s_master.mp4`, unchanged since §7): frame 0 still ships without the
+headline (unfixed — the finding was investigated, the video itself was not re-rendered),
+and the Scene 01→02 cut still shows a ~1-2 frame caption/scene blend at the boundary,
+consistent with the same stale-buffer-reuse mechanism firing mid-transition (inferred, not
+source-confirmed the way the frame-0 case is). Actual fix path, not yet taken: re-render
+locally on this workstation (macOS → `screenshot` capture mode, structurally immune to this
+class of bug, per the 4-project comparison above) rather than via whatever produced the
+current master, then redo the two-pass `loudnorm` mastering pass from §5/§7 against the new
+render before treating it as the shipped file. Needs sign-off before that re-render replaces
+the only copy of this untracked file.
+
+## 10. QC verification (`peeling-question-open`) — three of five findings didn't reproduce, one was real but misdiagnosed, and verification surfaced a sixth defect the report never saw
+
+An external QC pass returned "Verdict: Rework" on `videos/peeling-question-open` (25.1s
+Short), citing 2 BLOCKERs ("completely silent audio track," "100% visual, no auto-captions
+possible"), 2 MAJORs (two citation pills inside the bottom 15% safe zone), and 1 MINOR (the
+final 5 seconds drag). Per *Verification loop*'s own rule, every finding was reproduced
+against the actual rendered pixels/audio before touching anything.
+
+| # | QC claim | Verdict | Evidence |
+|---|---|---|---|
+| 1 | **BLOCKER** — "Completely silent audio track. No voiceover, music, or SFX." | **False** | Every one-second window across the render measures −19.1 to −13.8 dB RMS. BGM bed + 12 SFX cues present throughout, already mastered to −14.1 LUFS / −1.5 dBTP (`ebur128`). Only "no voiceover" is true — a recorded decision (`BRIEF.md: VO_MODE: silent`), not the same claim as "silent." |
+| 2 | **BLOCKER** — "100% visual; YouTube cannot generate auto-captions." | **False premise** | `captions/peeling-question-open.srt` + `.vtt` already existed, 21 hand-authored cues. The skill sanctions a silent, type-carried short *given* a hand-authored sidecar — it had one. |
+| 3 | **MAJOR** — "Arch Dermatol 1995" pill in the bottom 15%. | **False** | Lowest ink row measured y=1241 (64.6% down a 1920-tall canvas) — 391px clear of the claimed line, 295px clear of the real 20% reserve. `check-safe-area.py` (hard gate) independently confirmed: 0 findings, 100 sampled frames. |
+| 4 | **MAJOR** — "AAD guidance" pill in the bottom-15% danger area. | **False as stated** | Lowest ink row y=1530 (79.7% down) — 102px clear of the claimed line. It does clear the *real* 20% reserve by only 6px though — the tightest margin in the piece, inside spec but worth widening on its own merit, not the report's stated one. |
+| 5 | **MINOR** — "final 5 seconds drag… staggered text takes too long." | **Real, misdiagnosed** | The hero panel measured 1.30s of zero rendered change (local 2.95–4.05s in `06-open.html`), between the word-grid's exit and the closing lockup's arrival. But the four words already land 0.30s apart — *tighter* than the report's own 0.5s suggestion. Widening the entrance (the report's literal fix) would have made the video slower without touching the actual gap, which was the EXIT-to-lockup handoff, not the entrance stagger. |
+
+**The sixth defect, found only because verifying #5 meant re-reading this project's own
+tooling, not just the composition:** `scripts/check-static-hold.py` still carried
+`mugwort-healing-herb`'s caption-band crop (`CAPTION_BAND_EXCLUDE = True`, y 215–350)
+despite `peeling-question-open` having no burned-in captions at all — silently excluding
+Scene 05's own "THE BOUNDARY" kicker from every diff the script ran. The script's own
+docstring already documents this exact mistake happening once before, one project earlier
+(`peeling-not-progress` inheriting a crop from a different sibling) — the warning did not
+stop the recurrence, because a comment describing a past bug is not the same as a check
+enforcing against it.
+
+**What the report got right, structurally, even while being wrong on every specific:** a
+video this short with real, present audio and real, shipped captions is not remotely a
+"Rework" verdict — but the one real finding (#5) was still worth finding and fixing.
+
+**Fix applied — `06-open.html`:** the lockup's `fromTo` moved from local 4.05 to 3.15,
+closing the exit-to-lockup gap without touching the (already-tight) entrance stagger.
+Re-timing cascade: the lockup-landing SFX cue (`index.html`, 24.05→23.15), caption cue 21
+(`captions/*.srt`/`.vtt`, 24.050–24.700 → 23.150–23.800), `STORYBOARD.md`'s Scene 6 beat
+table (found drifted from the shipped file — wrong element IDs, a stale lockup timestamp —
+and fully re-derived from the actual composition while there, not just patched at the one
+changed line). Verified on the re-rendered, re-mastered final via the same panel-box pixel
+measurement used to find the defect: the true empty window is now 0.40s, down from 1.30s.
+
+**Two smaller items closed in the same pass:** the AAD pill's 6px margin (finding #4) was
+widened anyway (`--safe-margin` 4px→20px in `05-boundary.html`) since it was the tightest
+margin in the piece even though the report's own claim about it was false. Scenes 2 and 6
+were candidates for this round's cadence-floor hardening (matching Scenes 3/4/5's existing
+Ken Burns zoom) — added to Scene 2; deliberately withheld from Scene 6, whose own
+`06-open.html` spatial-plan comment documents a specific reason (no zoom on either loop
+endpoint, matching Scene 1, so the loop's geometry can't drift) that a zoom addition would
+have fought rather than honored.
+
+**Tooling fix and harvest.** `check-static-hold.py` corrected (`CAPTION_BAND_EXCLUDE =
+False`) and rebuilt with a second, region-aware check — grids the safe content box, reads
+scene boundaries from the project's own `index.html`, and flags a cell that goes from real
+content to essentially empty and stays there, closing the gap that let #5's actual defect
+hide behind an unrelated element's motion in the same frame. Two false-positive classes
+were found and documented rather than hidden: a textured/gradient plate (Scene 1's
+frosted-glass watermark) can cross the active-content threshold without being real content;
+and a weaker second content transition in the same cell (the SeoulHabit lockup's own ink
+footprint, in the specific grid column it mostly doesn't reach) can still read as "empty"
+against a per-scene baseline calibrated to an earlier, stronger beat — confirmed *after*
+applying and pixel-verifying the real fix, not before, which is itself the finding: this
+skill's own "verify by pixels, don't trust a report" discipline had to be turned back on
+this session's own new tool, immediately, not eventually. Harvested to
+`catalog/tooling/check-static-hold.py` with the full diagnosis in
+`catalog/tooling/README.md` rather than left project-local.
+
+**Delivery manifest for this pass:**
+
+- **Render:** `videos/peeling-question-open/renders/peeling-question-open_FINAL_mastered.mp4`
+  — 750 video frames / 25.000s picture, 1080×1920, loudness-normalized to −14.1 LUFS /
+  −1.5 dBTP. Supersedes the 2026-08-31 master, which was deleted, not left for ambiguity.
+- **Captions:** `videos/peeling-question-open/captions/peeling-question-open.srt` and
+  `.vtt` — cue 21 retimed, all 20 others unchanged.
+- **Skill updated:** `.claude/skills/faceless-video-craft/SKILL.md` — see below.
+- **Catalog updated:** `catalog/tooling/check-static-hold.py` (new harvest),
+  `catalog/tooling/README.md`, `catalog/README.md`, `catalog/index.html`.
+
+## 11. Skill updates applied (this round)
+
+1. **The static-hold masking rule was too narrow** — it only named captions as a masking
+   risk. Generalized to any second on-screen element, and named a third failure case
+   distinct from both halves of the blankness-vs-static-hold split: a hero *region* going
+   empty inside an otherwise-alive *frame*, which neither existing scanner type is built to
+   see.
+2. **The inherited-crop trap (caption-band constants copied without re-deriving them) is
+   now named directly in *Verification loop***, not left to live only inside one script's
+   own docstring where the same mistake had already recurred once despite the warning being
+   right there.
+3. **The pre-render gate gained item 13 — does an actual mix exist and hit the mastering
+   target.** Nothing in the 12-item gate asked this; a one-line `astats`/`ebur128` check
+   would have settled finding #1 above before any deeper verification began.
+4. **"Silence is a genuine choice" now requires the reason be recorded**, matching the
+   existing precedent for a >50s duration and an all-illustrated video — both already
+   required a recorded reason; a fully silent-VO video didn't.
+5. **Five new failure modes named**, covering the inherited-crop trap, the hero-region-
+   empty-but-frame-alive case, misdiagnosing an exit gap as an entrance problem, applying a
+   cadence-floor fix uniformly without checking a scene's own documented reason to be
+   exempt, and trusting a QC-verification tool's own output without the same pixel-level
+   skepticism applied to an external report.

@@ -14,7 +14,15 @@
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
           --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
-          --safe-margin: 4px;
+          /* 20px, not the usual 4px guard band: this scene's footer (caveat + AAD
+             pill) sits flush against .stage's own bottom padding edge (last flex
+             child, no margin of its own), so the derived -zoomed reserve WAS the
+             pill's actual clearance to the real line. Measured on the rendered
+             render (QC-verification round, 2026-09-01): only 6px past the true
+             1536px boundary at 4px -- inside spec but the tightest margin in the
+             piece. Widened here rather than adding an ad-hoc margin on .footer,
+             so cards-row's own flex:1 sizing still accounts for the real reserve. */
+          --safe-margin: 20px;
           /* Adapted from peeling-not-progress/04-boundary.html's own round-6 fix --
              this scene's Ken Burns wrapper maps the padded box's edge outward, so the
              padded edge must be derived from this scene's own scale/origin rather than

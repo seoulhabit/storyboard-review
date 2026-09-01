@@ -923,6 +923,22 @@ for next time:
     generic subscribe card? See *The hook* below and production-loop
     step 2.
 12. **Does the video still make sense with the sound off?**
+13. **If the piece isn't a recorded silent-by-design exception (see
+    *Posture*'s "Silence is a genuine choice" below), does an actual mix
+    exist and hit the mastering target** — not "the render has an audio
+    track," but a real measured level? One `ffmpeg astats`/`ebur128` pass
+    against the actual file settles this in one command; don't infer it from
+    a manifest, a `data-volume` attribute in the source, or the render tool
+    reporting success. This is the single cheapest disproof available for an
+    external QC report's "completely silent" claim — cheaper than the
+    frame-by-frame pixel work most of this section's other items need, and
+    exactly the kind of claim the *Verification loop*'s fabricated-findings
+    note already warns can be asserted without being true. Confirmed
+    necessary: an external QC report claimed `videos/peeling-question-open`
+    was "completely silent" when every one-second window across the render
+    measured −19 to −14 dB RMS and the file was already mastered to −14.1
+    LUFS / −1.5 dBTP — one command would have settled it before any deeper
+    verification pass began.
 
 ## Verification loop
 
@@ -959,6 +975,46 @@ changed, even though the actual content (the hero plate, the graphic, the
 thing the scene is about) has been static the whole time. This is exactly
 how a static-hold bug survives a human scrubbing the render, too: a person
 watching sees the captions updating and reads the whole frame as in motion.
+
+**The masking risk isn't limited to a caption track — any second on-screen
+element can hide a dead hero region the same way, whole-frame diffing alone
+cannot see it, and a per-scene checker script inheriting another project's
+crop geometry is its own separate, confirmed failure mode.** Two distinct,
+confirmed cases:
+
+- A scene's own dominant/hero element (the thing gate item 3's "one dominant
+  focal point" is actually about) can go fully **empty** — not just static,
+  genuinely carrying zero content — while a *different, legitimate* element
+  elsewhere in the same frame keeps animating and keeps the whole-frame diff
+  "alive." Confirmed on `videos/peeling-question-open`'s `06-open.html`: the
+  hero glass-panel sat empty for 1.30s between a word-grid's exit and a
+  closing lockup's arrival, invisible to a whole-frame check because a
+  closing headline couplet, in a different region of the same frame, kept
+  animating throughout that exact window. This is a **third case**, distinct
+  from both halves of the blankness-vs-static-hold split above: not an empty
+  *frame* (blankness scanner's job) and not a frozen *frame* (whole-frame
+  static-hold's job), but an empty *region inside an otherwise-alive frame*.
+  Closing it needs a check that is region-aware — grid the safe content box
+  and evaluate each cell's own content-then-empty transition, not just the
+  frame as a whole; see `catalog/tooling/check-static-hold.py`'s region-aware
+  half for a working (if still heuristic and imperfect — see its own
+  documented false-positive classes) reference implementation.
+- **A per-project copy of a static-hold checker script inheriting a SIBLING
+  project's caption-band crop is a recurring, not a one-time, failure.**
+  Confirmed twice in the same lineage: `peeling-not-progress`'s copy of this
+  script originally inherited a different project's caption geometry while
+  having no burned-in captions of its own — documented as CORRECTED in that
+  script's own docstring. One project later, `peeling-question-open`'s copy
+  of the *same file* still carried `mugwort-healing-herb`'s caption-band crop
+  (`CAPTION_BAND_EXCLUDE = True`, specific pixel numbers) despite
+  `peeling-question-open` having no burned-in captions at all — silently
+  excluding a real scene's own kicker text from every diff it ran. The
+  documented warning did not stop the recurrence: a comment describing a past
+  bug is not the same as a check enforcing against it. Before trusting *any*
+  project's "0 findings" from a copied static-hold script, confirm its
+  `CAPTION_BAND_EXCLUDE`/crop constants against that project's own
+  `index.html` — does a burned-in caption element actually exist at those
+  coordinates? — rather than trusting the file's own inherited comment.
 
 **Source-level cadence measurement is an authoring-time aid, never a
 substitute for the check above.** Extracting every GSAP tween position from a
@@ -1626,7 +1682,17 @@ actually differentiate:
 - **Silence is a genuine choice, not the default.** Some beats (a B-roll
   interlude, a breather) can and should run with no VO, letting motion and
   music carry pacing alone — but that is an authored exception inside an
-  otherwise-narrated piece, not the assumed baseline for the format.
+  otherwise-narrated piece, not the assumed baseline for the format. **A
+  whole video with no VO needs the reason recorded**, the same way a >50s
+  duration (production-loop step 2) and an all-illustrated video (*Asset
+  protocol* rule 6) both require one — `BRIEF.md`'s `VO_MODE: silent` line
+  in `videos/peeling-question-open` is the shape this takes: a one-line,
+  checkable record, not something inferred after the fact from the absence
+  of a voiceover file. This still requires a real mix (BGM/SFX, mastered —
+  see pre-render gate item 13) and, for a short watched muted-first, the
+  hand-authored sidecar captions *The captions* section requires even
+  without ASR to drive them — "silent" describes the VO track, never the
+  whole audio layer or the caption deliverable.
 
 ## Companion skills
 
@@ -1895,3 +1961,38 @@ either pattern as "the" approach, and the majority of projects had neither.
   clinical or regulatory vocabulary to act on it correctly. The two are
   independent: a pill can be perfectly formatted next to a headline the
   target audience can't parse.
+- Copying a project's static-hold checker script into a new project without
+  re-deriving its `CAPTION_BAND_EXCLUDE`/crop constants against that new
+  project's own `index.html` — a comment in the file documenting a past
+  instance of this exact mistake does not stop it recurring one project
+  later; confirmed happening twice in the same file's own lineage (see
+  *Verification loop*'s static-hold section).
+- Trusting a whole-frame static-hold check's "clean" result as proof a
+  scene's own hero element is alive, when a different, legitimate element
+  elsewhere in the same frame is what kept the diff moving — the hero region
+  can be genuinely empty (not merely static) for the whole window and never
+  register. Needs a region-aware check, not a frame-wide one.
+- Diagnosing "the final beats drag" as the ENTRANCE stagger being too slow
+  and widening it, when the actual measured gap is a scene's own EXIT-to-
+  next-beat handoff — the entrance can already be tighter than the report's
+  own suggestion. Reproduce the specific dead window against the render
+  before picking which half of the scene to retime.
+- Adding a Ken Burns cadence-floor zoom to every scene a QC round touches,
+  without checking whether that specific scene's own file already documents
+  a reason to have none — a scene built as a loop's byte-identical shell to
+  its own opening scene can have "no zoom, on either end" as the deliberate
+  mechanism keeping the loop seam matched, not an oversight to fix.
+- Trusting an external QC report's "completely silent" claim (or any binary
+  presence/absence claim about audio) without running the one-line
+  `ffmpeg astats`/`ebur128` check first — this is the cheapest disproof
+  available in this entire skill and is worth reaching for before any
+  frame-by-frame pixel work, not after.
+- Building a new region-aware or content-detection scanner and trusting its
+  own first clean/dirty result without re-verifying that result against
+  actual extracted frames — a heuristic image-analysis script is exactly as
+  capable of a false positive (a textured plate reading as "content," a
+  weaker second content state reading as "still empty" against a baseline
+  calibrated to an earlier, stronger state in the same cell) as an external
+  QC report is, and earns the same "verify by pixels" discipline turned back
+  on itself, including immediately after fixing the defect it was built to
+  catch.

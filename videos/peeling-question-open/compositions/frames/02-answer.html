@@ -14,11 +14,23 @@
           --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
           --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
           --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* Cadence-floor zoom added 2026-09-01 (QC verification round) -- same
+             derived-token pattern as 04-evidence.html/05-boundary.html: the padded
+             edge must be computed from THIS scene's own scale/origin, not a flat
+             token, because the Ken Burns transform sits outside the padded box and
+             maps its edge outward by the same factor it scales the box. */
+          --zoom-max: 1.02; --zoom-origin-x: 540px; --zoom-origin-y: 864px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
 
           position: relative; width: 1080px; height: 1920px; overflow: hidden;
           background: var(--ink-soft); font-family: var(--font-body);
         }
         .clip { position: absolute; inset: 0; }
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
 
         /* Spatial plan:
            1. Full-bleed flex column, centered both axes -- the stamp card is the
@@ -30,7 +42,7 @@
               below the card -- not absolutely placed against the card. */
         .stage { display: flex; flex-direction: column; align-items: center;
                  justify-content: center; height: 100%; gap: 40px;
-                 padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+                 padding: var(--safe-top) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
 
         .stamp-card { display: flex; flex-direction: column; align-items: center; gap: 20px;
                       padding: 56px 72px; border-radius: 20px;
@@ -47,13 +59,15 @@
       </style>
 
       <div id="root" data-composition-id="02-answer" data-width="1080" data-height="1920" data-duration="3.200">
-        <div class="clip stage">
-          <div class="stamp-card" id="stamp-card">
-            <div class="kicker">SHORT ANSWER:</div>
-            <div class="verdict">NO.</div>
+        <div class="clip frame-zoom" id="zoom">
+          <div class="stage">
+            <div class="stamp-card" id="stamp-card">
+              <div class="kicker">SHORT ANSWER:</div>
+              <div class="verdict">NO.</div>
+            </div>
+            <div class="rule" id="rule"></div>
+            <div class="micro-label" id="micro-label">Not the way most people mean it.</div>
           </div>
-          <div class="rule" id="rule"></div>
-          <div class="micro-label" id="micro-label">Not the way most people mean it.</div>
         </div>
       </div>
 
@@ -62,6 +76,14 @@
         window.__timelines = window.__timelines || {};
         const tl = gsap.timeline({ paused: true });
         gsap.set('#stamp-card', { transformOrigin: '50% 50%' });
+
+        // Continuous zoom -- the cadence floor across the full scene, added
+        // 2026-08-31 QC verification round (this scene's own per-region scan
+        // showed only a 0.50s hold, under the 1.5s ceiling -- this is added
+        // hardening, not a fix for a measured defect, matching scenes 3/4/5's
+        // existing device rather than leaving this scene as the one with no
+        // ambient motion under its beats).
+        tl.fromTo('#zoom', { scale: 1 }, { scale: 1.02, duration: 3.200, ease: "none" }, 0);
 
         // Impact stamp, not a fade: accelerating-in scale-down from an oversized,
         // slightly rotated "from" state -- power2.in over 0.16s. This target is

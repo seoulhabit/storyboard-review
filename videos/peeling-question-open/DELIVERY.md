@@ -11,7 +11,9 @@ be reused with different content, not to replace the earlier video.
 
 **`renders/peeling-question-open_FINAL_mastered.mp4`** — the only render kept;
 every earlier iteration from the fix-and-reverify loop was deleted once
-superseded, matching house convention.
+superseded, matching house convention. **Re-rendered 2026-09-01** (QC-
+verification round, see Verification record item 4 below) — supersedes the
+2026-08-31 master; numbers on this page are for the current file.
 
 - **750 video frames at 30fps = 25.000s of picture** (confirmed via
   `ffprobe -count_frames`; video stream copied through unchanged by the
@@ -23,17 +25,24 @@ superseded, matching house convention.
   unchanged. Measured **−14.1 LUFS integrated / −1.5 dBTP** against a target
   of −14 LUFS / −1.5 dBTP. Raw pre-master render measured −22.3 LUFS
   integrated, confirming the render itself does not apply loudness
-  normalization (per house convention, this is always a separate step).
+  normalization (per house convention, this is always a separate step). This
+  directly disproves an external QC report's claim of a "completely silent
+  audio track" on this project (see Verification record below) — the report
+  did not reproduce against the actual render.
 - No voiceover (silent-first, matching `peeling-not-progress`'s own
   precedent — see BRIEF.md). BGM bed (`assets/bgm/track.mp3`, reused from
   `peeling-not-progress`) plus 12 SFX cues are the only audio.
 - **Loop-aware BGM envelope**, a deliberate departure from the usual
   declick-to-true-silence convention: both ends land on a low floor (0.15)
   rather than 0, because a hard fade-to-silence-then-restart creates an
-  audible dead spot exactly at the seam every replay. Confirmed on the actual
-  mastered file via `ffmpeg astats` RMS: start window (0–0.6s) measures
-  **−8.9 dB RMS**, end window (24.4–25.0s) measures **−24.5 dB RMS** — both
-  real, audible signal, neither true digital silence.
+  audible dead spot exactly at the seam every replay. Confirmed on the
+  current mastered file via `ffmpeg -af atrim,astats` RMS (sample-accurate,
+  post-decode windowing — re-measured this round after re-mastering, numbers
+  differ from the superseded 2026-08-31 master's own reading, which used a
+  looser measurement approach): start window (0–0.6s) measures
+  **−17.4 dB RMS**, end window (24.4–25.0s) measures **−16.8 dB RMS** — both
+  real, audible signal, neither true digital silence, and if anything with
+  more headroom at both ends than the prior build.
 
 ## Captions
 
@@ -46,6 +55,11 @@ clicks are omitted. Decorative category labels (REACTION / RESULT) are not
 captioned redundantly alongside their own sentence — only the sentence itself
 is captioned, per the skill's rule against a caption repeating a decorative
 label's exact phrase with no new meaning.
+
+**Retimed 2026-09-01:** cue 21 (`[chime] 습 SeoulHabit`) moved from
+24.050–24.700 to 23.150–23.800, matching scene 6's own lockup retime — see
+Verification record item 4. Every other cue was unaffected by this round's
+changes.
 
 No separate burned-in caption track: the on-screen kinetic type *is* the
 caption layer for this silent short (matching `peeling-not-progress`'s
@@ -97,10 +111,12 @@ convention — nothing deleted, the rejected one labeled for what it tested.
 ## Verification record
 
 `npx hyperframes check` passed cleanly at every stage but caught none of the
-three real defects found below — consistent with `REPORT.md`'s own recorded
-history of `check` reporting 0 issues on genuinely broken renders. All three
+four real defects found below — consistent with `REPORT.md`'s own recorded
+history of `check` reporting 0 issues on genuinely broken renders. All four
 were found by extracting and eyeballing real frames, exactly as the skill
-requires, not by trusting a passing lint.
+requires, not by trusting a passing lint (the fourth was found while
+re-verifying an external QC report's own claims against the render, not by
+this project's own tooling).
 
 1. **Void-box reveal rendered fully drawn from frame zero** (scene 3,
    `03-reaction.html`). The empty "result" outline was meant to stay hidden
@@ -139,12 +155,55 @@ requires, not by trusting a passing lint.
    whole-column scan, which was initially contaminated by the couplet text
    itself): scene 1 frame 0 and scene 6's resting frame now both measure
    panel top=192, bottom=1201 at every tested x-column.
+4. **Scene 6's hero panel sat empty for 1.30s** (local 2.95–4.05,
+   `06-open.html`) between the word-grid's exit and the SeoulHabit lockup's
+   arrival — invisible to the whole-frame static-hold check because the
+   closing headline couplet, in a different part of the same frame, kept the
+   whole-frame diff alive throughout. Found 2026-09-01 while verifying an
+   external QC report's claim that "the final 5 seconds drag... the
+   staggered text takes too long to appear" — the report's own diagnosis
+   (widen the word-grid's entrance stagger) was checked against the render
+   and found wrong: the four words already land 0.30s apart, tighter than
+   the report's own 0.5s suggestion. The real gap was the exit-to-lockup
+   handoff, not the entrance. Fixed by pulling the lockup's `fromTo` from
+   local 3.15 (was 4.05); confirmed on the fixed, mastered render via the
+   same panel-box pixel measurement used to find it: the true empty window
+   is now 0.40s (22.8s–23.1s absolute), well under any reasonable cadence
+   ceiling. Closes with a re-timing cascade: the lockup-landing SFX cue
+   (`index.html`, was 24.05, now 23.15), caption cue 21 (`captions/*.srt`
+   and `.vtt`, was 24.050–24.700, now 23.150–23.800), and `STORYBOARD.md`'s
+   scene 6 beat table (also re-derived from the real file while here — it
+   had drifted to describe an earlier, unshipped draft).
+
+   Two related, smaller items closed in the same pass: the AAD-guidance
+   pill in scene 5 (`05-boundary.html`) measured only 6px of clearance past
+   the real 20%-bottom safe line — inside spec, but the tightest margin in
+   the piece, and the QC report's (non-reproducing) claim about it was
+   close enough to worth widening on its own merit. `--safe-margin` raised
+   4px→20px there. Scenes 2 and 6 were also candidates for this round's
+   cadence-floor hardening (matching scenes 3/4/5's continuous Ken Burns
+   zoom); added to scene 2, deliberately withheld from scene 6 — its own
+   `06-open.html` spatial-plan comment documents a specific reason (no
+   Ken Burns anywhere in this scene, matching scene 1, so the loop's two
+   endpoints never move their own frame) that a zoom addition would have
+   fought rather than honored.
 
 All four QC scripts (`check-safe-area.py`, `check-static-hold.py`,
 `check-blank-frames.py`, `check-sfx-durations.py`) run clean against the final
-render. `check-safe-area.py` (hard gate): 0 findings across 100 sampled
-frames. `check-static-hold.py`: 0 findings across 50 sampled frames — no scene
-holds frozen more than 2.5s. `check-blank-frames.py` (advisory): 4 near-blank
+render, with one asterisk. `check-safe-area.py` (hard gate): 0 findings
+across 100 sampled frames. `check-static-hold.py`: 0 findings on the
+whole-frame check (50 sampled frames, no scene holds frozen more than
+2.5s); its NEW region-aware half (added this round specifically because the
+whole-frame check missed defect #4 above) still flags 3 candidates on this
+final render — one confirmed a benign textured-plate false positive (scene
+1's frosted-glass watermark), one confirmed a benign grid-geometry artifact
+(the SeoulHabit lockup sits mostly right of a column boundary, so that
+column's own signal stays weak even though the panel is genuinely
+populated), and one is that same lockup-column artifact restated for the
+adjacent column — all three verified false by direct frame extraction, not
+dismissed by assumption; see `catalog/tooling/README.md`'s `check-static-
+hold.py` section for the full diagnosis and a documented improvement this
+round didn't implement. `check-blank-frames.py` (advisory): 4 near-blank
 windows flagged, all at scene-boundary opening beats (the deliberate "beat
 before the beat" pattern already established and gate-passing in
 `peeling-not-progress`'s own `01-hook.html`); each verified by direct frame

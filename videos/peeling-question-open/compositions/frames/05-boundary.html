@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --moss: #4F6B52; --celadon: #93B896; --coral: #C97A5C;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* Adapted from peeling-not-progress/04-boundary.html's own round-6 fix --
+             this scene's Ken Burns wrapper maps the padded box's edge outward, so the
+             padded edge must be derived from this scene's own scale/origin rather than
+             a flat token allowance. */
+          --zoom-max: 1.025; --zoom-origin-x: 540px; --zoom-origin-y: 864px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--moss); font-family: var(--font-body);
+          /* Coral is used ONCE in this project, here, and only as a filled dot --
+             never as text: coral on moss measures well under the 4.5:1 floor. */
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. Full-bleed moss #root, one .frame-zoom wrapper holding a flex column:
+              kicker zone / cards row (flex:1, centered) / caveat + pill footer.
+           2. Cards row is a flex row -- left card, divider, right card -- laid out
+              by flex gap, matching the predecessor's proven mechanism, not two
+              independently positioned cards.
+           3. Each card's kicker/body/chip stack is a plain flex column in normal
+              document flow inside the card; the footer caveat + pill are a second
+              flex column below the row, not floated against it. */
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
+        .stage { display: flex; flex-direction: column; height: 100%; gap: 28px;
+                 padding: calc(var(--safe-top) + 20px) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
+
+        .kicker-zone { height: 110px; text-align: center; }
+        .kicker { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                  letter-spacing: 0.08em; color: var(--paper); opacity: 0; }
+
+        .cards-row { flex: 1; display: flex; align-items: center; justify-content: center; gap: 22px; }
+        .divider { width: 3px; height: 0%; background: rgba(247,245,240,0.35); border-radius: 2px;
+                   align-self: center; }
+
+        .card { flex: 1; max-width: 380px; padding: 36px 28px; border-radius: 16px;
+                background: rgba(247,245,240,0.08); border: 2px solid rgba(247,245,240,0.30);
+                display: flex; flex-direction: column; gap: 18px; opacity: 0; }
+        .card-stop { border-color: rgba(247,245,240,0.55); background: rgba(247,245,240,0.12); }
+
+        .card-kicker-row { display: flex; align-items: center; gap: 14px; }
+        .dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--paper); }
+        .card-normal .dot { background: var(--celadon); }
+        .card-stop .dot { background: var(--coral); }
+        .card-kicker { font-family: var(--font-mono); font-weight: 700; font-size: 32px;
+                       letter-spacing: 0.06em; color: var(--paper); }
+
+        .card-body { font-family: var(--font-body); font-weight: 800; font-size: 38px;
+                     line-height: 1.32; color: var(--paper); }
+
+        .footer { display: flex; flex-direction: column; align-items: center; gap: 14px;
+                  padding-top: 4px; text-align: center; }
+        .caveat { font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 1.35;
+                  color: rgba(247,245,240,0.85); max-width: 780px; opacity: 0; }
+        .pill { font-family: var(--font-mono); font-weight: 500; font-size: 32px; letter-spacing: 0.04em;
+                color: rgba(247,245,240,0.75); border: 1.5px solid rgba(247,245,240,0.35);
+                border-radius: 999px; padding: 7px 20px; opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="05-boundary" data-width="1080" data-height="1920" data-duration="5.000">
+        <div class="clip frame-zoom" id="zoom">
+          <div class="stage">
+            <div class="kicker-zone">
+              <div class="kicker" id="kicker">THE BOUNDARY</div>
+            </div>
+
+            <div class="cards-row">
+              <div class="card card-normal" id="card-normal">
+                <div class="card-kicker-row"><div class="dot"></div><div class="card-kicker">NORMAL</div></div>
+                <div class="card-body">Temporary dryness can happen.</div>
+              </div>
+
+              <div class="divider" id="divider"></div>
+
+              <div class="card card-stop" id="card-stop">
+                <div class="card-kicker-row"><div class="dot" id="stop-dot"></div><div class="card-kicker">STOP</div></div>
+                <div class="card-body">Burning or worsening irritation? Stop.</div>
+              </div>
+            </div>
+
+            <div class="footer">
+              <div class="caveat" id="caveat">On a prescription? Ask your dermatologist.</div>
+              <div class="pill" id="pill">AAD guidance</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Continuous slow push across the entire scene -- the cadence floor,
+        // same technique as the source scene.
+        tl.fromTo('#zoom', { scale: 1 }, { scale: 1.025, duration: 5.000, ease: "none" }, 0);
+
+        tl.to('#kicker', { opacity: 1, duration: 0.3 }, 0);
+
+        tl.to('#card-normal', { opacity: 1, duration: 0.35 }, 0.15);
+        tl.to('#card-stop', { opacity: 1, duration: 0.35 }, 0.5);
+        tl.to('#divider', { height: '62%', duration: 0.5, ease: "power2.inOut" }, 1.3);
+
+        // Bounded pulse, resolves inside the scene -- this project's own
+        // refusal moment, so it gets the piece's one accelerating-in cutoff
+        // language via the dot's own pulse rather than a new easing family.
+        tl.to('#stop-dot', { scale: 1.32, duration: 0.34, yoyo: true, repeat: 3,
+                              ease: "power1.inOut", transformOrigin: "50% 50%" }, 2.20);
+
+        // The prescription caveat fills what would otherwise be this scene's
+        // dead tail -- real added content the source scene didn't need,
+        // required by this brief's fuller AAD quote, not decorative padding.
+        tl.fromTo('#caveat', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35 }, 3.80);
+        tl.fromTo('#pill', { opacity: 0 }, { opacity: 1, duration: 0.30 }, 4.10);
+
+        tl.to({}, { duration: 5.000 }, 0);
+        window.__timelines["05-boundary"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

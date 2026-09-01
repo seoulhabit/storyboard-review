@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --moss: #4F6B52;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", sans-serif;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--moss); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+
+        /* Spatial plan:
+           1. BYTE-IDENTICAL .stage/.glass-panel shell to 01-question.html --
+              same padding, same gap, same flex:1 panel -- so the hard cut back
+              to scene 1 lands on a matched hero position by construction, not
+              by eyeballing. No Ken Burns wrapper here either, for the same
+              reason: scene 1 never scales its content, so scene 6 doesn't
+              either -- the loop's geometry can't drift if neither endpoint
+              moves its own frame.
+           2. Inside the panel, the three content states (lead question, word
+              grid, 습 lockup) are layered position:absolute; inset:0 children,
+              each its own centered flex column -- the same "layered motion
+              planes" idiom scene 1 uses for its texture/peel-sheet pair.
+           3. The closing couplet occupies the SAME text-stack box scene 1's
+              hero question occupies -- a content swap inside a stationary
+              frame, not a new layout. */
+        .stage { display: flex; flex-direction: column; justify-content: flex-end;
+                 height: 100%; gap: 48px;
+                 padding: var(--safe-top) var(--safe-right) calc(var(--safe-bottom) + 40px) var(--safe-left); }
+
+        .glass-panel { position: relative; flex: 1; border-radius: 32px; overflow: hidden;
+                       background: rgba(251,249,245,0.16);
+                       backdrop-filter: blur(25px) saturate(1.15);
+                       -webkit-backdrop-filter: blur(25px) saturate(1.15);
+                       border: 1px solid rgba(255,255,255,0.30); }
+
+        .panel-state { position: absolute; inset: 0; display: flex; flex-direction: column;
+                       align-items: center; justify-content: center; gap: 20px; padding: 0 48px; }
+
+        .q-lead { font-family: var(--font-mono); font-weight: 500; font-size: 40px;
+                  letter-spacing: 0.06em; color: rgba(247,245,240,0.75); opacity: 0; text-align: center; }
+        .q-main { font-family: var(--font-display); font-size: 100px; line-height: 1.1;
+                  color: var(--paper); opacity: 0; text-align: center; }
+
+        .word-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; opacity: 0; }
+        .word-chip { font-family: var(--font-mono); font-weight: 500; font-size: 38px;
+                     color: var(--paper); opacity: 0; }
+
+        .lockup { display: flex; flex-direction: column; align-items: center; gap: 16px; opacity: 0; }
+        .hangul { font-family: var(--font-kr); font-size: 120px; color: var(--paper); line-height: 1; }
+        .wordmark { font-family: var(--font-body); font-weight: 800; font-size: 44px;
+                    color: rgba(247,245,240,0.85); letter-spacing: 0.02em; }
+
+        .text-stack { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+        /* font-size/line-height must be BYTE-IDENTICAL to 01-question.html's .h-line --
+           .text-stack has no fixed height, and .glass-panel is flex:1 in the same
+           .stage column, so any difference in the text-stack's intrinsic height
+           changes how much space the panel auto-expands into. A 96px/1.16 draft
+           here (vs scene 1's 108px/1.12) made this scene's panel render ~38px
+           taller than scene 1's, confirmed by pixel-column measurement on the
+           actual render -- the loop's geometric match must be verified this way,
+           not assumed from matching source CSS class names alone. */
+        .h-line { font-family: var(--font-display); font-size: 108px; line-height: 1.12;
+                  color: var(--paper); opacity: 0; }
+      </style>
+
+      <div id="root" data-composition-id="06-open" data-width="1080" data-height="1920" data-duration="5.000">
+        <div class="clip stage">
+          <div class="glass-panel">
+            <div class="panel-state" id="state-question">
+              <div class="q-lead" id="q-lead">The better question:</div>
+              <div class="q-main" id="q-main">What changed?</div>
+            </div>
+            <div class="panel-state word-grid" id="state-grid">
+              <div class="word-chip" id="w-1">ingredient</div>
+              <div class="word-chip" id="w-2">strength</div>
+              <div class="word-chip" id="w-3">frequency</div>
+              <div class="word-chip" id="w-4">combination</div>
+            </div>
+            <div class="panel-state lockup" id="state-lockup">
+              <div class="hangul">&#xC2B5;</div>
+              <div class="wordmark">SeoulHabit</div>
+            </div>
+          </div>
+          <div class="text-stack">
+            <div class="h-line" id="h-line-1">Not the claim.</div>
+            <div class="h-line" id="h-line-2">The question.</div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out" } });
+
+        // Baseline registration -- #state-grid and #word-chip children are each
+        // hit by two tweens at different positions (entrance, then exit before
+        // the lockup arrives), so their t=0 state must be a real timeline tween,
+        // not a bare gsap.set() outside it.
+        // #state-grid's own container CSS defaults to opacity:0 (it shares the
+        // .word-grid class); its children (#w-1..4) render only through it, so
+        // the container itself must be forced visible at t=0 -- its children's
+        // OWN opacity is what actually gates when each word is seen. The lockup
+        // container is NOT force-set here: it's hit by exactly one fromTo (at
+        // 4.05), so its CSS default (opacity:0) is already the correct t=0
+        // value -- an earlier draft mistakenly forced it to opacity:1 at 0,
+        // which would have shown all three panel states stacked simultaneously
+        // for the scene's first 4.05s. Caught before render, not after.
+        tl.set('#state-grid', { opacity: 1 }, 0);
+        tl.set(['#w-1', '#w-2', '#w-3', '#w-4'], { opacity: 0, y: 16 }, 0);
+
+        // State 1: the question, composed early and held briefly.
+        tl.fromTo('#q-lead', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.30 }, 0.20);
+        tl.fromTo('#q-main', { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 0.60);
+
+        // State 2: the four-word grid, staggered in then out.
+        const words = ['#w-1', '#w-2', '#w-3', '#w-4'];
+        words.forEach(function (sel, i) {
+          tl.to(sel, { opacity: 1, y: 0, duration: 0.26 }, 1.05 + i * 0.30);
+        });
+        tl.to('#q-lead', { opacity: 0, duration: 0.28 }, 1.05);
+        tl.to('#q-main', { opacity: 0, duration: 0.28 }, 1.05);
+        words.forEach(function (sel, i) {
+          tl.to(sel, { opacity: 0, y: -14, duration: 0.30, ease: "power2.in" }, 2.35 + i * 0.05);
+        });
+
+        // State 3: the 습 SeoulHabit lockup settles in.
+        tl.fromTo('#state-grid', { opacity: 1 }, { opacity: 0, duration: 0.01 }, 2.95);
+        tl.fromTo('.lockup', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.34, ease: "power3.out" }, 4.05);
+        // Bounded breath, resolves before the scene ends -- the lockup is at
+        // rest (scale 1) for the final cut back to scene 1, matching its own
+        // resting state, not mid-tween.
+        tl.to('.hangul', { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, 4.50);
+
+        // Closing couplet, in the same box scene 1's hero question occupies.
+        tl.fromTo('#h-line-1', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.34 }, 2.85);
+        tl.fromTo('#h-line-2', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.34 }, 3.30);
+
+        tl.to({}, { duration: 5.000 }, 0);
+        window.__timelines["06-open"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

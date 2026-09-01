@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --moss: #4F6B52; --celadon: #93B896;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 4px;
+          /* Ken Burns zoom, centered origin -- derived safe padding per the
+             mandatory pattern (a rendered-pixel bug the source alone can't show). */
+          --zoom-max: 1.03; --zoom-origin-x: 540px; --zoom-origin-y: 960px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--moss); font-family: var(--font-body);
+          /* Text on --moss ground stays paper/mist -- celadon on moss measures only
+             ~2.7:1 (fails the 4.5:1 floor), confirmed before this scene was built,
+             not discovered after. Celadon is used here only as a non-text stroke
+             (the void outline), which has no contrast-floor requirement. */
+        }
+        .clip { position: absolute; inset: 0; }
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
+
+        /* Spatial plan:
+           1. .stage is a CSS Grid, two content rows (REACTION field / RESULT
+              field) separated by a seam row -- a horizontal split, structurally
+              distinct from scene 2's centered card and scene 1's panel-over-text.
+              Deliberately horizontal rather than vertical so this doesn't read as
+              a re-skin of the catalog's SplitCompare (a vertical bisector).
+           2. Each field is its own flex column, left-aligned -- not centered,
+              which is what makes the split read as two distinct zones rather
+              than one more centered stack.
+           3. The tick marks and the result-void are children of their own
+              field's flow, not canvas-absolute. The ≠ symbol is the one element
+              that rides the seam itself, grid-positioned on the seam row. */
+        .stage { display: grid; grid-template-rows: 1fr 10px 1fr; height: 100%;
+                 padding: var(--safe-top) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
+
+        .field { display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+        .field-label { font-family: var(--font-mono); font-weight: 500; font-size: 36px;
+                       letter-spacing: 0.10em; color: rgba(247,245,240,0.85); opacity: 0; }
+        .field-desc { font-family: var(--font-display); font-size: 76px; line-height: 1.18;
+                      color: var(--paper); max-width: 760px; opacity: 0; }
+
+        .tick-row { display: flex; gap: 16px; margin-top: 8px; }
+        .tick { width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--paper);
+                opacity: 1; transform: scaleX(0); transform-origin: 0% 50%; }
+
+        .seam { position: relative; align-self: center; justify-self: stretch; width: 100%;
+                background: rgba(247,245,240,0.35); transform: scaleX(0); transform-origin: 0% 50%; }
+        .neq { position: absolute; right: 0; top: 50%; transform: translateY(-50%) scale(0.7) rotate(-8deg);
+               font-family: var(--font-body); font-weight: 800; font-size: 88px; color: var(--paper);
+               opacity: 0; }
+
+        .void-box { width: 460px; height: 140px; margin-top: 8px; }
+        .void-box path { fill: none; stroke: var(--celadon); stroke-width: 3; }
+      </style>
+
+      <div id="root" data-composition-id="03-reaction" data-width="1080" data-height="1920" data-duration="5.000">
+        <div class="clip frame-zoom" id="zoom">
+          <div class="stage">
+            <div class="field" id="field-top">
+              <div class="field-label">REACTION</div>
+              <div class="field-desc" id="react-desc">Peeling is a reaction.</div>
+              <div class="tick-row">
+                <div class="tick" id="tick-1"></div>
+                <div class="tick" id="tick-2"></div>
+                <div class="tick" id="tick-3"></div>
+                <div class="tick" id="tick-4"></div>
+                <div class="tick" id="tick-5"></div>
+              </div>
+            </div>
+
+            <div class="seam" id="seam">
+              <div class="neq" id="neq">&#8800;</div>
+            </div>
+
+            <div class="field" id="field-bot" style="justify-content: flex-start; padding-top: 8px;">
+              <div class="field-label">RESULT</div>
+              <div class="field-desc" id="result-desc">Not proof of results.</div>
+              <svg class="void-box" id="result-void" viewBox="0 0 460 140" aria-hidden="true">
+                <path d="M18,4 L442,4 A14,14 0 0 1 456,18 L456,122 A14,14 0 0 1 442,136 L18,136 A14,14 0 0 1 4,122 L4,18 A14,14 0 0 1 18,4 Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        gsap.set('#neq', { transformOrigin: '50% 50%' });
+        const ticks = [1,2,3,4,5].map(i => document.getElementById('tick-'+i));
+        const voidRect = document.querySelector('#result-void path');
+        const voidLen = voidRect.getTotalLength();
+
+        // Baseline registration for elements hit by more than one fromTo/to at
+        // different positions -- must be inside the timeline at 0, not a bare
+        // gsap.set() outside it (that does not survive an arbitrary seek).
+        tl.set(ticks, { scaleX: 0 }, 0);
+        tl.set('#neq', { scale: 0.7, rotation: -8, opacity: 0 }, 0);
+        tl.set('#field-top', { opacity: 1 }, 0);
+        // Registered inside the timeline, not a bare gsap.set() -- the same
+        // discipline that fixed the multi-fromTo seek-bleed failure mode applies
+        // here too: a property set only outside the timeline is not guaranteed
+        // to hold under an arbitrary seek.
+        tl.set(voidRect, { strokeDasharray: voidLen, strokeDashoffset: voidLen }, 0);
+
+        // Continuous slow push across the FULL scene -- the cadence floor.
+        tl.to('#zoom', { scale: 1.03, duration: 5.000, ease: "none" }, 0);
+
+        tl.to('#seam', { scaleX: 1, duration: 0.42, ease: "power2.inOut" }, 0.00);
+
+        tl.to('#field-top .field-label', { opacity: 1, duration: 0.30 }, 0.10);
+        tl.fromTo('#react-desc', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.34 }, 0.45);
+
+        tl.to('#field-bot .field-label', { opacity: 1, duration: 0.30 }, 0.85);
+        tl.fromTo('#result-desc', { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.34 }, 0.85);
+
+        tl.to('#neq', { scale: 1, rotation: 0, opacity: 1, duration: 0.20, ease: "power2.in" }, 1.25);
+        // Bounded snap-pulse, resolves inside the scene.
+        tl.to('#neq', { scale: 1.06, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 3 }, 1.70);
+
+        ticks.forEach(function (t, i) {
+          tl.to(t, { scaleX: 1, duration: 0.24, ease: "power2.out" }, 1.70 + i * 0.10);
+        });
+
+        tl.to(voidRect, { strokeDashoffset: 0, duration: 1.00, ease: "power1.inOut" }, 2.45);
+
+        // Dim the reaction ticks once the empty result has landed -- the
+        // reaction side visibly demotes itself, real content beat not filler.
+        ticks.forEach(function (t, i) {
+          tl.to(t, { opacity: 0.4, duration: 0.30, ease: "power1.inOut" }, 3.60 + i * 0.06);
+        });
+
+        tl.to({}, { duration: 5.000 }, 0);
+        window.__timelines["03-reaction"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

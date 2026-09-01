@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"></head>
+  <body>
+    <template>
+      <style>
+        @font-face { font-family: "EB Garamond"; font-weight: 400; font-style: normal;
+          src: url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-soft: #211F1B; --leaf: #6F8F72;
+          --font-display: "EB Garamond", Georgia, serif;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --safe-margin: 4px;
+          --zoom-max: 1.03; --zoom-origin-x: 540px; --zoom-origin-y: 960px;
+          --safe-bottom-zoomed: calc(1920px - (var(--zoom-origin-y)
+            + (1920px - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+          --safe-right-zoomed: calc(1080px - (var(--zoom-origin-x)
+            + (1080px - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
+
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink-soft); font-family: var(--font-body);
+        }
+        .clip { position: absolute; inset: 0; }
+        .frame-zoom { position: absolute; inset: 0; transform-origin: var(--zoom-origin-x) var(--zoom-origin-y); }
+
+        /* Spatial plan:
+           1. .stage is a CSS Grid, two columns: a flexible content column and a
+              fixed 88px vertical rail -- structurally distinct from scene 3's
+              horizontal split and scenes 1/2/6's centered stacks (this project's
+              second structurally-distinct frame, per the layout-variety budget).
+           2. The rail is a single vertical-text label, not floating decoration --
+              a structural edge element belonging to the grid, not absolute.
+           3. The content column is one flex column (badge -> headline -> claims
+              -> dose row -> pill); the dose row is itself a nested flex row of
+              three equal sub-columns (chip over bar), not three independently
+              positioned chips. */
+        /* Rail sits INSIDE the safe-right reserve, not flush against the canvas
+           edge -- grid-template-columns splits the safe content width (1080 -
+           safe-left - safe-right-zoomed) between the content column and a 64px
+           rail, so the rail's own text never enters the platform's reserved
+           right-edge zone (verified against check-safe-area.py, not assumed). */
+        .stage { display: grid; grid-template-columns: 1fr 64px; column-gap: 28px; height: 100%;
+                 padding: var(--safe-top) var(--safe-right-zoomed) var(--safe-bottom-zoomed) var(--safe-left); }
+
+        .content-col { display: flex; flex-direction: column; justify-content: center; gap: 32px; }
+
+        .badge { display: inline-flex; align-self: flex-start; align-items: center; gap: 14px;
+                 padding: 14px 26px; border-radius: 10px; border: 2px solid var(--paper);
+                 background: rgba(247,245,240,0.05); opacity: 0; }
+        .badge-text { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                      letter-spacing: 0.08em; color: var(--paper); }
+        /* scaleX(0) at rest -- an earlier draft left this at 0.9 (near-full-width)
+           by mistake, so the rule rendered almost fully drawn from frame zero,
+           before the badge it decorates had even stamped in. Confirmed on the
+           actual render, not assumed from reading the source. */
+        .badge-rule { width: 100%; height: 3px; background: var(--leaf); margin-top: 10px;
+                      transform: scaleX(0); transform-origin: 0% 50%; }
+
+        .headline { font-family: var(--font-display); font-size: 88px; line-height: 1.16;
+                    color: var(--paper); max-width: 680px; opacity: 0; }
+
+        .claim { font-family: var(--font-mono); font-weight: 500; font-size: 38px; line-height: 1.4;
+                 color: rgba(247,245,240,0.82); max-width: 680px; opacity: 0; }
+
+        .dose-row { display: flex; gap: 40px; margin-top: 8px; }
+        .dose-col { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 96px; }
+        .dose-chip { font-family: var(--font-mono); font-weight: 500; font-size: 30px; color: var(--paper);
+                     opacity: 0; }
+        .dose-track { width: 12px; height: 80px; background: rgba(247,245,240,0.10); border-radius: 6px;
+                      display: flex; align-items: flex-end; overflow: hidden; }
+        .dose-bar { width: 100%; height: 100%; background: var(--leaf); transform: scaleY(0);
+                    transform-origin: 50% 100%; border-radius: 6px; }
+
+        .pill { align-self: flex-start; font-family: var(--font-mono); font-weight: 500; font-size: 32px;
+                letter-spacing: 0.04em; color: rgba(247,245,240,0.75);
+                border: 1.5px solid rgba(247,245,240,0.30); border-radius: 999px;
+                padding: 8px 22px; opacity: 0; }
+
+        .rail { writing-mode: vertical-rl; text-orientation: mixed; align-self: stretch;
+                display: flex; align-items: flex-end; justify-content: center; gap: 18px;
+                padding: 40px 0; }
+        .rail-label { font-family: var(--font-mono); font-weight: 500; font-size: 30px;
+                      letter-spacing: 0.20em; color: rgba(247,245,240,0.45); transform: scaleY(0);
+                      transform-origin: 50% 100%; }
+      </style>
+
+      <div id="root" data-composition-id="04-evidence" data-width="1080" data-height="1920" data-duration="5.000">
+        <div class="clip frame-zoom" id="zoom">
+          <div class="stage">
+            <div class="content-col">
+              <div class="badge" id="badge">
+                <span class="badge-text">EVIDENCE: ESTABLISHED</span>
+              </div>
+              <div class="badge-rule" id="badge-rule"></div>
+              <div class="headline" id="headline">Irritation can happen.</div>
+              <div class="claim" id="claim-2">More irritation doesn't mean faster results.</div>
+
+              <div class="dose-row">
+                <div class="dose-col">
+                  <div class="dose-chip" id="dose-chip-1">1&times;</div>
+                  <div class="dose-track"><div class="dose-bar" id="dose-bar-1"></div></div>
+                </div>
+                <div class="dose-col">
+                  <div class="dose-chip" id="dose-chip-2">2&times;</div>
+                  <div class="dose-track"><div class="dose-bar" id="dose-bar-2"></div></div>
+                </div>
+                <div class="dose-col">
+                  <div class="dose-chip" id="dose-chip-3">3&times;</div>
+                  <div class="dose-track"><div class="dose-bar" id="dose-bar-3"></div></div>
+                </div>
+              </div>
+
+              <div class="pill" id="pill">Arch Dermatol &middot; 1995</div>
+            </div>
+
+            <div class="rail">
+              <div class="rail-label" id="rail-label">EVIDENCE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        gsap.set('#badge', { transformOrigin: '50% 50%' });
+
+        // #badge is hit by only one fromTo (the stamp) -- no baseline register
+        // needed. #badge-rule IS hit by two tweens at different positions (entrance
+        // + breathe), so its t=0 state is registered inside the timeline here,
+        // not left to a CSS default alone.
+        tl.set('#badge-rule', { scaleX: 0 }, 0);
+
+        // Continuous zoom -- the cadence floor across the full scene.
+        tl.to('#zoom', { scale: 1.03, duration: 5.000, ease: "none" }, 0);
+
+        // Stamp impact -- same accelerating-in language as scene 2's verdict
+        // card, deliberately smaller and quieter, so the evidence badge reads
+        // as an echo of the answer's own stamp, not a second payoff.
+        tl.fromTo('#badge', { opacity: 0, scale: 1.30, rotation: -2.2 },
+                             { opacity: 1, scale: 1, rotation: 0, duration: 0.18, ease: "power2.in" }, 0.20);
+        tl.to('#badge-rule', { scaleX: 1, duration: 0.30, ease: "power2.out" }, 0.42);
+
+        tl.fromTo('#headline', { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.30 }, 0.55);
+        tl.fromTo('#claim-2', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34 }, 1.10);
+
+        // Dose-response row: 1x/2x/3x land, then their bars fill to the SAME
+        // height -- the claim ("more irritation doesn't mean faster results")
+        // rendered as a real beat, not decorative padding for the back half.
+        ['#dose-chip-1', '#dose-chip-2', '#dose-chip-3'].forEach(function (sel, i) {
+          tl.to(sel, { opacity: 1, duration: 0.24 }, 2.00 + i * 0.18);
+        });
+        ['#dose-bar-1', '#dose-bar-2', '#dose-bar-3'].forEach(function (sel, i) {
+          tl.to(sel, { scaleY: 0.62, duration: 0.30, ease: "power2.out" }, 2.35 + i * 0.18);
+        });
+
+        tl.fromTo('#pill', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.30 }, 3.35);
+        tl.to('#rail-label', { scaleY: 1, duration: 0.45, ease: "power2.out" }, 3.75);
+
+        // Bounded breathe on the evidence rule, resolves inside the scene.
+        tl.to('#badge-rule', { scaleX: 0.94, duration: 0.90, ease: "sine.inOut", yoyo: true, repeat: 2 }, 3.20);
+
+        tl.to({}, { duration: 5.000 }, 0);
+        window.__timelines["04-evidence"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

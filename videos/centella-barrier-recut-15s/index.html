@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="portrait">
+<head>
+  <meta charset="UTF-8">
+  <title>Centella barrier recut — 15s hook rebuild</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: #101314; }
+    .scene { position: absolute; inset: 0; }
+  </style>
+</head>
+<body>
+  <!--
+    Rebuild scope: packaging + first 15s of d6DPiORuPO4 (videos/centella-tiger-grass, 71s).
+    Hard cuts at every boundary — scene 2 is flat ink, scenes 1/3 are scrimmed plates, so
+    no boundary shares a ground colour and a crossfade would produce a muddy midpoint
+    (SKILL.md "Cuts vs crossfades").
+  -->
+  <div id="root" data-composition-id="main" data-start="0" data-duration="15.000"
+       data-width="1080" data-height="1920">
+
+    <div class="scene clip" data-composition-id="01-hook"
+         data-composition-src="compositions/frames/01-hook.html"
+         data-start="0.000" data-duration="4.200" data-track-index="0"></div>
+
+    <div class="scene clip" data-composition-id="02-barrier"
+         data-composition-src="compositions/frames/02-barrier.html"
+         data-start="4.200" data-duration="4.400" data-track-index="1"></div>
+
+    <div class="scene clip" data-composition-id="03-fix"
+         data-composition-src="compositions/frames/03-fix.html"
+         data-start="8.600" data-duration="6.400" data-track-index="0"></div>
+
+    <!-- Bed reused from the channel's own library (assets/bgm/track-soft.mp3), not
+         re-sourced. Plain data-volume only: on this pin a data-automation volume lane
+         REPLACES data-volume rather than scaling it, which is the documented way a bed
+         ships ~10dB hot. Tail handled in the post-render master. -->
+    <audio id="bgm" src="assets/bgm/track-soft.mp3"
+           data-start="0.000" data-duration="15.000" data-volume="0.30"></audio>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.2/gsap.min.js"></script>
+  <script>
+    // Root timeline's only job is scene handoff; each sub-composition owns its own beats.
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+    tl.to({}, { duration: 15.000 }, 0);   // anchor: tl.duration() === root duration
+    window.__timelines['main'] = tl;
+  </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  #root {
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 60px;
+    --paper: #F7F5F0; --ink: #101314; --celadon: #93B896;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    position:relative; width:1080px; height:1920px; overflow:hidden;
+    background:var(--ink); font-family:'Inter',system-ui,sans-serif;
+  }
+  .clip { position:absolute; inset:0; }
+
+  .plate-wrap { overflow:hidden; background:#1A1A1A; }
+  .plate-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+  #fx-cent img { filter:saturate(0.95) contrast(1.04) brightness(0.62); transform-origin:50% 45%; }
+  /* Loop tail plate — identical treatment to 01-hook's frame zero so the last
+     frame hands back to the first (engineered loop, not a hard reset). */
+  #fx-loop { opacity:0; }
+  #fx-loop img { filter:saturate(0.92) contrast(1.08) brightness(0.82); }
+
+  .scrim { background:linear-gradient(to bottom,
+      rgba(16,19,20,0.88) 0%, rgba(16,19,20,0.74) 34%,
+      rgba(16,19,20,0.34) 62%, rgba(16,19,20,0.74) 100%); pointer-events:none; }
+
+  .stage { display:flex; flex-direction:column; justify-content:center;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+  .kicker { font-weight:700; font-size:34px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--celadon); margin-bottom:30px; }
+
+  .rx { display:flex; flex-direction:column; gap:34px; }
+  .rx-row { display:flex; align-items:baseline; gap:26px; opacity:0; }
+  .rx-verb { font-weight:800; font-size:88px; line-height:1.0; letter-spacing:-0.015em;
+    text-transform:uppercase; color:var(--celadon); flex:0 0 auto; min-height:0; }
+  .rx-what { font-weight:700; font-size:52px; line-height:1.14; color:var(--paper); }
+
+  .idline { margin-top:52px; font-family:var(--font-mono); font-size:34px;
+    letter-spacing:0.06em; color:rgba(247,245,240,0.80); opacity:0; }
+
+  /* Togglable layout debug — add to #root. Verified OFF
+     before render by checking frame zero (SKILL.md: a debug-tinted export is a bug). */
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+  #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+  #root.debug-layout .plate-wrap { outline: 2px solid #FFD400 !important; }
+  #root.debug-layout::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+    background:
+      linear-gradient(to left,  rgba(255,0,168,.25) 15%, transparent 15%),
+      linear-gradient(to top,   rgba(255,0,168,.25) 20%, transparent 20%),
+      linear-gradient(to bottom,rgba(255,0,168,.25) 10%, transparent 10%);
+  }
+</style>
+
+<div data-composition-id="03-fix" id="root" data-width="1080" data-height="1920" data-duration="6.400">
+
+  <div id="fx-cent" class="clip plate-wrap" data-layout-allow-overflow data-start="0" data-duration="6.400">
+    <img src="assets/plates/02-centella-asiatica.png" alt=""
+         width="2048" height="2048" loading="eager" decoding="sync">
+  </div>
+
+  <div id="fx-loop" class="clip plate-wrap" data-start="0" data-duration="6.400">
+    <img src="assets/plates/03-flaking-skin.png" alt=""
+         width="1200" height="1200" loading="eager" decoding="sync">
+  </div>
+
+  <div class="clip scrim" id="fx-scrim" data-start="0" data-duration="6.400"></div>
+
+  <div class="clip stage" id="fx-stage" data-start="0" data-duration="6.400">
+    <div class="kicker" id="fx-kick">The fix</div>
+    <div class="rx">
+      <div class="rx-row" id="fx-r1">
+        <span class="rx-verb">Stop</span>
+        <span class="rx-what">the acids.<br>Two weeks.</span>
+      </div>
+      <div class="rx-row" id="fx-r2">
+        <span class="rx-verb">Start</span>
+        <span class="rx-what">cica &mdash; morning<br>and night.</span>
+      </div>
+    </div>
+    <div class="idline" id="fx-id">CICA = CENTELLA = TIGER GRASS</div>
+  </div>
+
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  var DUR = 6.400;
+
+  tl.fromTo('#fx-cent', { scale: 1.13 }, { scale: 1.0, duration: DUR, ease: 'none',
+    immediateRender: true }, 0);
+
+  // Two instructions, each its own entrance shape — not one shared fade-and-rise.
+  tl.fromTo('#fx-r1', { opacity: 0, x: -28 },
+    { opacity: 1, x: 0, duration: 0.38, ease: 'power4.out', immediateRender: false }, 0.20);
+  tl.fromTo('#fx-r2', { opacity: 0, y: 26 },
+    { opacity: 1, y: 0, duration: 0.42, ease: 'back.out(1.6)', immediateRender: false }, 1.55);
+
+  // The identity the old cut spent 11.3s on, compressed to one line as a byproduct.
+  tl.fromTo('#fx-id', { opacity: 0 }, { opacity: 1, duration: 0.40, immediateRender: false }, 2.95);
+
+  // Mid-hold beats so the back half is not frozen.
+  gsap.set('#fx-kick', { transformOrigin: '0% 50%' });
+  tl.to('#fx-kick', { scaleX: 1.05, duration: 0.60, ease: 'power1.inOut' }, 3.55);
+  tl.to('#fx-kick', { scaleX: 1.0,  duration: 0.45, ease: 'power1.inOut' }, 4.20);
+  tl.to('#fx-id',   { color: '#93B896', duration: 0.35 }, 4.05);
+  // Back-half beat: the two instructions settle apart so the hold keeps moving.
+  tl.to('#fx-r1', { y: -12, duration: 1.00, ease: 'power1.inOut' }, 3.70);
+  tl.to('#fx-r2', { y: 12,  duration: 1.00, ease: 'power1.inOut' }, 3.70);
+
+  // LOOP HAND-BACK: cross to 01-hook's own plate + treatment over the last 0.85s so
+  // the final frame matches frame zero's ground (skill: engineer the loop).
+  tl.to('#fx-loop', { opacity: 1, duration: 0.85, ease: 'power2.inOut' }, DUR - 0.95);
+  tl.to(['#fx-r1', '#fx-r2', '#fx-id'], { opacity: 0.18, duration: 0.60 }, DUR - 0.80);
+
+  tl.to({}, { duration: DUR }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['03-fix'] = tl;
+})();
+</script>
+</template>

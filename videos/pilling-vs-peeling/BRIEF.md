@@ -274,6 +274,48 @@ the discrepancy is invisible from source alone. Fixed with a project-wide
 own content silently grow it past a smaller declared basis). See the
 faceless-video-craft SKILL.md update this round proposes.
 
+## Round 3 — scene 07 retimed for pacing (2026-09-01)
+
+Direct creator feedback while reviewing round 2's render, live: "scene 7
+feels rushed." Not a re-review of the whole cut — a single, specific
+pacing note on one scene.
+
+**This corroborates round 2's own cadence measurement rather than
+contradicting it.** `frame.md` § Verification — Round 2 had already
+flagged `07-fix-peeling` as the weakest scene by its own active-step
+metric (0 steps clearing the 1.0 threshold) and recorded it as "worth a
+closer look in a future pass if cadence is revisited" — that future pass
+is this one.
+
+**Fix:** `07-fix-peeling`'s own duration 2.1s → 3.3s (+1.2s), same beat
+order, more room between each beat. Both citation chips now hold on screen
+for 1.35s before the cut, up from 0.75s. A bounded scale-pulse on the
+headline (2.5–3.1s) was added so the extra hold time carries real motion
+rather than reading as a static freeze once both chips have landed.
+
+**Cascade this triggered** (per the skill's own re-timing-cascade warning —
+a single scene's duration change touches more than it looks):
+
+1. `08-close`'s `data-start` in both `index.html` and
+   `variants/index-hook-b.html`: 17.9 → 19.1.
+2. Root `data-duration` and anchor tween in both files: 19.9 → 21.1.
+3. `07-fix-peeling`'s own 4 SFX cues, retimed to the new beat schedule
+   (15.95/16.65/17.45/17.85, was 15.90/16.35/16.90/17.15).
+4. `08-close`'s 2 SFX cues, shifted +1.2s (19.65/20.00, was 18.45/18.80).
+5. BGM: re-cut from the 26.0s source bed to 21.1s (was 19.9s), same 200ms
+   declick fades; automation tail points moved to 20.5/21.1.
+6. Captions: every cue at or after the old 17.9s mark shifted +1.2s, in
+   all four caption files (`pilling-vs-peeling.{srt,vtt}` and
+   `_hookB.{srt,vtt}`) — both variants share this cue range, so both
+   needed the identical shift.
+7. `STORYBOARD.md`'s scene map, duration sum, and the `07-fix-peeling`
+   per-scene note.
+
+**Not touched:** scenes 01–06 and their SFX/captions (all before the
+15.8s boundary this change starts at), the imagery decision record, the
+copy changes, the box-sizing fix, and both variants' hook scenes — this
+round is scoped to the one scene named in the feedback.
+
 ## Assets
 
 | Asset | Source | Reused / new | Used in |

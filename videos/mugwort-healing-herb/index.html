@@ -15,7 +15,7 @@
       .clip { position: absolute; }
       .vo-caption { top: 240px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 50; pointer-events: none; }
       .vo-caption span { display: inline-block; max-width: 760px; background: rgba(247,245,240,0.94); color: #131516;
-        border: 1px solid rgba(19,21,22,0.1); font-family: 'Inter', 'Helvetica Neue', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.3;
+        border: 1px solid rgba(19,21,22,0.1); font-family: 'Inter', 'Helvetica Neue', sans-serif; font-weight: 800; font-size: 46px; line-height: 1.3;
         text-align: center; padding: 12px 26px; border-radius: 16px; box-shadow: 0 4px 18px rgba(19,21,22,0.12); }
     </style>
   </head>
@@ -26,25 +26,45 @@
       "breakdown.", inter-beat gaps 0.15s. Takes re-transcribed post-processing; captions and
       all cues recomputed programmatically from the new word timings.
       S1=0.000 S2=9.861 S3=18.403 S4=30.074 S5=42.738 S6=51.272, total=57.671s.
+
+      Round 4 (pixel-verified re-cut, this pass): VO and every data-start/data-duration above
+      are FROZEN — no re-timing cascade. Fixes are scene-CSS (safe-area, type scale, canvas
+      occupancy, photography, cadence — see compositions/frames/*.html) plus the audio layer
+      here: a voiceover bus (fx-chain copied verbatim from glass-skin-5-habits, the same
+      chain kbeauty-one-percent-line/seoulhabit-launch/centella-cica-vs-snail-mucin also
+      carry), edge fades on every VO/SFX/BGM clip, and BGM ducked under narration. Caption
+      font bumped 40px→46px (type-floor pass).
     -->
     <div id="root" data-composition-id="main" data-start="0.000" data-duration="57.671" data-width="1080" data-height="1920">
+      <!-- Voiceover bus — channel-level chain, copied verbatim from glass-skin-5-habits'
+           index.html (the same chain kbeauty-one-percent-line and seoulhabit-launch also
+           carry) rather than re-derived: highpass rumble cut, a warmth bump, a compressor,
+           a clarity bump, a de-ess fallback, and a peak-ceiling limiter. -->
+      <hf-audio-group id="voiceover" data-label="Voiceover" data-volume="1" data-fx-chain='{"version":1,"nodes":[{"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},{"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.8,"q":1.2}},{"type":"compressor","id":"n3","label":"Even Out Loudness","params":{"threshold":-24,"ratio":4,"attack":5,"release":140,"knee":2,"makeup":3,"mix":1}},{"type":"peaking","id":"n4","label":"Add Clarity","params":{"frequency":3000,"gain":2.5,"q":1}},{"type":"peaking","id":"n5","label":"De-ess (fallback)","params":{"frequency":6500,"gain":-4,"q":3.5}},{"type":"limiter","id":"n6","label":"Peak Ceiling","params":{"limit":-9,"attack":0.05,"release":40,"level_out":0}}]}'></hf-audio-group>
+
       <div id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0.000" data-duration="9.861" data-track-index="0"></div>
-      <audio id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="9.711" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-01-voice" src="assets/voice/01.wav" data-start="0.000" data-duration="9.711" data-track-index="10" data-volume="1" data-audio-group="voiceover"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":9.631,"v":1},{"t":9.711,"v":0}]}]}'></audio>
 
       <div id="el-02-file" class="scene" data-composition-id="02-file" data-composition-src="compositions/frames/02-file.html" data-start="9.861" data-duration="8.542" data-track-index="1"></div>
-      <audio id="el-02-voice" src="assets/voice/02.wav" data-start="9.861" data-duration="8.392" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-02-voice" src="assets/voice/02.wav" data-start="9.861" data-duration="8.392" data-track-index="10" data-volume="1" data-audio-group="voiceover"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":8.312,"v":1},{"t":8.392,"v":0}]}]}'></audio>
 
       <div id="el-03-mechanism" class="scene" data-composition-id="03-mechanism" data-composition-src="compositions/frames/03-mechanism.html" data-start="18.403" data-duration="11.671" data-track-index="0"></div>
-      <audio id="el-03-voice" src="assets/voice/03.wav" data-start="18.403" data-duration="11.521" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-03-voice" src="assets/voice/03.wav" data-start="18.403" data-duration="11.521" data-track-index="10" data-volume="1" data-audio-group="voiceover"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":11.441,"v":1},{"t":11.521,"v":0}]}]}'></audio>
 
       <div id="el-04-protocol" class="scene" data-composition-id="04-protocol" data-composition-src="compositions/frames/04-protocol.html" data-start="30.074" data-duration="12.664" data-track-index="1"></div>
-      <audio id="el-04-voice" src="assets/voice/04.wav" data-start="30.074" data-duration="12.514" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-04-voice" src="assets/voice/04.wav" data-start="30.074" data-duration="12.514" data-track-index="10" data-volume="1" data-audio-group="voiceover"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":12.434,"v":1},{"t":12.514,"v":0}]}]}'></audio>
 
       <div id="el-05-layer" class="scene" data-composition-id="05-layer" data-composition-src="compositions/frames/05-layer.html" data-start="42.738" data-duration="8.534" data-track-index="0"></div>
-      <audio id="el-05-voice" src="assets/voice/05.wav" data-start="42.738" data-duration="8.384" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-05-voice" src="assets/voice/05.wav" data-start="42.738" data-duration="8.384" data-track-index="10" data-volume="1" data-audio-group="voiceover"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":8.304,"v":1},{"t":8.384,"v":0}]}]}'></audio>
 
       <div id="el-06-cta" class="scene" data-composition-id="06-cta" data-composition-src="compositions/frames/06-cta.html" data-start="51.272" data-duration="6.399" data-track-index="1"></div>
-      <audio id="el-06-voice" src="assets/voice/06.wav" data-start="51.272" data-duration="5.899" data-track-index="10" data-volume="1"></audio>
+      <audio id="el-06-voice" src="assets/voice/06.wav" data-start="51.272" data-duration="5.899" data-track-index="10" data-volume="1" data-audio-group="voiceover"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":5.819,"v":1},{"t":5.899,"v":0}]}]}'></audio>
 
       <!-- Burned-in captions — authoritative script text paired positionally with whisper word
            timings (word counts verified equal per beat); each cue extends to the next cue's start. -->
@@ -93,21 +113,46 @@
       <div id="el-cap-43" class="clip vo-caption" data-start="54.752" data-duration="1.110" data-track-index="5"><span>and follow for the next</span></div>
       <div id="el-cap-44" class="clip vo-caption" data-start="55.862" data-duration="1.170" data-track-index="5"><span>ingredient breakdown.</span></div>
 
-      <!-- BGM — quiet bed, trimmed+faded to the new runtime, ducked well beneath narration -->
-      <audio id="el-bgm" src="assets/bgm/track-pulse-58.wav" data-start="0.000" data-duration="57.671" data-track-index="11" data-volume="0.1"></audio>
+      <!-- BGM — re-cropped from the healthy middle of the 62.16s source bed (track-pulse.wav)
+           rather than reusing track-pulse-58.wav's own crop, whose baked-in tail fade started
+           well before this edit's true end (measured: -11 to -14dBFS through 56.17s, but
+           already -18.9dBFS by 56.67-57.17s and -28.6dBFS in the final 0.5s — a source-bed
+           fade authored for a longer running time, landing early under this shorter cut; see
+           faceless-video-craft SKILL.md's loop-boundary note). track-pulse-loop-declick.wav is
+           a flat, unfaded crop; ALL shaping now lives in this element's own data-automation so
+           there is a single source of truth for the envelope, not two fades compounding. Ducks
+           under the voiceover bus via data-fx-carve. -->
+      <audio id="el-bgm" src="assets/bgm/track-pulse-loop-declick.wav" data-start="0.000" data-duration="57.671" data-track-index="11" data-volume="0.1"
+             data-fx-carve='{"sources":["voiceover"],"strength":0.25}'
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.4,"v":0.1},{"t":57.421,"v":0.1},{"t":57.671,"v":0}]}]}'></audio>
 
-      <!-- SFX — lean 3-sound palette (click-soft / whoosh-short / chime) -->
-      <audio id="el-sfx-01" src="assets/sfx/whoosh-short.mp3" data-start="9.861" data-duration="0.575" data-track-index="20" data-volume="0.28"></audio>
-      <audio id="el-sfx-02" src="assets/sfx/click-soft.mp3" data-start="17.231" data-duration="0.366" data-track-index="21" data-volume="0.22"></audio>
-      <audio id="el-sfx-03" src="assets/sfx/click-soft.mp3" data-start="18.403" data-duration="0.366" data-track-index="22" data-volume="0.2"></audio>
-      <audio id="el-sfx-04" src="assets/sfx/chime.mp3" data-start="20.243" data-duration="2.5" data-track-index="23" data-volume="0.22"></audio>
-      <audio id="el-sfx-05" src="assets/sfx/click-soft.mp3" data-start="30.074" data-duration="0.366" data-track-index="24" data-volume="0.2"></audio>
-      <audio id="el-sfx-06" src="assets/sfx/click-soft.mp3" data-start="34.434" data-duration="0.366" data-track-index="25" data-volume="0.25"></audio>
-      <audio id="el-sfx-07" src="assets/sfx/chime.mp3" data-start="37.704" data-duration="2.5" data-track-index="26" data-volume="0.22"></audio>
-      <audio id="el-sfx-08" src="assets/sfx/whoosh-short.mp3" data-start="42.738" data-duration="0.575" data-track-index="27" data-volume="0.26"></audio>
-      <audio id="el-sfx-09" src="assets/sfx/chime.mp3" data-start="44.808" data-duration="2.5" data-track-index="28" data-volume="0.22"></audio>
-      <audio id="el-sfx-10" src="assets/sfx/whoosh-short.mp3" data-start="51.272" data-duration="0.575" data-track-index="29" data-volume="0.28"></audio>
-      <audio id="el-sfx-11" src="assets/sfx/click-soft.mp3" data-start="55.052" data-duration="0.366" data-track-index="30" data-volume="0.22"></audio>
+      <!-- SFX — lean 3-sound palette (click-soft / whoosh-short / chime), each with its own
+           short edge fade so no clip clicks at its cut point. Plateau values equal each
+           clip's own data-volume — a volume automation lane REPLACES data-volume rather than
+           multiplying it, so the "full" point in an envelope has to be the real intended
+           level, never a bare 1.0 (see faceless-video-craft SKILL.md's audio section). -->
+      <audio id="el-sfx-01" src="assets/sfx/whoosh-short.mp3" data-start="9.861" data-duration="0.575" data-track-index="20" data-volume="0.28"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":0.28},{"t":0.495,"v":0.28},{"t":0.575,"v":0}]}]}'></audio>
+      <audio id="el-sfx-02" src="assets/sfx/click-soft.mp3" data-start="17.231" data-duration="0.366" data-track-index="21" data-volume="0.22"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.316,"v":0.22},{"t":0.366,"v":0}]}]}'></audio>
+      <audio id="el-sfx-03" src="assets/sfx/click-soft.mp3" data-start="18.403" data-duration="0.366" data-track-index="22" data-volume="0.2"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.316,"v":0.2},{"t":0.366,"v":0}]}]}'></audio>
+      <audio id="el-sfx-04" src="assets/sfx/chime.mp3" data-start="20.243" data-duration="2.5" data-track-index="23" data-volume="0.22"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.1,"v":0.22},{"t":2.4,"v":0.22},{"t":2.5,"v":0}]}]}'></audio>
+      <audio id="el-sfx-05" src="assets/sfx/click-soft.mp3" data-start="30.074" data-duration="0.366" data-track-index="24" data-volume="0.2"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.316,"v":0.2},{"t":0.366,"v":0}]}]}'></audio>
+      <audio id="el-sfx-06" src="assets/sfx/click-soft.mp3" data-start="34.434" data-duration="0.366" data-track-index="25" data-volume="0.25"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.25},{"t":0.316,"v":0.25},{"t":0.366,"v":0}]}]}'></audio>
+      <audio id="el-sfx-07" src="assets/sfx/chime.mp3" data-start="37.704" data-duration="2.5" data-track-index="26" data-volume="0.22"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.1,"v":0.22},{"t":2.4,"v":0.22},{"t":2.5,"v":0}]}]}'></audio>
+      <audio id="el-sfx-08" src="assets/sfx/whoosh-short.mp3" data-start="42.738" data-duration="0.575" data-track-index="27" data-volume="0.26"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":0.26},{"t":0.495,"v":0.26},{"t":0.575,"v":0}]}]}'></audio>
+      <audio id="el-sfx-09" src="assets/sfx/chime.mp3" data-start="44.808" data-duration="2.5" data-track-index="28" data-volume="0.22"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.1,"v":0.22},{"t":2.4,"v":0.22},{"t":2.5,"v":0}]}]}'></audio>
+      <audio id="el-sfx-10" src="assets/sfx/whoosh-short.mp3" data-start="51.272" data-duration="0.575" data-track-index="29" data-volume="0.28"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":0.28},{"t":0.495,"v":0.28},{"t":0.575,"v":0}]}]}'></audio>
+      <audio id="el-sfx-11" src="assets/sfx/click-soft.mp3" data-start="55.052" data-duration="0.366" data-track-index="30" data-volume="0.22"
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.316,"v":0.22},{"t":0.366,"v":0}]}]}'></audio>
     </div>
 
     <script>

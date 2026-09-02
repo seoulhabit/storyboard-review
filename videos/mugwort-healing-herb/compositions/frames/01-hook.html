@@ -3,45 +3,54 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0;
+    --safe-top:192px; --safe-bottom:384px; --safe-left:72px; --safe-right:162px; --safe-margin:6px; }
   .clip { position:absolute; inset:0; }
   .hk-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
   .hk-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     opacity:0.12; mix-blend-mode:multiply; }
 
-  .hk-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:36px; padding:0 90px; text-align:center; }
+  /* Safe column: consumes --safe-left/--safe-right directly, not a hardcoded width. */
+  .hk-stage { position:absolute; top:400px; left:calc(var(--safe-left) + var(--safe-margin)); width:calc(1080px - var(--safe-left) - var(--safe-right) - var(--safe-margin) * 2); height:1136px;
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between; }
 
-  /* Ingredient name in the first shot — the point of the hook. The question lives in VO/caption. */
-  .hk-name { font-family:'EB Garamond',serif; font-size:8.2cqw; line-height:1.05; position:relative; display:inline-block; }
-  .hk-name::after { content:""; position:absolute; left:0; bottom:-0.07em; height:0.045em; width:100%; background:#59B8AE; }
+  /* Hero plate — the real photographic anchor, in beat one, not late B-roll. */
+  .hk-media { position:relative; width:100%; aspect-ratio:16/10; overflow:hidden; border-radius:28px; background:#EFEAE1; }
+  .hk-media img { width:100%; height:100%; object-fit:cover; display:block; }
+  .hk-media::after { content:""; position:absolute; inset:0; background:#F7F5F0; mix-blend-mode:multiply; opacity:0.07; pointer-events:none; }
+  .hk-media-zoom { width:100%; height:100%; }
 
-  .hk-field { position:relative; width:560px; height:280px; border:1px solid rgba(19,21,22,0.14); border-radius:28px; background:transparent; overflow:hidden; }
-  .hk-kicker { position:absolute; bottom:22px; left:32px; font-weight:700; font-size:1.7cqw; letter-spacing:0.1em; color:rgba(19,21,22,0.68); text-transform:uppercase; text-align:left; }
-  .hk-tag { position:absolute; bottom:22px; right:32px; font-weight:700; font-size:1.5cqw; letter-spacing:0.06em; color:rgba(19,21,22,0.62); text-transform:uppercase; text-align:right; }
+  .hk-title-block { display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .hk-name { font-family:'EB Garamond',serif; font-size:11cqw; line-height:1.02; position:relative; display:inline-block; }
+  .hk-name::after { content:""; position:absolute; left:0; bottom:-0.09em; height:0.04em; width:100%; background:#59B8AE; }
+
+  .hk-preview { font-weight:700; font-size:3.0cqw; letter-spacing:0.08em; text-transform:uppercase; color:rgba(19,21,22,0.85);
+    border:1px solid rgba(19,21,22,0.24); border-radius:999px; padding:14px 30px; background:rgba(19,21,22,0.045); }
+  .hk-preview b { font-weight:800; }
+
+  .hk-meta { width:100%; display:flex; align-items:flex-end; justify-content:space-between; }
+  .hk-kicker { font-weight:700; font-size:3.0cqw; letter-spacing:0.08em; color:rgba(19,21,22,0.68); text-transform:uppercase; text-align:left; line-height:1.3; }
+  .hk-tag { font-weight:700; font-size:3.0cqw; letter-spacing:0.05em; color:rgba(19,21,22,0.62); text-transform:uppercase; text-align:right; }
 </style>
 <div data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="9.861">
   <div id="hk-bg" class="clip hk-bg" data-start="0" data-duration="9.861" data-track-index="0"></div>
   <div id="hk-grain" class="clip hk-grain" data-start="0" data-duration="9.861" data-track-index="1"></div>
 
   <div id="hk-stage" class="clip hk-stage" data-start="0" data-duration="9.861" data-track-index="2">
-    <div class="hk-name" id="hk-name">Mugwort</div>
+    <figure class="hk-media" id="hk-media">
+      <div class="hk-media-zoom" id="hk-media-zoom" data-layout-allow-overflow="true">
+        <img src="assets/plates/18-mugwort.png" alt="" width="2048" height="2048" loading="eager" decoding="sync">
+      </div>
+    </figure>
 
-    <div class="hk-field" id="hk-field">
-      <svg id="hk-svg" viewBox="0 0 560 280" width="560" height="280" aria-hidden="true">
-        <g id="hk-sprig">
-          <path id="hk-stem" d="M70,150 C210,138 350,138 490,142" stroke="#131516" stroke-width="5" fill="none" stroke-linecap="round" />
-          <path id="hk-lb1" class="hk-lobe" d="M140,146 C150,100 170,70 195,52" stroke="#131516" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb2" class="hk-lobe" d="M220,141 C232,96 254,68 282,50" stroke="#131516" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb3" class="hk-lobe" d="M300,139 C314,98 338,74 368,58" stroke="#131516" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb4" class="hk-lobe" d="M380,139 C396,104 420,84 448,72" stroke="#131516" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb5" class="hk-lobe" d="M170,147 C182,190 202,214 228,228" stroke="rgba(19,21,22,0.55)" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb6" class="hk-lobe" d="M250,142 C264,186 286,210 314,224" stroke="rgba(19,21,22,0.55)" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb7" class="hk-lobe" d="M330,140 C346,180 370,202 398,214" stroke="rgba(19,21,22,0.55)" stroke-width="4" fill="none" stroke-linecap="round" />
-          <path id="hk-lb8" class="hk-lobe" d="M410,141 C424,172 446,190 472,200" stroke="rgba(19,21,22,0.55)" stroke-width="4" fill="none" stroke-linecap="round" />
-        </g>
-      </svg>
+    <div class="hk-title-block">
+      <div class="hk-name" id="hk-name">Mugwort</div>
+      <div class="hk-preview" id="hk-preview">One studied compound: <b>Eupatilin</b></div>
+    </div>
+
+    <div class="hk-meta">
       <div class="hk-kicker" id="hk-kicker">The Korean<br>healing herb</div>
-      <div class="hk-tag" id="hk-tag">Artemisia Princeps · 01/06</div>
+      <div class="hk-tag" id="hk-tag">Artemisia Princeps<br>01/06</div>
     </div>
   </div>
 </div>
@@ -51,28 +60,28 @@
 (function () {
   var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
-  // Frame zero stays fully composed (name, underline, sprig, kicker, tag all opaque) — but the
-  // sprig now UNFURLS through the first sentence: every lobe starts slightly folded toward the
-  // stem (still visible, still a leaf) and rotates open in a stagger, so the hook carries live
-  // write-on energy without ever blanking the scroll-stop frame. Review round 2, item 3.
-  var junctions = { 'hk-lb1':'140 146','hk-lb2':'220 141','hk-lb3':'300 139','hk-lb4':'380 139',
-                    'hk-lb5':'170 147','hk-lb6':'250 142','hk-lb7':'330 140','hk-lb8':'410 141' };
-  var seq = ['hk-lb1','hk-lb5','hk-lb2','hk-lb6','hk-lb3','hk-lb7','hk-lb4','hk-lb8'];
-  seq.forEach(function (id, i) {
-    var up = id.slice(-1) <= '4';
-    gsap.set('#'+id, { svgOrigin: junctions[id], rotation: up ? 22 : -22 });
-    tl.to('#'+id, { rotation: 0, duration: 0.55 }, 0.15 + i * 0.22);
-  });
-  // the stem breathes a width pulse under the unfurl — same trick PDRN's hook uses.
-  tl.fromTo('#hk-stem', { attr: { 'stroke-width': 3.4 } }, { attr: { 'stroke-width': 5 }, duration: 1.6, ease: 'power2.inOut' }, 0.15);
+  // Frame zero stays fully composed — plate, name, underline, preview badge, kicker and tag
+  // are all opaque at t=0; only sub-pixel settles and the continuous Ken Burns move. Rule 4.
+  var mediaZoom = document.getElementById('hk-media-zoom');
+  var name = document.getElementById('hk-name');
+  var preview = document.getElementById('hk-preview');
 
-  gsap.set('#hk-name', { y: 8 });
-  tl.to('#hk-name', { y: 0, duration: 0.4 }, 0.1);
+  // Continuous slow Ken Burns across the FULL scene — the whole point of this pass:
+  // motion that means something (a real photographic reveal), running the whole duration
+  // instead of stopping at t~5-6s and leaving the back half of the scene frozen.
+  gsap.set(mediaZoom, { scale: 1.09 });
+  tl.to(mediaZoom, { scale: 1.0, duration: 9.861, ease: 'power1.inOut' }, 0);
+
+  gsap.set(name, { y: 8 });
+  tl.to(name, { y: 0, duration: 0.4 }, 0.1);
 
   // Cues (tightened take): herb@3.74 · thousand years@5.89-6.96 · science@7.19 · folklore@9.02.
-  gsap.set('#hk-field', { scale: 1.03 });
-  tl.to('#hk-field', { scale: 1.0, duration: 5.2, ease: 'power1.inOut' }, 0.4);
-  tl.fromTo('#hk-field', { y: 0 }, { y: -6, duration: 0.5 }, 7.19);
+  // The payoff badge lands the video's concrete promise inside the retention window — not just
+  // an ingredient label — and gets a small pulse on the "herb" cue to draw the eye to it.
+  gsap.set(preview, { y: 8 });
+  tl.to(preview, { y: 0, duration: 0.4 }, 0.25);
+  tl.to(preview, { scale: 1.035, duration: 0.3, ease: 'power2.out' }, 3.74);
+  tl.to(preview, { scale: 1.0, duration: 0.35, ease: 'power2.inOut' }, 4.04);
 
   tl.to({}, { duration: 9.861 }, 0); // span anchor
 

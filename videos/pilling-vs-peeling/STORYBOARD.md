@@ -1,6 +1,7 @@
 # Storyboard — Pilling vs. Peeling
 
-**Round 2** (2026-09-01 creator-feedback recut). 19.9s, 1080×1920, 30fps,
+**Round 3** (2026-09-01, direct creator feedback on round 2's render:
+"scene 7 feels rushed"). 21.1s, 1080×1920, 30fps,
 silent/type-carried. Re-derived from the built `index.html` /
 `variants/index-hook-b.html`, not hand-estimated. Two opening variants share
 scenes 02–08 verbatim; only scene 01 and its SFX differ.
@@ -23,10 +24,10 @@ oversight; still every boundary is a hard cut regardless of ground match.
 | 04 | `04-flaking` | 7.4 | 2.8 | ink | ✔ | headline / macro→diagram match-cut media box (BarrierWall) / qualifier + chip |
 | 05 | `05-test` | 10.2 | 3.0 | paper | ✔ | fixed panel, base plate + wipe-mask reveal (same plate both sides), sub-lines, UnsourcedFlag pill |
 | 06 | `06-fix-pilling` | 13.2 | 2.6 | ink | — | label row / 3-card row, each card demoing its own tip / SPF sub-line / UnsourcedFlag pill |
-| 07 | `07-fix-peeling` | 15.8 | 2.1 | paper | — | header / 3-icon row (actives switch-off, moisturizer+SPF pulse) / 2-chip row |
-| 08 | `08-close` | 17.9 | 2.0 | ink | ✔ (crop, 0.18 opacity bg) | centered takeaway + lockup + reworked CTA, loop-matched to 01 |
+| 07 | `07-fix-peeling` | 15.8 | 3.3 | paper | — | header / 3-icon row (actives switch-off, moisturizer+SPF pulse) / 2-chip row, retimed round 3 for more breathing room |
+| 08 | `08-close` | 19.1 | 2.0 | ink | ✔ (crop, 0.18 opacity bg) | centered takeaway + lockup + reworked CTA, loop-matched to 01 |
 
-Sum: 2.6+2.9+1.9+2.8+3.0+2.6+2.1+2.0 = **19.9s** exactly, matches both
+Sum: 2.6+2.9+1.9+2.8+3.0+2.6+3.3+2.0 = **21.1s** exactly, matches both
 roots' `data-duration` and anchor tween.
 
 ## Per-scene notes
@@ -83,10 +84,17 @@ the coral ✗ pop (pat don't rub — this video's one coral spend,
 `UnsourcedFlag` pill at 2.20s, explicitly covering the reworded SPF line
 too (still untested as an intervention).
 
-**07-fix-peeling** — Densest scene per second. Header + all three icon
-columns settled at frame zero; actives dims + strikes through at 0.10s,
-moisturizer/SPF pulse at 0.55/0.75s, two chips (`Cutis · 2006`,
-`FDA guidance · 2005`) at 1.10/1.35s.
+**07-fix-peeling** — **Retimed round 3** (2.1s → 3.3s) per direct creator
+feedback on round 2's render — independently consistent with round 2's own
+cadence measurement, which had already flagged this as the weakest scene
+(0 steps clearing the active-step threshold; see `frame.md` § Verification
+— Round 2). Same beat order, more room between each: header + all three
+icon columns settled at frame zero; actives dims + strikes through at
+0.15/0.20s, moisturizer pulse at 0.85s, SPF pulse at 1.20s, two chips
+(`Cutis · 2006`, `FDA guidance · 2005`) at 1.65/2.05s — each now holds on
+screen for 1.35s before the cut (was 0.75s). A slow bounded scale-pulse on
+the headline at 2.5–3.1s carries the scene's continuous motion through the
+extra hold time so it doesn't read as a static freeze.
 
 **08-close** — Loop-locked, so its own motion budget is intentionally
 small. A low-opacity (0.18) crop of the hook's own plate sits inset within

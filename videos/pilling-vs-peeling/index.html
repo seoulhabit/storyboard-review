@@ -5,7 +5,7 @@
   <title>Pilling vs. Peeling — Which One Is It? (variant A: real macro hook)</title>
 </head>
 <body>
-  <div data-hf-id="hf-rspd" id="root" data-composition-id="main" data-start="0" data-duration="19.900" data-width="1080" data-height="1920">
+  <div data-hf-id="hf-rspd" id="root" data-composition-id="main" data-start="0" data-duration="21.100" data-width="1080" data-height="1920">
 
     <!-- Scene 01: real macro hook, variant A. -->
     <div data-hf-id="hf-8g15" id="scene-hook" class="scene clip" data-start="0.000" data-duration="2.600" data-composition-id="01-hook-a" data-composition-src="compositions/frames/01-hook-a.html"></div>
@@ -34,10 +34,10 @@
     <div id="scene-06-fix-pilling" class="scene clip" data-start="13.200" data-duration="2.600"
          data-composition-id="06-fix-pilling"
          data-composition-src="compositions/frames/06-fix-pilling.html"></div>
-    <div id="scene-07-fix-peeling" class="scene clip" data-start="15.800" data-duration="2.100"
+    <div id="scene-07-fix-peeling" class="scene clip" data-start="15.800" data-duration="3.300"
          data-composition-id="07-fix-peeling"
          data-composition-src="compositions/frames/07-fix-peeling.html"></div>
-    <div id="scene-08-close" class="scene clip" data-start="17.900" data-duration="2.000"
+    <div id="scene-08-close" class="scene clip" data-start="19.100" data-duration="2.000"
          data-composition-id="08-close"
          data-composition-src="compositions/frames/08-close.html"></div>
 
@@ -46,7 +46,7 @@
          CLI version, so every cue for the full 19.9s, including the ones
          that fall after t=2.6s, is wired here to avoid depending on an
          unverified engine behavior. -->
-    <audio data-hf-id="hf-wjln" id="bgm-track" src="assets/bgm/track-19.9s.mp3" data-start="0" data-duration="19.9" data-volume="0.32" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.15},{&quot;t&quot;:0.6,&quot;v&quot;:0.32},{&quot;t&quot;:19.3,&quot;v&quot;:0.32},{&quot;t&quot;:19.9,&quot;v&quot;:0.15}]}]}"></audio>
+    <audio data-hf-id="hf-wjln" id="bgm-track" src="assets/bgm/track-21.1s.mp3" data-start="0" data-duration="21.1" data-volume="0.32" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;volume&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:0.15},{&quot;t&quot;:0.6,&quot;v&quot;:0.32},{&quot;t&quot;:20.5,&quot;v&quot;:0.32},{&quot;t&quot;:21.1,&quot;v&quot;:0.15}]}]}"></audio>
 
     <!-- Scene 01 -->
     <audio data-hf-id="hf-l7kf" id="sfx-press-01" src="assets/sfx/crumb-scatter-soft-granular-tick.mp3" data-start="0.50" data-duration="0.24" data-volume="0.42"></audio>
@@ -77,15 +77,17 @@
     <audio data-hf-id="hf-lror" id="sfx-demo2-06" src="assets/sfx/ui-toggle-trimmed.mp3" data-start="13.95" data-duration="0.35" data-volume="0.35"></audio>
     <audio data-hf-id="hf-cpct" id="sfx-demo3-06" src="assets/sfx/click-soft-chip-pair-lands.mp3" data-start="14.80" data-duration="0.264" data-volume="0.35"></audio>
 
-    <!-- Scene 07 (abs 15.8-17.9) -->
-    <audio data-hf-id="hf-xixw" id="sfx-switch-07" src="assets/sfx/ui-toggle-trimmed.mp3" data-start="15.90" data-duration="0.35" data-volume="0.35"></audio>
-    <audio data-hf-id="hf-9cp5" id="sfx-pulse-07" src="assets/sfx/cream-swoosh-short.mp3" data-start="16.35" data-duration="0.35" data-volume="0.30"></audio>
-    <audio data-hf-id="hf-w0k9" id="sfx-chip1-07" src="assets/sfx/click-soft-chip-pair-lands.mp3" data-start="16.90" data-duration="0.264" data-volume="0.32"></audio>
-    <audio data-hf-id="hf-frp2" id="sfx-chip2-07" src="assets/sfx/click-soft-chip-pair-lands.mp3" data-start="17.15" data-duration="0.264" data-volume="0.32"></audio>
+    <!-- Scene 07 (abs 15.8-19.1) -- retimed round 3: scene grew 2.1s -> 3.3s,
+         SFX shifted to the new beat schedule (each cue still lands exactly
+         on its beat's own start; see 07-fix-peeling.html's script comment). -->
+    <audio data-hf-id="hf-xixw" id="sfx-switch-07" src="assets/sfx/ui-toggle-trimmed.mp3" data-start="15.95" data-duration="0.35" data-volume="0.35"></audio>
+    <audio data-hf-id="hf-9cp5" id="sfx-pulse-07" src="assets/sfx/cream-swoosh-short.mp3" data-start="16.65" data-duration="0.35" data-volume="0.30"></audio>
+    <audio data-hf-id="hf-w0k9" id="sfx-chip1-07" src="assets/sfx/click-soft-chip-pair-lands.mp3" data-start="17.45" data-duration="0.264" data-volume="0.32"></audio>
+    <audio data-hf-id="hf-frp2" id="sfx-chip2-07" src="assets/sfx/click-soft-chip-pair-lands.mp3" data-start="17.85" data-duration="0.264" data-volume="0.32"></audio>
 
-    <!-- Scene 08 (abs 17.9-19.9) -->
-    <audio data-hf-id="hf-mhnn" id="sfx-lockup-08" src="assets/sfx/citation-tick-trimmed.mp3" data-start="18.45" data-duration="0.5" data-volume="0.4"></audio>
-    <audio data-hf-id="hf-08m2" id="sfx-chime-08" src="assets/sfx/chime-trimmed.mp3" data-start="18.80" data-duration="1.1" data-volume="0.42"></audio>
+    <!-- Scene 08 (abs 19.1-21.1) -- shifted +1.2s -->
+    <audio data-hf-id="hf-mhnn" id="sfx-lockup-08" src="assets/sfx/citation-tick-trimmed.mp3" data-start="19.65" data-duration="0.5" data-volume="0.4"></audio>
+    <audio data-hf-id="hf-08m2" id="sfx-chime-08" src="assets/sfx/chime-trimmed.mp3" data-start="20.00" data-duration="1.1" data-volume="0.42"></audio>
   </div>
 
   <style>.scene.clip { position: absolute; inset: 0; }</style>
@@ -94,7 +96,7 @@
   <script>
     window.__timelines = window.__timelines || {};
     const tl = gsap.timeline({ paused: true });
-    tl.to({}, { duration: 19.900 }, 0); // anchor: scene handoff only
+    tl.to({}, { duration: 21.100 }, 0); // anchor: scene handoff only
     window.__timelines["main"] = tl;
   </script>
 </body>

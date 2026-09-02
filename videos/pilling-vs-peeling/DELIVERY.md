@@ -1,4 +1,4 @@
-# Delivery — pilling-vs-peeling (Round 2, 2026-09-01)
+# Delivery — pilling-vs-peeling (Round 3, 2026-09-01)
 
 Two variants shipped for A/B testing per the creator review's explicit ask.
 **Variant A is the primary/default upload** (real macro pilling hook);
@@ -9,22 +9,27 @@ day/time before comparing retention.
 
 ## Renders
 
+**Round 3 retimed `07-fix-peeling` (2.1s → 3.3s, +1.2s) per direct creator
+feedback on round 2's render** — "scene 7 feels rushed." Both variants
+share scenes 02–08, so both grew by the same 1.2s.
+
 | | File | Duration | Loudness | True peak |
 |---|---|---|---|---|
-| **Variant A** (primary) | `renders/pilling-vs-peeling.mp4` | 19.9s (597 frames, 30fps), 1080×1920, h264/AAC 192kbps | −14.3 LUFS integrated | −2.1 dBTP |
-| **Variant B** | `renders/pilling-vs-peeling_hookB.mp4` | 19.9s, 1080×1920, h264/AAC 192kbps | −14.1 LUFS integrated | −1.5 dBTP |
+| **Variant A** (primary) | `renders/pilling-vs-peeling.mp4` | 21.1s (633 frames, 30fps), 1080×1920, h264/AAC 192kbps | −14.3 LUFS integrated | −2.0 dBTP |
+| **Variant B** | `renders/pilling-vs-peeling_hookB.mp4` | 21.1s, 1080×1920, h264/AAC 192kbps | −14.2 LUFS integrated | −2.1 dBTP |
 
-Both mastered via two-pass `ffmpeg loudnorm` (target `I=-14:TP=-2.5`, extra
-pre-encode headroom versus round 1's `TP=-1.5` — round 1's true peak was
-verified on the PCM intermediate, not the shipped AAC file, and the shipped
-file measured **+0.5 dBTP** as a direct result; this round's numbers above
-are measured on the final encoded MP4 itself). Video stream copied through
-unchanged (`-c:v copy`) during mastering.
+Both mastered via two-pass `ffmpeg loudnorm` (target `I=-14:TP=-2.5`, the
+same target round 2 established, re-applied fresh after this round's
+re-render). Video stream copied through unchanged (`-c:v copy`) during
+mastering — confirmed via matching MD5 on the isolated video stream,
+both variants.
 
 No voiceover (`VO_MODE: silent`, unchanged from round 1). BGM re-cut to
-19.9s with 200ms declick fades at both ends. Tactile SFX added for the
-press/rub beat, both macro→diagram match cuts, the comparison wipe
-(forward and return), and each of the three demoed tips.
+21.1s (was 19.9s) with 200ms declick fades at both ends. Tactile SFX added
+for the press/rub beat, both macro→diagram match cuts, the comparison wipe
+(forward and return), and each of the three demoed tips; scene 07's 4 cues
+and scene 08's 2 cues retimed this round to the new beat schedule (see
+BRIEF.md § Round 3 for the exact cascade).
 
 ## Captions
 
@@ -39,7 +44,9 @@ All cues re-derived from round 2's own scene timings and copy deck, hand-
 authored (no ASR — there's no voiceover to transcribe). Every cue is ≥1.0s
 (round 1 shipped 10 of 29 cues under 0.5s, shortest 0.15s — each on-screen
 element's entrance had become its own cue; round 2 merges co-occurring
-copy into one cue per beat instead).
+copy into one cue per beat instead). Round 3 shifted every cue at or after
+the old 17.9s mark by +1.2s in all four files, matching scene 07's own
+retime — cue text unchanged, only timing.
 
 ## Thumbnail
 
@@ -124,12 +131,13 @@ See `frame.md` § Verification for the full account. Summary:
 
 | Check | Result |
 |---|---|
-| `npx hyperframes check` | 0 errors/warnings, both variants; 7 benign info findings |
-| `check-blank-frames.py` | 0 findings, 299 frames sampled |
-| `check-static-hold.py` (whole-frame) | 0 findings |
-| `check-static-hold.py` (region-aware) | Fell back to whole-render mode — script's scene-boundary parser needs re-deriving against this round's `index.html` before trusting a region-aware result next round |
-| Own cadence measurement (mean `\|Δluma\|`, 8fps) | 6% → 11% active-step share vs. round 1; no scene fully frozen (round 1 had three) |
-| `check-safe-area.py` (hard gate) | **Failed twice, fixed, now 0 findings on both variants** — see `frame.md` § Verification § 2 and § 5 for the box-sizing defect and the full-bleed-plate-at-low-opacity defect this caught |
+| `npx hyperframes check` | 0 errors, 1 pre-existing warning unrelated to this round (see `frame.md` § Verification — Round 3 § 1), 6 benign info findings |
+| Render pipeline | Caught a real gap: plain `npm run render` writes a timestamped file, not `renders/pilling-vs-peeling.mp4` — the postrender scripts hardcode that filename, so the first postrender pass after this round's render validated the *stale* round-2 file. Caught by checking `ffprobe` duration before trusting the result; fixed by promoting the new render and re-running. See `frame.md` § Verification — Round 3 § 2. |
+| `check-blank-frames.py` | 0 findings, 317 frames sampled (on the correct, promoted file) |
+| `check-static-hold.py` (whole-frame) | 0 findings, 42 samples |
+| `check-static-hold.py` (region-aware) | Still falls back to whole-render mode — round 2's open item, not addressed this round |
+| `check-safe-area.py` (hard gate) | 0 findings, both variants (84 samples each) |
 | `check-sfx-durations.py` | 0 findings, 23/23 checked |
-| Audio mastering | See table above — measured on the final encoded file, not the intermediate |
-| Thumbnail | Extracted, graded, confirmed legible at grid scale |
+| Audio mastering | −14.3/−2.0 dBTP (A), −14.2/−2.1 dBTP (B), video MD5-confirmed unchanged, loop-seam RMS −16.2 dB (live, not silent) |
+| Visual spot-check, scene 07 | 6 frames extracted across the new timeline, beat schedule confirmed landing where authored (see `frame.md` § Verification — Round 3 § 7) |
+| Thumbnail | Unaffected by this round (t=1.6s sits in scene 01, untouched) |

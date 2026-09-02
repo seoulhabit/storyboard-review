@@ -1,0 +1,150 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  #root {
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 60px;
+    --paper: #F7F5F0; --ink: #101314; --celadon: #93B896; --rust: #C2504A;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    position:relative; width:1080px; height:1920px; overflow:hidden;
+    background:var(--ink); font-family:'Inter',system-ui,sans-serif;
+  }
+  .clip { position:absolute; inset:0; }
+
+  .stage { display:flex; flex-direction:column;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+  .kicker { font-weight:700; font-size:34px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--celadon); flex:0 0 auto; min-height:0; }
+  .headline-zone { flex:0 0 auto; min-height:0; margin-top:22px; }
+  .h-line { display:block; font-weight:800; font-size:96px; line-height:1.06;
+    letter-spacing:-0.015em; text-transform:uppercase; color:var(--paper);
+    opacity:0; transform:translateY(12px); }
+  .diagram-zone { flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; }
+  .diagram-zone svg { width:100%; max-width:840px; height:auto; display:block; }
+  .foot-zone { flex:0 0 auto; min-height:0; }
+  .qualifier { font-family:var(--font-mono); font-size:40px; line-height:1.35;
+    color:rgba(247,245,240,0.78); opacity:0; }
+
+  /* Bricks stay visible; opacity:0 lives on the course <g> only — stacking both
+     multiplies to zero even after the group fades in (documented in the catalog entry). */
+  .wall-brick { fill:rgba(247,245,240,0.07); stroke:rgba(247,245,240,0.55); stroke-width:2.4; }
+  #course-top, #course-mid, #course-bot { opacity:0; }
+  .wash { fill:rgba(194,80,74,0.20); opacity:0; }
+  .wash-line { stroke:var(--rust); stroke-width:2.4; stroke-dasharray:6 6; opacity:0; }
+  .shard { fill:rgba(247,245,240,0.14); stroke:rgba(247,245,240,0.55); stroke-width:2; opacity:0; }
+  .wall-label { font-family:var(--font-mono); font-size:32px; font-weight:500;
+    letter-spacing:0.08em; fill:rgba(247,245,240,0.7); opacity:0; }
+
+  /* Togglable layout debug — add to #root. Verified OFF
+     before render by checking frame zero (SKILL.md: a debug-tinted export is a bug). */
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+  #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+  #root.debug-layout .plate-wrap { outline: 2px solid #FFD400 !important; }
+  #root.debug-layout::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+    background:
+      linear-gradient(to left,  rgba(255,0,168,.25) 15%, transparent 15%),
+      linear-gradient(to top,   rgba(255,0,168,.25) 20%, transparent 20%),
+      linear-gradient(to bottom,rgba(255,0,168,.25) 10%, transparent 10%);
+  }
+</style>
+
+<div data-composition-id="02-barrier" id="root" data-width="1080" data-height="1920" data-duration="4.400">
+  <div class="clip stage" id="bw-stage" data-start="0" data-duration="4.400">
+
+    <div class="kicker" id="bw-kick">What actually broke</div>
+
+    <div class="headline-zone">
+      <span class="h-line" id="bw-h1">Every acid.</span>
+      <span class="h-line" id="bw-h2">Every day.</span>
+    </div>
+
+    <div class="diagram-zone">
+      <svg viewBox="0 0 700 420" role="img" aria-label="Skin barrier diagram">
+        <g id="wash-group">
+          <rect class="wash" id="bw-wash" x="60" y="-30" width="580" height="110" rx="10" />
+          <line class="wash-line" id="bw-washline" x1="60" y1="80" x2="640" y2="80" />
+        </g>
+        <g id="wall">
+          <g id="course-top">
+            <rect class="wall-brick" id="bt-1" x="60"  y="120" width="130" height="58" rx="9" />
+            <rect class="wall-brick" id="bt-2" x="206" y="120" width="130" height="58" rx="9" />
+            <rect class="wall-brick" id="bt-3" x="352" y="120" width="130" height="58" rx="9" />
+            <rect class="wall-brick" id="bt-4" x="498" y="120" width="142" height="58" rx="9" />
+          </g>
+          <g id="course-mid">
+            <rect class="wall-brick" x="60"  y="192" width="70"  height="58" rx="9" />
+            <rect class="wall-brick" x="146" y="192" width="130" height="58" rx="9" />
+            <rect class="wall-brick" x="292" y="192" width="130" height="58" rx="9" />
+            <rect class="wall-brick" x="438" y="192" width="130" height="58" rx="9" />
+            <rect class="wall-brick" x="584" y="192" width="56"  height="58" rx="9" />
+          </g>
+          <g id="course-bot">
+            <rect class="wall-brick" x="60"  y="264" width="130" height="58" rx="9" />
+            <rect class="wall-brick" x="206" y="264" width="130" height="58" rx="9" />
+            <rect class="wall-brick" x="352" y="264" width="130" height="58" rx="9" />
+            <rect class="wall-brick" x="498" y="264" width="142" height="58" rx="9" />
+          </g>
+        </g>
+        <path class="shard" id="shard-1" d="M112,108 l28,-8 l7,18 l-26,9 Z" />
+        <path class="shard" id="shard-2" d="M320,102 l24,4 l-4,20 l-24,-6 Z" />
+        <path class="shard" id="shard-3" d="M528,106 l26,-4 l6,18 l-28,6 Z" />
+        <text class="wall-label" id="bw-label" x="350" y="392" text-anchor="middle">SKIN BARRIER</text>
+      </svg>
+    </div>
+
+    <div class="foot-zone">
+      <div class="qualifier" id="bw-qual">It stops holding water in.</div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+  // Mechanism adapted from catalog/visual-components/barrier-wall (its 4th use;
+  // three prior videos each rebuilt it from scratch). Same paused, seek-safe clock.
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  var DUR = 4.400;
+  var shards = ['shard-1','shard-2','shard-3'].map(function (id) { return document.getElementById(id); });
+  var bricksTop = ['bt-1','bt-2','bt-3','bt-4'].map(function (id) { return document.getElementById(id); });
+
+  // Baselines registered INSIDE the timeline at 0 — a bare gsap.set() is not
+  // evaluated on a seek, so elements hit by a later fromTo would bleed through.
+  tl.set('#bw-wash',     { y: -110 }, 0);
+  tl.set('#bw-washline', { y: -110 }, 0);
+
+  tl.to(['#course-top', '#course-mid', '#course-bot'], { opacity: 1, duration: 0.22 }, 0.05);
+  tl.to('#bw-label', { opacity: 1, duration: 0.30 }, 0.30);
+  tl.to('#bw-h1', { opacity: 1, y: 0, duration: 0.34 }, 0.25);
+  tl.to('#bw-h2', { opacity: 1, y: 0, duration: 0.34 }, 0.72);
+
+  // The barrier separates — the one idea this scene exists to show.
+  tl.to(['#bw-wash', '#bw-washline'], { y: 0, opacity: 1, duration: 0.62, ease: 'power2.inOut' }, 1.70);
+  shards.forEach(function (s, i) {
+    tl.to(s, { opacity: 1, duration: 0.20 }, 2.20 + i * 0.26);
+    tl.to(s, { y: 30 + i * 8, rotation: 7 - i * 5, opacity: 0, duration: 0.95, ease: 'power2.in' }, 2.42 + i * 0.26);
+  });
+  bricksTop.forEach(function (b, i) {
+    tl.to(b, { opacity: 0.45, duration: 0.52 }, 2.36 + i * 0.13);
+  });
+
+  tl.to('#bw-qual', { opacity: 1, duration: 0.36 }, 3.05);
+
+  // The payoff of the mechanism, and a beat that actually reads at frame scale: the
+  // wrecked course collapses out and the wall visibly drops to two courses. Dimming
+  // an already-near-transparent brick measured ~0 rendered change (verified against
+  // the render, not the source) — this is the fix for that, not extra decoration.
+  tl.to('#course-top', { opacity: 0.10, y: -18, duration: 0.60, ease: 'power2.in' }, 3.35);
+  tl.to(['#bw-wash', '#bw-washline'], { y: 62, duration: 0.75, ease: 'power2.inOut' }, 3.35);
+  tl.to('#wall', { scale: 1.05, transformOrigin: '50% 62%', duration: 1.05, ease: 'power1.inOut' }, 3.35);
+
+  tl.to({}, { duration: DUR }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['02-barrier'] = tl;
+})();
+</script>
+</template>

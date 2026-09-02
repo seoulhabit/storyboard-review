@@ -1,0 +1,116 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Mandatory rule 3 — border-box reset first, every composition. */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  #root {
+    /* Safe-area tokens DECLARED and CONSUMED here (gate 7a). 1080x1920 canvas. */
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 60px;
+    --paper: #F7F5F0; --ink: #101314; --celadon: #93B896;
+    position:relative; width:1080px; height:1920px; overflow:hidden;
+    background:var(--ink); font-family:'Inter',system-ui,sans-serif;
+  }
+  .clip { position:absolute; inset:0; }
+
+  .plate-wrap { overflow:hidden; background:#1A1A1A; }
+  .plate-wrap img { width:100%; height:100%; object-fit:cover; display:block;
+    filter:saturate(0.92) contrast(1.08) brightness(0.82); transform-origin:50% 45%; }
+
+  /* Legibility scrim — an opaque backing for type over a variable plate, not decoration. */
+  .scrim { background:linear-gradient(to bottom,
+      rgba(16,19,20,0.86) 0%, rgba(16,19,20,0.72) 34%,
+      rgba(16,19,20,0.30) 62%, rgba(16,19,20,0.72) 100%); pointer-events:none; }
+
+  /* Content column: Flex, inside the safe box. No independent top/left pairs. */
+  .stage { display:flex; flex-direction:column; justify-content:center;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+  .kicker { font-weight:700; font-size:34px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--celadon); margin-bottom:26px; }
+  .head { font-weight:800; font-size:116px; line-height:1.02; letter-spacing:-0.015em;
+    text-transform:uppercase; color:var(--paper); margin:0; }
+  .head .l2 { display:block; color:var(--celadon); margin-top:14px; }
+  .sub { font-weight:700; font-size:46px; letter-spacing:0.13em; text-transform:uppercase;
+    color:rgba(247,245,240,0.94); margin-top:40px; }
+
+  /* Togglable layout debug — add to #root. Verified OFF
+     before render by checking frame zero (SKILL.md: a debug-tinted export is a bug). */
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+  #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+  #root.debug-layout .plate-wrap { outline: 2px solid #FFD400 !important; }
+  #root.debug-layout::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+    background:
+      linear-gradient(to left,  rgba(255,0,168,.25) 15%, transparent 15%),
+      linear-gradient(to top,   rgba(255,0,168,.25) 20%, transparent 20%),
+      linear-gradient(to bottom,rgba(255,0,168,.25) 10%, transparent 10%);
+  }
+</style>
+
+<div data-composition-id="01-hook" id="root" data-width="1080" data-height="1920" data-duration="4.200">
+
+  <div id="hk-plate" class="clip plate-wrap" data-layout-allow-overflow data-start="0" data-duration="4.200">
+    <img id="hk-img" src="assets/plates/03-flaking-skin.png" alt=""
+         width="1200" height="1200" loading="eager" decoding="sync">
+  </div>
+
+  <div class="clip scrim" id="hk-scrim" data-start="0" data-duration="4.200"></div>
+
+  <div class="clip stage" id="hk-stage" data-start="0" data-duration="4.200">
+    <div class="kicker" id="hk-kick"><span id="hk-k1">Stinging</span> &middot; <span id="hk-k2">tight</span> &middot; <span id="hk-k3">flaking</span></div>
+    <h1 class="head" id="hk-head">
+      Your skin isn&rsquo;t
+      <span class="l2" id="hk-l2">sensitive.</span>
+    </h1>
+    <div class="sub" id="hk-sub">It&rsquo;s a broken barrier.</div>
+  </div>
+
+</div>
+<script>
+(function () {
+  // Frame zero is the scroll-stop: plate, kicker and headline are at their RESTING
+  // state in the DOM. Every tween below is immediateRender:false, so a cold seek(0)
+  // paints the composed hook, never a mid-fade (mandatory rule 4).
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  var wrap = document.getElementById('hk-plate');
+
+  // Ken Burns on the plate — a static plate is never left motionless (asset rule 5).
+  tl.fromTo(wrap, { scale: 1.0 }, { scale: 1.115, duration: 4.200, ease: 'none',
+    immediateRender: true }, 0);
+
+  // Baselines registered INSIDE the timeline at position 0. A fromTo with
+  // immediateRender:false leaves the element at its CSS resting state until the tween
+  // STARTS, then snaps to the "from" value — which rendered the payoff line visible at
+  // frame zero, blanked it at 1.30s and faded it back in. Caught by frame extraction,
+  // not by check (0 errors on the flashing build). tl.set at 0 is what a seek evaluates.
+  tl.set('#hk-sub', { opacity: 0, y: 18 }, 0);
+  tl.set('#hk-l2',  { color: '#F7F5F0' }, 0);
+
+  // THE PAYOFF — the reframe lands at 1.30s, inside the ~2s shorts window. Frame zero
+  // still reads as a complete claim on its own ("YOUR SKIN ISN'T SENSITIVE."), which is
+  // what the scroll-stop needs; this beat is the answer arriving, not the sentence.
+  tl.to('#hk-sub', { opacity: 1, y: 0, duration: 0.30, ease: 'power4.out' }, 1.30);
+  tl.to('#hk-l2',  { color: '#93B896', duration: 0.22 }, 1.30);
+
+  // Kicker pulses on the third symptom word — a beat, not decoration.
+  ['#hk-k1', '#hk-k2', '#hk-k3'].forEach(function (sel, i) {
+    tl.fromTo(sel, { opacity: 0.34 }, { opacity: 1, duration: 0.26, immediateRender: false },
+      0.55 + i * 0.34);
+  });
+
+  // Cadence beats across the WHOLE hold, not just the opening (gate 4b).
+  tl.to('#hk-head', { scale: 1.012, transformOrigin: '0% 50%', duration: 0.28 }, 2.45);
+  tl.to('#hk-head', { scale: 1.0,   duration: 0.32 }, 2.75);
+  gsap.set('#hk-sub', { transformOrigin: '0% 50%' });
+  tl.to('#hk-sub',  { scaleX: 1.035, duration: 0.55, ease: 'power1.inOut' }, 3.20);
+  tl.to('#hk-sub',  { scaleX: 1.0,   duration: 0.40, ease: 'power1.inOut' }, 3.78);
+
+  tl.to({}, { duration: 4.200 }, 0);   // anchor — always last, always at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['01-hook'] = tl;
+})();
+</script>
+</template>

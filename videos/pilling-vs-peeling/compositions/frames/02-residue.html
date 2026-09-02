@@ -79,57 +79,71 @@
         .band-fill-top { fill: rgba(247,245,240,0.10); }
         .band-fill-mid { fill: rgba(247,245,240,0.075); }
         .band-fill-bot { fill: rgba(247,245,240,0.05); }
+        /* The skin substrate is deliberately NOT a .band: flat higher-opacity
+           fill, square corners, no stroke. It is the ground the three product
+           layers sit ON, and it is what makes this stack read as a depth
+           cross-section (SPF outermost, serum against skin) rather than as a
+           top-to-bottom application ORDER -- the misread an external QC pass
+           flagged on the 2026-09-01 render. */
+        .band-skin { fill: rgba(247,245,240,0.20); }
         .band-label { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
                       letter-spacing: 0.08em; fill: rgba(247,245,240,0.72); }
         .pill { fill: rgba(247,245,240,0.85); opacity: 0; }
 
         .chip-zone { flex: 0 0 85px; padding-top: 12px; min-height: 0; }
-        .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+        .chip { font-family: var(--font-mono); font-size: 34px; letter-spacing: 0.04em;
                 color: rgba(247,245,240,0.85); border: 1.5px solid rgba(247,245,240,0.3);
                 border-radius: 999px; padding: 8px 20px; display: inline-block; opacity: 0; }
       </style>
 
-      <div id="root" data-composition-id="02-residue" data-width="1080" data-height="1920" data-duration="2.900">
-        <div class="clip stage">
-          <div class="caption-zone">
-            <p class="caption-line" id="s2-cap-a">PRODUCT RESIDUE</p>
-            <p class="caption-sub" id="s2-cap-b">Rolls into balls while you layer.</p>
+      <div data-hf-id="hf-i4c0" id="root" data-composition-id="02-residue" data-width="1080" data-height="1920" data-duration="2.900">
+        <div data-hf-id="hf-q6os" class="clip stage">
+          <div data-hf-id="hf-81nh" class="caption-zone">
+            <p data-hf-id="hf-1uqo" class="caption-line" id="s2-cap-a">PRODUCT RESIDUE</p>
+            <p data-hf-id="hf-ec7c" class="caption-sub" id="s2-cap-b">Rolls into balls while you layer.</p>
           </div>
 
-          <div class="media-zone">
-            <div class="media-box">
-              <div class="media-plate" id="s2-plate">
-                <div class="plate-zoom" id="s2-zoom">
-                  <img src="assets/plates/02-layering-hand.png" alt=""
-                       width="1200" height="1200" loading="eager" decoding="sync">
+          <div data-hf-id="hf-hudn" class="media-zone">
+            <div data-hf-id="hf-pw7w" class="media-box">
+              <div data-hf-id="hf-cax9" class="media-plate" id="s2-plate">
+                <div data-hf-id="hf-2kvz" class="plate-zoom" id="s2-zoom">
+                  <img data-hf-id="hf-b3he" src="assets/plates/02-layering-hand.png" alt="" width="1200" height="1200" loading="eager" decoding="sync">
                 </div>
               </div>
-              <div class="diagram" id="s2-diagram">
-                <svg viewBox="0 0 820 500">
-                  <rect class="band band-fill-top" x="20" y="40" width="780" height="90" rx="10"/>
-                  <text class="band-label" x="40" y="93">SPF</text>
-                  <rect class="band band-fill-mid" x="20" y="200" width="780" height="90" rx="10"/>
-                  <text class="band-label" x="40" y="253">MOISTURIZER</text>
-                  <rect class="band band-fill-bot" x="20" y="360" width="780" height="90" rx="10"/>
-                  <text class="band-label" x="40" y="413">SERUM</text>
+              <div data-hf-id="hf-sb2m" class="diagram" id="s2-diagram">
+                <svg data-hf-id="hf-gbg6" viewBox="0 0 820 500">
+                  <rect data-hf-id="hf-leg3" class="band band-fill-top" x="20" y="40" width="780" height="90" rx="10" />
+                  <text data-hf-id="hf-ez4q" class="band-label" x="40" y="93">SPF</text>
+                  <rect data-hf-id="hf-0wlq" class="band band-fill-mid" x="20" y="200" width="780" height="90" rx="10" />
+                  <text data-hf-id="hf-qzoy" class="band-label" x="40" y="253">MOISTURIZER</text>
+                  <rect data-hf-id="hf-2v2a" class="band band-fill-bot" x="20" y="360" width="780" height="90" rx="10" />
+                  <text data-hf-id="hf-oikb" class="band-label" x="40" y="413">SERUM</text>
 
-                  <circle class="pill" id="s2-pillA0" cx="60" cy="145" r="8"/>
-                  <circle class="pill" id="s2-pillA1" cx="230" cy="145" r="10"/>
-                  <circle class="pill" id="s2-pillA2" cx="400" cy="145" r="7"/>
-                  <circle class="pill" id="s2-pillA3" cx="570" cy="145" r="9"/>
-                  <circle class="pill" id="s2-pillA4" cx="740" cy="145" r="8"/>
+                  <rect data-hf-id="hf-7kf6" class="band-skin" x="20" y="462" width="780" height="38" />
+                  <text data-hf-id="hf-d171" class="band-label" x="40" y="489">SKIN</text>
 
-                  <circle class="pill" id="s2-pillB0" cx="100" cy="305" r="9"/>
-                  <circle class="pill" id="s2-pillB1" cx="280" cy="305" r="7"/>
-                  <circle class="pill" id="s2-pillB2" cx="460" cy="305" r="10"/>
-                  <circle class="pill" id="s2-pillB3" cx="640" cy="305" r="8"/>
+                  <!-- Round 6: these were r=7-10 specks -- 0.09% of canvas,
+                       measurably and visibly nothing, while the caption promised
+                       "rolls into balls." They now sit IN the two seams (the
+                       130-200 and 290-360 gaps) at a size a viewer can actually
+                       read as a ball of product. -->
+                  <circle data-hf-id="hf-36ta" class="pill" id="s2-pillA0" cx="110" cy="165" r="0" />
+                  <circle data-hf-id="hf-nirk" class="pill" id="s2-pillA1" cx="250" cy="165" r="0" />
+                  <circle data-hf-id="hf-l8ly" class="pill" id="s2-pillA2" cx="400" cy="165" r="0" />
+                  <circle data-hf-id="hf-5gol" class="pill" id="s2-pillA3" cx="550" cy="165" r="0" />
+                  <circle data-hf-id="hf-7hbn" class="pill" id="s2-pillA4" cx="700" cy="165" r="0" />
+
+                  <circle data-hf-id="hf-jsne" class="pill" id="s2-pillB0" cx="175" cy="325" r="0" />
+                  <circle data-hf-id="hf-ia15" class="pill" id="s2-pillB1" cx="340" cy="325" r="0" />
+                  <circle data-hf-id="hf-hfi1" class="pill" id="s2-pillB2" cx="505" cy="325" r="0" />
+                  <circle data-hf-id="hf-xlo8" class="pill" id="s2-pillB3" cx="660" cy="325" r="0" />
                 </svg>
               </div>
             </div>
           </div>
 
-          <div class="chip-zone">
-            <div class="chip" id="s2-chip">Skin Res Technol &middot; 2024</div>
+          <div data-hf-id="hf-t4ed" class="chip-zone">
+            <div data-hf-id="hf-zy8j" class="chip" id="s2-chip">Skin Res Technol · 2024</div>
           </div>
         </div>
       </div>
@@ -146,20 +160,40 @@
         tl.to('#s2-plate', { opacity: 0, scale: 0.97, duration: 0.10, ease: 'power1.in' }, 0.85);
         tl.to('#s2-diagram', { opacity: 1, duration: 0.10 }, 0.87);
 
-        // t1.30-2.55: pills detach from both seams, staggered.
-        var pillsA = ['#s2-pillA0','#s2-pillA1','#s2-pillA2','#s2-pillA3','#s2-pillA4'];
-        var pillsB = ['#s2-pillB0','#s2-pillB1','#s2-pillB2','#s2-pillB3'];
-        pillsA.forEach(function (id, i) {
-          var t = 1.30 + i * 0.16;
-          tl.set(id, { opacity: 1 }, t);
-          tl.to(id, { y: 38 + (i % 3) * 8, rotation: (i % 2 === 0 ? 1 : -1) * (16 + i * 3),
-                      opacity: 0, duration: 0.7, ease: 'power2.in' }, t);
+        // Round 6 cadence: the old loops staggered 9 specks at 0.16-0.18s
+        // apart. Every step of that motion measured far under the 1.0 mean
+        // |dLuma| beat threshold, so scene 02 read as 1.75s of dead air even
+        // though tweens were firing the whole time. Reworked into two CLUSTERS
+        // that each form and then roll off together: a cluster is a big enough
+        // simultaneous change to register as a real beat, and it reads better
+        // too -- residue collecting at a seam, then lifting away, instead of
+        // dust drifting. Balls roll UP and out (away from the SKIN substrate).
+        var pillsA = [['#s2-pillA0',32],['#s2-pillA1',36],['#s2-pillA2',28],
+                      ['#s2-pillA3',34],['#s2-pillA4',30]];
+        var pillsB = [['#s2-pillB0',34],['#s2-pillB1',29],['#s2-pillB2',36],
+                      ['#s2-pillB3',31]];
+
+        // Baselines registered as real timeline tweens at position 0 -- the
+        // engine seeks here directly without passing through t=0 first, and a
+        // bare gsap.set() outside the timeline does not survive that.
+        pillsA.concat(pillsB).forEach(function (e) {
+          tl.set(e[0], { attr: { r: 0 }, opacity: 0, x: 0, y: 0 }, 0);
         });
-        pillsB.forEach(function (id, i) {
-          var t = 1.45 + i * 0.18;
-          tl.set(id, { opacity: 1 }, t);
-          tl.to(id, { y: 36 + (i % 3) * 8, rotation: (i % 2 === 0 ? -1 : 1) * (16 + i * 3),
-                      opacity: 0, duration: 0.7, ease: 'power2.in' }, t);
+
+        // Seam A forms (~1.15) then lifts off (~1.80).
+        pillsA.forEach(function (e, i) {
+          tl.to(e[0], { attr: { r: e[1] }, opacity: 1, duration: 0.28,
+                        ease: 'back.out(1.8)' }, 1.15 + i * 0.05);
+          tl.to(e[0], { y: -190, x: (i % 2 ? 14 : -14), opacity: 0,
+                        duration: 0.55, ease: 'power2.in' }, 1.80 + i * 0.05);
+        });
+        // Seam B forms (~1.55) then lifts off (~2.30), landing the scene's last
+        // beat at ~2.85 so the tail never sits still into the cut.
+        pillsB.forEach(function (e, i) {
+          tl.to(e[0], { attr: { r: e[1] }, opacity: 1, duration: 0.28,
+                        ease: 'back.out(1.8)' }, 1.55 + i * 0.05);
+          tl.to(e[0], { y: -210, x: (i % 2 ? -12 : 16), opacity: 0,
+                        duration: 0.55, ease: 'power2.in' }, 2.30 + i * 0.05);
         });
 
         tl.to('#s2-cap-b', { opacity: 1, duration: 0.28 }, 1.60);

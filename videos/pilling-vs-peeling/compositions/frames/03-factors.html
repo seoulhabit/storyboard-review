@@ -63,39 +63,48 @@
                     max-width: 800px; }
 
         .diagram-zone { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
-        .diagram-zone svg { width: 780px; height: 560px; display: block; }
+        .diagram-zone svg { width: 840px; height: 620px; display: block; }
         .connector { fill: none; stroke: var(--ink); stroke-width: 2.5; opacity: 0.5; }
         .node-outer { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; }
         .node-center { fill: var(--aqua); opacity: 0; }
+        /* Labels sit OUTSIDE their nodes. They used to be centred inside
+           r=64 circles at the 32px mono floor, which only ever fit the
+           shortest of the three: "SKIN" is 4 characters (~83 units) but
+           "FORMULA" is 7 (~146) and "HOW YOU APPLY" is 13 (~270) against a
+           128-unit circle. Shipped result was the ring drawn straight through
+           "YOU" and FORMULA's final A sitting on its own stroke. No circle
+           radius fixes a 13-character label at the type floor -- it would need
+           r=145 and the three nodes would collide -- so the constraint is
+           removed rather than tuned. */
         .node-label { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
                       letter-spacing: 0.05em; fill: var(--ink); text-anchor: middle; }
       </style>
 
-      <div id="root" data-composition-id="03-factors" data-width="1080" data-height="1920" data-duration="1.900">
-        <div class="clip stage">
-          <div class="headline-zone">
-            <h2 class="headline">Not automatically the product&rsquo;s fault.</h2>
+      <div data-hf-id="hf-nlon" id="root" data-composition-id="03-factors" data-width="1080" data-height="1920" data-duration="1.900">
+        <div data-hf-id="hf-q6os" class="clip stage">
+          <div data-hf-id="hf-o22v" class="headline-zone">
+            <h2 data-hf-id="hf-4g8d" class="headline">Not automatically the product’s fault.</h2>
           </div>
-          <div class="diagram-zone">
-            <svg viewBox="0 0 700 500">
-              <path class="connector" id="s3-line-skin" d="M180,140 L350,270"/>
-              <path class="connector" id="s3-line-formula" d="M520,140 L350,270"/>
-              <path class="connector" id="s3-line-app" d="M350,420 L350,270"/>
+          <div data-hf-id="hf-fq8q" class="diagram-zone">
+            <svg viewBox="0 0 700 520">
+              <line class="connector" id="s3-line-skin" x1="140" y1="175" x2="350" y2="290" />
+              <line class="connector" id="s3-line-formula" x1="560" y1="175" x2="350" y2="290" />
+              <line class="connector" id="s3-line-app" x1="350" y1="405" x2="350" y2="290" />
 
               <g id="s3-group-skin">
-                <circle class="node-outer" cx="180" cy="140" r="64"/>
-                <text class="node-label" x="180" y="149">SKIN</text>
+                <circle class="node-outer" cx="140" cy="175" r="42" />
+                <text class="node-label" x="140" y="107">SKIN</text>
               </g>
               <g id="s3-group-formula">
-                <circle class="node-outer" cx="520" cy="140" r="64"/>
-                <text class="node-label" x="520" y="149">FORMULA</text>
+                <circle class="node-outer" cx="560" cy="175" r="42" />
+                <text class="node-label" x="560" y="107">FORMULA</text>
               </g>
               <g id="s3-group-app">
-                <circle class="node-outer" cx="350" cy="420" r="64"/>
-                <text class="node-label" x="350" y="429">HOW YOU APPLY</text>
+                <circle class="node-outer" cx="350" cy="405" r="42" />
+                <text class="node-label" x="350" y="485">HOW YOU APPLY</text>
               </g>
 
-              <circle class="node-center" id="s3-node-center" cx="350" cy="270" r="30"/>
+              <circle class="node-center" id="s3-node-center" cx="350" cy="290" r="26" />
             </svg>
           </div>
         </div>
@@ -106,9 +115,15 @@
         window.__timelines = window.__timelines || {};
         var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
+        // Length computed directly rather than via getTotalLength(): these are
+        // straight lines whose endpoints move later, and a hand-computed value
+        // keeps the draw-on deterministic. The dasharray stays at the original
+        // length after the node end travels; with offset 0 a dash longer than
+        // the line simply renders solid, which is what we want.
         ['#s3-line-skin', '#s3-line-formula', '#s3-line-app'].forEach(function (id) {
           var el = document.querySelector(id);
-          var len = el.getTotalLength();
+          var len = Math.hypot(el.x2.baseVal.value - el.x1.baseVal.value,
+                               el.y2.baseVal.value - el.y1.baseVal.value);
           gsap.set(id, { strokeDasharray: len, strokeDashoffset: len });
         });
 
@@ -125,9 +140,17 @@
         // t1.35-1.85: the three factors travel inward along their own
         // connectors toward the center -- the convergence payoff, not
         // decoration; it's the mechanism the scene exists to show.
-        tl.to('#s3-group-skin', { x: 47.6, y: 36.4, duration: 0.5, ease: "power2.inOut" }, 1.35);
-        tl.to('#s3-group-formula', { x: -47.6, y: 36.4, duration: 0.5, ease: "power2.inOut" }, 1.35);
-        tl.to('#s3-group-app', { x: 0, y: -60, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        // Convergence offsets are 28% of each node's vector to the centre for
+        // the top pair and 26% for the bottom one -- re-derived after the
+        // geometry change, not carried over. The bottom node travels straight
+        // up at the centre node, so its share is the one that has to stay under
+        // the point where the two rings would touch (405-42 vs 290+26).
+        tl.to('#s3-group-skin', { x: 58.8, y: 32.2, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-group-formula', { x: -58.8, y: 32.2, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-group-app', { x: 0, y: -30, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-line-skin', { attr: { x1: 198.8, y1: 207.2 }, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-line-formula', { attr: { x1: 501.2, y1: 207.2 }, duration: 0.5, ease: "power2.inOut" }, 1.35);
+        tl.to('#s3-line-app', { attr: { y1: 375 }, duration: 0.5, ease: "power2.inOut" }, 1.35);
 
         tl.to({}, { duration: 1.900 }, 0); // full-span anchor
         window.__timelines["03-factors"] = tl;

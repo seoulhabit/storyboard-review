@@ -131,13 +131,18 @@ See `frame.md` § Verification for the full account. Summary:
 
 | Check | Result |
 |---|---|
-| `npx hyperframes check` | 0 errors, 1 pre-existing warning unrelated to this round (see `frame.md` § Verification — Round 3 § 1), 6 benign info findings |
-| Render pipeline | Caught a real gap: plain `npm run render` writes a timestamped file, not `renders/pilling-vs-peeling.mp4` — the postrender scripts hardcode that filename, so the first postrender pass after this round's render validated the *stale* round-2 file. Caught by checking `ffprobe` duration before trusting the result; fixed by promoting the new render and re-running. See `frame.md` § Verification — Round 3 § 2. |
-| `check-blank-frames.py` | 0 findings, 317 frames sampled (on the correct, promoted file) |
+| `npx hyperframes check` | **0 errors, 0 warnings** (first time — the long-standing `duplicate_media_discovery_risk` on scene 05 is cleared), 4 benign info findings (Ken Burns zoom overflow inside clipping plates — intentional) |
+| Contrast (engine) | 14/14 text checks pass WCAG AA — evaluates *declared* colours; rendered-pixel measurements below are the ones that count |
+| `check-blank-frames.py` | 0 findings, 317 frames sampled |
 | `check-static-hold.py` (whole-frame) | 0 findings, 42 samples |
-| `check-static-hold.py` (region-aware) | Still falls back to whole-render mode — round 2's open item, not addressed this round |
-| `check-safe-area.py` (hard gate) | 0 findings, both variants (84 samples each) |
-| `check-sfx-durations.py` | 0 findings, 23/23 checked |
-| Audio mastering | −14.3/−2.0 dBTP (A), −14.2/−2.1 dBTP (B), video MD5-confirmed unchanged, loop-seam RMS −16.2 dB (live, not silent) |
-| Visual spot-check, scene 07 | 6 frames extracted across the new timeline, beat schedule confirmed landing where authored (see `frame.md` § Verification — Round 3 § 7) |
-| Thumbnail | Unaffected by this round (t=1.6s sits in scene 01, untouched) |
+| `check-static-hold.py` (region-aware) | Pre-existing region voids only. `CAPTION_BAND_EXCLUDE = False` re-confirmed against this project's own `index.html` (no burned-in captions) rather than trusted from the inherited comment |
+| `check-safe-area.py` (hard gate) | 0 findings on both variants (84 samples each), on the **mastered** deliverables |
+| `check-cadence.py` | **Overall: clean — no scene exceeds the 1.6s quiet ceiling.** Whole video 37/162 active steps (22.8%, was 13.6%). Per-scene longest quiet run: 1.00 / 1.00 / 1.25 / 1.25 / 0.88 / 0.50 / 1.12 / 0.88s |
+| Scene 05 render integrity | Was rendering **nothing** — the wipe's animated `width` on an `overflow:hidden` box was dropped by hardware GPU capture, so the layered subtree never reached any captured frame. Reworked to `clip-path` on a `--wipe` custom property; verified present under the normal hardware render path. See `BRIEF.md` § Round 6 |
+| `check-sfx-durations.py` | 0 findings, 23/23 checked. Scene 06's cue at abs 14.80s still lands on the card-tap beat |
+| Audio mastering | Re-applied after re-render (raw −23.0/−23.3 LUFS). A's first pass at `TP=-2.5` came back **−0.8 dBTP**, over the −1.0 bar, from a setting that gave −2.0 a round earlier; swept and shipped at `TP=-3.0`. Encoded deliverables: **−14.5 LUFS/−2.4 dBTP (A)**, −14.2/−2.1 (B); video streams MD5-identical through the pass |
+| Rendered-pixel contrast | Scene 07 citation chips 6.91:1; scene 04 chip 12.23:1 |
+| Visual verification | Scenes 02 and 05 frame-stripped across their full windows on both variants; scene 05 now shows a genuine bare-vs-layered split with a travelling aqua seam |
+| Duration | 21.100s video stream, 633 frames, both variants — no `data-start`/`data-duration` edits, so captions remain valid |
+| Scene 03 labels | Node labels moved outside their rings — they were centred inside r=64 circles at the 32px floor, so the ring cut through "HOW YOU APPLY" and FORMULA's final glyph sat on its own stroke. Verified clear of every stroke at native and 25% phone scale |
+| Thumbnail | Unaffected by this round (t=1.6s sits in scene 01) |

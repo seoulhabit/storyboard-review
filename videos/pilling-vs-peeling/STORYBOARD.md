@@ -1,7 +1,12 @@
 # Storyboard — Pilling vs. Peeling
 
-**Round 3** (2026-09-01, direct creator feedback on round 2's render:
-"scene 7 feels rushed"). 21.1s, 1080×1920, 30fps,
+**Round 4** (2026-09-01, review against the updated authoring skill).
+Scene 07's claim was re-scoped to the regulator it cites, and scenes 06 and
+07 were re-choreographed after a pixel measurement showed their authored
+beats were firing but sub-perceptual. Durations, scene starts and the BGM
+are untouched from round 3 — nothing upstream of a beat moved, so the
+re-timing cascade did not fire. **Round 3** (direct creator feedback on
+round 2's render: "scene 7 feels rushed"). 21.1s, 1080×1920, 30fps,
 silent/type-carried. Re-derived from the built `index.html` /
 `variants/index-hook-b.html`, not hand-estimated. Two opening variants share
 scenes 02–08 verbatim; only scene 01 and its SFX differ.
@@ -23,8 +28,8 @@ oversight; still every boundary is a hard cut regardless of ground match.
 | 03 | `03-factors` | 5.5 | 1.9 | paper | — | headline / FactorConverge diagram (3 nodes travel inward on their own connectors) |
 | 04 | `04-flaking` | 7.4 | 2.8 | ink | ✔ | headline / macro→diagram match-cut media box (BarrierWall) / qualifier + chip |
 | 05 | `05-test` | 10.2 | 3.0 | paper | ✔ | fixed panel, base plate + wipe-mask reveal (same plate both sides), sub-lines, UnsourcedFlag pill |
-| 06 | `06-fix-pilling` | 13.2 | 2.6 | ink | — | label row / 3-card row, each card demoing its own tip / SPF sub-line / UnsourcedFlag pill |
-| 07 | `07-fix-peeling` | 15.8 | 3.3 | paper | — | header / 3-icon row (actives switch-off, moisturizer+SPF pulse) / 2-chip row, retimed round 3 for more breathing room |
+| 06 | `06-fix-pilling` | 13.2 | 2.6 | ink | — | label row / 3-card row, each card highlighting while its own tip is demoed / SPF sub-line / UnsourcedFlag pill |
+| 07 | `07-fix-peeling` | 15.8 | 3.3 | paper | — | header / 3-icon row (two of three actives cut, moisturizer+SPF activate) / severity line / 3-chip row |
 | 08 | `08-close` | 19.1 | 2.0 | ink | ✔ (crop, 0.18 opacity bg) | centered takeaway + lockup + reworked CTA, loop-matched to 01 |
 
 Sum: 2.6+2.9+1.9+2.8+3.0+2.6+3.3+2.0 = **21.1s** exactly, matches both
@@ -47,8 +52,15 @@ only, a divider draw + staggered crumb appearance as the only motion.
 Headline "Those flakes may be your skincare." settled at rest.
 
 **02-residue** — Plate (`02-layering-hand.png`) zooms gently for 0.85s, then
-a hard **match cut** swaps it for the 3-band SPF/MOISTURIZER/SERUM diagram
-at the same box. Pills detach in a staggered sequence through 2.55s. Chip
+a hard **match cut** swaps it for the SPF/MOISTURIZER/SERUM cross-section at
+the same box, seated on a labelled **SKIN** substrate (round 5) so the stack
+reads as depth, not as an application order. Pills detach in a staggered
+sequence, drifting **up and out** toward the outer surface (round 5; they
+previously fell downward, which reads as rolling *into* the skin once the
+substrate is present). Round 6 resized them from r=7-10 specks to r=28-36
+balls formed in two seam clusters (~1.15s and ~1.55s) that lift away at
+~1.80s and ~2.30s — the caption promises "rolls into balls," and at the old
+size there were no balls to see. Chip
 (`Skin Res Technol · 2024`) lands at 2.20s — 1.35s after the plate left
 screen, never co-resident with it.
 
@@ -57,7 +69,10 @@ screen, never co-resident with it.
 Headline + 3 outer nodes (SKIN / FORMULA / HOW YOU APPLY) settled at frame
 zero; connectors draw 0.15–0.90s; center node arrives and pulses at 1.00s;
 1.35–1.85s the three factors travel inward along their own connectors — the
-convergence payoff, not decoration. No citation chip (recorded decision,
+convergence payoff, not decoration. Round 7 moved the three node labels
+outside their rings (the rings previously cut through "HOW YOU APPLY") and
+made the connectors travel with their nodes through the convergence. No
+citation chip (recorded decision,
 unchanged from round 1 — this is an elaboration of scene 02's same study,
 not a new claim).
 
@@ -76,15 +91,43 @@ side-by-side. Sub-lines "Flakes? → Peeling." / "Crumbs? → Pilling." at
 1.30/1.50s. `UnsourcedFlag` pill "A clue — not a diagnosis." at 2.10s. No
 citation chip (the heuristic has no tested source).
 
-**06-fix-pilling** — "TRY THIS" + all three cards settled at frame zero;
-each demo *is* its own card's entrance: a line-shrink (thinner passes,
-0.10–0.60s), a clock-hand sweep (let it settle, 0.75–1.30s), a double tap +
-the coral ✗ pop (pat don't rub — this video's one coral spend,
-1.35–1.90s). SPF line reworded to "Same total SPF — just thinner passes."
+**06-fix-pilling** — "TRY THIS" + all three cards settled at frame zero.
+Each card **highlights** (background and border lift) while its own tip is
+being demonstrated, so the motion encodes *which* tip is on: a line-shrink
+(thinner passes, 0.10–0.70s), a clock-hand sweep (let it settle,
+0.80–1.45s), a double tap + the coral slash pop (round 5: three discrete
+taps for *pat*, one continuous stroke for *rub*, the slash sized to the rub
+stroke alone — it was previously a full-glyph ✗ with no pat mark at all, which
+reads as negating the whole card — this video's
+one coral spend, 1.55–2.20s). **Round 4 reworked this.** The glyphs were
+56px and the demos animated 12px strokes inside them — ~48px² of change on
+a 2,073,600px canvas, measuring 0.0001–0.012 mean |Δluma| per 8fps step:
+tweens that fired correctly and that no viewer could see. Glyphs are now
+168px and the card highlight carries the beat. Measured after: 5% → 40% of
+steps carrying a visible beat, longest quiet run 2.38s → 0.50s. SPF line reworded to "Same total SPF — just thinner passes."
 `UnsourcedFlag` pill at 2.20s, explicitly covering the reworded SPF line
 too (still untested as an intervention).
 
-**07-fix-peeling** — **Retimed round 3** (2.1s → 3.3s) per direct creator
+**07-fix-peeling** — **Re-scoped round 4.** Through round 3 this scene read
+"Pause actives. Moisturize. Protect." under two chips inherited verbatim
+from `peeling-not-progress`, neither of which supports pausing an active —
+an unsourced instruction to stop an active, which no flag rescues. It now
+reads "One active at a time. Moisturize. Protect.", tracking 21 CFR
+§333.350(c)(1)(ii), with (c)(3)(ii)'s severity gate rendered beneath it
+("Severe burning or swelling? Stop and ask a doctor.") and a third chip
+carrying the regulation. The actives column shows three droplets; two dim
+and are struck, one survives — the claim rendered literally. See BRIEF.md
+§ Source verification for the full correction.
+
+Its cadence was reworked in the same pass. The two "do this" circles were
+`--mist` on `--paper` — **~1.08:1**, so the 1.08× scale pulses authored on
+them moved 0.02–0.10 mean |Δluma|, i.e. nothing. They now change *state*
+(a persisting aqua activation) rather than size, and the cut column takes
+an ink veil. Round 3's recorded "8% active steps" for this scene was an
+artifact: both qualifying steps were h264 keyframe refreshes (mean 5.2 at a
+per-pixel max of 12 — a global quantization shift, not motion), so the
+scene in fact had no real beat at all. **Originally retimed round 3**
+(2.1s → 3.3s) per direct creator
 feedback on round 2's render — independently consistent with round 2's own
 cadence measurement, which had already flagged this as the weakest scene
 (0 steps clearing the active-step threshold; see `frame.md` § Verification

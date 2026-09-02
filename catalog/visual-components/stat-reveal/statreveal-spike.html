@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>StatReveal — harvested component</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* Tokens copied verbatim from the source composition (see README). Not
+     re-verified live against DesignSync this session (unavailable,
+     non-interactive) -- matches shipped code. */
+  :root {
+    --ink: #131516;
+    --paper: #F7F5F0;
+    --ink-3: #9C978D;
+    --aqua: #59B8AE;
+    --font-display: "EB Garamond", Georgia, serif;
+    --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+    --safe-margin: 6px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); }
+  #root {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--ink); font-family: var(--font-body);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  /* Spatial plan: a single flex column -- numeral zone (top) / qualifier+chip
+     zone (middle) / tick-fraction zone (flex:1, bottom). The tick grid is a
+     pictogram (discrete unit squares), never an axis/gridline/plotted-point
+     chart -- see the parent skill's "a diagram is not a chart" rule. */
+  .sr-stage {
+    display: flex; flex-direction: column; height: 100%;
+    padding: calc(var(--safe-top) + var(--safe-margin)) calc(var(--safe-right) + var(--safe-margin))
+             calc(var(--safe-bottom) + var(--safe-margin)) calc(var(--safe-left) + var(--safe-margin));
+  }
+  .sr-numeral-zone { flex: 0 0 auto; padding-top: 24px; padding-bottom: 48px; }
+  .sr-numeral { font-family: var(--font-display); font-weight: 400; font-size: 220px;
+                line-height: 1.15; color: var(--paper); margin: 0; }
+  .sr-meta-zone { flex: 0 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .sr-qualifier { font-family: var(--font-mono); font-weight: 500; font-size: 40px;
+                  line-height: 1.3; color: rgba(247,245,240,0.75); max-width: 780px;
+                  opacity: 0; }
+  .sr-chip { align-self: flex-start; font-family: var(--font-mono); font-size: 32px;
+             letter-spacing: 0.04em; color: rgba(247,245,240,0.85);
+             border: 1.5px solid rgba(247,245,240,0.35); border-radius: 999px;
+             padding: 8px 20px; opacity: 0; }
+  .sr-tick-zone { flex: 1 1 auto; display: flex; align-items: flex-end; justify-content: center;
+                  padding-bottom: 8px; }
+  .sr-tick-wrap { display: flex; flex-direction: column; align-items: center; }
+  .sr-tick { fill: rgba(247,245,240,0.14); }
+  .sr-tick-caption { font-family: var(--font-mono); font-size: 26px; letter-spacing: 0.06em;
+                      color: var(--ink-3); text-align: center; margin-top: 16px; }
+
+  .debug-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(19,21,22,.92); color: var(--paper); font-family: ui-monospace, monospace; font-size: 13px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .debug-bar input[type="range"] { flex: 1; }
+  .debug-bar button { font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid #9C978D; background: transparent; color: var(--paper); cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="clip">
+    <div class="sr-stage">
+      <div class="sr-numeral-zone">
+        <h1 class="sr-numeral" id="sr-numeral">0%</h1>
+      </div>
+      <div class="sr-meta-zone">
+        <p class="sr-qualifier" id="sr-qualifier"></p>
+        <div class="sr-chip" id="sr-chip"></div>
+      </div>
+      <div class="sr-tick-zone">
+        <div class="sr-tick-wrap">
+          <svg width="272" height="272" viewBox="0 0 272 272">
+          <rect class="sr-tick" id="sr-tick0" x="0" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick1" x="28" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick2" x="56" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick3" x="84" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick4" x="112" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick5" x="140" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick6" x="168" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick7" x="196" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick8" x="224" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick9" x="252" y="0" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick10" x="0" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick11" x="28" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick12" x="56" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick13" x="84" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick14" x="112" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick15" x="140" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick16" x="168" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick17" x="196" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick18" x="224" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick19" x="252" y="28" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick20" x="0" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick21" x="28" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick22" x="56" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick23" x="84" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick24" x="112" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick25" x="140" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick26" x="168" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick27" x="196" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick28" x="224" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick29" x="252" y="56" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick30" x="0" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick31" x="28" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick32" x="56" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick33" x="84" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick34" x="112" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick35" x="140" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick36" x="168" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick37" x="196" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick38" x="224" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick39" x="252" y="84" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick40" x="0" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick41" x="28" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick42" x="56" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick43" x="84" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick44" x="112" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick45" x="140" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick46" x="168" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick47" x="196" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick48" x="224" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick49" x="252" y="112" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick50" x="0" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick51" x="28" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick52" x="56" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick53" x="84" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick54" x="112" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick55" x="140" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick56" x="168" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick57" x="196" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick58" x="224" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick59" x="252" y="140" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick60" x="0" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick61" x="28" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick62" x="56" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick63" x="84" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick64" x="112" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick65" x="140" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick66" x="168" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick67" x="196" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick68" x="224" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick69" x="252" y="168" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick70" x="0" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick71" x="28" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick72" x="56" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick73" x="84" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick74" x="112" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick75" x="140" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick76" x="168" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick77" x="196" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick78" x="224" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick79" x="252" y="196" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick80" x="0" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick81" x="28" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick82" x="56" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick83" x="84" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick84" x="112" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick85" x="140" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick86" x="168" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick87" x="196" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick88" x="224" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick89" x="252" y="224" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick90" x="0" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick91" x="28" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick92" x="56" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick93" x="84" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick94" x="112" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick95" x="140" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick96" x="168" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick97" x="196" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick98" x="224" y="252" width="20" height="20" rx="3"/>
+          <rect class="sr-tick" id="sr-tick99" x="252" y="252" width="20" height="20" rx="3"/>
+          </svg>
+          <p class="sr-tick-caption" id="sr-tick-caption"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Field contract -- swap this object per use. `percent` drives the numeral
+  // count-up AND the tick-fraction (percent of 100 ticks lit, so it only reads
+  // cleanly for a percentage out of a rounded base -- for a raw count instead
+  // of a percent, light `tickLit` ticks directly and skip the count-up-to-percent
+  // coupling). Generalized sample data below -- not the source video's real
+  // content (see catalog contribution convention).
+  var DATA = {
+    percent: 58,
+    qualifier: "of 300 survey respondents",
+    citation: "Consumer Study · 2024",
+    tickCaption: "58 OF 100 RESPONDENTS"
+  };
+
+  document.getElementById("sr-qualifier").textContent = DATA.qualifier;
+  document.getElementById("sr-chip").textContent = DATA.citation;
+  document.getElementById("sr-tick-caption").textContent = DATA.tickCaption;
+
+  var TOTAL = 4.0;
+  var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+  // t0.0-0.6: numeral counts up 0 -> DATA.percent, a pure function of tween progress.
+  var counter = { v: 0 };
+  var numeralEl = document.getElementById('sr-numeral');
+  tl.to(counter, {
+    v: DATA.percent, duration: 0.6, ease: "power2.out",
+    onUpdate: function () { numeralEl.textContent = Math.round(counter.v) + '%'; }
+  }, 0);
+
+  tl.to('#sr-qualifier', { opacity: 1, duration: 0.32 }, 1.1);
+  tl.to('#sr-chip', { opacity: 1, duration: 0.3 }, 1.9);
+
+  // t2.6-4.0: tick grid lights DATA.percent of 100 units in reading order --
+  // the continuous back-half motion. Deterministic stagger, not a loop/rAF.
+  var order = [];
+  for (var i = 0; i < DATA.percent; i++) { order.push('#sr-tick' + i); }
+  tl.to(order, { fill: '#59B8AE', duration: 0.05, stagger: (1.3 / Math.max(DATA.percent, 1)) }, 2.6);
+
+  tl.to({}, { duration: TOTAL }, 0);
+
+  function renderFrame(t) { if (t === 0) tl.progress(0); else tl.time(t); }
+  window.renderFrame = renderFrame;
+  window.__statRevealTimeline = tl;
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement("div");
+    bar.className = "debug-bar";
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector("#dbg-range"), label = bar.querySelector("#dbg-t");
+    range.addEventListener("input", function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector("#dbg-0").addEventListener("click", function () { range.value = 0; renderFrame(0); label.textContent = "0.00"; });
+    bar.querySelector("#dbg-end").addEventListener("click", function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

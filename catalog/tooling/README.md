@@ -31,6 +31,19 @@ inside a reserved zone — a **hard gate**, unlike this repo's other
 project's own `package.json` `postrender` script alongside
 `check-blank-frames.py` / `check-static-hold.py`.
 
+**Fix, 2026-09-01 (`videos/centella-barrier-recut-15s`).**
+`check-static-hold.py`'s scene-boundary regex required a literal `class="scene"`
+and therefore did not match the canonical `class="scene clip"` markup the
+HyperFrames skeleton actually ships (`.clip` is what gives a scene its
+full-frame box, so the two-class form is the normal case, not an edge case).
+On a non-matching project it silently fell back to treating the whole render
+as one scene and printed a "cross-cut false positives are possible" note
+rather than an error — which is exactly how a project reads a degraded run as
+a clean one. Widened to `class="[^"]*\bscene\b[^"]*"`. Verified both ways on
+a real render: whole-render fallback reported 2 region voids, the corrected
+scene-aware run reported 1, and the difference was a false positive spanning
+a hard cut.
+
 **Status: validated reference, not yet wired into every project.** Confirmed
 working against a real render (`peeling-not-progress`'s round-6 mastered
 file, before and after the fix) but copied per-project rather than imported —

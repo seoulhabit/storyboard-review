@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>FactorConverge — harvested component</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* Tokens copied verbatim from the source composition (see README). Not
+     re-verified live against DesignSync this session -- matches shipped code. */
+  :root {
+    --ink: #131516;
+    --paper: #F7F5F0;
+    --ink-2: #6B6B6B;
+    --aqua: #59B8AE;
+    --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--paper); }
+  #root {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--paper); font-family: var(--font-body);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  .fc-stage { display: flex; flex-direction: column; height: 100%; padding: 198px 162px 384px 78px; }
+  .fc-headline-zone { flex: 0 0 auto; }
+  .fc-headline { font-weight: 800; font-size: 60px; line-height: 1.2; color: var(--ink); max-width: 800px; }
+  .fc-diagram-zone { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; }
+  .fc-diagram-zone svg { width: 760px; height: 540px; display: block; }
+  .fc-connector { fill: none; stroke: var(--ink); stroke-width: 2.5; opacity: 0.5; }
+  .fc-node-outer { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; }
+  .fc-node-center { fill: var(--aqua); }
+  .fc-node-label { font-family: var(--font-mono); font-size: 26px; font-weight: 500;
+                   letter-spacing: 0.06em; fill: var(--ink); text-anchor: middle; }
+  .fc-caption-zone { flex: 0 0 auto; padding-top: 12px; }
+  .fc-caption { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                line-height: 1.4; color: var(--ink-2); max-width: 760px; }
+
+  .debug-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(19,21,22,.92); color: var(--paper); font-family: ui-monospace, monospace; font-size: 13px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .debug-bar input[type="range"] { flex: 1; }
+  .debug-bar button { font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid #9C978D; background: transparent; color: var(--paper); cursor: pointer; }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div class="clip fc-stage">
+      <div class="fc-headline-zone"><h2 class="fc-headline" id="fc-headline"></h2></div>
+      <div class="fc-diagram-zone">
+        <svg viewBox="0 0 700 500">
+          <path class="fc-connector" id="fc-line-0" d="M180,140 L350,270"/>
+          <path class="fc-connector" id="fc-line-1" d="M520,140 L350,270"/>
+          <path class="fc-connector" id="fc-line-2" d="M350,420 L350,270"/>
+
+          <circle class="fc-node-outer" id="fc-node-0" cx="180" cy="140" r="64"/>
+          <text class="fc-node-label" id="fc-label-0" x="180" y="148"></text>
+
+          <circle class="fc-node-outer" id="fc-node-1" cx="520" cy="140" r="64"/>
+          <text class="fc-node-label" id="fc-label-1" x="520" y="148"></text>
+
+          <circle class="fc-node-outer" id="fc-node-2" cx="350" cy="420" r="64"/>
+          <text class="fc-node-label" id="fc-label-2" x="350" y="428"></text>
+
+          <circle class="fc-node-center" id="fc-node-center" cx="350" cy="270" r="30"/>
+        </svg>
+      </div>
+      <div class="fc-caption-zone"><p class="fc-caption" id="fc-caption"></p></div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  // Field contract -- generalized from the source's SKIN/FORMULA/APPLICATION
+  // converge beat. Exactly 3 nodes: the geometry (2 upper corners + 1 lower
+  // corner, both converging on a center node) is fixed to a triangle, not an
+  // N-node array -- a real variant (4+ nodes, arranged in a circle) this
+  // spike doesn't build (same honest-limitation disclosure StatReveal's own
+  // README carries for its 100-tick coupling).
+  var DATA = {
+    headline: "Not automatically the product's fault.",
+    nodes: [
+      { label: "SKIN" },
+      { label: "FORMULA" },
+      { label: "APPLICATION" }
+    ],
+    caption: "Doesn't mean the product is bad."
+  };
+
+  document.getElementById("fc-headline").textContent = DATA.headline;
+  document.getElementById("fc-caption").textContent = DATA.caption;
+  DATA.nodes.forEach(function (n, i) {
+    document.getElementById("fc-label-" + i).textContent = n.label;
+  });
+
+  var TOTAL = 2.6;
+  var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+  ["#fc-line-0", "#fc-line-1", "#fc-line-2"].forEach(function (id) {
+    var el = document.querySelector(id);
+    var len = el.getTotalLength();
+    gsap.set(id, { strokeDasharray: len, strokeDashoffset: len });
+  });
+  gsap.set(["#fc-node-0", "#fc-label-0", "#fc-node-1", "#fc-label-1", "#fc-node-2", "#fc-label-2", "#fc-node-center"],
+    { opacity: 0 });
+  gsap.set(["#fc-node-0", "#fc-node-1", "#fc-node-2"], { scale: 0.8, transformOrigin: "50% 50%" });
+  gsap.set("#fc-node-center", { transformOrigin: "50% 50%" });
+  gsap.set("#fc-caption", { opacity: 0 });
+
+  // 3 outer nodes settle in, staggered.
+  [0, 1, 2].forEach(function (i) {
+    tl.to(["#fc-node-" + i, "#fc-label-" + i], { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(1.8)" }, 0.15 + i * 0.10);
+  });
+
+  // Connector lines draw in toward the center, staggered.
+  [0, 1, 2].forEach(function (i) {
+    tl.to("#fc-line-" + i, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, 0.60 + i * 0.15);
+  });
+
+  // Center node arrives and pulses -- the convergence payoff.
+  tl.to("#fc-node-center", { opacity: 1, duration: 0.2 }, 1.35);
+  tl.to("#fc-node-center", { scale: 1.2, duration: 0.4, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.55);
+
+  tl.to("#fc-caption", { opacity: 1, duration: 0.3 }, 1.70);
+
+  tl.to({}, { duration: TOTAL }, 0);
+
+  function renderFrame(t) { if (t === 0) tl.progress(0); else tl.time(t); }
+  window.renderFrame = renderFrame;
+  window.__factorConvergeTimeline = tl;
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement("div");
+    bar.className = "debug-bar";
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector("#dbg-range"), label = bar.querySelector("#dbg-t");
+    range.addEventListener("input", function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector("#dbg-0").addEventListener("click", function () { range.value = 0; renderFrame(0); label.textContent = "0.00"; });
+    bar.querySelector("#dbg-end").addEventListener("click", function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

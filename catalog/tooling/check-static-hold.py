@@ -186,7 +186,7 @@ def scene_boundaries(project_root):
         return None
     text = index_path.read_text(errors="replace")
     pattern = re.compile(
-        r'class="scene"[^>]*data-composition-src="[^"]+"\s+data-start="([\d.]+)"\s+data-duration="([\d.]+)"'
+        r'class="[^"]*\bscene\b[^"]*"[^>]*data-composition-src="[^"]+"[^>]*?\s+data-start="([\d.]+)"\s+data-duration="([\d.]+)"'
     )
     scenes = [(float(a), float(a) + float(b)) for a, b in pattern.findall(text)]
     return scenes or None

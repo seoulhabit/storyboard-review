@@ -1,0 +1,51 @@
+{
+  "1": {
+    "src": "raw01.wav",
+    "speech": 2.78,
+    "lead_trimmed": 0.86,
+    "duration": 3.21,
+    "note": "rate default"
+  },
+  "2": {
+    "src": "raw02.wav",
+    "speech": 8.28,
+    "lead_trimmed": 0.42,
+    "duration": 8.71,
+    "note": "rate default"
+  },
+  "3": {
+    "src": "raw03.wav",
+    "speech": 12.76,
+    "lead_trimmed": 0.4,
+    "duration": 13.19,
+    "note": "rate default"
+  },
+  "4": {
+    "src": "raw04.wav",
+    "speech": 8.84,
+    "lead_trimmed": 0.38,
+    "duration": 9.27,
+    "note": "rate default (added taxonomy beat)"
+  },
+  "5": {
+    "src": "raw05.wav",
+    "speech": 12.06,
+    "lead_trimmed": 0.0,
+    "duration": 12.49,
+    "note": "rate default; script line rewritten for source accuracy"
+  },
+  "6": {
+    "src": "raw06.wav",
+    "speech": 9.56,
+    "lead_trimmed": 0.42,
+    "duration": 9.99,
+    "note": "rate default"
+  },
+  "7": {
+    "src": "raw07b.wav",
+    "speech": 7.1,
+    "lead_trimmed": 0.18,
+    "duration": 7.53,
+    "note": "re-recorded: first take ended with 0.011s tail (no room to decay). Comma before final clause gave a natural pause; tail now 0.286s of true silence."
+  }
+}

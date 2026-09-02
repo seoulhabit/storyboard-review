@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* UA MARGIN RESET -- load-bearing. Browser default margins (h1 .67em,
+           p 1em, figure `1em 40px`) silently inflate a fixed-height flex stack
+           and pushed this project's round-1 render past the safe line. */
+        h1, h2, h3, p, figure, blockquote, ul, ol, dl { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        /* Tokens inlined from assets/tokens/tokens.css (single source of truth).
+           PAPER GROUND -- secondary text uses the paper-scoped --ink-2 (4.89:1). */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --ink-3: #9C978D;
+          --celadon: #93B896; --moss: #4F6B52; --rule-strong: #D9D3C6;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, explicit 1920px height, real --safe-*
+              padding, space-between across three zones (head / triptych / tag).
+           2. The triptych is a 3-column CSS GRID of equal 1fr tracks. This is
+              the ONLY three-across structure in the piece, which is what keeps
+              it distinct from 03b's name stack and 06's vertical gate list.
+           3. Each tile's Ken Burns wrapper is absolute INSIDE that tile's own
+              overflow:hidden box, so no zoom can push the safe box outward and
+              this scene needs no --safe-*-zoomed math.
+           4. Split out of the original 13.5s 03-materials at 20.880s, a real
+              silence gap between caption cues 7 and 8 -- this half names the
+              three materials, 03b withdraws the link between them. */
+        .stage {
+          display: flex; flex-direction: column; justify-content: space-between;
+          height: 1920px;
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+        }
+
+        .head h1 { font-weight: 800; font-size: 76px; line-height: 1.06;
+                   letter-spacing: -0.03em; color: var(--ink); }
+        .head .sub { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.1em;
+                     text-transform: uppercase; color: var(--ink-2); margin-top: 18px;
+                     opacity: 0; }
+
+        .trip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .cell { display: flex; flex-direction: column; gap: 16px; }
+        /* Edge-anchored columns grow INWARD: a back.out() scale entrance passes
+           through ~1.05, which would otherwise walk the outer columns into the
+           reserved side rails for the length of the tween. */
+        .plate-wrap { position: relative; opacity: 0; }
+        /* The origin belongs on .plate-wrap, which is what the scale tween
+           actually targets -- putting it on .cell did nothing, and the first
+           tile's back.out() overshoot placed ink at x=70. Edge columns grow
+           inward. */
+        .trip .cell:first-child .plate-wrap { transform-origin: 0% 50%; }
+        .trip .cell:last-child  .plate-wrap { transform-origin: 100% 50%; }
+        /* Ink border + elevation, not a hairline rule: these are cream subjects
+           on a cream ground, and measured on an earlier render a tile arriving
+           changed only ~13 luma per pixel, so it barely registered as an event. */
+        .tile { width: 100%; aspect-ratio: 1 / 1; position: relative;
+                overflow: hidden; background: #E6E2DA;
+                border: 4px solid var(--ink);
+                box-shadow: 0 18px 32px -20px rgba(19, 21, 22, 0.35); }
+        .tile-zoom { position: absolute; inset: 0; }
+        .tile-zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .idx { position: absolute; right: 12px; top: 12px; background: var(--ink);
+               color: var(--paper); font-family: var(--font-mono); font-size: 32px;
+               line-height: 1; padding: 10px 12px; opacity: 0;
+               transform-origin: 100% 0%; }
+        /* Seated INSIDE the tile: an outdented chip on the third column sat
+           10px into the reserved right rail. */
+        .cell-body { opacity: 0; }
+        .cell-name { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                     color: var(--ink); text-transform: uppercase; }
+        .cell-sub { font-family: var(--font-mono); font-size: 32px; line-height: 1.3;
+                    color: var(--ink-2); margin-top: 10px; }
+
+        .tag { align-self: flex-start; background: var(--ink); width: 0;
+               overflow: hidden; height: 78px; }
+        .tag span { display: block; font-family: var(--font-mono); font-size: 34px;
+                    line-height: 78px; padding: 0 24px; letter-spacing: 0.04em;
+                    color: var(--paper); white-space: nowrap; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout .tile { outline: 2px solid #FFD400 !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="03a-materials"
+           data-width="1080" data-height="1920" data-duration="7.830">
+        <div class="stage">
+
+          <div class="head">
+            <h1>One word.<br>Three materials.</h1>
+            <p class="sub" id="ma-sub">All sold as &ldquo;exosome&rdquo;</p>
+          </div>
+
+          <div class="trip">
+            <div class="cell">
+              <div class="plate-wrap" id="ma-p1">
+                <div class="tile"><div class="tile-zoom" id="ma-z1" data-layout-allow-overflow>
+                  <img src="assets/plates/03a-cell-derived-tile.png" alt=""
+                       width="600" height="600" loading="eager" decoding="sync">
+                </div></div>
+                <span class="idx" id="ma-i1">01</span>
+              </div>
+              <div class="cell-body" id="ma-b1">
+                <p class="cell-name">CELL-DERIVED</p>
+                <p class="cell-sub">stem cell<br>platelet<br>milk</p>
+              </div>
+            </div>
+            <div class="cell">
+              <div class="plate-wrap" id="ma-p2">
+                <div class="tile"><div class="tile-zoom" id="ma-z2" data-layout-allow-overflow>
+                  <img src="assets/plates/03b-plant-tile.png" alt=""
+                       width="600" height="600" loading="eager" decoding="sync">
+                </div></div>
+                <span class="idx" id="ma-i2">02</span>
+              </div>
+              <div class="cell-body" id="ma-b2">
+                <p class="cell-name">PLANT</p>
+                <p class="cell-sub">leaf, root<br>extract</p>
+              </div>
+            </div>
+            <div class="cell">
+              <div class="plate-wrap" id="ma-p3">
+                <div class="tile"><div class="tile-zoom" id="ma-z3" data-layout-allow-overflow>
+                  <img src="assets/plates/03c-ferment-tile.png" alt=""
+                       width="600" height="600" loading="eager" decoding="sync">
+                </div></div>
+                <span class="idx" id="ma-i3">03</span>
+              </div>
+              <div class="cell-body" id="ma-b3">
+                <p class="cell-name">FERMENT</p>
+                <p class="cell-sub">bacteria<br>derived</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tag" id="ma-tag" data-layout-allow-overflow><span>Three different starting materials</span></div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Headline is composed at t=0. Everything else arrives, so the frame
+        // right after the 02->03a cut is already a finished statement.
+
+        // Three independent Ken Burns drifts -- different scales and eases, so
+        // the triptych reads as three separate materials, not one sprite sheet.
+        tl.fromTo('#ma-z1', { scale: 1.0 }, { scale: 1.095, duration: 7.83, ease: 'none' }, 0);
+        tl.fromTo('#ma-z2', { scale: 1.0 }, { scale: 1.075, duration: 7.83, ease: 'sine.inOut' }, 0);
+        tl.fromTo('#ma-z3', { scale: 1.0 }, { scale: 1.110, duration: 7.83, ease: 'none' }, 0);
+
+        tl.to('#ma-sub', { opacity: 1, duration: 0.30, ease: 'none' }, 0.18);
+
+        // Each material lands as THREE beats -- plate, then name, then a stamped
+        // index -- instead of one. Splitting the original 13.5s scene bought the
+        // room to spread them; this is what actually spends it.
+        [['#ma-p1','#ma-b1','#ma-i1',0.60],
+         ['#ma-p2','#ma-b2','#ma-i2',2.30],
+         ['#ma-p3','#ma-b3','#ma-i3',4.00]].forEach(function (g) {
+          var p = g[0], b = g[1], i = g[2], t = g[3];
+          tl.fromTo(p, { opacity: 0, scale: 0.78, y: 64 },
+                       { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: 'back.out(1.5)' }, t);
+          tl.fromTo(b, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.28 }, t + 0.40);
+          tl.fromTo(i, { opacity: 0, scale: 0.5 },
+                       { opacity: 1, scale: 1, duration: 0.24, ease: 'back.out(2.4)' }, t + 0.75);
+        });
+
+        // 5.60 the tag strikes across; 6.50 the three plates lift in sequence,
+        // so the scene's last 1.6s carries three more real state changes.
+        tl.to('#ma-tag', { width: 764, duration: 0.44, ease: 'power2.inOut' }, 5.60);
+        tl.to('#ma-p1', { y: -22, duration: 0.40, ease: 'power2.out' }, 6.50);
+        tl.to('#ma-p2', { y: -22, duration: 0.40, ease: 'power2.out' }, 6.68);
+        tl.to('#ma-p3', { y: -22, duration: 0.40, ease: 'power2.out' }, 6.86);
+        tl.to('#ma-tag', { x: 22, duration: 0.55, ease: 'power2.out' }, 7.20);
+
+        tl.to({}, { duration: 7.830 }, 0); // full-span anchor -- always last
+        window.__timelines["03a-materials"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

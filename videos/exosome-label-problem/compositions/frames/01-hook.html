@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        /* box-sizing reset FIRST. Without it any element combining an explicit
+           height with padding (.stage: height 1920 + 192/384 vertical padding)
+           lays out at 2496px and pushes bottom-anchored content past the canvas
+           into the reserved zone. Invisible from source; only comparing
+           getBoundingClientRect() against getComputedStyle() on a real render
+           shows it. */
+        *, *::before, *::after { box-sizing: border-box; }
+        /* UA MARGIN RESET -- load-bearing, not cosmetic. Without it the browser
+           default margins silently inflate every fixed-height flex stack:
+           h1 carries margin .67em (= 100px at this scene's display size), p
+           carries 1em, and figure carries `1em 40px`. Measured on the round-1
+           render, that pushed 01/05/07's hero panel 64-75px BELOW the safe
+           bottom line and the figure 39px PAST the right line -- a hard
+           safe-area gate failure -- while the scenes still looked plausible in
+           isolation. `gap` on the flex column does the spacing here, so every
+           one of these margins is unwanted. */
+        h1, h2, h3, p, figure, blockquote, ul, ol, dl { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        /* Tokens inlined from assets/tokens/tokens.css. A <link> to the shared
+           file is confirmed not to resolve custom properties through this render
+           pipeline (measured empty on a compiled render), so the values are
+           copied with that file as the single source of truth. */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --ink-3: #9C978D;
+          --celadon: #93B896;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is ONE flex column with real --safe-* padding on all four
+              sides and an explicit px height (not 100% -- a percentage height on
+              an absolutely positioned child resolves against #root at layout
+              time, which was observed racing during font/image load).
+           2. The hero is a 2-column CSS GRID (annotation | bottle) with an
+              explicit panel width, not two absolutely-positioned siblings -- it
+              survives a string-length change and an aspect flip.
+           3. The ONLY absolute element is the plate's Ken Burns wrapper, and it
+              lives inside .plate-panel's own overflow:hidden clipped context, so
+              it can never push the safe box outward. That is why this scene
+              needs no --safe-*-zoomed math. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+          gap: 30px;
+        }
+
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  color: var(--ink-2); text-transform: uppercase; flex: 0 0 auto;
+                  opacity: 0; }
+
+        .headline { font-weight: 800; font-size: 150px; line-height: 0.90;
+                    letter-spacing: -0.045em; color: var(--ink); flex: 0 0 auto;
+                    white-space: nowrap; }
+
+        /* Width is the animated property on both the rule and the payoff wipe --
+           a real rendered pixel change, and `width` is inside the engine's
+           supported GSAP property set (clipPath is not). */
+        .rule { height: 8px; background: var(--celadon); width: 0; flex: 0 0 auto; }
+
+        /* Payoff: paper on ink measures 16.1:1. The bar reveals by growing its
+           own width with overflow:hidden, so the nowrap text inside is never
+           squashed the way a scaleX would squash it. */
+        .payoff { flex: 0 0 auto; align-self: flex-start; background: var(--ink);
+                  width: 0; overflow: hidden; height: 82px; }
+        .payoff span { display: block; font-family: var(--font-mono); font-size: 38px;
+                       line-height: 82px; padding: 0 26px; letter-spacing: 0.03em;
+                       color: var(--paper); text-transform: uppercase;
+                       white-space: nowrap; }
+
+        .hero { flex: 1 1 auto; min-height: 0; display: grid;
+                grid-template-columns: 1fr 400px; gap: 34px; align-items: end; }
+
+        .annot { display: flex; flex-direction: column; justify-content: flex-end;
+                 gap: 20px; padding-bottom: 6px; min-width: 0; }
+        .annot-row { font-family: var(--font-mono); font-size: 32px; line-height: 1.32;
+                     color: var(--ink-2); opacity: 0; }
+        .annot-row b { display: block; color: var(--ink); font-weight: 500; }
+        .annot-kr { font-family: var(--font-kr); }
+
+        .plate-panel { width: 400px; height: 765px; position: relative;
+                       overflow: hidden; background: #1A1A1A; }
+        .plate-zoom { position: absolute; inset: 0; }
+        .plate-zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* Debug overlay -- toggled by adding .debug-layout to #root, never
+           shipped on. Frame zero is checked for tint before every render. */
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout .plate-panel { outline: 2px solid #FFD400 !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="01-hook"
+           data-width="1080" data-height="1920" data-duration="4.000">
+        <div class="stage">
+          <p class="kicker" id="h-kicker">Korean skincare, decoded</p>
+
+          <h1 class="headline" id="h-word">EXOSOME</h1>
+          <div class="rule" id="h-rule"></div>
+
+          <div class="payoff" id="h-payoff" data-layout-allow-overflow><span>May not be what you think</span></div>
+
+          <div class="hero">
+            <div class="annot">
+              <p class="annot-row" id="h-a1"><b>[ FIG. 01 ]</b>Serum, as sold</p>
+              <p class="annot-row" id="h-a2"><b class="annot-kr">세럼 · 30mL</b>A category. A volume.<br>Nothing else.</p>
+            </div>
+            <figure class="plate-panel">
+              <div class="plate-zoom" id="h-zoom" data-layout-allow-overflow>
+                <img src="assets/plates/01-serum-bottle-crop.png" alt=""
+                     width="900" height="1720" loading="eager" decoding="sync">
+              </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero is COMPOSED: the headline and the bottle are already at
+        // rest (their hidden siblings start hidden in CSS, not via a tl.set at
+        // position 0, which the engine's lint flags and which does not reliably
+        // render at exactly t=0). Only kicker/annotations/payoff arrive, so the
+        // literal t=0 export frame is a finished poster, not a mid-fade.
+
+        // Continuous Ken Burns for the whole scene -- the plate is never a
+        // motionless still (asset-protocol rule 5). Clipped by .plate-panel's
+        // own overflow:hidden, so it cannot move the safe box.
+        tl.fromTo('#h-zoom', { scale: 1.0 }, { scale: 1.080, duration: 4.0, ease: 'none' }, 0);
+
+        // 0.20 kicker, 0.45/0.72 annotations -- a staggered read down the left
+        // column while the voice says "your exosome serum".
+        tl.to('#h-kicker', { opacity: 1, duration: 0.35 }, 0.20);
+        tl.fromTo('#h-a1', { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.40 }, 0.45);
+        tl.fromTo('#h-a2', { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: 0.40 }, 0.72);
+
+        // 1.35 THE PAYOFF -- an ink bar struck across, inside the ~2s retention
+        // window. Width (not opacity) so it reads as a bar being drawn.
+        tl.to('#h-payoff', { width: 620, duration: 0.44, ease: 'power2.inOut' }, 1.35);
+
+        // 2.30 celadon rule draws under the word; 3.05 a slow settle push keeps
+        // the back half of the scene alive rather than frozen.
+        tl.to('#h-rule', { width: 620, duration: 0.42, ease: 'power2.inOut' }, 2.25);
+        // 2.85 the annotations step back so the payoff owns the frame -- a real
+        // state change in the scene's back half, not idle decoration.
+        // opacity + a small DOWNWARD drift, never x: this block sits on the
+        // left safe edge, and an x:-10 step-back put 472px of ink at x=62.
+        tl.to(['#h-a1','#h-a2'], { opacity: 0.42, y: 10, duration: 0.36,
+                                   ease: 'power2.inOut', stagger: 0.08 }, 2.85);
+        tl.to('#h-payoff', { x: 26, duration: 0.55, ease: 'power2.out' }, 3.30);
+
+        tl.to({}, { duration: 4.000 }, 0); // full-span anchor -- always last
+        window.__timelines["01-hook"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

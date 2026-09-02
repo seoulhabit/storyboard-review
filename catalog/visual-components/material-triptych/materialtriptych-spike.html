@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MaterialTriptych — catalog spike</title>
+<style>
+  /* Standalone single-file spike with its own :root, per catalog.md §1.
+     Tokens transcribed from the SeoulHabit video design system. */
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1;
+    --ink-2:#6B6B6B; --ink-3:#9C978D;
+    --celadon:#93B896; --moss:#4F6B52; --rule-strong:#D9D3C6;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    --r-2:6px;
+  }
+  body { margin:0; background:#5A5A5A; font-family:var(--font-body);
+         display:flex; align-items:flex-start; justify-content:center; padding:24px; }
+
+  /* 9:16 canvas -- this component is authored for the Shorts lane, and its
+     safe-area padding is part of the mechanism, not a demo wrapper. */
+  .stage-9x16 { position:relative; width:1080px; height:1920px; overflow:hidden;
+                background:var(--paper); transform-origin: top center; }
+  .stage { display:flex; flex-direction:column; justify-content:space-between;
+           height:1920px; padding:192px 162px 384px 72px; }
+
+  .head h1 { font-weight:800; font-size:76px; line-height:1.06; letter-spacing:-0.03em;
+             color:var(--ink); margin:0; }
+  .head .sub { font-family:var(--font-mono); font-size:32px; letter-spacing:0.1em;
+               text-transform:uppercase; color:var(--ink-2); margin:18px 0 0; opacity:0; }
+
+  /* THE MECHANISM, part 1: N equal columns. Three is the authored case; the
+     grid is `repeat(var(--n),1fr)` so 2 or 4 work without a layout rewrite. */
+  .trip { display:grid; grid-template-columns:repeat(var(--n,3),1fr); gap:30px; }
+  .cell { display:flex; flex-direction:column; gap:16px; opacity:0; }
+  .tile { width:100%; aspect-ratio:1/1; position:relative; overflow:hidden;
+          background:#E6E2DA; border:2px solid var(--rule-strong); }
+  /* Each tile's drift is clipped by the tile, so it can never reach the safe
+     box -- that is why this component needs no zoom-aware safe-area math. */
+  .tile-zoom { position:absolute; inset:0; display:flex; align-items:center;
+               justify-content:center; font-family:var(--font-mono);
+               font-size:34px; color:var(--ink-3); background:var(--mist); }
+  .cell-name { font-family:var(--font-mono); font-size:32px; letter-spacing:0.04em;
+               color:var(--ink); text-transform:uppercase; margin:0; }
+  .cell-sub  { font-family:var(--font-mono); font-size:32px; line-height:1.3;
+               color:var(--ink-2); margin:0; }
+
+  /* THE MECHANISM, part 2: a rail that first JOINS the columns, then is struck
+     through and dimmed. The rail proposes a relationship; the bar withdraws it. */
+  .rail { height:4px; background:var(--celadon); width:0; }
+  .rail-caps { display:flex; justify-content:space-between; margin-top:-9px; }
+  .rail-caps i { display:block; width:14px; height:14px; border-radius:50%;
+                 background:var(--celadon); opacity:0; }
+  .verdict { margin-top:30px; background:var(--ink); width:0; overflow:hidden; height:76px; }
+  .verdict span { display:block; font-family:var(--font-mono); font-size:34px;
+                  line-height:76px; padding:0 24px; letter-spacing:0.05em;
+                  color:var(--paper); text-transform:uppercase; white-space:nowrap; }
+
+  .close p { font-weight:800; font-size:52px; line-height:1.18; color:var(--ink);
+             opacity:0; margin:0; }
+  .close-foot { display:flex; justify-content:flex-end; margin-top:24px; }
+  .cite { width:max-content; font-family:var(--font-mono); font-size:32px;
+          letter-spacing:0.04em; color:var(--ink);
+          border:2px solid rgba(79,107,82,0.45); background:rgba(147,184,150,0.20);
+          border-radius:999px; padding:10px 22px; white-space:nowrap; opacity:0; }
+
+  .debug-bar { position:fixed; left:0; right:0; bottom:0; z-index:1000;
+               background:rgba(19,21,22,.92); color:var(--paper);
+               font-family:var(--font-mono); font-size:13px; padding:10px 16px;
+               display:flex; align-items:center; gap:12px; }
+  .debug-bar input[type="range"] { flex:1; }
+  .debug-bar button { font-family:inherit; font-size:12px; padding:6px 12px;
+                      border-radius:var(--r-2); border:1px solid var(--ink-3);
+                      background:transparent; color:var(--paper); cursor:pointer; }
+</style>
+</head>
+<body>
+  <div class="stage-9x16" id="stage9">
+    <div class="stage">
+      <div class="head">
+        <h1 id="mt-h">One word.<br>Three materials.</h1>
+        <p class="sub" id="mt-sub">All sold under the same name</p>
+      </div>
+
+      <div class="trip" id="mt-trip"></div>
+
+      <div>
+        <div class="rail" id="mt-rail"></div>
+        <div class="rail-caps" id="mt-caps"></div>
+        <div class="verdict" id="mt-verdict"><span id="mt-verdict-t">Evidence does not transfer</span></div>
+      </div>
+
+      <div class="close">
+        <p id="mt-close">Proof for one is not<br>proof for the others.</p>
+        <div class="close-foot"><span class="cite" id="mt-cite">Journal · Year</span></div>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+// ---- FIELD CONTRACT -------------------------------------------------------
+// Swap this object. `items` may hold 2-4 entries; the grid and every stagger
+// derive from items.length, so nothing else needs editing.
+var DATA = {
+  headline: "One word.<br>Three materials.",
+  sub:      "All sold under the same name",
+  items: [
+    { name: "Cell-derived", sub: "stem cell<br>platelet<br>milk", plate: null },
+    { name: "Plant",        sub: "leaf, root<br>extract",         plate: null },
+    { name: "Ferment",      sub: "bacteria<br>derived",           plate: null }
+  ],
+  verdict:  "Evidence does not transfer",
+  close:    "Proof for one is not<br>proof for the others.",
+  citation: "Journal · Year"
+};
+
+var RAIL_W = 846;          // safe content width at 1080 with 72/162 side padding
+var TOTAL  = 13.5;         // authored duration; every beat below is inside it
+
+// ---- build ---------------------------------------------------------------
+var trip = document.getElementById("mt-trip");
+var caps = document.getElementById("mt-caps");
+trip.style.setProperty("--n", DATA.items.length);
+document.getElementById("mt-h").innerHTML   = DATA.headline;
+document.getElementById("mt-sub").innerHTML = DATA.sub;
+document.getElementById("mt-verdict-t").textContent = DATA.verdict;
+document.getElementById("mt-close").innerHTML = DATA.close;
+document.getElementById("mt-cite").textContent = DATA.citation;
+
+DATA.items.forEach(function (it, i) {
+  var c = document.createElement("div");
+  c.className = "cell"; c.id = "mt-c" + i;
+  var inner = it.plate
+    ? '<img src="' + it.plate + '" alt="" width="600" height="600" loading="eager" decoding="sync" ' +
+      'style="width:100%;height:100%;object-fit:cover;display:block">'
+    : "PLATE " + (i + 1);
+  c.innerHTML = '<div class="tile"><div class="tile-zoom" id="mt-z' + i + '">' + inner + '</div></div>' +
+                '<p class="cell-name">' + it.name + '</p>' +
+                '<p class="cell-sub">'  + it.sub  + '</p>';
+  trip.appendChild(c);
+  var cap = document.createElement("i"); cap.id = "mt-cap" + i; caps.appendChild(cap);
+});
+
+// ---- timeline: paused, seek-driven, no wall clock -------------------------
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+var N = DATA.items.length;
+
+// Independent drifts, deliberately not in lockstep, so N tiles read as N
+// separate materials rather than one sprite sheet. Bounded, never infinite.
+DATA.items.forEach(function (_, i) {
+  tl.fromTo("#mt-z" + i, { scale: 1.0 },
+            { scale: 1.04 + i * 0.012, duration: TOTAL, ease: i % 2 ? "sine.inOut" : "none" }, 0);
+});
+
+tl.to("#mt-sub", { opacity: 1, duration: 0.34, ease: "none" }, 0.18);
+
+// 1. the materials arrive one at a time, each on its own name in the narration
+DATA.items.forEach(function (_, i) {
+  tl.fromTo("#mt-c" + i, { opacity: 0, scale: 0.92, y: 18 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.52, ease: "back.out(1.6)" }, 0.55 + i * 1.5);
+});
+
+// 2. the rail JOINS them -- the proposition that evidence flows between them
+var railAt = 0.55 + N * 1.5 + 0.25;
+tl.to("#mt-rail", { width: RAIL_W, duration: 0.70, ease: "power2.inOut" }, railAt);
+DATA.items.forEach(function (_, i) {
+  tl.to("#mt-cap" + i, { opacity: 1, duration: 0.22, ease: "none" }, railAt + 0.12 + i * 0.28);
+});
+
+// 3. the bar strikes across and the rail dims -- the proposition is withdrawn.
+//    This is the beat the component exists for; everything above sets it up.
+var strikeAt = railAt + 2.0;
+tl.to("#mt-verdict", { width: 640, duration: 0.52, ease: "power2.inOut" }, strikeAt);
+tl.to(["#mt-rail"].concat(DATA.items.map(function (_, i) { return "#mt-cap" + i; })),
+      { opacity: 0.22, duration: 0.45, ease: "none" }, strikeAt + 0.25);
+
+tl.fromTo("#mt-close", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.48 }, strikeAt + 1.6);
+tl.fromTo("#mt-cite",  { opacity: 0, scale: 0.94 },
+          { opacity: 1, scale: 1, duration: 0.40, ease: "back.out(2)" }, strikeAt + 3.0);
+tl.to("#mt-verdict", { x: 16, duration: 1.40, ease: "sine.inOut" }, strikeAt + 4.0);
+
+tl.to({}, { duration: TOTAL }, 0);   // full-span anchor -- always last
+window.__timelines["material-triptych"] = tl;
+
+function renderFrame(t) { tl.seek(t); }
+
+// Fit the 1080x1920 canvas to the viewport for review.
+(function fit() {
+  var s = Math.min((window.innerHeight - 90) / 1920, (window.innerWidth - 48) / 1080);
+  document.getElementById("stage9").style.transform = "scale(" + s + ")";
+  document.body.style.height = (1920 * s + 90) + "px";
+})();
+window.addEventListener("resize", function () { location.reload(); });
+
+// Scrubber loads PRE-APPLIED: a reader should not have to discover a debug
+// flag by accident to see that this component has a time axis at all.
+(function () {
+  var bar = document.createElement("div");
+  bar.className = "debug-bar";
+  bar.innerHTML = '<button id="dbg-0">t=0</button>' +
+    '<input id="dbg-range" type="range" min="0" max="' + TOTAL + '" step="0.01" value="0">' +
+    '<span id="dbg-label">0.00</span><span>/ ' + TOTAL.toFixed(2) + 's</span>';
+  document.body.appendChild(bar);
+  var range = document.getElementById("dbg-range"), label = document.getElementById("dbg-label");
+  range.addEventListener("input", function () {
+    renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2);
+  });
+  document.getElementById("dbg-0").addEventListener("click", function () {
+    range.value = 0; renderFrame(0); label.textContent = "0.00";
+  });
+  renderFrame(0);
+})();
+</script>
+</body>
+</html>

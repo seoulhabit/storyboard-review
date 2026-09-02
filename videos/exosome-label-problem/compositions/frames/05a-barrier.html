@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        h1, h2, h3, p, figure, blockquote, ul, ol, dl { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        /* PAPER GROUND. --coral is spent HERE and in 05b only -- one refusal,
+           carried across the split. Coral measures 2.95:1 as text on paper, so
+           it is never read-type: it is a fill, and any bar carries INK text. */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --ink-3: #9C978D;
+          --coral: #C97A5C; --rule-strong: #D9D3C6; --brick: #E4DECF; --brick-edge: #9C927C;
+          --mortar: #8C8371;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, explicit 1920px height, real --safe-*
+              padding, space-between across three zones (head / wall / foot).
+           2. The wall is FULL-BLEED across the safe width -- a single dominant
+              object. 05b answers it with a two-column compare, so the two
+              halves of the old scene never share a structure even though they
+              share a ground.
+           3. Channels and shards are absolute INSIDE .wall's own
+              overflow:hidden context (the sanctioned exception). Nothing else
+              is positioned, and no transform sits outside the padded box, so
+              this scene needs no --safe-*-zoomed math.
+           4. Split out of the original 12.8s 05-barrier at 44.480s, a real
+              silence gap between caption cues 15 and 16. */
+        .stage {
+          display: flex; flex-direction: column; justify-content: space-between;
+          height: 1920px;
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+        }
+
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--ink-2); opacity: 0; }
+        .head h1 { font-weight: 800; font-size: 74px; line-height: 1.08;
+                   letter-spacing: -0.03em; color: var(--ink); margin-top: 18px; }
+
+        /* The wall is the scene's ONE dominant object and now fills the safe column:
+   at 540px it occupied ~40% of the content box, which left big dead bands
+   above and below and made even three driven channels and three falling
+   shards a tiny fraction of the canvas (measured 2% active steps). This is
+   the 9:16 under-fill defect, not a metric artifact. */
+        .wall { position: relative; overflow: hidden; height: 780px; background: var(--mortar);
+                border: 3px solid var(--rule-strong); padding: 30px 0;
+                display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+        .course { display: flex; gap: 12px; padding: 0 16px; }
+        .course.off { padding-left: 118px; }
+        .brick { height: 230px; flex: 1 1 auto; background: var(--brick);
+                 border: 3px solid var(--brick-edge); }
+        .chan { position: absolute; top: 0; width: 46px; height: 0; background: var(--coral); }
+        #ba-ch1 { left: 160px; } #ba-ch2 { left: 392px; } #ba-ch3 { left: 620px; }
+        .shard { opacity: 0; position: absolute; background: var(--brick);
+                 border: 3px solid var(--brick-edge); transform-origin: 50% 50%; }
+        #ba-sh1 { left: 236px; top: 92px;  width: 168px; height: 150px; }
+        #ba-sh2 { left: 470px; top: 330px; width: 146px; height: 150px; }
+        #ba-sh3 { left: 106px; top: 566px; width: 152px; height: 150px; }
+
+        .foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+        /* Opacity-only entrances in this foot zone. Its bottom edge sits ON the
+           1536 safe line, so a y:20 entrance put 6px of ink past it for the
+           length of the tween -- fix the mechanism, never pad the margin. */
+        .lab { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.06em;
+               text-transform: uppercase; color: var(--ink); opacity: 0; }
+        .lab-sub { font-family: var(--font-mono); font-size: 32px; font-weight: 500;
+                   color: var(--ink-2); margin-top: 10px; line-height: 1.3; opacity: 0; }
+        .stamp { transform-origin: 100% 100%; background: var(--coral); width: max-content;
+                 font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                 color: var(--ink); text-transform: uppercase; padding: 14px 22px;
+                 white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout .wall { outline: 2px solid #FFD400 !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="05a-barrier"
+           data-width="1080" data-height="1920" data-duration="8.380">
+        <div class="stage">
+
+          <div class="head">
+            <p class="kicker" id="ba-kicker">There&rsquo;s another problem</p>
+            <h1>Most of that research<br>went through the barrier.</h1>
+          </div>
+
+          <div class="wall">
+            <div class="course"><i class="brick"></i><i class="brick"></i><i class="brick"></i></div>
+            <div class="course off"><i class="brick"></i><i class="brick"></i></div>
+            <div class="course"><i class="brick"></i><i class="brick"></i><i class="brick"></i></div>
+            <div class="chan" id="ba-ch1"></div>
+            <div class="chan" id="ba-ch2"></div>
+            <div class="chan" id="ba-ch3"></div>
+            <div class="shard" id="ba-sh1" data-layout-allow-overflow></div>
+            <div class="shard" id="ba-sh2" data-layout-allow-overflow></div>
+            <div class="shard" id="ba-sh3" data-layout-allow-overflow></div>
+          </div>
+
+          <div class="foot">
+            <div><p class="lab" id="ba-lab">In the studies</p>
+                 <p class="lab-sub" id="ba-lab2">Microneedling or laser<br>opens the skin first</p></div>
+            <span class="stamp" id="ba-stamp">Barrier opened</span>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // The headline and the wall are composed at t=0. This scene's argument
+        // is an event happening TO a barrier that was already standing, so the
+        // barrier can never be the thing that fades in.
+
+        // Shards start hidden in CSS, not via tl.set(...,0): a zero-duration
+        // set at position 0 does not render while the playhead sits exactly at
+        // 0, so frame 0 would show them un-hidden. The skill's tl.set rule is
+        // for elements hit by multiple fromTo() calls, which would render at the
+        // first fromTo's "from" value on a cold seek -- these use to() only, so
+        // there is no "from" to bleed through.
+
+        tl.to('#ba-kicker', { opacity: 1, duration: 0.28, ease: 'none' }, 0.15);
+        tl.to('#ba-lab',  { opacity: 1, duration: 0.30, ease: 'none' }, 0.95);
+        tl.to('#ba-lab2', { opacity: 1, duration: 0.30, ease: 'none' }, 1.25);
+
+        // 1.90-3.20 THE PUNCTURE: three channels drive down through the courses,
+        // landing under "microneedling or laser".
+        tl.to('#ba-ch1', { height: 774, duration: 0.18, ease: 'power3.in' }, 1.90);
+        tl.to('#ba-ch2', { height: 774, duration: 0.18, ease: 'power3.in' }, 2.55);
+        tl.to('#ba-ch3', { height: 774, duration: 0.18, ease: 'power3.in' }, 3.20);
+
+        // 3.40-5.10 THE BREACH: three fragments detach and fall away. This is
+        // BarrierWall's own shard mechanism, adapted -- the barrier is opened,
+        // not merely marked.
+        [['#ba-sh1', 3.85, -78, 330, -22],
+         ['#ba-sh2', 4.45,  64, 300,  26],
+         ['#ba-sh3', 5.05, -46, 260, -16]].forEach(function (g) {
+          tl.to(g[0], { opacity: 1, duration: 0.10, ease: 'none' }, g[1]);
+          tl.to(g[0], { x: g[2], y: g[3], rotation: g[4], duration: 0.42, ease: 'power2.in' }, g[1] + 0.05);
+        });
+
+        // 5.55 the coral stamp lands; 6.40 the channels widen once more; 7.30 a
+        // final settle. The scene's back half keeps producing real change.
+        tl.fromTo('#ba-stamp', { opacity: 0, scale: 0.88 },
+                               { opacity: 1, scale: 1, duration: 0.22, ease: 'back.out(2)' }, 5.95);
+        tl.to(['#ba-ch1','#ba-ch2','#ba-ch3'], { scaleX: 2.4, duration: 0.20, yoyo: true,
+                                                 repeat: 1, ease: 'sine.inOut', stagger: 0.14 }, 6.70);
+        tl.to('#ba-stamp', { y: -18, duration: 0.32, ease: 'power2.out' }, 7.60);
+
+        tl.to({}, { duration: 8.380 }, 0); // full-span anchor -- always last
+        window.__timelines["05a-barrier"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

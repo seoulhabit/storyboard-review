@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* UA MARGIN RESET -- load-bearing, not cosmetic. Without it the browser
+           default margins silently inflate every fixed-height flex stack:
+           h1 carries margin .67em (= 100px at this scene's display size), p
+           carries 1em, and figure carries `1em 40px`. Measured on the round-1
+           render, that pushed 01/05/07's hero panel 64-75px BELOW the safe
+           bottom line and the figure 39px PAST the right line -- a hard
+           safe-area gate failure -- while the scenes still looked plausible in
+           isolation. `gap` on the flex column does the spacing here, so every
+           one of these margins is unwanted. */
+        h1, h2, h3, p, figure, blockquote, ul, ol, dl { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        /* Tokens inlined from assets/tokens/tokens.css (single source of truth).
+           INK GROUND -- secondary text uses --ink-2-dark (5.5:1), never the
+           paper-scoped --ink-2 (3.44:1 here). */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-soft: #211F1B;
+          --ink-2-dark: #878B8C;
+          --celadon: #93B896; --aqua: #59B8AE; --rule-dark: #333333;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, explicit 1920px height, real --safe-*
+              padding, space-between across three zones (head / gates / foot).
+           2. .gates is a relatively-positioned flex column holding three rows;
+              the spine rail is the ONE absolute element and it is a child of
+              .gates (not of the clip), positioned against .gates' own box, so it
+              cannot reach the canvas edge. Each row is itself a 2-track grid
+              (numeral | question) so a longer question wraps without moving the
+              numeral.
+           3. A top-to-bottom vertical list is what makes this scene structurally
+              distinct from scene 03's tile row and scene 04's branch tree.
+           4. No transform sits outside the padded box -- no --safe-*-zoomed math. */
+        .stage {
+          display: flex; flex-direction: column; justify-content: space-between;
+          height: 1920px;
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+        }
+
+        .head { flex: 0 0 auto; }
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--celadon); opacity: 0; }
+        .head h1 { font-weight: 800; font-size: 82px; line-height: 1.06;
+                   letter-spacing: -0.03em; color: var(--paper); margin-top: 20px; }
+
+        .gates { flex: 0 0 auto; position: relative; padding-left: 128px;
+                 display: flex; flex-direction: column; gap: 34px; }
+        .spine { position: absolute; left: 49px; top: 8px; width: 4px; height: 0;
+                 background: var(--rule-dark); }
+        .row { display: grid; grid-template-columns: 100px 1fr; gap: 28px;
+               align-items: start; margin-left: -128px; opacity: 0; }
+        /* TRANSFORM-ORIGIN IS A SAFE-AREA CONTROL HERE, not styling. Every
+           scale entrance below uses a back.out() ease, which overshoots PAST
+           1.0 before settling. On an element whose box already touches a safe
+           edge, that overshoot walks its edge into the reserved zone for the
+           length of the tween -- measured on the round-2 render as 5-8px, i.e.
+           ~500px of masked ink, and a hard safe-area gate failure. Anchoring
+           the origin to the touched edge makes the overshoot grow INWARD, which
+           keeps the pop and removes the geometry risk. */
+        .num { transform-origin: 0% 50%; width: 100px; height: 100px; border: 3px solid var(--celadon);
+               background: var(--ink); color: var(--celadon);
+               font-family: var(--font-mono); font-size: 40px; display: flex;
+               align-items: center; justify-content: center; }
+        /* The ROW never translates: it is anchored to the left safe edge, and
+           an x:-26 entrance on it put ink at x=46 for the whole tween (measured
+           400px of masked ink in the reserved zone on the round-3 render). The
+           slide lives on .qbody instead, which starts at x=200. */
+        .qbody { min-width: 0; }
+        .q { font-weight: 800; font-size: 48px; line-height: 1.2; color: var(--paper);
+             padding-top: 8px; }
+        .q-mark { transform-origin: 0% 50%; height: 5px; width: 0; background: var(--aqua); margin-top: 16px; }
+
+        .foot { flex: 0 0 auto; }
+        .note { font-family: var(--font-mono); font-size: 32px; line-height: 1.34;
+                color: var(--ink-2-dark); opacity: 0; }
+        .foot-row { display: flex; align-items: center; justify-content: flex-end;
+                    margin-top: 22px; }
+        .cite { transform-origin: 100% 50%; right: auto; width: max-content; flex: 0 0 auto;
+                font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: var(--paper); border: 2px solid rgba(147,184,150,0.55);
+                background: rgba(147,184,150,0.14); border-radius: 999px;
+                padding: 10px 22px; white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="06-questions"
+           data-width="1080" data-height="1920" data-duration="10.300">
+        <div class="stage">
+
+          <div class="head">
+            <p class="kicker" id="q-kicker">Before you trust the claim</p>
+            <h1>Ask three<br>questions.</h1>
+          </div>
+
+          <div class="gates">
+            <div class="spine" id="q-spine"></div>
+
+            <div class="row" id="q-r1">
+              <div class="num" id="q-n1">01</div>
+              <div class="qbody" id="q-b1"><p class="q">What is the source?</p><div class="q-mark" id="q-m1"></div></div>
+            </div>
+
+            <div class="row" id="q-r2">
+              <div class="num" id="q-n2">02</div>
+              <div class="qbody" id="q-b2"><p class="q">Was the finished formula tested on people?</p><div class="q-mark" id="q-m2"></div></div>
+            </div>
+
+            <div class="row" id="q-r3">
+              <div class="num" id="q-n3">03</div>
+              <div class="qbody" id="q-b3"><p class="q">Was it tested on intact skin?</p><div class="q-mark" id="q-m3"></div></div>
+            </div>
+          </div>
+
+          <div class="foot">
+            <p class="note" id="q-note">A 2024 review of topical use<br>found nine studies. None FDA approved.</p>
+            <div class="foot-row">
+              <span class="cite" id="q-cite">Aesthet Surg J Open Forum · 2024</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Headline composed at t=0. The spine then draws downward and each gate
+        // opens as it passes -- the motion carries the sequence the viewer is
+        // being asked to apply in order, which is the whole point of a checklist
+        // rather than three simultaneous bullets.
+        tl.to('#q-kicker', { opacity: 1, duration: 0.32, ease: 'none' }, 0.15);
+        tl.to('#q-spine', { height: 620, duration: 4.60, ease: 'none' }, 0.80);
+
+        // Each row slides in from the spine, then its aqua rule draws under the
+        // question -- two beats per gate, so a 10.3s scene never coasts.
+        tl.fromTo('#q-r1', { opacity: 0 }, { opacity: 1, duration: 0.30 }, 1.15);
+        tl.fromTo('#q-b1', { x: -40 }, { x: 0, duration: 0.44, ease: 'power3.out' }, 1.15);
+        tl.to('#q-m1', { width: 300, duration: 0.40, ease: 'power2.inOut' }, 1.75);
+
+        tl.to('#q-r1', { opacity: 0.42, duration: 0.34, ease: 'power2.inOut' }, 2.75);
+        tl.fromTo('#q-r2', { opacity: 0 }, { opacity: 1, duration: 0.30 }, 2.90);
+        tl.fromTo('#q-b2', { x: -40 }, { x: 0, duration: 0.44, ease: 'power3.out' }, 2.90);
+        tl.to('#q-m2', { width: 560, duration: 0.46, ease: 'power2.inOut' }, 3.55);
+
+        tl.to('#q-r2', { opacity: 0.42, duration: 0.34, ease: 'power2.inOut' }, 4.90);
+        tl.fromTo('#q-r3', { opacity: 0 }, { opacity: 1, duration: 0.30 }, 5.05);
+        tl.fromTo('#q-b3', { x: -40 }, { x: 0, duration: 0.44, ease: 'power3.out' }, 5.05);
+        tl.to('#q-m3', { width: 470, duration: 0.44, ease: 'power2.inOut' }, 5.70);
+
+        // 6.80 / 7.70 the qualifier and its citation.
+        tl.fromTo('#q-note', { opacity: 0 }, { opacity: 1, duration: 0.42 }, 6.80);
+        tl.fromTo('#q-cite', { opacity: 0, scale: 0.94 },
+                             { opacity: 1, scale: 1, duration: 0.40, ease: 'back.out(2)' }, 7.70);
+
+        // 8.60 question 03 is the load-bearing one -- a single bounded emphasis
+        // pulse marks it without adding a second accent colour to the frame.
+        // The pulse is on the NUMERAL CHIP and its rule, never on the whole
+        // row: scaling the row about its centre walked its left edge from
+        // x=72 out to x=57, past the safe line, for the full 1.2s of the pulse
+        // (measured on the round-1 render). Both of these sit well inside the
+        // safe box, so the same emphasis carries no geometry risk.
+        // 7.10 all three come back up together: the viewer is meant to leave
+        // with the whole checklist, not just the last item.
+        tl.to(['#q-r1','#q-r2'], { opacity: 1, duration: 0.40, ease: 'power2.inOut',
+                                   stagger: 0.10 }, 7.10);
+        tl.to('#q-n3', { scale: 1.14, duration: 0.45, yoyo: true, repeat: 1,
+                         ease: 'sine.inOut' }, 8.40);
+        tl.to('#q-m3', { scaleX: 1.18, duration: 0.45, yoyo: true, repeat: 1,
+                         ease: 'sine.inOut' }, 8.40);
+        tl.to(['#q-n1','#q-n2','#q-n3'], { y: -14, duration: 0.55, ease: 'power2.out',
+                                           stagger: 0.09 }, 9.20);
+
+        tl.to({}, { duration: 10.300 }, 0); // full-span anchor -- always last
+        window.__timelines["06-questions"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

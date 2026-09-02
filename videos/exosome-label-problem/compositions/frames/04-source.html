@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* UA MARGIN RESET -- load-bearing, not cosmetic. Without it the browser
+           default margins silently inflate every fixed-height flex stack:
+           h1 carries margin .67em (= 100px at this scene's display size), p
+           carries 1em, and figure carries `1em 40px`. Measured on the round-1
+           render, that pushed 01/05/07's hero panel 64-75px BELOW the safe
+           bottom line and the figure 39px PAST the right line -- a hard
+           safe-area gate failure -- while the scenes still looked plausible in
+           isolation. `gap` on the flex column does the spacing here, so every
+           one of these margins is unwanted. */
+        h1, h2, h3, p, figure, blockquote, ul, ol, dl { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        /* Tokens inlined from assets/tokens/tokens.css (single source of truth).
+           INK GROUND -- secondary text uses --ink-2-dark (5.5:1), never the
+           paper-scoped --ink-2, which measures 3.44:1 here. */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-soft: #211F1B;
+          --ink-2-dark: #878B8C;
+          --celadon: #93B896; --aqua: #59B8AE; --rule-dark: #333333;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, explicit 1920px height, real --safe-*
+              padding, space-between across three zones (head / tree / foot).
+           2. The tree is a centred flex column: parent chip, a vertical rail, a
+              horizontal span rail, three vertical rails on a 3-track grid, then
+              three child chips on the SAME 3-track grid -- so the drop rails and
+              the chips they point at share one grid and stay aligned under any
+              string-length change. This branch structure is what keeps scene 04
+              distinct from scene 03's tile grid and scene 06's vertical list.
+           3. Nothing is absolutely positioned and no transform sits outside the
+              padded box, so this scene needs no --safe-*-zoomed math. */
+        .stage {
+          display: flex; flex-direction: column; justify-content: space-between;
+          height: 1920px;
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+        }
+
+        .head { flex: 0 0 auto; }
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--celadon); opacity: 0; }
+        .head h1 { font-weight: 800; font-size: 86px; line-height: 1.06;
+                   letter-spacing: -0.03em; color: var(--paper); margin-top: 20px; }
+
+        .tree { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; }
+        /* Scaled up: at 34px chips and 62px drop rails this tree occupied barely a
+           third of the safe column, so its whole build-out registered as ~1% of
+           steps carrying visible change. The mechanism was right; the scale was
+           the defect -- the skill's named 9:16 under-fill failure, which reads
+           as "small fonts" even when the type clears the floor. */
+        .chip { transform-origin: 50% 50%; border: 4px solid var(--celadon); background: rgba(147,184,150,0.14);
+                color: var(--paper); font-family: var(--font-mono); font-size: 46px;
+                letter-spacing: 0.05em; text-transform: uppercase;
+                padding: 28px 46px; white-space: nowrap; }
+        .chip-parent { opacity: 0; }
+        .rail-v { width: 6px; background: var(--rule-dark); height: 0; }
+        .rail-h { height: 6px; background: var(--rule-dark); width: 0; }
+        .drops { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr);
+                 justify-items: center; }
+        .drops .rail-v { background: var(--rule-dark); }
+        .kids { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr);
+                gap: 20px; justify-items: center; margin-top: 0; }
+        /* TRANSFORM-ORIGIN IS A SAFE-AREA CONTROL HERE, not styling. Every
+           scale entrance below uses a back.out() ease, which overshoots PAST
+           1.0 before settling. On an element whose box already touches a safe
+           edge, that overshoot walks its edge into the reserved zone for the
+           length of the tween -- measured on the round-2 render as 5-8px, i.e.
+           ~500px of masked ink, and a hard safe-area gate failure. Anchoring
+           the origin to the touched edge makes the overshoot grow INWARD, which
+           keeps the pop and removes the geometry risk. */
+        .kids .kid { transform-origin: 50% 50%; }
+        .kids > .kid:first-child { transform-origin: 0% 50%; }
+        .kids > .kid:last-child  { transform-origin: 100% 50%; }
+        .kid { opacity: 0; border: 4px solid var(--celadon); background: rgba(147,184,150,0.10);
+               color: var(--paper); font-family: var(--font-mono); font-size: 40px;
+               letter-spacing: 0.04em; text-transform: uppercase; text-align: center;
+               padding: 34px 10px; width: 100%; }
+
+        .foot { flex: 0 0 auto; }
+        .qual { font-weight: 800; font-size: 58px; line-height: 1.18; color: var(--paper);
+                opacity: 0; }
+        .qual b { color: var(--aqua); font-weight: 800; }
+        /* Stacked for the same reason as 02-what's .turn-foot. */
+        .foot-row { display: flex; flex-direction: column; align-items: flex-start;
+                    gap: 18px; margin-top: 26px; }
+        .note { font-family: var(--font-mono); font-size: 32px; line-height: 1.3;
+                color: var(--ink-2-dark); opacity: 0; }
+        .cite { transform-origin: 100% 50%; right: auto; width: max-content; flex: 0 0 auto;
+                font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: var(--paper); border: 2px solid rgba(147,184,150,0.55);
+                background: rgba(147,184,150,0.14); border-radius: 999px;
+                padding: 10px 22px; white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="04-source"
+           data-width="1080" data-height="1920" data-duration="9.550">
+        <div class="stage">
+
+          <div class="head">
+            <p class="kicker" id="s-kicker">Zoom in &mdash; cell-derived</p>
+            <h1>Not one thing<br>either.</h1>
+          </div>
+
+          <div class="tree">
+            <div class="chip chip-parent" id="s-parent">Cell-derived</div>
+            <div class="rail-v" id="s-drop0"></div>
+            <div class="rail-h" id="s-span"></div>
+            <div class="drops">
+              <div class="rail-v" id="s-d1"></div>
+              <div class="rail-v" id="s-d2"></div>
+              <div class="rail-v" id="s-d3"></div>
+            </div>
+            <div class="kids">
+              <div class="kid" id="s-k1">Stem cell</div>
+              <div class="kid" id="s-k2">Platelet</div>
+              <div class="kid" id="s-k3">Milk</div>
+            </div>
+          </div>
+
+          <div class="foot">
+            <p class="qual" id="s-qual">Different origin,<br><b>different contents.</b></p>
+            <div class="foot-row">
+              <p class="note" id="s-note">One review counted all<br>four source types in use.</p>
+              <span class="cite" id="s-cite">Dermatol Pract Concept · 2026</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Headline is composed at t=0. The tree then draws itself in reading
+        // order -- parent, trunk, span, drops, children -- so the motion IS the
+        // argument (one label opening into three real sources), not decoration.
+
+        tl.to('#s-kicker', { opacity: 1, duration: 0.32, ease: 'none' }, 0.15);
+
+        tl.fromTo('#s-parent', { opacity: 0, y: -16 },
+                               { opacity: 1, y: 0, duration: 0.42 }, 0.95);
+
+        // Trunk and span draw as real height/width changes -- both inside the
+        // engine's supported GSAP property set.
+        tl.to('#s-drop0', { height: 150, duration: 0.22, ease: 'power2.inOut' }, 1.55);
+        tl.to('#s-span',  { width: 620, duration: 0.34, ease: 'power2.inOut' }, 1.92);
+
+        // Three drops fall, each immediately followed by its chip -- the pairs
+        // land on "stem cells", "platelets", "even from milk".
+        tl.to('#s-d1', { height: 128, duration: 0.28, ease: 'power2.in' }, 2.55);
+        tl.fromTo('#s-k1', { opacity: 0, scale: 0.94 },
+                           { opacity: 1, scale: 1, duration: 0.36, ease: 'back.out(1.8)' }, 2.80);
+
+        tl.to('#s-d2', { height: 128, duration: 0.28, ease: 'power2.in' }, 3.40);
+        tl.fromTo('#s-k2', { opacity: 0, scale: 0.72, y: 40 },
+                           { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: 'back.out(1.7)' }, 3.65);
+        // the parent answers each child landing -- a second beat per pair
+        tl.to('#s-parent', { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1,
+                             ease: 'power2.inOut' }, 3.75);
+
+        tl.to('#s-d3', { height: 128, duration: 0.28, ease: 'power2.in' }, 4.25);
+        tl.fromTo('#s-k3', { opacity: 0, scale: 0.94 },
+                           { opacity: 1, scale: 1, duration: 0.36, ease: 'back.out(1.8)' }, 4.50);
+
+        // 5.60 the qualifier, 6.90 the note, 7.45 the citation -- the back half
+        // of the scene keeps arriving rather than holding.
+        tl.fromTo('#s-qual', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.46 }, 5.60);
+        tl.fromTo('#s-note', { opacity: 0 }, { opacity: 1, duration: 0.38 }, 6.90);
+        tl.fromTo('#s-cite', { opacity: 0, scale: 0.94 },
+                             { opacity: 1, scale: 1, duration: 0.38, ease: 'back.out(2)' }, 7.45);
+
+        // 8.10 a slow breath across the three children so the final 1.4s is not
+        // a frozen hold.
+        // 7.95-8.85 the three children brighten in turn, then the whole tree
+        // settles: real change through the scene's last 1.6s.
+        tl.to('#s-k1', { scale: 1.06, duration: 0.30, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 7.95);
+        tl.to('#s-k2', { scale: 1.06, duration: 0.30, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 8.25);
+        tl.to('#s-k3', { scale: 1.06, duration: 0.30, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 8.55);
+        tl.to(['#s-k1','#s-k2','#s-k3'], { y: -18, duration: 0.70, ease: 'power2.out',
+                                           stagger: 0.08 }, 8.85);
+
+        tl.to({}, { duration: 9.550 }, 0); // full-span anchor -- always last
+        window.__timelines["04-source"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

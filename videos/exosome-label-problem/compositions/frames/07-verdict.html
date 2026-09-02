@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        h1, h2, h3, p, figure, blockquote, ul, ol, dl { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        /* PAPER GROUND -- paper-scoped --ink-2 for secondary text (4.89:1). */
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --ink-3: #9C978D;
+          --celadon: #93B896; --moss: #4F6B52; --rule-strong: #D9D3C6;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, explicit 1920px height, real --safe-*
+              padding, space-between across four zones (kicker / field / field /
+              cite). No plate: this is the one late scene that is pure type, so
+              the cut into 08's brand lockup + hero plate reads as a change of
+              register rather than a repeat.
+           2. Both fields are plain blocks in the column, split by a bisector
+              rule that draws between them. The tint floods the INTERROGATED
+              side only -- the evidence half -- and there is no success colour
+              on the other.
+           3. Nothing is absolutely positioned and no transform sits outside the
+              padded box, so this scene needs no --safe-*-zoomed math.
+           4. Split out of the original 8.25s 07-verdict at 63.120s, a real
+              silence gap between caption cues 24 and 25, so the end card gets
+              its own beat instead of being crammed into this one. */
+        .stage {
+          display: flex; flex-direction: column; justify-content: space-between;
+          height: 1920px;
+          padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+        }
+
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--ink-2); opacity: 0; }
+
+        .field { opacity: 0; }
+        .field .lab { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.08em;
+                      text-transform: uppercase; color: var(--ink-2); }
+        .field .val { font-weight: 800; font-size: 152px; line-height: 1.0;
+                      letter-spacing: -0.04em; color: var(--ink); margin-top: 14px; }
+        /* Tint floods the interrogated side only. transform-origin pinned to the
+           left edge: this block sits on the left safe line, so any scale
+           emphasis must grow inward. */
+        .field.tinted { transform-origin: 0% 50%; background: rgba(147,184,150,0.22);
+                        padding: 22px 24px; margin-left: -24px; }
+
+        .bisector { height: 5px; background: var(--rule-strong); width: 0; }
+
+        .foot { display: flex; justify-content: flex-end; }
+        .cite { transform-origin: 100% 50%; width: max-content;
+                font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
+                color: var(--ink); border: 2px solid rgba(19,21,22,0.28);
+                background: rgba(19,21,22,0.06); border-radius: 999px;
+                padding: 10px 22px; white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="07-verdict"
+           data-width="1080" data-height="1920" data-duration="3.920">
+        <div class="stage">
+
+          <p class="kicker" id="vd-kicker">The verdict</p>
+
+          <div class="field" id="vd-f1">
+            <p class="lab">The biology</p>
+            <p class="val">Promising</p>
+          </div>
+
+          <div class="bisector" id="vd-bis"></div>
+
+          <div class="field tinted" id="vd-f2">
+            <p class="lab">The evidence</p>
+            <p class="val">Still<br>developing</p>
+          </div>
+
+          <div class="foot">
+            <span class="cite" id="vd-cite">Cureus · 2026</span>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Nothing is composed at t=0 here except the ground: this scene cuts in
+        // hard from 06's ink and its whole job is the two-part verdict landing
+        // in sequence, one clause per field, under the narration saying exactly
+        // those two things.
+        tl.to('#vd-kicker', { opacity: 1, duration: 0.24, ease: 'none' }, 0.10);
+
+        tl.fromTo('#vd-f1', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.34 }, 0.45);
+        tl.to('#vd-bis', { width: 846, duration: 0.42, ease: 'power2.inOut' }, 1.10);
+        tl.fromTo('#vd-f2', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.34 }, 1.60);
+
+        // 2.35 emphasis shifts from the promising half to the developing half --
+        // the verdict's actual point, landing as its own beat rather than being
+        // left for the viewer to infer from the tint alone.
+        tl.to('#vd-f1', { opacity: 0.45, duration: 0.36, ease: 'power2.inOut' }, 2.35);
+        tl.to('#vd-f2', { scale: 1.04, duration: 0.36, ease: 'power2.out' }, 2.35);
+
+        tl.fromTo('#vd-cite', { opacity: 0, scale: 0.94 },
+                              { opacity: 1, scale: 1, duration: 0.30, ease: 'back.out(2)' }, 2.95);
+        tl.to('#vd-f2', { scale: 1.0, duration: 0.45, ease: 'power2.inOut' }, 3.35);
+
+        tl.to({}, { duration: 3.920 }, 0); // full-span anchor -- always last
+        window.__timelines["07-verdict"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

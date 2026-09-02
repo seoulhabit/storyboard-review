@@ -1,0 +1,415 @@
+{
+  "slug": "2026-09-01-how-to-repair-skin-barrier",
+  "format": "short",
+  "fps": 30,
+  "canvas": {
+    "w": 1080,
+    "h": 1920
+  },
+  "vo_duration_s": 45.28,
+  "presenter": "kinetic-type",
+  "bg": "#101314",
+  "ink": "#F7F5F0",
+  "accent": "#59B8AE",
+  "muted": "#9B9A97",
+  "fonts": {
+    "family": "Inter",
+    "css": "'Inter', 'Noto Sans KR', system-ui, sans-serif",
+    "google_css2": "https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Noto+Sans+KR:wght@600;700&display=swap"
+  },
+  "safe_area": {
+    "top": 192,
+    "bottom": 384,
+    "right": 162,
+    "left": 72
+  },
+  "audio": {
+    "src": "assets/bgm/track-pulse.wav",
+    "volume": 0.3
+  },
+  "sections": [
+    {
+      "name": "hook",
+      "start": 0.0,
+      "end": 3.999
+    },
+    {
+      "name": "misconception",
+      "start": 3.999,
+      "end": 14.302
+    },
+    {
+      "name": "mechanism",
+      "start": 14.302,
+      "end": 39.993
+    },
+    {
+      "name": "application",
+      "start": 39.993,
+      "end": 45.28
+    }
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "duration": 3.999,
+      "section": "hook",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#59B8AE",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "head",
+          "text": "Is your skin actually sensitive?",
+          "intent": "head: Is your skin actually sensitive?",
+          "easing": "snap"
+        },
+        {
+          "offset": 1.4,
+          "dur": 0.45,
+          "role": "head",
+          "text": "Or is the barrier damaged?",
+          "intent": "head: Or is the barrier damaged?",
+          "easing": "snap"
+        },
+        {
+          "offset": 2.7,
+          "dur": 0.45,
+          "role": "kicker",
+          "text": "TWO DIFFERENT PROBLEMS",
+          "intent": "kicker: TWO DIFFERENT PROBLEMS",
+          "easing": "arrive"
+        }
+      ]
+    },
+    {
+      "id": "misc-a",
+      "start": 3.999,
+      "duration": 4.135,
+      "section": "misconception",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#59B8AE",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "body",
+          "text": "You reach for something gentler",
+          "intent": "body: You reach for something gentler",
+          "easing": "arrive"
+        },
+        {
+          "offset": 1.4,
+          "dur": 0.45,
+          "role": "body",
+          "text": "and keep exfoliating",
+          "intent": "body: and keep exfoliating",
+          "easing": "arrive"
+        },
+        {
+          "offset": 2.8,
+          "dur": 0.45,
+          "role": "head",
+          "text": "anyway.",
+          "intent": "head: anyway.",
+          "easing": "snap"
+        }
+      ]
+    },
+    {
+      "id": "misc-b",
+      "start": 8.134,
+      "duration": 6.168,
+      "section": "misconception",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#59B8AE",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "flag",
+          "text": "○ UNSOURCED — no record in this system",
+          "intent": "[K-2] concurrent unsourced flag",
+          "easing": "arrive"
+        },
+        {
+          "offset": 1.3,
+          "dur": 0.45,
+          "role": "body",
+          "text": "Stinging, tightness, flaking",
+          "intent": "body: Stinging, tightness, flaking",
+          "easing": "arrive"
+        },
+        {
+          "offset": 2.7,
+          "dur": 0.45,
+          "role": "body",
+          "text": "are commonly described as",
+          "intent": "body: are commonly described as",
+          "easing": "arrive"
+        },
+        {
+          "offset": 4.1,
+          "dur": 0.45,
+          "role": "head",
+          "text": "barrier damage.",
+          "intent": "head: barrier damage.",
+          "easing": "snap"
+        },
+        {
+          "offset": 5.2,
+          "dur": 0.45,
+          "role": "body",
+          "text": "Not a skin type.",
+          "intent": "body: Not a skin type.",
+          "easing": "arrive"
+        }
+      ]
+    },
+    {
+      "id": "ident",
+      "start": 14.302,
+      "duration": 3.796,
+      "section": "mechanism",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#59B8AE",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "head",
+          "text": "Centella asiatica",
+          "intent": "head: Centella asiatica",
+          "easing": "snap"
+        },
+        {
+          "offset": 1.3,
+          "dur": 0.45,
+          "role": "body",
+          "text": "병풀 · tiger grass",
+          "intent": "body: 병풀 · tiger grass",
+          "easing": "arrive"
+        },
+        {
+          "offset": 2.6,
+          "dur": 0.45,
+          "role": "kicker",
+          "text": "BOTANICAL EXTRACT",
+          "intent": "kicker: BOTANICAL EXTRACT",
+          "easing": "arrive"
+        }
+      ]
+    },
+    {
+      "id": "comp-a",
+      "start": 18.098,
+      "duration": 6.304,
+      "section": "mechanism",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#59B8AE",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "sub",
+          "text": "Asiatic acid",
+          "intent": "sub: Asiatic acid",
+          "easing": "arrive"
+        },
+        {
+          "offset": 1.3,
+          "dur": 0.45,
+          "role": "sub",
+          "text": "Asiaticoside",
+          "intent": "sub: Asiaticoside",
+          "easing": "arrive"
+        },
+        {
+          "offset": 2.6,
+          "dur": 0.45,
+          "role": "sub",
+          "text": "Madecassoside",
+          "intent": "sub: Madecassoside",
+          "easing": "arrive"
+        },
+        {
+          "offset": 3.9,
+          "dur": 0.45,
+          "role": "sub",
+          "text": "Madecassic acid",
+          "intent": "sub: Madecassic acid",
+          "easing": "arrive"
+        },
+        {
+          "offset": 5.0,
+          "dur": 0.45,
+          "role": "kicker",
+          "text": "FOUR MAIN TRITERPENES",
+          "intent": "kicker: FOUR MAIN TRITERPENES",
+          "easing": "arrive"
+        }
+      ]
+    },
+    {
+      "id": "mech",
+      "start": 24.402,
+      "duration": 7.999,
+      "section": "mechanism",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#59B8AE",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "cite",
+          "text": "PMID 35328954",
+          "intent": "[K-2] citation chip for a SOURCED claim",
+          "easing": "arrive"
+        },
+        {
+          "offset": 1.4,
+          "dur": 0.45,
+          "role": "body",
+          "text": "A 4-trial review reports",
+          "intent": "body: A 4-trial review reports",
+          "easing": "arrive"
+        },
+        {
+          "offset": 2.9,
+          "dur": 0.45,
+          "role": "body",
+          "text": "an anti-inflammatory effect —",
+          "intent": "body: an anti-inflammatory effect —",
+          "easing": "arrive"
+        },
+        {
+          "offset": 4.4,
+          "dur": 0.45,
+          "role": "body",
+          "text": "reduced IL-1β, IL-6, TNF-α",
+          "intent": "body: reduced IL-1β, IL-6, TNF-α",
+          "easing": "arrive"
+        },
+        {
+          "offset": 6.2,
+          "dur": 0.45,
+          "role": "kicker",
+          "text": "IN WOUND HEALING",
+          "intent": "kicker: IN WOUND HEALING",
+          "easing": "arrive"
+        }
+      ]
+    },
+    {
+      "id": "disclose",
+      "start": 32.401,
+      "duration": 7.592,
+      "section": "mechanism",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#9B9A97",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "body",
+          "text": "That review is about wound healing,",
+          "intent": "body: That review is about wound healing,",
+          "easing": "arrive"
+        },
+        {
+          "offset": 1.5,
+          "dur": 0.45,
+          "role": "head",
+          "text": "not daily skincare.",
+          "intent": "head: not daily skincare.",
+          "easing": "snap"
+        },
+        {
+          "offset": 3.0,
+          "dur": 0.45,
+          "role": "body",
+          "text": "The routine advice below",
+          "intent": "body: The routine advice below",
+          "easing": "arrive"
+        },
+        {
+          "offset": 4.5,
+          "dur": 0.45,
+          "role": "head",
+          "text": "has no source record here.",
+          "intent": "head: has no source record here.",
+          "easing": "snap"
+        },
+        {
+          "offset": 6.0,
+          "dur": 0.45,
+          "role": "kicker",
+          "text": "SCOPE NOTE",
+          "intent": "kicker: SCOPE NOTE",
+          "easing": "arrive"
+        }
+      ]
+    },
+    {
+      "id": "apply",
+      "start": 39.993,
+      "duration": 5.287,
+      "section": "application",
+      "layout": "flex column, centred, kinetic type stack inside the safe box",
+      "bg": "#101314",
+      "accent": "#C97A5C",
+      "plate": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 0.45,
+          "role": "flag",
+          "text": "○ UNSOURCED — no record in this system",
+          "intent": "[K-2] concurrent unsourced flag",
+          "easing": "arrive"
+        },
+        {
+          "offset": 1.3,
+          "dur": 0.45,
+          "role": "body",
+          "text": "The usual advice:",
+          "intent": "body: The usual advice:",
+          "easing": "arrive"
+        },
+        {
+          "offset": 2.6,
+          "dur": 0.45,
+          "role": "head",
+          "text": "stop over-exfoliating.",
+          "intent": "head: stop over-exfoliating.",
+          "easing": "snap"
+        },
+        {
+          "offset": 3.9,
+          "dur": 0.45,
+          "role": "body",
+          "text": "Cica daily, on damp skin.",
+          "intent": "body: Cica daily, on damp skin.",
+          "easing": "arrive"
+        }
+      ]
+    }
+  ],
+  "chapters": []
+}

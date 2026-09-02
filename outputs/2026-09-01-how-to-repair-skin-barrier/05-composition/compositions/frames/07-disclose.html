@@ -1,0 +1,74 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@500;700;800&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  #root{
+    --ink:#131516; --paper:#F7F5F0; --ground:#101314; --card:#FBF9F5;
+    --aqua:#59B8AE; --coral:#C97A5C; --celadon:#93B896;
+    --muted:rgba(247,245,240,.62); --line-dark:rgba(247,245,240,.14); --line:rgba(19,21,22,.12);
+    --ink-faint:rgba(19,21,22,.62);
+    --safe-t:192px; --safe-b:384px; --safe-r:162px; --safe-l:72px;
+    --display:'EB Garamond',Georgia,serif; --body:'Inter','Noto Sans KR',system-ui,sans-serif;
+    position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:var(--ground);font-family:var(--body);
+  }
+  .clip{position:absolute;inset:0}
+  .stage{padding:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+         display:flex;flex-direction:column;justify-content:center}
+  /* The channel's display face. Serif, 400 — not a bold sans. */
+  .display{font-family:var(--display);font-weight:400;line-height:1.08;
+           letter-spacing:-.015em;color:var(--paper);margin:0}
+  .d-xl{font-size:132px} .d-lg{font-size:104px} .d-md{font-size:78px}
+  .label{font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+         font-size:32px;color:var(--muted)}
+  .label-aqua{color:var(--aqua)}
+  .body{font-weight:500;line-height:1.4;font-size:46px;color:var(--paper)}
+  .rule{height:2px;background:var(--aqua);transform-origin:0 50%;width:100%}
+  .flag{font-weight:500;font-size:34px;letter-spacing:.04em;color:var(--muted)}
+  .cite{font-weight:700;font-size:32px;letter-spacing:.10em;text-transform:uppercase;color:var(--aqua)}
+  /* uc-card — position:absolute on the rule is REQUIRED (PDRN Round-4 bug class) */
+  .uc-card{position:absolute;background:var(--card);border:1px solid var(--line);
+           border-radius:28px;box-shadow:0 24px 64px rgba(0,0,0,.34)}
+
+  .scopebox{border:1px solid var(--line-dark);border-radius:24px;padding:52px 48px;
+            background:rgba(247,245,240,.025)}
+  .sc-body{font-size:48px;font-weight:500;line-height:1.32;color:var(--muted);margin:26px 0 0}
+  .sc-body em{font-style:normal;color:var(--paper);font-weight:700}
+  .sc-div{height:1px;background:var(--line-dark);margin:34px 0 0}
+</style>
+
+<div id="root" data-composition-id="disclose" data-width="1080" data-height="1920"
+     data-duration="7.592">
+  <div class="clip stage">
+    <div class="scopebox" id="sc-box">
+      <div class="label" id="sc-lab" style="color:var(--muted)">SCOPE NOTE</div>
+      <p class="sc-body" id="sc-1">That review is about <em>wound healing</em>,<br>not daily skincare.</p>
+      <div class="sc-div" id="sc-div"></div>
+      <p class="sc-body" id="sc-2">Two of its four trials were <em>oral</em>,<br>not topical.</p>
+      <div class="sc-div" id="sc-div2"></div>
+      <p class="sc-body" id="sc-3">The routine advice below has<br>no source record here.</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out" } });
+  gsap.set("#sc-box",{opacity:0,y:24});
+  gsap.set(["#sc-1","#sc-2","#sc-3"],{opacity:0,y:14});
+  gsap.set(["#sc-div","#sc-div2"],{scaleX:0,transformOrigin:"0 50%"});
+  tl.to("#sc-box",{opacity:1,y:0,duration:.5},0.05);
+  tl.to("#sc-1",{opacity:1,y:0,duration:.4},0.60);
+  tl.to("#sc-div",{scaleX:1,duration:.5,ease:"power2.inOut"},1.85);
+  tl.to("#sc-2",{opacity:1,y:0,duration:.4},2.35);
+  tl.to("#sc-div2",{scaleX:1,duration:.5,ease:"power2.inOut"},3.75);
+  tl.to("#sc-3",{opacity:1,y:0,duration:.4},4.25);
+  tl.to("#sc-lab",{opacity:.55,duration:1.2,ease:"power1.inOut"},5.55);
+  tl.to("#sc-box",{y:-10,duration:1.4,ease:"power1.inOut"},6.10);
+  tl.to({},{duration:7.592},0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["disclose"] = tl;
+})();
+</script>
+</template>

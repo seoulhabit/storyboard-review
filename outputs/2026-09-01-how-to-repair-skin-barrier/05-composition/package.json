@@ -1,0 +1,9 @@
+{
+  "name": "how-to-repair-skin-barrier",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npx --yes hyperframes@0.8.22 check",
+    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1"
+  }
+}

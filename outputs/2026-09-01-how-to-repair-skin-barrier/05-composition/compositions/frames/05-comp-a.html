@@ -1,0 +1,78 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@500;700;800&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  #root{
+    --ink:#131516; --paper:#F7F5F0; --ground:#101314; --card:#FBF9F5;
+    --aqua:#59B8AE; /* dark-ground only */
+    --aqua-card:#27706A; /* SAME role on the card ground: aqua measures 2.15:1
+       on #FBF9F5 and fails AA. A token's definition carries a scope; using it
+       off that scope is a contrast bug (restored-v1-rules R2). */ --coral:#C97A5C; --celadon:#93B896;
+    --muted:rgba(247,245,240,.62); --line-dark:rgba(247,245,240,.14); --line:rgba(19,21,22,.12);
+    --ink-faint:rgba(19,21,22,.62);
+    --safe-t:192px; --safe-b:384px; --safe-r:162px; --safe-l:72px;
+    --display:'EB Garamond',Georgia,serif; --body:'Inter','Noto Sans KR',system-ui,sans-serif;
+    position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:var(--ground);font-family:var(--body);
+  }
+  .clip{position:absolute;inset:0}
+  .stage{padding:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+         display:flex;flex-direction:column;justify-content:center}
+  /* The channel's display face. Serif, 400 — not a bold sans. */
+  .display{font-family:var(--display);font-weight:400;line-height:1.08;
+           letter-spacing:-.015em;color:var(--paper);margin:0}
+  .d-xl{font-size:132px} .d-lg{font-size:104px} .d-md{font-size:78px}
+  .label{font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+         font-size:32px;color:var(--muted)}
+  .label-aqua{color:var(--aqua)}
+  .body{font-weight:500;line-height:1.4;font-size:46px;color:var(--paper)}
+  .rule{height:2px;background:var(--aqua);transform-origin:0 50%;width:100%}
+  .flag{font-weight:500;font-size:34px;letter-spacing:.04em;color:var(--muted)}
+  .cite{font-weight:700;font-size:32px;letter-spacing:.10em;text-transform:uppercase;color:var(--aqua)}
+  /* uc-card — position:absolute on the rule is REQUIRED (PDRN Round-4 bug class) */
+  .uc-card{position:absolute;background:var(--card);border:1px solid var(--line);
+           border-radius:28px;box-shadow:0 24px 64px rgba(0,0,0,.34)}
+
+  .chipgrid{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .chip{border:1px solid var(--line);border-radius:18px;padding:28px 26px;
+        display:flex;flex-direction:column;gap:8px;background:rgba(19,21,22,.02)}
+  .chip b{font-size:40px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .chip span{font-size:26px;font-weight:700;letter-spacing:.10em;color:var(--aqua-card)}
+  .ca-foot{margin-top:34px;font-size:30px;font-weight:500;color:var(--ink-faint);line-height:1.35}
+</style>
+
+<div id="root" data-composition-id="comp-a" data-width="1080" data-height="1920"
+     data-duration="6.304">
+  <div class="clip">
+    <div class="uc-card" id="ca-card" style="left:72px;right:162px;top:560px;padding:60px 56px 56px">
+      <div class="label" style="color:var(--ink-faint)" id="ca-lab">FOUR MAIN TRITERPENES</div>
+      <div class="chipgrid">
+        <div class="chip" id="ch-1"><b>Asiatic acid</b><span>AA</span></div>
+        <div class="chip" id="ch-2"><b>Asiaticoside</b><span>AS</span></div>
+        <div class="chip" id="ch-3"><b>Madecassoside</b><span>MS</span></div>
+        <div class="chip" id="ch-4"><b>Madecassic acid</b><span>MA</span></div>
+      </div>
+      <div class="ca-foot" id="ca-foot">Listed in the source's own order. None is ranked.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out" } });
+  gsap.set("#ca-card",{opacity:0,y:30});
+  gsap.set(["#ch-1","#ch-2","#ch-3","#ch-4"],{opacity:0,y:18});
+  gsap.set("#ca-foot",{opacity:0});
+  tl.to("#ca-card",{opacity:1,y:0,duration:.5},0.05);
+  tl.to("#ch-1",{opacity:1,y:0,duration:.38},0.70);
+  tl.to("#ch-2",{opacity:1,y:0,duration:.38},1.85);
+  tl.to("#ch-3",{opacity:1,y:0,duration:.38},3.00);
+  tl.to("#ch-4",{opacity:1,y:0,duration:.38},4.15);
+  tl.to("#ca-foot",{opacity:1,duration:.42},5.20);
+  tl.to({},{duration:6.304},0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["comp-a"] = tl;
+})();
+</script>
+</template>

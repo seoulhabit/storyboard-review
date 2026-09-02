@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-09-02T00:54:27Z",
+  "run": "2026-09-01-how-to-repair-skin-barrier",
+  "purpose": "K-1 source resolution for the centella re-cut. A source with resolved:false MAY NOT be cited.",
+  "scope_note": "Built ONLY from the three candidate sources named in the brief, fetched directly. No other repository or evidence system was consulted.",
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36918311/",
+      "doi": "https://doi.org/10.1016/j.jht.2022.11.001",
+      "resolved": true,
+      "published_title_verbatim": "The effect of Centella Asiatica cream on scar development in patients who underwent open carpal tunnel release surgery.",
+      "journal_verbatim": "Journal of hand therapy : official journal of the American Society of Hand Therapists",
+      "published": "2023-03-12",
+      "read_by": "code",
+      "read_at": "2026-09-02T00:54:27Z",
+      "fetch_method": "PubMed MCP get_article_metadata (pmid 36918311)",
+      "scope_verbatim": "In the intervention group, a petroleum cream mixture consisting of 1% Centella asiatica extract was applied to the patients' wrist for 6 months after the sutures were removed.",
+      "conclusion_verbatim": "The Centella asiatica cream applied to the wrist after CTR surgery was found to be beneficial in preventing scar tenderness in the thenar and hypothenar regions of the hand.",
+      "supports_rows": [],
+      "escalate": "OFF-TOPIC for every claim row in this video. Population is post-operative carpal tunnel release; site is the wrist and hand; outcome is surgical scar (Vancouver Scar Scale, QuickDASH, VAS). Contains nothing on facial skin, barrier function, inflammation signalling, constituent ranking, or a daily cosmetic routine. Recorded, not substituted."
+    },
+    {
+      "id": "S2",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35328954/",
+      "doi": "https://doi.org/10.3390/ijerph19063266",
+      "pmc": "PMC8956065",
+      "resolved": true,
+      "published_title_verbatim": "A Systematic Review of the Effect of [Centella asiatica] on Wound Healing",
+      "verbatim_note": "The PubMed/PMC API strips italicised species names from title and body. The elision is marked in brackets. Uncorrected API string: 'A Systematic Review of the Effect ofon Wound Healing.' Every quotation below carries the same artifact and is marked the same way.",
+      "journal_verbatim": "International journal of environmental research and public health",
+      "published": "2022-03-10",
+      "read_by": "code",
+      "read_at": "2026-09-02T00:54:27Z",
+      "fetch_method": "PubMed MCP get_article_metadata + get_full_text_article (PMC8956065)",
+      "trial_count_verbatim": "Four studies [,,,] on[Centella asiatica] were included in the systematic review ().",
+      "inclusion_scope_verbatim": "Oral or topical treatment with[Centella asiatica] for at least 3 weeks.",
+      "limitation_verbatim": "Only four studies were included in the systematic review, and this may limit the wider application of the findings of the review.",
+      "quotable_sentences": {
+        "four_triterpenes": "The main triterpenes found in[Centella asiatica], also known as centelloids, are asiatic acid (AA), asiaticoside (AS), madecassoside (MS) or brahminoside, and madecassic acid (MA) or brahmic acid [,,].",
+        "common_names": "[Centella asiatica], also known as Gotu Kola, Bua-bok, Tiger grass, or Indian Pennywort [,], is an herbaceous perennial plant member of the[Apiaceae] family, also known as[Umbelliferae].",
+        "most_active_constituent": "These wound healing properties appear particularly effective when the extract contains greater amounts of AS [], being one of its more active compounds.",
+        "fibroblast_proliferation": "In addition, the enhanced proliferation of fibroblasts and the synthesis of the extracellular matrix has been reported after treatment with AS [].",
+        "anti_inflammatory": "[Centella asiatica] has shown an anti-inflammatory effect observed by the reduction in Interleukin-1β (IL-1β), Interleukin-6 (IL-6) and Tumour Necrosis Factor α (TNFα) [,,], as well as prostaglandin E2 (PGE2) [,], and cyclooxygenase-2 (COX-2) []."
+      },
+      "supports_rows": [
+        "R4 (partial: common names)",
+        "R5 (four triterpenes)",
+        "R7 (RE-SCOPED: anti-inflammatory effect, in wound healing)"
+      ],
+      "escalate": "SCOPE MISMATCH against the brief. The brief specified 'the 4-trial PRISMA systematic review of TOPICAL centella'. This review is 4-trial and PRISMA, but its inclusion criterion is 'Oral or topical treatment', and two of its four trials are ORAL (oral asiaticoside capsules; oral CA tablets). No topical-only 4-trial PRISMA review of centella was found -- see not_found below. Included as the nearest real object with its true scope stated, NOT as a silent substitution.",
+      "row_R7_supporting_sentence_verbatim": "[Centella asiatica] has shown an anti-inflammatory effect observed by the reduction in Interleukin-1β (IL-1β), Interleukin-6 (IL-6) and Tumour Necrosis Factor α (TNFα) [,,], as well as prostaglandin E2 (PGE2) [,], and cyclooxygenase-2 (COX-2) [].",
+      "row_R7_scope_guard": "R7 was re-scoped by operator instruction to the limb this sentence supports, and the on-screen type carries 'IN WOUND HEALING' plus a following scene stating the review is not about daily skincare. The fibroblast and barrier limbs were NOT sourced and were removed, not softened."
+    },
+    {
+      "id": "S3",
+      "url": "https://www.cir-safety.org/sites/default/files/centel062015FR.pdf",
+      "resolved": true,
+      "published_title_verbatim": "Safety Assessment of Centella asiatica-derived Ingredients as Used in Cosmetics",
+      "status_verbatim": "Final Report",
+      "release_date_verbatim": "July 10, 2015",
+      "panel_date_verbatim": "June15-16, 2015",
+      "read_by": "code",
+      "read_at": "2026-09-02T00:54:27Z",
+      "fetch_method": "curl -> pypdf text extraction (24 pages, 77,393 chars)",
+      "local_copy": "04-assets/sources/cir-centella-2015FR.pdf",
+      "sha256_16": "93fec36ba33a2f94",
+      "draft_check": "CONFIRMED the Jul 2015 FINAL, not the Feb 2015 draft: the cover page prints 'Status: Final Report' and 'Release Date: July 10, 2015'. The filename's '06' is the Panel Date (June 15-16, 2015), not the release.",
+      "conclusion_verbatim": "The CIR Expert Panel concluded that the following 9 ingredients are safe in the present practices of use and concentration in cosmetics, as described in this safety assessment, when formulated to be non-sensitizing.",
+      "term_scan": {
+        "barrier": 0,
+        "primary active": 0,
+        "sensitive skin": 0,
+        "stinging": 0,
+        "tightness": 0,
+        "flaking": 0,
+        "exfoliat": 0,
+        "fibroblast": 7,
+        "madecassoside": 19
+      },
+      "term_scan_note": "Full-text term scan over all 24 pages. The 7 'fibroblast' hits concern asiatic acid INHIBITING collagen type I expression in keloid fibroblasts -- the opposite direction from a 'fibroblasts rebuild' claim. The report names asiatic acid as 'one of the active constituents', never madecassoside as primary.",
+      "supports_rows": [],
+      "escalate": "SAFETY SCOPE ONLY. Establishes conditional safety, not efficacy or mechanism. Cannot source any efficacy/mechanism row in this video."
+    }
+  ],
+  "not_found": [
+    {
+      "described_as": "The 4-trial PRISMA systematic review of topical centella",
+      "resolved": false,
+      "searches_run": [
+        {
+          "query": "centella asiatica topical systematic review",
+          "n": 5,
+          "result": "Returned 39233460 (26-plant photoaging cosmeceutical review), 33141449 / 27048768 / 16034893 (Cochrane phlebotonics, 66-69 RCTs, and each states 'No studies evaluating topical phlebotonics ... fulfilled the inclusion criteria'), 10796111 (stretch-mark creams, ONE included study). None is a 4-trial PRISMA review of topical centella."
+        },
+        {
+          "query": "Centella asiatica PRISMA systematic review wound healing clinical trials",
+          "n": 2,
+          "result": "Returned 35328954 (= S2, oral or topical) and 39757623 (26 trials, 45 plant species, not centella-specific)."
+        }
+      ],
+      "conclusion": "No topical-only 4-trial PRISMA review of centella exists in PubMed under these searches. S2 is the nearest real object and is recorded with its true oral-or-topical scope. MAY NOT be cited as a topical-only review."
+    }
+  ],
+  "k2b_status": {
+    "before": "FIRES (sourced 0, unsourced 2)",
+    "after": "CLEARS (sourced 1, unsourced 0)",
+    "action": "R6 cut by operator instruction; R7 re-scoped and sourced to S2."
+  }
+}

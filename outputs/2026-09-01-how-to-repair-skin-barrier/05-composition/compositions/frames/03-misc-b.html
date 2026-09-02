@@ -1,0 +1,117 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@500;700;800&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  #root{
+    --ink:#131516; --paper:#F7F5F0; --ground:#101314; --card:#FBF9F5;
+    --aqua:#59B8AE; --coral:#C97A5C; --celadon:#93B896;
+    --muted:rgba(247,245,240,.62); --line-dark:rgba(247,245,240,.14); --line:rgba(19,21,22,.12);
+    --ink-faint:rgba(19,21,22,.62);
+    --safe-t:192px; --safe-b:384px; --safe-r:162px; --safe-l:72px;
+    --display:'EB Garamond',Georgia,serif; --body:'Inter','Noto Sans KR',system-ui,sans-serif;
+    position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:var(--ground);font-family:var(--body);
+  }
+  .clip{position:absolute;inset:0}
+  .stage{padding:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+         display:flex;flex-direction:column;justify-content:center}
+  /* The channel's display face. Serif, 400 — not a bold sans. */
+  .display{font-family:var(--display);font-weight:400;line-height:1.08;
+           letter-spacing:-.015em;color:var(--paper);margin:0}
+  .d-xl{font-size:132px} .d-lg{font-size:104px} .d-md{font-size:78px}
+  .label{font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+         font-size:32px;color:var(--muted)}
+  .label-aqua{color:var(--aqua)}
+  .body{font-weight:500;line-height:1.4;font-size:46px;color:var(--paper)}
+  .rule{height:2px;background:var(--aqua);transform-origin:0 50%;width:100%}
+  .flag{font-weight:500;font-size:34px;letter-spacing:.04em;color:var(--muted)}
+  .cite{font-weight:700;font-size:32px;letter-spacing:.10em;text-transform:uppercase;color:var(--aqua)}
+  /* uc-card — position:absolute on the rule is REQUIRED (PDRN Round-4 bug class) */
+  .uc-card{position:absolute;background:var(--card);border:1px solid var(--line);
+           border-radius:28px;box-shadow:0 24px 64px rgba(0,0,0,.34)}
+
+  .diagram-zone{flex:0 0 auto;height:520px;display:flex;align-items:center;
+               justify-content:center;margin:18px 0 10px}
+  .diagram-zone svg{width:790px;height:520px;display:block;overflow:visible}
+  .wall-brick{fill:rgba(247,245,240,.07);stroke:rgba(247,245,240,.55);stroke-width:2.4}
+  #course-top,#course-mid,#course-bot{opacity:0}
+  .wash{fill:rgba(247,245,240,.16);opacity:0}
+  .wash-line{stroke:var(--aqua);stroke-width:2.4;stroke-dasharray:6 6;opacity:0}
+  .shard{fill:rgba(247,245,240,.14);stroke:rgba(247,245,240,.55);stroke-width:2;opacity:0}
+  .wall-label{font-family:'Inter',sans-serif;font-size:30px;font-weight:700;
+              letter-spacing:.08em;fill:rgba(247,245,240,.7);opacity:0}
+</style>
+
+<div id="root" data-composition-id="misc-b" data-width="1080" data-height="1920"
+     data-duration="6.168">
+  <div class="clip stage">
+    <div class="flag" id="bw-flag">○ UNSOURCED — no record in this system</div>
+    <h2 class="display d-md" id="bw-h1" style="margin-top:30px">Stinging, tightness, flaking</h2>
+    <h2 class="display d-md" id="bw-h2" style="color:var(--aqua)">are commonly described as barrier damage.</h2>
+    <div class="diagram-zone">
+      <svg viewBox="0 0 700 480" aria-hidden="true">
+        <g id="wash-group">
+          <rect class="wash" id="wash" x="60" y="-30" width="580" height="110" rx="10"/>
+          <line class="wash-line" id="wash-line" x1="60" y1="80" x2="640" y2="80"/>
+        </g>
+        <g id="wall">
+          <g id="course-top">
+            <rect class="wall-brick" x="60"  y="120" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="206" y="120" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="352" y="120" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="498" y="120" width="142" height="58" rx="9"/>
+          </g>
+          <g id="course-mid">
+            <rect class="wall-brick" x="60"  y="192" width="70"  height="58" rx="9"/>
+            <rect class="wall-brick" x="146" y="192" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="292" y="192" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="438" y="192" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="584" y="192" width="56"  height="58" rx="9"/>
+          </g>
+          <g id="course-bot">
+            <rect class="wall-brick" x="60"  y="264" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="206" y="264" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="352" y="264" width="130" height="58" rx="9"/>
+            <rect class="wall-brick" x="498" y="264" width="142" height="58" rx="9"/>
+          </g>
+        </g>
+        <path class="shard" id="shard-1" d="M112,108 l28,-8 l7,18 l-26,9 Z"/>
+        <path class="shard" id="shard-2" d="M320,102 l24,4 l-4,20 l-24,-6 Z"/>
+        <path class="shard" id="shard-3" d="M528,106 l26,-4 l6,18 l-28,6 Z"/>
+        <text class="wall-label" id="wall-label" x="350" y="392" text-anchor="middle">SKIN BARRIER</text>
+      </svg>
+    </div>
+    <div class="display d-md" id="bw-h3" style="text-align:center;margin-bottom:8px">Not a skin type.</div>
+  </div>
+</div>
+<script>
+(function(){
+  var tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out" } });
+  // Ported from catalog/visual-components/barrier-wall/barrierwall-spike.html.
+  // opacity:0 lives on the course <g> only, never on the bricks too — doubling it
+  // multiplies to 0 even after the group fades in (documented bug class).
+  gsap.set(["#bw-h1","#bw-h2","#bw-h3"],{opacity:0,y:18});
+  tl.to("#bw-h1",{opacity:1,y:0,duration:.4},0.55);
+  tl.to("#bw-h2",{opacity:1,y:0,duration:.4},1.10);
+  tl.to("#course-bot",{opacity:1,duration:.34},0.30);
+  tl.to("#course-mid",{opacity:1,duration:.34},0.52);
+  tl.to("#course-top",{opacity:1,duration:.34},0.74);
+  tl.to("#wall-label",{opacity:1,duration:.4},1.15);
+  // the acid wash descends onto the top course
+  tl.to("#wash",{opacity:1,duration:.3},2.05);
+  tl.to("#wash-line",{opacity:1,duration:.3},2.05);
+  tl.to("#wash-group",{y:64,duration:1.05,ease:"power2.inOut"},2.20);
+  // top course dims as three shards detach and drift
+  tl.to("#course-top",{opacity:.32,duration:.7},3.05);
+  tl.to("#shard-1",{opacity:1,x:-26,y:-34,rotation:-16,duration:1.0},3.15);
+  tl.to("#shard-2",{opacity:1,x:8,y:-44,rotation:11,duration:1.0},3.32);
+  tl.to("#shard-3",{opacity:1,x:30,y:-30,rotation:18,duration:1.0},3.49);
+  tl.to("#bw-h3",{opacity:1,y:0,duration:.45},4.85);
+  tl.to({},{duration:6.168},0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["misc-b"] = tl;
+})();
+</script>
+</template>

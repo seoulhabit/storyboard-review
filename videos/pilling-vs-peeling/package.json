@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "npx --yes hyperframes@0.8.22 preview",
     "check": "npx --yes hyperframes@0.8.22 check && python3 scripts/check-sfx-durations.py .",
-    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1",
+    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o renders/pilling-vs-peeling.mp4",
     "render:b": "npx --yes hyperframes@0.8.22 render --composition variants/index-hook-b.html --quality high --workers 1 -o renders/pilling-vs-peeling_hookB.mp4",
     "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . renders/pilling-vs-peeling.mp4 && python3 scripts/check-safe-area.py . renders/pilling-vs-peeling.mp4 --safe-top 192 --safe-bottom 384 --safe-right 162 --safe-left 72",
     "postrender:b": "python3 scripts/check-safe-area.py . renders/pilling-vs-peeling_hookB.mp4 --safe-top 192 --safe-bottom 384 --safe-right 162 --safe-left 72",

@@ -77,7 +77,7 @@
                 padding: 8px 20px; opacity: 0; }
       </style>
 
-      <div id="root" data-composition-id="07-fix-peeling" data-width="1080" data-height="1920" data-duration="2.100">
+      <div id="root" data-composition-id="07-fix-peeling" data-width="1080" data-height="1920" data-duration="3.300">
         <div class="clip stage">
           <div class="header-zone">
             <div class="kicker">THE RESET</div>
@@ -130,20 +130,35 @@
         var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
         // Frame zero: header + all three icon columns already settled --
-        // each object's own switch/pulse is the entrance beat.
+        // each object's own switch/pulse is the entrance beat. Retimed
+        // 2026-09-01 (round 3) -- extended from 2.1s to 3.3s per direct
+        // creator feedback watching round 2's render ("scene 7 feels
+        // rushed"), which independently confirms this scene's own round-2
+        // cadence measurement (0 steps clearing the active-step threshold,
+        // flagged in frame.md as "worth a closer look in a future pass").
+        // The beat order is unchanged; every beat just has more room
+        // between it and the next, and both chips now hold on screen for
+        // 1.35s before the cut instead of 0.75s.
         tl.set('#s7-strike', { transformOrigin: 'left center' }, 0);
         tl.set(['#s7-circle-moisture', '#s7-circle-spf'], { transformOrigin: '50% 50%' }, 0);
 
-        tl.to('#s7-obj-actives .icon-circle svg', { opacity: 0.35, duration: 0.3 }, 0.10);
-        tl.to('#s7-strike', { scaleX: 1, duration: 0.35, ease: "power2.inOut" }, 0.15);
+        tl.to('#s7-obj-actives .icon-circle svg', { opacity: 0.35, duration: 0.3 }, 0.15);
+        tl.to('#s7-strike', { scaleX: 1, duration: 0.35, ease: "power2.inOut" }, 0.20);
 
-        tl.to('#s7-circle-moisture', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 0.55);
-        tl.to('#s7-circle-spf', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 0.75);
+        tl.to('#s7-circle-moisture', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 0.85);
+        tl.to('#s7-circle-spf', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.20);
 
-        tl.to('#s7-chip-1', { opacity: 1, duration: 0.3 }, 1.10);
-        tl.to('#s7-chip-2', { opacity: 1, duration: 0.3 }, 1.35);
+        tl.to('#s7-chip-1', { opacity: 1, duration: 0.3 }, 1.65);
+        tl.to('#s7-chip-2', { opacity: 1, duration: 0.3 }, 2.05);
 
-        tl.to({}, { duration: 2.100 }, 0); // full-span anchor
+        // t2.5-3.1: a slow, bounded settle pulse on the header rule-less
+        // headline itself -- this scene's continuous back-half motion, so
+        // the extra hold time doesn't read as a static freeze once both
+        // chips have landed.
+        tl.set('.headline', { transformOrigin: '50% 50%' }, 0);
+        tl.to('.headline', { scale: 1.015, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.5);
+
+        tl.to({}, { duration: 3.300 }, 0); // full-span anchor
         window.__timelines["07-fix-peeling"] = tl;
       </script>
     </template>

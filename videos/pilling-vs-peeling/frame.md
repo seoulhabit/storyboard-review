@@ -98,6 +98,95 @@ harvests — the mechanisms already exist in the catalog (`04-stack.html`'s
 2-band shed is the same shape as `BarrierWall`'s shed-beat; `05-reset.html`'s
 3-icon row is a project-to-project file reuse, not a component gap).
 
+## Verification — Round 3 (2026-09-01, scene 07 retimed)
+
+Scoped verification — only `07-fix-peeling` and the cascade it touched
+(scene 08's start, both roots' duration/BGM/SFX, all four caption files)
+changed this round. Scenes 01–06 untouched and not re-verified beyond the
+project-wide checks below, which cover the whole render regardless.
+
+### 1. `npx hyperframes check`
+
+0 errors, 1 pre-existing warning (`duplicate_media_discovery_risk` in
+`05-test.html`, unrelated to this round's edit — not present in round 2's
+own recorded "0 warnings," so either a version-bump artifact
+(`hyperframes@0.8.22`, same pin as round 2 used) or a check round 2 didn't
+actually clear; flagged here rather than silently reconciled, not fixed
+since it's out of this round's scope), 6 benign info findings, all in
+scenes 01/02/04/05/06 — same shapes round 2 already recorded (Ken-Burns
+zoom overflow inside an already-clipped panel, one content-overlap at a
+crossfade sample instant, one decorative overflow by design).
+
+### 2. Render + `check-blank-frames.py`
+
+**Real bug caught in this round's own pipeline, not the composition:**
+`npm run render`'s default output is a timestamped filename
+(`pilling-vs-peeling_2026-09-01_14-45-27.mp4`), not an overwrite of
+`renders/pilling-vs-peeling.mp4` — `postrender`'s `check-static-hold.py`
+and `check-safe-area.py` invocations hardcode that filename as an argument,
+so the first `npm run postrender` after this round's render silently
+validated the **stale round-2 file** (20.0s) while `check-blank-frames.py`
+(which auto-discovers the most recent `renders/*.mp4`) correctly picked up
+the new one. Caught by checking `ffprobe` duration on every file in
+`renders/` before trusting any postrender output, not by the scripts
+themselves — nothing in the pipeline would have surfaced this on its own.
+Fixed by promoting the timestamped render to `pilling-vs-peeling.mp4` and
+re-running `postrender` against the correct file. Fixed in this round: `package.json`'s `render` script now passes
+`-o renders/pilling-vs-peeling.mp4` explicitly, matching `render:b`'s own
+convention, so a future re-render can't reproduce this exact gap.
+
+Blank-frame scan on the correct file: 0 findings (317 frames sampled).
+
+### 3. `check-static-hold.py` (whole-frame + region-aware)
+
+Whole-frame: 0 findings (42 samples, 2.5s ceiling — up from round 2's 40
+samples, matching the longer 21.1s runtime). Region-aware: still falls
+back to whole-render mode (round 2's own note about re-deriving the
+script's scene-boundary parser against this project's single-level 8-scene
+root remains open — not addressed this round, out of scope for a
+single-scene retime).
+
+### 4. `check-safe-area.py` (hard gate)
+
+0 findings, both variants (84 samples each, up from round 2's 80 — longer
+runtime, same sampling interval).
+
+### 5. `check-sfx-durations.py`
+
+0 findings, 23/23 checked — the 4 retimed scene-07 cues and 2 shifted
+scene-08 cues all still match their declared `data-duration` against the
+actual source files (retiming only moved `data-start`, not any cue's own
+duration).
+
+### 6. Audio mastering
+
+Pre-master (raw re-render, both variants): **−23.0 to −23.3 LUFS / −6.5 to
+−6.7 dBTP** — consistent with round 2's own pre-master range, confirming
+the retime didn't change the mix's overall loudness character. Two-pass
+`ffmpeg loudnorm` at the same `I=-14:TP=-2.5` target round 2 established,
+video stream copied through (confirmed via matching MD5 on the isolated
+video stream, both variants). **Re-measured on the final encoded MP4:**
+
+| | Integrated | True peak |
+|---|---|---|
+| Variant A | −14.3 LUFS | −2.0 dBTP |
+| Variant B | −14.2 LUFS | −2.1 dBTP |
+
+Both within 0.1 LUFS of round 2's own numbers — the extra 1.2s changed
+scene 07's pacing, not the mix's overall level. Loop-seam RMS (final 2s):
+−16.2 dB both variants, genuinely live (not silence).
+
+### 7. Visual spot-check, scene 07's new pacing
+
+Extracted frames at 15.9/16.7/17.5/17.9/18.5/19.0s (variant A). Confirms
+the intended beat schedule lands where authored: actives icon still fully
+opaque at 15.9s (strike hasn't started), struck through by 16.7s,
+`Cutis · 2006` chip fading in at 17.5s, both chips fully settled and held
+from ~18.0s through the 19.1s cut — a genuine 1.1s+ hold with both
+citations legible, versus round 2's ~0.75s.
+
+---
+
 ## Verification — Round 2 (2026-09-01 recut)
 
 The round-1 verification record below this line described a render that no

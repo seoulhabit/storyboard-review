@@ -12,6 +12,13 @@
       "runtimeExecutable": "sh",
       "runtimeArgs": ["-c", "python3 -m http.server $PORT --directory \"/Users/sumitchoudhary/Desktop/Story Board\""],
       "autoPort": true
+    },
+    {
+      "name": "exosome",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "hyperframes@0.8.22", "preview", "--port", "5599"],
+      "cwd": "videos/exosome-label-decode",
+      "port": 5599
     }
   ]
 }

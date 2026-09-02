@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Margin reset. box-sizing alone is NOT enough: the UA stylesheet's
+           default `p { margin: 1em 0 }` / `h1 { margin: .67em 0 }` scale with
+           FONT SIZE, so a 170px headline carried ~114px of phantom margin above
+           and below it and a 42px card question carried ~42px. Measured on a real
+           snapshot: gate cards rendered 280/393px tall against ~194px of actual
+           content, which pushed card 03 to y=1513 -- past the content box (1360)
+           and nearly to the safe line (1536). One reset, six scenes. */
+        h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --ink-3: #9C978D;
+          --coral: #C97A5C; --celadon: #93B896; --leaf: #6F8F72; --moss: #4F6B52;
+          --rule-strong: #D9D3C6; --empty: #EAEAEA;
+          --cap-lane: 176px;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, safe padding, explicit 1920px height;
+              four stacked zones (head / meter / confound / foot).
+           2. The meter is a 4-column grid whose columns are equal fr units --
+              the node row and the label row share the same grid so a label can
+              never drift off its own node, which two absolute rows would allow.
+           3. The confound row is a flex row of two chips around a "+" glyph;
+              the strike rule that crosses it is an absolute child INSIDE that
+              row's own relative context, not a canvas-level absolute sibling. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          /* --cap-lane reserves the burned-in caption band (y 1360-1520) so no
+             scene's own content can sit under it. Content bottom is 1360, not
+             1536 -- the lane sits between the content box and --safe-bottom. */
+          padding: var(--safe-top) var(--safe-right)
+                   calc(var(--safe-bottom) + var(--cap-lane)) var(--safe-left);
+          gap: 22px;
+        }
+
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.13em;
+                  text-transform: uppercase; color: var(--ink-2); flex: 0 0 auto; opacity: 0; }
+
+        .head { flex: 0 0 auto; }
+        .head h1 { font-weight: 800; font-size: 76px; line-height: 0.98;
+                   letter-spacing: -0.035em; color: var(--ink); }
+        /* Stamp: ink on coral = 5.60:1. align-self keeps it hugging its own
+           text instead of stretching the full column. */
+        .stamp { display: inline-block; margin-top: 14px; background: var(--coral);
+                 padding: 14px 28px; transform: rotate(-2deg) scale(0.6); opacity: 0;
+                 transform-origin: 0% 0%; }
+        .stamp span { font-family: var(--font-mono); font-size: 50px; font-weight: 500;
+                      letter-spacing: 0.08em; color: var(--ink); white-space: nowrap; }
+
+        /* --- EvidenceMeter, mechanism adapted from the catalog component:
+           N checkpoint nodes, a staggered hollow->solid snap with a transient
+           scale dip, claim above and citation below. Skin re-derived for this
+           project's ground. NO SUCCESS COLOUR -- celadon marks a reached stage
+           at every level, so 2-of-4 must not read as a failure. --- */
+        .meter { flex: 0 0 auto; }
+        .meter-label { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.12em;
+                       text-transform: uppercase; color: var(--ink-2); margin-bottom: 16px; opacity: 0; }
+        .nodes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+        .node { height: 62px; border: 3px solid var(--rule-strong); background: transparent; }
+        .node-labels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px; }
+        .node-labels span { font-family: var(--font-mono); font-size: 32px; line-height: 1.2;
+                            color: var(--ink-2); text-align: center; opacity: 0; }
+        .here { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 10px; }
+        .here i { font-family: var(--font-mono); font-size: 32px; font-style: normal;
+                  color: var(--coral); text-align: center; opacity: 0; }
+
+        /* --- the confound --- */
+        .confound { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+                    justify-content: center; gap: 18px; }
+        .confound h2 { font-size: 40px; line-height: 1.28; color: var(--ink); font-weight: 800;
+                       opacity: 0; }
+        .confound h2 em { font-style: normal; color: var(--coral); }
+        .chips { position: relative; display: flex; align-items: center; gap: 20px; }
+        .chip { background: var(--mist); border: 2px solid var(--rule-strong);
+                padding: 16px 22px; font-family: var(--font-mono); font-size: 32px;
+                color: var(--ink); white-space: nowrap; opacity: 0; }
+        .plus { font-family: var(--font-mono); font-size: 40px; color: var(--ink-2); opacity: 0; }
+        .strike { position: absolute; left: 0; top: 50%; height: 4px; width: 0;
+                  background: var(--coral); }
+        .verdict { font-size: 40px; line-height: 1.3; color: var(--ink-2); opacity: 0; }
+
+        .foot { flex: 0 0 auto; display: flex; justify-content: flex-start; }
+        .cite { right: auto; width: max-content; font-family: var(--font-mono); font-size: 32px;
+                color: var(--ink-2); border: 2px solid var(--rule-strong); padding: 10px 18px;
+                white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div data-hf-id="hf-2ut3" id="root" data-composition-id="03-evidence" data-width="1080" data-height="1920" data-duration="12.800">
+        <div data-hf-id="hf-tan6" class="stage">
+
+          <p data-hf-id="hf-km3e" class="kicker" id="e-kick">Topical exosome skincare</p>
+
+          <div data-hf-id="hf-z992" class="head">
+            <h1 data-hf-id="hf-li72" id="e-h1">Human evidence</h1>
+            <div data-hf-id="hf-o84q" class="stamp" id="e-stamp"><span data-hf-id="hf-dcxt">LIMITED</span></div>
+          </div>
+
+          <div data-hf-id="hf-rq4r" class="meter">
+            <p data-hf-id="hf-i6h5" class="meter-label" id="e-mlabel">Evidence stage</p>
+            <div data-hf-id="hf-g17r" class="nodes">
+              <div data-hf-id="hf-o1y7" class="node" id="e-n1"></div>
+              <div data-hf-id="hf-jg1g" class="node" id="e-n2"></div>
+              <div data-hf-id="hf-g5q5" class="node" id="e-n3"></div>
+              <div data-hf-id="hf-yxfu" class="node" id="e-n4"></div>
+            </div>
+            <div data-hf-id="hf-3u0w" class="node-labels">
+              <span data-hf-id="hf-sn1a" id="e-l1">LAB<br data-hf-id="hf-x5px">ONLY</span>
+              <span data-hf-id="hf-4u02" id="e-l2">EARLY<br data-hf-id="hf-rsrt">HUMAN</span>
+              <span data-hf-id="hf-nsj0" id="e-l3">REPEATED<br data-hf-id="hf-szow">TRIALS</span>
+              <span data-hf-id="hf-s8q6" id="e-l4">WELL<br data-hf-id="hf-sldv">PROVEN</span>
+            </div>
+            <div data-hf-id="hf-fvde" class="here">
+              <i data-hf-id="hf-wt6k"></i><i data-hf-id="hf-6sod" id="e-here">▲ here</i><i data-hf-id="hf-zeb8"></i><i data-hf-id="hf-y7e5"></i>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-1a2o" class="confound">
+            <h2 data-hf-id="hf-nm7s" id="e-ch">Many studies test the serum <em data-hf-id="hf-qglb">with</em> a procedure.</h2>
+            <div data-hf-id="hf-exrd" class="chips">
+              <span data-hf-id="hf-hf47" class="chip" id="e-c1">EXOSOME SERUM</span>
+              <span data-hf-id="hf-gkxm" class="plus" id="e-plus">+</span>
+              <span data-hf-id="hf-4b5w" class="chip" id="e-c2">MICRONEEDLING</span>
+              <span data-hf-id="hf-5i79" class="strike" id="e-strike"></span>
+            </div>
+            <p data-hf-id="hf-2fsv" class="verdict" id="e-verdict">So it&rsquo;s hard to credit the serum alone.</p>
+          </div>
+
+          <div data-hf-id="hf-mlgk" class="foot">
+            <span data-hf-id="hf-bgqr" class="cite" id="e-cite">J Drugs Dermatol · 2026</span>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero composed: headline already set, meter frame already drawn.
+        tl.set('#e-h1', { opacity: 1 }, 0);
+        // Pin the stamp's transform origin to its top-left so neither the -2deg
+        // rotation nor back.out's scale overshoot can cross the left safe line.
+        tl.set('#e-stamp', { transformOrigin: '0% 0%' }, 0);
+        tl.set(['#e-n1','#e-n2','#e-n3','#e-n4'], { opacity: 1 }, 0);
+
+        tl.set(['#e-kick', '#e-mlabel'], { opacity: 1 }, 0);  // compose the cut frame
+
+        // 0.55 THE STAMP -- this video's one bold moment. Punches in on a back
+        // ease; everything else in the piece uses restrained power eases.
+        tl.to('#e-stamp', { opacity: 1, scale: 1, duration: 0.42, ease: 'back.out(2.6)' }, 0.55);
+
+                // 1.85 / 2.15 the two reached stages snap hollow -> solid, 0.30 apart.
+        // fromTo with a transient 0.88 dip so an idle node never sits at a
+        // different resting size than a filled one.
+        tl.fromTo('#e-n1', { scale: 0.88 },
+          { backgroundColor: '#93B896', borderColor: '#6F8F72', scale: 1,
+            duration: 0.22, ease: 'power3.out', immediateRender: false }, 1.85);
+        tl.fromTo('#e-n2', { scale: 0.88 },
+          { backgroundColor: '#93B896', borderColor: '#6F8F72', scale: 1,
+            duration: 0.22, ease: 'power3.out', immediateRender: false }, 2.15);
+
+        // stage labels stagger, then the "here" marker lands under stage 2.
+        ['#e-l1','#e-l2','#e-l3','#e-l4'].forEach(function (s, i) {
+          tl.to(s, { opacity: 1, duration: 0.28 }, 2.55 + i * 0.16);
+        });
+        tl.fromTo('#e-here', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.34 }, 3.35);
+
+        // 4.90 the confound turn.
+        tl.fromTo('#e-ch', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.44 }, 4.90);
+        tl.fromTo('#e-c1',   { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.36 }, 5.85);
+        tl.to('#e-plus', { opacity: 1, duration: 0.24 }, 6.20);
+        tl.fromTo('#e-c2',   { opacity: 0, x: 20 },  { opacity: 1, x: 0, duration: 0.36 }, 6.45);
+
+        // 7.60 a coral rule strikes across the pair -- motion that means
+        // something: the two are entangled, so neither is isolated.
+        tl.to('#e-strike', { width: '100%', duration: 0.55, ease: 'power2.inOut' }, 7.60);
+        tl.fromTo('#e-verdict', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.42 }, 8.45);
+        tl.fromTo('#e-cite', { opacity: 0 }, { opacity: 1, duration: 0.38 }, 9.45);
+
+        // 10.2-12.8: the stamp breathes once and the here-marker nudges, so the
+        // scene's last 2.6s is not a frozen hold under the tail of the VO.
+        tl.to('#e-stamp', { rotation: -1, duration: 1.2, yoyo: true, repeat: 1,
+                            ease: 'sine.inOut' }, 10.20);
+        tl.to('#e-here', { y: -6, duration: 0.9, yoyo: true, repeat: 1,
+                           ease: 'sine.inOut' }, 11.10);
+
+        tl.to({}, { duration: 12.800 }, 0);
+        window.__timelines["03-evidence"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

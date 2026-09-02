@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --coral: #C97A5C; --celadon: #93B896;
+          --rule-strong: #D9D3C6;
+          --cap-lane: 176px;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, safe padding, explicit 1920px height:
+              quoted phrase / compare / note.
+           2. The comparison bisects HORIZONTALLY, not vertically. The vertical
+              split gave each field only ~400px of the 1080px canvas, which
+              wrapped "A marketing claim" onto two lines and left the ≠ --
+              centred on a 4px-wide column -- sitting on top of the word
+              "Proof" (confirmed on a rendered snapshot, not inferred).
+              Stacked fields each get the full 846px width and the bisector
+              becomes a full-width rule. Same SplitCompare mechanism (two
+              independently-targetable fields, tint floods only the
+              interrogated one, no success colour), on the axis this canvas
+              actually has room for.
+           3. Each field's flood is an absolute child inside that field's own
+              overflow:hidden context. Only the CLAIM field ever floods. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          padding: var(--safe-top) var(--safe-right)
+                   calc(var(--safe-bottom) + var(--cap-lane)) var(--safe-left);
+          gap: 30px;
+        }
+
+        .quoted { flex: 0 0 auto; }
+        .quoted .lead { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.12em;
+                        text-transform: uppercase; color: var(--ink-2); opacity: 0; }
+        .quoted h1 { font-weight: 800; font-size: 80px; line-height: 1.06;
+                     letter-spacing: -0.035em; color: var(--ink); margin-top: 14px; }
+        .quoted h1 mark { background: transparent; color: var(--ink);
+                          box-shadow: inset 0 -0.30em 0 rgba(201,122,92,0); }
+
+        .compare { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+
+        .field { flex: 1 1 0; min-height: 0; position: relative; overflow: hidden;
+                 display: flex; flex-direction: column; justify-content: center;
+                 padding: 24px 22px; }
+        .flood { position: absolute; inset: 0; background: var(--coral); opacity: 0.15;
+                 transform: scaleX(0); transform-origin: 0% 50%; }
+        .field .inner { position: relative; }
+        .field .tag { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.1em;
+                      color: var(--ink-2); }
+        .field .big { font-weight: 800; font-size: 70px; line-height: 1.02;
+                      letter-spacing: -0.03em; color: var(--ink); margin-top: 10px;
+                      white-space: nowrap; }
+        .field .sub { font-size: 36px; line-height: 1.26; color: var(--ink-2); margin-top: 12px; }
+
+        /* Bisector row: a full-width rule with the ≠ occupying its own gap in
+           the middle, so the glyph always has clear space and can never land
+           on a neighbouring word. */
+        .bisect { flex: 0 0 auto; display: grid; grid-template-columns: 1fr auto 1fr;
+                  align-items: center; gap: 24px; }
+        .bisect .line { height: 4px; background: var(--rule-strong); transform: scaleX(0); }
+        .bisect .line.l { transform-origin: 100% 50%; }
+        .bisect .line.r { transform-origin: 0% 50%; }
+        .neq { font-weight: 800; font-size: 88px; line-height: 1; color: var(--coral);
+               opacity: 0; transform: scale(0.4); }
+
+        .note { flex: 0 0 auto; font-size: 42px; line-height: 1.26; color: var(--ink);
+                font-weight: 800; opacity: 0; }
+        .note span { color: var(--ink-2); font-weight: 400; display: block; font-size: 34px;
+                     margin-top: 8px; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="05-claim"
+           data-width="1080" data-height="1920" data-duration="7.550">
+        <div class="stage">
+
+          <div class="quoted">
+            <p class="lead" id="c-lead">If the brand only says</p>
+            <h1 id="c-h1"><mark>&ldquo;Exosome technology&rdquo;</mark></h1>
+          </div>
+
+          <div class="compare">
+            <div class="field">
+              <span class="flood" id="c-flood"></span>
+              <div class="inner">
+                <p class="tag">WHAT THAT IS</p>
+                <p class="big" id="c-left">A marketing claim</p>
+                <p class="sub">A word printed on a box.</p>
+              </div>
+            </div>
+
+            <div class="bisect">
+              <span class="line l" id="c-line-l"></span>
+              <span class="neq" id="c-neq">&ne;</span>
+              <span class="line r" id="c-line-r"></span>
+            </div>
+
+            <div class="field">
+              <div class="inner">
+                <p class="tag">WHAT IT ISN&rsquo;T</p>
+                <p class="big" id="c-right">Proof</p>
+                <p class="sub">A result measured on this product.</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="note" id="c-note">Promising isn&rsquo;t the same as proven.<span>Both can be true at once.</span></p>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero composed. Every element hit by more than one tween has its
+        // t=0 state registered as a real timeline tween, not a bare gsap.set --
+        // the engine seeks to arbitrary times without passing through 0, so an
+        // unregistered baseline can bleed through before its scheduled beat.
+        tl.set('#c-h1', { opacity: 1 }, 0);
+        tl.set('#c-flood', { scaleX: 0 }, 0);
+        tl.set(['#c-line-l', '#c-line-r'], { scaleX: 0 }, 0);
+        tl.set('#c-right', { opacity: 0.35 }, 0);
+        tl.set('#c-neq', { opacity: 0, scale: 0.4 }, 0);
+
+        // Beats timed to measured clause boundaries in assets/voice/05.wav:
+        //   "If the brand only says exosome technology," 0.43 - 2.92
+        //   "that is a marketing claim."                 3.45 - 4.78
+        //   "Not proof of a miracle."                    5.69 - 7.22
+        tl.to('#c-lead', { opacity: 1, duration: 0.32 }, 0.20);
+
+        // 0.55 a coral underline sweeps the box's own word -- marked as a
+        // quotation, not as a finding.
+        tl.to('#c-h1 mark', { boxShadow: 'inset 0 -0.30em 0 rgba(201,122,92,0.42)',
+                              duration: 0.6, ease: 'power2.inOut' }, 0.55);
+
+        // 1.55 the bisector draws outward from the centre in both directions.
+        tl.to(['#c-line-l', '#c-line-r'], { scaleX: 1, duration: 0.55, ease: 'power2.inOut' }, 1.55);
+
+        // 2.90 the INTERROGATED field floods, wiping left to right.
+        tl.to('#c-flood', { scaleX: 1, duration: 0.62, ease: 'power2.inOut' }, 2.90);
+        tl.fromTo('#c-left', { scale: 0.97 }, { scale: 1, duration: 0.4 }, 2.90);
+
+        // 3.55 the ≠ punches in, in its own clear gap in the rule.
+        tl.to('#c-neq', { opacity: 1, scale: 1, duration: 0.40, ease: 'back.out(2.2)' }, 3.55);
+
+        // 4.80 the proof field comes up to full on "Not proof of a miracle."
+        tl.to('#c-right', { opacity: 1, duration: 0.45 }, 4.80);
+
+        tl.fromTo('#c-note', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.44 }, 5.75);
+
+        // 6.65 a slow settle keeps the tail of the scene alive.
+        tl.to('#c-neq', { y: -8, duration: 0.8, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 6.65);
+
+        tl.to({}, { duration: 7.550 }, 0);
+        window.__timelines["05-claim"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

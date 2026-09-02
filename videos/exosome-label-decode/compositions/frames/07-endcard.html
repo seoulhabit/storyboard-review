@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --coral: #C97A5C; --celadon: #93B896;
+          --cap-lane: 176px;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage deliberately MIRRORS 01-hook and 06-close: same paper
+              ground, same safe padding, same two-column hero grid with the
+              plate in the right column. That is what keeps the loop intact --
+              a centred brand card would have matched the ground but moved the
+              hero, and a static unrelated endcard as the true final frame
+              throws away the replay this piece is built for.
+           2. The left column carries the brand lockup where 01-hook carries
+              its headline, so the eye lands in the same place across the cut.
+           3. The plate holds the SAME reverse Ken Burns end value (scale 1.0)
+              that 01-hook opens from, so the seam matches on the plate too. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          padding: var(--safe-top) var(--safe-right)
+                   calc(var(--safe-bottom) + var(--cap-lane)) var(--safe-left);
+          gap: 26px;
+        }
+
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--ink-2); flex: 0 0 auto; opacity: 0; }
+
+        /* The channel mark. Construction from brand/channel/avatar-800.html:
+           the Hangul glyph 습 in Noto Sans KR 500, --ink, optically raised
+           (Hangul syllable blocks sit high in the em box — the avatar uses
+           top:53% for the same reason). The avatar's paper tile is its own
+           canvas, not part of the mark, so on a paper ground the bare ink
+           glyph IS the mark. */
+        .brand { flex: 0 0 auto; }
+        .mark { display: block; font-family: var(--font-kr); font-weight: 500;
+                font-size: 180px; line-height: 0.82; color: var(--ink);
+                opacity: 0; }
+        .wordmark { display: block; font-family: var(--font-mono); font-size: 56px;
+                    letter-spacing: 0.17em; color: var(--ink); font-weight: 500;
+                    margin-top: 18px; opacity: 0; }
+        .bar { display: block; height: 6px; background: var(--coral); width: 0; margin: 12px 0; }
+        .tagline { display: block; font-family: var(--font-mono); font-size: 32px;
+                   letter-spacing: 0.08em; color: var(--ink-2); opacity: 0; }
+
+        .hero { flex: 1 1 auto; min-height: 0; display: grid;
+                grid-template-columns: 1fr 440px; gap: 34px; align-items: stretch; }
+        .cta { display: flex; flex-direction: column; justify-content: flex-end;
+               gap: 18px; padding-bottom: 8px; min-width: 0; }
+        .cta-line { font-size: 40px; line-height: 1.24; color: var(--ink); font-weight: 800; opacity: 0; }
+        .cta-line em { font-style: normal; color: var(--coral); }
+
+        .plate-panel { height: 100%; position: relative; overflow: hidden; background: var(--ink); }
+        .plate-zoom { position: absolute; inset: 0; transform-origin: 50% 46%; }
+        .plate-zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="07-endcard"
+           data-width="1080" data-height="1920" data-duration="3.200">
+        <div class="stage">
+          <p class="kicker" id="e-kicker">Korean skincare, decoded</p>
+
+          <div class="brand">
+            <span class="mark" id="e-mark">&#xC2B5;</span>
+            <span class="wordmark" id="e-word">SEOULHABIT</span>
+            <i class="bar" id="e-bar"></i>
+            <span class="tagline" id="e-tag">Korean skincare, answered.</span>
+          </div>
+
+          <div class="hero">
+            <div class="cta">
+              <p class="cta-line" id="e-cta">Comment the <em>exact product</em>.<br>We&rsquo;ll decode its label next.</p>
+            </div>
+            <figure class="plate-panel">
+              <div class="plate-zoom" id="e-zoom" data-layout-allow-overflow>
+                <img src="assets/plates/01-serum-bottle-crop.png" alt=""
+                     width="946" height="1720" loading="eager" decoding="sync">
+              </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero of this card is COMPOSED -- the mark and the bottle are
+        // already set, so the cut out of 06-close lands on a finished card
+        // rather than an empty paper field.
+        tl.set(['#e-mark', '#e-kicker'], { opacity: 1 }, 0);
+
+        // The plate holds at scale 1.0 for the whole card -- the exact value
+        // 01-hook opens from, so the replay seam matches on the plate. No Ken
+        // Burns here on purpose: this is the loop's handoff frame, and drifting
+        // it would reintroduce the mismatch the reverse zoom in 06-close exists
+        // to remove.
+        tl.set('#e-zoom', { scale: 1.0 }, 0);
+
+        // 0.15 -> 1.35 the lockup assembles under the already-present mark.
+        tl.fromTo('#e-word', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.36 }, 0.15);
+        tl.to('#e-bar', { width: 320, duration: 0.42, ease: 'power2.inOut' }, 0.45);
+        tl.to('#e-tag', { opacity: 1, duration: 0.34 }, 0.80);
+        tl.fromTo('#e-cta', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.40 }, 1.15);
+
+        // 2.05 a single slow settle on the mark keeps the card from sitting
+        // frozen for its whole hold (the cadence ceiling applies here too).
+        tl.to('#e-mark', { y: -8, duration: 0.55, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 2.05);
+
+        tl.to({}, { duration: 3.200 }, 0); // full-span anchor -- always last
+        window.__timelines["07-endcard"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

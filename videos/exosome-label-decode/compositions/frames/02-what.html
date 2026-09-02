@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Margin reset. box-sizing alone is NOT enough: the UA stylesheet's
+           default `p { margin: 1em 0 }` / `h1 { margin: .67em 0 }` scale with
+           FONT SIZE, so a 170px headline carried ~114px of phantom margin above
+           and below it and a 42px card question carried ~42px. Measured on a real
+           snapshot: gate cards rendered 280/393px tall against ~194px of actual
+           content, which pushed card 03 to y=1513 -- past the content box (1360)
+           and nearly to the safe line (1536). One reset, six scenes. */
+        h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-soft: #211F1B; --mist: #F0EBE1;
+          --ink-2-dark: #878B8C; --celadon: #93B896; --coral: #C97A5C; --aqua: #59B8AE;
+          --cap-lane: 176px;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column, safe padding on all four sides,
+              explicit 1920px height; three stacked zones (term lockup /
+              diagram / sources) so the read order is top-to-bottom.
+           2. The diagram is a single flex child that OWNS its own SVG
+              viewBox -- the vesicle geometry is expressed in viewBox units,
+              not as absolute px siblings, so it scales with the zone.
+           3. The sources row is a 3-column grid; nothing in this scene is
+              positioned with an independent top/left pair.
+           NOTE ON GROUND: this scene is INK, so secondary text uses
+           --ink-2-dark (5.32:1). --ink-2 would measure 3.44:1 here -- the
+           token's documented scope is a constraint, not a comment. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          /* --cap-lane reserves the burned-in caption band (y 1360-1520) so no
+             scene's own content can sit under it. Content bottom is 1360, not
+             1536 -- the lane sits between the content box and --safe-bottom. */
+          padding: var(--safe-top) var(--safe-right)
+                   calc(var(--safe-bottom) + var(--cap-lane)) var(--safe-left);
+          gap: 26px;
+        }
+
+        /* --- TermDefinition lockup, adapted from the catalog component.
+           Single entry: the array-cycling half of its contract is unused,
+           and the progress rail it normally carries is dropped with it. --- */
+        .term { flex: 0 0 auto; }
+        .term-head { display: flex; align-items: baseline; gap: 22px; }
+        .term-name { font-weight: 800; font-size: 104px; line-height: 1;
+                     letter-spacing: -0.035em; color: var(--paper); opacity: 0; }
+        .term-kr { font-family: var(--font-kr); font-size: 46px; color: var(--celadon); opacity: 0; }
+        .term-cat { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.13em;
+                    text-transform: uppercase; color: var(--ink-2-dark); margin-top: 14px; opacity: 0; }
+        .term-def { font-size: 44px; line-height: 1.32; color: var(--paper);
+                    margin-top: 18px; max-width: 800px; opacity: 0; }
+        .term-def em { font-style: normal; color: var(--celadon); }
+
+        .diagram { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; }
+        .diagram svg { width: 100%; height: 100%; display: block; overflow: hidden; }
+        .vesicle { transform-box: fill-box; transform-origin: 50% 50%; }
+        .dlabel { font-family: var(--font-mono); font-size: 32px; fill: var(--ink-2-dark);
+                  letter-spacing: 0.1em; }
+
+        /* --- source divergence --- */
+        .sources { flex: 0 0 auto; }
+        .src-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .src { background: var(--ink-soft); border: 2px solid #333333; padding: 20px 14px;
+               text-align: center; opacity: 0; }
+        .src b { display: block; font-family: var(--font-mono); font-size: 32px;
+                 letter-spacing: 0.06em; color: var(--paper); font-weight: 500; }
+        .src-foot { display: flex; align-items: center; justify-content: space-between;
+                    gap: 20px; margin-top: 22px; }
+        .src-note { font-size: 38px; line-height: 1.25; color: var(--paper); opacity: 0; }
+        .src-note b { color: var(--coral); font-weight: 800; }
+        /* Citation pill: width:max-content + right:auto so it can never inherit
+           the .clip inset and stretch into a full-width slab. */
+        .cite { flex: 0 0 auto; right: auto; width: max-content;
+                font-family: var(--font-mono); font-size: 32px; color: var(--ink-2-dark);
+                border: 2px solid #3A3E3F; padding: 10px 18px; white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div data-hf-id="hf-y4xf" id="root" data-composition-id="02-what" data-width="1080" data-height="1920" data-duration="10.750">
+        <div data-hf-id="hf-tan6" class="stage">
+
+          <div data-hf-id="hf-d8se" class="term">
+            <div data-hf-id="hf-wvmx" class="term-head">
+              <h1 data-hf-id="hf-u2tz" class="term-name" id="w-name">EXOSOME</h1>
+              <span data-hf-id="hf-vmu9" class="term-kr" id="w-kr">엑소좀</span>
+            </div>
+            <p data-hf-id="hf-q4nt" class="term-cat" id="w-cat">Extracellular vesicle</p>
+            <p data-hf-id="hf-c2ia" class="term-def" id="w-def">A particle a cell releases to carry <em data-hf-id="hf-zg04">signals</em> to other cells.</p>
+          </div>
+
+          <div data-hf-id="hf-yk1z" class="diagram">
+            <svg data-hf-id="hf-c10f" viewBox="0 0 846 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- the cell: one mechanism, three labels max (FIG / CELL / VESICLES) -->
+              <circle data-hf-id="hf-invg" id="w-cell" cx="196" cy="280" r="150" fill="none" stroke="#93B896" stroke-width="3" />
+              <circle data-hf-id="hf-805k" id="w-nucleus" cx="196" cy="280" r="74" fill="#93B896" fill-opacity="0.16" stroke="#93B896" stroke-width="2" />
+              <text data-hf-id="hf-8txp" class="dlabel" x="196" y="470" text-anchor="middle" id="w-lab-cell">CELL</text>
+
+              <g data-hf-id="hf-hqmm" id="w-vesicles" fill="#93B896" fill-opacity="0.9">
+                <circle data-hf-id="hf-v1bn" class="vesicle" id="w-v1" cx="392" cy="212" r="21" />
+                <circle data-hf-id="hf-e05e" class="vesicle" id="w-v2" cx="462" cy="322" r="16" />
+                <circle data-hf-id="hf-ubf5" class="vesicle" id="w-v3" cx="536" cy="196" r="24" />
+                <circle data-hf-id="hf-rclt" class="vesicle" id="w-v4" cx="602" cy="356" r="18" />
+                <circle data-hf-id="hf-y95e" class="vesicle" id="w-v5" cx="668" cy="252" r="22" />
+                <circle data-hf-id="hf-fi5e" class="vesicle" id="w-v6" cx="742" cy="368" r="15" />
+                <circle data-hf-id="hf-qybt" class="vesicle" id="w-v7" cx="792" cy="268" r="19" />
+              </g>
+              <text data-hf-id="hf-uxgw" class="dlabel" x="600" y="470" text-anchor="middle" id="w-lab-ves">RELEASED VESICLES</text>
+            </svg>
+          </div>
+
+          <div data-hf-id="hf-g9om" class="sources">
+            <div data-hf-id="hf-coqt" class="src-row">
+              <div data-hf-id="hf-x9e8" class="src" id="w-s1"><b data-hf-id="hf-bqms">STEM CELL</b></div>
+              <div data-hf-id="hf-5xa3" class="src" id="w-s2"><b data-hf-id="hf-cw3s">IMMUNE CELL</b></div>
+              <div data-hf-id="hf-1z62" class="src" id="w-s3"><b data-hf-id="hf-1zo4">PLATELET</b></div>
+            </div>
+            <div data-hf-id="hf-hu4f" class="src-foot">
+              <p data-hf-id="hf-l4ax" class="src-note" id="w-note">Different sources.<br data-hf-id="hf-x5px"><b data-hf-id="hf-nbxi">Not automatically the same.</b></p>
+              <span data-hf-id="hf-9db1" class="cite" id="w-cite">Aesthet Surg J · 2026</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Every vesicle is hit by more than one tween (release, then drift), so
+        // each one's t=0 state is registered as a REAL timeline tween via
+        // tl.set(...,0). A bare gsap.set() outside the timeline does NOT work:
+        // the engine seeks straight to arbitrary times without passing t=0, and
+        // the element would render at its first fromTo's "from" value for the
+        // whole stretch before its scheduled release.
+        var V = ['#w-v1','#w-v2','#w-v3','#w-v4','#w-v5','#w-v6','#w-v7'];
+        V.forEach(function (s) { tl.set(s, { opacity: 0, scale: 0.35, x: -190, y: 34 }, 0); });
+
+        // The cell itself is composed at t=0 -- frame zero of this scene is a
+        // finished diagram waiting to emit, never an empty canvas.
+        tl.set(['#w-cell', '#w-nucleus'], { opacity: 1 }, 0);
+        // Compose the term lockup at t=0. Measured: without this the cut into
+        // this scene landed on 5,221 ink px -- a bare circle on black -- because
+        // the name did not arrive until 0.10s.
+        tl.set(['#w-name', '#w-kr'], { opacity: 1 }, 0);
+
+        // 0.10-0.95 the term lockup builds, four staggered arrivals.
+                        tl.to('#w-cat', { opacity: 1, duration: 0.34 }, 0.22);
+        tl.fromTo('#w-def', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.44 }, 0.55);
+
+        // 1.45-3.55 vesicles bud off the cell, staggered 0.30 apart -- this is
+        // the scene's mechanism beat, landing under "particles cells release".
+        V.forEach(function (s, i) {
+          tl.to(s, { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.62, ease: 'power2.out' },
+                1.45 + i * 0.30);
+        });
+        tl.to('#w-lab-cell', { opacity: 1, duration: 0.3 }, 1.30);
+        tl.fromTo('#w-lab-ves', { opacity: 0 }, { opacity: 1, duration: 0.35 }, 3.30);
+
+        // A single slow breath on the membrane keeps the diagram alive through
+        // the stretch where the voice is still on the definition. Bounded
+        // repeat, never infinite -- an infinite repeat is wall-clock behaviour.
+        tl.to('#w-cell', { attr: { r: 156 }, duration: 1.15, yoyo: true, repeat: 3,
+                           ease: 'sine.inOut' }, 1.20);
+
+        // 5.35 onward: the source turn. Three chips stagger in, then the
+        // qualifier, then the citation.
+        tl.fromTo('#w-s1', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.40 }, 5.35);
+        tl.fromTo('#w-s2', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.40 }, 5.72);
+        tl.fromTo('#w-s3', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.40 }, 6.09);
+
+        // The vesicles re-tint toward their own sources -- motion that means
+        // something: the same particles, now marked as different in origin.
+        tl.to(['#w-v1','#w-v4'], { fill: '#59B8AE', duration: 0.5 }, 6.55);
+        tl.to(['#w-v3','#w-v6'], { fill: '#C97A5C', duration: 0.5 }, 6.80);
+
+        tl.fromTo('#w-note', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45 }, 7.60);
+        tl.fromTo('#w-cite', { opacity: 0 }, { opacity: 1, duration: 0.40 }, 8.55);
+
+        // Late continuous drift so the last ~2s is not a frozen hold.
+        tl.to('#w-vesicles', { x: 16, duration: 2.0, ease: 'sine.inOut' }, 8.60);
+
+        tl.to({}, { duration: 10.750 }, 0);
+        window.__timelines["02-what"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

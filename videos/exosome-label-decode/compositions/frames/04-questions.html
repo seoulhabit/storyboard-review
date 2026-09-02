@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Margin reset. box-sizing alone is NOT enough: the UA stylesheet's
+           default `p { margin: 1em 0 }` / `h1 { margin: .67em 0 }` scale with
+           FONT SIZE, so a 170px headline carried ~114px of phantom margin above
+           and below it and a 42px card question carried ~42px. Measured on a real
+           snapshot: gate cards rendered 280/393px tall against ~194px of actual
+           content, which pushed card 03 to y=1513 -- past the content box (1360)
+           and nearly to the safe line (1536). One reset, six scenes. */
+        h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --ink-soft: #211F1B;
+          --ink-2-dark: #878B8C; --rule-dark: #333333;
+          --celadon: #93B896; --coral: #C97A5C; --aqua: #59B8AE;
+          --cap-lane: 176px;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--ink); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage is one flex column with safe padding and an explicit
+              1920px height; three zones -- head / gates / foot.
+           2. .gates is a flex column of three equal cards (flex: 1 1 0 with
+              min-height: 0 on each -- without min-height:0 a flex item's
+              default min-height:auto resolves to its content's min-content
+              size and silently overrides the basis, which is how a card ends
+              up taller than declared and pushes the foot into the safe zone).
+           3. Each card is a 2-column grid (index | body). The activation bar
+              is an absolute child inside the card's OWN relative context --
+              a decorative overlay, not a stand-in for the layout. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          /* --cap-lane reserves the burned-in caption band (y 1360-1520) so no
+             scene's own content can sit under it. Content bottom is 1360, not
+             1536 -- the lane sits between the content box and --safe-bottom. */
+          padding: var(--safe-top) var(--safe-right)
+                   calc(var(--safe-bottom) + var(--cap-lane)) var(--safe-left);
+          gap: 22px;
+        }
+
+        .q-head { flex: 0 0 auto; }
+        .q-head h1 { font-weight: 800; font-size: 62px; line-height: 1.02;
+                     letter-spacing: -0.03em; color: var(--paper); }
+        .q-head .count { display: block; font-family: var(--font-mono); font-size: 32px;
+                         letter-spacing: 0.13em; text-transform: uppercase;
+                         color: var(--celadon); margin-bottom: 14px; opacity: 0; }
+
+        .gates { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+                 justify-content: space-between; gap: 16px; }
+
+        /* flex: 0 0 auto -- the card is sized BY its content. The earlier
+           `flex: 1 1 0` forced every card to an equal share of the column and,
+           once the caption lane shortened that column, the content was taller
+           than the card and spilled out BOTH ends under align-content:center
+           (measured: index overflowing its card top by 74px). A content-sized
+           card cannot overflow; .gates distributes the slack instead. */
+        .gate { flex: 0 0 auto; position: relative;
+                display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start;
+                border: 2px solid var(--rule-dark); background: var(--ink-soft);
+                padding: 22px 26px 22px 32px; opacity: 0; }
+        .gate-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+                    background: var(--celadon); transform: scaleY(0); transform-origin: 50% 0%; }
+        .gate-idx { font-family: var(--font-mono); font-size: 34px; line-height: 1.1; opacity: 0.32;
+                    color: var(--ink-2-dark); align-self: start; padding-top: 6px; }
+        .gate-q { font-weight: 800; font-size: 42px; line-height: 1.14; color: var(--paper); opacity: 0.32; }
+        .gate-subs { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .sub { display: flex; align-items: baseline; gap: 12px; font-size: 32px;
+               line-height: 1.28; color: var(--ink-2-dark); opacity: 0; }
+        .sub .tick { font-family: var(--font-mono); color: var(--celadon); flex: 0 0 auto; }
+
+        .foot { flex: 0 0 auto; display: flex; }
+        .cite { right: auto; width: max-content; font-family: var(--font-mono); font-size: 32px;
+                color: var(--ink-2-dark); border: 2px solid #3A3E3F; padding: 10px 18px;
+                white-space: nowrap; opacity: 0; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div data-hf-id="hf-7i8f" id="root" data-composition-id="04-questions" data-width="1080" data-height="1920" data-duration="12.700">
+        <div data-hf-id="hf-tan6" class="stage">
+
+          <div data-hf-id="hf-5sjw" class="q-head">
+            <span data-hf-id="hf-5bgr" class="count" id="q-count">Before you buy</span>
+            <h1 data-hf-id="hf-sk8i" id="q-h1">Ask three questions.</h1>
+          </div>
+
+          <div data-hf-id="hf-q0os" class="gates">
+            <div data-hf-id="hf-czmd" class="gate" id="q-g1">
+              <span data-hf-id="hf-f6qz" class="gate-bar" id="q-b1"></span>
+              <span data-hf-id="hf-cr99" class="gate-idx">01</span>
+              <div data-hf-id="hf-yeow">
+                <p data-hf-id="hf-qwf7" class="gate-q">What is the source?</p>
+                <div data-hf-id="hf-3oin" class="gate-subs">
+                  <p data-hf-id="hf-xvr0" class="sub" id="q-s1a"><span data-hf-id="hf-yw2g" class="tick">→</span><span data-hf-id="hf-8vlf">The label should name the cell.</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div data-hf-id="hf-gxqe" class="gate" id="q-g2">
+              <span data-hf-id="hf-4b9c" class="gate-bar" id="q-b2"></span>
+              <span data-hf-id="hf-dy6c" class="gate-idx">02</span>
+              <div data-hf-id="hf-y7yw">
+                <p data-hf-id="hf-qgms" class="gate-q">Proven to be what it says?</p>
+                <div data-hf-id="hf-gn6n" class="gate-subs">
+                  <p data-hf-id="hf-b0ot" class="sub" id="q-s2a"><span data-hf-id="hf-zw34" class="tick">→</span><span data-hf-id="hf-gvnt">Characterized — measured, not assumed.</span></p>
+                  <p data-hf-id="hf-eysu" class="sub" id="q-s2b"><span data-hf-id="hf-yp61" class="tick">→</span><span data-hf-id="hf-1w3t">Still stable when it reaches you.</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div data-hf-id="hf-kvuf" class="gate" id="q-g3">
+              <span data-hf-id="hf-7aix" class="gate-bar" id="q-b3"></span>
+              <span data-hf-id="hf-djvb" class="gate-idx">03</span>
+              <div data-hf-id="hf-x11t">
+                <p data-hf-id="hf-d6tw" class="gate-q">Tested on people — as sold?</p>
+                <div data-hf-id="hf-g8vm" class="gate-subs">
+                  <p data-hf-id="hf-vwda" class="sub" id="q-s3a"><span data-hf-id="hf-z3h2" class="tick">→</span><span data-hf-id="hf-4tzj">This exact finished product.</span></p>
+                  <p data-hf-id="hf-ry99" class="sub" id="q-s3b"><span data-hf-id="hf-xwjz" class="tick">→</span><span data-hf-id="hf-6ac5">Not just the ingredient.</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-mlgk" class="foot">
+            <span data-hf-id="hf-xdzd" class="cite" id="q-cite">Cureus · 2026</span>
+          </div>
+
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero composed: the heading is already set. Each activation bar
+        // is registered at t=0 as a REAL timeline tween -- every bar is hit by
+        // more than one tween later, and the engine seeks to arbitrary times
+        // without passing through t=0, so a bare gsap.set() would let a bar
+        // render at its first fromTo's "from" value before its scheduled beat.
+        tl.set('#q-h1', { opacity: 1 }, 0);
+        ['#q-b1','#q-b2','#q-b3'].forEach(function (s) { tl.set(s, { scaleY: 0 }, 0); });
+        // Cards are COMPOSED at t=0 -- their fill and border carry most of this
+        // frame's ink, and the cut previously landed on 13,714px (the headline
+        // alone). The opening stagger moves onto the card TEXT brightening, so
+        // the scene still opens with three beats.
+        ['#q-g1','#q-g2','#q-g3'].forEach(function (s) { tl.set(s, { opacity: 1 }, 0); });
+        tl.set(['.gate-idx', '.gate-q'], { opacity: 0.32 }, 0);
+        tl.set('#q-count', { opacity: 1 }, 0);
+
+        // 0.30-1.10 the three gates settle in, staggered.
+        tl.to(['#q-g1 .gate-idx', '#q-g1 .gate-q'], { opacity: 1, duration: 0.38 }, 0.25);
+        tl.to(['#q-g2 .gate-idx', '#q-g2 .gate-q'], { opacity: 1, duration: 0.38 }, 0.75);
+        tl.to(['#q-g3 .gate-idx', '#q-g3 .gate-q'], { opacity: 1, duration: 0.38 }, 1.25);
+
+        // 2.30 the indices take the paper ink on "...three questions."
+        tl.to('.gate-idx', { color: '#F7F5F0', duration: 0.35, stagger: 0.07 }, 2.30);
+
+        // --- activation sequence, timed to MEASURED sentence boundaries in
+        // assets/voice/04.wav (silencedetect @ -38dB), not to an even split:
+        //   "What is the source?"        voice 4.02
+        //   "...properly characterised"  voice 5.34
+        //   "and kept stable?"           voice 7.75
+        //   "this exact finished product" voice 9.24
+        //   "tested on people?"          voice 11.27
+        // Cards 2 and 3 each carry TWO sub-beats because the voice splits each
+        // into two clauses -- without them, 5.28 -> 9.18 would be a 3.9s hold.
+        tl.to('#q-b1', { scaleY: 1, duration: 0.38, ease: 'power2.out' }, 3.95);
+        tl.to('#q-s1a', { opacity: 1, duration: 0.32 }, 4.05);
+
+        tl.to('#q-b2', { scaleY: 1, duration: 0.38, ease: 'power2.out' }, 5.28);
+        tl.to('#q-s2a', { opacity: 1, duration: 0.32 }, 5.40);
+        tl.to('#q-s2b', { opacity: 1, duration: 0.32 }, 7.55);
+
+        tl.to('#q-b3', { scaleY: 1, duration: 0.38, ease: 'power2.out' }, 9.18);
+        tl.to('#q-s3a', { opacity: 1, duration: 0.32 }, 9.30);
+        tl.to('#q-s3b', { opacity: 1, duration: 0.32 }, 11.10);
+
+        // Each answered gate steps back so the live one reads first -- the
+        // border, not a colour wash, carries the state.
+        tl.to('#q-g1', { borderColor: '#2A2E2F', duration: 0.4 }, 5.28);
+        tl.to('#q-g2', { borderColor: '#2A2E2F', duration: 0.4 }, 9.18);
+
+        tl.fromTo('#q-cite', { opacity: 0 }, { opacity: 1, duration: 0.36 }, 11.85);
+
+        tl.to({}, { duration: 12.700 }, 0);
+        window.__timelines["04-questions"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

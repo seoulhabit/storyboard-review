@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        /* Margin reset. box-sizing alone is NOT enough: the UA stylesheet's
+           default `p { margin: 1em 0 }` / `h1 { margin: .67em 0 }` scale with
+           FONT SIZE, so a 170px headline carried ~114px of phantom margin above
+           and below it and a 42px card question carried ~42px. Measured on a real
+           snapshot: gate cards rendered 280/393px tall against ~194px of actual
+           content, which pushed card 03 to y=1513 -- past the content box (1360)
+           and nearly to the safe line (1536). One reset, six scenes. */
+        h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+        @font-face { font-family: "Inter"; font-weight: 800; font-style: normal;
+          src: url("assets/fonts/inter-800.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/jetbrains-mono-500.woff2") format("woff2"); font-display: block; }
+        @font-face { font-family: "Noto Sans KR Video"; font-weight: 500; font-style: normal;
+          src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-display: block; }
+
+        #root {
+          --paper: #F7F5F0; --ink: #131516; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --coral: #C97A5C; --celadon: #93B896; --moss: #4F6B52;
+          --rule-strong: #D9D3C6;
+          --cap-lane: 176px;
+          --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+          --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+          --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+          --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+          position: relative; width: 1080px; height: 1920px; overflow: hidden;
+          background: var(--paper); font-family: var(--font-body);
+        }
+
+        /* Spatial plan
+           1. .stage deliberately MIRRORS 01-hook's structure -- same ground,
+              same safe padding, same kicker / type-block / rule / hero-grid
+              order -- so the last frame hands back to the first (the loop is
+              a designed handoff, not a hard reset).
+           2. .hero is the same 2-column grid (text column | plate panel) with
+              the plate panel at the same 946/1720 aspect and the same
+              bottom alignment, so the bottle sits in the same region of the
+              frame at the cut.
+           3. The Ken Burns runs in REVERSE here, landing on scale 1.0 -- which
+              is exactly the value 01-hook starts from -- so the seam matches
+              on the plate as well as on the layout. */
+        .stage {
+          display: flex; flex-direction: column; height: 1920px;
+          /* --cap-lane reserves the burned-in caption band (y 1360-1520) so no
+             scene's own content can sit under it. Content bottom is 1360, not
+             1536 -- the lane sits between the content box and --safe-bottom. */
+          padding: var(--safe-top) var(--safe-right)
+                   calc(var(--safe-bottom) + var(--cap-lane)) var(--safe-left);
+          gap: 30px;
+        }
+
+        .kicker { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--ink-2); flex: 0 0 auto; opacity: 0; }
+
+        .verdict { flex: 0 0 auto; }
+        .vline { font-weight: 800; font-size: 78px; line-height: 1.06; letter-spacing: -0.03em;
+                 color: var(--ink); }
+        .vline .yes { color: var(--moss); }
+        .vline .no  { color: var(--coral); }
+        #k-v2 { opacity: 0; }
+
+        .rule { height: 8px; background: var(--celadon); width: 0; flex: 0 0 auto; }
+
+        .hero { flex: 1 1 auto; min-height: 0; display: grid;
+                grid-template-columns: 1fr 440px; gap: 34px; align-items: stretch; }
+
+        .cta { display: flex; flex-direction: column; justify-content: flex-end;
+               gap: 22px; padding-bottom: 8px; min-width: 0; }
+        .cta-action { font-size: 42px; line-height: 1.24; color: var(--ink); font-weight: 800;
+                      opacity: 0; }
+        .cta-action em { font-style: normal; color: var(--coral); }
+        /* The channel mark. Construction copied from brand/channel/avatar-800.html:
+           the Hangul glyph 습 in Noto Sans KR 500, --ink, optically raised because
+           Hangul syllable blocks sit high in the em box (the avatar uses top:53%
+           for the same reason). The avatar's paper tile is its own canvas, not
+           part of the mark -- on a paper ground the bare ink glyph IS the mark,
+           so no tile is drawn here. 습 is present in the local subset AND in the
+           Noto Sans KR faces the engine injects, so it never falls back. */
+        .lockup { opacity: 0; display: flex; align-items: flex-start; gap: 22px; }
+        .mark { font-family: var(--font-kr); font-weight: 500; font-size: 92px;
+                line-height: 0.86; color: var(--ink); flex: 0 0 auto;
+                margin-top: -6px; }
+        .lockup-text { min-width: 0; }
+        .lockup b { display: block; font-family: var(--font-mono); font-size: 44px;
+                    letter-spacing: 0.16em; color: var(--ink); font-weight: 500; }
+        .lockup .bar { display: block; height: 6px; background: var(--coral); width: 0; margin: 12px 0; }
+        .lockup span { display: block; font-family: var(--font-mono); font-size: 32px;
+                       letter-spacing: 0.08em; color: var(--ink-2); }
+
+        .plate-panel { height: 100%; position: relative;
+                       overflow: hidden; background: var(--ink); }
+        .plate-zoom { position: absolute; inset: 0; transform-origin: 50% 46%; }
+        .plate-zoom img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        #root.debug-layout * { outline: 1px solid rgba(255,0,0,0.6) !important; }
+        #root.debug-layout .stage { outline: 2px solid #00E5FF !important; }
+        #root.debug-layout::after {
+          content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 99;
+          background:
+            linear-gradient(to left,   rgba(255,0,168,.22) 15%, transparent 15%),
+            linear-gradient(to top,    rgba(255,0,168,.22) 20%, transparent 20%),
+            linear-gradient(to bottom, rgba(255,0,168,.22) 10%, transparent 10%);
+        }
+      </style>
+
+      <div data-hf-id="hf-7lc3" id="root" data-composition-id="06-close" data-width="1080" data-height="1920" data-duration="7.550">
+        <div data-hf-id="hf-tan6" class="stage">
+          <p data-hf-id="hf-ao9e" class="kicker" id="k-kick">The verdict</p>
+
+          <div data-hf-id="hf-6vur" class="verdict">
+            <p data-hf-id="hf-czs3" class="vline" id="k-v1">Promising? <span data-hf-id="hf-e3rx" class="yes">Yes.</span></p>
+            <p data-hf-id="hf-y1vh" class="vline" id="k-v2">Proven miracle? <span data-hf-id="hf-tugn" class="no">Not yet.</span></p>
+          </div>
+          <div data-hf-id="hf-tcqe" class="rule" id="k-rule"></div>
+
+          <div data-hf-id="hf-hie8" class="hero">
+            <div data-hf-id="hf-apeu" class="cta">
+              <p data-hf-id="hf-ck2y" class="cta-action" id="k-cta">Comment the <em data-hf-id="hf-19ap">exact product</em> — we’ll decode its label next.</p>
+              <div data-hf-id="hf-s25x" class="lockup" id="k-lock">
+                <span class="mark" id="k-mark">&#xC2B5;</span>
+                <span class="lockup-text">
+                  <b data-hf-id="hf-qdbz">SEOULHABIT</b>
+                  <i data-hf-id="hf-r6ys" class="bar" id="k-bar"></i>
+                  <span data-hf-id="hf-yvfa">Korean skincare, answered.</span>
+                </span>
+              </div>
+            </div>
+            <figure data-hf-id="hf-d6me" class="plate-panel">
+              <div data-hf-id="hf-iejr" class="plate-zoom" id="k-zoom">
+                <img data-hf-id="hf-0nvt" src="assets/plates/01-serum-bottle-crop.png" alt="" width="946" height="1720" loading="eager" decoding="sync">
+              </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+
+        // Frame zero composed: verdict line 1 and the bottle are already set.
+        tl.set('#k-v1', { opacity: 1 }, 0);
+
+        // Reverse Ken Burns -> lands on scale 1.0, the exact value 01-hook
+        // opens from, so a replay has no visible reset on the plate.
+        tl.fromTo('#k-zoom', { scale: 1.03 }, { scale: 1.0, duration: 7.55, ease: 'none' }, 0);
+
+        // Beats timed to measured clause boundaries in assets/voice/06.wav:
+        //   "Promising?"        0.10 - 0.52
+        //   "Yes."              0.72 - 0.94
+        //   "Proven miracle?"   1.83 - 3.01
+        //   "Not yet."          3.47 - 4.48
+        //   CTA                 4.93 - 7.01
+        tl.to('#k-kick', { opacity: 1, duration: 0.30 }, 0.12);
+        tl.fromTo('#k-v1 .yes', { scale: 0.9 }, { scale: 1, duration: 0.34, ease: 'back.out(2.4)' }, 0.72);
+
+        tl.fromTo('#k-v2', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.42 }, 1.83);
+        tl.fromTo('#k-v2 .no', { scale: 0.9 }, { scale: 1, duration: 0.36, ease: 'back.out(2.4)' }, 3.47);
+        tl.to('#k-rule', { width: 430, duration: 0.5, ease: 'power2.inOut' }, 3.90);
+
+        // 4.90 the ONE specific action -- not a generic subscribe card.
+        tl.fromTo('#k-cta', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.44 }, 4.90);
+
+        tl.fromTo('#k-lock', { opacity: 0 }, { opacity: 1, duration: 0.40 }, 5.95);
+        tl.to('#k-bar', { width: 300, duration: 0.45, ease: 'power2.inOut' }, 6.25);
+
+        tl.to({}, { duration: 7.550 }, 0);
+        window.__timelines["06-close"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

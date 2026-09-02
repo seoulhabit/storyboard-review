@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>QuestionGate — harvested component</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  /* Tokens copied verbatim from the source composition (see README). Not
+     re-verified live against DesignSync this session -- matches shipped code. */
+  :root {
+    --ink: #131516;
+    --ink-soft: #211F1B;
+    --paper: #F7F5F0;
+    --ink-2-dark: #878B8C;
+    --celadon: #93B896;
+    --rule-dark: #333333;
+    --rule-dim: #2A2E2F;
+    --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
+    --font-body: "Inter", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  }
+  /* Both halves of the reset matter. box-sizing alone is not enough: the UA
+     default `p { margin: 1em 0 }` scales with FONT SIZE, so a 42px card
+     question carries ~42px of phantom margin. On the source build that alone
+     rendered the cards at 280-393px against ~194px of real content and pushed
+     the last card past the safe line. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden;
+               background: var(--ink); font-family: var(--font-body); }
+
+  #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+
+  .qg-stage {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; height: 1920px;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+    gap: 22px;
+  }
+
+  .qg-head { flex: 0 0 auto; }
+  .qg-kicker { display: block; font-family: var(--font-mono); font-size: 32px;
+               letter-spacing: 0.13em; text-transform: uppercase;
+               color: var(--celadon); margin-bottom: 14px; }
+  .qg-headline { font-weight: 800; font-size: 62px; line-height: 1.02;
+                 letter-spacing: -0.03em; color: var(--paper); }
+
+  /* Cards are CONTENT-SIZED (flex: 0 0 auto) and the column distributes the
+     slack. An equal-share `flex: 1 1 0` was the source build's first attempt:
+     once anything shortened the column, content grew taller than its card and
+     spilled out BOTH ends under align-content:center -- measured at 74px of
+     overflow above a card's own top edge. */
+  .qg-gates { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+              justify-content: space-between; gap: 16px; }
+
+  .qg-gate { flex: 0 0 auto; position: relative;
+             display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start;
+             border: 2px solid var(--rule-dark); background: var(--ink-soft);
+             padding: 22px 26px 22px 32px; }
+  /* Activation lives in ONE narrow element so the card's own text never
+     changes contrast mid-scene. */
+  .qg-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+            background: var(--celadon); transform: scaleY(0); transform-origin: 50% 0%; }
+  .qg-idx { font-family: var(--font-mono); font-size: 34px; line-height: 1.1;
+            color: var(--ink-2-dark); align-self: start; padding-top: 6px; opacity: 0.32; }
+  .qg-q { font-weight: 800; font-size: 42px; line-height: 1.14; color: var(--paper); opacity: 0.32; }
+  .qg-subs { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  /* 32px is the floor for anything a viewer is meant to actually READ --
+     smaller is decoration, not content. */
+  .qg-sub { display: flex; align-items: baseline; gap: 12px; font-size: 32px;
+            line-height: 1.28; color: var(--ink-2-dark); opacity: 0; }
+  .qg-sub .tick { font-family: var(--font-mono); color: var(--celadon); flex: 0 0 auto; }
+
+  .qg-foot { flex: 0 0 auto; display: flex; }
+  /* right:auto + width:max-content so the pill can never inherit an ancestor's
+     inset:0 and stretch into a full-width slab. */
+  .qg-cite { right: auto; width: max-content; font-family: var(--font-mono);
+             font-size: 32px; color: var(--ink-2-dark); border: 2px solid #3A3E3F;
+             padding: 10px 18px; white-space: nowrap; opacity: 0; }
+
+  .debug-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(19,21,22,.92); color: var(--paper); font-family: ui-monospace, monospace; font-size: 13px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .debug-bar input[type="range"] { flex: 1; }
+  .debug-bar button { font-family: inherit; font-size: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid #9C978D; background: transparent; color: var(--paper); cursor: pointer; }
+</style>
+</head>
+<body>
+  <div id="root">
+    <div class="qg-stage">
+      <div class="qg-head">
+        <span class="qg-kicker" id="qg-kicker"></span>
+        <h2 class="qg-headline" id="qg-headline"></h2>
+      </div>
+      <div class="qg-gates" id="qg-gates"></div>
+      <div class="qg-foot"><span class="qg-cite" id="qg-cite"></span></div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  // ---- Field contract -------------------------------------------------
+  // Generalized sample content, NOT the source video's copy. N is 2-4: the
+  // cards are a flex column of content-sized items, so the geometry does not
+  // change with N (unlike FactorConverge's fixed triangle). Past ~4 the column
+  // stops fitting a 9:16 safe box at the 32px type floor -- a real limit.
+  // 1 or 2 subs per gate; the second exists to absorb a narration clause split.
+  var DATA = {
+    kicker: "Before you commit",
+    headline: "Ask three questions.",
+    gates: [
+      { idx: "01", q: "What is the source?",
+        subs: ["The label should name it."] },
+      { idx: "02", q: "Is the amount disclosed?",
+        subs: ["A percentage, not a position.",
+               "Stated for the active, not the blend."] },
+      { idx: "03", q: "Was the product tested?",
+        subs: ["The finished formula.",
+               "Not just the raw ingredient."] }
+    ],
+    citation: "Journal · Year"
+  };
+
+  // ---- build ----------------------------------------------------------
+  document.getElementById("qg-kicker").textContent = DATA.kicker;
+  document.getElementById("qg-headline").textContent = DATA.headline;
+  document.getElementById("qg-cite").textContent = DATA.citation;
+
+  var wrap = document.getElementById("qg-gates");
+  DATA.gates.forEach(function (g, i) {
+    var card = document.createElement("div");
+    card.className = "qg-gate";
+    card.id = "qg-gate-" + i;
+    var subs = g.subs.map(function (s, j) {
+      return '<p class="qg-sub" id="qg-sub-' + i + '-' + j + '">' +
+             '<span class="tick">→</span><span>' + s + '</span></p>';
+    }).join("");
+    card.innerHTML =
+      '<span class="qg-bar" id="qg-bar-' + i + '"></span>' +
+      '<span class="qg-idx" id="qg-idx-' + i + '">' + g.idx + '</span>' +
+      '<div><p class="qg-q" id="qg-q-' + i + '">' + g.q + '</p>' +
+      '<div class="qg-subs">' + subs + '</div></div>';
+    wrap.appendChild(card);
+  });
+
+  // ---- timeline -------------------------------------------------------
+  var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  var N = DATA.gates.length;
+
+  // Every bar is targeted by more than one tween, so its t=0 state is
+  // registered as a REAL timeline tween. A bare gsap.set() outside the
+  // timeline does NOT hold: the engine seeks to arbitrary times without
+  // passing through 0, and the element would render at its first tween's
+  // "from" value for the whole stretch before its scheduled beat.
+  DATA.gates.forEach(function (g, i) {
+    tl.set("#qg-bar-" + i, { scaleY: 0 }, 0);
+    tl.set(["#qg-idx-" + i, "#qg-q-" + i], { opacity: 0.32 }, 0);
+    g.subs.forEach(function (_, j) { tl.set("#qg-sub-" + i + "-" + j, { opacity: 0 }, 0); });
+  });
+  tl.set("#qg-cite", { opacity: 0 }, 0);
+
+  // Cards are COMPOSED at t=0 -- their fill and border carry most of the
+  // frame's ink, so a cut into this scene lands on a finished checklist. The
+  // opening stagger rides on the card TEXT instead of on card arrival.
+  DATA.gates.forEach(function (g, i) {
+    tl.to(["#qg-idx-" + i, "#qg-q-" + i], { opacity: 1, duration: 0.38 }, 0.25 + i * 0.50);
+  });
+  tl.to(".qg-idx", { color: "#F7F5F0", duration: 0.35, stagger: 0.07 }, 2.30);
+
+  // Activation sequence. In a real build these times come from MEASURED
+  // narration boundaries (ffmpeg silencedetect), not an even split -- real
+  // narration rarely spaces N questions evenly, and on the source video gates
+  // 1->2 sat 1.3s apart while 2->3 sat 3.9s apart. The evenly-spaced times
+  // below are a demo convenience; see README.
+  var ACT = [3.20, 5.00, 8.20];
+  var SUB2 = [null, 6.80, 9.60];
+  DATA.gates.forEach(function (g, i) {
+    tl.to("#qg-bar-" + i, { scaleY: 1, duration: 0.38, ease: "power2.out" }, ACT[i]);
+    tl.to("#qg-sub-" + i + "-0", { opacity: 1, duration: 0.32 }, ACT[i] + 0.12);
+    if (g.subs.length > 1) tl.to("#qg-sub-" + i + "-1", { opacity: 1, duration: 0.32 }, SUB2[i]);
+    // An answered gate steps back via its BORDER only. No success colour: an
+    // answered gate must not read as "passed" -- the viewer supplies the
+    // answer, not the video.
+    if (i < N - 1) tl.to("#qg-gate-" + i, { borderColor: "#2A2E2F", duration: 0.4 }, ACT[i + 1]);
+  });
+  tl.to("#qg-cite", { opacity: 1, duration: 0.36 }, 10.40);
+
+  var TOTAL = 11.20;
+  tl.to({}, { duration: TOTAL }, 0);   // full-span anchor -- always last
+
+  function renderFrame(t) { if (t === 0) tl.progress(0); else tl.time(t); }
+  window.renderFrame = renderFrame;
+  window.__questionGateTimeline = tl;
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement("div");
+    bar.className = "debug-bar";
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector("#dbg-range"), label = bar.querySelector("#dbg-t");
+    range.addEventListener("input", function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector("#dbg-0").addEventListener("click", function () { range.value = 0; renderFrame(0); label.textContent = "0.00"; });
+    bar.querySelector("#dbg-end").addEventListener("click", function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

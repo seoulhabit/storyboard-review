@@ -1,0 +1,43 @@
+{
+  "1": {
+    "src": "cand01.wav",
+    "note": "rate 20",
+    "lead_trimmed": 0.218,
+    "duration": 4.156,
+    "tail_rms_dB": "n/a"
+  },
+  "2": {
+    "src": "02.wav",
+    "note": "rate 0",
+    "lead_trimmed": 0.251,
+    "duration": 10.438,
+    "tail_rms_dB": "n/a"
+  },
+  "3": {
+    "src": "03.wav",
+    "note": "rate 0",
+    "lead_trimmed": 0.261,
+    "duration": 12.482,
+    "tail_rms_dB": "n/a"
+  },
+  "4": {
+    "src": "cand04b.wav",
+    "note": "rate 3",
+    "lead_trimmed": 0.199,
+    "duration": 12.399,
+    "tail_rms_dB": "n/a"
+  },
+  "5": {
+    "src": "05.wav",
+    "note": "rate 0",
+    "lead_trimmed": 1.083,
+    "duration": 7.217,
+    "tail_rms_dB": "n/a"
+  },
+  "6": {
+    "src": "c6a.wav",
+    "note": "rate 15 (re-recorded: rate-25 take ended mid-word)",
+    "lead_trimmed": 0.209,
+    "duration": 7.109
+  }
+}

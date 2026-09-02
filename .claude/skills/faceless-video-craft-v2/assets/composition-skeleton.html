@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ROOT COMPOSITION SKELETON — faceless-video-craft v2.1
+  ROOT COMPOSITION SKELETON — faceless-video-craft v2.2
 
   Every attribute below is transcribed from the pinned CLI's shipped docs; see
   references/hyperframes-engine.md for the file that says each one. This shape
@@ -13,6 +13,7 @@
   needs something the generator does not emit.
 
   Sub-composition shape: assets/scene-skeleton.html
+  Worked example with both transitions and every idiom: proof/v2.2-continuity-3scene/
 -->
 <html lang="en" data-resolution="portrait">
 <head>
@@ -43,18 +44,27 @@
          and lint warns without it, but the runtime keys visibility off
          data-start. data-track-index is a Studio lane the render never reads —
          it does not control paint order (use z-index) and does not prevent
-         overlap. A stable id is what Studio and agents edit against. -->
+         overlap. A stable id is what Studio and agents edit against.
+
+         TIMES HERE ARE DERIVED, NOT AUTHORED [S6/A-8]. The beat sheet's scenes
+         still tile with no gap (0-3.0, 3.0-6.0, 6.0-9.0); the generator then
+         opens each transition's overlap window by extending the OUTGOING
+         clip's data-duration by the transition duration (an ended clip holds
+         its final frame, so it is still on screen to transition away from) and
+         pulling the INCOMING clip's data-start earlier by the same amount.
+         s01 runs 0-3.5 rather than 0-3.0 because the 0.5s push-slide into s02
+         opens at 2.5. Never hand-type these; edit the beat sheet and re-run. -->
     <div class="scene clip" id="scene-s01" data-composition-id="s01"
          data-composition-src="compositions/frames/01-s01.html"
-         data-start="0.000" data-duration="3.000" data-track-index="0"></div>
+         data-start="0.000" data-duration="3.500" data-track-index="0"></div>
 
     <div class="scene clip" id="scene-s02" data-composition-id="s02"
          data-composition-src="compositions/frames/02-s02.html"
-         data-start="3.000" data-duration="3.000" data-track-index="1"></div>
+         data-start="2.500" data-duration="4.100" data-track-index="1"></div>
 
     <div class="scene clip" id="scene-s03" data-composition-id="s03"
          data-composition-src="compositions/frames/03-s03.html"
-         data-start="6.000" data-duration="3.000" data-track-index="0"></div>
+         data-start="5.400" data-duration="3.600" data-track-index="0"></div>
 
     <!-- Project-relative path; hyperframes.json declares `paths.assets`.
          Plain data-volume only: a data-automation volume lane REPLACES
@@ -70,9 +80,40 @@
     // docs/gsap.md: paused, registered on window.__timelines[compositionId].
     // The root timeline's only job is scene handoff; each sub-composition owns
     // its own beats. There is no seek(t) — the engine never calls one.
+    //
+    // No `defaults: { ease }` anywhere, root or scene: an inherited ease is an
+    // UNCOUNTED ease, and that is how a video ends up with one entrance
+    // signature across most of its real tweens while an explicit-ease grep
+    // reports variety [S6/A-10]. Every tween names its own.
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true });
-    tl.to({}, { duration: 9.000 }, 0);   // anchor: tl.duration() === root duration
+
+    // TRANSITIONS [S6/A-8] — stamped from the machine registry at
+    // skills/hyperframes-animation/transitions/TRANSITION-REGISTRY.md, acting
+    // on the two scene CLIP WRAPPERS only. The sub-compositions' own paused
+    // timelines keep being driven independently, so this is not a nested
+    // timeline and does not double-seek. Exit animations are never authored:
+    // the outgoing scene is fully composed when the transition starts, and the
+    // transition IS the exit.
+    //
+    // push-slide LEFT 0.500s: s01 -> s02, overlap opens at 2.500s.
+    // Geometric — opacity stays 1 on both wrappers, so no frame ever
+    // composites two grounds. This is why it is the long-form primary.
+    tl.to('#scene-s01', { x: -1080, duration: 0.500, ease: "power3.inOut" }, 2.500);
+    tl.fromTo('#scene-s02', { x: 1080, opacity: 1 },
+      { x: 0, duration: 0.500, ease: "power3.inOut" }, 2.500);
+
+    // blur-crossfade 0.600s: s02 -> s03, overlap opens at 5.400s.
+    // This one DOES blend: both wrappers sit at 0.500 at the midpoint, exactly
+    // as a plain crossfade would, and the 10px blur only masks the clash.
+    // Extract that midpoint frame [S7/R-2] — do not assume the blur made it safe.
+    tl.to('#scene-s02', { filter: "blur(10px)", scale: 1.03, opacity: 0,
+      duration: 0.600, ease: "power2.inOut" }, 5.400);
+    tl.fromTo('#scene-s03', { filter: "blur(10px)", scale: 0.97, opacity: 0 },
+      { filter: "blur(0px)", scale: 1, opacity: 1,
+        duration: 0.600, ease: "power2.inOut" }, 5.400);
+
+    tl.to({}, { duration: 9.000, ease: 'none' }, 0);   // anchor: tl.duration() === root duration
     window.__timelines['main'] = tl;
   </script>
 </body>

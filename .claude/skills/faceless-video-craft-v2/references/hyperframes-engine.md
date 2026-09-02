@@ -251,6 +251,23 @@ text-animation effects, and the runtime adapters — use `/hyperframes-animation
 For punch-ins, camera moves, Ken Burns and match cuts, `/hyperframes-keyframes`.
 This file does not restate them.
 
+**Scene-to-scene transitions are a root-timeline mechanism, and the machine
+source of truth is `skills/hyperframes-animation/transitions/TRANSITION-REGISTRY.md`**
+— read it rather than deriving the GSAP by hand. Its five Tier-B entries
+(`crossfade`, `blur-crossfade`, `push-slide` with a LEFT/RIGHT/UP/DOWN
+direction, `zoom-through`, `squeeze`) act purely on the two scene **clip
+wrappers**, so no per-scene cooperation and no injected overlay DOM is needed.
+The shape, which `scripts/beats_to_composition.py` emits from a scene's
+`transition` field `[S6/A-8]`: extend the outgoing wrapper's `data-duration` by
+the transition duration so it holds its final frame; pull the incoming
+wrapper's `data-start` earlier by the same amount to create the overlap; keep
+`data-track-index` ping-ponging 0/1 so the two overlapping wrappers never share
+a track; and stamp the registry's `gsap_template` on
+`window.__timelines["main"]` at the overlap start. The sub-compositions' own
+paused timelines are still driven independently by the runtime — this is not a
+nested timeline and does not double-seek. Cap 2.0s. Exit animations are never
+authored: the transition *is* the exit.
+
 ## 13. The `faceless-explainer` route
 
 v2.1 runs through the shipped `/faceless-explainer` route. Its interview asks

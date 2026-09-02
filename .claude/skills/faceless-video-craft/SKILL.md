@@ -252,12 +252,18 @@ they keep each scene's markup, tokens, and timeline reviewable in isolation.
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.2/gsap.min.js"></script>
   <script>
-    // The root timeline's own job is scene handoff — see "Cuts vs crossfades."
-    // It does NOT drive content inside a scene; each sub-composition owns that.
+    // The root timeline's own job is scene handoff — see "Cuts, crossfades,
+    // and transitions." It does NOT drive content inside a scene; each
+    // sub-composition owns that.
     window.__timelines = window.__timelines || {};
     const tl = gsap.timeline({ paused: true });
-    // Prefer a hard cut (no tween) between same-family scenes; only tween
-    // opacity across a boundary that stays on the same background colour.
+    // Boundary treatment is FORMAT-SCOPED: cuts on the grid for a Short (no
+    // tween at all); a 2-3-type transition system for long-form; never a
+    // plain crossfade across a ground change, in either. A transition is a
+    // timing edit — extend the outgoing clip's data-duration by d, pull the
+    // incoming clip's data-start back by d, ping-pong data-track-index —
+    // plus one tween stamped here at the overlap start, on the WRAPPERS:
+    //   tl.to('#scene-01', { xPercent: -100, duration: 0.5, ease: 'power3.inOut' }, 7.5);
     tl.to({}, { duration: 90.00 }, 0); // anchor: tl.duration() === root duration
     window.__timelines["main"] = tl;
   </script>
@@ -407,6 +413,63 @@ above sets `--p` directly, and CSS reads it. No CSS `@keyframes`.
   transform-origin: 50% 40%;
 }
 ```
+
+### Motion idiom by narrative function
+
+The `.beat` above is a **starting shape, not a vocabulary.** It is one
+entrance — fade plus rise — that happens to be the one this file writes down,
+which is exactly why it ends up on every element in a project. Choose the idiom
+from what the beat is *doing narratively*, then implement it with the named
+rule. Every name below is a real file in
+`~/.claude/skills/hyperframes-animation/rules/`; read it before authoring
+rather than reconstructing it from the label.
+
+| What the beat is doing | Idiom | Rule |
+|---|---|---|
+| Explaining a mechanism or process | Draw it, deform it, assemble it | `svg-path-draw`, `reactive-displacement`, `depth-scatter-assemble` |
+| Presenting evidence or data | Let the number, bar, or axis perform | `counting-dynamic-scale`, `stat-bars-and-fills`, `chart-scrub-readout` |
+| Investigating something (a label, a list, a document) | Take the camera to the evidence | `coordinate-target-zoom`, `viewport-change` |
+| Correcting a myth, delivering a verdict | Transform the wrong thing into the right one | `scale-swap-transition`, `card-morph-anchor` |
+| Landing type on a spoken beat | Hit it, or sequence it word by word | `kinetic-beat-slam`, `discrete-text-sequence`, `asr-keyword-glow` |
+| Holding, deliberately | Liveness from the hero actor or the camera | `multi-phase-camera` micro-drift |
+
+Three of those rows carry a rule of their own.
+
+- **Evidence: the choreography enacts the study's own structure.** A trial's
+  *n* divides into its arms; a Week 0→4 outcome scrubs its own axis; a
+  percentage counts to its value. That is the motion form of *Asset protocol*
+  rule 8 — a diagram is not a chart unless it plots real data, and data is
+  allowed chart grammar — and it is what makes a data beat explanatory rather
+  than decorative (*Posture*'s "motion that means something").
+- **Correction: transform, don't replace.** Fading card A out and card B in
+  tells the viewer two unrelated things happened. `scale-swap-transition` and
+  `card-morph-anchor` keep the anchor, so the second state reads as *the first
+  one corrected* — the whole point of a myth-versus-fact beat.
+- **A hold is not a licence to breathe a text card.** Liveness comes from the
+  hero actor or a camera with a reason to move. `sine-wave-loop`'s own
+  frontmatter is explicit — "**Reach for this last**… circular breathing as
+  'aliveness' is cheap… I'd rather have NO motion than BAD motion" — so it is
+  never the default answer to a quiet stretch. Same anti-pattern *Posture* and
+  *Failure modes worth naming* already carry: decorative idle motion added to
+  make a frozen scene score better on a metric instead of earning a real beat.
+
+**The entrance-signature rule.** Count a tween's signature as **(the set of
+properties it animates + its *effective* ease)**, where *effective* is the
+load-bearing word: an ease inherited from
+`gsap.timeline({ defaults: { ease } })` is as much a signature as one written
+on the tween. **A majority of a project's real tweens sharing one signature is
+the template failure regardless of how varied the content is** — and counting
+only explicit `ease:` strings misses it completely. Confirmed case:
+`videos/ectoin-survival-molecule/` declares `defaults: { ease: "power3.out" }`
+on **29 of 29** scene timelines; 8 explicit plus 120 inherited is **128 of 196
+real tweens (65%)** on one ease, and **69 of 122 opacity tweens also move
+x/y** — the canonical fade-and-rise — against 47 pure fades. Grepping that
+project for `power3.out` returns 8 hits and would have reported variety.
+
+Unlike cadence, this is a legitimate **source-level** check — entrance variety
+genuinely is a property of the source, where a source-level beat map is only
+ever a hypothesis about pixels (*Verification loop*). Run it at authoring time,
+before the render exists.
 
 ### The image plate component
 
@@ -655,7 +718,11 @@ authored up front and hoped to fit), a single script change — even inserting
 one new short scene — cascades further than it looks:
 
 1. Every scene `data-start` after the change point.
-2. Every crossfade/cut pairing on the root timeline that references those times.
+2. Every transition overlap window on the root timeline — the extended
+   outgoing `data-duration`, the pulled-forward incoming `data-start`, the
+   `data-track-index` ping-pong and the stamped `T`. One retime re-derives all
+   four; moving the scene start alone leaves the tween firing over the wrong
+   pair of wrappers.
 3. Every SFX clip's `data-start` in scenes after the change point.
 4. The BGM's loop/slot length and its `data-fx-carve` timing if it's phrase-synced.
 5. The root `data-duration` and its anchor tween.
@@ -829,7 +896,12 @@ Follow this order; skipping ahead is what produces expensive rework.
    letting the script sprawl past its own structure (see the *re-timing
    cascade* section above), not a deliberate choice, and 14 of this
    channel's 23 shipped shorts already run past 50s with no such reason on
-   record.
+   record. **A long-form beat sheet carries two more columns: a camera path
+   and an actor map.** The camera path assigns each act a zoom level in one
+   continuous space; the actor map names every beat's subject and marks the
+   runs where consecutive beats share one. Both belong here because the actor
+   map *is* the file split (step 7), and deciding it after the markup exists
+   means rewriting the markup. See *Long-form structure*.
 3. **Choose the presenter.** With no face and (often) live narration, something
    has to carry attention: type, a moving diagram, a photographic plate, or a
    data object. Pick one per video. Videos that switch presenter mid-way read
@@ -856,7 +928,11 @@ Follow this order; skipping ahead is what produces expensive rework.
    what gets built new here is exactly what step 12 later asks you to look
    back at.
 6. **Spatial plan.** Three bullets per scene naming the Grid/Flex strategy
-   before any markup exists. See the layout section.
+   before any markup exists. See the layout section. For long-form this is
+   also where an actor-continuous run collapses into **one merged
+   sub-composition** with internal phase divs rather than one file per
+   narration sentence (`hyperframes-core`'s composition-patterns §"C.
+   Multi-scene merge") — actors rearranged between phases, not redrawn.
 7. **Composition skeleton.** Scenes and timing wired with the engine's real
    timing attributes. Get the structure seeking correctly before any styling.
 8. **Layout check with the debug overlay on.** Verify bounding boxes and safe
@@ -865,11 +941,20 @@ Follow this order; skipping ahead is what produces expensive rework.
    beats across the *whole* scene, not just its opening two seconds — a scene
    that lands three beats immediately and then holds for the rest of its
    narration duration fails the cadence target just as hard as a scene with no
-   beats at all. See *Cadence* below.
+   beats at all. See *Cadence* below. **Pick each beat's idiom from what it is
+   doing narratively** (*Motion idiom by narrative function*), not from the
+   canonical `.beat` shape, and don't set one timeline-wide
+   `defaults: { ease }` for every tween to inherit. **Author the
+   `*.motion.json` sidecar in this same pass** — assertions on the copy
+   elements, one `keepsMoving` per scene with `maxStaticSec` from this
+   format's cadence budget. Written later it documents what the composition
+   happens to do, not what it was supposed to do.
 10. **Lint and preview.** Use the project's real preview/check tooling (e.g.
     `npx hyperframes preview --background`, `npm run check`) and scrub by
     dragging the seek position, not by playing — dragging is what exposes
-    non-seekable animation.
+    non-seekable animation. `check` picks up step 9's sidecar on its own —
+    no flag — so confirm the report says a sidecar was found and scale
+    `--samples` to the piece's length before reading a clean pass as one.
 11. **Render, then extract frames and inspect.** Check frame zero, every
     scene's settle frame, every transition midpoint, and the last frame. See
     *Verification loop* for the two checks a passing lint cannot substitute for.
@@ -936,7 +1021,21 @@ for next time:
     and swamp a threshold set too low). A whole-video active-step share
     under ~10-15% is worth a second look regardless of what `check`
     reports; three consecutive scenes with near-zero internal motion is
-    the pattern that produced this rule.
+    the pattern that produced this rule. **Two limits on that share.** It
+    is *portrait-derived* — both comparators behind it are 9:16 (11.7%,
+    23.1%), while the same beat vocabulary in landscape measured 4.0%
+    before a fix pass and 5.8% after (*16:9-native composition*). And it
+    is **structurally blind**: `videos/ectoin-survival-molecule/` measures
+    **12.7%** (344 of 2703 steps) on the shipped render — above one shipped
+    9:16 comparator and well under the other — and still read as slides,
+    because all 29 of its scenes had the same enter → wash → hold shape.
+    The share says how much changed, never whether it changed differently
+    from the last scene; that question is item 14. **Measure this on the
+    file you are shipping, and do not trust a number the project already
+    wrote down**: that project's own `DELIVERY.md:53-58` records 14.8%,
+    written eleven minutes *after* the render it describes, and re-running
+    the project's own unmodified script against the shipped MP4 returns
+    12.7%. A stale recorded figure is indistinguishable from a fresh one.
 5. **Is there a real photographic, tactile, or product-specific visual
    early in the video**, rather than a fully illustrated/typographic open
    by default? See the tactile-anchor rule in *Asset protocol* above.
@@ -992,6 +1091,42 @@ for next time:
     measured −19 to −14 dB RMS and the file was already mastered to −14.1
     LUFS / −1.5 dBTP — one command would have settled it before any deeper
     verification pass began.
+14. **(Long-form) Does the piece pass a continuity audit** — four counts,
+    all properties of the source, so run them before the render:
+    (a) **boundaries by type** and how many change ground;
+    (b) **entrance-signature share**, reported as two separate numbers
+    because they answer different questions — the top *(properties +
+    effective ease)* signature, and the top *effective ease* on its own,
+    counting any inherited from `defaults: { ease }` (*Motion idiom by
+    narrative function*); (c) an **actor-persistence map** — which
+    subjects span consecutive scenes, and whether each is one merged
+    sub-composition or two redrawings; (d) a **camera-move count**.
+    `catalog/tooling/continuity-audit.py` keeps this check; (c) and (d)
+    are heuristics, so confirm a finding on frames. Confirmed case:
+    `videos/ectoin-survival-molecule/` fails all four — 28/28 cuts; a top
+    signature of 26.0% but a top effective ease of **65.3%** across 29 of
+    29 timelines; one rebuilt-actor pair and 0 merged scenes; 0 camera
+    moves — while passing every other item here. Report both signature
+    numbers: the ease share is the one that exposes a house template, and
+    it is invisible if you only count explicit `ease:` strings (8 here). Item 4b measures *how much* changed; this measures whether
+    it changed *differently from the last scene*, which is what "reads as
+    slides" means.
+15. **Is there one `*.motion.json` sidecar at the project root** — not one
+    per scene, which is read by nothing — with assertions naming the **copy
+    elements** rather than their containers, `keepsMoving` scoped to `#root`
+    rather than to a scene, `maxStaticSec` set from this format's cadence
+    budget rather than the 2s default, and `check --samples` scaled to the
+    piece's length? `motion.enabled: false` means no sidecar was written,
+    not that verification was switched off — see *Verification loop*.
+16. **Is there no plain crossfade across a ground change, and has every
+    transition midpoint been extracted and looked at** — `blur-crossfade`
+    included, since it blends exactly as hard and only masks the clash?
+17. **(Long-form) The slides test.** Is every *within-chapter* boundary
+    carried by at least one of the three continuity mechanisms — a
+    transition, camera continuity, or an actor persisting across it — and
+    does every *chapter* boundary open on the next act's payoff rather
+    than its setup? A boundary carried by none of the three is a slide
+    change, however well-paced the scenes either side of it are.
 
 ## Verification loop
 
@@ -1082,6 +1217,176 @@ confirmed cases:
   warn if a burned-in caption composition exists but the flag is `False`)
   — fail loud rather than silently trusting inherited constants.
 
+**A QC script calibrated for one canvas does not merely mis-measure another —
+it can report a clean pass on a defect it structurally cannot see.** Confirmed,
+and worse than the caption-band inheritance bug above because no comment
+anywhere would have caught it: `catalog/tooling/check-safe-area.py` and
+`check-static-hold.py` both hard-coded `CANVAS_W, CANVAS_H = 1080, 1920` as
+module constants with no override. Run against a 1920×1080 render they did not
+error. Measured, on a fully-inked landscape frame:
+
+```
+bottom zone  mask[1536:, :]   -> shape (0, 1920)     sum=0        FAIL-OPEN
+right  zone  mask[:, 918:]    -> shape (1080, 1002)  sum=1082160  wrong region
+```
+
+The bottom slice runs past the end of a 1080-tall array, so numpy returns an
+**empty view** — the *hard gate* printed "no findings" and exited 0. The right
+slice silently measured the right 52% of the frame instead of a 162px rail, so
+the same run would fire spuriously on the other axis. A gate that fails open on
+one edge and fails loud-but-wrong on another is worse than no gate, because its
+clean exit is read as evidence.
+
+Note what did **not** prevent this: the script's own docstring already said it
+assumed a portrait canvas. Documentation of an assumption is not enforcement of
+it — the same lesson the caption-band constants taught one section above, which
+is why the fix here is an `ffprobe` dimension probe that **refuses to run**
+(exit 2) on a mismatch, not a louder comment. Before trusting any gate's clean
+result, confirm it actually measured the canvas you rendered.
+
+A second, independent bug surfaced while testing that one, and it is worth
+naming separately because it is the kind that hides inside a passing run: the
+scene-boundary regex required a literal attribute order
+(`data-composition-src` → `data-start` → `data-duration`). The repo's newest
+project writes `data-start` first, so the scene list came back **empty** and the
+region-aware check silently degraded to "treat the whole render as one scene" —
+the exact mode whose own warning text says cross-cut false positives are
+possible. Parse the tag, then pull each attribute out of it independently; never
+assume authored attribute order, since nothing enforces it. Note a project's own
+copy of a shared script may already carry an independent fix — this one's did —
+so a bug in the shared copy does not automatically discredit that project's
+published numbers. Check the copy in front of you before crediting or
+discrediting a specific past measurement.
+
+**A third bug, found by a reviewer asking why one finding crossed a cut, and the
+most damaging of the three: a per-scene check can manufacture a false positive at
+almost every boundary through nothing worse than integer truncation.** The
+windowing read:
+
+```python
+i0 = max(1, int(scene_start * REGION_FPS))     # 13.200 * 4 = 52.8 -> 52 -> t=13.00s
+```
+
+`int()` truncates, so whenever a scene start did not land exactly on the sampling
+grid the window opened **one sample early**, on a frame still showing the
+*previous* scene. That frame set the run's "has content" flag, and the new
+scene's legitimately-empty cell then read as "content, then empty" — a defect
+invented by the measurement, at exactly the boundary the per-scene windowing
+existed to respect. **711 of 936 `data-start` values across the repo (76 %) are
+off the 4 fps grid**, so it fired at roughly three cuts in four; fixing it cut
+one project's findings from 10 to 3 and removed another's entirely, with no real
+finding lost. Use half-open `[start, end)` semantics — `math.ceil` on both
+bounds — so a window holds only frames whose timestamp is genuinely inside the
+scene.
+
+Two lessons generalise past this script:
+
+- **Check the arithmetic at the boundaries of a windowed measurement, not just
+  its thresholds.** Threshold tuning gets all the attention; an off-by-one in
+  frame-index conversion is invisible in the output, survives every threshold
+  change, and produces findings indistinguishable from real ones.
+- **A finding that spans a boundary the tool claims to respect is itself evidence
+  of a tool bug**, and is worth chasing before explaining it away as content.
+
+Corollary for reading history: an "N content-voids" count from before such a fix
+is not comparable to one after it. Re-run rather than compare.
+
+**And a third class, which no threshold tuning can reach: binary ink presence is
+the wrong primitive for an element whose ALPHA is animated.** A card whose
+background sits at `rgba(247,245,240,0.06)` at rest and `rgba(...,0.18)` while
+highlighted straddles any fixed ink threshold, so its entire area enters and
+leaves the ink mask on a legitimate highlight-then-release cycle while the
+element never moves. Measured on a synthetic card: ink swings **26,576 →
+111,044 (4.2×)** between those two alphas while edge density stays **flat at
+6,116**; only genuine removal collapses both to zero. Hysteresis between
+enter/exit ink thresholds does not save this — the swing dwarfs any sane gap.
+
+Borders and glyph strokes survive an alpha change, so **require a structural
+signal as well**: a cell counts as empty only when its ink delta is low *and*
+its edge density has fallen to a small fraction of that scene's own peak. This
+class fires on anything that dims, highlights, or pulls focus — an opacity
+1 → 0.45 focus pull is the same shape as a card highlight — so a project using
+any of those idioms will see it.
+
+**And the payoff for keeping the region-aware check honest rather than deleting
+it: it caught a real defect the ENGINE'S OWN auditor missed.** After two rounds
+of fixing its false positives it flagged three cards as content-then-empty; frame
+extraction showed they were rendering **completely blank**. The cause was a bare
+text node — copy written directly inside a container rather than wrapped in an
+element:
+
+```html
+<!-- wrong: the copy is a TEXT NODE, so `.wash ~ *` has nothing to match -->
+<div class="card"><div class="wash"></div>Fragrance-free?</div>
+<!-- right -->
+<div class="card"><div class="wash"></div><span>Fragrance-free?</span></div>
+```
+
+A sibling selector that lifts content above an animated background can only
+raise **elements**. A text node has nothing to carry `position`/`z-index`, so the
+background paints over it and the card renders empty. `check`'s own
+`text_occluded` pass caught the same mistake where the copy *was* wrapped, and
+did not catch it here — which is the general lesson: **a layout auditor that
+walks text elements is blind to text that never became one.**
+
+Two things follow. Wrap copy in an element inside any container with an animated
+background, always. And treat a content-void finding as worth one frame
+extraction even after a run of false positives — the run is exactly what makes
+the real one easy to wave away.
+
+**A gate's own background estimator is an assumption, and on a hard gate a false
+positive is worse than a miss.** The safe-area check took "page background" as
+the whole-frame modal luma — fine while the ground is most of the canvas, wrong
+the moment it is not. On a landscape scene with two ~45%-of-frame panels the
+modal became a *panel* colour (151 against a true ground of 243), every margin
+differed from "background" by 92 luma, and **all four reserved zones reported
+100% ink** across 136 frames with nothing actually out of place. Deriving the
+ground from the **median of the outer 4px border ring** fixes it, and is the
+right reference precisely because reserved margins exist: the extreme edge is
+page ground by construction in any composition that respects them.
+
+Why this matters more than an equivalent miss: a hard gate that cries wolf gets
+waved through, and the next wave-through is the real one. When a gate fails,
+**check its assumptions against the frame before changing the composition** — the
+first instinct here was to go hunting for the offending element, and there wasn't
+one.
+
+That was the fourth distinct defect found in one checker family in a single day
+— attribute-order parsing, `int()` window truncation, ink-presence as the wrong
+primitive for animated alpha, and the background estimator. The common thread is
+worth more than any of them individually: **each assumption held for the portrait
+Shorts the tool was written against, and broke on the first composition with
+different geometry or a different colour distribution.** A checker inherited from
+another format is not validated for yours until something in yours has actually
+violated its premises.
+
+**A checker's summary line is part of the checker, and it is where a coverage
+gap ships as a false all-clear.** `check-static-hold.py` used to end with
+*"Overall: clean (whole-frame and region-aware checks both clean)"* — which
+reads as a verdict on the **render**, not on the two passes that ran. A region
+that stays frozen while still *carrying* content is invisible to both: the
+whole-frame diff stays alive on any other moving element, and the region pass
+only looks for content-then-**empty**, which never happens. So a render with an
+entirely dead scene printed "Overall: clean". Confirmed on a synthetic (a
+populated region frozen for a whole clip beside an animating one) and
+independently on another project's real known-broken repro.
+
+The logic was right and the sentence was wrong, which is the general shape:
+**state what was covered and what was not, and never let the absence of findings
+render as a verdict.** A scope line costs nothing and is the difference between
+"these two checks found nothing" and an all-clear the tool was never entitled to
+give. Name the uncovered mode explicitly, so the next reader can go look for it
+by hand instead of trusting the banner.
+
+**Then validate the fix in both directions, and treat the negative result as the
+weaker half.** After adding the structural signal, two real projects went to
+zero findings; that is only trustworthy because a synthetic control — a
+structured block genuinely removed at t=5.0 of a 12 s clip — was **still
+flagged**, at the right time and in the right cells. A scanner reporting nothing
+is exactly as suspect as one crying wolf, and the discipline this file already
+demands of external QC reports applies with equal force to a checker
+immediately after it has been "fixed."
+
 **Source-level cadence measurement is an authoring-time aid, never a
 substitute for the check above.** Extracting every GSAP tween position from a
 scene's own `<script>` block is the fast way to get a rough cadence read
@@ -1099,11 +1404,89 @@ If this kind of pre-render estimate is used at all, treat its output as a
 hypothesis to check, not a result to report — the post-render pixel diff
 above is the only thing that actually answers the static-hold question.
 
+**Motion sidecars (`*.motion.json`) — declared intent, checked against the
+same seeked timeline the renderer uses.** This sits between a source-level beat
+map and a full render, and is the closest automated proxy for "render the MP4
+and watch it". Drop a `*.motion.json` beside the composition, matching the HTML
+basename when several share a directory; `check` **discovers it
+automatically — there is no flag**, and `check --help` has no `--motion`. Its
+`assertions[]` array takes exactly four kinds
+(`~/.claude/skills/hyperframes-cli/references/lint-validate-inspect.md:74-99`):
+
+| Assertion | Fires when | Code |
+|---|---|---|
+| `appearsBy {selector, bySec}` | not visible (opacity ≥ 0.5) by `bySec` | `motion_appears_late` |
+| `before {a, b}` | `a` does not first appear strictly before `b` | `motion_out_of_order` |
+| `staysInFrame {selector}` | once visible, its box leaves the canvas | `motion_off_frame` |
+| `keepsMoving {withinSelector?, maxStaticSec?}` | a fully-static window exceeds `maxStaticSec` (default 2s) | `motion_frozen` |
+
+Findings are errors by default, and a selector matching nothing fails loudly
+as `motion_selector_missing` rather than passing silently. Five things follow
+that are easy to get wrong, the last two of them measured on
+`hyperframes@0.8.22` rather than reasoned from the docs:
+
+- **`motion.enabled: false` in a `check --json` report means "no sidecar was
+  found", not "motion verification was disabled."** Nothing was switched off;
+  nothing was ever written. Read it as an adoption number — measured across
+  this repo on 2026-09-02, **0 of 31 `videos/*` projects had one.** With no
+  sidecar the fallback is the far coarser `sweep_static` failure.
+- **The default `maxStaticSec` of 2s is Shorts-scale.** Set it per format from
+  the cadence budget in the *Formats* table, and **scale `--samples`** with the
+  piece — the 9-sample default on a multi-minute render is no coverage.
+- **Scope `keepsMoving` to `#root`, never to one scene.** Its static-window
+  scan runs across the **whole root composition duration** and is never
+  bounded to the window in which that scene's clip is actually live, so a
+  per-scene `withinSelector` reports the scene's own *off-screen* time as a
+  frozen window and fails by construction on any composition whose scenes
+  tile. Measured on a 3-scene, 9s proof where scene 2 runs 2.5-6.6s:
+  `#scene-s02` → "nothing moves … between 0s and 2.5s", `#scene-s03` → "between
+  0s and 5.65s", `#scene-s01` → "between 3.5s and 9s" — three errors, all of
+  them the clip being off screen, none of them a real defect.
+  `#<cid>-stage` behaves identically. The selector is not the problem: both
+  forms resolve, so neither reports `motion_selector_missing`. On tiling
+  scenes a single root-scoped `keepsMoving` loses nothing — a genuinely frozen
+  scene still exceeds the window — and additionally covers the boundaries a
+  scene-scoped assertion skips.
+- **A sidecar beside a sub-composition file is silently ignored, and that is a
+  false green.** `check` looks for the sidecar in the **project directory**
+  next to the root composition; one written to `compositions/frames/` is never
+  read. Confirmed by planting a deliberately impossible assertion
+  (`appearsBy` on a selector matching nothing, which is the one thing
+  guaranteed to fail loudly) in `compositions/frames/01-s01.motion.json`:
+  `check` returned `ok: true`, `motion.errorCount: 0`, with `specPath` still
+  the root `index.motion.json`. So per-scene sidecars do not shard the way
+  per-scene compositions do — **one sidecar at the root, with every scene's
+  selectors in it.**
+
+What it sees is geometry and opacity on the seeked timeline, so it complements
+a pixel diff rather than replacing it: it cannot see a colour wash, a clipped
+raster going frozen (the `drawElement` failure above), or a text node
+overpainted by an animated background — **unless the assertions name the copy
+element itself.** That is the whole argument for asserting on the text rather
+than its container. In `videos/ectoin-survival-molecule/`,
+`compositions/frames/28-remember.html:167` puts the payoff line "A genuinely
+interesting supporting molecule" as a **bare text node** under a `.wash.moss`
+div, rendering it overpainted at **1.72:1**; an `appearsBy` on `#nt-2 p` would
+have failed at check time as `motion_selector_missing`, because there is no
+`p` to match.
+
+An external review's language maps onto the four kinds almost directly — the
+cheap way to turn a QC report into a re-runnable assertion rather than an
+argument: "the reveal order is wrong" → `before`; "the entrance never happens"
+→ `appearsBy`; "the hold is dead" → `keepsMoving`; "it drifts off" →
+`staysInFrame`.
+
 **Transition midpoint check.** Extract a frame at the exact midpoint of every
 scene-to-scene transition, not just before and after it. A crossfade between
 two different background colours produces a genuinely muddy, near-blank frame
-at 50% — invisible if you only ever look at settled frames. See *Cuts vs
-crossfades* below for when a crossfade is and isn't safe.
+at 50% — invisible if you only ever look at settled frames. `blur-crossfade`
+is **not** exempt: its opacity pair and ease are identical to a plain
+crossfade's, so it blends exactly as hard and the 10px blur only masks the
+clash. `zoom-through` blends mildly (both wrappers at 0.875 at the midpoint —
+worth the frame, rarely muddy). Only `push-slide` and `squeeze` genuinely
+cannot blend: their midpoints must show both scenes side by side or
+compressed, never mixed. See *Cuts, crossfades, and transitions* below for
+which boundary gets which.
 
 Also always check: frame zero (must be composed, not mid-fade — see mandatory
 rule 4), and, for a short, that the last frame hands back toward the first if
@@ -1243,19 +1626,208 @@ existence for most of its claims doesn't mean the one real finding isn't
 real; verify each claim independently rather than discounting the whole
 report once a couple of claims fail to reproduce.
 
-## Cuts vs crossfades
+**A clipped raster can render as a DEAD REGION while the DOM, the lint pass
+and the engine's own capture guard all report it fine.** This is a capture-path
+defect, not a composition bug, and it is the one failure in this file that a
+correct source cannot prevent.
 
-Hard cuts on a timing grid are the default and outperform transitions on
-retention — this is a real, not merely aesthetic, preference. A crossfade is
-only safe **between two scenes that share the same background/ground colour**;
-crossfading between a light and a dark scene produces a washed, near-blank
-midpoint frame (the transition-midpoint failure above) because both layers sit
-at ~50% opacity over an unrelated canvas colour at once. If a project's design
-alternates background colour scene-to-scene for contrast (a legitimate
-technique), that same alternation makes crossfades structurally unsafe for
-every boundary that changes ground — use a hard cut there, and reserve any
-softness (a very short, ≤150-200ms same-ground fade) for boundaries that don't
-change background.
+The engine's default capture path on this platform is `drawElement`, not a
+screenshot (`captureMode: "drawelement"` in the render trace). It is faster and
+usually pixel-exact, but it can silently produce wrong pixels for one specific
+shape: **a raster image inside a container whose own `width` is being
+animated** — a wipe mask, a reveal panel, any `overflow: hidden` box that grows.
+Confirmed by bisection on `hyperframes@0.8.22`, four renders, one variable at a
+time:
+
+| clip content, identical geometry otherwise | result |
+|---|---|
+| text on a solid fill | **passes**, `psnrDb: "inf"` (pixel-identical) |
+| 1200×1200 raster + scrim at `inset: 0` | **fails**, 22.6 dB |
+| same, SVG overlay removed | **fails**, 22.6 dB — the SVG is not the trigger |
+| same, image removed, text control only | **passes**, `inf` |
+
+So the trigger is the raster, not the animated `width` itself. **Scale matters
+too** — the same content at 846×300 passed where 840×900 failed, so a small
+clipped image is not evidence the pattern is safe. A text or solid-colour
+reveal bar is fine; do not read this as "never animate width".
+
+`0.8.22` ships a guard: it captures a few ground-truth screenshots, compares
+them against the fast path, and re-renders the whole video via screenshot when
+they disagree (`drawElement self-verify failed at frame N: 22.6dB < 32dB`,
+followed by `re-rendering via screenshot`). **Do not treat that guard as
+protection.** It samples ~4 instants across the entire render and scores each
+against a fixed threshold, which makes it weakest exactly where this defect
+lives — an animation that ramps in from nothing. Measured on a real broken
+project: the guard armed, sampled *inside* the broken scene, and **passed at
+40.4 dB**, because at that instant the wipe was 2.8% open — about 23px of 840,
+roughly 1% of the canvas. The same defect was catastrophic twenty frames later.
+The render shipped broken with a clean log.
+
+Read the render log as triage, never as proof:
+
+- **no `self-verify` line at all** — the guard never armed; you have no signal.
+- **`failed`** — the fast path was wrong and the fallback saved you. The output
+  is correct; the composition still has the shape that triggers it.
+- **`passed` with `psnrDb: "inf"`** — pixel-identical, genuinely clean.
+- **`passed` with a *finite* psnrDb** — a real divergence was measured and
+  judged small. Not a bug on its own (a benign value can repeat identically in
+  a known-good build), but worth a look when a comparable frame reads `inf`, or
+  when the number drifts toward 32.
+
+**This is a FOURTH failure mode, and nothing in `catalog/tooling/` currently
+catches it.** That matters, because "we already have a region-aware static-hold
+check" is exactly the reasoning that gets the right detector dropped as
+duplicative — it was the first assumption on the project where this was
+confirmed, and it was wrong. The four are distinct:
+
+| # | defect | caught by |
+|---|---|---|
+| 1 | blank *frame* | blankness scanner (luma stddev) |
+| 2 | frozen *frame* | whole-frame static-hold (PSNR) |
+| 3 | *empty region* inside an alive frame | region-aware content-then-empty |
+| 4 | **frozen region that still carries content** | **nothing we ship** |
+
+Measured against a render known to ship a dead panel,
+`catalog/tooling/check-static-hold.py` missed it in **both** modes:
+whole-frame reported no findings across 42 samples, because the scene's labels
+and badges animated on schedule and the frame was therefore never frozen — the
+same masking problem this file already documents for burned-in captions, with
+ordinary scene furniture doing the masking. Region-aware reported three
+content-voids, **none of them the frozen panel**, because it detects a cell
+going content-then-*empty* and that panel always had content in it. It was
+frozen, never emptied, so there was no transition to fire on.
+
+**The check that actually decides it is per-region and per-scene**, because it
+does not inherit the guard's sampled-instant blind spot:
+
+```
+for each element that CLIPS A RASTER (Ken Burns panel, wipe mask, tile)
+        AND has an authored tween inside this scene's window:
+    sample N frames ACROSS THAT ELEMENT'S OWN SCENE WINDOW
+    count adjacent pairs where the region is byte-identical
+    any long identical run = dead region
+```
+
+**Both halves of that scope are load-bearing.** A deliberately static plate is
+byte-identical too, so raw identity flags calm design as dead — a held product
+shot would fail every time. Scoping to elements that clip a raster *and* carry
+authored motion in that window is what keeps the false-positive rate sane, and
+it is the operational form of "should be animating".
+
+That catches the confirmed case by construction — its panel was byte-identical
+between mask-closed and mask-open, a window where it should have been moving.
+A healthy panel looks like this (5 clipped rasters, 10 samples across each
+one's own scene): **0/9 identical pairs, max frame-to-frame delta 179–235**.
+
+Two corollaries worth carrying:
+
+- **A frame diff reporting ZERO change in a region across a whole scene is
+  evidence of a broken render, not slow pacing.** On the confirmed case it was
+  misread as a cadence number for two rounds, and two plausible diagnoses were
+  wrong first (too-subtle contrast; duplicate media nodes — both real issues,
+  neither the cause).
+- **`snapshot` and a plain browser drawing the scene correctly while `render`
+  does not is the tell**, and `--no-browser-gpu` confirms it. But fix the
+  mechanism, not the flag: a `clip-path` driven by a custom property is
+  compositor-safe and keeps the fast hardware path.
+
+## Cuts, crossfades, and transitions
+
+**The hard rule first, because it is the one part a frame can settle: a plain
+crossfade across a ground change produces a muddy midpoint.** Both layers sit
+at ~50% opacity over an unrelated canvas colour at once, so the 50% frame is
+washed and near-blank — invisible if you only look at settled frames. A design
+that alternates background colour scene-to-scene for contrast (a legitimate
+technique) makes plain crossfades structurally unsafe at every boundary that
+changes ground. The arbiter is not an argument but the *Verification loop*'s
+transition-midpoint extraction: pull the frame at the exact midpoint and look.
+Same-ground softness (a very short ≤150-200ms fade) was always allowed.
+
+**Everything past that rule is format-scoped, and this file used to state it
+format-blind.**
+
+- **Shorts.** Hard cuts on a timing grid stay the default. A 30-45s piece cut
+  to a grid has no room for a transition system, and softness at a boundary
+  reads as slack against the format's own cadence.
+- **Long-form.** Plan a *transition system*, not a per-boundary decision:
+  **2-3 types**, one primary carrying ~60-70% of boundaries plus 1-2 accents
+  (`hyperframes-animation`'s `transitions/overview.md` sets that budget —
+  "Pick ONE primary … + 1-2 accents. Never use a different transition for
+  every scene."). For an editorial explainer the primary is **`push-slide`**,
+  one direction held per chapter; **`blur-crossfade`** is the sanctioned soft
+  option across a ground change, and **`zoom-through`** / **`squeeze`** are the
+  accent slots. Give the accent to **chapter boundaries** so transition
+  strength serves the re-hook (*Long-form structure* below) rather than
+  decorating an arbitrary scene change — or let a camera leg land on the next
+  act's payoff and carry the boundary that way. Hard cuts survive as
+  **deliberate emphasis**: a few per piece, chosen, not defaulted.
+
+The registry holds exactly five — `crossfade`, `blur-crossfade`, `push-slide`,
+`zoom-through`, `squeeze` — and **which of them can cross a ground change is a
+property of their GSAP templates, not of their names**, computed at the
+midpoint (`p = 0.5`) from the registry's own `gsap_template` lines:
+
+| Transition | Both wrappers at midpoint | Blends grounds? |
+|---|---|---|
+| `push-slide` | `opacity: 1` pinned; only `x`/`y` move | **No** — never composites two grounds |
+| `squeeze` | `opacity: 1` pinned; only `scaleX` moves | **No** — never composites two grounds |
+| `zoom-through` | 0.875 / 0.875 (asymmetric `power3.in` out, `power3.out` in) | Mildly — ~11% outgoing ground, ~2% raw canvas |
+| `blur-crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — the 10px blur masks it, nothing more |
+| `crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — this is the muddy case |
+
+`push-slide` takes a `direction` of `LEFT`/`RIGHT`/`UP`/`DOWN` ("vertical
+push" is a direction, not a separate transition); there is no named `cut`,
+`match-cut` or `wipe`, a cut being the absence of a transition. And the
+registry's note on `blur-crossfade` ("Default when the two scenes' #root
+backgrounds differ a lot — the blur masks the background-color clash a plain
+crossfade would expose") means what it says: **masks**, not removes. Extract
+its midpoint like any other.
+
+**Record the disagreement rather than resolving it silently.** This file has
+said hard cuts beat transitions on retention; `transitions/overview.md` says
+"Every composition uses transitions. No exceptions… Scenes without transitions
+feel like jump cuts." **Neither claim is measured**, and the one long-form
+project this channel has shipped marks every retention comparison available to
+it `[UNDERPOWERED]` in its own brief
+(`videos/ectoin-survival-molecule/BRIEF.md:23-25`), the baseline being
+Shorts-derived and the piece not. The format split above therefore has the
+same status as the hook window in *Long-form structure*: a craft budget,
+usable for authoring, never citable as the cause of a failure, superseded the
+moment a channel has retention data on a piece that used transitions.
+
+**The mechanics, so a transition is a timing edit and not a hand-drawn
+effect.** `transitions/TRANSITION-REGISTRY.md` (§"How the injector applies a
+transition") defines the whole move as four edits at a boundary of duration
+`d`:
+
+1. Extend the **outgoing** clip's `data-duration` by `d`. An ended clip holds
+   its final frame, so it is still on screen to be transitioned away from.
+2. Pull the **incoming** clip's `data-start` earlier by `d`. That overlap *is*
+   the transition window; no other authored time moves.
+3. Alternate `data-track-index` 0/1 so two overlapping wrappers never share a
+   track. The higher track composites on top.
+4. Stamp the tween on `window.__timelines["main"]` at `T = overlap start`,
+   targeting the two clip **wrappers** — not their contents.
+
+Each sub-composition's own paused timeline keeps being driven independently, so
+the root tween moving the wrappers introduces no double seek. Two constraints
+travel with the mechanism: **exit animations are banned except on the final
+scene** ("The transition IS the exit" — fading the outgoing scene out and then
+running the next scene's entrance is a jump cut with a dip), and the registry's
+`max_duration_s` is **2.0s**, with 0.3-0.6s the working range.
+
+**Confirmed case — the rule worked exactly as written and the video still read
+as slides.** `videos/ectoin-survival-molecule/` (340s, 1920×1080, 29 scenes)
+has **28 of 28 boundaries as hard cuts**, and not by neglect: its root timeline
+is a single empty anchor tween (`index.html:230-238`) and the reasoning is
+written out immediately above it (`index.html:231-233`), citing the
+muddy-midpoint rule this section opens with. 17 of the 28 do change ground
+(ink↔paper) — but **11 of 28 are paper→paper** and could have carried a
+same-ground transition even under the old, format-blind rule. Every gate this
+skill had came back green and an external review still called the piece an
+animated presentation. A cuts-only rule written for Shorts and applied to
+long-form is one of the three ways a piece passes its cadence gate and reads as
+slides; see *Long-form structure* for the other two.
 
 ## YouTube delivery
 
@@ -1269,15 +1841,324 @@ anything load-bearing before a real publish.
 | | Long-form | Short |
 |---|---|---|
 | Canvas | 1920×1080 (16:9) | 1080×1920 (9:16) |
-| Length | any | ≤ 3:00 (limit raised Oct 2024) |
+| `data-resolution` on `<html>` | `landscape` | `portrait` |
+| Length | any (but see the ~3 min workflow cap below) | ≤ 3:00 (limit raised Oct 2024) |
 | State-change cadence | every 8–12 s | every 1.5–3 s, **for the entire scene** |
+| Reserved zones | bottom 108 / top 54 / sides 96 | bottom 384 / top 192 / right 162 |
+| End-screen reserve | final 5–20 s only, right third + lower-right | n/a |
 | End screens / cards | yes | no — one related-video link |
-| Chapters | yes | no |
+| Chapters | yes (≥ 3, first at 0:00, each ≥ 10 s) | no |
+| Thumbnail | authored or extracted + scored | frame 0 |
+| Replay mechanism | end-screen handoff | engineered loop |
+
+Both canvases share a **1080px short edge**, so the type floors below are the
+same for each — see *16:9-native composition* for why, and for why scaling the
+scale is the error.
 
 The cadence target is not "at least one beat somewhere in the scene" — a scene
 that is 15s long with narration needs roughly 5-10 authored state changes
 spread across its full duration, not 2-3 clustered at the start. See
 *Verification loop*'s static-hold check for how this actually gets caught.
+
+**For long-form the cadence row above is a floor, not a pass.** A piece can
+clear it on every scene and still read as slides; it must also satisfy
+*Long-form structure*'s continuity mechanisms and gate items 14-17.
+
+### 16:9-native composition
+
+The 9:16 section below is the one this skill grew up on, because every project it
+was written against was a Short. **This section is its sibling, not its
+afterthought** — and the first thing to know is that landscape is the engine's
+*native* canvas, not a port away from portrait. HyperFrames' `CANVAS_DIMENSIONS`
+defines `landscape: {1920, 1080}`; `init --help` calls 1920×1080 the template
+default; `1080p` and `hd` both alias to it; `data-attributes.md` lists `1920x1080`
+first; and `storyboard-format.md`'s own worked example is `format: 1920x1080`.
+The vertical work is the deviation. Approach a 16:9 build as returning to the
+default, not as porting away from a norm.
+
+- **Declaration is two coordinated places**, and both must agree:
+
+  ```html
+  <html lang="en" data-resolution="landscape">
+    ...
+    <div id="root" data-composition-id="main"
+         data-width="1920" data-height="1080" data-duration="...">
+  ```
+
+  `data-resolution` goes on `<html>`, not on the root, and accepts exactly six
+  preset strings (`landscape`, `portrait`, `landscape-4k`, `portrait-4k`,
+  `square`, `square-4k`). **`render --resolution` is a supersampler, not an
+  aspect converter** — it raises Chrome's device scale factor so the capture
+  lands at a larger size, and it requires the aspect to already match and the
+  scale to be an integer multiple. You cannot render a portrait composition as
+  landscape, and passing mismatched `--width`/`--height` silently renders at the
+  authored size instead of erroring.
+
+- **The type scale transfers unchanged. Do not re-derive it, and above all do
+  not scale it.** This is counter-intuitive enough to state plainly: **1080×1920
+  and 1920×1080 have the same 1080px short edge.** Type size is a fraction of
+  the short edge, because the short edge is what governs how much of a viewer's
+  visual field a glyph occupies for a full-frame video at a given distance. So
+  the floors below carry over one-for-one, and a project's existing `--t-*`
+  scale needs no landscape variant.
+
+  A design system may even record that its canonical scale was specced on
+  1920×1080 in the first place, with the 9:16 numbers as the improvised
+  reinterpretation — in which case a 16:9 build is returning the scale to its
+  home canvas. What *does* need an explicit variant is **layout**, per the rule
+  such a system states directly: "each component needs an explicit layout
+  variant; none can be derived by scaling." Scaling by 0.5625 or 1.78 is the
+  error in both directions — one pushes body copy under the floor, the other
+  inflates a headline into the frame edge.
+
+- **Reserved zones, and they are a different shape from Shorts — not merely
+  different numbers.** There is no action rail and no title strip in 16:9;
+  reserving 162px on the right is *semantically* wrong there, not just
+  numerically. Verify against a current device or Studio before a real publish;
+  these are current-as-written:
+
+  - **Bottom 108px (10%)** — the player progress bar and controls. Persistent on
+    mobile, on-hover on desktop. This is the only zone that binds every frame
+    hard.
+  - **Top 54px, left/right 96px (5%)** — general title-safe margin, the
+    broadcast 5% action-safe convention. Looser than the bottom because nothing
+    is reliably drawn there.
+
+  So a reasonable landscape token set is `--safe-top: 54px; --safe-right: 96px;
+  --safe-bottom: 108px; --safe-left: 96px` — and, exactly as in 9:16, **the
+  tokens must be consumed by every scene, not declared in one file and
+  hardcoded elsewhere.**
+
+- **The end-screen reserve is scene-scoped, which is the structural difference
+  from Shorts.** The Shorts rails bind all 1920 frames of a 60-second short.
+  The end-screen zone binds only the final 5–20s, and is *unreserved* for the
+  rest of the piece — so applying it globally wastes the right third of every
+  frame in the video. Reserve it on the final scene alone (see *The end screen
+  is a scene*): at most 4 elements, all inside the inner 80% (192px left/right,
+  108px top/bottom), video/playlist elements ≈613×343, subscribe/channel circles
+  ≈298px diameter. In practice: keep the **right third (~640px) and the
+  lower-right** clear of anything that must be read.
+
+- **Clip at the safe box, and entrance transients stop being a safe-area problem
+  at all.** The zoom-derived `--safe-*-zoomed` tokens elsewhere in this file solve
+  a *scene-wide* transform; they do nothing for the far more common case of an
+  individual element's entrance. A panel that rests against the safe line and
+  enters from `x:-90` sits 90px inside the reserved zone for its whole entrance,
+  and so does anything given a `scale:1.03` "breath" near an edge. Measured on a
+  real 29-scene landscape build: the hard safe-area gate found **81 frames with
+  ink in a reserved zone**, every one of them an entrance or scale transient, in
+  four different scenes — and the composition's padding was correct throughout.
+
+  Per-element fixes are whack-a-mole. One rule fixes the whole project:
+
+  ```css
+  .stage { padding: var(--safe-top) var(--safe-right)
+                    var(--safe-bottom) var(--safe-left); }
+  .stage > * { overflow: hidden; }   /* the child fills the safe box exactly */
+  ```
+
+  The stage's single child fills the safe box, so clipping it clips at the safe
+  line by construction — no element can render outside it regardless of what its
+  transform does. It also *reads* better: a slide-in becomes a masked reveal
+  rather than a panel flying in over the margin. Prefer this to widening a
+  margin, which is sized against whatever the token happened to be that day and
+  goes stale silently the moment it changes.
+
+  Containment is not a licence to keep decorative motion, though. Two of the four
+  offending scenes were only moving because a `scale:1.03` had been added to keep
+  a quiet scene alive on a metric — the exact idle-motion anti-pattern named
+  above. Those were **removed and replaced with a real content beat**, not
+  clipped into compliance. Clip the transients you actually want; delete the ones
+  that were filler.
+
+- **The layout failure mode inverts, and this is the part most likely to be got
+  wrong by someone carrying 9:16 habits across.** A vertical canvas fails as a
+  small element marooned in a tall empty column — hence 9:16's "fill the safe
+  column" rule. A wide canvas fails the opposite way: as a **full-width band of
+  text with no depth**, a single centered line stretched across 1728px of safe
+  width with nothing behind it. Advice tuned for the vertical case ("structure
+  scenes as rows, not columns") is actively wrong here.
+
+  The native 16:9 shapes are the ones a wide frame affords and a tall one
+  doesn't: **two-column** (claim left, evidence right), **hero-left /
+  diagram-right**, **full-bleed plate with a caption rail**, and a genuine
+  **three-across** row that portrait can only fake vertically. Hero copy still
+  occupies 60–80% of *available* width — but in landscape "available" should
+  usually mean a column of the grid, not the whole 1728px. A headline set across
+  the full safe width reads as a slide, not a frame.
+
+- **The type scale transfers, but the MOTION budget does not — and this is the
+  trap, because the two feel like the same question.** Measured on this repo's
+  first landscape build: a composition authored with the channel's normal beat
+  vocabulary (text fades, thin strike-through wipes, staggered entrances) came
+  out at **4.0 % of 8fps steps clearing a perceptibility floor, median
+  frame-to-frame |Δluma| 0.027**, against **11.7 %/0.162** and **23.1 %/0.451**
+  for two shipped 9:16 projects on the same channel. Same pixel count, same type
+  scale, roughly six times less perceived motion.
+
+  The mechanism is grid share, not size. On a 1080-wide portrait frame a
+  `--t-hero` headline spans most of the frame's width, so animating it changes a
+  large fraction of the pixels. On a 1920-wide landscape frame that same
+  headline sits inside a two-column grid cell and changes roughly half the
+  share — the beat is identical in the source and materially weaker on screen.
+  Thin elements suffer worst: a 5px strike-through bar is ~0.07 % of a 1920×1080
+  frame and is essentially invisible to any frame-difference metric, and nearly
+  so to a viewer.
+
+  So budget landscape motion by **fraction of frame changed**, not by counting
+  authored tweens. In practice: give entrances noticeably longer travel than the
+  portrait equivalent, prefer beats that move a whole column or panel over ones
+  that move a word, and treat any scene whose only motion is a text fade as
+  having no beat at all. A targeted pass adding real content beats to dead tails
+  moved the number above from 4.0 % to only 5.8 % — widening travel and adding
+  end-of-scene payoffs is not enough on its own, which is worth knowing before
+  budgeting a landscape build's motion pass as an afterthought.
+
+- **Size a beat against the metric, and the metric is LUMA area — not how
+  different the colours look.** A frame-difference check sees
+  `mean |Δluma| per step ≈ (frame-area-fraction × luma-delta) / (duration × 8)`,
+  so a beat clears a 1.0 floor only when area and *luminance* change together.
+  Two traps, both measured on a real build:
+
+  - **Hue change is not luma change.** Recolouring a 12%-of-frame element from
+    celadon `#93B896` to coral `#C97A5C` reads as a dramatic shift to the eye and
+    is a **27-luma step** — per-step 0.45, under the floor, invisible to the
+    check. The same element to `#131516` is a **149-luma step** — per-step 2.48.
+    When a beat needs to register, pick the colour by luminance, not by hue.
+  - **Small elements do not add up.** 104 dots recolouring, 18 ring squares
+    rotating, an 18px strand field dispersing — each measured at ~0.1–0.4 per
+    step. A single panel at 8–17% of the frame clears comfortably. Rough
+    working rule for 1920×1080: **area ≥ 8% and luma delta ≥ 80, inside ≤ 0.8s.**
+
+  Compute it before authoring rather than after rendering. Two of the fixes in
+  that build failed *because they were sized by eye*, and each cost a full render
+  to discover.
+
+- **Depth roles and the one-dominant-focal-point rule are unchanged**, and
+  landscape makes them easier to satisfy, not harder: there is room for a hero
+  and a genuinely separated supporting layer side by side, rather than stacked.
+  Use it. Two competing focal points is still the failure.
+
+- **Vertical occupancy still matters, it is just less scarce.** A 1080-tall safe
+  box is short enough that a centered single line with 400px of dead space above
+  and below reads as an unfinished layout, the same as it would in portrait.
+
+- **The contrast floor is universal, not a portrait rule** — it sits in the
+  9:16 section below only because that is where this file grew up. 4.5:1 for
+  any text meant to be read, **measured on rendered pixels rather than declared
+  tokens**, and landscape makes its worst shape *more* likely: a wide frame has
+  room for large tinted washes behind copy. Two findings from the one long-form
+  piece this repo has, pointing opposite ways — a coral strike-out held at 0.85
+  to rhyme with the opening scene measured 4.78:1 and an external review flagged
+  it anyway (deliberate, not a defect), while the real defect in that same scene
+  was a **bare text node under a `.wash`** at 1.72:1 that no declared-colour
+  check caught. Sample the pixels, and check the copy's *markup* too.
+
+### Long-form structure
+
+Everything above is per-frame. This is the shape of the whole piece, and the
+skill had almost nothing on it because it had never built one.
+
+- **Know that you are outside the specialized workflows.** `/hyperframes`'s
+  routes cap the specialized narrative workflows (`faceless-explainer`,
+  `product-launch-video`, `pr-to-video`) at **about 3 minutes**, are strongest
+  at 30–90s, and explicitly route anything longer to `/general-video`. A 5-minute
+  piece is outside all of them. That is not a prohibition — it means the
+  scene-count, asset, and render assumptions those routes bake in do not apply,
+  and you own them yourself.
+- **Act structure, not a long Short.** Group beats into acts that each deliver
+  one payoff, and give every act its own small arc. The rule that every beat past
+  the value delivery must earn its place applies *per act*, not once for the
+  whole video — a five-minute piece has five or six chances to lose the viewer,
+  not one.
+- **Re-hook at every chapter boundary.** This is long-form's equivalent of the
+  Short's engineered loop, and it is the single highest-leverage structural move
+  the format has. A chapter boundary is precisely where a viewer decides to
+  leave; it is also where most compositions relax — a summary beat, a calm
+  transition, a breath. Design a hook *into* each boundary: end the act on an
+  open question the next one answers, and open the next act on its payoff rather
+  than its setup. If the beat sheet's chapter boundaries all read as "and now,
+  the next topic," the structure is wrong.
+- **Cadence 8–12s, recorded as a craft budget and not a measured threshold.**
+  Treat it the way a channel baseline treats any unbacked number: usable for
+  authoring, never citable as the cause of a failure. If a project's own
+  measured channel data says otherwise, that data wins.
+- **The hook window is genuinely unresolved — do not pick one silently.** This
+  file has said ~8s for long-form; the v2 package says ~15s; neither is measured
+  on any real channel, and the two disagree by nearly 2×. Where a channel has
+  its own retention data, use it and record that you did. Where it doesn't, say
+  the number is an assumption in the beat sheet rather than inheriting one from
+  whichever document was read most recently. What is *not* in dispute: frame
+  zero is still the hook, still composed, still never a fade-from-black or a
+  title card, and the payoff still lands early rather than after a setup.
+- **Chapters are a YouTube metadata feature with no engine primitive behind
+  them.** There is no chapter attribute, no chapter element, nothing in the CLI.
+  They exist only as timestamps in the description — which means nothing in the
+  render pipeline will ever tell you they drifted after a re-time. Re-derive the
+  chapter list from the composition's real `data-start` values as the last step
+  before publish, exactly as the re-timing cascade requires for the storyboard.
+- **Cadence is necessary and not sufficient — the failure mode long-form has
+  and Shorts don't is CONTINUITY.** The confirmed case is the one in *Cuts,
+  crossfades, and transitions*, and its numbers are the point:
+  `videos/ectoin-survival-molecule/` measures **12.7% active steps** on the
+  shipped render against its own Act 1 pilot at 5.8% and shipped 9:16
+  comparators at 11.7% and 23.1%, with a per-scene longest quiet run whose
+  median is **5.0s** and which never crosses the project's own 6.0s long-form
+  ceiling — scene 28 reaches exactly 6.00s. It passed on cadence and still
+  read as slides, and no gate here could say why:
+  all of them are per-frame or per-scene, and the defect was *between* scenes.
+  Three continuity mechanisms, in priority order — the **transition system**,
+  a **camera path**, **persistent actors**. The fix is continuity, not
+  spectacle: not Three.js, WebGPU or a shader pass, which is *Posture*'s
+  "spend boldness once" on the wrong problem.
+- **Camera as the spine, planned at beat-sheet time and not in the motion
+  pass.** Map the information hierarchy onto zoom levels so consecutive scenes
+  read as *framings of one space* rather than separate slides: salt crystal →
+  bacterium → hydration layer; front label → INCI list → verdict. Decided at
+  step 2 it is free; decided at step 9 it means re-authoring every scene's
+  markup. The rules: `viewport-change` (one `.world` wrapper, one
+  `cam {scale, x, y}` state object — everything else follows),
+  `coordinate-target-zoom` (*measure* the element you fly to, never hand-derive
+  its coordinates), `multi-phase-camera`; the multi-leg shapes are the
+  `camera-journey` and `zoom-out-workspace-reveal` blueprints, and
+  `hyperframes-keyframes` covers a punch-in on an untimed wrapper. Two rules
+  already here are exactly what a camera move needs: a scene-wide transform is
+  what the `--safe-*-zoomed` tokens exist for, and
+  `.stage > * { overflow: hidden }` keeps the moving world clipped at the safe
+  line. `motion-blur-streak` goes on the fast leg only, sharp at each landing,
+  and is hand-authored SVG/CSS — **there is no render-level motion blur.**
+- **Persistent actors: rearrange them, don't redraw them.** Consecutive beats
+  sharing a subject should share **one sub-composition** — the multi-scene
+  merge in `hyperframes-core`'s `references/composition-patterns.md` §"C.
+  Multi-scene merge": internal phase divs, one timeline, phases as timeline
+  positions. Actors are then *rearranged* between phases (the same DOM nodes
+  moving, FLIP-style) rather than rebuilt — the difference between a diagram
+  that evolves and two that resemble each other. So **split composition files
+  by actor continuity, not by narration sentence**, the same instinct as the
+  one-evolving-diagram rule in *Asset protocol*. This does not conflict with
+  the "stay one level" nesting warning below: a merged file *is* the
+  sub-composition, its phases positions on that file's own timeline, not a
+  second `data-composition-src` hop. A merged sub-comp can run 30-60s+, so
+  scale `check --samples` with it. Confirmed case:
+  `videos/ectoin-survival-molecule/`'s `09-exclusion.html` and
+  `10-messier.html` carry **byte-identical protein+shell SVG geometry**
+  (`viewBox 0 0 620 620`, r 190 and 112, `stroke-width` 46) plus a duplicated
+  ring-builder loop — one actor drawn twice instead of moved. Its
+  `hyperframes.json` even declares a `compositions/components` directory that
+  **does not exist**, and the shared catalog had no molecule actor: the miss
+  was a *creation* (production-loop step 12), not just a lookup.
+- **Narration sync at word level, not just scene level.** Long-form has enough
+  narration for beats to fire *on* the spoken word rather than near it: a claim
+  revealed phrase by phrase on its own onsets, three alternatives each reacting
+  to a spoken "not", a counter running while the number is said. Word timings
+  come from `hyperframes transcribe` (which writes `transcript.json`) or
+  `media-use`'s TTS `--words`; the per-word visual rule is `asr-keyword-glow`.
+  Two traps: **`hyperframes beats` is MUSIC beat detection, not narration**,
+  and captions stay a separate authoring decision from the visual beat schedule
+  (*The captions*), so a word-synced beat sheet does not license deriving
+  caption cues from it. The re-timing cascade's item 7 and its stale-transcript
+  warning apply at full force — a re-recorded line desyncs every word-timed
+  beat in its scene even when the scene's own start and duration never move.
 
 ### 9:16-native composition
 
@@ -1460,8 +2341,11 @@ size itself is reasonable.
 
 ### The hook
 
-Retention is decided in the first ~2 s of a short and ~8 s of long-form.
-Structural consequences:
+Retention is decided in the first ~2 s of a short. The long-form window is
+**genuinely unresolved** — this file has said ~8s, the v2 package ~15s, neither
+measured on a real channel; see *Long-form structure*'s hook-window bullet, and
+record which number a beat sheet assumed rather than inheriting one silently.
+Structural consequences, which hold either way:
 
 - **Cold open.** No logo, no fade-from-black, no title card. Frame zero *is*
   the hook — the strongest visual claim of the piece, already composed (see
@@ -1785,10 +2669,15 @@ actually differentiate:
   content is. This file's own canonical `.beat` pattern (*Consuming `--p` in
   CSS* above) is a starting shape to build variants from — a scale pop, a
   wipe, a stagger on a different curve — not the one entrance every element
-  in a project should use.
-- **Cuts over transitions.** Hard cuts on a timing grid outperform crossfades in
-  retention and are far cheaper to render — see *Cuts vs crossfades* for exactly
-  when a crossfade is still safe.
+  in a project should use. Pick the variant from what the beat is doing —
+  *Motion idiom by narrative function* is the vocabulary. And **the trap is the
+  inherited default**: a timeline-wide `defaults: { ease }` gives every tween in
+  the file one signature while the source shows almost no explicit eases, so a
+  grep says "varied" and the render says "template".
+- **Boundary treatment is format-scoped.** Hard cuts on a timing grid for a
+  Short; a 2-3-type transition system for long-form; never a plain crossfade
+  across a ground change in either. The retention argument runs unmeasured in
+  both directions — see *Cuts, crossfades, and transitions*.
 - **Layout variety, not just palette variety.** Alternating background colour
   scene-to-scene is not the same as alternating structure. Nine scenes that are
   all a single centered flex column — differing only in background colour and
@@ -1840,6 +2729,19 @@ actually differentiate:
 | `marketing:draft-content` | Titles, descriptions, hooks — the publish envelope. |
 | `searchfit-seo:*`, vidIQ tools | Topic/title/outlier research **before** the beat sheet (it changes the beats); competitive caption-pacing research via `vidiq_video_transcript` before the caption pass — see *The captions*; thumbnail generation, scoring, and refinement **after** the render — see *The thumbnail*. |
 | Higgsfield / HyperFrames MCP | Plate generation and cloud render. Both are asset/infra tools, not design authorities. |
+| `hyperframes-animation` | The implementation library behind this file's motion vocabulary: atomic rules in `rules/`, multi-phase scene blueprints in `blueprints/`, and the scene-transition registry in `transitions/`. *Motion idiom by narrative function* and *Long-form structure* name its files exactly — read the rule, don't reconstruct it from the label. |
+| `hyperframes-keyframes` | Punch-ins, reframes, and camera moves on a wrapper that is not itself a timed clip. |
+| `hyperframes-core` | The composition contract, and `references/composition-patterns.md` §"C. Multi-scene merge" — the pattern behind persistent actors and phase-based scenes. |
+| `hyperframes-cli` | The dev loop, and `references/lint-validate-inspect.md:74-99` — the `*.motion.json` sidecar's four assertion kinds and failure codes. |
+
+**Names that do not exist** — each was reached for and found absent, so don't
+spend a round trip rediscovering them: no `hyperframes docs motion` topic, no
+`check --motion` flag (the sidecar is auto-discovered), no render-level motion
+blur (`motion-blur-streak` is hand-authored SVG/CSS), no "chapter composition"
+primitive (the pattern is the multi-scene merge; nesting `data-composition-src`
+two levels deep is a confirmed defect). `hyperframes beats` exists but is
+**music** beat detection; narration word timings come from `hyperframes
+transcribe` (`transcript.json`) or `media-use`'s `--words`.
 
 ## Design tokens across sub-compositions
 
@@ -1852,6 +2754,25 @@ inlines-by-build-step into each sub-composition, and check for tokens that are
 declared but never referenced anywhere (a dead accent color, an unused
 elevation level) — that's a sign the token file and the compositions have
 already started to diverge.
+
+**An inlined token block that OMITS one token fails silently, and the failure
+looks like a layout bug rather than a token bug.** This is the paste-per-file
+trap's sharpest form: the shared `tokens.css` is correct, the scene's CSS is
+correct, and the inlined copy is simply missing one custom property the scene
+uses. CSS then discards the whole declaration as invalid — `padding-right:
+calc(var(--safe-right) + var(--endscreen-right))` with `--endscreen-right`
+undefined does not fall back to `--safe-right`, it drops the padding entirely.
+Confirmed on a real render: an end-screen scene ran full-bleed into the reserved
+right zone, and the **hard safe-area gate caught it on 41 frames** while both
+the token file and the scene source read as correct. `grep -c endscreen` was
+**3 in `tokens.css` and 0 in the inlined block** — a one-command diagnosis that
+is invisible from reading either file alone.
+
+So when a scene's own CSS looks right and its rendered geometry does not, diff
+the inlined token block against the source of truth *before* debugging layout.
+And prefer a build step that copies the token block mechanically over one that
+copies it by hand: every token added to `tokens.css` after the paste is a latent
+version of this.
 
 **A `tokens.css` that exists and is correct but is never actually loaded by
 anything is a worse version of the same trap, not a milder one** — it
@@ -1972,7 +2893,48 @@ either pattern as "the" approach, and the majority of projects had neither.
   variety without structural variety.
 - Crossfading between two scenes with different background colours, producing
   a muddy near-blank transition midpoint that only shows up in a frame
-  extracted at the exact midpoint.
+  extracted at the exact midpoint — when `push-slide` and `squeeze` cross a
+  ground change without blending at all, and `blur-crossfade` at least masks
+  the clash.
+- Applying the Shorts cuts-only rule to long-form: every boundary a hard cut,
+  every per-scene gate green, and a video that reads as slides.
+- An exit animation before a transition fires — the transition IS the exit, so
+  fading out first makes it a jump cut with a dip.
+- Rebuilding the same diagram in consecutive scenes instead of merging them and
+  rearranging the actors: two files that resemble each other, not one subject
+  that evolves.
+- A chapter transition that is *bigger* but lands the next act on its setup.
+- Reading `motion.enabled: false` as "motion verification was disabled." No
+  sidecar was ever written; nothing was switched off.
+- `*.motion.json` assertions aimed at containers rather than copy elements, so
+  an overpainted or never-wrapped text node passes clean.
+- `sine-wave-loop` as the default answer to a quiet stretch, when its own rule
+  file says reach for it last and would rather have no motion than bad motion.
+- `hyperframes beats` for narration timings (it is music beat detection), or a
+  render-level motion-blur flag (there isn't one).
+- Counting ease variety by grepping explicit `ease:` strings while a
+  timeline-wide `defaults: { ease }` supplies the rest — 8 explicit hits over
+  128 tweens actually carrying it.
+- Reading a healthy whole-video active-step share as "well paced" on a piece
+  whose every scene has the same enter → wash → hold shape.
+- **Disproving an external report's magnitude with a source-level number, or
+  with a figure the project already wrote down.** This is the sharpest
+  confirmed case in this file, because the disproof was the error. In this
+  channel's one long-form review, every structural claim reproduced ("28
+  boundaries, all hard cuts"; "fade + slide + `power3.out` everywhere") and
+  both magnitudes were called false — wrongly, twice, in the two specific ways
+  this file already warns about. "12.7% visible motion" was rejected against
+  the project's own `DELIVERY.md` figure of 14.8%; re-running that project's
+  unmodified cadence script on the shipped MP4 returns **12.7%**, and the
+  recorded 14.8% is stale despite being written after the render. "Holds of
+  four to six seconds" was rejected on a **median trailing hold of 2.14s** —
+  but that measures the gap from a scene's last *authored tween* to its end,
+  not perceived stillness; the pixel measurement gives a median longest quiet
+  run of **5.0s** with 21 of 29 scenes inside the reported 4-6s band. A
+  reviewer describing what a viewer sees is making a claim about pixels, and
+  only pixels answer it. Verifying a report is not the same as reaching for
+  the nearest available number, and a project's own delivery doc is a claim
+  too.
 - Glow used to create hierarchy. Use elevation, weight, and contrast instead.
 - Rendering at 60fps for content that has no fast motion — doubles cost, changes
   nothing a viewer can see.
@@ -2031,6 +2993,25 @@ either pattern as "the" approach, and the majority of projects had neither.
   position 0 — which registers the baseline as a real timeline tween in the
   same sequence GSAP evaluates on every seek. Any element hit by more than
   one `fromTo()` at different timeline positions needs this.
+- Treating `tl.set(target, {...}, 0)` as the SOLE source of an element's initial
+  state. Two sources in this codebase disagree about whether it holds: the
+  multiple-`fromTo` entry above records that it is what survives a cold seek,
+  while the engine's own lint (`gsap_timeline_set_initial_hide`) reports that
+  *"a zero-duration set at 0 does not render while the playhead sits exactly at
+  0, so frame 0 shows the un-hidden state"* and recommends `gsap.set()` outside
+  the timeline, or CSS/markup. They were established against different engine
+  versions and **neither has been adjudicated on a real render** — an attempt to
+  do so found that every position-0 set in the test project was redundant with a
+  CSS or markup default, so a silent no-op would have looked identical.
+
+  **Correct practice makes the disagreement moot, which is better than picking a
+  winner: let CSS or a markup attribute carry the initial state, and treat
+  `tl.set(..., 0)` as a restatement of it, never the sole source.** That is safe
+  under both claims — the CSS holds frame 0 either way — and it still fixes the
+  original defect the `fromTo` entry was written for, since an element hit by
+  several `fromTo`s gets a CSS baseline *plus* a restating `tl.set`. If a project
+  ever does depend on the timeline form alone, confirm frame 0 by extraction
+  rather than trusting either rule.
 - Shipping a render with the debug overlay still toggled on.
 - Using `loading="lazy"`, which the renderer will simply skip.
 - Diagnosing a missing asset while the debug overlay is tinting every container.
@@ -2161,6 +3142,78 @@ either pattern as "the" approach, and the majority of projects had neither.
   `ffmpeg astats`/`ebur128` check first — this is the cheapest disproof
   available in this entire skill and is worth reaching for before any
   frame-by-frame pixel work, not after.
+- Running a QC gate calibrated for one canvas against a render in another and
+  reading its silent zero-findings as a pass — confirmed to fail open on the
+  bottom zone (an empty numpy slice) while simultaneously measuring the wrong
+  region on the right. The script's own docstring naming the assumption does
+  not prevent it; only an assert that refuses to run does.
+- Editing a generated composition with a find-and-replace that is not asserted.
+  A no-match `str.replace` silently does nothing, so a CSS change can appear to
+  land while the generated file keeps the old rule — and the next render looks
+  like a layout mystery rather than an edit that never happened. Confirmed:
+  a card-conversion edit no-oped because an earlier edit had already changed the
+  matched text, the flood stayed at 0.67% of frame instead of 8%, and it cost a
+  full render cycle. Assert every match, and verify against the GENERATED file,
+  not the generator.
+- Sizing a beat by how different the colours look rather than by luma delta ×
+  frame area — a hue-only change (celadon → coral, 27 luma) is invisible to a
+  frame-difference check that a much duller-looking change to near-black (149
+  luma) clears easily.
+- Writing copy as a bare text node inside a container with an animated
+  background. A `.wash ~ *`-style rule lifts sibling ELEMENTS above the
+  background; a text node has nothing to apply it to, so the card renders
+  blank — and an engine layout auditor that walks text elements will not see it,
+  because the text never became one. **One instance survived in the very
+  project that documented this failure mode** —
+  `videos/ectoin-survival-molecule/compositions/frames/28-remember.html:167`,
+  the payoff line, overpainted at 1.72:1, with the file's own comment block
+  predicting it and the delivery doc recording it as fixed. The two checks that
+  catch it: a source grep for a text node immediately after a `.wash` div, and
+  a look for the `.wash:only-child` outline in an extracted frame. **A comment
+  predicting a bug is not a check for it.**
+- Printing "clean" or "passed" as a checker's summary when only some failure
+  modes were tested — the sentence is where a documented coverage gap ships as a
+  false all-clear. Scope the line to what actually ran and name what did not.
+- Keeping a checker's controls in a session scratch directory instead of a
+  runnable script beside the tool. A control that cannot be re-run after the
+  next threshold change is not a control.
+- Converting a scene start time to a frame index with `int()` instead of
+  `ceil()`, so any window whose start is off the sampling grid opens one frame
+  early on the previous scene's content — manufacturing a "content then empty"
+  finding at most hard cuts. Measured at 76 % of scene starts in one repo.
+- A scene-parsing regex that assumes authored attribute order, so a project
+  writing the same attributes in a different sequence silently yields zero
+  scenes and degrades a per-scene check into a whole-render one.
+- Carrying 9:16 layout instincts into a 16:9 frame — "fill the safe column" and
+  "structure scenes as rows, not columns" are corrections for the *vertical*
+  failure mode, and applying them to a wide canvas produces the landscape
+  failure mode instead: a full-width band of text with no depth behind it.
+- Re-deriving or scaling the type scale for a 16:9 flip. Both canvases share a
+  1080px short edge, so the scale transfers unchanged; scaling by 0.5625 pushes
+  body copy under the floor and scaling by 1.78 inflates a headline off the
+  frame. Layout gets an explicit variant; type does not.
+- Leaving the element that fills the safe box unclipped, so an entrance
+  transform's transient (or a decorative `scale:1.0x`) renders inside a reserved
+  zone even though every `--safe-*` token is consumed correctly. `.stage > * {
+  overflow: hidden; }` makes it structurally impossible; a bigger margin does not.
+- Reserving the end-screen zone across the whole video instead of on the final
+  scene, wasting the right third of every frame — the Shorts rails bind every
+  frame, the end-screen zone binds only the last 5–20 s.
+- Assuming `render --resolution` can change aspect ratio. It is a supersampler:
+  it requires the aspect to already match and the scale to be an integer
+  multiple, and a mismatched `--width`/`--height` renders at the authored size
+  rather than erroring.
+- Treating a catalog spike that exports `window.renderFrame` plus a bespoke
+  global as a drop-in sub-composition. The engine drives
+  `window.__timelines[<id>]`; a spike built for a review harness needs real
+  adaptation, not a CSS flip.
+- Nesting `data-composition-src` two levels deep (root → chapter → frame).
+  Confirmed by isolated test to silently break a scene's inner layout, pushing
+  content off-canvas — invisible in the rendered MP4, not a lint finding. Stay
+  one level: root → frame.
+- Running `check` at its 9-sample default on a multi-minute piece — on a 300 s
+  render that is one sample every 33 s, which is effectively no coverage while
+  reporting a clean pass.
 - Building a new region-aware or content-detection scanner and trusting its
   own first clean/dirty result without re-verifying that result against
   actual extracted frames — a heuristic image-analysis script is exactly as
@@ -2170,3 +3223,25 @@ either pattern as "the" approach, and the majority of projects had neither.
   QC report is, and earns the same "verify by pixels" discipline turned back
   on itself, including immediately after fixing the defect it was built to
   catch.
+- Animating `width` on an `overflow: hidden` box that clips a RASTER — the
+  engine's default `drawElement` capture path can silently render that region
+  as frozen while the DOM reports correct geometry and `check` passes clean.
+  Text or a solid fill in the same clip is pixel-identical and fine; the
+  raster is the trigger, and a small one is not proof of safety (846×300
+  passed where 840×900 failed). See *Verification loop*.
+- Treating the engine's `drawElement self-verify passed` line as proof the
+  render is clean. It samples ~4 instants across the whole render against a
+  fixed 32 dB threshold, so it is weakest exactly where this defect lives — an
+  animation ramping in from nothing. Measured: it armed, sampled INSIDE the
+  broken scene, and passed at 40.4 dB because the wipe was 2.8% open at that
+  instant. The video shipped broken with a clean log.
+- Assuming `check-static-hold.py`'s region-aware mode already covers a frozen
+  panel. It detects a cell going content-then-EMPTY; a panel that stays full
+  of content while frozen never makes that transition, and whole-frame mode is
+  masked by any other element still animating. Confirmed missed in both modes
+  on a render known to be broken — this is a fourth failure mode, not a
+  variant of the three above it.
+- Flagging a deliberately static plate as a dead region. Raw byte-identity
+  cannot tell a held product shot from a broken one; scope the scan to
+  elements that clip a raster AND carry an authored tween in that scene's
+  window, or the check cries wolf on calm design.

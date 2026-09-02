@@ -58,6 +58,24 @@ Ledger line format, one per rule fired:
   5. Tie → whichever format's median views/upload is higher in baseline.
 - default: baseline empty → **short**. (v2 defaulted to long. Reversed: the pipeline is aimed at Shorts-first channels, and a short that should have been long is a cheaper mistake than the reverse.)
 - ledger: format + which branch fired + the uploads_90d share that drove branch 2.
+- **first-of-kind override (branch 1 against a ≥ 60 % dominant format).** Branch 1
+  already wins on an explicit operator format; what this note adds is what that
+  costs when the chosen format has **no prior art on the channel or in the repo**.
+  Do not treat it as an ordinary branch-1 pass:
+  1. Ledger it as an override, naming the share it overrode (e.g. "long, operator
+     override; branch 2 would have selected short on 46/48 = 95.8 % Shorts").
+  2. Every `curve.*` and `retention.*` figure in the baseline was built from the
+     *other* format. Ranking this run against them is a category error — mark any
+     such comparison `[UNDERPOWERED]` or omit it, and say which in the ledger.
+  3. Format-specific gates must be re-pointed, not inherited. Safe-area zones,
+     cadence ceilings and QC canvas constants are all per-format; a portrait-
+     calibrated gate run against a landscape render is confirmed to report a
+     **silent clean pass** (see `youtube-delivery.md` §Long-form safe areas).
+  4. `[S3/P-3]` changes behaviour: long-form generates and scores a thumbnail,
+     where Shorts use frame 0. Do not carry the Shorts branch across.
+  5. Prefer proving the format on a short vertical slice before committing a full
+     runtime of voiceover and scenes. A first-of-kind format is a pipeline
+     hypothesis, not just a longer version of the same run.
 
 **S-2 · Target length** — per format, and never on a replay-inflated metric
 - reads: format; `channel-baseline.md` → `retention.avg_view_pct_long`, `curve.p50_7d`, per-video views and durations
@@ -406,6 +424,16 @@ the interview. Each field is resolved from data already in hand:
   **`scripts/beats_to_composition.py` enforces this at generation time and exits
   non-zero**, so the defect never reaches a render. It is still only an
   authoring-time aid: the post-render pixel answer is `[S7/R-2]`.
+- **cadence is a floor, not a pass.** Long-form additionally satisfies
+  `[S6/A-8]`, `[S6/A-9]` and `[S6/A-10]`: a piece can clear this rule on every
+  scene and still read as a slide deck, because a state-change count cannot see
+  that every scene has the same enter-wash-hold shape, the same entrance
+  signature and no continuity across its cuts. Confirmed:
+  `videos/ectoin-survival-molecule` passed this rule — and every other gate —
+  and was reviewed as separate slides. Measure the share on the shipped file,
+  never from a figure the project already recorded: that project's
+  `DELIVERY.md` says 14.8%, written eleven minutes after the render, and the
+  shipped MP4 measures **12.7%** under the project's own unmodified script.
 - ledger: max gap before/after, and whether the generator rejected a scene.
 
 **C-3 · End-screen scene (long only)**
@@ -499,6 +527,120 @@ the interview. Each field is resolved from data already in hand:
   evaluates it. That one stays a reading rule, checked on the extracted frame.
 - ledger: `check` contrast pass N/N, plus the hero-visual verdict per scene.
 
+**A-8 · Transition system, format-scoped**
+- reads: `format`; each scene's `bg` and `section`; `03-beat-sheet.json`
+- rule: **short — every boundary is a `cut`. Long — a transition SYSTEM: 2-3
+  types for the whole video, one primary carrying ~60-70% of boundaries plus
+  1-2 accents, never a different transition per scene.** The derivation the
+  generator applies when a scene names none: `push-slide LEFT` inside a
+  section, `zoom-through 0.4` at a section start — the boundary where a viewer
+  decides to leave, so the strongest transition serves the re-hook instead of
+  decorating it. A plain `crossfade` where the two scenes' grounds differ is a
+  **generation error**, not a warning: both layers sit near 50% opacity over an
+  unrelated canvas colour and the midpoint frame is muddy. `blur-crossfade` is
+  the sanctioned soft option across a ground change — the blur masks the clash
+  — but its midpoint still blends two grounds, so `[S7/R-2]` extracts that
+  frame rather than trusting the registry's note — in opacity terms
+  `blur-crossfade` blends *exactly* as hard as a plain `crossfade` (both ease
+  `power2.inOut`, so both wrappers sit at 0.500 at the midpoint and the
+  outgoing ground still shows through at ~25%); the 10px blur on both layers is
+  the entire difference, and it masks the clash rather than removing it.
+  `push-slide` and `squeeze` are the only two that genuinely cannot blend: they
+  animate `x`/`y` and `scaleX` with opacity pinned at 1 on both wrappers, so no
+  frame ever composites two grounds. `zoom-through` does cross-fade, but its
+  asymmetric pair (`power3.in` out, `power3.out` in) leaves both wrappers at
+  0.875 at the midpoint, so the outgoing ground shows ~11% and the raw canvas
+  ~2% — mild rather than muddy, and still worth the extracted frame. Exit
+  animations are never emitted:
+  the outgoing scene is fully composed when the transition starts, and the
+  transition IS the exit. The overlap window is DERIVED by
+  `scripts/beats_to_composition.py` from the scene's `transition.duration` —
+  outgoing `data-duration` extended, incoming `data-start` pulled earlier,
+  track index ping-ponged, the two-wrapper tween stamped on the root timeline —
+  so the beat sheet's own scene times stay contiguous and no overlap is ever
+  hand-typed. Registry cap 2.0s; typical 0.3-0.6s. Full text:
+  `references/restored-v1-rules.md` §R7.
+- **Written for:** `videos/ectoin-survival-molecule` — 28 of 28 boundaries hard
+  cut, by correct application of v1's Shorts-derived rule, on a 340s long-form
+  piece. It passed every gate this policy had, including `[S5/C-2]` at 12.7%
+  active steps on the shipped render (above one shipped 9:16 comparator at
+  11.7%, under the other at 23.1%), and was reviewed as "a sequence of
+  separate slides". 11 of those 28 boundaries did not even change ground.
+- **the disagreement, recorded rather than resolved:** v1 says hard cuts
+  outperform crossfades on retention; `hyperframes-animation`'s
+  `transitions/overview.md` says "Every composition uses transitions. No
+  exceptions." Neither is measured on this channel, and this channel's only
+  long-form piece marks every retention comparison `[UNDERPOWERED]` per
+  `[S1/S-1]`'s first-of-kind override. Treat the choice as a craft budget:
+  authorable, never citable as the cause of a result.
+- ledger: transition types used and the count per type, ground-change
+  boundaries, and which midpoints `[S7/R-2]` extracted.
+
+**A-9 · Continuity: camera path and actor map (long only)**
+- reads: `sections`; each beat's `actor`; each scene's `handoff`
+- rule: **cadence is a floor, not a pass — continuity is what a long-form piece
+  is judged on.** Two artifacts, both authored at `[S5]` and both cheap. A
+  **camera path** maps the information hierarchy to zoom levels so consecutive
+  scenes read as framings of one space rather than unrelated slides (salt
+  crystal into the bacterium into the protein's hydration layer; a product's
+  front label into its ingredient list, then back out to the verdict). An
+  **actor map** names which on-screen actors persist across which beats. An
+  actor appearing in two consecutive scenes as separately-drawn markup is the
+  defect: those scenes are ONE sub-composition with internal phase divs and one
+  timeline (hyperframes-core `references/composition-patterns.md` §"C.
+  Multi-scene merge"), the actors REARRANGED rather than redrawn, and the file
+  is marked `handoff: "hand-authored"` so the generator emits its clip, its
+  transition and its assertions but not its markup. **Split scene files by
+  actor continuity, not by narration sentence.** Camera legs are hand-authored
+  on that merged sub-comp: `viewport-change` for the base virtual camera,
+  `coordinate-target-zoom` to dive on an off-centre element (measure the
+  target — a journey amplifies centring error on every leg),
+  `multi-phase-camera` for a phased move plus the micro-drift that keeps a hold
+  alive. A camera move is exactly the transform-between-padded-box-and-canvas
+  case `[S6/A-3]` and the safe-area gate exist for: clip the stage's child
+  (`.stage > * { overflow: hidden }`) so no transient renders past the line.
+  `motion-blur-streak` only on a fast leg, resolving sharp at the landing —
+  there is no render-level motion blur in this engine.
+- **Written for:** the same render. `09-exclusion.html` and `10-messier.html`
+  draw byte-identical protein and water-shell geometry (`viewBox 0 0 620 620`,
+  r 190/112, stroke-width 46) with a duplicated ring-builder loop, because the
+  files were split by sentence. `hyperframes.json` declared a
+  `compositions/components` directory that was never created, and the catalog
+  held no molecule actor to reuse — so the merge was a missed *creation*, which
+  is what `[S6/A-1]`'s contribute half exists for.
+- ledger: the camera path, the actor list, which scenes merged, and the camera
+  leg count.
+
+**A-10 · Entrance idiom per beat; no single ease default**
+- reads: each beat's `idiom`, and its optional `easing` override
+- rule: **the fade-and-rise is one idiom among six, not the house style.** Each
+  beat declares an `idiom` chosen from what the narration is doing at that
+  moment: `arrive` (opacity plus travel — the old default), `slam`
+  (`kinetic-beat-slam`, a word landing on a spoken beat), `wipe` (a clip-path
+  reveal, a mechanism drawing itself), `count` (`counting-dynamic-scale`, a
+  number counting to its value as it is spoken), `swap`
+  (`scale-swap-transition`, a myth transforming into its correction rather than
+  being replaced by it), `hold` (bounded camera drift on the stage — a
+  deliberate hold kept alive by the camera, never a breathing loop stamped on a
+  text card). The generator emits an explicit ease per idiom and **declares no
+  timeline-level `defaults: { ease }`**, because an inherited default is
+  invisible to any grep for the ease name and is how a project ships one
+  signature without anyone counting it. Signature = animated property set plus
+  *effective* ease. A top signature over 50% of a run's real tweens is ledgered
+  as a template-failure warning. Full text:
+  `references/restored-v1-rules.md` §R8.
+- **Written for:** the same render. All 29 scene timelines declared
+  `defaults: { ease: "power3.out" }`; only 8 tweens named it and 128 of 196
+  real tweens carried it — 65%, with 69 of 122 opacity tweens also moving x/y.
+  Counting explicit occurrences alone reports 8 and misses the finding
+  entirely.
+- **this one is a legitimate source-level check**, unlike source-level cadence
+  (`[S5/C-2]`, which measures authored beats rather than pixels): entrance
+  variety IS a property of the source, so counting it in the markup answers the
+  actual question. `catalog/tooling/continuity-audit.py` does the counting.
+- ledger: the top three signatures with their shares, and the fade-and-slide
+  share.
+
 ---
 
 ## S7 — Render QA
@@ -540,6 +682,26 @@ the interview. Each field is resolved from data already in hand:
   `motion_selector_missing` rather than silently passing.
   `scripts/beats_to_composition.py` emits the sidecar in the same pass that
   emits the markup, so a selector cannot exist in one and not the other.
+- **one root-scoped `keepsMoving` (`withinSelector: "#root"`), with
+  `maxStaticSec` set from the format's own cadence cap** rather than the
+  engine's 2s default, which is a Shorts number. **Not one per scene**:
+  measured on `hyperframes@0.8.22`, the static-window scan runs across the
+  whole root duration and is never bounded to the window in which a scene's
+  clip is live, so a per-scene `withinSelector` reports that scene's own
+  off-screen time as frozen and fails by construction on any tiling
+  composition (a 3-scene 9s proof produced three `motion_frozen` errors, each
+  one exactly a clip's off-screen span). Relatedly, **the sidecar lives at the
+  project root and nowhere else** — one written beside a sub-composition in
+  `compositions/frames/` is silently ignored, confirmed by planting an
+  impossible assertion there and still getting `ok: true`.
+  And **assertions name the copy element, never its container**: an assertion
+  on a wrapper passes while the text inside it is overpainted or was never
+  wrapped in an element at all. Confirmed:
+  `videos/ectoin-survival-molecule`'s payoff line
+  (`compositions/frames/28-remember.html:167`) renders blank because it is a
+  bare text node under an animated wash — an `appearsBy` naming that copy
+  element would have failed at check time as `motion_appears_late`, or as
+  `motion_selector_missing` if the element does not exist to be named.
 - **Why this rule exists:** it is the closest automated proxy for "render the
   MP4 and watch it", and it catches the render-vs-preview class layout sampling
   cannot — an entrance the seek lands past, a broken stagger, a frozen shot.
@@ -547,7 +709,12 @@ the interview. Each field is resolved from data already in hand:
 
 **R-2 · Post-render pixel gate, on the muxed deliverable** — restored, verbatim as R5
 - reads: `bash scripts/extract_frames.sh 06-render/final.mp4 06-render/frames/`;
-  `catalog/tooling/check-static-hold.py`; `catalog/tooling/check-safe-area.py`
+  `catalog/tooling/check-static-hold.py`; `catalog/tooling/check-safe-area.py`;
+  `catalog/tooling/check-cadence.py` (the perceptibility metric: 8fps,
+  mean |dLuma| >= 1.0 AND a localised per-pixel max, so a codec refresh cannot
+  read as a beat); `catalog/tooling/continuity-audit.py` (source-structural,
+  long-form, `[S6/A-8]`-`[S6/A-10]`). The transition-midpoint frame below
+  covers `blur-crossfade` boundaries specifically.
 - rule: **a source-level cadence measurement is an authoring-time aid, never a
   substitute for the post-render pixel diff.** `[S5/C-2]` measures authored
   beats; an authored beat is not the same thing as a pixel changing. Full text

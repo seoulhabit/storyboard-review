@@ -198,7 +198,11 @@ The default of this category — AI voice, stock B-roll, centred sans type, slow
 zoom, ambient pad — is what to design against. The levers that differentiate:
 one grade and grain across every plate; motion that encodes meaning (depth =
 sequence, size = magnitude, position = time); type as the performer when there
-is no face; hard cuts on a timing grid over crossfades; one signature component
+is no face; **an entrance idiom chosen per beat rather than one ease for the
+whole video** `[S6/A-10]`; **hard cuts on a timing grid for a Short, a 2-3 type
+transition system for long-form, and never a plain crossfade across a ground
+change** `[S6/A-8]`; **continuity across the cut — a camera path and actors
+that persist rather than being redrawn** `[S6/A-9]`; one signature component
 per video; silence as a choice with captions carrying content.
 
 ## Companion skills and tools
@@ -209,6 +213,8 @@ per video; silence as a choice with captions carrying content.
 | vidIQ MCP (`vidiq_*`) | The data layer. Exact calls per stage in the runbook. |
 | HyperFrames CLI / MCP | Render engine. Verify API against the installed version. |
 | Higgsfield MCP | Plate generation when policy A-1 selects generated imagery. |
+| `/hyperframes-animation` | The implementation library: 48 atomic rules, 22 blueprints, the transition catalog and its machine registry. `[S6/A-8]`/`[S6/A-10]` name its rules exactly; do not invent equivalents. |
+| `/hyperframes-keyframes` | Punch-in, reframe, Ken Burns on a non-timed wrapper; routes match-cut and whip pan back to `-animation`. |
 | `design:design-critique` | Optional review pass on extracted frames, not code. |
 | `marketing:draft-content` | Description/pinned-comment copy if a house voice exists. |
 | `web-artifacts-builder` | Preview harnesses only — never render compositions. |
@@ -226,5 +232,16 @@ per video; silence as a choice with captions carrying content.
   badge doing all the disclosure work alone.
 - Building against recalled HyperFrames attribute names, or against a second
   gate that disagrees with the engine's own.
+- Applying the Short's cuts-only default to a long-form piece, so all N
+  boundaries are hard cuts and the result reads as a slide deck even though
+  every cadence, safe-area and contrast gate passed `[S6/A-8]`.
+- Letting a timeline's `defaults: { ease }` be the real entrance signature of a
+  whole video, then counting explicit occurrences of that ease and concluding
+  the motion is varied `[S6/A-10]`.
+- Splitting scene files by narration sentence, so the same diagram is redrawn
+  in consecutive scenes instead of one sub-comp rearranging its actors
+  `[S6/A-9]`.
+- Reading `check`'s `motion.enabled: false` as "motion verification was turned
+  off". There is no flag: it means no `*.motion.json` was written `[S7/R-1b]`.
 - Any `[NOT IN SKILL]` finding from a run that is not written back to the
   policy or the baseline within the same session (see `learning-loop.md`).

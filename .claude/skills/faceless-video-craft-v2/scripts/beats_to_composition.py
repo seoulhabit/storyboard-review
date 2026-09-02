@@ -39,6 +39,114 @@ Cadence enforcement ([S5/C-2]): a scene whose beats leave a still window longer
 than the format's cadence cap is a generation ERROR, not a warning. `check`'s
 own `motion_frozen` / `sweep_static` would catch it later; catching it here
 costs no render.
+
+--------------------------------------------------------------------------
+v2.2 — continuity: transitions, idioms, actors
+--------------------------------------------------------------------------
+Cadence is a floor, not a pass. A piece can measure clean on active-frame
+share and still read as a slide deck, because what is missing is CONTINUITY:
+a transition system, a camera, persistent actors, and an entrance vocabulary.
+Three beat-sheet fields and one derived quantity close that gap.
+
+  scene.transition  {type, direction?, duration?}   [S6/A-8]
+        The ENTERING transition (registry convention: a scene names what
+        brings it ON). type is one of cut / push-slide / blur-crossfade /
+        zoom-through / squeeze / crossfade. Omit it and the generator derives
+        one: `short` -> cut everywhere; `long` -> push-slide LEFT inside a
+        section and zoom-through at a section start, so transition strength
+        serves the re-hook. A plain `crossfade` across a ground change is a
+        generation ERROR (its midpoint is a muddy blend of two grounds);
+        `blur-crossfade` is the sanctioned soft option and its midpoint is
+        still extracted. More than 3 distinct non-cut types warns; a `short`
+        with any non-cut transition warns. Exit animations are never emitted
+        — the transition IS the exit.
+
+  scene.handoff     generated | hand-authored       [S6/A-9]
+        `hand-authored` keeps the generator's hands off that scene file (a
+        multi-scene merge with persistent actors, a camera leg) while it still
+        owns the clip, the transition and the assertions. The hand-authored
+        file must honour the id contract `#<scene-id>-b<N>` / `#<scene-id>-stage`.
+
+  beat.idiom        arrive|slam|wipe|count|swap|hold  [S6/A-10]
+        Motion by narrative function. `arrive` is the old fade-and-rise, now
+        one option of six rather than the house entrance. `slam` is
+        kinetic-beat-slam; `wipe` a clip-path reveal with opacity untouched;
+        `count` counting-dynamic-scale (proxy + deterministic onUpdate
+        formatter, the asr-keyword-glow pattern — no Date.now / Math.random /
+        rAF); `swap` scale-swap-transition (transform, don't replace); `hold`
+        a multi-phase-camera micro-drift on the stage that emits NO element,
+        which is how a deliberate hold is sanctioned by cadence instead of
+        padded. `easing`, when present, still overrides the idiom's ease.
+        The run prints the top signature's share; over 50% is warned.
+
+  beat.actor        a shared id                      [S6/A-9]
+        The same on-screen actor across beats and scenes. An actor in two
+        CONSECUTIVE scenes as separate beats warns: that is a diagram being
+        redrawn rather than rearranged. Merge the scenes and hand-author.
+
+DERIVED OVERLAP — the beat sheet never contains one.
+        Authored scene times still TILE exactly: no gap, no overlap. From
+        scene i's own transition the generator derives d_in (its entering
+        transition's duration, 0 for a cut and for scene 0) and d_out (which
+        is simply scene i+1's d_in). Then, exactly as the injector in
+        TRANSITION-REGISTRY.md §"How the injector applies a transition" does:
+          clip data-start     = start - d_in        (pull the incoming back)
+          clip data-duration  = duration + d_in + d_out
+                                                     (extend the outgoing; it
+                                                      holds its final frame)
+          data-track-index    = i % 2                (ping-pong; DOM order is
+                                                      what actually composites)
+          root timeline       = registry gsap_template stamped at
+                                T = start - d_in, the overlap start
+        Inside the sub-composition every beat offset shifts by +d_in and the
+        sub-comp's own duration becomes dur + d_in + d_out. Absolute assertion
+        times are unchanged by construction, because
+        (start - d_in) + (off + d_in) == start + off. Sub-composition
+        timelines stay independently driven by the runtime: no double seek.
+        One retime of the beat sheet re-derives all of it.
+
+NO TIMELINE `defaults: { ease }`, anywhere. An inherited ease is an UNCOUNTED
+ease — the mechanism by which a video reaches 65% of its real tweens sharing
+one entrance signature while every explicit-`ease:` grep says otherwise. Every
+tween the generator emits, including the duration anchors, names its own.
+
+MOTION SIDECAR — three things MEASURED on hyperframes 0.8.22, 2026-09-02, on
+the proof/v2.2-continuity-3scene project. Do not re-derive them from the docs;
+the docs do not say any of this.
+
+  1. `keepsMoving.withinSelector` RESOLVES for both `#scene-<cid>` (the root's
+     clip wrapper) and `#<cid>-stage` (the mounted sub-composition's own
+     stage). Neither produces `motion_selector_missing`, so `check` does see
+     the mounted sub-composition's children through the root clip wrapper.
+     BUT NEITHER IS USABLE PER SCENE: the static-window scan runs over the
+     WHOLE root composition duration and is never bounded to the window in
+     which that scene's clip is live, so a per-scene assertion reports the
+     scene's own off-screen time as a frozen window and fails by construction:
+       #scene-s02 "nothing moves ... between 0s and 2.5s (2.5s static)"
+       #scene-s01 "nothing moves ... between 3.5s and 9s (5.5s static)"
+       #scene-s03 "nothing moves ... between 0s and 5.65s"
+     (identical findings with `#s01-stage` / `#s02-stage` / `#s03-stage`.)
+     So the generator emits ONE composition-wide `keepsMoving` on `#root` at
+     the format's cadence cap. On tiling scenes that has the same coverage for
+     a frozen scene and additionally covers the boundaries. See build_sidecar.
+  2. A per-sub-composition sidecar (`compositions/frames/01-s01.motion.json`)
+     is NOT discovered: `check`'s reported `specPath` stays the root
+     `index.motion.json` and `samples` stays the root's. Writing one is a
+     silent no-op — the worst kind of green. The generator does not write one.
+  3. `staysInFrame` is INCOMPATIBLE with a transition. A transition translates
+     or scales the whole scene wrapper, so every element inside it genuinely
+     leaves the canvas during the overlap; the assertion fires
+     `motion_off_frame` by design ("#s01-b2 drifts off the 1080x1920 canvas at
+     2.7s" under a push-slide LEFT). It is emitted only on a scene that no
+     transition touches — which now includes the plate's own `staysInFrame`.
+
+A `wipe` beat gets `appearsBy` but never `before`: it never changes opacity, so
+`appearsBy` proves only that the copy element exists and is not hidden (still
+worth naming — a typo'd id fires motion_selector_missing), while
+`before(prev, wipe)` would actively FAIL, an opacity-1 element "first
+appearing" at frame zero. The clip-path reveal itself is outside all four
+assertion kinds' vocabulary; the transition-midpoint frame extraction is what
+verifies it.
 """
 from __future__ import annotations
 
@@ -65,6 +173,91 @@ EASE = {
 }
 DEFAULT_EASE = "arrive"
 
+# --------------------------------------------------------------------------
+# [S6/A-10] motion idiom by narrative function. `arrive` is the fade-and-rise
+# the generator used to emit for every entering beat; it is now ONE option of
+# six, and its dominance is a measurable template failure, not a house style.
+# Each idiom names its own ease — the timeline no longer carries a
+# `defaults: { ease }`, so an unnamed ease would silently be GSAP's own.
+# --------------------------------------------------------------------------
+IDIOM_EASE = {
+    "arrive": "power3.out",   # (unchanged) rules: none — the generic entrance
+    "slam": "power4.out",     # rules/kinetic-beat-slam.md
+    "wipe": "power2.inOut",   # a clip-path reveal; opacity untouched
+    "count": "power2.out",    # rules/counting-dynamic-scale.md
+    "swap": "back.out(1.6)",  # rules/scale-swap-transition.md (incoming only)
+    "hold": "sine.inOut",     # rules/multi-phase-camera.md micro-drift
+}
+DEFAULT_IDIOM = "arrive"
+
+# `^(\D*)(\d[\d,.]*)(\D*)$` — a `count` beat's text must contain exactly one
+# number, with optional prefix and suffix copy around it.
+COUNT_RE = re.compile(r"^(\D*)(\d[\d,.]*)(\D*)$")
+
+# --------------------------------------------------------------------------
+# [S6/A-8] transition registry. The `gsap_template` lines and the
+# `default_duration_s` values below are transcribed VERBATIM from
+# ~/.claude/skills/hyperframes-animation/transitions/TRANSITION-REGISTRY.md
+# (§Registry). The generator substitutes only the placeholders that file
+# documents in §"Template placeholders"; it never invents a transition tween.
+#
+# Mechanics, also from that file (§"How the injector applies a transition"):
+#   1. outgoing clip data-duration extended by d (it holds its final frame)
+#   2. incoming clip data-start pulled earlier by d (this IS the overlap)
+#   3. data-track-index ping-pongs 0/1 so the two overlapping wrappers never
+#      share a track (a readability convention; DOM order does the compositing)
+#   4. the template is stamped on window.__timelines['main'] at T = overlap start
+# Sub-composition timelines stay independently driven — no double seek.
+# EXIT ANIMATIONS ARE NEVER EMITTED: the transition IS the exit.
+# --------------------------------------------------------------------------
+TRANSITION_MIN_S = 0.15
+TRANSITION_MAX_S = 2.0   # registry `max_duration_s`
+
+TRANSITIONS = {
+    "cut": {"default_duration": 0.0, "template": []},
+    "crossfade": {
+        "default_duration": 0.5,
+        "template": [
+            'tl.to(__OLD__, { opacity: 0, duration: __DUR__, ease: "power2.inOut" }, __T__);',
+            'tl.fromTo(__NEW__, { opacity: 0 }, { opacity: 1, duration: __DUR__, ease: "power2.inOut" }, __T__);',
+        ],
+    },
+    "blur-crossfade": {
+        "default_duration": 0.6,
+        "template": [
+            'tl.to(__OLD__, { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: __DUR__, ease: "power2.inOut" }, __T__);',
+            'tl.fromTo(__NEW__, { filter: "blur(10px)", scale: 0.97, opacity: 0 }, { filter: "blur(0px)", scale: 1, opacity: 1, duration: __DUR__, ease: "power2.inOut" }, __T__);',
+        ],
+    },
+    "push-slide": {
+        "default_duration": 0.5,
+        "default_direction": "LEFT",
+        "template_horizontal": [
+            'tl.to(__OLD__, { x: __DX__, duration: __DUR__, ease: "power3.inOut" }, __T__);',
+            'tl.fromTo(__NEW__, { x: __DXIN__, opacity: 1 }, { x: 0, duration: __DUR__, ease: "power3.inOut" }, __T__);',
+        ],
+        "template_vertical": [
+            'tl.to(__OLD__, { y: __DY__, duration: __DUR__, ease: "power3.inOut" }, __T__);',
+            'tl.fromTo(__NEW__, { y: __DYIN__, opacity: 1 }, { y: 0, duration: __DUR__, ease: "power3.inOut" }, __T__);',
+        ],
+    },
+    "zoom-through": {
+        "default_duration": 0.4,
+        "template": [
+            'tl.to(__OLD__, { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: __DUR__, ease: "power3.in" }, __T__);',
+            'tl.fromTo(__NEW__, { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: __DUR__, ease: "power3.out" }, __T__);',
+        ],
+    },
+    "squeeze": {
+        "default_duration": 0.4,
+        "template": [
+            'tl.to(__OLD__, { scaleX: 0, transformOrigin: "left center", duration: __DUR__, ease: "power3.inOut" }, __T__);',
+            'tl.fromTo(__NEW__, { scaleX: 0, transformOrigin: "right center", opacity: 1 }, { scaleX: 1, transformOrigin: "right center", duration: __DUR__, ease: "power3.inOut" }, __T__);',
+        ],
+    },
+}
+TRANSITION_TYPES = sorted(TRANSITIONS)
+
 ROLE_CLASS = {
     "kicker": "kicker",
     "head": "head",
@@ -84,9 +277,19 @@ ROLE_CLASS = {
 }
 
 
+WARNINGS: list = []
+
+
 def die(msg: str) -> None:
     print(f"ERROR: {msg}", file=sys.stderr)
     sys.exit(1)
+
+
+def warn(msg: str) -> None:
+    """A warning is a ledger line, not a shrug: every one is re-printed in the
+    run summary so it lands in the delivery record rather than scrolling away."""
+    WARNINGS.append(msg)
+    print(f"WARNING: {msg}", file=sys.stderr)
 
 
 def slugify(s: str) -> str:
@@ -103,10 +306,126 @@ def f(x) -> str:
 
 
 # --------------------------------------------------------------------------
+# [S6/A-8] transitions: resolution and emission
+# --------------------------------------------------------------------------
+def resolve_transitions(bs: dict, scenes: list) -> list:
+    """One resolved {type, direction, duration} per scene — the ENTERING
+    transition, registry convention. Index 0 is always a cut.
+
+    Derived when the scene omits `transition`:
+      short -> cut everywhere (cuts on the timing grid are the Shorts default)
+      long  -> push-slide LEFT inside a section; zoom-through at a section
+               start, where the accent serves the re-hook.
+    """
+    fmt = bs["format"]
+    out = []
+    prev_section = None
+    for i, sc in enumerate(scenes):
+        section = sc.get("section")
+        t = sc.get("transition")
+        if i == 0:
+            if t and t.get("type", "cut") != "cut":
+                die(
+                    f"scene {sc['id']!r} is the first scene and carries "
+                    f"transition {t.get('type')!r} — there is nothing to transition "
+                    f"FROM. The first scene's transition must be absent or 'cut'."
+                )
+            t = {"type": "cut"}
+        elif t is None:
+            if fmt == "short":
+                t = {"type": "cut"}
+            elif prev_section is not None and section != prev_section:
+                t = {"type": "zoom-through"}
+            else:
+                t = {"type": "push-slide", "direction": "LEFT"}
+        kind = t.get("type", "cut")
+        if kind not in TRANSITIONS:
+            die(
+                f"scene {sc['id']!r} names transition type {kind!r}; the registry "
+                f"has {TRANSITION_TYPES}. (No 'wipe', 'match-cut' or 'whip pan' "
+                f"exists as a between-scene transition — TRANSITION-REGISTRY.md.)"
+            )
+        spec = TRANSITIONS[kind]
+        dur = float(t.get("duration", spec["default_duration"]))
+        direction = t.get("direction", spec.get("default_direction"))
+        if kind == "cut":
+            dur = 0.0
+            direction = None
+        else:
+            if not (TRANSITION_MIN_S - 1e-9 <= dur <= TRANSITION_MAX_S + 1e-9):
+                die(
+                    f"scene {sc['id']!r}: transition duration {dur}s is outside the "
+                    f"registry's {TRANSITION_MIN_S}-{TRANSITION_MAX_S}s window "
+                    f"(typical 0.3-0.6s)."
+                )
+            if dur > float(sc["duration"]) or (
+                i > 0 and dur > float(scenes[i - 1]["duration"])
+            ):
+                die(
+                    f"scene {sc['id']!r}: a {dur}s overlap does not fit between a "
+                    f"{scenes[i - 1]['duration']}s scene and a {sc['duration']}s one."
+                )
+        if kind != "push-slide" and t.get("direction"):
+            warn(
+                f"scene {sc['id']!r}: `direction` is meaningful only on push-slide; "
+                f"ignored for {kind!r}."
+            )
+            direction = None
+        if kind == "push-slide" and direction not in ("LEFT", "RIGHT", "UP", "DOWN"):
+            die(f"scene {sc['id']!r}: push-slide direction {direction!r} is not one of LEFT/RIGHT/UP/DOWN")
+        out.append({"type": kind, "direction": direction, "duration": dur})
+        prev_section = section
+    return out
+
+
+def transition_js(kind: str, direction, dur: float, old_sel: str, new_sel: str,
+                  t0: float, w: int, h: int) -> list:
+    """Substitute the registry's documented placeholders into its own template.
+    __DX__/__DY__ are where the OUTGOING travels; __DXIN__/__DYIN__ are the
+    side the INCOMING comes from — the opposite sign, one canvas away."""
+    spec = TRANSITIONS[kind]
+    if kind == "push-slide":
+        lines = (spec["template_horizontal"] if direction in ("LEFT", "RIGHT")
+                 else spec["template_vertical"])
+    else:
+        lines = spec["template"]
+    dx = {"LEFT": -w, "RIGHT": w}.get(direction, 0)
+    dy = {"UP": -h, "DOWN": h}.get(direction, 0)
+    sub = {
+        "__OLD__": f"'{old_sel}'",
+        "__NEW__": f"'{new_sel}'",
+        "__DUR__": f(dur),
+        "__DXIN__": str(-dx),
+        "__DYIN__": str(-dy),
+        "__DX__": str(dx),
+        "__DY__": str(dy),
+        "__ORIGIN_OUT__": '"left center"',
+        "__ORIGIN_IN__": '"right center"',
+        "__T__": f(t0),
+    }
+    out = []
+    for line in lines:
+        for token, value in sub.items():
+            line = line.replace(token, value)
+        out.append("    " + line)
+    return out
+
+
+def overlap_windows(trans: list) -> tuple:
+    """(d_in, d_out) per scene. d_out is simply the NEXT scene's d_in — the
+    outgoing clip is extended by exactly the window its successor pulls back
+    into. Both are DERIVED; the beat sheet's own times never overlap."""
+    d_in = [float(t["duration"]) for t in trans]
+    d_out = d_in[1:] + [0.0]
+    return d_in, d_out
+
+
+# --------------------------------------------------------------------------
 # validation
 # --------------------------------------------------------------------------
-def validate(bs: dict) -> list:
-    """Return the scene list, or die with the first structural problem."""
+def validate(bs: dict) -> tuple:
+    """Return (scenes, resolved transitions), or die with the first structural
+    problem."""
     for key in ("slug", "format", "fps", "canvas", "vo_duration_s", "presenter", "scenes"):
         if key not in bs:
             die(f"beat sheet is missing required key {key!r}")
@@ -136,8 +455,12 @@ def validate(bs: dict) -> list:
 
         # [S5/C-2] cadence: no still window longer than the cap, measured from
         # scene start, between consecutive beat ends, and to scene end.
+        handoff = sc.get("handoff", "generated")
+        if handoff not in ("generated", "hand-authored"):
+            die(f"scene {sc['id']!r}: handoff must be 'generated' or 'hand-authored', got {handoff!r}")
+
         marks = []
-        for b in sc["beats"]:
+        for j, b in enumerate(sc["beats"]):
             if "offset" not in b:
                 die(f"a beat in scene {sc['id']!r} is missing 'offset'")
             off = float(b["offset"])
@@ -146,6 +469,30 @@ def validate(bs: dict) -> list:
                 die(
                     f"beat at offset {off} (dur {bdur}) in scene {sc['id']!r} "
                     f"falls outside the scene's own {dur}s window"
+                )
+            # [S6/A-10] idiom. A `hold` beat COUNTS as a beat for cadence below:
+            # it is camera motion on the stage, which is how a deliberate
+            # long-form hold gets sanctioned instead of padded with a crossfade.
+            idiom = b.get("idiom", DEFAULT_IDIOM)
+            if idiom not in IDIOM_EASE:
+                die(
+                    f"beat {j} in scene {sc['id']!r} names idiom {idiom!r}; the "
+                    f"vocabulary is {sorted(IDIOM_EASE)}"
+                )
+            if idiom == "count":
+                text = b.get("text", b.get("caption", b.get("intent", "")))
+                if not COUNT_RE.match(str(text).strip()):
+                    die(
+                        f"beat {j} in scene {sc['id']!r} has idiom 'count' but its "
+                        f"text {text!r} contains no single number to count to. "
+                        f"counting-dynamic-scale needs one numeral, optionally "
+                        f"wrapped in copy (\"104\", \"up 42%\", \"1,200 people\")."
+                    )
+            if idiom == "swap" and j == 0:
+                die(
+                    f"beat 0 in scene {sc['id']!r} has idiom 'swap' but there is no "
+                    f"previous beat to swap OUT — scale-swap-transition transforms "
+                    f"what is already on screen, it does not introduce."
                 )
             marks.append((off, off + bdur))
         marks.sort()
@@ -173,7 +520,62 @@ def validate(bs: dict) -> list:
             f"scenes total {total:.3f}s but vo_duration_s is {vo:.3f}s — the voiceover's "
             f"measured duration is the master clock ([S4/V-2]); re-derive the beats."
         )
-    return scenes
+
+    # ---- [S6/A-8] transitions, resolved and gated -------------------------
+    trans = resolve_transitions(bs, scenes)
+    default_bg = bs.get("bg", "#101314")
+    used = []
+    for i, (sc, t) in enumerate(zip(scenes, trans)):
+        if t["type"] == "cut":
+            continue
+        used.append(t["type"])
+        if t["type"] == "crossfade":
+            bg_now = sc.get("bg", default_bg)
+            bg_prev = scenes[i - 1].get("bg", default_bg)
+            if str(bg_now).strip().lower() != str(bg_prev).strip().lower():
+                die(
+                    f"[S6/A-8] scene {sc['id']!r} enters on a plain 'crossfade' but its "
+                    f"ground {bg_now} differs from the previous scene's {bg_prev}. The "
+                    f"midpoint of that crossfade is a muddy blend of two grounds — the "
+                    f"one transition failure this project has already extracted and "
+                    f"proven. Use 'blur-crossfade' (the blur masks the clash; extract "
+                    f"its midpoint anyway [S7/R-2]) or a 'push-slide' (no frame ever "
+                    f"blends two grounds)."
+                )
+    distinct = sorted(set(used))
+    if len(distinct) > 3:
+        warn(
+            f"[S6/A-8] {len(distinct)} distinct non-cut transition types in one piece "
+            f"({', '.join(distinct)}). Pick 2-3 and repeat them — repetition is what "
+            f"reads as a system; four types read as a sampler."
+        )
+    if bs["format"] == "short" and used:
+        warn(
+            f"[S6/A-8] format is 'short' but {len(used)} scene(s) carry a non-cut "
+            f"transition ({', '.join(distinct)}). Hard cuts on the timing grid are the "
+            f"Shorts default; a transition spends frames a Short does not have."
+        )
+
+    # ---- [S6/A-9] actor continuity ----------------------------------------
+    # An actor that appears in two CONSECUTIVE scenes as separate beats is a
+    # diagram being REDRAWN rather than rearranged. The fix is a multi-scene
+    # merge (hyperframes-core composition-patterns §C) declared as
+    # `handoff: "hand-authored"`, which this generator will then not overwrite.
+    prev_actors: set = set()
+    for sc in scenes:
+        actors = {str(b["actor"]) for b in sc["beats"] if b.get("actor")}
+        shared = sorted(actors & prev_actors)
+        if shared and sc.get("handoff", "generated") != "hand-authored":
+            warn(
+                f"[S6/A-9] actor(s) {', '.join(shared)} appear in scene {sc['id']!r} and "
+                f"in the scene before it as separate beats — the actor is being redrawn, "
+                f"not rearranged. Merge those scenes into one hand-authored multi-phase "
+                f"sub-composition (`handoff: \"hand-authored\"`) so the same DOM nodes "
+                f"move, or accept a rebuilt diagram at the boundary."
+            )
+        prev_actors = actors
+
+    return scenes, trans
 
 
 # --------------------------------------------------------------------------
@@ -183,23 +585,49 @@ def scene_filename(idx: int, sid: str) -> str:
     return f"{idx + 1:02d}-{slugify(sid)}.html"
 
 
-def render_root(bs: dict, scenes: list) -> str:
+def render_root(bs: dict, scenes: list, trans: list) -> str:
     cv = bs["canvas"]
     w, h = int(cv["w"]), int(cv["h"])
     total = sum(float(s["duration"]) for s in scenes)
     resolution = "portrait" if h > w else "landscape"
     audio = bs.get("audio") or {}
+    d_in, d_out = overlap_windows(trans)
 
     rows = []
     for i, sc in enumerate(scenes):
         cid = slugify(sc["id"])
         src = f"compositions/frames/{scene_filename(i, sc['id'])}"
+        # [S6/A-8] the overlap is DERIVED here and nowhere else: the incoming
+        # clip's start is pulled back by its own transition's d, the outgoing
+        # clip's duration is extended by the NEXT one's d (it holds its final
+        # frame through the window). The beat sheet's own times still tile.
         rows.append(
             f'    <div class="scene clip" id="scene-{esc(cid)}" data-composition-id="{esc(cid)}"\n'
             f'         data-composition-src="{esc(src)}"\n'
-            f'         data-start="{f(sc["start"])}" data-duration="{f(sc["duration"])}"\n'
+            f'         data-start="{f(float(sc["start"]) - d_in[i])}"'
+            f' data-duration="{f(float(sc["duration"]) + d_in[i] + d_out[i])}"\n'
             f'         data-track-index="{i % 2}"></div>'
         )
+
+    # The registry template, stamped on the ROOT timeline at T = overlap start.
+    # Sub-composition timelines are driven independently by the runtime, so
+    # there is no double seek. No exit animation is ever emitted: this IS it.
+    trans_lines = []
+    for i, t in enumerate(trans):
+        if i == 0 or t["type"] == "cut":
+            continue
+        prev_cid = slugify(scenes[i - 1]["id"])
+        cid = slugify(scenes[i]["id"])
+        t0 = float(scenes[i]["start"]) - d_in[i]
+        label = t["type"] + (f" {t['direction']}" if t["direction"] else "")
+        trans_lines.append(
+            f"    // {label} {f(d_in[i])}s: {prev_cid} -> {cid}, overlap opens at {f(t0)}s"
+        )
+        trans_lines.extend(
+            transition_js(t["type"], t["direction"], d_in[i],
+                          f"#scene-{prev_cid}", f"#scene-{cid}", t0, w, h)
+        )
+    trans_block = ("\n" + "\n".join(trans_lines) + "\n") if trans_lines else ""
 
     audio_row = ""
     if audio.get("src"):
@@ -244,9 +672,11 @@ def render_root(bs: dict, scenes: list) -> str:
   <script>
     // The root timeline's only job is scene handoff; each sub-composition owns
     // its own beats. docs/gsap.md: paused, registered on window.__timelines.
+    // No timeline `defaults: {{ ease }}` anywhere — every tween names its own
+    // ease, because an inherited ease is an uncounted one [S6/A-10].
     window.__timelines = window.__timelines || {{}};
     var tl = gsap.timeline({{ paused: true }});
-    tl.to({{}}, {{ duration: {f(total)} }}, 0);   // anchor: tl.duration() === root duration
+{trans_block}    tl.to({{}}, {{ duration: {f(total)}, ease: 'none' }}, 0);   // anchor: tl.duration() === root duration
     window.__timelines['main'] = tl;
   </script>
 </body>
@@ -254,12 +684,19 @@ def render_root(bs: dict, scenes: list) -> str:
 """
 
 
-def render_scene(bs: dict, sc: dict, idx: int):
+def render_scene(bs: dict, sc: dict, idx: int, d_in: float = 0.0, d_out: float = 0.0):
     """Return (html, assertions). The sidecar is built from the same pass that
-    emits the markup, so a selector can never exist in one and not the other."""
+    emits the markup, so a selector can never exist in one and not the other.
+
+    `d_in` / `d_out` are the DERIVED transition overlap windows either side of
+    this scene ([S6/A-8]). The clip starts d_in early and runs d_in + d_out
+    longer, so every beat offset inside the sub-composition shifts by +d_in and
+    the sub-comp's own duration is dur + d_in + d_out. Absolute assertion times
+    are unaffected: (start - d_in) + (off + d_in) == start + off."""
     cv = bs["canvas"]
     w, h = int(cv["w"]), int(cv["h"])
     dur = float(sc["duration"])
+    total_dur = dur + d_in + d_out
     cid = slugify(sc["id"])
     safe = bs.get("safe_area") or {}
     st = int(safe.get("top", 192 if h > w else 80))
@@ -280,6 +717,18 @@ def render_scene(bs: dict, sc: dict, idx: int):
     els, tweens, assertions = [], [], []
     pre, entering = [], {}
     prev_sel = None
+    prev_eid = None
+    hold_n = 0
+    n_count = 0
+    uses = {"wipe": False, "swap": False, "count": False, "hold": False}
+    arrive_y = 20 if h > w else 32   # [v1] landscape gets the longer travel
+    # VERIFIED 2026-09-02, hyperframes 0.8.22: a transition translates or scales
+    # the WHOLE scene wrapper, so every element inside it leaves the canvas
+    # during the overlap and `staysInFrame` fires motion_off_frame by design
+    # (observed: "#s01-b2 drifts off the 1080x1920 canvas at 2.7s" under a
+    # push-slide LEFT). `staysInFrame` is therefore only asserted on a scene no
+    # transition touches; inside a transition, staying in frame is not true.
+    moved = d_in > 1e-9 or d_out > 1e-9
     for j, b in enumerate(sc["beats"]):
         role = b.get("role", "head" if j == 0 else "sub")
         cls = ROLE_CLASS.get(role, "sub")
@@ -287,12 +736,62 @@ def render_scene(bs: dict, sc: dict, idx: int):
         text = b.get("text", b.get("caption", b.get("intent", "")))
         off = float(b["offset"])
         bdur = float(b.get("dur", DEFAULT_BEAT_DUR))
-        ease = EASE.get(b.get("easing", DEFAULT_EASE), EASE[DEFAULT_EASE])
+        idiom = b.get("idiom", DEFAULT_IDIOM)
+        # `easing` still wins when the beat sheet names one; otherwise the idiom
+        # supplies its own. Nothing is inherited from a timeline default.
+        ease = (EASE.get(b["easing"], EASE[DEFAULT_EASE]) if "easing" in b
+                else IDIOM_EASE[idiom])
+        pos = f(off + d_in)          # [S6/A-8] every offset shifts by the overlap
+        composed = off <= 0.0001     # composed at frame zero: it IS the hook
 
-        hide = " is-entering" if off > 0.0001 else ""
-        els.append(
-            f'      <div class="beat {cls}{hide}" id="{eid}">{esc(text)}</div>'
-        )
+        # `hold` emits NO element: it is the camera staying alive over a
+        # deliberate hold (rules/multi-phase-camera.md micro-drift), bounded and
+        # finite, and it resolves. Never a breathing loop on a text card —
+        # sine-wave-loop.md's own frontmatter says "reach for this last".
+        if idiom == "hold":
+            uses["hold"] = True
+            sx, sy = (6, -4) if hold_n % 2 == 0 else (-6, 4)
+            hold_n += 1
+            tweens.append(
+                f"  tl.to('#{cid}-stage', {{ x: {sx}, y: {sy}, scale: 1.01, "
+                f"duration: {f(bdur)}, ease: '{ease}' }}, {pos});"
+            )
+            continue
+
+        hide = ""
+        if not composed:
+            hide = " is-wiping" if idiom == "wipe" else " is-entering"
+
+        if idiom == "count":
+            # rules/counting-dynamic-scale.md. `count` owns the `stat` role: it
+            # is a number, and the stat type scale is the one built for numbers.
+            m = COUNT_RE.match(str(text).strip())
+            prefix, number, suffix = m.group(1), m.group(2), m.group(3)
+            while number and number[-1] in ".,":       # trailing punctuation is copy
+                suffix, number = number[-1] + suffix, number[:-1]
+            grouped = "," in number
+            digits = number.replace(",", "")
+            decimals = len(digits.split(".")[1]) if "." in digits else 0
+            zero = "0" if decimals == 0 else "0." + "0" * decimals
+            els.append(
+                f'      <div class="beat stat{hide}" id="{eid}">{esc(prefix)}'
+                f'<span class="cnt" data-from="0" data-to="{esc(number)}">{zero}</span>'
+                f"{esc(suffix)}</div>"
+            )
+        elif idiom == "swap":
+            # rules/scale-swap-transition.md — transform, don't replace. The two
+            # states share one grid cell so the swap reads as one thing changing.
+            prev_markup = els.pop() if els else ""
+            els.append(
+                '      <div class="slot">\n'
+                + (f"  {prev_markup}\n" if prev_markup else "")
+                + f'        <div class="beat {cls}{hide}" id="{eid}">{esc(text)}</div>\n'
+                + "      </div>"
+            )
+        else:
+            els.append(
+                f'      <div class="beat {cls}{hide}" id="{eid}">{esc(text)}</div>'
+            )
 
         # Two traps, one on each side, both confirmed by the engine's own lint:
         #   fromTo + immediateRender:false leaves the element at its CSS resting
@@ -304,16 +803,79 @@ def render_scene(bs: dict, sc: dict, idx: int):
         # The state that survives a cold seek to 0 is one authored OUTSIDE the
         # timeline — in CSS, and re-stated with gsap.set() so the transform cache
         # agrees — with the timeline only ever tweening toward the visible state.
-        if off <= 0.0001:
+        if composed and idiom in ("arrive", "slam", "wipe", "swap"):
             # First beat is composed at frame zero: no entrance, it IS the hook.
             entering[eid] = False
+        elif idiom == "slam":
+            # rules/kinetic-beat-slam.md — a percussive hit on a spoken beat.
+            entering[eid] = True
+            pre.append(f"  gsap.set('#{eid}', {{ opacity: 0, scale: 1.12 }});")
+            tweens.append(
+                f"  tl.to('#{eid}', {{ opacity: 1, scale: 1, duration: {f(bdur)}, "
+                f"ease: '{ease}' }}, {pos});"
+            )
+        elif idiom == "wipe":
+            # A geometric reveal: opacity is deliberately untouched, so the CSS
+            # resting state is the CLIP, not a zero alpha.
+            uses["wipe"] = True
+            entering[eid] = False
+            pre.append(f"  gsap.set('#{eid}', {{ clipPath: 'inset(0 100% 0 0)' }});")
+            tweens.append(
+                f"  tl.to('#{eid}', {{ clipPath: 'inset(0 0% 0 0)', "
+                f"duration: {f(bdur)}, ease: '{ease}' }}, {pos});"
+            )
+        elif idiom == "count":
+            uses["count"] = True
+            entering[eid] = not composed
+            if composed:
+                pre.append(f"  gsap.set('#{eid}', {{ scale: 0.86 }});")
+                tweens.append(
+                    f"  tl.to('#{eid}', {{ scale: 1, duration: {f(bdur)}, "
+                    f"ease: '{ease}' }}, {pos});"
+                )
+            else:
+                pre.append(f"  gsap.set('#{eid}', {{ opacity: 0, scale: 0.86 }});")
+                tweens.append(
+                    f"  tl.to('#{eid}', {{ opacity: 1, scale: 1, duration: {f(bdur)}, "
+                    f"ease: '{ease}' }}, {pos});"
+                )
+            # The value itself rides a proxy object with a deterministic
+            # onUpdate formatter — the sanctioned pattern (asr-keyword-glow uses
+            # the same shape). No Date.now, no Math.random, no rAF: the writer
+            # is the seeked timeline, so frame N always renders the same digits.
+            pre.append(f"  var cntEl{n_count} = document.querySelector('#{eid} .cnt');")
+            pre.append(f"  var cntPx{n_count} = {{ v: 0 }};")
+            tweens.append(
+                f"  tl.to(cntPx{n_count}, {{ v: {digits}, duration: {f(bdur)}, "
+                f"ease: '{ease}',\n"
+                f"    onUpdate: function () {{ cntEl{n_count}.textContent = hfNum("
+                f"cntPx{n_count}.v, {decimals}, {'true' if grouped else 'false'}); }} }}, "
+                f"{pos});"
+            )
+            n_count += 1
+        elif idiom == "swap":
+            uses["swap"] = True
+            entering[eid] = True
+            if prev_eid:
+                # Outgoing rushes away on power2.in; only the INCOMING gets the
+                # bouncy ease, or the swap reads mechanical.
+                tweens.append(
+                    f"  tl.to('#{prev_eid}', {{ scale: 0.6, opacity: 0, duration: 0.250, "
+                    f"ease: 'power2.in' }}, {pos});"
+                )
+            pre.append(f"  gsap.set('#{eid}', {{ opacity: 0, scale: 0.6 }});")
+            tweens.append(
+                f"  tl.to('#{eid}', {{ opacity: 1, scale: 1, duration: {f(bdur)}, "
+                f"ease: '{ease}' }}, {f(off + d_in + 0.12)});"
+            )
         else:
             entering[eid] = True
-            pre.append(f"  gsap.set('#{eid}', {{ opacity: 0, y: 20 }});")
+            pre.append(f"  gsap.set('#{eid}', {{ opacity: 0, y: {arrive_y} }});")
             tweens.append(
                 f"  tl.to('#{eid}', {{ opacity: 1, y: 0, duration: {f(bdur)}, "
-                f"ease: '{ease}' }}, {f(off)});"
+                f"ease: '{ease}' }}, {pos});"
             )
+
         assertions.append(
             {
                 "kind": "appearsBy",
@@ -323,28 +885,42 @@ def render_scene(bs: dict, sc: dict, idx: int):
                 "bySec": round(float(sc["start"]) + off + bdur + 0.25, 3),
             }
         )
-        if prev_sel:
-            assertions.append({"kind": "before", "a": prev_sel, "b": f"#{eid}"})
-        prev_sel = f"#{eid}"
+        if idiom == "wipe":
+            # A wipe never changes opacity, so `appearsBy` on it only proves the
+            # copy element exists and is not hidden — the clip-path reveal itself
+            # is outside all four assertion kinds' vocabulary. It is still worth
+            # naming: a typo'd id fires motion_selector_missing, loudly. What it
+            # must NOT get is `before`: an opacity-1 element "first appears" at
+            # frame zero, so `before(prev, wipe)` reports motion_out_of_order.
+            # When no transition moves the scene, staysInFrame is the one honest
+            # geometric assertion available, so add it there.
+            if not moved:
+                assertions.append({"kind": "staysInFrame", "selector": f"#{eid}"})
+        else:
+            if prev_sel and entering[eid]:
+                assertions.append({"kind": "before", "a": prev_sel, "b": f"#{eid}"})
+            prev_sel = f"#{eid}"
+        prev_eid = eid
 
     # ---- the plate, when the scene has one -------------------------------
     plate_markup = ""
     if plate:
         plate_markup = (
             f'    <div class="clip plate-wrap" id="{cid}-plate" data-layout-allow-overflow\n'
-            f'         data-start="0" data-duration="{f(dur)}">\n'
+            f'         data-start="0" data-duration="{f(total_dur)}">\n'
             f'      <img id="{cid}-img" src="{esc(plate)}" alt=""\n'
             f'           width="{w}" height="{h}" loading="eager" decoding="sync">\n'
             f"    </div>\n"
-            f'    <div class="clip scrim" data-start="0" data-duration="{f(dur)}"></div>\n'
+            f'    <div class="clip scrim" data-start="0" data-duration="{f(total_dur)}"></div>\n'
         )
         # Ken Burns across the whole hold: a static plate is never left motionless.
         tweens.insert(
             0,
             f"  tl.fromTo('#{cid}-plate', {{ scale: 1.0 }}, {{ scale: 1.09, "
-            f"duration: {f(dur)}, ease: 'none', immediateRender: true }}, 0);",
+            f"duration: {f(total_dur)}, ease: 'none', immediateRender: true }}, 0);",
         )
-        assertions.append({"kind": "staysInFrame", "selector": f"#{cid}-b0"})
+        if not moved:
+            assertions.append({"kind": "staysInFrame", "selector": f"#{cid}-b0"})
 
     gfont_link = ""
     if gfont:
@@ -372,6 +948,45 @@ def render_scene(bs: dict, sc: dict, idx: int):
         if plate
         else ""
     )
+
+    # [S6/A-10] idiom CSS is emitted ONLY for idioms this scene actually uses:
+    # a scene of plain `arrive` beats emits exactly what it emitted before this
+    # feature existed, which is what makes the back-compat diff readable.
+    idiom_css = ""
+    if uses["wipe"]:
+        idiom_css += (
+            "  /* `wipe` resting state: clipped, not transparent. Authored in CSS so a\n"
+            "     cold seek to 0 paints the clip, and re-stated with gsap.set(). */\n"
+            "  .beat.is-wiping { clip-path: inset(0 100% 0 0); }\n"
+        )
+    if uses["swap"]:
+        idiom_css += (
+            "  /* `swap`: both states share one grid cell and one transform-origin, so\n"
+            "     the exchange reads as one thing changing rather than two things. */\n"
+            "  .slot { display: grid; }\n"
+            "  .slot > * { grid-area: 1 / 1; }\n"
+        )
+    if uses["count"]:
+        idiom_css += (
+            "  /* tabular-nums is MANDATORY on a counter: proportional digits reflow the\n"
+            "     line on every frame. Size is static; only the transform scales. */\n"
+            "  .cnt { font-variant-numeric: tabular-nums; display: inline-block; }\n"
+        )
+    idiom_css = idiom_css.rstrip("\n")
+
+    count_helper = ""
+    if uses["count"]:
+        count_helper = (
+            "  // Deterministic number formatting — no toLocaleString, whose grouping\n"
+            "  // depends on the renderer's ICU data. Same input, same digits, always.\n"
+            "  function hfNum(v, dp, grp) {\n"
+            "    var s = dp > 0 ? v.toFixed(dp) : String(Math.round(v));\n"
+            "    if (grp) { var p = s.split('.');\n"
+            "      p[0] = p[0].replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');\n"
+            "      s = p.join('.'); }\n"
+            "    return s;\n"
+            "  }\n"
+        )
 
     return f"""<template>
 {gfont_link}<style>
@@ -415,7 +1030,7 @@ def render_scene(bs: dict, sc: dict, idx: int):
             text-transform: uppercase; color: var(--accent); }}
   .stat   {{ font-weight: 800; font-size: 150px; line-height: 1; color: var(--accent); }}
   .caption{{ font-weight: 600; font-size: 44px; line-height: 1.25; color: var(--ink); }}
-
+{idiom_css}
   /* Debug overlay lives on #root, never on <body>: a sub-composition's own
      renderable surface IS #root. Confirm it is off by looking at frame zero. */
   #root.debug-layout * {{ outline: 1px solid rgba(255,0,0,.6) !important; }}
@@ -423,8 +1038,8 @@ def render_scene(bs: dict, sc: dict, idx: int):
 </style>
 
 <div id="root" data-composition-id="{esc(cid)}" data-width="{w}" data-height="{h}"
-     data-duration="{f(dur)}">
-{plate_markup}    <div class="clip stage" id="{esc(cid)}-stage" data-start="0" data-duration="{f(dur)}">
+     data-duration="{f(total_dur)}">
+{plate_markup}    <div class="clip stage" id="{esc(cid)}-stage" data-start="0" data-duration="{f(total_dur)}">
 {beats_markup}
     </div>
 </div>
@@ -433,10 +1048,14 @@ def render_scene(bs: dict, sc: dict, idx: int):
   // docs/gsap.md: create paused, register on window.__timelines[compositionId].
   // Supported methods are set / to / from / fromTo — nothing else is emitted.
   // Initial states first, immediate and outside the timeline.
-{pre_lines}
-  var tl = gsap.timeline({{ paused: true, defaults: {{ ease: 'power3.out' }} }});
+{count_helper}{pre_lines}
+  // NO `defaults: {{ ease }}` on this timeline. An inherited ease is an
+  // UNCOUNTED ease: it is how a video ends up with 65% of its real tweens
+  // sharing one entrance signature while every explicit-ease grep says
+  // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
+  var tl = gsap.timeline({{ paused: true }});
 {tween_lines}
-  tl.to({{}}, {{ duration: {f(dur)} }}, 0);   // anchor — always last, always at 0
+  tl.to({{}}, {{ duration: {f(total_dur)}, ease: 'none' }}, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {{}};
   window.__timelines['{esc(cid)}'] = tl;
 }})();
@@ -448,11 +1067,31 @@ def render_scene(bs: dict, sc: dict, idx: int):
 def build_sidecar(bs: dict, scenes: list, per_scene_assertions: dict) -> dict:
     """[S7/R-2] The motion sidecar `check` reads. Assertions are the beat sheet's
     own intent restated in the engine's vocabulary, so `check` verifies the
-    render against what the beat sheet asked for, not against itself."""
+    render against what the beat sheet asked for, not against itself.
+
+    There is now also a `keepsMoving` [S6/A-10, R-1b]: `appearsBy` and `before`
+    can all pass on a piece whose every scene enters, washes and then sits — the
+    frozen window is exactly what they do not see. `maxStaticSec` is the format's
+    own cadence cap, not the assertion default of 2s, which is Shorts-scale.
+
+    It is ONE composition-wide assertion, not one per scene, and that is an
+    engine fact rather than a preference. MEASURED 2026-09-02 on hyperframes
+    0.8.22 (see the module docstring): `keepsMoving`'s static-window scan runs
+    over the WHOLE root composition duration, never bounded to the window in
+    which the named scene's clip is live. A per-scene `withinSelector` therefore
+    reports the scene's own OFF-SCREEN time as a frozen window and fails by
+    construction — `#scene-s02` "static between 0s and 2.5s", `#scene-s01`
+    "static between 3.5s and 9s" — with `#<cid>-stage` behaving identically.
+    On a composition whose scenes tile, the composition-wide form has the same
+    coverage for a frozen scene (nothing else is moving during that window
+    either) and additionally covers the transition boundaries, which a
+    scene-scoped selector skips."""
     total = sum(float(s["duration"]) for s in scenes)
+    cap = CADENCE_CAP[bs["format"]]
     out = []
     for sc in scenes:
         out.extend(per_scene_assertions[sc["id"]])
+    out.append({"kind": "keepsMoving", "withinSelector": "#root", "maxStaticSec": cap})
     return {"duration": round(total, 3), "assertions": out}
 
 
@@ -472,7 +1111,8 @@ def main() -> None:
     except json.JSONDecodeError as e:
         die(f"beat sheet is not valid JSON: {e}")
 
-    scenes = validate(bs)
+    scenes, trans = validate(bs)
+    d_in, d_out = overlap_windows(trans)
 
     proj = Path(args.project_dir)
     frames = proj / "compositions" / "frames"
@@ -484,13 +1124,27 @@ def main() -> None:
     per_scene_assertions = {}
     written = []
     for i, sc in enumerate(scenes):
-        markup, assertions = render_scene(bs, sc, i)
+        markup, assertions = render_scene(bs, sc, i, d_in[i], d_out[i])
         per_scene_assertions[sc["id"]] = assertions
         path = frames / scene_filename(i, sc["id"])
+        if sc.get("handoff", "generated") == "hand-authored":
+            # [S6/A-9] the file is a hand-authored multi-scene merge. The
+            # generator still owns the clip, the derived transition and the
+            # assertions; it must not overwrite the actors.
+            if not path.exists():
+                warn(
+                    f"scene {sc['id']!r} is handoff='hand-authored' but {path} does not "
+                    f"exist. Write it, honouring the id contract the assertions name: "
+                    f"#{slugify(sc['id'])}-b<N> per beat and #{slugify(sc['id'])}-stage "
+                    f"for the stage, or `check` reports motion_selector_missing."
+                )
+            else:
+                print(f"  (kept hand-authored) {path}")
+            continue
         path.write_text(markup, encoding="utf-8")
         written.append(path)
 
-    index.write_text(render_root(bs, scenes), encoding="utf-8")
+    index.write_text(render_root(bs, scenes, trans), encoding="utf-8")
     written.append(index)
 
     sidecar = proj / "index.motion.json"
@@ -503,6 +1157,56 @@ def main() -> None:
           f"{sum(len(s['beats']) for s in scenes)} beats")
     for p in written:
         print(f"  {p}")
+
+    # [S6/A-8] transition ledger: types used, count per type, ground-change
+    # boundaries. This is the line the delivery record copies.
+    kinds: dict = {}
+    ground_changes = 0
+    default_bg = bs.get("bg", "#101314")
+    for i, t in enumerate(trans):
+        if i:
+            if str(scenes[i].get("bg", default_bg)).lower() != str(
+                scenes[i - 1].get("bg", default_bg)
+            ).lower():
+                ground_changes += 1
+            label = t["type"] + (f" {t['direction']}" if t["direction"] else "")
+            kinds[label] = kinds.get(label, 0) + 1
+    # [S6/A-10] entrance-signature share: (property set + EFFECTIVE ease). The
+    # inherited-default trap is why the ease is counted per tween, not grepped.
+    sig: dict = {}
+    for sc in scenes:
+        for j, b in enumerate(sc["beats"]):
+            if float(b["offset"]) <= 0.0001 and b.get("idiom", DEFAULT_IDIOM) in (
+                "arrive", "slam", "wipe", "swap"
+            ):
+                continue                       # composed at frame zero — no entrance
+            idiom = b.get("idiom", DEFAULT_IDIOM)
+            ease = (EASE.get(b["easing"], EASE[DEFAULT_EASE]) if "easing" in b
+                    else IDIOM_EASE[idiom])
+            key = f"{idiom}/{ease}"
+            sig[key] = sig.get(key, 0) + 1
+    n_sig = sum(sig.values()) or 1
+    top = max(sig.items(), key=lambda kv: kv[1]) if sig else ("-", 0)
+    share = 100.0 * top[1] / n_sig
+    print(
+        f"\n[S6/A-8] boundaries: {len(scenes) - 1}, "
+        f"{ground_changes} across a ground change; transitions: "
+        + (", ".join(f"{k} x{v}" for k, v in sorted(kinds.items())) or "none (all cuts)")
+    )
+    print(
+        f"[S6/A-10] entrance signatures: {len(sig)} distinct over {n_sig} entering "
+        f"beat(s); top {top[0]} at {share:.0f}%"
+    )
+    if share > 50.0 and n_sig > 2:
+        warn(
+            f"[S6/A-10] {share:.0f}% of entering beats share the signature {top[0]!r}. "
+            f"A majority sharing one entrance is the template failure regardless of "
+            f"what the beats say — vary the idiom by narrative function [R8]."
+        )
+    if WARNINGS:
+        print(f"\n{len(WARNINGS)} warning(s):", file=sys.stderr)
+        for m in WARNINGS:
+            print(f"  - {m}", file=sys.stderr)
     print("\nnext: npx hyperframes check --json --snapshots")
 
 

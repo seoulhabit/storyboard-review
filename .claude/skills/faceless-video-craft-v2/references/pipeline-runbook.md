@@ -140,6 +140,13 @@ so the gate is the generator refusing to emit, not a reading pass.
    `index.motion.json` from the beat sheet, with the `#root` attributes, the
    `.clip` timing, and the paused timelines registered on `window.__timelines`.
    Timing is never hand-typed into the HTML — edit the beat sheet and re-run.
+   Four fields drive the continuity rules: each scene's `transition`
+   (`[S6/A-8]` — the generator derives the overlap window, extends the outgoing
+   clip and stamps the root-timeline tween) and `handoff`
+   (`hand-authored` skips markup emission for a merged multi-phase scene), and
+   each beat's `idiom` (`[S6/A-10]`, one of arrive/slam/wipe/count/swap/hold)
+   and `actor` (`[S6/A-9]`; the same actor in two consecutive scenes is a
+   warning to merge them).
    `assets/composition-skeleton.html` and `assets/scene-skeleton.html` document
    the emitted shape for the rare root the generator does not cover.
 5. Layout check with `debug-layout` on `#root` → `check --snapshots` → fix →
@@ -148,7 +155,11 @@ so the gate is the generator refusing to emit, not a reading pass.
    vocabulary use `/hyperframes-animation`; for camera moves and Ken Burns,
    `/hyperframes-keyframes`; for how footage and plates are treated,
    `/media-use` and its `references/media-treatments.md`. Do not improvise
-   equivalents.
+   equivalents. Long-form only: hand-author the merged multi-phase scenes and
+   the camera legs `[S6/A-9]` on the files marked `handoff: hand-authored`, then
+   run `python3 catalog/tooling/continuity-audit.py 05-composition/` and read
+   its four counts — boundaries by type, entrance-signature share, rebuilt-actor
+   pairs, camera moves. Its verdict is source-structural, not pixels.
 
 Artifact: `05-composition/{index.html, compositions/frames/*.html,
 index.motion.json, hyperframes.json}`, `spatial-plan.md`.
@@ -195,7 +206,16 @@ Gate: `[S7/R-1]` `check` passes before render is attempted.
 
    Confirm each script's crop constants against *this* project's own
    `index.html` before trusting a "0 findings" — an inherited caption band
-   silently excludes real content. Look at every frame.
+   silently excludes real content. Look at every frame. Then the perceptibility
+   pass, which answers a different question from the frozen-hold one above:
+
+   ```bash
+   python3 catalog/tooling/check-cadence.py <project> 06-render/final.mp4 [--longform]
+   ```
+
+   And extract the midpoint frame of every transition boundary `[S6/A-8]`,
+   `blur-crossfade` boundaries especially: a settled frame either side of a cut
+   tells you nothing about a muddy frame between them.
 5. **`[K-4]` rendered-claim check**, on the same frames: every unsourced claim
    shows its flag concurrently; the flag is not the accent colour and not
    citation typography; no internal record id anywhere; the on-screen wording

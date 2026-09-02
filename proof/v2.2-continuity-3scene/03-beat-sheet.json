@@ -1,0 +1,56 @@
+{
+  "slug": "proof-3scene-v22",
+  "format": "short",
+  "fps": 30,
+  "canvas": { "w": 1080, "h": 1920 },
+  "vo_duration_s": 9.0,
+  "presenter": "kinetic-type",
+  "bg": "#101314",
+  "ink": "#F7F5F0",
+  "fonts": {
+    "family": "Inter",
+    "css": "'Inter', system-ui, sans-serif",
+    "google_css2": "https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap"
+  },
+  "safe_area": { "top": 192, "bottom": 384, "right": 162, "left": 72 },
+  "sections": [
+    { "name": "hook", "start": 0.0, "end": 3.0 },
+    { "name": "mechanism", "start": 3.0, "end": 6.0 },
+    { "name": "proof", "start": 6.0, "end": 9.0 }
+  ],
+  "scenes": [
+    {
+      "id": "s01", "start": 0.0, "duration": 3.0, "section": "hook",
+      "layout": "flex column, centred, kinetic type stack",
+      "bg": "#14332A", "accent": "#9FD8B4", "plate": null,
+      "beats": [
+        { "offset": 0.0,  "dur": 0.40, "role": "head",   "intent": "hook claim composed at frame zero", "text": "Scene one." },
+        { "offset": 1.00, "dur": 0.40, "role": "sub",    "intent": "percussive hit on the spoken beat", "text": "Green ground.", "idiom": "slam" },
+        { "offset": 2.10, "dur": 0.50, "role": "kicker", "intent": "label wipes in, opacity untouched", "text": "t = 0.0 - 3.0 s", "idiom": "wipe" }
+      ]
+    },
+    {
+      "id": "s02", "start": 3.0, "duration": 3.0, "section": "mechanism",
+      "layout": "flex column, centred, kinetic type stack",
+      "bg": "#2B1A3D", "accent": "#E0A8FF", "plate": null,
+      "transition": { "type": "push-slide", "direction": "LEFT", "duration": 0.5 },
+      "beats": [
+        { "offset": 0.0,  "dur": 0.40, "role": "head", "intent": "push-slide brings this ground on", "text": "Scene two." },
+        { "offset": 1.00, "dur": 0.40, "role": "stat", "intent": "the cohort counts to its value",   "text": "104", "idiom": "count" },
+        { "offset": 2.10, "dur": 0.50, "role": "sub",  "intent": "deliberate hold, camera stays alive", "text": "(camera drift, no new element)", "idiom": "hold" }
+      ]
+    },
+    {
+      "id": "s03", "start": 6.0, "duration": 3.0, "section": "proof",
+      "layout": "flex column, centred, kinetic type stack",
+      "bg": "#0E2A45", "accent": "#7FD1F0", "plate": null,
+      "transition": { "type": "blur-crossfade", "duration": 0.6 },
+      "beats": [
+        { "offset": 0.0,  "dur": 0.40, "role": "head",   "intent": "blur-crossfade lands on this ground", "text": "Scene three." },
+        { "offset": 1.00, "dur": 0.40, "role": "sub",    "intent": "the claim transforms, it is not replaced", "text": "Blue ground.", "idiom": "swap" },
+        { "offset": 2.10, "dur": 0.50, "role": "kicker", "intent": "label arrives", "text": "t = 6.0 - 9.0 s", "idiom": "arrive" }
+      ]
+    }
+  ],
+  "chapters": []
+}

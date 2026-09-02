@@ -1,6 +1,21 @@
 #!/usr/bin/env python3
-"""Scan a rendered MP4 for real content (ink) inside YouTube Shorts' reserved UI
+"""Scan a rendered MP4 for real content (ink) inside a platform's reserved UI
 zones, measured on transformed, RENDERED pixels — not on the composition's source.
+
+Canvas-aware since 2026-09-02. It was previously hard-coded to a 1080x1920
+portrait canvas, and the failure on a landscape render was SILENT AND MIXED,
+which is why the canvas is now asserted rather than assumed. Measured on a
+fully-inked 1920x1080 frame with the old portrait constants:
+
+    bottom zone  mask[1536:, :]   -> shape (0, 1920)     sum=0        FAIL-OPEN
+    right  zone  mask[:, 918:]    -> shape (1080, 1002)  sum=1082160  wrong region
+
+The bottom slice runs past the end of a 1080-tall array, so numpy returns an
+empty view and the hard gate reports "no findings" and exits 0. The right slice
+silently measures the right 52% of the frame instead of a 162px rail. A gate
+that lies in both directions is worse than no gate, so `--canvas-w/--canvas-h`
+now exist AND a mismatch against the render's real dimensions is a loud failure
+(exit 2), never a silent pass.
 
 Why this exists: `faceless-video-craft` SKILL.md's pre-render gate item 7 asks
 "are safe-area tokens consumed by every scene" — a source-code question. Every
@@ -21,7 +36,7 @@ reserved zone is not a judgment call the way a static hold's cadence sometimes
 is; it will be covered by the platform's own UI on a real device.
 
 Method: sample the render at a fixed fps, build an ink mask per frame (|luma -
-modal background luma| over a threshold, ignoring stray antialiasing by
+PAGE GROUND luma, taken from the outer border ring| over a threshold, ignoring stray antialiasing by
 requiring a minimum run of masked pixels in a row/column before it counts as a
 real edge), and flag any frame with ink inside the four reserved zones. Zone
 sizes are passed as CLI flags — this script is not project-specific — and
@@ -45,7 +60,7 @@ import subprocess
 
 SAMPLE_FPS = 4                  # finer than static-hold's 2fps -- a fast Ken Burns
                                  # drift can cross the line between two 2fps samples
-CANVAS_W, CANVAS_H = 1080, 1920
+CANVAS_W, CANVAS_H = 1080, 1920   # portrait default; override with --canvas-w/--canvas-h
 INK_THRESHOLD = 28              # |luma - background| above this counts as "ink"
 MIN_EDGE_RUN = 8                # a row/col needs >=8 masked px before it's a real
                                  # edge, not antialiasing noise, matching the method
@@ -61,9 +76,43 @@ def most_recent_render(project_root):
     return Path(max(candidates, key=lambda p: Path(p).stat().st_mtime))
 
 
+def render_dimensions(render_path):
+    """(width, height) of the render via ffprobe, or None if it cannot be determined."""
+    try:
+        out = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0",
+             "-show_entries", "stream=width,height", "-of", "csv=p=0:s=x", str(render_path)],
+            capture_output=True, check=False, timeout=30,
+        ).stdout.decode(errors="replace").strip()
+        w, h = out.split("x")[:2]
+        return int(w), int(h)
+    except Exception:  # noqa: BLE001 - any ffprobe/parse failure means "canvas unknown"
+        return None
+
+
+def page_ground(frame_gray):
+    """Luma of the PAGE GROUND, from the outer border ring.
+
+    The whole-frame modal fails as soon as content covers more than half the
+    canvas: two 45%-of-frame panels make the modal a PANEL colour, every margin
+    then differs from it by more than the ink threshold, and all four reserved
+    zones report 100% ink. Measured on a real landscape render -- modal 151
+    against a true ground of 243, a 92-luma disagreement, producing 136 flagged
+    frames with nothing actually in a reserved zone. On a hard gate that is worse
+    than a miss: it blocks a clean render.
+
+    The outer ring is the right reference precisely BECAUSE reserved margins
+    exist: the extreme edge of the canvas is page ground by construction in any
+    composition that respects them. Median, not modal, so a few stray edge pixels
+    cannot move it.
+    """
+    ring = np.concatenate([frame_gray[:4, :].ravel(), frame_gray[-4:, :].ravel(),
+                           frame_gray[:, :4].ravel(), frame_gray[:, -4:].ravel()])
+    return int(np.median(ring))
+
+
 def ink_mask(frame_gray):
-    vals, counts = np.unique(frame_gray, return_counts=True)
-    bg = int(vals[counts.argmax()])
+    bg = page_ground(frame_gray)
     diff = np.abs(frame_gray.astype(int) - bg)
     raw = diff > INK_THRESHOLD
     row_ok = raw.sum(axis=1) >= MIN_EDGE_RUN
@@ -75,11 +124,30 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("project_root", nargs="?", default=".")
     ap.add_argument("render_path", nargs="?", default=None)
-    ap.add_argument("--safe-top", type=int, default=192, help="reserved top px (default: skill's 10% of 1920)")
-    ap.add_argument("--safe-bottom", type=int, default=384, help="reserved bottom px (default: skill's 20% of 1920)")
-    ap.add_argument("--safe-right", type=int, default=162, help="reserved right px (default: skill's 15% of 1080)")
+    ap.add_argument("--safe-top", type=int, default=192, help="reserved top px (default: skill's 10%% of 1920)")
+    ap.add_argument("--safe-bottom", type=int, default=384, help="reserved bottom px (default: skill's 20%% of 1920)")
+    ap.add_argument("--safe-right", type=int, default=162, help="reserved right px (default: skill's 15%% of 1080)")
     ap.add_argument("--safe-left", type=int, default=0, help="reserved left px (default: 0 -- no left rail in the skill)")
+    ap.add_argument("--canvas-w", type=int, default=CANVAS_W, help=f"canvas width px (default: {CANVAS_W})")
+    ap.add_argument("--canvas-h", type=int, default=CANVAS_H, help=f"canvas height px (default: {CANVAS_H})")
+    ap.add_argument("--landscape", action="store_true",
+                    help="16:9 long-form profile: canvas 1920x1080 and the landscape reserved "
+                         "zones (top 54 / bottom 108 / left 96 / right 96). Any explicit "
+                         "--canvas-* or --safe-* flag still wins over the profile.")
     args = ap.parse_args()
+
+    # Landscape profile: apply only where the operator left the portrait default in place,
+    # so an explicit flag is never silently overridden.
+    if args.landscape:
+        supplied = {a.split("=")[0] for a in sys.argv[1:]}
+        def _default(flag, cur, portrait_default):
+            return cur if f"--{flag}" in supplied else portrait_default
+        args.canvas_w    = _default("canvas-w",    args.canvas_w,    1920)
+        args.canvas_h    = _default("canvas-h",    args.canvas_h,    1080)
+        args.safe_top    = _default("safe-top",    args.safe_top,    54)
+        args.safe_bottom = _default("safe-bottom", args.safe_bottom, 108)
+        args.safe_right  = _default("safe-right",  args.safe_right,  96)
+        args.safe_left   = _default("safe-left",   args.safe_left,   96)
 
     project_root = Path(args.project_root).resolve()
     render_path = Path(args.render_path) if args.render_path else most_recent_render(project_root)
@@ -88,10 +156,27 @@ def main():
         print("check-safe-area: no render found under renders/*.mp4 — skipping (exit 0).")
         return 0
 
-    y_top, y_bot = args.safe_top, CANVAS_H - args.safe_bottom
-    x_left, x_right = args.safe_left, CANVAS_W - args.safe_right
+    canvas_w, canvas_h = args.canvas_w, args.canvas_h
 
-    print(f"Safe-area scan — {render_path.name}, sampling every {1000/SAMPLE_FPS:.0f}ms.")
+    # Fail LOUD on a canvas mismatch. The whole reason this assert exists is that the
+    # old portrait-only version returned an empty numpy slice on a landscape render and
+    # reported a clean pass -- see the module docstring for the measured numbers.
+    real = render_dimensions(render_path)
+    if real and real != (canvas_w, canvas_h):
+        print(f"check-safe-area: CANVAS MISMATCH — {render_path.name} is "
+              f"{real[0]}x{real[1]} but the zones are configured for {canvas_w}x{canvas_h}.")
+        print("  Refusing to run: the reserved-zone slices would address the wrong region "
+              "(and a bottom zone past the frame height reports a silent false pass).")
+        print(f"  Fix: pass --canvas-w {real[0]} --canvas-h {real[1]}"
+              + ("  (or just --landscape)" if real == (1920, 1080) else "")
+              + " with the matching --safe-* values for that platform.")
+        return 2
+
+    y_top, y_bot = args.safe_top, canvas_h - args.safe_bottom
+    x_left, x_right = args.safe_left, canvas_w - args.safe_right
+
+    print(f"Safe-area scan — {render_path.name}, {canvas_w}x{canvas_h}, "
+          f"sampling every {1000/SAMPLE_FPS:.0f}ms.")
     print(f"  reserved zones: top<{y_top}  bottom>={y_bot}  right>={x_right}"
           + (f"  left<{x_left}" if x_left else ""))
 

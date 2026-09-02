@@ -1,7 +1,8 @@
 # Restored v1 rules — verbatim
 
-Six rules v2 dropped with no replacement. Each caught a real, confirmed defect
-in this channel's own shipping history (`REPORT-2026-09-01.md` §4.3). They are
+Eight rules v2 dropped or never had. Each caught a real, confirmed defect
+in this channel's own shipping history (`REPORT-2026-09-01.md` §4.3; R7 and R8
+were added 2026-09-02 from the `ectoin-survival-molecule` review). They are
 reproduced here **verbatim** from `.claude/skills/faceless-video-craft/SKILL.md`
 — the repo copy of v1 — because paraphrasing a rule is how its teeth get filed
 off. `decision-policy.md` carries each one as a numbered rule at the stage where
@@ -19,6 +20,8 @@ the threshold is where it is.
 | R4 | Catalog discover / reuse / contribute | `[S6/A-1]` | S6 entry and run exit | reading |
 | R5 | Post-render static-hold / cadence | `[S7/R-2]` | S7, on the muxed file | `check` `sweep_static` + `catalog/tooling/check-static-hold.py` |
 | R6 | AAC true-peak headroom | `[S7/R-3]` | S7 audio master | `ffmpeg ebur128` on the shipped file |
+| R7 | Cuts, crossfades, and transitions | `[S6/A-8]` | S5 beat sheet, S6 emission | generator derives the overlap; `[S7/R-2]` extracts each midpoint |
+| R8 | Motion idiom by narrative function | `[S6/A-10]` | S6, per beat | `catalog/tooling/continuity-audit.py` counts signatures |
 
 
 ---
@@ -345,3 +348,171 @@ above is the only thing that actually answers the static-hold question.
   `ebur128` on the actual shipped file before calling mastering done — a
   measurement against the intermediate is not evidence about the
   deliverable.
+
+
+---
+
+## R7 · Cuts, crossfades, and transitions — `[S6/A-8]`
+
+**Gates at:** S5 — the beat sheet names each scene's transition; S6 — the generator derives the overlap window
+**Written for:** `videos/ectoin-survival-molecule`, 28 of 28 boundaries hard cut on a 340s long-form piece by correct application of v1's Shorts-derived rule. Every gate passed; the review called it "a sequence of separate slides".
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1734-1830, verbatim.
+
+**The hard rule first, because it is the one part a frame can settle: a plain
+crossfade across a ground change produces a muddy midpoint.** Both layers sit
+at ~50% opacity over an unrelated canvas colour at once, so the 50% frame is
+washed and near-blank — invisible if you only look at settled frames. A design
+that alternates background colour scene-to-scene for contrast (a legitimate
+technique) makes plain crossfades structurally unsafe at every boundary that
+changes ground. The arbiter is not an argument but the *Verification loop*'s
+transition-midpoint extraction: pull the frame at the exact midpoint and look.
+Same-ground softness (a very short ≤150-200ms fade) was always allowed.
+
+**Everything past that rule is format-scoped, and this file used to state it
+format-blind.**
+
+- **Shorts.** Hard cuts on a timing grid stay the default. A 30-45s piece cut
+  to a grid has no room for a transition system, and softness at a boundary
+  reads as slack against the format's own cadence.
+- **Long-form.** Plan a *transition system*, not a per-boundary decision:
+  **2-3 types**, one primary carrying ~60-70% of boundaries plus 1-2 accents
+  (`hyperframes-animation`'s `transitions/overview.md` sets that budget —
+  "Pick ONE primary … + 1-2 accents. Never use a different transition for
+  every scene."). For an editorial explainer the primary is **`push-slide`**,
+  one direction held per chapter; **`blur-crossfade`** is the sanctioned soft
+  option across a ground change, and **`zoom-through`** / **`squeeze`** are the
+  accent slots. Give the accent to **chapter boundaries** so transition
+  strength serves the re-hook (*Long-form structure* below) rather than
+  decorating an arbitrary scene change — or let a camera leg land on the next
+  act's payoff and carry the boundary that way. Hard cuts survive as
+  **deliberate emphasis**: a few per piece, chosen, not defaulted.
+
+The registry holds exactly five — `crossfade`, `blur-crossfade`, `push-slide`,
+`zoom-through`, `squeeze` — and **which of them can cross a ground change is a
+property of their GSAP templates, not of their names**, computed at the
+midpoint (`p = 0.5`) from the registry's own `gsap_template` lines:
+
+| Transition | Both wrappers at midpoint | Blends grounds? |
+|---|---|---|
+| `push-slide` | `opacity: 1` pinned; only `x`/`y` move | **No** — never composites two grounds |
+| `squeeze` | `opacity: 1` pinned; only `scaleX` moves | **No** — never composites two grounds |
+| `zoom-through` | 0.875 / 0.875 (asymmetric `power3.in` out, `power3.out` in) | Mildly — ~11% outgoing ground, ~2% raw canvas |
+| `blur-crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — the 10px blur masks it, nothing more |
+| `crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — this is the muddy case |
+
+`push-slide` takes a `direction` of `LEFT`/`RIGHT`/`UP`/`DOWN` ("vertical
+push" is a direction, not a separate transition); there is no named `cut`,
+`match-cut` or `wipe`, a cut being the absence of a transition. And the
+registry's note on `blur-crossfade` ("Default when the two scenes' #root
+backgrounds differ a lot — the blur masks the background-color clash a plain
+crossfade would expose") means what it says: **masks**, not removes. Extract
+its midpoint like any other.
+
+**Record the disagreement rather than resolving it silently.** This file has
+said hard cuts beat transitions on retention; `transitions/overview.md` says
+"Every composition uses transitions. No exceptions… Scenes without transitions
+feel like jump cuts." **Neither claim is measured**, and the one long-form
+project this channel has shipped marks every retention comparison available to
+it `[UNDERPOWERED]` in its own brief
+(`videos/ectoin-survival-molecule/BRIEF.md:23-25`), the baseline being
+Shorts-derived and the piece not. The format split above therefore has the
+same status as the hook window in *Long-form structure*: a craft budget,
+usable for authoring, never citable as the cause of a failure, superseded the
+moment a channel has retention data on a piece that used transitions.
+
+**The mechanics, so a transition is a timing edit and not a hand-drawn
+effect.** `transitions/TRANSITION-REGISTRY.md` (§"How the injector applies a
+transition") defines the whole move as four edits at a boundary of duration
+`d`:
+
+1. Extend the **outgoing** clip's `data-duration` by `d`. An ended clip holds
+   its final frame, so it is still on screen to be transitioned away from.
+2. Pull the **incoming** clip's `data-start` earlier by `d`. That overlap *is*
+   the transition window; no other authored time moves.
+3. Alternate `data-track-index` 0/1 so two overlapping wrappers never share a
+   track. The higher track composites on top.
+4. Stamp the tween on `window.__timelines["main"]` at `T = overlap start`,
+   targeting the two clip **wrappers** — not their contents.
+
+Each sub-composition's own paused timeline keeps being driven independently, so
+the root tween moving the wrappers introduces no double seek. Two constraints
+travel with the mechanism: **exit animations are banned except on the final
+scene** ("The transition IS the exit" — fading the outgoing scene out and then
+running the next scene's entrance is a jump cut with a dip), and the registry's
+`max_duration_s` is **2.0s**, with 0.3-0.6s the working range.
+
+**Confirmed case — the rule worked exactly as written and the video still read
+as slides.** `videos/ectoin-survival-molecule/` (340s, 1920×1080, 29 scenes)
+has **28 of 28 boundaries as hard cuts**, and not by neglect: its root timeline
+is a single empty anchor tween (`index.html:230-238`) and the reasoning is
+written out immediately above it (`index.html:231-233`), citing the
+muddy-midpoint rule this section opens with. 17 of the 28 do change ground
+(ink↔paper) — but **11 of 28 are paper→paper** and could have carried a
+same-ground transition even under the old, format-blind rule. Every gate this
+skill had came back green and an external review still called the piece an
+animated presentation. A cuts-only rule written for Shorts and applied to
+long-form is one of the three ways a piece passes its cadence gate and reads as
+slides; see *Long-form structure* for the other two.
+
+---
+
+## R8 · Motion idiom by narrative function — `[S6/A-10]`
+
+**Gates at:** S6 — Composition, per beat, before any entrance is authored
+**Written for:** the same render. 29 of 29 scene timelines declared `defaults: { ease: "power3.out" }`; 128 of 196 real tweens (65%) carried it, but grepping for the ease name returns 8 hits and reports variety.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 417-472, verbatim.
+
+The `.beat` above is a **starting shape, not a vocabulary.** It is one
+entrance — fade plus rise — that happens to be the one this file writes down,
+which is exactly why it ends up on every element in a project. Choose the idiom
+from what the beat is *doing narratively*, then implement it with the named
+rule. Every name below is a real file in
+`~/.claude/skills/hyperframes-animation/rules/`; read it before authoring
+rather than reconstructing it from the label.
+
+| What the beat is doing | Idiom | Rule |
+|---|---|---|
+| Explaining a mechanism or process | Draw it, deform it, assemble it | `svg-path-draw`, `reactive-displacement`, `depth-scatter-assemble` |
+| Presenting evidence or data | Let the number, bar, or axis perform | `counting-dynamic-scale`, `stat-bars-and-fills`, `chart-scrub-readout` |
+| Investigating something (a label, a list, a document) | Take the camera to the evidence | `coordinate-target-zoom`, `viewport-change` |
+| Correcting a myth, delivering a verdict | Transform the wrong thing into the right one | `scale-swap-transition`, `card-morph-anchor` |
+| Landing type on a spoken beat | Hit it, or sequence it word by word | `kinetic-beat-slam`, `discrete-text-sequence`, `asr-keyword-glow` |
+| Holding, deliberately | Liveness from the hero actor or the camera | `multi-phase-camera` micro-drift |
+
+Three of those rows carry a rule of their own.
+
+- **Evidence: the choreography enacts the study's own structure.** A trial's
+  *n* divides into its arms; a Week 0→4 outcome scrubs its own axis; a
+  percentage counts to its value. That is the motion form of *Asset protocol*
+  rule 8 — a diagram is not a chart unless it plots real data, and data is
+  allowed chart grammar — and it is what makes a data beat explanatory rather
+  than decorative (*Posture*'s "motion that means something").
+- **Correction: transform, don't replace.** Fading card A out and card B in
+  tells the viewer two unrelated things happened. `scale-swap-transition` and
+  `card-morph-anchor` keep the anchor, so the second state reads as *the first
+  one corrected* — the whole point of a myth-versus-fact beat.
+- **A hold is not a licence to breathe a text card.** Liveness comes from the
+  hero actor or a camera with a reason to move. `sine-wave-loop`'s own
+  frontmatter is explicit — "**Reach for this last**… circular breathing as
+  'aliveness' is cheap… I'd rather have NO motion than BAD motion" — so it is
+  never the default answer to a quiet stretch. Same anti-pattern *Posture* and
+  *Failure modes worth naming* already carry: decorative idle motion added to
+  make a frozen scene score better on a metric instead of earning a real beat.
+
+**The entrance-signature rule.** Count a tween's signature as **(the set of
+properties it animates + its *effective* ease)**, where *effective* is the
+load-bearing word: an ease inherited from
+`gsap.timeline({ defaults: { ease } })` is as much a signature as one written
+on the tween. **A majority of a project's real tweens sharing one signature is
+the template failure regardless of how varied the content is** — and counting
+only explicit `ease:` strings misses it completely. Confirmed case:
+`videos/ectoin-survival-molecule/` declares `defaults: { ease: "power3.out" }`
+on **29 of 29** scene timelines; 8 explicit plus 120 inherited is **128 of 196
+real tweens (65%)** on one ease, and **69 of 122 opacity tweens also move
+x/y** — the canonical fade-and-rise — against 47 pure fades. Grepping that
+project for `power3.out` returns 8 hits and would have reported variety.
+
+Unlike cadence, this is a legitimate **source-level** check — entrance variety
+genuinely is a property of the source, where a source-level beat map is only
+ever a hypothesis about pixels (*Verification loop*). Run it at authoring time,
+before the render exists.

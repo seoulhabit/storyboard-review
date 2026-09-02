@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+  ROOT COMPOSITION SKELETON — faceless-video-craft v2.1
+
+  Every attribute below is transcribed from the pinned CLI's shipped docs; see
+  references/hyperframes-engine.md for the file that says each one. This shape
+  passed `hyperframes check` with 0 errors / 0 warnings and rendered three
+  distinct scenes on pins 0.8.19 and 0.8.22.
+
+  Normally you do NOT hand-write this file. `scripts/beats_to_composition.py`
+  generates it from 03-beat-sheet.json, which is the single source of timing.
+  This skeleton is here so the shape is readable, and for the rare root that
+  needs something the generator does not emit.
+
+  Sub-composition shape: assets/scene-skeleton.html
+-->
+<html lang="en" data-resolution="portrait">
+<head>
+  <meta charset="UTF-8">
+  <title>Render Composition</title>
+  <style>
+    /* Mandatory rule [S6/A-5]: border-box reset FIRST, every composition. The
+       shipped blank template carries this same reset. An explicit height plus
+       padding under the CSS default (`content-box`) renders LARGER than
+       declared — a 1920px stage with 192/384 padding lays out at 2496px and
+       silently pushes bottom-anchored content out of the safe zone. */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    /* Short: 1080x1920. Long: 1920x1080 and data-resolution="landscape". */
+    body { width: 1080px; height: 1920px; overflow: hidden; background: #101314; }
+
+    /* position:absolute here is CLIP/SCENE STACKING — the sanctioned exception.
+       Structure INSIDE a scene is Grid/Flex. */
+    .scene { position: absolute; inset: 0; }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="9.000"
+       data-width="1080" data-height="1920">
+
+    <!-- One .clip per scene. `class="clip"` gives the scene its full-frame box
+         and lint warns without it, but the runtime keys visibility off
+         data-start. data-track-index is a Studio lane the render never reads —
+         it does not control paint order (use z-index) and does not prevent
+         overlap. A stable id is what Studio and agents edit against. -->
+    <div class="scene clip" id="scene-s01" data-composition-id="s01"
+         data-composition-src="compositions/frames/01-s01.html"
+         data-start="0.000" data-duration="3.000" data-track-index="0"></div>
+
+    <div class="scene clip" id="scene-s02" data-composition-id="s02"
+         data-composition-src="compositions/frames/02-s02.html"
+         data-start="3.000" data-duration="3.000" data-track-index="1"></div>
+
+    <div class="scene clip" id="scene-s03" data-composition-id="s03"
+         data-composition-src="compositions/frames/03-s03.html"
+         data-start="6.000" data-duration="3.000" data-track-index="0"></div>
+
+    <!-- Project-relative path; hyperframes.json declares `paths.assets`.
+         Plain data-volume only: a data-automation volume lane REPLACES
+         data-volume on this engine rather than scaling it, which is how a bed
+         ships ~10dB hot. Tail belongs in the post-render master [S7/R-3]. -->
+    <audio id="bgm" src="assets/bgm/track.mp3"
+           data-start="0.000" data-duration="9.000" data-volume="0.30"></audio>
+  </div>
+
+  <!-- GSAP from CDN is the shipped blank template's own pattern. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    // docs/gsap.md: paused, registered on window.__timelines[compositionId].
+    // The root timeline's only job is scene handoff; each sub-composition owns
+    // its own beats. There is no seek(t) — the engine never calls one.
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+    tl.to({}, { duration: 9.000 }, 0);   // anchor: tl.duration() === root duration
+    window.__timelines['main'] = tl;
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="portrait">
+<head>
+  <meta charset="UTF-8">
+  <title>2026-09-01-how-to-repair-skin-barrier</title>
+  <style>
+    /* Mandatory rule: border-box reset first, every composition.
+       The shipped blank template carries this same reset
+       (templates/blank/index.html). An explicit height plus padding under the
+       CSS default renders LARGER than declared and pushes bottom-anchored
+       content out of the safe zone. */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { width: 1080px; height: 1920px; overflow: hidden; background: #101314; }
+    .scene { position: absolute; inset: 0; }
+  </style>
+</head>
+<body>
+  <!-- GENERATED from 03-beat-sheet.json by scripts/beats_to_composition.py.
+       Do not hand-edit timing here; edit the beat sheet and re-run. -->
+  <div id="root" data-composition-id="main" data-start="0" data-duration="45.280"
+       data-width="1080" data-height="1920">
+
+    <div class="scene clip" id="scene-hook" data-composition-id="hook"
+         data-composition-src="compositions/frames/01-hook.html"
+         data-start="0.000" data-duration="3.999"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-misc-a" data-composition-id="misc-a"
+         data-composition-src="compositions/frames/02-misc-a.html"
+         data-start="3.999" data-duration="4.135"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-misc-b" data-composition-id="misc-b"
+         data-composition-src="compositions/frames/03-misc-b.html"
+         data-start="8.134" data-duration="6.168"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-ident" data-composition-id="ident"
+         data-composition-src="compositions/frames/04-ident.html"
+         data-start="14.302" data-duration="3.796"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-comp-a" data-composition-id="comp-a"
+         data-composition-src="compositions/frames/05-comp-a.html"
+         data-start="18.098" data-duration="6.304"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-mech" data-composition-id="mech"
+         data-composition-src="compositions/frames/06-mech.html"
+         data-start="24.402" data-duration="7.999"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-disclose" data-composition-id="disclose"
+         data-composition-src="compositions/frames/07-disclose.html"
+         data-start="32.401" data-duration="7.592"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-apply" data-composition-id="apply"
+         data-composition-src="compositions/frames/08-apply.html"
+         data-start="39.993" data-duration="5.287"
+         data-track-index="1"></div>
+    <audio id="bgm" src="assets/bgm/track-pulse.wav"
+           data-start="0.000" data-duration="45.280"
+           data-volume="0.300"></audio>
+  </div>
+
+  <!-- GSAP from CDN is the shipped template's own pattern
+       (templates/blank/index.html loads gsap from jsdelivr). -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    // The root timeline's only job is scene handoff; each sub-composition owns
+    // its own beats. docs/gsap.md: paused, registered on window.__timelines.
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+    tl.to({}, { duration: 45.280 }, 0);   // anchor: tl.duration() === root duration
+    window.__timelines['main'] = tl;
+  </script>
+</body>
+</html>

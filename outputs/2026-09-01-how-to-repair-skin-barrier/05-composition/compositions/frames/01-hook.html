@@ -1,0 +1,68 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@500;700;800&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  #root{
+    --ink:#131516; --paper:#F7F5F0; --ground:#101314; --card:#FBF9F5;
+    --aqua:#59B8AE; --coral:#C97A5C; --celadon:#93B896;
+    --muted:rgba(247,245,240,.62); --line-dark:rgba(247,245,240,.14); --line:rgba(19,21,22,.12);
+    --ink-faint:rgba(19,21,22,.62);
+    --safe-t:192px; --safe-b:384px; --safe-r:162px; --safe-l:72px;
+    --display:'EB Garamond',Georgia,serif; --body:'Inter','Noto Sans KR',system-ui,sans-serif;
+    position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:var(--ground);font-family:var(--body);
+  }
+  .clip{position:absolute;inset:0}
+  .stage{padding:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+         display:flex;flex-direction:column;justify-content:center}
+  /* The channel's display face. Serif, 400 — not a bold sans. */
+  .display{font-family:var(--display);font-weight:400;line-height:1.08;
+           letter-spacing:-.015em;color:var(--paper);margin:0}
+  .d-xl{font-size:132px} .d-lg{font-size:104px} .d-md{font-size:78px}
+  .label{font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+         font-size:32px;color:var(--muted)}
+  .label-aqua{color:var(--aqua)}
+  .body{font-weight:500;line-height:1.4;font-size:46px;color:var(--paper)}
+  .rulewrap{position:relative}
+  .scan{position:absolute;left:0;top:-5px;width:12px;height:12px;border-radius:50%;
+        background:var(--aqua)}
+  .rule{height:2px;background:var(--aqua);transform-origin:0 50%;width:100%}
+  .flag{font-weight:500;font-size:34px;letter-spacing:.04em;color:var(--muted)}
+  .cite{font-weight:700;font-size:32px;letter-spacing:.10em;text-transform:uppercase;color:var(--aqua)}
+  /* uc-card — position:absolute on the rule is REQUIRED (PDRN Round-4 bug class) */
+  .uc-card{position:absolute;background:var(--card);border:1px solid var(--line);
+           border-radius:28px;box-shadow:0 24px 64px rgba(0,0,0,.34)}
+</style>
+
+<div id="root" data-composition-id="hook" data-width="1080" data-height="1920"
+     data-duration="3.999">
+  <div class="clip stage">
+    <div class="label label-aqua" id="hk-kick">BARRIER · 01</div>
+    <div class="rulewrap" style="margin:26px 0 44px">
+      <div class="rule" id="hk-rule"></div>
+      <div class="scan" id="hk-scan"></div>
+    </div>
+    <h1 class="display d-xl" id="hk-l1">Is your skin<br>actually sensitive?</h1>
+    <h2 class="display d-md" id="hk-l2" style="color:var(--aqua);margin-top:40px">Or is the barrier damaged?</h2>
+  </div>
+</div>
+<script>
+(function(){
+  var tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out" } });
+  gsap.set("#hk-rule",{scaleX:0});
+  gsap.set("#hk-l2",{opacity:0,y:22});
+  tl.to("#hk-rule",{scaleX:1,duration:.7,ease:"power2.inOut"},0.15);
+  tl.to("#hk-l2",{opacity:1,y:0,duration:.5},1.40);
+  // transform-only: an aqua marker scans the rule. letterSpacing snaps to whole
+  // device pixels under the renderer and judders (engine lint: gsap_non_transform_motion).
+  gsap.set("#hk-scan",{opacity:0,x:0});
+  tl.to("#hk-scan",{opacity:1,duration:.25},2.35);
+  tl.to("#hk-scan",{x:820,duration:1.25,ease:"power1.inOut"},2.45);
+  tl.to({},{duration:3.999},0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["hook"] = tl;
+})();
+</script>
+</template>

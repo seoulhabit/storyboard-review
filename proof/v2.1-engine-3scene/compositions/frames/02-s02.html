@@ -1,0 +1,76 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  /* GENERATED from 03-beat-sheet.json — edit the beat sheet, re-run the generator. */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  #root {
+    --safe-top: 192px; --safe-bottom: 384px; --safe-right: 162px; --safe-left: 72px;
+    --ink: #F7F5F0; --accent: #E0A8FF; --muted: #9B9A97;
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: #2B1A3D; font-family: 'Inter', system-ui, sans-serif;
+  }
+  .clip { position: absolute; inset: 0; }
+
+  /* Structural layout is Flex. position:absolute is scene/clip stacking only. */
+  .stage { display: flex; flex-direction: column; justify-content: center;
+    gap: 28px;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+
+  /* [restored from v1] Type floors for phone viewing: hero 96-160px,
+     body 40px min, captions 42-56px, labels 26-32px with 32px the absolute
+     floor for anything meant to be read. */
+  .beat   { opacity: 1; overflow-wrap: anywhere; }
+  /* Authored OUTSIDE the timeline so a cold seek to t=0 paints the composed
+     hook and nothing else. See the note beside the tweens below. */
+  .beat.is-entering { opacity: 0; }
+  .kicker { font-weight: 700; font-size: 34px; letter-spacing: .16em;
+            text-transform: uppercase; color: var(--accent); }
+  .head   { font-weight: 800; font-size: 112px; line-height: 1.03;
+            letter-spacing: -.015em; text-transform: uppercase; color: var(--ink);
+            margin: 0; }
+  .sub    { font-weight: 700; font-size: 46px; letter-spacing: .12em;
+            text-transform: uppercase; color: var(--ink); }
+  /* Sentence-case size for lines too long to set as a hero without wrapping
+     past the safe box. Still above the 40px reading-text floor [S6/A-6]. */
+  .body   { font-weight: 600; font-size: 58px; line-height: 1.22;
+            letter-spacing: -.005em; color: var(--ink); }
+  .flag   { font-weight: 600; font-size: 34px; letter-spacing: .06em;
+            color: var(--muted); }
+  .cite   { font-weight: 700; font-size: 34px; letter-spacing: .10em;
+            text-transform: uppercase; color: var(--accent); }
+  .stat   { font-weight: 800; font-size: 150px; line-height: 1; color: var(--accent); }
+  .caption{ font-weight: 600; font-size: 44px; line-height: 1.25; color: var(--ink); }
+
+  /* Debug overlay lives on #root, never on <body>: a sub-composition's own
+     renderable surface IS #root. Confirm it is off by looking at frame zero. */
+  #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
+  #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+</style>
+
+<div id="root" data-composition-id="s02" data-width="1080" data-height="1920"
+     data-duration="3.000">
+    <div class="clip stage" id="s02-stage" data-start="0" data-duration="3.000">
+      <div class="beat head" id="s02-b0">Scene two.</div>
+      <div class="beat sub is-entering" id="s02-b1">Plum ground.</div>
+      <div class="beat kicker is-entering" id="s02-b2">t = 3.0 - 6.0 s</div>
+    </div>
+</div>
+<script>
+(function () {
+  // docs/gsap.md: create paused, register on window.__timelines[compositionId].
+  // Supported methods are set / to / from / fromTo — nothing else is emitted.
+  // Initial states first, immediate and outside the timeline.
+  gsap.set('#s02-b1', { opacity: 0, y: 20 });
+  gsap.set('#s02-b2', { opacity: 0, y: 20 });
+  var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  tl.to('#s02-b1', { opacity: 1, y: 0, duration: 0.400, ease: 'power4.out' }, 1.000);
+  tl.to('#s02-b2', { opacity: 1, y: 0, duration: 0.500, ease: 'power3.out' }, 2.100);
+  tl.to({}, { duration: 3.000 }, 0);   // anchor — always last, always at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s02'] = tl;
+})();
+</script>
+</template>

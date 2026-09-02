@@ -1,0 +1,80 @@
+{
+  "duration": 9.0,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-b0",
+      "bySec": 0.65
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-b1",
+      "bySec": 1.65
+    },
+    {
+      "kind": "before",
+      "a": "#s01-b0",
+      "b": "#s01-b1"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-b2",
+      "bySec": 2.85
+    },
+    {
+      "kind": "before",
+      "a": "#s01-b1",
+      "b": "#s01-b2"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s02-b0",
+      "bySec": 3.65
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s02-b1",
+      "bySec": 4.65
+    },
+    {
+      "kind": "before",
+      "a": "#s02-b0",
+      "b": "#s02-b1"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s02-b2",
+      "bySec": 5.85
+    },
+    {
+      "kind": "before",
+      "a": "#s02-b1",
+      "b": "#s02-b2"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-b0",
+      "bySec": 6.65
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-b1",
+      "bySec": 7.65
+    },
+    {
+      "kind": "before",
+      "a": "#s03-b0",
+      "b": "#s03-b1"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-b2",
+      "bySec": 8.85
+    },
+    {
+      "kind": "before",
+      "a": "#s03-b1",
+      "b": "#s03-b2"
+    }
+  ]
+}

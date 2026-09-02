@@ -1,0 +1,234 @@
+{
+  "duration": 45.28,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#hk-kick",
+      "bySec": 0.3
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#hk-l1",
+      "bySec": 0.3
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#hk-l2",
+      "bySec": 2.15
+    },
+    {
+      "kind": "before",
+      "a": "#hk-l1",
+      "b": "#hk-l2"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ma-1",
+      "bySec": 4.299
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ma-2",
+      "bySec": 5.749
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ma-lab",
+      "bySec": 7.949
+    },
+    {
+      "kind": "before",
+      "a": "#ma-1",
+      "b": "#ma-2"
+    },
+    {
+      "kind": "before",
+      "a": "#ma-2",
+      "b": "#ma-lab"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#bw-flag",
+      "bySec": 8.434
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#bw-h1",
+      "bySec": 9.334
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#bw-h2",
+      "bySec": 9.884
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#wall-label",
+      "bySec": 9.934
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#bw-h3",
+      "bySec": 13.684
+    },
+    {
+      "kind": "before",
+      "a": "#bw-h1",
+      "b": "#bw-h2"
+    },
+    {
+      "kind": "before",
+      "a": "#bw-h2",
+      "b": "#bw-h3"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#id-card",
+      "bySec": 15.152
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#id-r1",
+      "bySec": 15.582
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#id-r3",
+      "bySec": 16.682
+    },
+    {
+      "kind": "before",
+      "a": "#id-r1",
+      "b": "#id-r3"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ch-1",
+      "bySec": 19.428
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ch-4",
+      "bySec": 22.878
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ca-foot",
+      "bySec": 23.968
+    },
+    {
+      "kind": "before",
+      "a": "#ch-1",
+      "b": "#ch-4"
+    },
+    {
+      "kind": "before",
+      "a": "#ch-4",
+      "b": "#ca-foot"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#me-cite",
+      "bySec": 24.702
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#me-h",
+      "bySec": 25.602
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#bar-1",
+      "bySec": 26.502
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#bar-3",
+      "bySec": 29.102
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#me-scope",
+      "bySec": 30.852
+    },
+    {
+      "kind": "before",
+      "a": "#bar-1",
+      "b": "#bar-3"
+    },
+    {
+      "kind": "before",
+      "a": "#bar-3",
+      "b": "#me-scope"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sc-box",
+      "bySec": 33.201
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sc-1",
+      "bySec": 33.651
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sc-3",
+      "bySec": 37.301
+    },
+    {
+      "kind": "before",
+      "a": "#sc-1",
+      "b": "#sc-3"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ap-flag",
+      "bySec": 40.293
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ap-lab",
+      "bySec": 41.143
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ap-stop",
+      "bySec": 41.743
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#ap-start",
+      "bySec": 43.443
+    },
+    {
+      "kind": "before",
+      "a": "#ap-stop",
+      "b": "#ap-start"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#hk-scan"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#shard-1"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#shard-2"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#shard-3"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#id-card"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#ap-start"
+    }
+  ]
+}

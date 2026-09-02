@@ -1,0 +1,84 @@
+<template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@500;700;800&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  #root{
+    --ink:#131516; --paper:#F7F5F0; --ground:#101314; --card:#FBF9F5;
+    --aqua:#59B8AE; /* dark-ground only */
+    --aqua-card:#27706A; /* SAME role on the card ground: aqua measures 2.15:1
+       on #FBF9F5 and fails AA. A token's definition carries a scope; using it
+       off that scope is a contrast bug (restored-v1-rules R2). */ --coral:#C97A5C; --celadon:#93B896;
+    --muted:rgba(247,245,240,.62); --line-dark:rgba(247,245,240,.14); --line:rgba(19,21,22,.12);
+    --ink-faint:rgba(19,21,22,.62);
+    --safe-t:192px; --safe-b:384px; --safe-r:162px; --safe-l:72px;
+    --display:'EB Garamond',Georgia,serif; --body:'Inter','Noto Sans KR',system-ui,sans-serif;
+    position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:var(--ground);font-family:var(--body);
+  }
+  .clip{position:absolute;inset:0}
+  .stage{padding:var(--safe-t) var(--safe-r) var(--safe-b) var(--safe-l);
+         display:flex;flex-direction:column;justify-content:center}
+  /* The channel's display face. Serif, 400 — not a bold sans. */
+  .display{font-family:var(--display);font-weight:400;line-height:1.08;
+           letter-spacing:-.015em;color:var(--paper);margin:0}
+  .d-xl{font-size:132px} .d-lg{font-size:104px} .d-md{font-size:78px}
+  .label{font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+         font-size:32px;color:var(--muted)}
+  .label-aqua{color:var(--aqua)}
+  .body{font-weight:500;line-height:1.4;font-size:46px;color:var(--paper)}
+  .rule{height:2px;background:var(--aqua);transform-origin:0 50%;width:100%}
+  .flag{font-weight:500;font-size:34px;letter-spacing:.04em;color:var(--muted)}
+  .cite{font-weight:700;font-size:32px;letter-spacing:.10em;text-transform:uppercase;color:var(--aqua)}
+  /* uc-card — position:absolute on the rule is REQUIRED (PDRN Round-4 bug class) */
+  .uc-card{position:absolute;background:var(--card);border:1px solid var(--line);
+           border-radius:28px;box-shadow:0 24px 64px rgba(0,0,0,.34)}
+
+  .id-rows{margin-top:38px;display:flex;flex-direction:column;gap:26px}
+  .id-row{display:grid;grid-template-columns:220px 1fr;align-items:baseline;gap:24px}
+  .id-row .k{font-weight:700;font-size:28px;letter-spacing:.08em;text-transform:uppercase;
+             color:var(--ink-faint)}
+  .id-row .v{color:var(--ink);font-size:52px;font-weight:500}
+  .id-row .v.display{color:var(--ink)}
+  .id-row .v.ko{font-family:'Noto Sans KR',sans-serif;font-size:58px;font-weight:700}
+  .leaf{position:absolute;right:56px;top:52px;width:104px;height:104px}
+  .leaf path{fill:none;stroke:var(--aqua-card);stroke-width:3}
+  .leaf line{stroke:var(--aqua-card);stroke-width:2;opacity:.55}
+</style>
+
+<div id="root" data-composition-id="ident" data-width="1080" data-height="1920"
+     data-duration="3.796">
+  <div class="clip">
+    <div class="uc-card" id="id-card" style="left:72px;right:162px;top:640px;padding:64px 60px 58px">
+      <div class="label" id="id-lab" style="color:var(--ink-faint)">INGREDIENT IDENTITY</div>
+      <div class="id-rows">
+        <div class="id-row" id="id-r1"><span class="k">Name</span><span class="v display d-md">Centella asiatica</span></div>
+        <div class="id-row" id="id-r2"><span class="k">Korean</span><span class="v ko">병풀</span></div>
+        <div class="id-row" id="id-r3"><span class="k">Category</span><span class="v">Botanical extract</span></div>
+      </div>
+      <svg class="leaf" id="id-leaf" viewBox="0 0 120 120" aria-hidden="true">
+        <path d="M60 14 C86 34 96 62 60 106 C24 62 34 34 60 14 Z"/>
+        <line x1="60" y1="26" x2="60" y2="98"/>
+      </svg>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var tl = gsap.timeline({ paused:true, defaults:{ ease:"power3.out" } });
+  gsap.set("#id-card",{opacity:0,y:34,scale:.965,transformOrigin:"50% 100%"});
+  gsap.set(["#id-r1","#id-r2","#id-r3"],{opacity:0,x:-16});
+  gsap.set("#id-leaf",{opacity:0,rotate:-8,transformOrigin:"50% 80%"});
+  tl.to("#id-card",{opacity:1,y:0,scale:1,duration:.55},0.05);
+  tl.to("#id-r1",{opacity:1,x:0,duration:.38},0.65);
+  tl.to("#id-r2",{opacity:1,x:0,duration:.38},1.20);
+  tl.to("#id-r3",{opacity:1,x:0,duration:.38},1.75);
+  tl.to("#id-leaf",{opacity:1,rotate:0,duration:.7},2.30);
+  tl.to("#id-leaf",{rotate:3,duration:.75,ease:"power1.inOut"},3.05);
+  tl.to({},{duration:3.796},0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["ident"] = tl;
+})();
+</script>
+</template>

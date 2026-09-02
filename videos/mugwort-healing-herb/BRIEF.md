@@ -54,10 +54,26 @@ spelling, ASR used only for timing).
   established lean palette.
 - Beat starts computed programmatically from real take durations; captions come from the
   authoritative script paired positionally with ASR word timings.
-- Delivery: master to −14 LUFS / ≤−1 dBTP (ffmpeg `alimiter` with `level=0`), verify with
+
+### Image asset manifest (added round 4 — this section did not exist before; catalog
+discovery was skipped at scaffold time, and two ready-made mugwort plates sat undiscovered in
+this repo's own shared catalog for four rounds)
+
+| Asset | Source | Reused / new | Used in |
+|---|---|---|---|
+| `assets/plates/18-mugwort.png` | `catalog/ingredient-photography/18-mugwort.png` (2048×2048, Higgsfield-generated, part of the 20-item ingredient-photography set) | Reused verbatim | Beats 01 (hero), 02 (card header band), 06 (loop landing pad) |
+| `assets/plates/A05-essence-refill.png` | `catalog/product-photography/assets/A05-01.png` ("Paperboard refill sachet + glass vessel", labeled 에센스·100mL — an unbranded essence bottle, already the right subject for this video's protocol beats) | Reused verbatim | Beats 04, 05 (product consistency across the two first-layer beats) |
+
+No new plate was generated this round — both candidates already existed and matched the
+beats' actual content once the catalog was actually checked. See `frame.md`'s Round 4 section
+for placement/treatment detail and `assets/thumbnail/` for the derived thumbnail (extract +
+grade from the render, not a separate generation).
+- Delivery: master to −14 LUFS / ≤−1 dBTP (two-pass ffmpeg `loudnorm`), verify with
   `loudnorm=print_format=json`, frame-extract QA (frame zero composed at t=0, no debug class,
-  safe zones respected: captions y=196 band, content y∈[384,1440], right ~15% rail clear),
-  then copy the delivery master to `/Users/korswedie/Desktop/ingredent videos/Mugwort/`.
+  safe zones respected — round 4: captions y=240 band, `--safe-*` tokens per scene
+  [top:192 bottom:384 left:72 right:162, +6px guard margin], verified against rendered pixels
+  via `scripts/check-safe-area.py`, not inferred from source), then copy the delivery master
+  to `/Users/korswedie/Desktop/ingredent videos/Mugwort/` once this round is approved.
 
 ## Round 2 — pasted review pass (2026-08-30)
 

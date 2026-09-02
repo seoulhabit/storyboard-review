@@ -3,25 +3,41 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0;
+    --safe-top:192px; --safe-bottom:384px; --safe-left:72px; --safe-right:162px; --safe-margin:6px; }
   .clip { position:absolute; inset:0; }
   .pr-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
   .pr-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     opacity:0.12; mix-blend-mode:multiply; }
 
-  .pr-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:40px; padding:0 90px; text-align:center; }
-  .pr-kicker { font-weight:700; font-size:2.3cqw; letter-spacing:0.12em; text-transform:uppercase; color:rgba(19,21,22,0.68); opacity:0; }
+  .pr-stage { position:absolute; top:400px; left:calc(var(--safe-left) + var(--safe-margin)); width:calc(1080px - var(--safe-left) - var(--safe-right) - var(--safe-margin) * 2);
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:44px; text-align:center; }
+  .pr-kicker { font-weight:700; font-size:3.0cqw; letter-spacing:0.12em; text-transform:uppercase; color:rgba(19,21,22,0.68); opacity:0; }
 
-  .pr-choice { display:flex; width:822px; border:1px solid rgba(19,21,22,0.14); border-radius:28px; overflow:hidden; opacity:0; background:#FBF9F5; box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); }
-  .pr-opt { flex:1; padding:44px 28px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+  /* Was width:822px centred (x 129-951) — 33px past the 918 safe-right rail. Now the safe
+     column's own width, never scaled as a box (see the mx-field note in 03-mechanism for
+     why an overflow:hidden box must never carry its own zoom transform) — the continuous
+     camera-pull lives on .pr-choice-inner instead, a real fix after the essence plate's own
+     tiny Ken Burns alone proved too small a fraction of the frame to register as motion. */
+  .pr-choice { position:relative; width:100%; border:1px solid rgba(19,21,22,0.14); border-radius:28px; overflow:hidden; opacity:0; background:#FBF9F5; box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); }
+  .pr-choice-inner { display:flex; width:100%; height:100%; }
+  .pr-opt { flex:1; padding:48px 26px; display:flex; flex-direction:column; align-items:center; gap:18px; }
   .pr-opt.dim { color:rgba(19,21,22,0.62); }
   .pr-opt.live { color:#131516; border-left:1px solid rgba(19,21,22,0.12); }
-  .pr-opt-label { font-weight:700; font-size:2.7cqw; letter-spacing:0.02em; text-transform:uppercase; line-height:1.25; }
-  .pr-opt-sub { font-weight:600; font-size:2.0cqw; color:rgba(19,21,22,0.62); line-height:1.3; }
+  .pr-opt-label { font-weight:700; font-size:3.6cqw; letter-spacing:0.02em; text-transform:uppercase; line-height:1.25; position:relative; display:inline-block; }
+  .pr-underline { position:absolute; left:0; bottom:-0.14em; height:0.05em; width:100%; background:#59B8AE; transform:scaleX(0); transform-origin:0 50%; }
+  .pr-opt-sub { font-weight:600; font-size:3.0cqw; color:rgba(19,21,22,0.62); line-height:1.35; }
   .pr-mark { width:64px; height:64px; }
 
-  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:2.8cqw; color:rgba(19,21,22,0.85);
-    border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:10px 24px; background:rgba(19,21,22,0.05); opacity:0; }
+  /* The essence bottle — a real tactile product plate on the "do this instead" column,
+     not just a hand-drawn checkmark. Own fixed clip boundary, scaled inner wrapper. */
+  .pr-plate { position:relative; width:150px; aspect-ratio:3/4; border-radius:16px; overflow:hidden; background:#EFEAE1; opacity:0; }
+  .pr-plate-zoom { width:100%; height:100%; }
+  .pr-plate img { width:100%; height:100%; object-fit:cover; display:block; }
+  .pr-plate::after { content:""; position:absolute; inset:0; background:#F7F5F0; mix-blend-mode:multiply; opacity:0.06; pointer-events:none; }
+
+  .uc-unsourced { font-family:'Inter',sans-serif; font-weight:600; font-size:3.0cqw; color:rgba(19,21,22,0.85);
+    border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 26px; background:rgba(19,21,22,0.05); opacity:0; }
 </style>
 <div data-composition-id="04-protocol" id="root" data-width="1080" data-height="1920" data-duration="12.664">
   <div id="pr-bg" class="clip pr-bg" data-start="0" data-duration="12.664" data-track-index="0"></div>
@@ -31,20 +47,27 @@
     <div class="pr-kicker" id="pr-kicker">The protocol</div>
 
     <div class="pr-choice" id="pr-choice">
-      <div class="pr-opt dim">
-        <svg class="pr-mark" viewBox="0 0 64 64" aria-hidden="true">
-          <path id="pr-x1" d="M18,18 L46,46" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" fill="none" />
-          <path id="pr-x2" d="M46,18 L18,46" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" fill="none" />
-        </svg>
-        <div class="pr-opt-label">Raw herb<br>DIY steam</div>
-        <div class="pr-opt-sub">irritates the skin<br>you are trying to calm</div>
-      </div>
-      <div class="pr-opt live">
-        <svg class="pr-mark" viewBox="0 0 64 64" aria-hidden="true">
-          <path id="pr-check" d="M16,34 L28,46 L50,20" stroke="#59B8AE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-        </svg>
-        <div class="pr-opt-label">Fermented<br>essence</div>
-        <div class="pr-opt-sub">your very first layer,<br>on damp skin</div>
+      <div class="pr-choice-inner" id="pr-choice-inner" data-layout-allow-overflow="true">
+        <div class="pr-opt dim">
+          <svg class="pr-mark" viewBox="0 0 64 64" aria-hidden="true">
+            <path id="pr-x1" d="M18,18 L46,46" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" fill="none" />
+            <path id="pr-x2" d="M46,18 L18,46" stroke="#C97A5C" stroke-width="6" stroke-linecap="round" fill="none" />
+          </svg>
+          <div class="pr-opt-label">Raw herb<br>DIY steam</div>
+          <div class="pr-opt-sub">irritates the skin<br>you are trying to calm</div>
+        </div>
+        <div class="pr-opt live" id="pr-opt-live">
+          <svg class="pr-mark" viewBox="0 0 64 64" aria-hidden="true">
+            <path id="pr-check" d="M16,34 L28,46 L50,20" stroke="#59B8AE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          </svg>
+          <div class="pr-opt-label" id="pr-label-live">Fermented<br>essence<span class="pr-underline" id="pr-underline"></span></div>
+          <div class="pr-opt-sub">your very first layer,<br>on damp skin</div>
+          <figure class="pr-plate" id="pr-plate">
+            <div class="pr-plate-zoom" id="pr-plate-zoom" data-layout-allow-overflow="true">
+              <img src="assets/plates/A05-essence-refill.png" alt="" width="1536" height="2752" loading="eager" decoding="sync">
+            </div>
+          </figure>
+        </div>
       </div>
     </div>
 
@@ -57,18 +80,24 @@
 (function () {
   var kicker = document.getElementById('pr-kicker');
   var choice = document.getElementById('pr-choice');
+  var choiceInner = document.getElementById('pr-choice-inner');
   var x1 = document.getElementById('pr-x1');
   var x2 = document.getElementById('pr-x2');
   var check = document.getElementById('pr-check');
   var unsourced = document.getElementById('pr-unsourced');
+  var plate = document.getElementById('pr-plate');
+  var plateZoom = document.getElementById('pr-plate-zoom');
+  var underline = document.getElementById('pr-underline');
 
   var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
   // Cues (tightened take): protocol.@0.80-1.49 · stop.@4.36-4.64 · calm.@7.16-7.63 ·
   // Instead,@7.63-8.08 · first layer@10.78-11.52 · damp skin@11.66-12.40.
 
-  // Hard cut open — both columns present together (a comparison reads instantly, never builds).
+  // Both columns still read as one instant comparison (never builds), but staggered by
+  // 0.15s so they register as two beats rather than a single simultaneous cut.
   tl.fromTo(choice, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5 }, 0.0);
+  tl.fromTo(plate, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 0.15);
   tl.to(kicker, { opacity: 1, duration: 0.4 }, 0.80);
 
   // The usage guidance on this panel has no record in this system — flagged, never asserted silently.
@@ -83,11 +112,27 @@
   tl.to(x2, { opacity: 1, duration: 0.02 }, 4.62);
   tl.to(x2, { strokeDashoffset: 0, duration: 0.25, ease: 'power2.out' }, 4.62);
 
+  // The whole two-column panel carries a continuous, very subtle Ken Burns across nearly
+  // the whole scene — a first attempt at fixing this scene's 11.5s static hold scaled only
+  // the small essence plate (150x200px), which measured as under 2% of the frame and didn't
+  // register as real cadence; scaling the full card (fixed, unscaled outer box + this scaled
+  // inner wrapper, same safe pattern as every other scene's field/media) does. The essence
+  // plate keeps its own faster inner zoom on top for a bit of parallax depth.
+  gsap.set(choiceInner, { scale: 1.025 });
+  tl.to(choiceInner, { scale: 1.0, duration: 11.3, ease: 'power1.inOut' }, 1.0);
+  gsap.set(plateZoom, { scale: 1.08 });
+  tl.to(plateZoom, { scale: 1.0, duration: 11.5, ease: 'power1.inOut' }, 1.0);
+
   // "Instead": the aqua check draws on the right column — the frame's one aqua accent.
   var lenC = check.getTotalLength();
   gsap.set(check, { strokeDasharray: lenC, strokeDashoffset: lenC, opacity: 0 });
   tl.to(check, { opacity: 1, duration: 0.02 }, 7.63);
   tl.to(check, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, 7.63);
+
+  // "first layer, on damp skin": a real underline element draws under the live label — a
+  // second, deliberate beat well into the back half of the scene, not a pseudo-element
+  // (GSAP cannot tween ::after directly).
+  tl.to(underline, { scaleX: 1, duration: 0.5, ease: 'power2.out' }, 10.78);
 
   tl.to({}, { duration: 12.664 }, 0); // span anchor
 

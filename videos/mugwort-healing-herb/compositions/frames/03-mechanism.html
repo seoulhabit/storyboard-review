@@ -3,26 +3,37 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0; }
+  #root { position:relative; width:1080px; height:1920px; overflow:hidden; container-type:size; color:#131516; font-family:'Inter',sans-serif; background:#F7F5F0;
+    --safe-top:192px; --safe-bottom:384px; --safe-left:72px; --safe-right:162px; --safe-margin:6px; }
   .clip { position:absolute; inset:0; }
   .mx-bg { background: radial-gradient(1100px 820px at 50% 32%, #FBF9F5 0%, #F7F5F0 55%, #EFEAE1 100%); }
   .mx-grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     opacity:0.12; mix-blend-mode:multiply; }
 
-  .mx-stage { top:384px; left:0; width:1080px; height:1056px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:26px; padding:0 90px; text-align:center; }
-  .mx-caption { font-weight:800; font-size:4.6cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.1; opacity:0; }
+  /* top:385 and the field/card sizes below trimmed once measured against the real render:
+     the 640px field + full-padding card stacked to ~1280px against a ~1145px budget and
+     the citation card ran well past the safe-bottom line. */
+  .mx-stage { position:absolute; top:385px; left:calc(var(--safe-left) + var(--safe-margin)); width:calc(1080px - var(--safe-left) - var(--safe-right) - var(--safe-margin) * 2);
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:22px; text-align:center; }
+  .mx-caption { font-weight:800; font-size:7cqw; letter-spacing:-0.005em; text-transform:uppercase; line-height:1.1; opacity:0; }
   .mx-caption .accent { color:#3A7871; }
 
-  .mx-field { position:relative; width:640px; height:520px; border:1px solid rgba(19,21,22,0.14); border-radius:32px; background:transparent; overflow:hidden; }
-  .mx-tag { position:absolute; bottom:24px; left:36px; font-weight:700; font-size:1.8cqw; letter-spacing:0.06em; color:#555555; text-align:left; }
+  /* The bordered field stays a FIXED, unscaled clip boundary — the camera-pull scale lives
+     on an inner wrapper only, so the zoom can never grow the box past its own safe-column
+     edges (a bare `gsap.set(field,{scale})` on an overflow:hidden box does exactly that: at
+     1.04x centred scale it bulges ~17px past both the left and right safe rails). */
+  .mx-field { position:relative; width:100%; height:480px; border:1px solid rgba(19,21,22,0.14); border-radius:32px; background:transparent; overflow:hidden; }
+  .mx-field-zoom { width:100%; height:100%; }
+  .mx-tag { position:absolute; bottom:24px; left:36px; font-weight:700; font-size:3.0cqw; letter-spacing:0.06em; color:#555555; text-align:left; }
 
-  .uc-card { position:relative; width:822px; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
-    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:32px 52px; text-align:left; opacity:0; }
-  .uc-claim { font-size:2.5cqw; line-height:1.42; font-weight:600; margin-bottom:10px; }
-  .uc-hl { background-color:rgba(255,224,61,0.68); padding:0.1em 0.05em; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
-  .mx-scope { font-weight:600; font-size:2.1cqw; color:rgba(19,21,22,0.68); margin-bottom:14px; }
-  .uc-cites { display:flex; flex-direction:column; gap:6px; }
-  .uc-cite { font-family:'Inter',sans-serif; font-weight:700; font-size:2.2cqw; color:#9F6149; border:1px solid rgba(201,122,92,0.4); border-radius:999px; padding:5px 14px; background:rgba(201,122,92,0.06); align-self:flex-start; }
+  .uc-card { position:relative; width:100%; background:#FBF9F5; border:1px solid rgba(19,21,22,0.12); border-radius:28px;
+    box-shadow:0 1px 3px rgba(19,21,22,0.08), 0 4px 16px rgba(19,21,22,0.04); padding:26px 44px; text-align:left; opacity:0; }
+  .uc-claim { font-size:4.0cqw; line-height:1.35; font-weight:600; margin-bottom:8px; }
+  /* Yellow highlighter retired — this frame's one accent stays aqua (the settle dot);
+     coral is reserved for beat 04's X per frame.md's accent discipline. */
+  .mx-scope { font-weight:600; font-size:3.0cqw; color:rgba(19,21,22,0.68); margin-bottom:10px; }
+  .uc-cites { display:flex; flex-direction:column; gap:10px; }
+  .uc-cite { font-family:'Inter',sans-serif; font-weight:700; font-size:3.0cqw; color:#9F6149; border:1px solid rgba(201,122,92,0.4); border-radius:999px; padding:8px 18px; background:rgba(201,122,92,0.06); align-self:flex-start; }
 </style>
 <div data-composition-id="03-mechanism" id="root" data-width="1080" data-height="1920" data-duration="11.671">
   <div id="mx-bg" class="clip mx-bg" data-start="0" data-duration="11.671" data-track-index="0"></div>
@@ -32,18 +43,20 @@
     <div class="mx-caption" id="mx-caption">The alarm, <span class="accent">turned down</span></div>
 
     <div class="mx-field" id="mx-field">
-      <svg id="mx-svg" viewBox="0 0 640 520" width="640" height="520" aria-hidden="true">
-        <circle cx="320" cy="270" r="64" fill="none" stroke="#131516" stroke-width="4.5" />
-        <circle cx="320" cy="270" r="22" fill="rgba(19,21,22,0.14)" />
-        <g id="mx-alarm"></g>
-        <g id="mx-calm" opacity="0"></g>
-        <circle id="mx-dot" cx="320" cy="60" r="13" fill="#59B8AE" opacity="0" />
-      </svg>
+      <div class="mx-field-zoom" id="mx-field-zoom" data-layout-allow-overflow="true">
+        <svg id="mx-svg" viewBox="0 0 640 520" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <circle cx="320" cy="270" r="64" fill="none" stroke="#131516" stroke-width="4.5" />
+          <circle cx="320" cy="270" r="22" fill="rgba(19,21,22,0.14)" />
+          <g id="mx-alarm"></g>
+          <g id="mx-calm" opacity="0"></g>
+          <circle id="mx-dot" cx="320" cy="60" r="13" fill="#59B8AE" opacity="0" />
+        </svg>
+      </div>
       <div class="mx-tag">[Authored, illustrative — not a claim]</div>
     </div>
 
     <div class="uc-card" id="mx-card">
-      <div class="uc-claim"><span class="uc-hl">Eupatilin suppressed inflammatory signaling in skin models.</span></div>
+      <div class="uc-claim">Eupatilin suppressed inflammatory signaling in skin models.</div>
       <div class="mx-scope">Mouse model · human skin cells in vitro — not a human clinical trial</div>
       <div class="uc-cites">
         <span class="uc-cite">Jung et al. 2018 · PMID 29353040</span>
@@ -92,10 +105,10 @@
   var caption = document.getElementById('mx-caption');
   var card = document.getElementById('mx-card');
   var dot = document.getElementById('mx-dot');
-  var field = document.getElementById('mx-field');
+  var fieldZoom = document.getElementById('mx-field-zoom');
 
   var tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
-  gsap.set(field, { scale: 1.04 });
+  gsap.set(fieldZoom, { scale: 1.04 });
 
   // Cues (tightened take): studies,@1.11-1.79 · Eupatilin@1.84-2.35 · quieted@2.35 ·
   // attack.@6.62-7.00 · alarm gets turned down@7.20-8.36 · settle.@10.58-11.00.
@@ -125,8 +138,12 @@
   tl.to(calmG, { opacity: 1, duration: 1.1, ease: 'power2.inOut' }, 7.93);
   tl.fromTo(caption, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4 }, 7.73);
 
-  // slow camera pull, calm register.
-  tl.to(field, { scale: 1.0, duration: 6.0, ease: 'power1.inOut' }, 1.0);
+  // Slow camera pull runs the FULL remaining duration (was capped at t=7.0, leaving the
+  // 7.5-10s tail motionless while "settle." played) — closes that static-hold window.
+  // Linear rate (not power1.inOut) — an eased eased zoom's per-frame delta shrinks near
+  // its own tail, which measured as a borderline ~2s low-motion window right before the
+  // scene ends; a constant rate keeps cadence steady all the way to t=11.671.
+  tl.to(fieldZoom, { scale: 1.0, duration: 10.671, ease: 'none' }, 1.0);
 
   tl.to({}, { duration: 11.671 }, 0); // span anchor
 

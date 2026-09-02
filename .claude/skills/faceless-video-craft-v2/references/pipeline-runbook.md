@@ -44,9 +44,13 @@ Artifact: rewrite `references/channel-baseline.md` from the template at its top
 (all fields, `populated: true`, date). Ledger: one line per field filled, with
 `not available via vidIQ` where a call failed.
 
-Gate: baseline has at least `subs`, `median_views_per_upload` for the chosen
-format, and `retention.avg_view_pct` — otherwise proceed with [default]s and
-tag the run `baseline-partial`.
+Gate: baseline has at least `channel.subs`,
+`formats.<fmt>.median_views_per_upload` for the chosen format, and
+`retention.avg_view_pct_<fmt>` — otherwise proceed with [default]s and tag the
+run `baseline-partial`. Use the real schema key names: a rule that reads a field
+the schema does not have fails silently to its default (both of this gate's
+original names were wrong, found 2026-09-02 by validating every documented field
+reference against the YAML).
 
 ## S1 — Story (entry: input received)
 

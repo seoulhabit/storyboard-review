@@ -49,10 +49,10 @@ Ledger line format, one per rule fired:
 ## S1 — Story
 
 **S-1 · Format (long 16:9 vs short 9:16)**
-- reads: run input; `channel-baseline.md` → `format_mix.uploads_90d`, then the story brief's shape
+- reads: run input; `channel-baseline.md` → `formats.short.uploads_90d` and `formats.long.uploads_90d`, then the story brief's shape
 - rule (in order):
   1. Run input names a format → use it.
-  2. **The baseline's dominant format by `uploads_90d`, when one format holds ≥ 60 % of uploads** → use it. What the channel actually publishes outranks what one brief looks like; a channel that is 46 of 48 Shorts does not want a long-form default because a single brief happened to fill six sections.
+  2. **The baseline's dominant format by `formats.<fmt>.uploads_90d`, when one format holds ≥ 60 % of `corpus.uploads_total`** → use it. What the channel actually publishes outranks what one brief looks like; a channel that is 46 of 48 Shorts does not want a long-form default because a single brief happened to fill six sections.
   3. Brief has ≥ 4 of the 6 spine sections with distinct content → **long**.
   4. Brief is a single claim + single mechanism → **short**.
   5. Tie → whichever format's median views/upload is higher in baseline.

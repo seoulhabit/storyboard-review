@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="portrait">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Exosome Skincare Has a Label Problem</title>
+</head>
+<body>
+
+  <div id="root" data-composition-id="main" data-start="0" data-duration="67.450"
+       data-width="1080" data-height="1920">
+
+    <!-- Voiceover bus. The fx-chain is the channel's established chain,
+         reused verbatim across five sibling projects. Not re-derived: a
+         shared chain is what makes a channel sound like one show. -->
+    <hf-audio-group id="voiceover" data-label="Voiceover" data-volume="1" data-fx-chain='{"version":1,"nodes":[{"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},{"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.8,"q":1.2}},{"type":"compressor","id":"n3","label":"Even Out Loudness","params":{"threshold":-24,"ratio":4,"attack":5,"release":140,"knee":2,"makeup":3,"mix":1}},{"type":"peaking","id":"n4","label":"Add Clarity","params":{"frequency":3000,"gain":2.5,"q":1}},{"type":"peaking","id":"n5","label":"De-ess (fallback)","params":{"frequency":6500,"gain":-4,"q":3.5}},{"type":"limiter","id":"n6","label":"Peak Ceiling","params":{"limit":-9,"attack":0.05,"release":40,"level_out":0}}]}'></hf-audio-group>
+
+    <!-- TEN scenes. 03 and 05 were each split in two at a real silence gap
+         between caption cues (20.880 and 44.480), so no cut lands mid-phrase.
+         The two halves of each pair share a ground, so STRUCTURE carries the
+         cut: 03a is a three-across tile grid against 03b's vertical name
+         stack; 05a is one full-bleed breached wall against 05b's two-column
+         intact-wall/skin compare. 07 was split the same way at 63.120 so the
+         END CARD gets its own beat instead of being crammed into the verdict:
+         07 is pure type with no plate, 08 brings the 습 brand mark and the
+         hero bottle back for the loop. Hard cuts everywhere -- a crossfade
+         across a ground change produces a muddy near-blank midpoint. -->
+    <div id="el-01-hook" class="scene clip" data-composition-id="01-hook"
+         data-composition-src="compositions/frames/01-hook.html"
+         data-start="0.000" data-duration="4.000" data-track-index="0"></div>
+    <div id="el-02-what" class="scene clip" data-composition-id="02-what"
+         data-composition-src="compositions/frames/02-what.html"
+         data-start="4.000" data-duration="9.050" data-track-index="1"></div>
+    <div id="el-03a-materials" class="scene clip" data-composition-id="03a-materials"
+         data-composition-src="compositions/frames/03a-materials.html"
+         data-start="13.050" data-duration="7.830" data-track-index="0"></div>
+    <div id="el-03b-transfer" class="scene clip" data-composition-id="03b-transfer"
+         data-composition-src="compositions/frames/03b-transfer.html"
+         data-start="20.880" data-duration="5.670" data-track-index="1"></div>
+    <div id="el-04-source" class="scene clip" data-composition-id="04-source"
+         data-composition-src="compositions/frames/04-source.html"
+         data-start="26.550" data-duration="9.550" data-track-index="0"></div>
+    <div id="el-05a-barrier" class="scene clip" data-composition-id="05a-barrier"
+         data-composition-src="compositions/frames/05a-barrier.html"
+         data-start="36.100" data-duration="8.380" data-track-index="1"></div>
+    <div id="el-05b-intact" class="scene clip" data-composition-id="05b-intact"
+         data-composition-src="compositions/frames/05b-intact.html"
+         data-start="44.480" data-duration="4.420" data-track-index="0"></div>
+    <div id="el-06-questions" class="scene clip" data-composition-id="06-questions"
+         data-composition-src="compositions/frames/06-questions.html"
+         data-start="48.900" data-duration="10.300" data-track-index="1"></div>
+    <div id="el-07-verdict" class="scene clip" data-composition-id="07-verdict"
+         data-composition-src="compositions/frames/07-verdict.html"
+         data-start="59.200" data-duration="3.920" data-track-index="0"></div>
+    <div id="el-08-endcard" class="scene clip" data-composition-id="08-endcard"
+         data-composition-src="compositions/frames/08-endcard.html"
+         data-start="63.120" data-duration="4.330" data-track-index="1"></div>
+
+    <!-- No burned-in caption sub-composition. This piece is fully
+         type-carried: every spoken claim renders on screen at 44-86px, above
+         the 42-56px burned-in caption floor, so a caption band would repeat
+         scenes 06 and 07 near-verbatim and collide with the foot zone every
+         scene occupies. Captions ship as .srt + .vtt sidecars -- see
+         DELIVERY.md. scripts/check-static-hold.py therefore keeps
+         CAPTION_BAND_EXCLUDE = False, and its runtime assertion agrees: no
+         data-composition-src matching /caption/ exists in this file. -->
+
+    <!-- Voiceover. All audio lives on the ROOT, never inside a
+         sub-composition. VO clip 03 spans the 03a/03b cut and clip 05 spans
+         the 05a/05b cut -- deliberate: the narration is continuous across
+         each split, which is exactly why the cut points were chosen in the
+         silence between cues. 80ms in / 100ms out so no cut clicks. -->
+    <audio id="el-vo-01" src="assets/voice/01.wav"
+           data-start="0.000" data-duration="3.210" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":3.11,"v":1},{"t":3.21,"v":0}]}]}'></audio>
+    <audio id="el-vo-02" src="assets/voice/02.wav"
+           data-start="4.120" data-duration="8.710" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":8.61,"v":1},{"t":8.71,"v":0}]}]}'></audio>
+    <audio id="el-vo-03" src="assets/voice/03.wav"
+           data-start="13.170" data-duration="13.190" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":13.09,"v":1},{"t":13.19,"v":0}]}]}'></audio>
+    <audio id="el-vo-04" src="assets/voice/04.wav"
+           data-start="26.670" data-duration="9.270" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":9.17,"v":1},{"t":9.27,"v":0}]}]}'></audio>
+    <audio id="el-vo-05" src="assets/voice/05.wav"
+           data-start="36.220" data-duration="12.490" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":12.39,"v":1},{"t":12.49,"v":0}]}]}'></audio>
+    <audio id="el-vo-06" src="assets/voice/06.wav"
+           data-start="49.020" data-duration="9.990" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":9.89,"v":1},{"t":9.99,"v":0}]}]}'></audio>
+    <audio id="el-vo-07" src="assets/voice/07.wav"
+           data-start="59.350" data-duration="7.530" data-track-index="10"
+           data-volume="1" data-audio-group="voiceover"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.08,"v":1},{"t":7.43,"v":1},{"t":7.53,"v":0}]}]}'></audio>
+
+    <!-- BGM re-cut from the channel bed to EXACTLY this runtime. The source
+         has a quiet intro (0-26s) and quiet outro (62-74s) with only ~34s of
+         full body, so a naive 0-67.45s cut left both loop boundaries ~24dB
+         down. This bed is two copies of the body (27-61.5s) crossfaded at the
+         seam. The tail fade is 150ms, not 500ms: a 500ms fade measured the
+         final 0.3s at -37dB against -16.5dB at the head, which handed the
+         replay a dead beat even though the picture looped cleanly.
+         The plateau is 0.12, NOT 1.0 -- a volume lane REPLACES data-volume
+         rather than scaling it, so 1.0 would ship the bed ~18dB hot with no
+         error at check or render time. -->
+    <audio id="el-bgm" src="assets/bgm/track-pulse-67.45s.wav"
+           data-start="0.000" data-duration="67.450" data-track-index="11"
+           data-volume="0.12"
+           data-fx-carve='{"sources":["voiceover"],"strength":0.25}'
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.4,"v":0.12},{"t":67.3,"v":0.12},{"t":67.45,"v":0}]}]}'></audio>
+
+    <!-- SFX. Every cue is spotted to a visual event that STILL animates at
+         that timestamp -- re-checked after the 03/05 split, since deleting or
+         retiming a beat orphans its cue. Each carries its own fade. -->
+    <!-- Scene 01 -->
+    <audio id="el-sfx-00" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="1.350" data-duration="1.100" data-track-index="20"
+           data-volume="0.26"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.26},{"t":0.98,"v":0.26},{"t":1.1,"v":0}]}]}'></audio>  <!-- 01 payoff bar strikes -->
+    <!-- Scene 02 -->
+    <audio id="el-sfx-01" src="assets/sfx/whoosh-soft-photo-reveal.mp3"
+           data-start="5.850" data-duration="0.288" data-track-index="21"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.216,"v":0.24},{"t":0.288,"v":0}]}]}'></audio>  <!-- 02 first vesicle releases -->
+    <audio id="el-sfx-02" src="assets/sfx/ui-toggle-trimmed.mp3"
+           data-start="9.550" data-duration="0.350" data-track-index="22"
+           data-volume="0.22"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.262,"v":0.22},{"t":0.35,"v":0}]}]}'></audio>  <!-- 02 turn line lands -->
+    <audio id="el-sfx-03" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="11.050" data-duration="0.500" data-track-index="23"
+           data-volume="0.2"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.38,"v":0.2},{"t":0.5,"v":0}]}]}'></audio>  <!-- 02 citation pill -->
+    <!-- Scene 03a -->
+    <audio id="el-sfx-04" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="13.650" data-duration="0.264" data-track-index="24"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.198,"v":0.24},{"t":0.264,"v":0}]}]}'></audio>  <!-- 03a tile A plate lands -->
+    <audio id="el-sfx-05" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="15.350" data-duration="0.264" data-track-index="25"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.198,"v":0.24},{"t":0.264,"v":0}]}]}'></audio>  <!-- 03a tile B plate lands -->
+    <audio id="el-sfx-06" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="17.050" data-duration="0.264" data-track-index="26"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.198,"v":0.24},{"t":0.264,"v":0}]}]}'></audio>  <!-- 03a tile C plate lands -->
+    <audio id="el-sfx-07" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="18.650" data-duration="1.100" data-track-index="27"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.98,"v":0.24},{"t":1.1,"v":0}]}]}'></audio>  <!-- 03a tag bar wipes -->
+    <!-- Scene 03b -->
+    <audio id="el-sfx-08" src="assets/sfx/whoosh-soft-photo-reveal.mp3"
+           data-start="21.230" data-duration="0.288" data-track-index="28"
+           data-volume="0.22"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.216,"v":0.22},{"t":0.288,"v":0}]}]}'></audio>  <!-- 03b rail draws down the gutter -->
+    <audio id="el-sfx-09" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="22.630" data-duration="1.100" data-track-index="29"
+           data-volume="0.26"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.26},{"t":0.98,"v":0.26},{"t":1.1,"v":0}]}]}'></audio>  <!-- 03b proof-does-not-transfer bar -->
+    <audio id="el-sfx-10" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="25.330" data-duration="0.500" data-track-index="30"
+           data-volume="0.2"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.38,"v":0.2},{"t":0.5,"v":0}]}]}'></audio>  <!-- 03b citation pill -->
+    <!-- Scene 04 -->
+    <audio id="el-sfx-11" src="assets/sfx/ui-toggle-trimmed.mp3"
+           data-start="27.500" data-duration="0.350" data-track-index="31"
+           data-volume="0.22"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.262,"v":0.22},{"t":0.35,"v":0}]}]}'></audio>  <!-- 04 parent chip -->
+    <audio id="el-sfx-12" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="29.350" data-duration="0.264" data-track-index="32"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.198,"v":0.24},{"t":0.264,"v":0}]}]}'></audio>  <!-- 04 stem cell chip -->
+    <audio id="el-sfx-13" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="30.200" data-duration="0.264" data-track-index="33"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.198,"v":0.24},{"t":0.264,"v":0}]}]}'></audio>  <!-- 04 platelet chip -->
+    <audio id="el-sfx-14" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="31.050" data-duration="0.264" data-track-index="34"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.198,"v":0.24},{"t":0.264,"v":0}]}]}'></audio>  <!-- 04 milk chip -->
+    <audio id="el-sfx-15" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="34.000" data-duration="0.500" data-track-index="35"
+           data-volume="0.2"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.38,"v":0.2},{"t":0.5,"v":0}]}]}'></audio>  <!-- 04 citation pill -->
+    <!-- Scene 05a -->
+    <audio id="el-sfx-16" src="assets/sfx/wall-crumble-trimmed.mp3"
+           data-start="38.000" data-duration="0.900" data-track-index="36"
+           data-volume="0.28"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.28},{"t":0.78,"v":0.28},{"t":0.9,"v":0}]}]}'></audio>  <!-- 05a channels drive through -->
+    <audio id="el-sfx-17" src="assets/sfx/wall-crumble-trimmed.mp3"
+           data-start="39.500" data-duration="0.900" data-track-index="37"
+           data-volume="0.26"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.26},{"t":0.78,"v":0.26},{"t":0.9,"v":0}]}]}'></audio>  <!-- 05a first shard detaches -->
+    <audio id="el-sfx-18" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="41.650" data-duration="1.100" data-track-index="38"
+           data-volume="0.24"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.24},{"t":0.98,"v":0.24},{"t":1.1,"v":0}]}]}'></audio>  <!-- 05a barrier-opened stamp -->
+    <!-- Scene 05b -->
+    <audio id="el-sfx-19" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="46.330" data-duration="1.100" data-track-index="39"
+           data-volume="0.26"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.26},{"t":0.98,"v":0.26},{"t":1.1,"v":0}]}]}'></audio>  <!-- 05b not-the-same-test bar -->
+    <audio id="el-sfx-20" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="47.580" data-duration="0.500" data-track-index="40"
+           data-volume="0.2"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.38,"v":0.2},{"t":0.5,"v":0}]}]}'></audio>  <!-- 05b citation pill -->
+    <!-- Scene 06 -->
+    <audio id="el-sfx-21" src="assets/sfx/chime-trimmed.mp3"
+           data-start="50.050" data-duration="1.100" data-track-index="41"
+           data-volume="0.22"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.98,"v":0.22},{"t":1.1,"v":0}]}]}'></audio>  <!-- 06 gate 01 opens -->
+    <audio id="el-sfx-22" src="assets/sfx/chime-trimmed.mp3"
+           data-start="51.800" data-duration="1.100" data-track-index="42"
+           data-volume="0.22"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.98,"v":0.22},{"t":1.1,"v":0}]}]}'></audio>  <!-- 06 gate 02 opens -->
+    <audio id="el-sfx-23" src="assets/sfx/chime-trimmed.mp3"
+           data-start="53.950" data-duration="1.100" data-track-index="43"
+           data-volume="0.22"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.22},{"t":0.98,"v":0.22},{"t":1.1,"v":0}]}]}'></audio>  <!-- 06 gate 03 opens -->
+    <audio id="el-sfx-24" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="56.600" data-duration="0.500" data-track-index="44"
+           data-volume="0.2"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.38,"v":0.2},{"t":0.5,"v":0}]}]}'></audio>  <!-- 06 citation pill -->
+    <!-- Scene 07 -->
+    <audio id="el-sfx-25" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="62.900" data-duration="0.500" data-track-index="45"
+           data-volume="0.2"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.2},{"t":0.38,"v":0.2},{"t":0.5,"v":0}]}]}'></audio>  <!-- 07 citation pill -->
+    <audio id="el-sfx-26" src="assets/sfx/glass-clink.mp3"
+           data-start="63.340" data-duration="0.312" data-track-index="46"
+           data-volume="0.26"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.05,"v":0.26},{"t":0.234,"v":0.26},{"t":0.312,"v":0}]}]}'></audio>  <!-- 08 brand mark lands -->
+
+  </div>
+
+  <style>.scene.clip { position: absolute; inset: 0; }</style>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    // The root timeline does scene handoff only -- it holds the full-span
+    // anchor so tl.duration() matches the declared root duration.
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    tl.to({}, { duration: 67.450 }, 0); // anchor
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>

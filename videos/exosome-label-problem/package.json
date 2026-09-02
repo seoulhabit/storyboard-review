@@ -1,0 +1,16 @@
+{
+  "name": "exosome-label-problem",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.22 preview",
+    "check": "npx --yes hyperframes@0.8.22 check && python3 scripts/check-sfx-durations.py .",
+    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o renders/exosome-label-problem.raw.mp4",
+    "master": "python3 scripts/master-audio.py . renders/exosome-label-problem.raw.mp4 renders/exosome-label-problem.mp4",
+    "postrender": "python3 scripts/run-checks.py . renders/exosome-label-problem.mp4",
+    "publish": "npx --yes hyperframes@0.8.22 publish"
+  },
+  "devDependencies": {
+    "@hyperframes/core": "^0.8.20"
+  }
+}

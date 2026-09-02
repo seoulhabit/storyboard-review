@@ -1,0 +1,246 @@
+/*
+  SeoulHabit Video Design System — reconciled 2026-08-28 against the CURRENT
+  state of the claude.ai design project (75132ad8-b81c-4151-8a4c-83368df1d949),
+  read live via DesignSync. Colors/spacing/motion/layout/legibility below are
+  transcribed verbatim from tokens/*.css (the --short-* 9:16 lane, since this
+  project's canvas IS 1080x1920) and match exactly.
+
+  Type scale note: the project's own readme.md flags canvas primacy as an
+  OPEN QUESTION — typography.css's eleven sizes (--t-title 96 down to a hard
+  --t-floor 20) are specced "on the 1920x1080 canvas" and there is no
+  confirmed 9:16-specific scale yet (design-system-spec.md: "each component
+  needs an explicit layout variant; none can be derived by scaling" — proven
+  out below: naive 0.5625x scaling would push --t-body under the floor).
+  So: the two SMALL/mono roles (--t-label, --t-chip) and the --t-floor
+  minimum are canvas-independent legibility rules and are used verbatim.
+  The larger display sizes below (--t-hero/--t-figure/--t-frame) are this
+  project's own 1080-wide interpretation, calibrated from the system's
+  named reference implementation (red-ginseng-two-routes) rather than a
+  literal reuse of the 1920-canvas numbers — do not treat them as literal
+  system tokens.
+
+  Do not hand-edit values here without updating the source project.
+*/
+:root {
+  /* ---- color: base five ---- */
+  --paper: #F7F5F0;
+  --ink: #131516;
+  --aqua: #59B8AE;
+  --leaf: #6F8F72;
+  --coral: #C97A5C;
+  --highlighter: #E0A32B;
+
+  /* ---- icon accents ---- */
+  --electric-blue: #0B6BF5;
+  --vibrant-yellow: #F5D016;
+  --vibrant-yellow-deep: #A87700;
+
+  /* ---- surfaces ---- */
+  --white: #FCFBF9;
+  --mist: #F0EBE1;
+  --ink-soft: #211F1B;
+
+  /* ---- evidence ramp ---- */
+  --moss: #4F6B52;
+  --celadon: #93B896;
+
+  /* ---- secondary inks ---- */
+  --ink-2: #6B6B6B;
+  --ink-3: #9C978D;
+  --ink-2-dark: #878B8C;
+  --ink-3-dark: #7C8082;
+
+  /* ---- rules / empty states ---- */
+  --rule: #E3E3E3;
+  --rule-strong: #D9D3C6;
+  --rule-dark: #333333;
+  --empty: #EAEAEA;
+  --empty-dark: #57534C;
+
+  /* ---- ingredient palette (recolor target) ---- */
+  --color-gochujang: #C97A5C;
+  --color-gochujang-tint: #E7B4A2;
+  --color-dasima: #2B6E6B;
+  --color-bada: #0B6BF5;
+  --color-chamgireum: #F5D016;
+  --color-chamgireum-deep: #C9973E;
+
+  /* ---- semantic aliases ---- */
+  --surface-page: var(--paper);
+  --surface-raised: var(--mist);
+  --surface-dark: var(--ink);
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-2);
+  --text-tertiary: var(--ink-3);
+  --text-on-dark: var(--paper);
+  --accent-focus: var(--aqua);
+  --accent-evidence: var(--leaf);
+  --accent-limit: var(--coral);
+  --data-highlight: var(--highlighter);
+  --brand-mark: var(--electric-blue);
+  --color-brand-primary: var(--color-bada);
+  /* readme.md's core five-color palette defines coral's role narrowly as "a limitation or a
+     refusal" — used here for Frame 6's CTA active-state via this broader video-editor semantic
+     layer's own reading ("primary marks, active states, limit callouts") instead. Flagged as a
+     considered tension in frame.md, not silently decided either way. */
+  --color-brand-accent: var(--color-gochujang);
+  --color-brand-highlight: var(--color-chamgireum);
+  --color-brand-canvas: var(--paper);
+  --color-brand-ink: var(--ink);
+
+  /* ---- motion: eases (source: tokens/motion.css) ---- */
+  --e-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --e-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --e-inout: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+  /* ---- motion: durations ---- */
+  --d-snap: 180ms;
+  --d-fast: 400ms;
+  --d-base: 500ms;
+  --d-fill: 600ms;
+  --d-bumper: 2000ms;
+  --d-endscreen: 15000ms;
+
+  /* ---- motion: staggers / travel ---- */
+  --stagger-line: 80ms;
+  --stagger-node: 120ms;
+  --stagger-step: 220ms;
+  --travel-in: 48px;
+  --travel-wipe: 100%;
+
+  /* ---- spacing (source: tokens/spacing.css) ---- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 20px;
+  --s-5: 32px;
+  --s-6: 60px;
+  --s-7: 96px;
+  --s-8: 144px;
+  --r-1: 2px;
+  --r-2: 6px;
+  --r-3: 10px;
+  --r-4: 16px;
+  --r-pill: 999px;
+  --rule-w-thin: 1px;
+  --rule-w: 2px;
+  --rule-w-strong: 3px;
+
+  /* ---- canvas: 1080x1920, 30fps (source: tokens/layout.css --short-* lane) ---- */
+  --canvas-w: 1080px;
+  --canvas-h: 1920px;
+  --canvas-fps: 30;
+  --safe-top: 192px;      /* 10% -- search/camera icons. This project uses the skill's
+                             stated default (not peeling-not-progress's 120px deviation,
+                             which was argued from that project's own headline geometry
+                             and doesn't transfer). Matches mugwort-healing-herb and
+                             peeling-question-open, and scripts/check-safe-area.py's
+                             own --safe-top default. */
+  --safe-bottom: 384px;   /* 20% -- title / channel / progress bar */
+  --safe-left: 72px;
+  --safe-right: 162px;    /* 15% -- like/dislike/comment/share rail */
+  --safe-margin: 6px;     /* guard band for antialiasing / subpixel rounding at a
+                             computed safe-edge boundary */
+
+  /* Zoom-aware safe box -- neutral defaults; a scene with no Ken Burns overrides
+     nothing and these reduce to the plain tokens above. */
+  --zoom-max: 1;
+  --zoom-origin-x: 540px;
+  --zoom-origin-y: 960px;
+
+  /* A transform: scale() applied OUTSIDE a padded box maps the padded edge outward --
+     padding constrains the layout box, not the box's final on-screen position once a
+     transform sits between it and the canvas. These invert that map, so the box's edge
+     lands ON the safe line after the scene's own max scale, as a function of the
+     scene's actual zoom/origin rather than a hand-tuned +Npx constant that goes stale
+     the moment either changes. See frame.md Post-render review fixes round 6 for the
+     defect this replaces (03-truth/05-reset overshot the real safe line by 7-10px
+     using a fixed allowance computed against the old, under-reserved token). */
+  --safe-bottom-zoomed: calc(var(--canvas-h) - (var(--zoom-origin-y)
+    + (var(--canvas-h) - var(--safe-bottom) - var(--safe-margin) - var(--zoom-origin-y)) / var(--zoom-max)));
+  --safe-right-zoomed: calc(var(--canvas-w) - (var(--zoom-origin-x)
+    + (var(--canvas-w) - var(--safe-right) - var(--safe-margin) - var(--zoom-origin-x)) / var(--zoom-max)));
+
+  /* Added 2026-09-01 (pilling-vs-peeling recut): the two above only cover the
+     edges FARTHER from the zoom origin than the origin itself. A zoom whose
+     origin sits off-center (e.g. 50% 40%, common for a hero plate framed
+     slightly above dead-center) maps the NEARER edges (top/left here) outward
+     too, by the same inversion in the other direction. Omitting these two
+     passed unnoticed only because no prior project in this repo zoomed a
+     top-anchored composition -- see faceless-video-craft SKILL.md's own note
+     on this gap. Reduces to the plain token at --zoom-max: 1. */
+  --safe-top-zoomed: calc(var(--zoom-origin-y)
+    - (var(--zoom-origin-y) - var(--safe-top) - var(--safe-margin)) / var(--zoom-max));
+  --safe-left-zoomed: calc(var(--zoom-origin-x)
+    - (var(--zoom-origin-x) - var(--safe-left) - var(--safe-margin)) / var(--zoom-max));
+
+  /* ---- elevation: shadow only, never glow ---- */
+  --elev-1: 0 2px 4px rgba(19, 21, 22, 0.08);
+  --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
+  --elev-3: 0 32px 64px -28px rgba(19, 21, 22, 0.45);
+
+  /* ---- legibility: scrims over avatar footage (source: tokens/legibility.css) ---- */
+  --scrim-strength: 0.30;
+  --scrim-bottom: linear-gradient(to top, rgba(19, 21, 22, 0.72) 0%, rgba(19, 21, 22, 0.30) 38%, rgba(19, 21, 22, 0) 68%);
+  --scrim-top: linear-gradient(to bottom, rgba(19, 21, 22, 0.62) 0%, rgba(19, 21, 22, 0.30) 40%, rgba(19, 21, 22, 0) 72%);
+  --capsule-dark: rgba(19, 21, 22, 0.80);
+  --capsule-light: rgba(252, 251, 249, 0.80);
+  --capsule-pad-y: var(--s-3);
+  --capsule-pad-x: var(--s-4);
+  --capsule-radius: var(--r-2);
+
+  /* ---- type: families (source: tokens/fonts.css — self-hosted face renamed to match
+     the real system's "Noto Sans KR Video"; kept as the plain "Noto Sans KR" name too
+     so either resolves locally without a CDN dependency) ---- */
+  --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", "Noto Sans KR Video", "Noto Sans KR", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
+
+  /* ---- type: scale ----
+     --t-label / --t-chip / --t-floor are canonical (source: guidelines/type-scale.card.html,
+     matches tokens/typography.css exactly) — canvas-independent legibility floor, used verbatim.
+     --t-hero / --t-figure / --t-frame are THIS PROJECT's own 1080-wide interpretation for the
+     larger display roles (see header note) — not literal system tokens. */
+  --t-hero: 96px;
+  --t-figure: 60px;
+  --t-frame: 50px;
+  --t-body: 40px;    /* raised from 32 — faceless-video-craft SKILL.md's 2026-08-31 update
+                         sets 40px as the reading-type floor for phone viewing; this
+                         project's own frame.md § Type had already argued the same 40px
+                         reading floor independently before the skill codified it. */
+  --t-caption: 24px;
+  --t-label: 32px;   /* raised from 24 — skill's new label/chrome floor is 26-32px, with
+                         32px absolute for anything a viewer is meant to actually read. */
+  --t-chip: 32px;    /* raised from 22 — this project's citation pills were converted from
+                         raw catalog/lookup IDs (PMID nnn) to human-readable "Journal ·
+                         Year" text this round (see What must never reach a rendered frame),
+                         which makes them something a viewer IS meant to read, not a
+                         decorative signal-only mark — the 22px "signal sourced, not read"
+                         exception this file used to carry no longer applies. */
+  --t-floor: 20px;   /* real absolute floor — "nothing smaller ships" */
+
+  --lh-tight: 1.06;
+  --lh-snug: 1.2;
+  --lh-body: 1.45;
+  --lh-loose: 1.5;
+  --tr-display: -0.018em;
+  --tr-body: 0em;
+  --tr-mono: 0.04em;
+  --tr-mono-wide: 0.1em;
+}
+
+@font-face {
+  font-family: "Noto Sans KR Video";
+  font-weight: 500;
+  font-style: normal;
+  src: url("../fonts/NotoSansKR-500-subset.woff2") format("woff2");
+  font-display: block;
+}
+@font-face {
+  font-family: "Noto Sans KR";
+  font-weight: 500;
+  font-style: normal;
+  src: url("../fonts/NotoSansKR-500-subset.woff2") format("woff2");
+  font-display: block;
+}

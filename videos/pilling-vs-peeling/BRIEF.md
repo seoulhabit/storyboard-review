@@ -7,7 +7,7 @@ destination: shorts
 aspect: 1080x1920
 language: en
 audience: "skincare-curious viewers who see white flakes/crumbs after their routine and default to assuming their skin is shedding"
-length: 19.9s
+length: 21.1s
 angle: differential-explainer
 VO_MODE: silent
 style_preset: seoulhabit
@@ -87,14 +87,44 @@ concentrations of topical tretinoin (retinoic acid) cause similar
 improvement of photoaging but different degrees of irritation.* Arch
 Dermatol. 1995 Sep;131(9):1037-44. PMID 7544967.
 
+**Scene numbers below are the SHIPPED 8-scene map** (re-keyed round 4 — they
+had been left on the pre-recut 9-scene numbering since round 2, so every row
+pointed one scene later than the render it describes).
+
 | Scene | Brief claim | What the source actually reports | On-screen resolution |
 |---|---|---|---|
-| 03 | "Pilling is product rolling into tiny balls... usually appears while layering or rubbing" | Confirmed verbatim — 217/528 (41%) volunteers experienced pilling; mechanically it's product balling on the surface during/after layering | Used as-is, chip `Skin Res Technol · 2024` |
-| 04 | "Doesn't automatically mean the product is bad. Skin, formulas, and application can all play a role" | Confirmed — abstract states pilling correlates with skin physiology (drier, smoother, higher-pH skin), which product is layered (655 pilling events after sunscreen vs. 35 with foundation — a formula difference), and application method (circular/linear rubbing produced the most events) | Used as-is. **No separate chip** — this is an elaboration of scene 03's same study 2.6s later, not a new claim; repeating an identical chip that soon adds no information |
-| 05 | "Peeling is different... actual skin flaking... dryness, tightness, redness or stinging" | 21 CFR §333.350(c)(4)(ii) lists burning, itching, **peeling**, and swelling as expected, *labeled* local irritation from topical acne drug products — the regulatory vocabulary this claim describes in plain language | Used as-is, chip `FDA · 21 CFR 333.350` (same on-screen form `peeling-not-progress` scene 02 already ships) |
-| 06 | "Flakes on bare skin → peeling; crumbs only after layering → pilling" | **Not tested by either source.** A reasonable clinical heuristic, not a diagnostic finding | **No chip** — `UnsourcedFlag`: "A clue — not a diagnosis" (the brief's own hedge, kept verbatim) |
-| 07 | "Thinner layers, let it settle, pat don't rub, SPF in two thin passes" | Lua BL 2024 measured which *existing* rubbing motions correlated with pilling; it never tested a settle-then-press technique or two-pass SPF application as an intervention | Kept as reasonable advice, **no chip** — `UnsourcedFlag`, matching `pilling-not-dead-skin` scene 06's identical call |
-| 08 | "Pause harsh actives, cleanse gently, moisturize, protect with sunscreen" | Draelos et al. 2006, *Cutis* (PMID 17121065): barrier moisturizer before/during retinoid therapy "facilitates the early phase of facial retinization." FDA AHA labeling guidance, Jan 2005 (FDA-2000-P-0063): the source of the sunscreen-during-exfoliation advisory. Both already verified live by `peeling-not-progress`'s own research pass | Reused verbatim, chips `Cutis · 2006` · `FDA guidance · 2005` (same on-screen form `peeling-not-progress` scene 05 ships) |
+| 02 | "Pilling is product rolling into tiny balls... usually appears while layering or rubbing" | Confirmed verbatim — 217/528 (41%) volunteers experienced pilling; mechanically it's product balling on the surface during/after layering | Used as-is, chip `Skin Res Technol · 2024` |
+| 03 | "Doesn't automatically mean the product is bad. Skin, formulas, and application can all play a role" | Confirmed — abstract states pilling correlates with skin physiology (drier, smoother, higher-pH skin), which product is layered (655 pilling events after sunscreen vs. 35 with foundation — a formula difference), and application method (circular/linear rubbing produced the most events) | Used as-is. **No separate chip** — this is an elaboration of scene 03's same study 2.6s later, not a new claim; repeating an identical chip that soon adds no information |
+| 04 | "Peeling is different... actual skin flaking... dryness, tightness, redness or stinging" | 21 CFR §333.350(c)(4)(ii) lists burning, itching, **peeling**, and swelling as expected, *labeled* local irritation from topical acne drug products — the regulatory vocabulary this claim describes in plain language | Used as-is, chip `FDA · 21 CFR 333.350` (same on-screen form `peeling-not-progress` scene 02 already ships) |
+| 05 | "Flakes on bare skin → peeling; crumbs only after layering → pilling" | **Not tested by either source.** A reasonable clinical heuristic, not a diagnostic finding | **No chip** — `UnsourcedFlag`: "A clue — not a diagnosis" (the brief's own hedge, kept verbatim) |
+| 06 | "Thinner layers, let it settle, pat don't rub, SPF in two thin passes" | Lua BL 2024 measured which *existing* rubbing motions correlated with pilling; it never tested a settle-then-press technique or two-pass SPF application as an intervention | Kept as reasonable advice, **no chip** — `UnsourcedFlag`, matching `pilling-not-dead-skin` scene 06's identical call |
+| 07 | "One active at a time. Moisturize. Protect." + "Severe burning or swelling? Stop and ask a doctor." | 21 CFR §333.350(c)(1)(ii): "only use one topical acne medication at a time" if irritation occurs — the textual basis for the first limb. (c)(3)(ii): the severity-gated stop-and-ask-a-doctor instruction. Draelos et al. 2006, *Cutis* (PMID 17121065): barrier moisturizer **before and during** retinoid therapy "facilitates the early phase of facial retinization" — the moisturize limb. FDA AHA labeling guidance, Jan 2005 (FDA-2000-P-0063): the sunscreen-during-exfoliation advisory — the protect limb | Chips `21 CFR §333.350` · `Cutis · 2006` · `FDA guidance · 2005`. **Rewritten round 4 — see below.** |
+
+**Round 4 correction (the reason this row changed).** Through round 3 this
+scene rendered **"Pause actives. Moisturize. Protect."** with the ACTIVES
+icon struck through, under the two chips carried over verbatim from
+`peeling-not-progress/05-reset.html`. Neither chip says anything about
+pausing an active: Cutis 2006 backs a moisturizer applied *before and
+during* therapy — which points the other way — and FDA-2000-P-0063 backs
+the sunscreen limb. The pause limb had no backing row anywhere in this
+table, which makes it an **unsourced instruction to stop using an active**,
+rendered plainly beside citations that implied it was sourced, with no
+`UnsourcedFlag` in the scene. An unsourced claim about starting or stopping
+an active is hard-prohibited — a flag does not rescue it — so it was
+re-scoped rather than badged.
+
+It also contradicted a regulator this video itself cites: scene 04 uses
+`FDA · 21 CFR 333.350` to establish peeling as *expected, labeled*
+irritation, and §333.350(c)(3)(ii) gates "stop and ask a doctor" on
+**severity**. The video was instructing an unconditional pause three scenes
+after citing the rule that says otherwise. `peeling-not-progress` reworded
+two of its own claims for exactly this reason ("the brief's original wording
+said the opposite of the cited regulator"); this is the same correction,
+found one project later.
+
+The fix keeps the beat and the strike animation but changes what they mean:
+three actives are shown, two are dimmed and struck, one survives — "one at
+a time," not "stop." The severity gate renders beside it.
 
 ## Component reuse (production-loop step 5 — checked against catalog/ first)
 
@@ -315,6 +345,161 @@ a single scene's duration change touches more than it looks):
 15.8s boundary this change starts at), the imagery decision record, the
 copy changes, the box-sizing fix, and both variants' hook scenes — this
 round is scoped to the one scene named in the feedback.
+
+## Round 5 — external QC pass on the round-4 render (2026-09-01)
+
+Three "visual and educational polish" items were raised against
+`renders/pilling-vs-peeling.mp4`. Each was reproduced against actual pixels
+before any fix was planned, per the craft skill's rule that a QC report is a
+claim, not a diagnosis. **Two reproduced; one did not.** In both real cases the
+named symptom was legitimate and the prescribed fix was wrong.
+
+| # | Claim | Verdict | Measured |
+|---|---|---|---|
+| 1 | SPF/Moisturizer/Serum stack + "connecting dots" reads as application order | Real misread risk, mechanism misdescribed | It is a physical cross-section (SPF outermost, serum against skin) — correct. The "dots" are not sequence connectors; they are the `.pill` residue balls detaching from the seams, which is the scene's entire subject. No descending line exists. |
+| 2 | Red ✗ over "Pat, don't rub" is contradictory | Real, and worse than reported | Card 3's glyph was *only* a coral ✗. Cards 1–2 each carry an affirmative glyph; card 3 had **no "pat" mark at all**. |
+| 3 | Citations too small / low-contrast | **Did not reproduce** | Nothing on screen is below 32px (the floor); smallest is exactly 32px. Scene 04 chip measured **12.23:1**, scene 07 chips **5.09:1** — both clear 4.5:1. Legible at 25% phone scale. |
+
+### What was changed, and where this diverges from the report
+
+- **Scene 02.** The report asked for bullet points. Rejected — that destroys the
+  cross-section and the pills-from-the-seams animation. Instead the stack now
+  sits on a labelled **SKIN** substrate (flat higher-opacity fill, square
+  corners, deliberately not a fourth `.band`), which makes it read as depth
+  rather than order. The residue pills were reversed to drift **upward**: with a
+  substrate present, falling downward reads as rolling *into* the skin. Same
+  durations, stagger and easing, so no beat or SFX moved.
+- **Scene 06.** The report asked for a green check plus a red ✗ on "Rub".
+  Rejected on the colour half — coral is this video's single accent spend, and a
+  second accent competing in one frame is its own defect. The split was achieved
+  in-palette instead: **three discrete taps** (pat, full-brightness paper,
+  untouched) above **one continuous stroke** (rub) carrying a coral slash sized
+  to that stroke alone. Discrete-vs-continuous now carries the instruction, so
+  the two marks differ in kind rather than only in label. An intermediate pass
+  that dimmed the rub stroke to 0.4 was rejected on inspection — the coral read
+  as free-floating negation again, because the thing it crossed had become
+  invisible underneath it.
+- **Chips (elective).** 32px → 34px across scenes 02/04/07, and scene 07's chips
+  moved to a scoped `--ink-2-strong` (#565656) with a firmer border:
+  **5.09:1 → 6.91:1** measured on the render. Scene 04's chip colour was left
+  alone at 12.23:1. `--ink-2` itself was not touched — `.kicker` also consumes it
+  and it is correctly scoped to paper at 4.89:1.
+
+### A regression this round caught, and the reason it was catchable
+
+The 34px chip bump pushed scene 07's two wrapped chip rows to ~148px against
+`.chips-zone`'s fixed `flex: 0 0 140px` basis. The zone does not grow
+(`min-height: 0`), so the overflow painted **below the stage's content box and
+4px into the reserved bottom zone**. `npx hyperframes check` reported **0 errors**
+on that state — this is a rendered-pixel defect, not a source defect, and only
+`check-safe-area.py` on the actual render saw it. Fixed by tightening the zone's
+own vertical rhythm (chip padding 8→6px, row gap 12→10px, zone padding-top 8→4px)
+to fit the larger type inside the existing basis, rather than reverting the type
+or widening a zone whose bottom edge *is* the safe line. Ink now ends at row 1527
+against a 1536 boundary.
+
+### Mastering had to be re-applied
+
+Re-rendering discarded round 3's `loudnorm` master — the fresh renders measured
+**−23.0 / −23.3 LUFS**, ~9 dB under target. The documented two-pass
+`I=-14:TP=-2.5` chain was re-run and both variants land back on their previously
+recorded values (A −14.3 LUFS / −2.0 dBTP, B −14.2 / −2.1), video streams
+MD5-identical through the mastering pass. **Any future round that re-renders must
+re-master**; the render step does not carry it.
+
+### Pre-existing, not addressed this round
+
+`check-cadence.py` reports 4 scenes over the 1.6s quiet ceiling (2, 4, 5, 7;
+whole-video 13.6% active steps). Scene 5 — 0/23 beats, 2.88s quiet — was not
+touched this round, which confirms these predate it. Out of scope for a QC pass
+that raised no cadence finding, but it is the largest open item on this video.
+
+
+## Round 6 — cadence gaps in scenes 2, 4, 5, 7 (2026-09-02)
+
+Round 5 left `check-cadence.py` reporting four scenes over the 1.6s quiet
+ceiling. All four are now clean.
+
+| Scene | Before | After |
+|---|---|---|
+| 2 `02-residue` | 2/22 beats, 1.75s quiet | 6/22, **1.00s** |
+| 4 `04-flaking` | 1/21 beats, 1.75s quiet | 4/21, **1.25s** |
+| 5 `05-test` | **0/23 beats, 2.88s quiet** | 7/23, **0.88s** |
+| 7 `07-fix-peeling` | 2/25 beats, 1.75s quiet | 3/25, **1.12s** |
+
+Whole video: 13.6% → **22.8%** active steps. `Overall: clean.`
+
+The gate is the longest quiet *run*, not a beat percentage, so each dead window
+needed one or two genuinely large changes rather than continuous motion. In every
+case the fix was to make the thing the scene is already about actually visible,
+not to add idle motion to move a metric.
+
+- **Scene 2.** The pills were r=7-10 specks — about 0.09% of canvas — while the
+  caption promised "rolls into balls." They are now real balls (r=28-36) seated
+  in the two seams, forming in two clusters and lifting **up and away** from the
+  SKIN substrate. A cluster is large enough to register; a 0.16s-staggered speck
+  never was.
+- **Scene 4.** The top course was mostly *outline* (fill 0.07), so round 4's
+  opacity dim moved ~900px per brick. The course now loosens (fills, `--bf`) and
+  then sheds — which is what "actual skin flaking" means — and shards were
+  enlarged.
+- **Scene 7.** Removed the `scale: 1.015` headline pulse; this file already
+  records that even a 1.08 pulse on a 1.08:1 ground measured 0.02-0.10 mean
+  |dLuma|. Replaced with a focus pull: once the routine and its citations have
+  landed, the icon row dims to 0.45 and the severity line comes to full ink.
+  That is an editorial beat — attention moving to the safety exception.
+
+### Scene 5 was not a pacing problem — it never rendered at all
+
+Worth recording in full, because two plausible explanations were wrong before
+the real one was found.
+
+`05-test` measured **0 beats in 23 steps** across three separate renders, and
+frames at t=10.25 / 11.40 / 12.95 were **byte-identical inside the panel** while
+the rest of the frame animated normally. The wipe had no visual effect in any
+shipped render — this scene has never worked, in any round.
+
+1. **First hypothesis — the comparison was too subtle.** Partly true and worth
+   fixing on its own: the scrim was 0.08 (~14 luma on a light plate) and the
+   crumbs were r=7-11, so the "after layering" side was, to both a viewer and a
+   frame diff, the same picture as the bare side. Fixed (bigger clumped crumbs,
+   scrim to 0.13, its own dulled plate). **Did not change the measurement.**
+2. **Second hypothesis — duplicate media nodes.** Both `<img>`s pointed at
+   `04-base-skin.png`; lint had flagged `duplicate_media_discovery_risk` for
+   rounds and it had been repeatedly waved through as benign. Clearing it got
+   the project to 0 warnings for the first time. **Also did not change the
+   measurement** — so the warning, while real, was not the cause.
+3. **Actual cause — GPU compositing.** The reveal animated `width` on an
+   `overflow: hidden` box. Under hardware capture (ANGLE/Metal on this Mac) the
+   compositor never updated that clip, so the entire layered subtree was absent
+   from every captured frame — while the DOM reported correct geometry the whole
+   time (the engine's own layout pass even reported `layered-content overflowed
+   #s5-wipe right 504px`, i.e. mask = 336, at t=12.89).
+
+**What isolated it:** `hyperframes snapshot --at 11.40` drew the scene
+*correctly* from identical source, and so did a plain browser. Render and
+snapshot disagreeing pointed at the capture path, and re-rendering with
+`--no-browser-gpu` (SwiftShader) produced the correct picture. The fix is the
+mechanism, not the flag: the reveal is now `clip-path: inset()` driven by a
+`--wipe` custom property — compositor-safe, and the same custom-property pattern
+this project already uses for `--hl` / `--act` / `--bf`. It renders correctly
+under the normal hardware path, so the render stays fast.
+
+**Generalisation checked:** three other scenes animate `width`
+(`01-hook-a` #h1a-rule, `06-fix-pilling` #s6-labelRule, `08-close`
+#s8-underline). All are solid rules whose own painted box grows — not clips over
+other content — and all verified present in the render. No further change.
+
+**Lesson worth carrying:** a frame diff that reports *zero* change in a region
+across a whole scene is evidence of a broken render, not of slow pacing. It was
+read as a pacing number for two rounds.
+
+### Mastering, again
+
+The render discards the `loudnorm` master every time (raw: −23.0 / −23.3 LUFS).
+Re-applied; both variants back on target (A −14.3 LUFS / −2.0 dBTP, B −14.1 /
+−1.8), video streams MD5-identical through the pass.
+
 
 ## Assets
 

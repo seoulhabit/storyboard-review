@@ -24,7 +24,7 @@
 
         #root {
           --paper: #F7F5F0; --ink: #131516; --aqua: #59B8AE; --coral: #C97A5C;
-          --ink-2: #6B6B6B; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
+          --ink-2: #6B6B6B; --ink-2-strong: #565656; --ink-2-dark: #878B8C; --ink-3-dark: #7C8082; --mist: #F0EBE1;
           --elev-2: 0 18px 32px -20px rgba(19, 21, 22, 0.35);
           --safe-top: 192px; --safe-bottom: 384px; --safe-left: 72px; --safe-right: 162px;
           --safe-margin: 6px;
@@ -59,67 +59,108 @@
                   letter-spacing: 0.08em; color: var(--ink-2); }
         .headline { font-family: var(--font-display); font-size: 68px; line-height: 1.2; color: var(--ink); }
 
-        .objects-row { flex: 0 0 1048px; display: flex; align-items: center; justify-content: center; gap: 40px; min-height: 0; }
+        .objects-row { flex: 0 0 810px; display: flex; align-items: center; justify-content: center; gap: 40px; min-height: 0; }
         .object-col { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .icon-circle { position: relative; width: 220px; height: 220px; border-radius: 50%;
-                       background: var(--mist); box-shadow: var(--elev-2); display: flex;
+        /* --act ("do this") and --cut ("dial this back") are the scene's real
+           beats. They exist because the circles were --mist (#F0EBE1) on
+           --paper (#F7F5F0): ~1.08:1, so the 1.08x scale pulses authored on
+           them moved 0.02-0.10 mean |dLuma| -- measurably nothing. Round 4
+           makes each circle change STATE rather than size, which both gives
+           the scene visible beats and gives the circles real separation from
+           their own ground while they matter. */
+        .icon-circle { --act: 0; --cut: 0;
+                       position: relative; width: 220px; height: 220px; border-radius: 50%;
+                       background-color: var(--mist);
+                       background-image:
+                         linear-gradient(rgba(89,184,174,var(--act)), rgba(89,184,174,var(--act))),
+                         linear-gradient(rgba(19,21,22,var(--cut)), rgba(19,21,22,var(--cut)));
+                       box-shadow: var(--elev-2); display: flex;
                        align-items: center; justify-content: center; }
         .icon-circle svg { width: 100px; height: 100px; stroke: var(--ink); stroke-width: 1.8;
                            fill: none; stroke-linecap: round; stroke-linejoin: round; }
-        .strike-line { position: absolute; left: 20%; right: 20%; top: 50%; height: 4px;
+        /* Actives column renders the claim literally -- three actives, two cut,
+           one left -- rather than one icon switched off. Cluster is 3x52 + 2x6
+           = 168px inside the 220px circle. */
+        .active-cluster { display: flex; align-items: center; gap: 6px; }
+        .active-cluster svg { width: 52px; height: 52px; }
+        /* Strike spans only glyphs 2-3: cluster runs x=26..194 in a 220px
+           circle, so the last two start at x=80 (36%) and end at x=194 (11%
+           from the right). */
+        .strike-line { position: absolute; left: 36%; right: 11%; top: 50%; height: 4px;
                        background: var(--ink); transform: scaleX(0); transform-origin: left center; }
         .object-label { font-family: var(--font-mono); font-weight: 500; font-size: 32px;
                         letter-spacing: 0.04em; color: var(--ink); text-align: center; }
 
-        .chips-zone { flex: 0 0 70px; display: flex; justify-content: center; gap: 20px; padding-top: 8px; min-height: 0; }
-        .chip { font-family: var(--font-mono); font-size: 32px; letter-spacing: 0.04em;
-                color: var(--ink-2); border: 1.5px solid rgba(19,21,22,0.25); border-radius: 999px;
-                padding: 8px 20px; opacity: 0; }
+        .severity-zone { flex: 0 0 168px; display: flex; align-items: flex-start;
+                         justify-content: center; min-height: 0; }
+        .severity { font-family: var(--font-mono); font-weight: 500; font-size: 34px;
+                    line-height: 1.4; letter-spacing: 0.01em; color: var(--ink);
+                    text-align: center; max-width: 800px; opacity: 0; }
+        /* Round 5: chips went 32px -> 34px, which pushed this zone's two wrapped
+           rows to ~148px against its fixed 140px basis. The zone does not grow
+           (min-height: 0), so the overflow painted BELOW the stage's content box
+           and put ink 4px inside the reserved bottom zone -- caught by
+           check-safe-area.py on the render, invisible in `check` (which reported
+           0 errors). Vertical rhythm is tightened to fit the larger type inside
+           the existing basis rather than reverting the type or widening the
+           zone, since the zone's bottom edge IS the safe line here. */
+        .chips-zone { flex: 0 0 140px; display: flex; flex-wrap: wrap; align-content: flex-start;
+                      justify-content: center; gap: 10px 20px; padding-top: 4px; min-height: 0; }
+        .chip { font-family: var(--font-mono); font-size: 34px; letter-spacing: 0.04em;
+                color: var(--ink-2-strong); border: 1.5px solid rgba(19,21,22,0.35); border-radius: 999px;
+                padding: 6px 20px; opacity: 0; }
       </style>
 
-      <div id="root" data-composition-id="07-fix-peeling" data-width="1080" data-height="1920" data-duration="3.300">
-        <div class="clip stage">
-          <div class="header-zone">
-            <div class="kicker">THE RESET</div>
-            <h2 class="headline">Pause actives. Moisturize. Protect.</h2>
+      <div data-hf-id="hf-ch0b" id="root" data-composition-id="07-fix-peeling" data-width="1080" data-height="1920" data-duration="3.300">
+        <div data-hf-id="hf-q6os" class="clip stage">
+          <div data-hf-id="hf-wmea" class="header-zone">
+            <div data-hf-id="hf-chit" class="kicker">THE RESET</div>
+            <h2 data-hf-id="hf-w31q" class="headline">One active at a time. Moisturize. Protect.</h2>
           </div>
 
-          <div class="objects-row">
-            <div class="object-col" id="s7-obj-actives">
-              <div class="icon-circle">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-                </svg>
-                <div class="strike-line" id="s7-strike"></div>
+          <div data-hf-id="hf-vtrn" class="objects-row">
+            <div data-hf-id="hf-5yi6" class="object-col" id="s7-obj-actives">
+              <div data-hf-id="hf-30if" class="icon-circle" id="s7-circle-actives">
+                <div data-hf-id="hf-b28f" class="active-cluster">
+                  <svg data-hf-id="hf-kkct" id="s7-act-1" viewBox="0 0 24 24" aria-hidden="true"><path data-hf-id="hf-yi3z" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg>
+                  <svg data-hf-id="hf-s542" id="s7-act-2" viewBox="0 0 24 24" aria-hidden="true"><path data-hf-id="hf-uw5r" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg>
+                  <svg data-hf-id="hf-jas7" id="s7-act-3" viewBox="0 0 24 24" aria-hidden="true"><path data-hf-id="hf-uhuq" d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" /></svg>
+                </div>
+                <div data-hf-id="hf-gujg" class="strike-line" id="s7-strike"></div>
               </div>
-              <div class="object-label">ACTIVES</div>
+              <div data-hf-id="hf-4fi2" class="object-label">ONE ACTIVE</div>
             </div>
-            <div class="object-col" id="s7-obj-moisture">
-              <div class="icon-circle" id="s7-circle-moisture">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M10 2v7.3" /><path d="M14 9.3V2" /><path d="M8.5 2h7" />
-                  <path d="M14 9.3a6.5 6.5 0 1 1-4 0" /><path d="M5.5 16h13" />
+            <div data-hf-id="hf-tp5f" class="object-col" id="s7-obj-moisture">
+              <div data-hf-id="hf-z8hc" class="icon-circle" id="s7-circle-moisture">
+                <svg data-hf-id="hf-cku8" viewBox="0 0 24 24" aria-hidden="true">
+                  <path data-hf-id="hf-b1h6" d="M10 2v7.3" /><path data-hf-id="hf-gaxk" d="M14 9.3V2" /><path data-hf-id="hf-modb" d="M8.5 2h7" />
+                  <path data-hf-id="hf-y8ks" d="M14 9.3a6.5 6.5 0 1 1-4 0" /><path data-hf-id="hf-08og" d="M5.5 16h13" />
                 </svg>
               </div>
-              <div class="object-label">MOISTURIZER</div>
+              <div data-hf-id="hf-6p1b" class="object-label">MOISTURIZER</div>
             </div>
-            <div class="object-col" id="s7-obj-spf">
-              <div class="icon-circle" id="s7-circle-spf">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2" /><path d="M12 20v2" />
-                  <path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" />
-                  <path d="M2 12h2" /><path d="M20 12h2" />
-                  <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+            <div data-hf-id="hf-icva" class="object-col" id="s7-obj-spf">
+              <div data-hf-id="hf-90u7" class="icon-circle" id="s7-circle-spf">
+                <svg data-hf-id="hf-0whk" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle data-hf-id="hf-kysq" cx="12" cy="12" r="4" />
+                  <path data-hf-id="hf-tplc" d="M12 2v2" /><path data-hf-id="hf-ysdk" d="M12 20v2" />
+                  <path data-hf-id="hf-d1np" d="m4.93 4.93 1.41 1.41" /><path data-hf-id="hf-8s75" d="m17.66 17.66 1.41 1.41" />
+                  <path data-hf-id="hf-msdq" d="M2 12h2" /><path data-hf-id="hf-bfo8" d="M20 12h2" />
+                  <path data-hf-id="hf-14cr" d="m6.34 17.66-1.41 1.41" /><path data-hf-id="hf-6d4n" d="m19.07 4.93-1.41 1.41" />
                 </svg>
               </div>
-              <div class="object-label">DAYTIME SPF</div>
+              <div data-hf-id="hf-h5u0" class="object-label">DAYTIME SPF</div>
             </div>
           </div>
 
-          <div class="chips-zone">
-            <div class="chip" id="s7-chip-1">Cutis &middot; 2006</div>
-            <div class="chip" id="s7-chip-2">FDA guidance &middot; 2005</div>
+          <div data-hf-id="hf-co08" class="severity-zone">
+            <p data-hf-id="hf-h2ea" class="severity" id="s7-severity">Severe burning or swelling? Stop and ask a doctor.</p>
+          </div>
+
+          <div data-hf-id="hf-m7y4" class="chips-zone">
+            <div data-hf-id="hf-2xf7" class="chip" id="s7-chip-1">21 CFR §333.350</div>
+            <div data-hf-id="hf-o0pv" class="chip" id="s7-chip-2">Cutis · 2006</div>
+            <div data-hf-id="hf-5eca" class="chip" id="s7-chip-3">FDA guidance · 2005</div>
           </div>
         </div>
       </div>
@@ -130,33 +171,68 @@
         var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
         // Frame zero: header + all three icon columns already settled --
-        // each object's own switch/pulse is the entrance beat. Retimed
-        // 2026-09-01 (round 3) -- extended from 2.1s to 3.3s per direct
-        // creator feedback watching round 2's render ("scene 7 feels
-        // rushed"), which independently confirms this scene's own round-2
-        // cadence measurement (0 steps clearing the active-step threshold,
-        // flagged in frame.md as "worth a closer look in a future pass").
-        // The beat order is unchanged; every beat just has more room
-        // between it and the next, and both chips now hold on screen for
-        // 1.35s before the cut instead of 0.75s.
+        // each object's own cut/pulse is the entrance beat. Duration and beat
+        // ORDER are unchanged from round 3's retime (2.1s -> 3.3s, made for
+        // direct creator feedback that "scene 7 feels rushed"); round 4 only
+        // re-scoped what the scene CLAIMS and slotted the severity line in
+        // ahead of the chips, so the scene's own timing is not re-derived and
+        // nothing upstream of it moves.
+        //
+        // Round 4 claim re-scope: this scene used to read "Pause actives."
+        // under chips (Cutis 2006 / FDA guidance 2005) inherited verbatim from
+        // peeling-not-progress/05-reset.html -- neither of which says anything
+        // about pausing an active. Cutis 2006 (PMID 17121065) backs a barrier
+        // moisturizer applied BEFORE AND DURING retinoid therapy, which points
+        // the other way, and FDA-2000-P-0063 backs the sunscreen limb. An
+        // unsourced instruction to stop an active is hard-prohibited (no flag
+        // rescues it), so the limb is re-scoped to 21 CFR 333.350(c)(1)(ii)'s
+        // actual text -- "only use one topical acne medication at a time" --
+        // with (c)(3)(ii)'s severity gate rendered beside it. Same regulator
+        // this video already cites in 04-flaking to define peeling as expected
+        // labeled irritation, so the video no longer instructs against the
+        // source it opened with.
         tl.set('#s7-strike', { transformOrigin: 'left center' }, 0);
         tl.set(['#s7-circle-moisture', '#s7-circle-spf'], { transformOrigin: '50% 50%' }, 0);
+        tl.set('#s7-severity', { opacity: 0, y: 14 }, 0);
 
-        tl.to('#s7-obj-actives .icon-circle svg', { opacity: 0.35, duration: 0.3 }, 0.15);
+        // Two of the three actives dim and are struck through; one survives,
+        // and the whole column recedes under an ink veil.
+        tl.to(['#s7-act-2', '#s7-act-3'], { opacity: 0.22, duration: 0.3 }, 0.15);
+        tl.to('#s7-circle-actives', { '--cut': 0.28, duration: 0.35, ease: "power2.out" }, 0.20);
         tl.to('#s7-strike', { scaleX: 1, duration: 0.35, ease: "power2.inOut" }, 0.20);
 
+        // The two "do this" objects activate and STAY activated -- an
+        // instruction that persists, not a decorative throb.
+        tl.to('#s7-circle-moisture', { '--act': 0.85, duration: 0.30, ease: "power2.out" }, 0.85);
         tl.to('#s7-circle-moisture', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 0.85);
-        tl.to('#s7-circle-spf', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.20);
+        tl.to('#s7-circle-spf', { '--act': 0.85, duration: 0.30, ease: "power2.out" }, 1.25);
+        tl.to('#s7-circle-spf', { scale: 1.08, duration: 0.35, ease: "power1.inOut", yoyo: true, repeat: 1 }, 1.25);
+
+        tl.to('#s7-severity', { opacity: 1, y: 0, duration: 0.35 }, 1.30);
 
         tl.to('#s7-chip-1', { opacity: 1, duration: 0.3 }, 1.65);
-        tl.to('#s7-chip-2', { opacity: 1, duration: 0.3 }, 2.05);
+        tl.to('#s7-chip-2', { opacity: 1, duration: 0.3 }, 1.85);
+        tl.to('#s7-chip-3', { opacity: 1, duration: 0.3 }, 2.05);
 
         // t2.5-3.1: a slow, bounded settle pulse on the header rule-less
         // headline itself -- this scene's continuous back-half motion, so
         // the extra hold time doesn't read as a static freeze once both
         // chips have landed.
-        tl.set('.headline', { transformOrigin: '50% 50%' }, 0);
-        tl.to('.headline', { scale: 1.015, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.5);
+        // Round 6 cadence: scene 07 measured 2/25 beats and 1.75s of dead air
+        // (1.58-3.20 local). Everything authored into that window was small text
+        // fading plus a 1.015 headline pulse -- and this file already records
+        // (see .icon-circle) that even a 1.08 pulse on a 1.08:1 ground moved
+        // 0.02-0.10 mean |dLuma|. That pulse is removed rather than re-tuned:
+        // it was motion that could not be seen at any size worth using.
+        //
+        // Replaced with a focus pull, which is a real editorial beat rather
+        // than decoration -- once the routine has landed and its citations are
+        // up, attention moves to the one thing a viewer must not miss, the
+        // severity exception. Dimming the icon row moves ~3.7% of the canvas.
+        tl.set('.objects-row', { opacity: 1 }, 0);
+        tl.set('.severity', { color: 'rgba(19,21,22,0.78)' }, 0);
+        tl.to('.objects-row', { opacity: 0.45, duration: 0.40, ease: "power2.inOut" }, 2.35);
+        tl.to('.severity', { color: 'rgba(19,21,22,1)', duration: 0.40, ease: "power2.inOut" }, 2.35);
 
         tl.to({}, { duration: 3.300 }, 0); // full-span anchor
         window.__timelines["07-fix-peeling"] = tl;

@@ -18,7 +18,7 @@ captions at all — the crop was cutting a real content strip out of every
 scene it scanned. See that project's own copy for the full story if reusing
 this file again.
 
-RE-DERIVED 2026-09-01 (this project, peeling-question-open): the PREVIOUS
+RE-DERIVED 2026-09-01 (peeling-question-open): the PREVIOUS
 version of this exact file still carried mugwort-healing-herb's caption-band
 crop (`CAPTION_BAND_EXCLUDE = True`, y 215-350) despite this project having
 NO burned-in captions at all — the on-screen kinetic type IS the only visual
@@ -31,6 +31,15 @@ tool. Confirmed: with the crop on, this script silently excluded scene 5's
 CAPTION_BAND_EXCLUDE is OFF below. Re-derive per project — check the actual
 index.html for a burned-in caption element before ever setting this True
 again; do not copy a sibling project's value.
+
+ENFORCED 2026-09-01 (round 4, pilling-vs-peeling): the note above travelled
+into THIS project's copy still naming peeling-question-open as "this
+project" — a fourth recurrence of the same drift, with the constant correct
+only by luck. assert_caption_band_derived() below now checks the calling
+project's own index.html at runtime and exits rather than trusting the
+constant. pilling-vs-peeling has no burned-in captions (its caption
+deliverable is the sidecar .srt/.vtt — see DELIVERY.md), so the flag is
+False and the assertion passes.
 
 REGION-AWARE CHECK ADDED 2026-09-01, closing a second, independent gap: the
 whole-frame-only PSNR check above can read "clean" while a scene's own HERO
@@ -185,11 +194,55 @@ def scene_boundaries(project_root):
     if not index_path.exists():
         return None
     text = index_path.read_text(errors="replace")
-    pattern = re.compile(
-        r'class="scene"[^>]*data-composition-src="[^"]+"\s+data-start="([\d.]+)"\s+data-duration="([\d.]+)"'
-    )
-    scenes = [(float(a), float(a) + float(b)) for a, b in pattern.findall(text)]
+    # Attribute-order- and newline-tolerant. The previous version required
+    # class="scene" exactly, data-composition-src BEFORE data-start, and all
+    # three on one line; this project writes class="scene clip", puts
+    # data-start first, and wraps scenes 02-08 over three lines, so the match
+    # silently returned nothing and every run fell back to treating the whole
+    # render as a single scene -- which disables the content-then-empty
+    # detection this function exists to feed. Parse the tag, then read its
+    # attributes, instead of assuming one authored spelling.
+    scenes = []
+    for tag in re.findall(r"<div\b[^>]*>", text, re.DOTALL):
+        cls = re.search(r'class="([^"]*)"', tag)
+        if not cls or "scene" not in cls.group(1).split():
+            continue
+        if not re.search(r'data-composition-src="[^"]+"', tag):
+            continue
+        st = re.search(r'data-start="([\d.]+)"', tag)
+        du = re.search(r'data-duration="([\d.]+)"', tag)
+        if st and du:
+            a, b = float(st.group(1)), float(du.group(1))
+            scenes.append((a, a + b))
+    scenes.sort()
     return scenes or None
+
+
+def assert_caption_band_derived(project_root):
+    """Fail loud rather than trusting an inherited CAPTION_BAND_EXCLUDE.
+
+    The docstring above records this exact constant being copied wholesale
+    from a sibling project three times running, each time with a comment
+    warning about the previous time. A comment demonstrably does not stop it,
+    so this checks the calling project's own index.html instead."""
+    index_path = project_root / "index.html"
+    text = index_path.read_text(errors="replace") if index_path.exists() else ""
+    has_burned_in = bool(re.search(r'data-composition-src="[^"]*caption', text, re.IGNORECASE))
+    if CAPTION_BAND_EXCLUDE and not has_burned_in:
+        sys.exit(
+            "FATAL: CAPTION_BAND_EXCLUDE is True but no burned-in caption "
+            f"composition appears in {index_path}. This constant was almost "
+            "certainly inherited from another project; excluding "
+            f"y {CAPTION_BAND_TOP}-{CAPTION_BAND_BOTTOM}px would silently cut "
+            "real content out of every diff. Re-derive it for THIS project."
+        )
+    if has_burned_in and not CAPTION_BAND_EXCLUDE:
+        print(
+            "WARNING: a burned-in caption composition exists in index.html but "
+            "CAPTION_BAND_EXCLUDE is False -- the caption track's own word "
+            "changes will register as motion and can mask a frozen scene "
+            "underneath it."
+        )
 
 
 def psnr(a, b):
@@ -367,6 +420,8 @@ def main():
     if not render_path or not render_path.exists():
         print("check-static-hold: no render found under renders/*.mp4 — skipping.")
         return 0
+
+    assert_caption_band_derived(project_root)
 
     whole_findings = whole_frame_check(render_path)
     region_findings = region_check(render_path, project_root)

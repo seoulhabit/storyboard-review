@@ -501,6 +501,56 @@ Re-applied; both variants back on target (A −14.3 LUFS / −2.0 dBTP, B −14.
 −1.8), video streams MD5-identical through the pass.
 
 
+## Round 7 — scene 03 node labels moved outside their rings (2026-09-02)
+
+Spotted on review of a shipped frame, then reproduced against the render.
+
+**The defect.** All three labels were centred *inside* `r="64"` circles at the
+32px mono floor. "SKIN" is 4 characters (~83 units) and fits; "FORMULA" is 7
+(~146) and its final A was drawn on top of its own stroke (text ended x=709, the
+stroke sat at x=700-706); "HOW YOU APPLY" is 13 (~290) against a ~143px circle,
+so the ring was drawn straight through "YOU" and the label read as two broken
+fragments. Present in both variants since the scene was built; it survived
+because the shortest of the three labels fits, and the scene passes lint,
+contrast, safe-area and cadence.
+
+No circle radius fixes this — 13 characters at the type floor needs r≈145 and
+the three nodes would collide — so the constraint was removed rather than tuned:
+rings shrink to r=42 and the labels sit outside them (the top pair above their
+nodes, the bottom one below). Type stays at the floor, and the diagram was
+widened from 780px to 840px so it fills the safe content box (x 78..918) exactly.
+
+**A second bug the fix exposed.** With rings at r=42 instead of r=64, the
+convergence beat at 1.35s left visible stubs: the connectors ran node-centre to
+centre and never moved, so once a node travelled ~67 units its own line-end was
+no longer hidden under its paper fill. At r=64 the old 60-unit travel stayed
+inside the ring, which is why it never showed. Connectors are now `<line>`
+elements whose node end animates with its node (`x1`/`y1` are plain numbers the
+attr plugin interpolates reliably, unlike numbers inside a path `d` string), and
+their length is computed with `Math.hypot` rather than `getTotalLength()` since
+the endpoints move. Convergence offsets were re-derived for the new geometry,
+not carried over.
+
+**Not fixed, worth recording:** vertical fill improved from 51% to 56% of the
+safe area, still under the 65-80% guide. The scene is under-filled rather than
+badly composed; closing that gap means resizing the headline, which would break
+type consistency with the rest of the video and is a separate decision.
+
+**Also worth recording:** the diagram sits ~45px left of true canvas centre.
+That is correct — it is centred on the safe *content* box, which is offset
+because the right engagement rail reserves 162px against the left's 72px. It
+should not be "corrected".
+
+**Mastering caught a regression.** Variant A's first master came back at
+**−0.8 dBTP** — over the −1.0 bar — from the same `TP=-2.5` setting that had
+produced −2.0 the round before, so the post-AAC overshoot is not stable enough
+to assume. Swept the target and measured the *encoded* file each time
+(−3.0 → −2.4 dBTP, −4.0 → −3.4, −5.0 → −3.9); shipped at `TP=-3.0`, which lands
+−14.5 LUFS / −2.4 dBTP. Variant B was unaffected at −14.2 / −2.1. Measure the
+deliverable, never the intermediate, and never assume last round's setting still
+clears.
+
+
 ## Assets
 
 | Asset | Source | Reused / new | Used in |

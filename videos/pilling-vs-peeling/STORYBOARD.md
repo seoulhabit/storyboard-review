@@ -69,7 +69,10 @@ screen, never co-resident with it.
 Headline + 3 outer nodes (SKIN / FORMULA / HOW YOU APPLY) settled at frame
 zero; connectors draw 0.15–0.90s; center node arrives and pulses at 1.00s;
 1.35–1.85s the three factors travel inward along their own connectors — the
-convergence payoff, not decoration. No citation chip (recorded decision,
+convergence payoff, not decoration. Round 7 moved the three node labels
+outside their rings (the rings previously cut through "HOW YOU APPLY") and
+made the connectors travel with their nodes through the convergence. No
+citation chip (recorded decision,
 unchanged from round 1 — this is an elaboration of scene 02's same study,
 not a new claim).
 

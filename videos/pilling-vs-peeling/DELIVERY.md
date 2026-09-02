@@ -140,8 +140,9 @@ See `frame.md` § Verification for the full account. Summary:
 | `check-cadence.py` | **Overall: clean — no scene exceeds the 1.6s quiet ceiling.** Whole video 37/162 active steps (22.8%, was 13.6%). Per-scene longest quiet run: 1.00 / 1.00 / 1.25 / 1.25 / 0.88 / 0.50 / 1.12 / 0.88s |
 | Scene 05 render integrity | Was rendering **nothing** — the wipe's animated `width` on an `overflow:hidden` box was dropped by hardware GPU capture, so the layered subtree never reached any captured frame. Reworked to `clip-path` on a `--wipe` custom property; verified present under the normal hardware render path. See `BRIEF.md` § Round 6 |
 | `check-sfx-durations.py` | 0 findings, 23/23 checked. Scene 06's cue at abs 14.80s still lands on the card-tap beat |
-| Audio mastering | Re-applied after re-render (raw −23.0/−23.3 LUFS). Encoded deliverables: −14.3 LUFS/−2.0 dBTP (A), −14.1/−1.8 (B); video streams MD5-identical through the pass |
+| Audio mastering | Re-applied after re-render (raw −23.0/−23.3 LUFS). A's first pass at `TP=-2.5` came back **−0.8 dBTP**, over the −1.0 bar, from a setting that gave −2.0 a round earlier; swept and shipped at `TP=-3.0`. Encoded deliverables: **−14.5 LUFS/−2.4 dBTP (A)**, −14.2/−2.1 (B); video streams MD5-identical through the pass |
 | Rendered-pixel contrast | Scene 07 citation chips 6.91:1; scene 04 chip 12.23:1 |
 | Visual verification | Scenes 02 and 05 frame-stripped across their full windows on both variants; scene 05 now shows a genuine bare-vs-layered split with a travelling aqua seam |
 | Duration | 21.100s video stream, 633 frames, both variants — no `data-start`/`data-duration` edits, so captions remain valid |
+| Scene 03 labels | Node labels moved outside their rings — they were centred inside r=64 circles at the 32px floor, so the ring cut through "HOW YOU APPLY" and FORMULA's final glyph sat on its own stroke. Verified clear of every stroke at native and 25% phone scale |
 | Thumbnail | Unaffected by this round (t=1.6s sits in scene 01) |

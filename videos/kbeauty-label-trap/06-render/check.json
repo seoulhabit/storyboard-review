@@ -1,0 +1,319 @@
+{
+  "ok": true,
+  "strict": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 15
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 3,
+    "infoCount": 4,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 15.882,
+        "selector": "#s01-ribbon-l",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 619.61,
+          "top": 211.31,
+          "right": 774,
+          "bottom": 646.92,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "containerSelector": "div.lb-row > span:nth-of-type(1)",
+        "text": "CENTELLA ASIATICA EXTRACT · WATER · GLYCERIN · NIACINAMIDE · PANTHENOL · SODIUM HYALURONATE · ALLANTOIN · FRAGRANCE",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 619.61,
+          "y": 211.31,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "firstSeen": 15.882,
+        "lastSeen": 16.311,
+        "occurrences": 3
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 15.882,
+        "selector": "#s01-ribbon-l",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 619.61,
+          "top": 211.31,
+          "right": 774,
+          "bottom": 646.92,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "containerSelector": "div.lb-row > span:nth-of-type(2)",
+        "text": "CENTELLA ASIATICA EXTRACT · WATER · GLYCERIN · NIACINAMIDE · PANTHENOL · SODIUM HYALURONATE · ALLANTOIN · FRAGRANCE",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 619.61,
+          "y": 211.31,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "firstSeen": 15.882,
+        "lastSeen": 16.311,
+        "occurrences": 3
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 15.882,
+        "selector": "#s01-ribbon-r",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1199.61,
+          "top": 211.31,
+          "right": 1354,
+          "bottom": 646.92,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "containerSelector": "div.lb-row > span:nth-of-type(2)",
+        "text": "CENTELLA ASIATICA EXTRACT · WATER · BUTYLENE GLYCOL · NIACINAMIDE · MADECASSOSIDE · PANTHENOL · ALLANTOIN · FRAGRANCE",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1199.61,
+          "y": 211.31,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "firstSeen": 15.882,
+        "lastSeen": 16.311,
+        "occurrences": 3
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 619.61,
+          "top": 211.31,
+          "right": 774,
+          "bottom": 646.92,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "CENTELLA ASIATICA EXTRACT · WATER · GLYCERIN · NIACINAMIDE · PANTHENOL · SODIUM HYALURONATE · ALLANTOIN · FRAGRANCE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 619.61,
+          "y": 211.31,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1199.61,
+          "top": 211.31,
+          "right": 1354,
+          "bottom": 646.92,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "CENTELLA ASIATICA EXTRACT · WATER · BUTYLENE GLYCOL · NIACINAMIDE · MADECASSOSIDE · PANTHENOL · ALLANTOIN · FRAGRANCE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1199.61,
+          "y": 211.31,
+          "width": 154.39,
+          "height": 435.61
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "div.emboss",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 692.36,
+          "top": 901.47,
+          "right": 777.64,
+          "bottom": 936.47,
+          "width": 85.28,
+          "height": 35
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "CICA",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 692.36,
+          "y": 901.47,
+          "width": 85.28,
+          "height": 35
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "div.head",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 222.5,
+          "top": 649.73,
+          "right": 1697.5,
+          "bottom": 764.73,
+          "width": 1475,
+          "height": 115
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "SAME HERO. DIFFERENT FORMULA.",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 222.5,
+          "y": 649.73,
+          "width": 1475,
+          "height": 115
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      }
+    ],
+    "duration": 257.12,
+    "samples": [
+      3.214,
+      9.642,
+      16.07,
+      22.498,
+      28.926,
+      35.354,
+      41.782,
+      48.21,
+      54.638,
+      61.066,
+      67.494,
+      73.922,
+      80.35,
+      86.778,
+      93.206,
+      99.634,
+      106.062,
+      112.49,
+      118.918,
+      125.346,
+      131.774,
+      138.202,
+      144.63,
+      151.058,
+      157.486,
+      163.914,
+      170.342,
+      176.77,
+      183.198,
+      189.626,
+      196.054,
+      202.482,
+      208.91,
+      215.338,
+      221.766,
+      228.194,
+      234.622,
+      241.05,
+      247.478,
+      253.906
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 7,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      3.214,
+      61.066,
+      125.346,
+      189.626,
+      253.906
+    ],
+    "checked": 23,
+    "passed": 23
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "_meta": {
+    "version": "0.8.27",
+    "latestVersion": "0.8.27",
+    "updateAvailable": false
+  }
+}

@@ -6,6 +6,64 @@ it never edits `decision-policy.md` directly (SKILL.md §1).
 
 ---
 
+## 2026-09-03 · run `kbeauty-label-trap` (long-form 16:9, 257.12s)
+
+### P6 — a scene's own `data-duration` must match `index.html`'s transition-extended window, not the beat sheet's nominal duration
+**Found:** `[S6/A-8]`'s own transition-overlap formula (`clip data-duration =
+duration + d_in + d_out`) is documented for the WRAPPER div in `index.html`,
+but nothing in the skill's composition rules says a sub-composition's OWN
+`data-duration` (and internal timeline length) must match that extended
+value rather than the beat sheet's nominal per-scene duration. Building it
+the "obvious" way — sub-comp duration = beat sheet duration — leaves a dead
+zone of `d_in + d_out` seconds where the wrapper keeps the clip mounted past
+the point its own internal timeline (and rendered background) considers
+itself finished. Confirmed: this rendered as **solid black**, not a frozen
+last frame, across the tail windows of every scene followed by a non-cut
+transition (8 of this project's 14 scenes) — including the video's own true
+final ~0.45 seconds, which is how it was first caught. Neither `hyperframes
+check` nor `check-safe-area.py`/`check-static-hold.py` flagged it; only a
+manual review of the extracted last-frame PNG did.
+**Proposed:** state explicitly, next to `[S6/A-8]`'s overlap formula, that a
+sub-composition's own registered duration must equal its wrapper's extended
+`data-duration`, not the beat sheet's nominal value — and that `check`
+should probably assert this equality directly (comparing each
+`data-composition-src` file's own root `data-duration` against the value
+computed for its wrapper) rather than leaving it to be caught by luck on a
+manually-extracted last frame.
+
+### P7 — `check`'s overlap/occlusion detectors are not clip-path-aware
+**Found:** `hyperframes check`'s layout pass flagged `content_overlap` and
+`text_occluded` warnings for two scenes' text sitting at the same DOM
+coordinates during a `clip-path`-driven wipe transition — a real, correctly-
+composited transition where only the unmasked half of each element is
+actually visible on any given pixel. The warning text ("Two text blocks
+overlap and may render unreadable") reads as a real defect until the actual
+extracted frame is checked and shows the wipe compositing correctly.
+**Proposed:** either have the layout pass account for `clip-path` when
+computing effective visible bounds, or state explicitly in the docs that a
+`content_overlap`/`text_occluded` warning landing exactly inside a
+transition's `[overlap_start, overlap_start+duration]` window should be
+visually verified before being treated as a real defect, rather than fixed
+by construction (which would mean avoiding text near a wipe boundary
+entirely — a worse outcome than the false positive).
+
+### P8 — `amix`'s default `normalize=1` silently drops mixed-audio loudness below the primary track alone
+**Found:** mixing VO + a manually-ducked (`volume=0.12`) music bed with
+ffmpeg's `amix` filter at its default settings measured **~6 LU quieter**
+than the VO's own standalone loudness (-29.75 vs -23.60 LUFS) — `amix`'s
+`normalize=1` default auto-attenuates every input to guard against clipping
+on sum, which is redundant (and actively harmful) once one input is already
+manually gain-staged relative to the other. Not caught until the final
+`loudnorm` measurement looked implausibly quiet for content whose loudest
+element (VO) peaks at 0dBFS.
+**Proposed:** the skill's audio-mixing guidance (or `hyperframes-audio`)
+should say explicitly: pass `normalize=0` to `amix` whenever any input has
+already been deliberately gain-staged (a ducked music bed, a sound-effect
+mixed under narration) — `amix`'s own clipping protection and a
+deliberately-set relative level are working against each other otherwise.
+
+---
+
 ## 2026-09-03 · run `hyaluronic-acid-vs-filler` (long-form 16:9, 180.000s)
 
 ### P1 — `[S1/S-3]` / `[S1/S-4]` have no rule for a multi-character script

@@ -3,6 +3,13 @@
 **`[S8/E-1]`: nothing here has been written to YouTube.** `vidiq_update_video`
 was never called. Everything below is paste-ready; the publish click is yours.
 
+**v2 note (2026-09-03):** this envelope now describes the revised **160 s
+single-narrator cut**, not the original 180 s two-hander. Title, thumbnail and
+tags carry over unchanged from the scored S3 pass — the subject and seed
+keyword are identical, and neither needed a re-score. Chapters, description,
+the sourcing count, and the end-screen scene reference are updated below to
+match the new 13-scene structure and measured timings.
+
 ---
 
 ## Title
@@ -26,7 +33,7 @@ states, overlay text **"THREE JOBS"** (two words, neither in the title).
 ## Description
 
 ```
-Three different things share the name "hyaluronic acid" — the kind your body makes, the kind in your serum, and the kind a doctor injects. They are not the same job.
+Your hyaluronic-acid serum cannot do what filler does. Same name — three completely different jobs: the kind your body makes, the kind in your serum, and the kind a doctor injects.
 
 A topical serum hydrates the surface. An injectable filler is cross-linked into a gel and placed under the skin. Same ingredient family, different size, structure and location — so a different result.
 
@@ -36,14 +43,11 @@ Every claim in this video is sourced. Nothing here is unsourced or editorial-as-
 
 CHAPTERS
 0:00 Three things, one name
-0:13 Not filler in a bottle
-0:25 It came out of a cow's eye
-0:46 The version already in you
-1:00 Why size decides everything
-1:36 It cannot make water
-2:00 What a filler actually is
-2:22 Do not inject yourself
-2:37 Same family, different jobs
+0:14 Not filler in a bottle
+0:28 The version already in you
+1:20 It cannot make water
+1:54 Do not inject yourself
+2:15 Same family, different jobs
 
 SOURCES
 On screen we show only "Journal · Year". Here are the actual records.
@@ -92,9 +96,9 @@ Which ingredient should we take apart next?
 
 ## End-screen element map
 
-The final scene (`s14-endcard`, 171.0–180.0 s, **9.0 s** — inside the 8–20 s
-window) is designed as a frame for these. Motion is calmed and the right third
-is kept clear of anything meant to be read.
+The final scene (`s13-endcard`, 150.889–160.0 s, **9.111 s** — inside the
+8–20 s window) is designed as a frame for these. Motion is calmed and the
+right third is kept clear of anything meant to be read.
 
 | Zone | Element |
 |---|---|
@@ -107,8 +111,9 @@ measured guarantee.
 
 ## `[K-5]` — sourcing posture, stated on the page
 
-**All 10 substantive claims are sourced; 0 are unsourced.** `[K-2b]`'s
-disclosure-forward form did not fire (Mechanism + Proof are 8 : 0 sourced :
+**All 11 substantive claims are sourced; 0 are unsourced** (v2 adds C0, the
+opening thesis, sourced to the same C5/C7/C8/C9 backing). `[K-2b]`'s
+disclosure-forward form did not fire (Mechanism + Proof are 6 : 0 sourced :
 unsourced), so no UNSOURCED flag appears anywhere in the video — because there is
 nothing to flag, not because the disclosure layer was dropped. The description's
 third paragraph states this, and the full reference list is on the page rather

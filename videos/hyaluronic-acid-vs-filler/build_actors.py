@@ -536,9 +536,15 @@ def _row_tweens(sid, rows_used):
             tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
     return sets, tw
 
-def _hold_drift(sid, target_sel):
+def _hold_drift(sid, target_sel, drifts=None):
+    """drifts=None uses the shared default magnitude. Pass a smaller custom
+    list for a scene whose content already sits close to a safe-area edge --
+    [S7/R-2] measured a scale-up drift pushing s11's bottom-row text 862px
+    into the reserved zone at t=131.75s, a violation `check`'s bounding-box
+    layout pass could not see (it flagged only a generic container_overflow
+    warning on the stage element, not real ink in a reserved zone)."""
     sets, tw = [], []
-    DRIFTS = [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
+    DRIFTS = drifts or [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
     drift = 0
     for bt in beats_of(sid):
         if bt["idiom"] != "hold": continue
@@ -804,7 +810,12 @@ def build_warning():
         else:
             sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 30 }});")
             tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-    hs, ht = _hold_drift(sid, f"#{sid}-stage"); sets += hs; tw += ht
+    # s11's own content already reaches close to the bottom safe-area edge by
+    # design (the full-bleed warning look) -- cap drift well below the shared
+    # default so a hold can never push it over. No y-component at all: the
+    # measured violation was specifically a downward push into the bottom zone.
+    S11_DRIFTS = [(6, 0, 1.006), (-5, 0, 1.004), (4, 0, 1.005), (-4, 0, 1.003)]
+    hs, ht = _hold_drift(sid, f"#{sid}-stage", drifts=S11_DRIFTS); sets += hs; tw += ht
     return scene_shell(sid, HEROSPLIT_CSS + WARNING_CSS, markup, sets, tw)
 
 BUILD = {

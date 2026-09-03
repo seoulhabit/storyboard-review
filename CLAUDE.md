@@ -98,9 +98,18 @@ serves them, injecting `data-hf-id` as the **first attribute on every tag** in
 <div data-hf-id="hf-6axv" id="root" class="clip">
 ```
 
-This is not transient. **204 files in this repo already carry injected ids**,
-committed — so it is the normal state of a composition here, not a temporary
-dirty edit waiting to be cleaned up.
+**No generator emits this attribute.** Verified across three projects'
+`build_index.py`: zero occurrences in any of them, while their generated
+`index.html` files carry between 0 and 22. So `data-hf-id` in a generated file
+is always injected from outside, never produced by the build — and its presence
+means **that file has silently diverged from its generator.** Re-run the
+generator and the attributes disappear.
+
+204 files in this repo carry injected ids **committed**, because copies that had
+been through the server were saved. That makes the attribute common, but it does
+not make a divergence between a generator and its output normal, and reading it
+that way costs an hour of wondering why a freshly built file does not match what
+the builder emits.
 
 Two consequences:
 
@@ -116,4 +125,25 @@ Two consequences:
 
 The second one is the expensive kind: it does not error, it just quietly stops
 finding things, and a parser that finds nothing looks exactly like a file with
-nothing in it.
+nothing in it. It crashed a storyboard parser on a file that was otherwise
+perfectly valid.
+
+**Leave a preview server running and you get both at once**: a generated file
+that no longer matches its generator, and tooling that stops matching it. If a
+generated file looks wrong, stop the preview and rebuild before debugging
+anything else.
+
+### Globs that abort the whole command
+
+In zsh a glob matching nothing is a fatal error, not an empty expansion, so
+`rm -rf renders/work-* raw.mp4` deletes **neither** when no work dir exists —
+the command aborts before it runs. That cost two wasted 8-minute renders: a
+file-existence wait returned immediately against a stale `raw.mp4`, and a
+previous render was mastered and gated twice before anyone noticed. Prefer:
+
+```bash
+find renders -maxdepth 1 -name 'work-*' -exec rm -rf {} +
+```
+
+which cannot fail that way. Applies to any helper in this repo that globs paths
+that may legitimately not exist.

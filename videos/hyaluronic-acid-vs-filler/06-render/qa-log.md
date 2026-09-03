@@ -1,104 +1,108 @@
-# QA log — hyaluronic-acid-vs-filler
+# QA log — hyaluronic-acid-vs-filler (v2 revision)
 
 ## Gates
 
 | Gate | Result | Measured on |
 |---|---|---|
-| `hyperframes@0.8.22 check` | **ok: true**, 0 errors across lint / runtime / layout / motion / contrast | the composition under seek, 40 samples |
-| `check-safe-area.py --landscape` | **PASS — no findings, 720 frames sampled** | `06-render/final.mp4` |
-| `check-static-hold.py --landscape` | advisory (exit 0); content-void regions verified by eye, see below | `final.mp4` |
-| `check-cadence.py --longform` | advisory (exit 0); **15.1% whole-video active share** | `final.mp4` |
-| `continuity-audit.py` | 13/13 boundaries transitioned · top signature 28.7% · 0 rebuilt actors · 17 camera moves | source |
-| `ebur128` | **−14.1 LUFS integrated, −2.5 dBTP, LRA 3.0** | `final.mp4`, not the loudnorm intermediate |
-| `ffprobe` duration | video **180.000 s / 5400 frames @ 30 fps** == VO master clock exactly | `final.mp4` |
+| `hyperframes@0.8.22 check` | **ok: true**, 0 errors across lint / runtime / layout / motion / contrast, 3 accepted warnings | the composition under seek, 40 samples |
+| `check-safe-area.py --landscape` | **PASS — no findings, 640 frames sampled** | `06-render/final.mp4` |
+| `check-static-hold.py --landscape` | advisory (exit 0); **no findings** — whole-frame pass (320 samples, 10.0s ceiling) and region-aware pass (2×3 grid, 1.0s content-then-empty ceiling) both clean | `final.mp4` |
+| `check-cadence.py --longform` | advisory (exit 0); **18.1% whole-video active share**, no scene exceeds the 6.0s quiet ceiling | `final.mp4` |
+| `continuity-audit.py` | 12/12 boundaries transitioned · top entrance signature 23.0% · top raw ease 40.0% · 0 rebuilt actors · 14 camera-move tweens · 0 plain-crossfade-across-ground violations | source |
+| `ebur128` | **−14.5 LUFS integrated, −2.3 dBTP, LRA 2.0** | `final.mp4`, not the loudnorm intermediate |
+| `ffprobe` duration | video **160.000000 s / 4800 frames @ 30 fps** == VO master clock exactly | `final.mp4` |
 
-**Constants confirmed against this project before trusting any "0 findings"**
-(`[S7/R-2]` requires this; an inherited caption band has silently excluded real
-content three times in this lineage): `CAPTION_BAND_EXCLUDE = False` is correct
-here — there is no burned-in caption band, `.caption` is ordinary flow text
-inside the stage. `--landscape` rebinds both scripts to 1920×1080 with zones
-54/108/96/96, which matches this project's own declared tokens exactly, and both
-scripts `ffprobe` the render and refuse on a canvas mismatch.
+**Two full safe-area re-renders were needed**, both catching real ink in the
+reserved zone that `hyperframes check`'s layout pass reported as completely
+clean (0 errors) each time — see `00-decision-ledger.md`'s `## re-run`
+section for the root-cause diagnosis on each (s05-compare's vertical budget,
+then s11-do-not-inject's hold-drift on already-tight content). The layout
+pass checks declared containers; it has no notion of the canvas edge or the
+reserved safe-area zones, which is exactly why `check-safe-area.py` is the
+authoritative gate and not a formality after `check` passes.
 
-## Cadence, in context
-
-15.1% of 8fps steps carry a perceptible, localised change. Comparators, all
-measured on shipped files rather than quoted from a delivery note:
-
-| Piece | Active share |
-|---|---|
-| **this run** | **15.1 %** |
-| `ectoin-survival-molecule` (the long-form comparator) | 14.0 % |
-| shipped 9:16, low end | 11.7 % |
-| shipped 9:16, high end | 23.1 % |
-
-Five scenes exceed the 6.0 s long-form quiet ceiling (longest 10.12 s, in
-`s06-serum-size`). These are advisory. Each is a scene where a single sourced
-claim is being read aloud over a diagram that is already making the argument —
-`s06` is the size/boundary panel, which holds while the VO explains it. The
-script's own note applies: "does it need a beat, or is it a deliberate hold?"
-Judged deliberate, and the whole-video share is above the long-form comparator.
+**Cadence, in context.** 18.1% of 8fps steps carry a perceptible, localised
+change — higher than this project's own 180s cut (15.1%) and the long-form
+comparator `ectoin-survival-molecule` (14.0%), consistent with a materially
+denser scene count per minute (13 scenes / 160s = one scene every 12.3s,
+vs the 180s cut's one every 12.9s) and several newly-added animated elements
+(droplet convergence in s08, the loose-to-lattice crossfade in s10).
 
 ## `[K-4]` — rendered-claim check, on the extracted frames
 
 | Check | Verdict |
 |---|---|
-| Every unsourced claim shows its flag concurrently | **n/a — there are no unsourced claims.** `[K-2b]` did not fire (Mechanism + Proof are 8 : 0). No flag component is emitted because there is nothing to flag. |
-| Flag not in the accent colour / not citation typography | n/a, as above |
-| No internal record id (`ING-*`) anywhere | **PASS** — confirmed on all frames |
-| No PMID on any frame | **PASS** — chips render `Journal · Year` or `FDA · Dermal Fillers`; PMIDs and DOIs are in the description only, per `ectoin`'s convention |
-| On-screen wording hedges at least as far as the VO | **PASS** — verified on the pixels at t=75.0: the frame reads "Smaller ones **may** travel farther into the upper layers", carrying the VO's own hedge into the type. `[K-3]` is satisfied where it matters most, since the muted viewer reads the type. |
-| Nothing hard-prohibited appears | **PASS** — the only on-screen number is `1934` (cited); the two safety lines are FDA-verbatim; no *treats/prevents/cures*, no comparative superiority, no absolute language |
+| No internal record id (`ING-*`) anywhere | **PASS** — confirmed across all 13 scene frames |
+| No PMID on any frame | **PASS** — chips render `Journal · Year` or `FDA · Dermal Fillers`; PMIDs and DOIs are in the description only |
+| On-screen wording hedges at least as far as the VO | **PASS** — verified on extracted frames: `s06-serum-size` at t≈62s reads "Smaller ones **may** travel farther into the upper layers of skin"; `s07-plumping` at t≈75s reads "Hydrated surface cells can **temporarily** make fine lines **appear** softer" — both hedges legible in the on-screen type, not audio-only |
+| Nothing hard-prohibited appears | **PASS** — the only on-screen number is `1934` (cited); `DO NOT INJECT YOURSELF` and the risk lines are FDA-verbatim; no *treats/prevents/cures*, no comparative superiority (the "not X" distinctions — "Neither behaves like a filler", the C0 thesis — assert difference, not superiority), no absolute language |
+| One citation treatment throughout | **PASS** — the mono pill, unified across all 13 scenes (carried forward from the 180s cut's own `[K-4]` fix) |
 
-**One `[K-4]` finding, fixed rather than logged:** the video shipped **two
-different citation treatments** — hand-authored scenes used the bordered mono
-pill, generated scenes used accent uppercase sans. Two treatments read as two
-different kinds of evidence, and citations are this video's entire credibility
-layer. Unified on the pill across all 14 scenes.
+**One `[K-4]`-adjacent finding, fixed during S7 rather than shipped:** the
+1930s eye+glassware illustration (`s03-origin`) and the clinical vignette
+(`s11-do-not-inject`) were both drawn browser-native (inline SVG line art)
+rather than generated — no needle enters skin anywhere in either, no
+photographic realism, both hold to the "elegant, non-graphic" and "calm,
+professional, no frightening stock photography" briefs on inspection of the
+extracted frames.
 
 ## `design-critique` — frame review
 
-`COMPANION-RESOLVED:design-critique (skill-tool)`. Applied to frames extracted
-from the muxed deliverable.
+`COMPANION-RESOLVED:design-critique (skill-tool)`. Applied to frames
+extracted from the muxed deliverable, both before and after the two
+safe-area fix cycles.
 
 ### First impression
-Frame zero reads as what it is: one name over three visibly different structures.
-The three-lane comparison is legible in about a second, before any narration.
+Frame zero states the thesis in text and shows it in the diagram in the same
+instant — "Your hyaluronic-acid serum cannot do what filler does" over the
+three-lane molecule lineup, category icons legible, all three lanes composed
+at rest. The video's whole argument is visible before a single beat animates.
 
 ### What works
-- **The diagram makes the argument the sentence makes.** At t=75.0 the copy says
-  large chains stay near the surface and smaller ones may travel farther, and the
-  panel shows exactly that — big coils above a dashed boundary, small ones below.
-  That alignment is the whole reason the presenter is `moving-diagram`.
-- **The payoff frame (t=168) is the strongest in the piece.** Three morphologies,
-  three badges, no explanation needed.
-- Type hierarchy is doing real work: EB Garamond hero against Inter body against
-  a mono chip gives three unmistakable registers.
-- Ground alternation (paper → ink) tracks the argument rather than decorating it:
-  the dark scenes are the origin story and the filler/safety material.
+- **The backbone does what it's for.** The three-lane diagram opens the
+  film, resolves it (s12-badges), and the intervening dives (s05, s06, s10)
+  never redraw it — they extend the same actors. `continuity-audit.py`
+  confirms this structurally (0 rebuilt-actor pairs); the extracted frames
+  confirm it visually.
+- **The side-by-side comparison (s05) reads instantly** — "Serum — Surface"
+  next to "Filler — Beneath the Skin", each panel's own cross-section making
+  the claim the text makes. Lands well before the 1:00 mark the feedback
+  asked for.
+- **The loose-chains-to-lattice crossfade (s10) is a genuine transform**, not
+  a cut — verified on extracted frames either side of the swap beat (t≈107s
+  loose, t≈112s settled lattice). Honest about what the engine can actually
+  do (opacity/scale, not path morphing) while still reading as a structural
+  change.
+- **The clinical vignette (s11) does real work in a small space** — capped
+  syringe, vial, gloved hand, no needle touching anything, established
+  before the full-bleed warning text takes over.
+- **The final message holds long enough to be read twice** — "Serum
+  hydrates. Filler adds volume. Same name, different jobs." is on screen
+  from ≈151.9s to 160.0s, over 8 seconds, well past the requested 3s floor.
 
 ### Findings
 
 | Finding | Severity | Action |
 |---|---|---|
-| Frame zero showed only lane 0; lanes 1–2 were hidden until their beats, leaving ~60% of the opening frame empty — close to mandatory rule 5's "a lone title on empty canvas" | 🔴 Critical | **Fixed.** All three lanes composed at t=0 at rest, each brought forward on its own beat. |
-| The cross-linked lattice was **invisible** for 16 s on `s10-crosslink`: `.actor` painted with `var(--ink)`, which stays the dark token when only the text colour flips | 🔴 Critical | **Fixed.** Flip the token, not the colour, so actor strokes and badge borders follow. |
-| Two citation treatments in one video | 🟡 Moderate | **Fixed.** Unified on the mono pill. |
-| Lane scenes are top-heavy; the lower third is reserved for foot copy that enters later, so several frames read bottom-empty | 🟢 Minor | **Accepted.** The space is reserved, not wasted — it fills as the beats land. Recorded for the next long-form piece. |
-| Actor stroke weight is light at 1920 width; the free-coil state reads as thin squiggles more than as a dispersed tangle | 🟢 Minor | **Accepted for this cut.** The three states are still distinguishable at a glance, which is the job. Noted in the catalog entry as the thing to redraw per ingredient. |
+| s05-compare's original layout put roughly 700px of content into a 560px lane row — no ink was in the reserved zone yet at the design-critique stage, but the margin was already visibly tight on the extracted frame | 🔴 Critical (confirmed by the pixel gate, not just this review) | **Fixed.** Actor 340→260px, title 104→64px, body text to the type floor. |
+| s11's hold-drift pushed already-bottom-heavy content further down on one beat | 🟡 Moderate (confirmed by the pixel gate) | **Fixed.** Drift magnitude capped for this scene specifically. |
+| The category icons on s01 (bottle/body/syringe) are small enough that at a glance they could be mistaken for decoration rather than the "three categories" the brief asked for | 🟢 Minor | **Accepted.** They sit directly above each molecule actor with consistent teal tinting and read correctly once the lane labels arrive a beat later; the actors themselves already carry the primary identity signal. |
+| Lane scenes remain top-heavy (unchanged from the 180s cut's own accepted finding) — the lower third is reserved for foot copy that enters later | 🟢 Minor | **Accepted**, same reasoning as the 180s cut: the space fills as the beats land, not wasted. |
 
 ### Accessibility
-- Contrast: `check`'s pass measures WCAG AA on rendered pixels — **0 failures**.
-  The citation pill measures 4.29:1 on mist (needs 3:1 at 32 px).
-- Text sizes: hero 104 px, body 52 px, caption 44 px, chip 32 px — all at or above
-  `[S6/A-6]`'s floors, with 32 px the absolute floor for anything meant to be read.
+- Contrast: `check`'s pass measures WCAG AA on rendered pixels — **0
+  failures** (down from 2 warnings mid-cycle, both fixed: the kicker/accent
+  color on paper measured 2.17:1 against a 3:1 floor for large bold text,
+  resolved to the same accessible teal `check` itself suggested).
+- Text sizes: hero 64–112px depending on scene, body 40–58px, caption 44px,
+  chip 32px — all at or above `[S6/A-6]`'s floors, with 32px the absolute
+  floor honored throughout, including the newly-scoped `.cmp-col .body`
+  (set to exactly 40px, not below it).
 
 ## Warnings left standing, with reasons
 
-- `lint / overlapping_gsap_tweens` ×1 — two tweens touch one element in an
-  overlapping window by design (a `swap` re-states its panel while the copy
-  scales in). Intentional.
-- `layout / container_overflow` ×3 (+13 info) — a `hold` drift scales the padded
-  stage ~1.5%, so its **box** crosses the canvas edge by ~15 px. No **ink** does:
-  the safe-area scan on rendered pixels reports no findings across 720 frames,
-  and that scan, not a bounding-box test, is the authority here.
+- `layout / container_overflow` ×3 — a `hold` drift scales the padded stage
+  slightly, so its **box** crosses the canvas edge by a small margin. No
+  **ink** does: `check-safe-area.py` on rendered pixels reports 0 findings
+  across 640 frames, and that scan — not a bounding-box test — is the
+  authority. Same accepted class the 180s cut logged for the same reason.

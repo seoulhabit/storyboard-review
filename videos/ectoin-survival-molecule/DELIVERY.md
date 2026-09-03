@@ -46,12 +46,36 @@ since the video stream is copied through untouched.
 
 | Gate | Result |
 |---|---|
-| `hyperframes check --samples 40` | **Pass.** 0 errors, 0 warnings, 26 info (scenes legitimately clipped mid-wipe). |
-| Safe-area (**hard gate**) | **PASS** — 1,361 frames, no ink in any reserved zone. |
+| `hyperframes check --samples 40` | **Pass.** 0 errors, 0 warnings, 26 info (scenes legitimately clipped mid-wipe). **Sample-density dependent** — see the note below before raising `--samples`. |
+| Safe-area (**hard gate**) | **PASS** — 1,361 frames, no ink in any reserved zone. Requires the multi-ground estimator; an older copy of the gate reports 70 false failures on this render. |
 | Static-hold, whole-frame | **No findings**, 680 frames. |
 | Static-hold, region-aware | 6 content-voids, **all verified false** — the flagged cells carry content throughout (edge density 2.33% inside a "void" against 2.34% just before it). The ink threshold, not the content, is what moves. |
 | Audio | **−14.6 LUFS / −1.9 dBTP** on the delivered file, decoded back. |
 | Cadence (`--longform`) | **Clean** — no scene exceeds the quiet ceiling. Whole-video active-step share **14.0%**. |
+
+**Both of those gate results depend on tool versions, and a reader re-running
+them with older copies will get failures that are not this render's fault.**
+
+*Safe-area.* The gate's page-ground estimator took a single median of the outer
+border ring, which is only valid while a frame has one ground. Every wipe
+boundary here has two, so the ring goes bimodal and whichever ground loses the
+median reads as 100% ink. On this render that produced **70 flagged frames, all
+false** — the frame it called worst has a top band of uniform luma 19, min ==
+max, zero variation. Fixed upstream in `catalog/tooling/check-safe-area.py`
+(commit `cc343e9`, controls added in `78c1460`) by clustering the ring instead
+of averaging it. `scripts/check-safe-area.py` here is a copy of the fixed
+version. A pre-fix copy will fail this render; the render is fine.
+
+*`check` layout findings.* A clip-path wipe trips the engine's layout pass as
+`content_overlap` / `text_occluded`, because that pass tests bounding-box
+geometry and does not model `clip-path` — a clipped incoming wrapper still
+presents a full-canvas opaque box over the outgoing scene's text. The rendered
+frames show both scenes with a clean seam. Severity is persistence-aware, so
+the verdict tracks **sampling density rather than the composition**: at
+`--samples 40` a 0.45s window is rarely hit twice across 340s, so these land as
+26 info. Raise the sampling and they become errors without anything about the
+video changing. Measured on a 3-scene proof of the same generator: cuts 0
+layout errors at any density, wipes 1 at `--samples 9`, 3 at 20, 3 at 60.
 
 ## The thing this rebuild was for
 

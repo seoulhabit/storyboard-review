@@ -372,9 +372,14 @@ def resolve_transitions(bs: dict, scenes: list) -> list:
         kind = t.get("type", "cut")
         if kind not in TRANSITIONS:
             die(
-                f"scene {sc['id']!r} names transition type {kind!r}; the registry "
-                f"has {TRANSITION_TYPES}. (No 'wipe', 'match-cut' or 'whip pan' "
-                f"exists as a between-scene transition — TRANSITION-REGISTRY.md.)"
+                f"scene {sc['id']!r} names transition type {kind!r}; this "
+                f"generator has {TRANSITION_TYPES}. A bare 'wipe' is not one of "
+                f"them — the two wipes are directional, 'wipe-left' and "
+                f"'wipe-up', and they are authored here rather than taken from "
+                f"the engine's Tier-B set. 'match-cut' and 'whip pan' exist "
+                f"nowhere: neither is a named between-scene transition "
+                f"(TRANSITION-REGISTRY.md), and whip pan is shader-only with no "
+                f"CSS implementation."
             )
         spec = TRANSITIONS[kind]
         dur = float(t.get("duration", spec["default_duration"]))

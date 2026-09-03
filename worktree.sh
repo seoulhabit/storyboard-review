@@ -225,9 +225,20 @@ cmd_guard() {
   return 0
 }
 
+# _self_check runs for `new` as well as `status`, because `new` is the command
+# the people most likely to hold a stale copy actually run. The check's own
+# comment says a stale copy "is most likely to be run by exactly the people it
+# is for" -- and those people are mid-migration, so they type `new`, not
+# `status`. Wiring it only to `status` put the warning on the one path that
+# audience had no reason to take.
+#
+# Deliberately NOT wired to `guard`: guard is documented as hook-usable, its
+# contract is an exit code, and a hook that starts emitting an extra paragraph
+# on every invocation is a hook someone silences. Its answer -- am I in the
+# shared tree -- also barely depends on script version.
 case "${1:-status}" in
   status) _self_check; cmd_status ;;
-  new)    shift; cmd_new "$@" ;;
+  new)    _self_check; shift; cmd_new "$@" ;;
   guard)  cmd_guard ;;
   *)      die "unknown command: $1 (status | new <name> | guard)" ;;
 esac

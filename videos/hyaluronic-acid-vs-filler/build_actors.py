@@ -30,6 +30,13 @@ SCENES = {s["id"]: s for s in BS["scenes"]}
 ORDER = [s["id"] for s in BS["scenes"]]
 IDIOM_EASE = {"arrive": "power3.out", "slam": "power4.out", "wipe": "power2.inOut",
               "count": "power2.out", "swap": "back.out(1.6)", "hold": "sine.inOut"}
+# [simplification] shared default hold-drift magnitude -- was duplicated
+# verbatim in two_col() and _hold_drift(), with nothing enforcing they stay
+# in sync. s11-do-not-inject already needed a scene-specific override
+# (S11_DRIFTS, see build_warning()) after this exact default pushed content
+# into a reserved safe-area zone; that pattern will recur, and a future
+# tune of the magnitude should only need to happen in one place.
+DEFAULT_DRIFTS = [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
 
 def esc(t):
     return (str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
@@ -134,7 +141,6 @@ def eye_glassware_svg():
     (outline + iris) beside a simple Erlenmeyer flask. Elegant, no gore, no
     likeness of a real person or animal in distress -- pure line art in the
     house idiom, the same restraint the channel uses everywhere else."""
-    rng = random.Random(1934)
     # the eye: almond outline via two symmetric arcs, iris circle, three
     # short lash strokes -- the "tasteful, elegant" 1930s-plate register
     eye = (
@@ -173,7 +179,6 @@ def clinical_vignette_svg():
     """Calm, professional, non-graphic: a prepared tray, a capped/sealed
     syringe lying flat (never entering skin), a small vial, a gloved hand
     resting beside the tray. No face, no needle piercing anything."""
-    rng = random.Random(2024)
     tray = '<rect x="20" y="180" width="480" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="5"/>'
     # capped syringe, lying flat on the tray -- barrel + plunger + a CAPPED tip
     syringe = (
@@ -469,7 +474,7 @@ def two_col(sid, kind, panel_on=False):
               "      </div>\n"
               "    </div>")
     sets, tw, drift = [], [], 0
-    DRIFTS = [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
+    DRIFTS = DEFAULT_DRIFTS
     sets.append(f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
     tw.append(f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
     for i, bt in enumerate(b):
@@ -500,6 +505,18 @@ def two_col(sid, kind, panel_on=False):
 
 
 # ------------------------------------------------------- v2 bespoke scenes --
+# [altitude] THREE separate safe-area violations in this section were each
+# found the same way -- render, run check-safe-area.py, notice real ink in
+# a reserved zone, hand-compute a smaller number, re-render to confirm --
+# and each fix is a one-off literal with no shared, margin-aware mechanism
+# behind it: `S11_DRIFTS` in build_warning(), the pixel budget in
+# `COMPARE_CSS` (build_compare()), and the retuned actor height in
+# `LANE_CSS` (lane_scene()). None of the three would help a FUTURE scene
+# with similarly tight margins -- that scene would rediscover the same
+# defect through the same render/check/guess/re-render cycle. Flagging the
+# pattern here, next to where a fourth instance would most likely be added,
+# rather than solving it with new infrastructure this one-shot generator
+# doesn't otherwise need.
 ROLE_CLASS_MAP = {"head":"head","sub":"sub","body":"body","caption":"caption",
                    "cite":"cite","kicker":"kicker","stat":"stat"}
 
@@ -544,7 +561,7 @@ def _hold_drift(sid, target_sel, drifts=None):
     layout pass could not see (it flagged only a generic container_overflow
     warning on the stage element, not real ink in a reserved zone)."""
     sets, tw = [], []
-    DRIFTS = drifts or [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
+    DRIFTS = drifts or DEFAULT_DRIFTS
     drift = 0
     for bt in beats_of(sid):
         if bt["idiom"] != "hold": continue
@@ -563,7 +580,7 @@ HEROSPLIT_CSS = """
   .panel .actor { color:var(--ink); }
 """
 
-def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None):
+def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None, css_extra=""):
     """head/sub/body/caption/cite text in a left column, one illustration
     panel on the right. The shared shape behind s03/s04/s08/s09."""
     rows = _rows(sid)
@@ -580,16 +597,13 @@ def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None
     if panel_extra_tweens: tw += panel_extra_tweens
     rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
-    return scene_shell(sid, HEROSPLIT_CSS, markup, sets, tw)
+    return scene_shell(sid, HEROSPLIT_CSS + css_extra, markup, sets, tw)
 
 # ---- s03-origin: 1934, cow-eye vitreous, drawn in a tasteful 1930s idiom ---
 def build_origin():
     return _hero_left("s03-origin", eye_glassware_svg())
 
 # ---- s04-body: natural HA in a skin cross-section, water molecules --------
-BODYCROSS_CSS = HEROSPLIT_CSS + """
-  .cross { width:100%; height:100%; }
-"""
 def build_body_cross():
     sid = "s04-body"
     rng = random.Random(11)
@@ -598,8 +612,7 @@ def build_body_cross():
              + "\n      " + water_dots(rng, 20, 480, 560, r=6))
     panel = (f'<svg class="actor cross" viewBox="0 0 480 560" width="480" height="560" '
              f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {inner}\n    </svg>')
-    html = _hero_left(sid, panel)
-    return html.replace(HEROSPLIT_CSS, BODYCROSS_CSS, 1) if HEROSPLIT_CSS in html else html
+    return _hero_left(sid, panel, css_extra="\n  .cross { width:100%; height:100%; }\n")
 
 # ---- s05-compare: side-by-side cross-section, serum vs filler -------------
 # [S7/R-2] measured: the original budget (104px title + 340px actor + 3-line
@@ -630,7 +643,7 @@ def build_compare():
     body_i = [i for i in idx if beats[i].get("role") == "body"]
     cite_i = [i for i in idx if beats[i].get("role") == "cite"]
 
-    rng_s, rng_f = random.Random(23), random.Random(37)
+    rng_s = random.Random(23)
     serum_inner = boundary_panel(rng_s, 420, 460)
     serum_svg = (f'<svg class="actor" viewBox="0 0 420 460" width="420" height="460" '
                  f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {serum_inner}\n    </svg>')
@@ -645,9 +658,6 @@ def build_compare():
         titled = head_i[0]
         title = f'      <h1 class="cmp-title beat" id="{sid}-b{titled}">{txt(beats[titled])}</h1>'
 
-    body_rows = []
-    for n, i in enumerate(body_i[:1]):
-        pass  # left column gets the first body line, right gets the second
     left_body = (f'<div class="body beat is-entering" id="{sid}-b{body_i[0]}">{txt(beats[body_i[0]])}</div>'
                  if len(body_i) > 0 else "")
     left_cite = (f'<div class="cite beat is-entering" id="{sid}-b{cite_i[0]}">{txt(beats[cite_i[0]])}</div>'
@@ -676,12 +686,8 @@ def build_compare():
         sets.append(f"gsap.set('{colsel}', {{ opacity: 0, y: 40, scale: 0.96 }});")
         tw.append(f"tl.to('{colsel}', {{ opacity: 1, y: 0, scale: 1, duration: 1.200, "
                   f"ease: 'power2.inOut' }}, {0.20 + n*0.35:.3f});")
-    for i in idx:
-        if i == titled: continue
-        b = beats[i]
-        sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 26 }});")
-        tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {b['dur']:.3f}, "
-                  f"ease: '{IDIOM_EASE[b['idiom']]}' }}, {b['offset']:.3f});")
+    rows_used = [(i, beats[i], None) for i in idx if i != titled]
+    rs, rt = _row_tweens(sid, rows_used); sets += rs; tw += rt
     hs, ht = _hold_drift(sid, f"#{sid}-colR" ); sets += hs; tw += ht
     return scene_shell(sid, COMPARE_CSS, markup, sets, tw)
 
@@ -797,19 +803,8 @@ def build_warning():
     # #top itself is static (always opacity 1) -- only the vignette
     # illustration it wraps; the caption/kicker inside it get their own
     # tweens below like every other beat, so each keeps its own timing.
-    sets, tw = [], []
-    for i in idx:
-        b = beats[i]
-        ease = IDIOM_EASE[b["idiom"]]; off, d = b["offset"], b["dur"]
-        if b["idiom"] == "slam":
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 1.06, y: -18 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-        elif b["idiom"] == "wipe":
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ clipPath: 'inset(0 0% 0 0)', y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-        else:
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 30 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+    rows_used = [(i, beats[i], None) for i in idx]
+    sets, tw = _row_tweens(sid, rows_used)
     # s11's own content already reaches close to the bottom safe-area edge by
     # design (the full-bleed warning look) -- cap drift well below the shared
     # default so a hold can never push it over. No y-component at all: the
@@ -844,12 +839,14 @@ def fix_generated_grounds():
     own suggestedColor in the same palette direction [S6/A-7].
     """
     fixed = 0
+    total_subs = 0
     for i, sid in enumerate(ORDER, start=1):
         sc = SCENES[sid]
         if sc["handoff"] != "generated":
             continue
         path = f"{OUT}/{i:02d}-{sid}.html"
         html = open(path).read()
+        scene_subs = 0
         pad = ("\n  /* [S7/R-2] a slam parked at scale 1.12 on a full-width block\n"
                "     grows 6% past each edge -- 370px of ink inside left<96 at\n"
                "     t=117.75s. Origin-left pins the edge; the punch goes vertical. */\n"
@@ -868,7 +865,8 @@ def fix_generated_grounds():
                    "     generated ground measures 2.17:1 against the 3:1 floor. Same\n"
                    "     suggestedColor as the hand-authored .kicker fix. */\n"
                    "  .kicker { color:#4B9B93; }\n")
-        html = html.replace("</style>", css + "</style>", 1)
+        html, n = html.replace("</style>", css + "</style>", 1), ("</style>" in html)
+        scene_subs += int(n)
 
         # A `wipe` beat emits a clipPath-ONLY tween. clipPath changes what is
         # painted but NOT the bounding-box geometry the motion pass samples, so
@@ -876,31 +874,41 @@ def fix_generated_grounds():
         # static across s12-do-not-inject, whose tail is three wipes and nothing
         # else. Pair every reveal with a short travel on the same element -- it
         # satisfies the gate because it is genuinely more motion, not less.
-        html = re.sub(
+        html, n = re.subn(
             r"(gsap\.set\('#[^']+', \{ clipPath: 'inset\(0 100% 0 0\)')( \}\);)",
             r"\1, y: 22\2", html)
+        scene_subs += n
         # slam: scale 1.12 -> 1.03 plus a vertical drop
-        html = re.sub(r"(gsap\.set\('#[^']+', \{ opacity: 0, scale: )1\.12( \}\);)",
+        html, n = re.subn(r"(gsap\.set\('#[^']+', \{ opacity: 0, scale: )1\.12( \}\);)",
                       r"\g<1>1.03, y: -18\2", html)
-        html = re.sub(r"(tl\.to\('#[^']+', \{ opacity: 1, scale: 1)(, duration[^}]*ease: 'power4\.out')",
+        scene_subs += n
+        html, n = re.subn(r"(tl\.to\('#[^']+', \{ opacity: 1, scale: 1)(, duration[^}]*ease: 'power4\.out')",
                       r"\1, y: 0\2", html)
-        html = re.sub(
+        scene_subs += n
+        html, n = re.subn(
             r"(tl\.to\('#[^']+', \{ clipPath: 'inset\(0 0% 0 0\)')(, duration)",
             r"\1, y: 0\2", html)
+        scene_subs += n
 
         # And alternate the `hold` drift: identical targets mean every hold after
         # the first tweens to where the element already sits -- zero movement.
-        drifts = [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
         cnt = [0]
         def _drift(m):
-            dx, dy, ds = drifts[cnt[0] % len(drifts)]; cnt[0] += 1
+            dx, dy, ds = DEFAULT_DRIFTS[cnt[0] % len(DEFAULT_DRIFTS)]; cnt[0] += 1
             return "%sx: %d, y: %d, scale: %s%s" % (m.group(1), dx, dy, ds, m.group(3))
-        html = re.sub(r"(tl\.to\('#[^']+-stage', \{ )(x: -?[\d.]+, y: -?[\d.]+, scale: [\d.]+)(, duration)",
+        html, n = re.subn(r"(tl\.to\('#[^']+-stage', \{ )(x: -?[\d.]+, y: -?[\d.]+, scale: [\d.]+)(, duration)",
                       _drift, html)
+        scene_subs += n
 
         open(path, "w").write(html)
         fixed += 1
-    print("  ground/contrast fix applied to %d generated scene(s)" % fixed)
+        total_subs += scene_subs
+        if scene_subs == 0:
+            print("  WARNING: fix_generated_grounds made 0 substitutions on %s -- "
+                  "the external generator's output format may have changed "
+                  "under this fixer's regexes" % sid)
+    print("  ground/contrast fix applied to %d generated scene(s), %d substitution(s) made"
+          % (fixed, total_subs))
 
 
 def fix_motion_sidecar():

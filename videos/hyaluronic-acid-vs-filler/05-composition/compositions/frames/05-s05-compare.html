@@ -198,18 +198,18 @@
 (function () {
   gsap.set('#s05-compare-colL', { opacity: 0, y: 40, scale: 0.96 });
   gsap.set('#s05-compare-colR', { opacity: 0, y: 40, scale: 0.96 });
-  gsap.set('#s05-compare-b2', { opacity: 0, y: 26 });
-  gsap.set('#s05-compare-b4', { opacity: 0, y: 26 });
-  gsap.set('#s05-compare-b5', { opacity: 0, y: 26 });
-  gsap.set('#s05-compare-b6', { opacity: 0, y: 26 });
+  gsap.set('#s05-compare-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s05-compare-b4', { opacity: 0, y: 30 });
+  gsap.set('#s05-compare-b5', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s05-compare-b6', { opacity: 0, y: 30 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
   tl.to('#s05-compare-colL', { opacity: 1, y: 0, scale: 1, duration: 1.200, ease: 'power2.inOut' }, 0.200);
   tl.to('#s05-compare-colR', { opacity: 1, y: 0, scale: 1, duration: 1.200, ease: 'power2.inOut' }, 0.550);
-  tl.to('#s05-compare-b2', { opacity: 1, y: 0, duration: 1.500, ease: 'power2.inOut' }, 3.050);
+  tl.to('#s05-compare-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 3.050);
   tl.to('#s05-compare-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 7.625);
-  tl.to('#s05-compare-b5', { opacity: 1, y: 0, duration: 1.600, ease: 'power2.inOut' }, 9.150);
+  tl.to('#s05-compare-b5', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 9.150);
   tl.to('#s05-compare-b6', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 12.477);
   tl.to('#s05-compare-colR', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
   tl.to('#s05-compare-colR', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 6.450);

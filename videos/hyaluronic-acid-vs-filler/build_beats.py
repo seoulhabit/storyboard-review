@@ -111,7 +111,14 @@ SCENES = [
         (at(9,0.00), 1.40, "arrive", "caption", "Skip that step, and you're hiring a lifeguard for an empty swimming pool"),
         (at(9,0.60), 1.10, "slam",   "sub",     "Strange image. Correct principle."),
       ]),
- dict(id="s10-crosslink", actor="ha-filler", section="proof", layout="two-column", bg=INK,
+ # layout is "hero-left", not "two-column": build_actors.py's BUILD dict
+ # routes this scene through build_crosslink_transform() -> _hero_left(),
+ # not two_col() -- the label was wrong (copy-pasted from s06-serum-size,
+ # the actual two-column scene) and made the beat sheet's own metadata
+ # misleading about which code path renders it, confirmed by a real
+ # difference: s06 gets an aqua accent border from two_col's panel_on,
+ # this scene structurally cannot.
+ dict(id="s10-crosslink", actor="ha-filler", section="proof", layout="hero-left", bg=INK,
       start=S[10]["start"], end=S[11]["start"], beats=[
         (at(10,0.00), 1.50, "arrive", "head", "A filler is chemically different"),
         (at(10,0.30), 1.80, "swap",   "body", "Cross-linked into a stable, connected grid"),
@@ -167,10 +174,17 @@ for sc in SCENES:
             cursor = round(cursor + step, 3)
             step = HOLD_STEP
             if b["offset"] - cursor <= 0: break
-            filled.append({"offset": cursor, "dur": min(0.9, round(dur - cursor, 3)),
+            # [correctness] clip against the UPCOMING beat's own offset too,
+            # not only the scene's total length -- clipping against `dur`
+            # alone let a hold's end run past the very next beat's start
+            # (measured: 7 overlaps up to 0.773s across 6 scenes), so two
+            # beats were animating in the same window at once.
+            hold_dur = min(0.9, round(dur - cursor, 3), round(b["offset"] - cursor, 3))
+            if hold_dur <= 0: break
+            filled.append({"offset": cursor, "dur": hold_dur,
                            "idiom": "hold", "role": "body", "actor": sc["actor"],
                            "intent": f"camera drift on {sc['actor']}"})
-            cursor = round(cursor + 0.9, 3)
+            cursor = round(cursor + hold_dur, 3)
         filled.append(b)
         end2 = b["offset"] + b["dur"]
         if k == 0 and abs(b["offset"]) < 1e-6:

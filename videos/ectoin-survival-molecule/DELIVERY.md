@@ -11,16 +11,24 @@ published anywhere.
 | Item | Path | Notes |
 |---|---|---|
 | **Publish candidate** | `renders/ectoin-survival-molecule_2026-09-02_final.mp4` | 1920×1080, 30 fps, **5:40.2**, 10,207 frames. Carries the wipe transition system and the scene-28 fix. **Mastered: −14.6 LUFS / −1.9 dBTP**, measured by decoding the shipped file back. |
-| Pre-master of the above | `renders/ectoin-survival-molecule_2026-09-02_wipes.mp4` | Same picture, unmastered (−24.2 LUFS). Kept for re-mastering; **not** the publish candidate. |
 | Superseded — no transitions | `renders/ectoin-survival-molecule.mp4` | The 28-hard-cut build, mastered. Kept as the before/after reference and as the safe-area gate's clean baseline. |
-| Superseded — pre-master of that | `renders/ectoin-full.mp4` | Same picture as the row above, unmastered. |
-| **Rejected build** | `renders/ectoin-survival-molecule_2026-09-02_transitions.mp4` | Translating push instead of a wipe. **Fails the safe-area gate on 35 frames** — sliding a full-canvas scene drags its content through the reserved zones. Kept only as the known-dirty fixture the gate fix was validated against; safe to delete once that is no longer wanted. |
 | Act 1 pilot | `renders/ectoin-act1.mp4` | The 75s risk-retirement render. Superseded — kept only as the cadence baseline the table below compares against. |
 | Captions | `captions/ectoin-survival-molecule.srt` / `.vtt` | 217 cues from real word timings, not estimates. Shortest 1.00s, longest 5.26s, **0 under the 1.0s floor**. |
 | Voiceover | `assets/voice/01.wav` … `29.wav` | Standing series voice. All normalised to exactly 250ms trailing silence. |
 | Storyboard | `STORYBOARD.md` | **Generated** from `index.html` — chapters and timing table cannot drift. |
 | Brief + claim table | `BRIEF.md` | The `[K-1]` table for all 13 claims. |
 | Script | `SCRIPT.md` | All four corrections applied. |
+
+**Pruned 2026-09-02.** Three renders were removed once the final master existed:
+both unmastered pre-masters (`ectoin-full.mp4` and
+`ectoin-survival-molecule_2026-09-02_wipes.mp4`) and the rejected translating-push
+build (`…_2026-09-02_transitions.mp4`), which failed the safe-area gate on 35
+frames because sliding a full-canvas scene drags its content through the reserved
+zones. All three were picture-identical to a render still present here and
+differed only in audio mastering — verified by frame hash before deletion. They
+remain in git history at `4894c0f` if a re-master or the known-dirty gate fixture
+is ever wanted again; re-mastering is cheap from either surviving master anyway,
+since the video stream is copied through untouched.
 
 **Chapters** (paste-ready, from `STORYBOARD.md`):
 
@@ -219,8 +227,9 @@ still zero camera moves.
 ## Reproducing
 
 ```bash
-python3 scripts/pad_vo.py && npm run build && npm run check && npm run render
-python3 scripts/master-audio.py . renders/ectoin-full.mp4 renders/ectoin-survival-molecule.mp4
+python3 scripts/pad_vo.py && npm run build && npm run check
+npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o renders/<raw>.mp4
+python3 scripts/master-audio.py . renders/<raw>.mp4 renders/<final>.mp4
 ```
 
 Gates need their profile flags — `--landscape` for safe-area and static-hold,

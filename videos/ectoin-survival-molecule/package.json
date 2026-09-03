@@ -1,0 +1,13 @@
+{
+  "name": "ectoin-survival-molecule",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 scripts/build_frames.py && python3 scripts/build_index.py",
+    "dev": "npx --yes hyperframes@0.8.22 preview",
+    "check": "npx --yes hyperframes@0.8.22 check --samples 40",
+    "render": "npx --yes hyperframes@0.8.22 render --quality high -o renders/ectoin-act1.mp4",
+    "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . renders/ectoin-act1.mp4 --landscape && python3 scripts/check-safe-area.py . renders/ectoin-act1.mp4 --landscape && python3 scripts/check-cadence.py . renders/ectoin-act1.mp4 --longform"
+  },
+  "devDependencies": { "@hyperframes/core": "^0.8.20" }
+}

@@ -38,7 +38,19 @@ target-version = "py39"
 line-length = 100
 # storyline.py is a separate, not-yet-packaged tool living in this same
 # folder — out of scope here, so leave it out of lint scope too.
-extend-exclude = ["storyline.py"]
+#
+# videos/*/scripts/ are the same case one level down: per-video build
+# generators, packaged with nothing, imported by nothing outside their own
+# project. The package here ships storyboard.py alone (see the wheel target
+# above) and mypy is scoped to it, so holding a scene-spec file to the
+# package's profile buys nothing and costs something — 22 of the 46 findings
+# on the first such project wanted `dict(css=..., body=...)` scene specs
+# rewritten as dict literals, which is strictly harder to read in a file whose
+# whole job is to be read as data.
+#
+# catalog/tooling/ is deliberately NOT excluded. Those are shared checkers that
+# other projects copy, so they stay in scope and their findings get fixed.
+extend-exclude = ["storyline.py", "videos/"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

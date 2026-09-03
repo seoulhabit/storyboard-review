@@ -1,5 +1,13 @@
 # Packaging — hyaluronic-acid-vs-filler
 
+**v2 note (2026-09-03):** the video was revised to a 160 s single-narrator cut
+(see `01-story-brief.md` §v2 Revision). Nothing below was re-run — the topic,
+title and thumbnail scoring all depend on the subject and seed keyword, which
+are unchanged, so re-scoring would have spent vidIQ credits to re-derive the
+same answer. `07-publish-envelope.md` carries the v2-specific chapters and
+description; this file's research stands as the record of how the title and
+thumbnail were chosen.
+
 ## §Topic — S2
 
 **`[S2/T-1]` seed (initial):** `hyaluronic acid vs filler` — shortest noun phrase

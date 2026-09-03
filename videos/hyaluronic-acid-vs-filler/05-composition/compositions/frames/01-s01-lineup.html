@@ -28,8 +28,12 @@
           text-transform:uppercase; }
   .body { font-weight:600; font-size:52px; line-height:1.24; }
   .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
   .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
-            text-transform:uppercase; color:var(--aqua); }
+            text-transform:uppercase; color:#4B9B93; }
   .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
   /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
      those live in the brief's claim table and the video description. */
@@ -46,7 +50,7 @@
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   .col-wrap { display:flex; flex-direction:column; width:100%; height:100%;
-              justify-content:space-between; gap:18px; }
+              justify-content:space-between; gap:32px; }
   .lanes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0;
            width:100%; flex:0 1 auto; min-height:0; align-items:center;
            overflow:hidden; }
@@ -54,7 +58,16 @@
           padding:0 26px; position:relative; height:100%; justify-content:center; }
   .lane + .lane::before { content:""; position:absolute; left:0; top:8%;
           bottom:8%; width:2px; background:var(--rule-strong); }
-  .lane .actor { height:440px; width:auto; max-width:100%; flex:0 0 auto; }
+  /* [S7/R-2] measured: 440px + the foot's 76px punchline left only ~20px
+     clearance -- check flagged content_overlap between the lane0 label and
+     the foot head at their closest approach. 380px restores real clearance. */
+  .lane .actor { height:380px; width:auto; max-width:100%; flex:0 0 auto; }
+  /* Absolutely positioned so the icon adds ZERO height to the lane's flex
+     budget -- v1's proven 440px-actor layout already fills the available
+     798px column exactly; anything added in-flow overflows into .foot. */
+  .lane-icon { position:absolute; top:6px; left:50%; transform:translateX(-50%);
+               color:var(--kicker-color, #4B9B93); opacity:0.85; z-index:1; }
+  .lane-icon svg { display:block; width:52px; height:52px; }
   .lane-copy { font-weight:700; font-size:34px; letter-spacing:.12em;
                text-transform:uppercase; color:var(--ink-2); text-align:center; }
   .badge { font-weight:700; font-size:34px; letter-spacing:.10em;
@@ -65,12 +78,13 @@
 </style>
 
 <div id="root" data-composition-id="s01-lineup" data-width="1920" data-height="1080"
-     data-duration="13.255">
-  <div class="clip stage" id="s01-lineup-stage" data-start="0" data-duration="13.255">
+     data-duration="14.734">
+  <div class="clip stage" id="s01-lineup-stage" data-start="0" data-duration="14.734">
     <div class="col-wrap">
-      <h1 class="head beat" id="s01-lineup-b0">Hyaluronic acid</h1>
+      <h1 class="head beat" id="s01-lineup-b0">Your hyaluronic-acid serum cannot do what filler does.</h1>
       <div class="lanes">
         <div class="lane" id="s01-lineup-lane0">
+          <div class="lane-icon"><svg class="icon" viewBox="0 0 96 96" width="96" height="96" aria-hidden="true"><circle cx="48" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="5"/><path d="M48 32 L48 62 M48 40 L26 56 M48 40 L70 56 M48 62 L32 92 M48 62 L64 92" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></div>
           <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <path d="M 86.9 351.2 C 105.8 351.2 115.2 339.2 134.0 339.2 C 152.9 339.2 162.3 347.1 181.2 347.1 C 200.0 347.1 209.5 337.2 228.3 337.2 C 247.2 337.2 256.6 344.9 275.5 344.9 C 294.3 344.9 303.8 331.1 322.6 331.1 C 341.5 331.1 350.9 358.5 369.8 358.5 C 388.6 358.5 398.0 332.8 416.9 332.8" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
       <path d="M 26.0 195.2 C 44.9 195.2 54.3 208.0 73.1 208.0 C 92.0 208.0 101.4 212.6 120.3 212.6 C 139.1 212.6 148.6 187.3 167.4 187.3 C 186.3 187.3 195.7 223.2 214.6 223.2 C 233.4 223.2 242.9 202.2 261.7 202.2 C 280.6 202.2 290.0 220.6 308.9 220.6 C 327.7 220.6 337.1 190.7 356.0 190.7" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
@@ -104,9 +118,10 @@
       <circle cx="136.6" cy="368.7" r="7" fill="currentColor" opacity="0.28"/>
       <circle cx="198.4" cy="282.9" r="7" fill="currentColor" opacity="0.28"/>
     </svg>
-          <div class="lane-copy beat is-entering" id="s01-lineup-b1">The kind your body makes</div>
+          <div class="lane-copy beat is-entering" id="s01-lineup-b2">The kind your body makes</div>
         </div>
         <div class="lane" id="s01-lineup-lane1">
+          <div class="lane-icon"><svg class="icon" viewBox="0 0 96 96" width="96" height="96" aria-hidden="true"><rect x="30" y="4" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="5"/><path d="M32 16 L32 30 L22 46 L22 88 Q22 92 26 92 L70 92 Q74 92 74 88 L74 46 L64 30 L64 16" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><rect x="26" y="58" width="44" height="26" fill="currentColor" opacity="0.14"/></svg></div>
           <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <g class="big">
       <path d="M 217.9 214.4 C 239.8 214.4 250.7 195.6 272.5 195.6 C 294.4 195.6 305.3 216.9 327.1 216.9 C 349.0 216.9 359.9 194.0 381.7 194.0 C 403.6 194.0 414.5 223.1 436.3 223.1" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
@@ -126,9 +141,10 @@
       <path d="M 151.5 572.5 C 160.7 572.5 165.3 569.5 174.5 569.5 C 183.7 569.5 188.3 573.3 197.5 573.3 C 206.7 573.3 211.3 568.6 220.5 568.6 C 229.7 568.6 234.3 577.1 243.5 577.1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
       </g>
     </svg>
-          <div class="lane-copy beat is-entering" id="s01-lineup-b2">The kind in your serum</div>
+          <div class="lane-copy beat is-entering" id="s01-lineup-b3">The kind in your serum</div>
         </div>
         <div class="lane" id="s01-lineup-lane2">
+          <div class="lane-icon"><svg class="icon" viewBox="0 0 96 96" width="96" height="96" aria-hidden="true"><g transform="translate(6,40) rotate(-28 42 8)"><rect x="0" y="0" width="60" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="5"/><rect x="-14" y="3" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="5"/><line x1="60" y1="8" x2="82" y2="8" stroke="currentColor" stroke-width="4"/></g></svg></div>
           <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
       <line x1="40.0" y1="40.0" x2="128.0" y2="40.0"/>
@@ -278,12 +294,12 @@
       <circle cx="480.0" cy="580.0" r="9"/>
       </g>
     </svg>
-          <div class="lane-copy beat is-entering" id="s01-lineup-b3">The kind a doctor injects</div>
+          <div class="lane-copy beat is-entering" id="s01-lineup-b4">The kind a doctor injects</div>
         </div>
       </div>
       <div class="foot">
-        <div class="kicker beat is-entering" id="s01-lineup-b4">Same name</div>
-        <div class="head beat is-entering" id="s01-lineup-b5" style="font-size:76px;color:var(--aqua)">Different jobs</div>
+        <div class="kicker beat is-entering" id="s01-lineup-b1">Same name</div>
+        <div class="head beat is-entering" id="s01-lineup-b6" style="font-size:76px;color:var(--aqua)">Different jobs</div>
       </div>
     </div>
   </div>
@@ -297,21 +313,22 @@
   gsap.set('#s01-lineup-b2', { opacity: 0, y: 26 });
   gsap.set('#s01-lineup-b3', { opacity: 0, y: 26 });
   gsap.set('#s01-lineup-b4', { opacity: 0, y: 26 });
-  gsap.set('#s01-lineup-b5', { opacity: 0, y: 26 });
+  gsap.set('#s01-lineup-b6', { opacity: 0, y: 26 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
   tl.to('#s01-lineup-stage', { scale: 1.014, y: -7, duration: 1.500, ease: 'sine.inOut' }, 0.150);
   tl.to('#s01-lineup-stage', { scale: 1.0, y: 0, duration: 1.200, ease: 'sine.inOut' }, 1.700);
-  tl.to('#s01-lineup-lane0', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 1.829);
-  tl.to('#s01-lineup-b1', { opacity: 1, y: 0, duration: 1.400, ease: 'power2.inOut' }, 1.829);
-  tl.to('#s01-lineup-lane1', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 4.323);
-  tl.to('#s01-lineup-b2', { opacity: 1, y: 0, duration: 1.400, ease: 'power2.inOut' }, 4.323);
-  tl.to('#s01-lineup-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 6.650);
-  tl.to('#s01-lineup-b3', { opacity: 1, y: 0, duration: 1.400, ease: 'power2.inOut' }, 6.650);
-  tl.to('#s01-lineup-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 8.782);
-  tl.to('#s01-lineup-b5', { opacity: 1, y: 0, duration: 0.800, ease: 'power4.out' }, 11.698);
-  tl.to({}, { duration: 13.255, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s01-lineup-lane0', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 3.866);
+  tl.to('#s01-lineup-b2', { opacity: 1, y: 0, duration: 1.300, ease: 'power4.out' }, 3.866);
+  tl.to('#s01-lineup-lane1', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 6.489);
+  tl.to('#s01-lineup-b3', { opacity: 1, y: 0, duration: 1.300, ease: 'power2.inOut' }, 6.489);
+  tl.to('#s01-lineup-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 9.112);
+  tl.to('#s01-lineup-b4', { opacity: 1, y: 0, duration: 1.300, ease: 'power2.inOut' }, 9.112);
+  tl.to('#s01-lineup-b1', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 1.381);
+  tl.to('#s01-lineup-b6', { opacity: 1, y: 0, duration: 1.000, ease: 'power4.out' }, 12.425);
+  tl.to('#s01-lineup-stage', { x: 8, y: -6, scale: 1.012, duration: 0.113, ease: 'sine.inOut' }, 12.312);
+  tl.to({}, { duration: 14.734, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s01-lineup'] = tl;
 })();

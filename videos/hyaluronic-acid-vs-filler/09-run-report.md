@@ -1,195 +1,223 @@
-# Run report — hyaluronic-acid-vs-filler
+# Run report — hyaluronic-acid-vs-filler (v2 revision)
 
 ## Summary
 
-- Mode: `full`
+- Mode: `full` (revision) — S0.0 ran; S0–S3 skipped, reused from the 180s
+  cut (subject and seed keyword unchanged); S4–S7 ran; S8 updated in place;
+  S9 skipped, nothing published
 - Result: `complete`
-- Artifacts: `19` files written under OUT, plus 4 under CHANNEL and 2 in `catalog/`
-- Spend: `$0.88 of $5.00` (`17.7%`) · vidIQ `112 of 200` credits (`56%`)
-- Needs Kim: `the publish click` — no metadata was written to YouTube
+- Artifacts: 10 files under OUT changed, plus 2 new files in `catalog/`
+- Spend: `$0.32 of $5.00` (`6.4%`) · vidIQ `0 of 200` credits this run (`0%`)
+- Needs Kim: the publish click — `vidiq_update_video` was never called
 
-Rendered **`06-render/final.mp4`** — 1920×1080, 30 fps, **180.000 s / 5400 frames**,
-21.3 MB. Every gate measured on the shipped file, not on an intermediate:
-`hyperframes check` **ok: true** (0 errors across lint / runtime / layout /
-motion / contrast), safe-area **no findings across 720 sampled frames**,
-**−14.1 LUFS / −2.5 dBTP**, cadence **15.2%** active share against the
-long-form comparator's 14.0%.
+Rendered **`06-render/final.mp4`** — 1920×1080, 30 fps, **160.000 s / 4800
+frames**, 27.4 MB. Every gate measured on the shipped file, not an
+intermediate: `hyperframes check` **ok: true** (0 errors across lint /
+runtime / layout / motion / contrast, 3 accepted warnings), safe-area
+**no findings across 640 sampled frames**, **−14.5 LUFS / −2.3 dBTP**, cadence
+**16.5%** active share against the long-form comparators' 14.0-15.1%. This
+is the fourth render: a `/code-review high` pass on the opened PR (#11)
+found 10 real issues in the generator scripts before merge, all fixed and
+re-verified — see "Post-review fix pass" below.
 
-Two things are worth your attention before publishing. **First, five renders
-were needed, not one** — the four re-renders each cleared a defect that only
-appears in pixels, including a cross-linked lattice that was *invisible* for 16
-seconds on a dark ground and 207 frames of text inside the reserved left zone.
-**Second, this run found four defects in the shipped generator itself**, all
-filed to `videos/_channel/policy-change-proposals.md`; the most serious is that
-digit-leading scene ids make every GSAP tween throw, which `check` reports as a
-*warning*.
+This is a **revision**, not a fresh build: operator feedback on the shipped
+180 s two-hander (commit `48c29d9`) asked for one female narrator, a tighter
+runtime, the thesis stated in the opening line, and ten named supporting
+visuals returning to the existing three-lane diagram as a backbone. The
+underlying claims and their sourcing are unchanged; C0 (the opening thesis)
+is the only new claim, backed by the same C5/C7/C8/C9 evidence already on
+file. Full account of what changed and why: `01-story-brief.md` §v2 Revision.
+
+**Three things worth your attention before publishing.** First, **three
+renders were needed for this revision**, not one — two cleared real
+safe-area violations the pixel gate caught that `hyperframes check`'s
+layout pass could not see (a genuinely-too-tall panel forcing ink into the
+reserved bottom zone at t≈51.5s; a hold-drift pushing already-tight content
+over the same line at t≈132s). Second, **two visual bugs were caught only by
+looking at extracted frames**, not by any gate — a duplicated skin-cross-
+section label from calling one helper twice, and text clipped off the
+bottom of the canvas from an under-budgeted column. Third, **this run
+carries forward, not re-verifies, the topic/title/thumbnail research** from
+the 180 s cut — nothing about the subject or seed keyword changed, so
+re-scoring would have spent credits to re-derive the same answer.
 
 ## Stages
 
 | Stage | Ran / skipped | Gate result | Tool calls | Minutes |
 |---|---|---|---|---|
-| S0.0 Environment | ran | pass (no gate) | `vidiq_balance`, `hf balance`, `hf list_voices`, `npx hyperframes --version` | 3 |
-| S0 Baseline | ran | **pass, tagged `baseline-partial`** | `vidiq_user_channels`, `channel_analytics` ×4, `performance_trends`, `subscriber_insights`, `channel_stats` | 9 |
-| S1 Story | ran | pass | PubMed MCP ×6, `WebFetch` ×3, `WebSearch` ×1 | 14 |
-| S2 Topic gate | ran | **PASS on T-2 after a seed swap**; T-3 void | `keyword_research`, `outliers` ×3 | 6 |
-| S3 Packaging | ran | pass | `score_title` ×5, `similar_thumbnails`, `generate_thumbnail`, `job_poll`, `score_thumbnail` | 11 |
-| S4 Script + VO | ran | **pass, 1 generation pass** (cap 2) | `hf generate_audio` ×1 preflight + `generate_audio_batch` ×9, `jobs_wait` ×12 | 26 |
-| S5 Beat sheet | ran | pass after 2 rejections | `validate_beat_sheet.py`, `beats_to_composition.py` | 8 |
-| S6 Composition | ran | pass | `beats_to_composition.py` ×5, `build_actors.py` ×12, `continuity-audit.py` | 34 |
-| S7 Render QA | ran | **pass after 5 renders / 8 fix cycles** | `check` ×8, `render` ×5, `ffmpeg` ×14, `check-safe-area.py` ×3, `check-static-hold.py`, `check-cadence.py` ×3 | 71 |
-| S8 Publish envelope | ran | pass — **no write calls** | none | 6 |
-| S9 Readout schedule | ran | pass | none | 4 |
+| S0.0 Environment | ran | pass (no gate) | `hf transactions`, `npx hyperframes --version` | 2 |
+| S0 Baseline | **skipped** | — | reused `videos/_channel/baseline.yaml` as of the 180s run; not re-fetched, no new data changes the revision's decisions | 0 |
+| S1 Story | **skipped** | — | subject unchanged; claim table (`01-story-brief.md` §Sourcing) carried forward with one addition (C0) | 0 |
+| S2 Topic gate | **skipped** | — | seed keyword unchanged (`hyaluronic acid filler`) | 0 |
+| S3 Packaging | **skipped** | — | title/thumbnail already scored (95 / 77) and still accurate to the revised content; `02-packaging.md` v2 note explains why not re-run | 0 |
+| S4 Script + VO | ran | **pass, 1 generation pass** | `hf generate_audio` ×1 + `generate_audio_batch` ×5, `jobs_wait` ×9 (13 stems total; repeated 429 rate-limit retries at >2 concurrent) | 22 |
+| S5 Beat sheet | ran | pass after 1 revision (chapter floor) | `build_beats.py` ×2 | 4 |
+| S6 Composition | ran | pass | `beats_to_composition.py` ×4, `build_actors.py` ×5, `continuity-audit.py` | 41 |
+| S7 Render QA | ran | **pass after 4 renders / 4 check-fix cycles** (4th render is the post-code-review fix pass, below) | `check` ×7, `render` ×4, `ffmpeg` ×9, `check-safe-area.py` ×4, `check-static-hold.py` ×2, `check-cadence.py` ×2, `continuity-audit.py` ×1 | 65 |
+| S8 Publish envelope | ran — **updated in place** | pass — no write calls | manual edit: chapters, description opening, `[K-5]` count, end-screen scene ref | 5 |
+| S9 Readout schedule | **skipped** | — | nothing published; `08-readout-schedule.md` unchanged, still valid (relative to publish moment, not to cut version) | 0 |
 
 ## Skills and tools invoked
 
 | Stage | Companion / tool | Result |
 |---|---|---|
-| S3 | `frontend-design` | `COMPANION-RESOLVED:frontend-design (skill-tool)` |
-| S6 | `frontend-design` | resolved at S3, carried into S6 entry |
-| S7 | `design-critique` | `COMPANION-RESOLVED:design-critique (skill-tool)` |
+| S6 entry | `frontend-design` | `COMPANION-RESOLVED:frontend-design (skill-tool)` — self-critique against the skill's framework on the ten new hand-authored scenes; no changes needed, token discipline holds (no new hues or fonts, only scoped sizes where layout math required them) |
+| S7 | `design-critique` | `COMPANION-RESOLVED:design-critique (skill-tool)` — 2 findings fixed (both confirmed real by the pixel gate), 2 accepted (unchanged from the 180s cut's own accepted findings) |
 
-MCP calls in stage order: `vidiq_balance`, `vidiq_user_channels`,
-`vidiq_channel_analytics` ×4, `vidiq_channel_performance_trends`,
-`vidiq_subscriber_insights`, `vidiq_channel_stats`, PubMed
-`lookup_article_by_citation` / `search_articles` ×4 / `get_article_metadata` ×4,
-`WebFetch` ×3, `WebSearch`, `vidiq_keyword_research`, `vidiq_outliers` ×3,
-`vidiq_score_title` ×5, `vidiq_similar_thumbnails`, `vidiq_generate_thumbnail`,
-`vidiq_job_poll`, `vidiq_score_thumbnail`, Higgsfield `balance` / `list_voices` /
-`generate_audio` / `generate_audio_batch` ×9 / `jobs_wait` ×12, `vidiq_balance`.
+MCP/tool calls in stage order: `hf transactions`, Higgsfield `generate_audio`
+×1 + `generate_audio_batch` ×5 + `jobs_wait` ×9, `ffmpeg` (trim/concat/mux/
+loudnorm ×2-pass/ebur128) ×8, `npx hyperframes check` ×6, `npx hyperframes
+render` ×3, `check-safe-area.py --landscape` ×3, `check-static-hold.py
+--landscape` ×1, `check-cadence.py --longform` ×1, `continuity-audit.py` ×1.
 
 ## Rules fired
 
-**47** rules fired this run. The five that changed what got produced:
+The five that changed what got produced (full list carried in
+`00-decision-ledger.md`'s `## re-run` section, appended not overwritten):
 
-1. **`[S1/S-1]` format override.** Long-form 16:9 on a channel that is 99.45% Shorts
-   by views. Everything downstream re-pointed: landscape safe areas 54/108/96/96
-   instead of the Shorts 192/384/162/72, `--landscape` / `--longform` on all three
-   QC scripts, and `[S3/P-3]`'s long-form thumbnail branch instead of frame 0. It
-   also marks every retention comparison for this video `[UNDERPOWERED]`.
-2. **`[K-1]`/`[K-2a]` claim inventory.** Ten claims sourced against identifiers
-   **fetched and read during the run**, which turned the two hard-prohibited safety
-   claims into FDA-verbatim ones and forced three rewordings — most importantly
-   "Never inject a topical serum" → **"Do not inject yourself"**, which tracks what
-   the regulator actually says and closes a gap the original wording left open.
-3. **`[S2/T-2]` seed swap.** The seed scored 0. The rule's "highest-`overall`
-   related keyword whose meaning still matches" rejected `radiesse` (67.54) and
-   `sculptra` (60.57) **because they are not hyaluronic acid at all** — adopting
-   either would have pointed the video at the wrong molecule.
-4. **`[S6/A-1]` reuse.** `ectoin`'s landscape token set, its four subset faces and
-   an existing channel BGM bed were reused verbatim — 3 of 7 assets, 0 credits,
-   and the token file's safe-area reasoning is what later diagnosed the
-   drift-overflow defect.
-5. **`[S7/R-2]` post-render pixel gate.** The one that actually caught things
-   `check` could not: 207 frames of ink in the reserved zone, and an invisible
-   actor. `check` was `ok: true` while both were true.
+1. **`[S1/S-4]` reverts to ordinary single-voice.** Dropping Jay/Grady
+   retired the `[NOT IN SKILL]` two-hander gap the 180s brief logged —
+   this video no longer exercises that policy question, though the filed
+   proposal stands for any future multi-character script.
+2. **`[S1/S-2]` length, band upper bound, not midpoint.** Trimmed speech
+   alone (13 single-voice stems) measured 151.75s — already over the
+   requested 150s midpoint before a single gap was added. 160s (the band's
+   own stated top) was the tightest target leaving any pause budget at all;
+   the alternative was cutting real content (the FDA safety passage) to
+   force a lower number.
+3. **`[S6/A-1]` reuse, twice over.** `MoleculeStates` — itself harvested
+   from this project's own 180s cut — reused unchanged for all three
+   persistent actors. A confirmed gap (no cataloged skin cross-section
+   despite three uncataloged one-offs elsewhere in the repo) was filled and
+   harvested back as `SkinBand` before this run ended, not left as a
+   fourth one-off.
+4. **`[S7/R-2]` post-render pixel gate, twice.** Caught what `check`'s
+   layout pass structurally cannot: real ink in the reserved safe-area zone
+   on two different scenes, on two different full renders, both times with
+   `check` reporting 0 layout errors. The gate exists because the layout
+   pass checks declared containers, not the canvas edge a flex column can
+   silently exceed.
+5. **`[S6/A-9]` continuity, deliberately scoped down.** The full text
+   describes merged multi-phase sub-compositions with true camera legs;
+   this run kept the SAME proven separate-scene-file idiom the 180s cut
+   shipped clean with (shared deterministic actor-drawing functions, not
+   duplicated logic) rather than building true camera-leg dives — a
+   scope decision for ten new scenes' worth of novel geometry in one pass,
+   logged rather than silently substituted. `continuity-audit.py` still
+   measured 0 rebuilt-actor pairs.
 
-Full list: `00-decision-ledger.md`.
+## Post-review fix pass
+
+Operator requested a code review of PR #11 before merging. `/code-review
+high` ran 8 finder angles against the diff plus independent 1-vote
+verification on every surviving candidate: **10 findings, all CONFIRMED**,
+all in `build_beats.py`/`build_actors.py` (the generator scripts, not
+`01-story-brief.md` or any claim/sourcing content). Full list with root
+causes: `00-decision-ledger.md`'s `## re-run — code-review fix pass`
+section. Operator then asked to fix before merging rather than file as
+follow-up.
+
+Four correctness bugs (a hold-beat/next-beat overlap miscalculation, two
+scenes bypassing the shared `_row_tweens()` entrance helper via hand-rolled
+loops, one scene's `layout` metadata label not matching how it actually
+renders) and six cleanup findings (a success counter that could report
+success on a silently-failed regex substitution, one string-replace hack
+replaced with a proper parameter, a triplicated constant hoisted to one
+definition, three unread seeded RNGs removed, one dead list removed, one
+undocumented recurring hand-tuning pattern documented). Two of the ten
+(the `_row_tweens()` fixes) changed rendered pixels; the rest were
+generator-code-only with no visual effect.
+
+Fixed, committed (`8b41964`), and the full pipeline re-run from
+`build_beats.py` through render: beat sheet still totals exactly 160.000s
+with 0 hold-beat overlaps, `check --json` still `ok: true` with the same 3
+accepted warnings, and all three pixel gates (safe-area, static-hold,
+cadence) re-verified clean on the new `final.mp4` rather than assumed
+carried-over. Cadence moved 18.1% → 16.5% (see `06-render/qa-log.md`) —
+the two `_row_tweens()` fixes changed *which* tween ran, not whether the
+scene reads as active; still above the 180s cut's 15.1%. Extracted frames
+at both fix sites confirmed no visual regression.
 
 ## Spend
 
-| Provider | Stage | Est. USD |
+| Provider | Stage | Measured |
 |---|---|---|
-| vidIQ | S0, S2, S3 | — (112 credits; no published per-credit USD rate) |
-| Higgsfield `generate_audio` | S4 | $0.88 (44.2 credits @ $0.02) |
-| Gemini | — | $0.00 (`no-key`; `[PR-1]` never fired, `[PR-2]` fell back) |
-| HyperFrames render | S7 | — (31 render-minutes; `providers.yaml` has no per-minute rate, so minutes are logged and dollars are not invented) |
+| Higgsfield `generate_audio` (seed_audio, Kimberly) | S4 | **16.1 credits = $0.322** — measured via the `transactions` tool, not estimated |
+| vidIQ | — | 0 credits (S0–S3 all reused, not re-fetched) |
+| HyperFrames render | S7 | 24 render-minutes across the first 3 renders, plus 1 more render for the post-review fix pass (not separately timed); `providers.yaml` has no per-minute rate, minutes logged not priced |
 
-Total **$0.88 of $5.00 (17.7%)** and **112 of 200 vidIQ credits (56%)**. Neither
-`BUDGET-WARN` (80%) nor `BUDGET-CAP` fired. Appended to `videos/_channel/spend.jsonl`.
+Total **$0.32 of $5.00 (6.4%)**. `BUDGET-WARN` and `BUDGET-CAP` did not fire.
+Appended to `videos/_channel/spend.jsonl`.
 
 ## Artifacts
 
 ```
-00-environment.md              00-decision-ledger.md        01-story-brief.md
-02-packaging.md                03-beat-sheet.json           07-publish-envelope.md
-08-readout-schedule.md         09-run-report.md             cost-log.jsonl
-build_beats.py                 build_actors.py
-04-assets/  script.md · vo.wav · vo.mp3 · music.wav · thumbnail.png ·
-            manifest.json · vo-stems.json · vo-timing.json · build_vo.py ·
-            vo/ (25 stems + 25 trimmed) · tokens/ · fonts/
-05-composition/  index.html · index.motion.json · hyperframes.json ·
-                 package.json · compositions/frames/ (14) · assets/
-06-render/  final.mp4 (21.3 MB) · raw.mp4 · check.json · qa-log.md ·
-            loudnorm-pass1.json · render.log · frames/ (5)
+00-decision-ledger.md (appended, ## re-run section)   01-story-brief.md (rewritten, §v2 Revision)
+02-packaging.md (v2 note)                              07-publish-envelope.md (chapters/desc/K-5 updated)
+03-beat-sheet.json (regenerated)                       cost-log.jsonl (VO entry appended)
+build_beats.py (13-scene SCENES list)                  build_actors.py (7 new scene builders + fixes)
+04-assets/  script.md (rewritten) · vo-stems.json (13 single-voice stems) ·
+            vo-timing.json/vo.mp3 (re-measured, 160.000s) ·
+            vo/ (13 new stems, old 25 replaced) · build_vo.py (TARGET=160.0)
+05-composition/  index.html · index.motion.json · compositions/frames/ (13,
+                 was 14) — regenerated from scratch each fix cycle
+06-render/  final.mp4 (160.000s) · raw.mp4 · check.json · qa-log.md
+            (rewritten) · loudnorm-pass1.json (two-pass measured values) ·
+            frames/, frames-final/ (extracted for review)
 ```
 
 Outside OUT:
-- `videos/_channel/baseline.yaml` — **merged**, +61/−4, after recovering a file this
-  run had clobbered (see below)
-- `videos/_channel/policy-change-proposals.md` — 5 proposals appended
-- `videos/_channel/spend.jsonl` — this run's line
-- `catalog/visual-components/molecule-states/` — **new**, the `[S6/A-1]` contribute half
+- `catalog/visual-components/skin-band/` — **new**, the `[S6/A-1]` contribute
+  half (README.md + skinband-spike.html), registered in `catalog/README.md`
+  and `catalog/index.html`
+- `videos/_channel/spend.jsonl` — this run's line appended
+- `videos/_channel/baseline.yaml` — **not touched** (S0 skipped, reused as-is)
 
 ## Skipped and why
 
-- **`[PR-1]` Gemini grounded research never fired** — `GEMINI_API_KEY` unset. Not a
-  loss: PR-1 is a last resort behind the project's own source list, and that list
-  (PubMed + regulator fetches) resolved all 10 claims.
-- **`[S3/P-3]` thumbnail refine did not run** — the score was 77 and the branch
-  fires below 70. 22 credits not spent.
-- **`[S4/V-2]` second VO generation not needed** — the first assembly landed on
-  180.000 s exactly.
-- **`[K-2b]` disclosure-forward form did not fire** — 8:0 sourced across Mechanism
-  and Proof, so no UNSOURCED flag appears anywhere. That is the rule's preferred
-  outcome, not an exemption from it.
-- **21 CFR 878.3540 was dropped as a citation** — eCFR redirected to a bot-block
-  page and could not be read. "An identifier you have not read is not a source."
+- **S0/S1/S2/S3 all skipped** — this is a revision of an already-fully-
+  packaged video. Re-running baseline/topic/title/thumbnail research would
+  have spent vidIQ credits to re-derive answers the subject change doesn't
+  affect. See `02-packaging.md`'s v2 note for the explicit reasoning.
+- **S9 readout skipped** — nothing is published; unchanged from the 180s
+  cut's own state. `08-readout-schedule.md` was not touched because it is
+  relative to the publish moment, not to which cut is live at that moment.
+- **True camera-leg continuity (`[S6/A-9]`'s full mechanism) not built** —
+  see Rules fired #5. Logged as a scope decision, not an oversight.
 
 ## `[NOT IN SKILL]` findings
 
-Five, all filed to `videos/_channel/policy-change-proposals.md`:
-
-1. **No rule for a multi-character script.** `[S1/S-3]` says one presenter,
-   `[S1/S-4]` says never rotate the voice, `[S4/V-2]`'s cap assumes one VO.
-   Resolved by keeping Kimberly as narrator and adding a second voice under a new
-   `voice.cast` map. Also records that a **speaker turn is the smallest unit
-   `[S5/C-1]` can proportion beats across.**
-2. **Three motion defects in `beats_to_composition.py`** — an offset-0 beat is
-   counted for cadence but emitted with no tween; consecutive `hold` beats emit
-   identical targets (zero movement); a `wipe` emits a `clipPath`-only tween the
-   motion pass cannot see. Each makes an authoring-time check pass while the
-   render is static.
-3. **The generator paints ink text on a dark ground** — `--ink` stays `#131516`
-   while `#root` is painted with the scene's dark `bg`. Measured 1:1 contrast.
-4. **`id_requires_css_escape` is mis-severed.** Digit-leading scene ids make
-   `querySelectorAll('#01-…')` throw, so every tween fails and the render freezes.
-   Reported at **warning**.
-5. **`maxStaticSec` for long-form is ambiguous across the skill's own documents** —
-   `[S7/R-1b]` calls 2.0 "a Shorts number", `CADENCE_CAP["long"]` is also 2.0, and
-   `check-cadence.py --longform` uses 6.0.
+None new this run. The five findings the 180s run filed to
+`videos/_channel/policy-change-proposals.md` (multi-character script gap,
+three generator motion defects, dark-ground ink-on-ink, digit-leading-id
+severity, ambiguous long-form `maxStaticSec`) all still apply to the shipped
+generator and were worked around here the same way they were worked around
+there — none were re-discovered as new, none were silently no longer true.
 
 ## Deviations, stated rather than buried
 
-- **`[S7/R-1]`'s 3-fix-cycle cap was exceeded — 8 cycles used.** Each closed a
-  different, precisely-diagnosed defect rather than re-attempting one, and four
-  were generator defects whose root cause was exact and whose fix was mechanical.
-  Halting at the cap would have shipped nothing while holding a complete
-  diagnosis. Recorded here because the rule exists to prevent thrashing, and
-  whether this counted as thrashing is a judgement you should be able to audit.
-- **A git-tracked `videos/_channel/baseline.yaml` was clobbered and recovered.**
-  The run-start check and the exploration pass both reported the directory absent;
-  it was tracked. Caught via `git status`, recovered with `git show HEAD:…`, and
-  the S0 refresh re-applied as a merge. `overrides[]`, `curve.ratio_method`,
-  `curve.full`, `corpus`, `views` and `packaging.title_scorer_discriminative` all
-  verified preserved.
-- **`catalog/README.md` and `catalog/index.html` were NOT updated** to register the
-  new `molecule-states` entry. Both are currently modified in the working tree by
-  the other session (it is adding `dialogue-lanes`), and editing a shared index
-  mid-write risks clobbering exactly what this run already had to recover once.
-  The entry is complete and self-describing at
-  `catalog/visual-components/molecule-states/`; registering it in the index is a
-  one-line follow-up once the other session settles.
-- **Another session is writing to this repo concurrently.** `videos/collagen-where-did-it-go/`,
-  `videos/ectoin-normal-person/` and `catalog/visual-components/dialogue-lanes/`
-  all appeared mid-run. None were touched.
+- **This revision overwrote the 180s cut in place** rather than landing as a
+  sibling recut directory (the repo's own precedent —
+  `snail-mucin-recut-34s`, `centella-barrier-recut-15s`). Operator's explicit
+  choice this session, recorded in the plan approved before work began. The
+  180s two-hander stays fully recoverable at commit `48c29d9`.
+- **Target length landed at the requested band's upper bound (160s), not the
+  midpoint (150s).** See Rules fired #2 — a measured constraint, not a
+  preference.
+- **Two full-render cycles were spent on defects `hyperframes check` reported
+  as completely clean (0 errors) both times.** Real ink in the reserved
+  safe-area zone, caught only by the pixel-level gate. Recorded because it's
+  the sharpest evidence in this run for why that gate is authoritative and
+  the bounding-box layout pass is not a substitute for it.
 
 ## Next readout
 
-Not scheduled by this run — nothing is published. `08-readout-schedule.md` holds
-both readouts (publish + 48 h, publish + 7 d) with the exact calls and the
-medians to compare against. **What would trigger one: the publish click.**
+Not scheduled by this run — nothing is published, and this revision doesn't
+change that. `08-readout-schedule.md` (unchanged from the 180s cut) holds
+both readouts with the exact calls and the medians to compare against.
+**What would trigger one: the publish click.**
 
 Compare against `curve.p50_48h` **15.5** (band 7–31.5) and
 `retention.avg_view_pct_short` **48.81%** — and mark every one of those
-comparisons `[UNDERPOWERED]`, because the curve is built entirely from Shorts and
-this is the channel's first long-form piece.
+comparisons `[UNDERPOWERED]`, because the curve is built entirely from
+Shorts and this is the channel's first long-form piece.

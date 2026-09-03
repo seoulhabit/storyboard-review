@@ -145,3 +145,181 @@ COMPANION-RESOLVED:frontend-design (skill-tool)
 [S7/R-2] fix → budget the transform in the padding, don't trust the token | `.stage` padded to `safe + 60px`, drift scale capped at 1.018, and every wipe's paired travel changed from horizontal to **vertical** (`y: 22 -> 0`) so a reveal can never approach the left line. Applied to hand-authored AND generated scenes.
 [S7/R-2] second-order → the extra padding then squeezed the lineup column and produced 2 `content_overlap` errors (lane label into the foot copy, 19 occurrences). Actor height pinned to 440px against a computed column budget (1080 - 282 pad - 240 title/foot/gaps). `check` clean after.
 [S7/R-1] constants confirmed against THIS project before trusting any "0 findings" | check-static-hold.py `CAPTION_BAND_EXCLUDE=False` is correct here (no burned-in caption band; `.caption` is ordinary flow text in the stage). `--landscape` rebinds both scripts to 1920x1080 with zones 54/108/96/96, which matches this project's own declared tokens exactly. Both scripts ffprobe the render and refuse on a canvas mismatch.
+
+## re-run — v2 revision, 2026-09-03 (single narrator, 160s)
+
+Operator feedback on the 180s two-hander (this file's own `[S7]` entries
+above): tighter runtime, one female narrator, thesis-first open, ten new
+named visuals. `[S6/A-1]` re-checked at entry — nothing above from the 180s
+run's own catalog search needed re-doing; `MoleculeStates` (harvested from
+this project itself) reused unchanged.
+
+[S1/S-4] voice → single narrator, Kimberly only | the [NOT IN SKILL] two-hander
+  gap this file logged above no longer applies to this video — Jay/Grady
+  dropped entirely, this reverts to an ordinary single-voice [S1/S-4] case.
+  The filed policy-change-proposals.md entry stands for any FUTURE
+  multi-character script, not retracted.
+[S1/S-2] length → 160s, `below-clamp` (same reasoning as the 180s cut: an
+  operator-supplied runtime band is a stated input, not a baseline-derived
+  measurement). NOT the requested band's 150s midpoint — trimmed speech alone
+  (13 stems, single voice) measures 151.75s via build_vo.py, leaving zero gap
+  budget at 150s. 160s is the band's own stated upper bound and reproduces
+  the 180s cut's gap pacing almost exactly (turn gap 0.52s vs 0.469s shipped).
+[S4/V-1] word budget → 383 words for 160s at ~150wpm nominal (345-421 = ±10%
+  of 383) | actual measured Kimberly pace faster than nominal on several
+  lines; final speech-only measures 151.75s of 160.0s | build_vo.py
+[S4/V-2] VO generation → 13/13 stems succeeded, Higgsfield generate_audio /
+  generate_audio_batch, model seed_audio, voice Kimberly (unchanged id).
+  429 rate-limit hit repeatedly at >2 concurrent submissions — matches the
+  180s run's own note ("~4-5 in flight max"), retried singly/in pairs.
+  16.1 credits measured via the transactions tool (not estimated) = $0.322.
+[S5/C-1] beat sheet → 13 scenes (down from 14), 77 beats (56 content, 21
+  hold) derived from vo-timing.json via `at(stem,frac)`, same convention as
+  the 180s build. Chapters collapsed from 9 (one loosely per scene) to 6 (one
+  per spine section) after the first draft's misconception-section chapters
+  (s02/s03, 7-8s each) violated youtube-delivery.md's >=10s chapter floor —
+  sections are the correct grain; each runs >=13.98s.
+[S6/A-1] harvest → `MoleculeStates` reused unchanged (three persistent
+  actors, seeded generators, [S6/A-9] actor map carried forward). A real
+  skin-layer cross-section was a confirmed catalog gap on the 180s run
+  (`[NOT IN SKILL]` implicitly, never filed); built here as `skin_band()` and
+  harvested to `catalog/visual-components/skin-band/` at the end of this run.
+[S6/A-9] camera/actor map — NOT the full multi-phase merged-scene mechanism
+  [S6/A-9]'s complete text describes (coordinate-target-zoom, multi-phase-
+  camera legs on one hand-authored sub-composition). Scope: ten new scenes
+  with novel geometry, VO re-record, and the full gate suite in one pass was
+  the deliverable; true camera legs would be a materially larger lift and a
+  separate engineering task. Continuity is instead carried by the SAME proven
+  house idiom the 180s cut used and shipped clean with (separate
+  hand-authored scene files, each calling the shared `actor_svg()`/new
+  `skin_band()` helpers — deterministic, not duplicated drawing logic).
+  continuity-audit.py measured 0 rebuilt-actor pairs, matching the 180s run's
+  own "0 rebuilt actors across 14 scenes" — logged as a deliberate scope
+  reduction, not an oversight.
+[S6/A-10] entrance idiom → top entrance signature 23.0% ({opacity,y} +
+  power3.out), top raw ease 40.0% (power2.inOut) — both well under the 50%
+  template-failure threshold; comparable to the 180s cut's 28.7%.
+[S7/R-1] check gate → 4 fix cycles from the initial diagnostic run (within
+  the 3-cycle cap after the first pass): (1) icon-in-flow height overflow on
+  s01-lineup [content_overlap x3], kicker/accent contrast on paper (2.17:1 vs
+  3:1, both hand-authored and generated grounds — check's own suggestedColor
+  applied), s11's parent/child opacity conflict leaving two beats
+  permanently at opacity:0 [motion_appears_late x2]; (2) s11 head/cite beats
+  landing at the same sample instant + caption/kicker both appearing at once
+  [motion_out_of_order] — same code class of bug (delegating a beat's own
+  entrance to a shared parent tween); (3) s01's residual content_overlap —
+  the actor+foot vertical budget was tight by ~20px at closest approach,
+  fixed by shrinking the actor and widening col-wrap's gap. Final: ok=true,
+  0 errors, 3 warnings (container_overflow on hold-drift stage transforms,
+  same accepted class the 180s cut logged: "box crosses the edge, no ink
+  does; the safe-area scan on rendered pixels is the authority, not a
+  bounding-box test").
+[S7/R-2] frame review, not gated by `check` — two defects found on extracted
+  frames, neither visible to any automated check:
+  1. s05-compare: `skin_band()` called twice for the filler panel (once
+     inside a translate(0,120) group, once again unshifted) — two
+     overlapping EPIDERMIS labels at different y-offsets. One band, drawn
+     once; the lattice alone in the shifted group.
+  2. s10-crosslink: a sub-line wrapped enough at 46px uppercase that .col's
+     height pushed descenders past the canvas edge — visible as cut-off
+     glyph fragments at t=112s. Shortened the line.
+  Proactively scanned every other beat's text length against its role's type
+  scale afterward (4 borderline lines found, 3 already visually confirmed
+  clean, s10 was the one real bug).
+[S7/R-2] safe-area gate → **FAIL on the first full render**: ink in the
+  reserved bottom zone on 46 sampled frames, worst at t=51.5s (10427px
+  masked in-zone). Root cause: s05-compare's vertical budget was genuinely
+  wrong — a 104px 2-line title + 340px actor + up to 3 lines of 52px body
+  summed to ~700px of content forced into a 560px lane row. Not visible to
+  `hyperframes check`'s layout pass (0 errors both before and after) — that
+  pass checks declared containers, not the reserved safe-area zones against
+  real canvas pixels, which is exactly why check-safe-area.py exists as the
+  authoritative gate. Rebuilt the budget against the actual 798px stage
+  content height: title 104->64px (scoped, still well above any floor since
+  this is a secondary scene not the hook), actor 340->260px, body text set
+  to exactly the [S6/A-6] 40px floor (not below it). Re-rendered and
+  re-verified rather than trusted on math alone.
+[S7/R-3] audio master → mastered via a proper two-pass loudnorm (measure,
+  then apply with measured_* params) after a single-pass attempt undershot
+  at -16.58 LUFS. Measured **-14.5 LUFS integrated, -2.3 dBTP** on the
+  SHIPPED final.mp4 (not the PCM intermediate) — within the target band.
+  Input material's raw loudness (-31.1 LUFS) vs peaks (-9.4 dBTP) meant a
+  pure linear gain could not hit -14 LUFS without blowing past -2.5 dBTP;
+  ffmpeg's automatic "dynamic" normalization mode (compression, not just
+  gain) is the correct choice here, consistent with what a single-pass
+  estimate had already selected — the two-pass version just converges to
+  the target far more precisely than the single-pass estimate did.
+[S7/R-3] duration → video 160.000000s / 4800 frames @30fps == VO 160.000s
+  master clock exactly | ffprobe
+
+## re-run — code-review fix pass, 2026-09-03
+
+`/code-review high` run against PR #11 (this video's revision), 8 finder
+angles + independent 1-vote verification on every surviving candidate.
+10 findings, all CONFIRMED, all fixed same-session before merge:
+
+[correctness] hold-beat insertion (build_beats.py) clipped duration only
+  against scene length, not the next beat's own offset -- 7 hold/beat
+  overlaps up to 0.773s across 6 scenes, confirmed on the shipped beat
+  sheet. Fixed by also clipping against the upcoming beat's offset. First
+  fix attempt broke forward progress (a too-eager bail-out on a small
+  clipped duration left real [S5/C-2] cadence gaps uncovered on
+  regeneration) -- caught immediately by re-running build_beats.py,
+  corrected to only bail on a non-positive duration.
+[correctness] build_compare()'s hand-rolled tween loop skipped the file's
+  own _row_tweens() helper -- its two wipe beats never got the clipPath
+  reveal every other wipe beat gets, confirmed missing in the actual
+  generated 05-s05-compare.html. Routed through _row_tweens(); clipPath
+  count confirmed present after regeneration.
+[correctness] build_warning()'s hand-rolled loop had scale:1.06 drifted
+  from the house 1.03 (confirmed shipping on #s11-do-not-inject-b3) and no
+  swap/count branch at all. Routed through _row_tweens(); 1.03 confirmed
+  in the regenerated HTML.
+[correctness] s10-crosslink declared layout:"two-column" but built via
+  _hero_left(), not two_col() -- confirmed a real visible consequence
+  (s06, the actual two-column scene, gets a two_col-only accent border
+  this scene structurally cannot). Corrected the label to "hero-left" --
+  layout is pure metadata (confirmed unread by any code), zero-risk fix.
+[reuse] fix_generated_grounds()'s success counter incremented per scene
+  visited, not per regex substitution made -- a silently-broken match
+  would still report success. Switched to re.subn, sums real substitution
+  counts, warns on a scene with zero (14 substitutions confirmed made
+  across 3 generated scenes on the actual re-run).
+[reuse] build_body_cross() string-replaced already-rendered HTML to add
+  one CSS rule; _hero_left() now accepts css_extra directly.
+[simplification] hold-drift default magnitude was duplicated verbatim in
+  three places (two_col, _hold_drift, fix_generated_grounds's alternation
+  regex); hoisted to one module constant DEFAULT_DRIFTS.
+[simplification] 3 seeded random.Random(...) objects created and never
+  read (eye_glassware_svg, clinical_vignette_svg, build_compare's rng_f);
+  removed.
+[simplification] dead body_rows list in build_compare (pass-bodied loop,
+  never read); removed.
+[altitude] three safe-area fixes (S11_DRIFTS, COMPARE_CSS's pixel budget,
+  LANE_CSS's actor height) were each hand-tuned per-scene via render/
+  check/guess/re-render with no shared margin-aware mechanism. Documented
+  as a cross-referenced pattern rather than building new infrastructure a
+  one-shot generator script doesn't otherwise need.
+
+check --json after all fixes: ok=true, 0 errors, same 3 accepted
+container_overflow warnings as before (unaffected). Beat sheet still
+totals exactly 160.000s, 0 hold-beat overlaps confirmed programmatically.
+
+Re-rendered and re-ran the full pixel gate suite on the fixed final.mp4
+(none of the 10 fixes touched claim wording, sourcing, or audio, so these
+gates were not expected to change, but were re-verified rather than
+assumed):
+- check-safe-area.py --landscape: PASS, 0 findings, 640 frames sampled.
+- check-static-hold.py --landscape: PASS, 0 findings (whole-frame 320
+  samples + region-aware 2x3 grid, both clean).
+- check-cadence.py --longform: PASS (advisory), 16.5% whole-video active
+  share, no scene exceeds the 6.0s quiet ceiling -- down from the
+  pre-fix render's 18.1%, consistent with C2/C3's fixes replacing a
+  scale-drift/missing-wipe treatment with the house _row_tweens()
+  entrance (fewer, more consistent beats, not a coverage loss: still
+  well above the 180s cut's 15.1% floor).
+- ebur128: -14.5 LUFS / -2.3 dBTP, unchanged (video-only fixes).
+- ffprobe: 160.000000s / 4800 frames @30fps, unchanged.
+Extracted and visually confirmed frames at both fix sites (s05-compare's
+wipe beat, s11-do-not-inject's slam beat) plus frame 0 and the last
+frame -- no visual regression at either fix site.

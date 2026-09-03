@@ -1,0 +1,207 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>SkinBand - labelled skin cross-section</title>
+<style>
+  :root { --paper:#F7F5F0; --ink:#131516; --aqua:#59B8AE; --ink-2:#6B6B6B;
+          --rule-strong:#D9D3C6; --mist:#F0EBE1;
+          --font-display:"EB Garamond",Georgia,serif;
+          --font-body:"Inter",system-ui,sans-serif;
+          --font-mono:"JetBrains Mono",ui-monospace,monospace; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+         font-family:var(--font-body); padding:48px; }
+  h1 { font-family:var(--font-display); font-weight:600; font-size:52px; margin:0 0 6px; }
+  p.lede { color:var(--ink-2); max-width:70ch; font-size:17px; line-height:1.5; margin:0 0 36px; }
+  .lanes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:40px; }
+  .lane { display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .lab { font-weight:700; font-size:15px; letter-spacing:.14em;
+         text-transform:uppercase; color:var(--ink-2); text-align:center; }
+  .panel { border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel svg { display:block; color:var(--ink); }
+  .note { margin-top:44px; font-size:14px; color:var(--ink-2); max-width:78ch;
+          line-height:1.6; border-top:2px solid var(--rule-strong); padding-top:18px; }
+  code { font-family:var(--font-mono); font-size:13px;
+         background:var(--mist); padding:2px 6px; border-radius:4px; }
+</style>
+<h1>SkinBand</h1>
+<p class="lede">A labelled two-layer skin cross-section (epidermis over dermis, a
+gently wavy surface line) that other actors compose within or beneath. Built
+for <code>videos/hyaluronic-acid-vs-filler</code> v2 -- a confirmed catalog gap
+at the time (three uncatalogued one-off cross-sections already existed
+elsewhere in the repo, none harvested) -- and used across four scenes to carry
+where each molecular form actually sits.</p>
+<div class="lanes">
+  <div class="lane">
+    <div class="lab">Natural HA &middot; in the dermis</div>
+    <div class="panel"><svg viewBox="0 0 480 560" width="320" height="373" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path d="M 0.0 26.0 L 48.0 32.3 L 96.0 33.8 L 144.0 29.4 L 192.0 22.5 L 240.0 18.2 L 288.0 19.8 L 336.0 26.1 L 384.0 32.3 L 432.0 33.8 L 480.0 29.3" fill="none" stroke="currentColor" stroke-width="4" opacity="0.7"/>
+      <line class="skin" x1="0" y1="123.2" x2="480" y2="123.2" stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>
+      <text x="16" y="107.2" font-size="22" fill="currentColor" opacity="0.55" style="font-family:var(--font-mono)">EPIDERMIS</text>
+      <text x="16" y="540.0" font-size="22" fill="currentColor" opacity="0.55" style="font-family:var(--font-mono)">DERMIS</text>
+      <path d="M 100.5 315.8 C 121.3 315.8 131.7 298.6 152.5 298.6 C 173.3 298.6 183.7 326.4 204.5 326.4 C 225.3 326.4 235.7 287.5 256.5 287.5 C 277.3 287.5 287.7 327.3 308.5 327.3 C 329.3 327.3 339.7 287.6 360.5 287.6" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 136.0 413.8 C 156.8 413.8 167.2 407.8 188.0 407.8 C 208.8 407.8 219.2 431.3 240.0 431.3 C 260.8 431.3 271.2 403.2 292.0 403.2 C 312.8 403.2 323.2 447.8 344.0 447.8 C 364.8 447.8 375.2 391.6 396.0 391.6" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 206.4 505.7 C 227.2 505.7 237.6 495.5 258.4 495.5 C 279.2 495.5 289.6 514.9 310.4 514.9 C 331.2 514.9 341.6 472.3 362.4 472.3 C 383.2 472.3 393.6 527.5 414.4 527.5 C 435.2 527.5 445.6 474.4 466.4 474.4" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 48.0 148.2 C 68.8 148.2 79.2 146.0 100.0 146.0 C 120.8 146.0 131.2 172.7 152.0 172.7 C 172.8 172.7 183.2 139.3 204.0 139.3 C 224.8 139.3 235.2 180.4 256.0 180.4 C 276.8 180.4 287.2 137.2 308.0 137.2" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+      <circle cx="239.9" cy="364.5" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="221.2" cy="164.6" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="459.0" cy="537.8" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="389.7" cy="388.1" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="158.7" cy="139.4" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="147.2" cy="56.5" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="357.2" cy="228.2" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="392.5" cy="221.0" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="441.5" cy="460.6" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="20.2" cy="129.1" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="420.5" cy="264.4" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="451.4" cy="226.7" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="52.1" cy="347.3" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="362.5" cy="160.3" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="58.3" cy="192.9" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="444.2" cy="414.2" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="71.9" cy="148.1" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="64.5" cy="51.1" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="370.7" cy="112.4" r="6" fill="currentColor" opacity="0.28"/>
+      <circle cx="266.1" cy="252.7" r="6" fill="currentColor" opacity="0.28"/>
+    </svg></div>
+  </div>
+  <div class="lane">
+    <div class="lab">Serum &middot; at the surface</div>
+    <div class="panel"><svg viewBox="0 0 480 560" width="320" height="373" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g class="big">
+      <path d="M 201.3 188.2 C 228.2 188.2 241.6 152.8 268.5 152.8 C 295.4 152.8 308.8 207.8 335.7 207.8 C 362.6 207.8 376.0 169.8 402.9 169.8" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      <path d="M 123.9 71.0 C 150.8 71.0 164.2 55.0 191.1 55.0 C 218.0 55.0 231.4 96.6 258.3 96.6 C 285.2 96.6 298.6 66.0 325.5 66.0" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      <path d="M 24.9 74.8 C 51.7 74.8 65.2 48.9 92.1 48.9 C 118.9 48.9 132.4 96.3 159.3 96.3 C 186.1 96.3 199.6 65.4 226.5 65.4" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      </g>
+      <line class="skin" x1="0" y1="257.6" x2="480" y2="257.6" stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>
+      <g class="small">
+      <path d="M 142.1 312.6 C 151.3 312.6 155.9 309.5 165.1 309.5 C 174.3 309.5 178.9 314.7 188.1 314.7 C 197.3 314.7 201.9 306.8 211.1 306.8 C 220.3 306.8 224.9 320.0 234.1 320.0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 143.3 465.6 C 152.5 465.6 157.1 465.6 166.3 465.6 C 175.5 465.6 180.1 470.9 189.3 470.9 C 198.5 470.9 203.1 460.6 212.3 460.6 C 221.5 460.6 226.1 469.3 235.3 469.3" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 181.2 458.0 C 190.4 458.0 195.0 455.3 204.2 455.3 C 213.4 455.3 218.0 461.5 227.2 461.5 C 236.4 461.5 241.0 450.2 250.2 450.2 C 259.4 450.2 264.0 460.7 273.2 460.7" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 130.0 476.7 C 139.2 476.7 143.8 474.5 153.0 474.5 C 162.2 474.5 166.8 479.1 176.0 479.1 C 185.2 479.1 189.8 470.9 199.0 470.9 C 208.2 470.9 212.8 483.3 222.0 483.3" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 214.8 478.8 C 224.0 478.8 228.6 477.5 237.8 477.5 C 247.0 477.5 251.6 481.6 260.8 481.6 C 270.0 481.6 274.6 474.0 283.8 474.0 C 293.0 474.0 297.6 488.2 306.8 488.2" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 206.7 352.0 C 215.9 352.0 220.5 355.7 229.7 355.7 C 238.9 355.7 243.5 359.8 252.7 359.8 C 261.9 359.8 266.5 353.0 275.7 353.0 C 284.9 353.0 289.5 359.0 298.7 359.0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 205.5 502.6 C 214.7 502.6 219.3 503.8 228.5 503.8 C 237.7 503.8 242.3 502.5 251.5 502.5 C 260.7 502.5 265.3 501.0 274.5 501.0 C 283.7 501.0 288.3 504.5 297.5 504.5" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 161.5 305.2 C 170.7 305.2 175.3 302.7 184.5 302.7 C 193.7 302.7 198.3 309.5 207.5 309.5 C 216.7 309.5 221.3 300.6 230.5 300.6 C 239.7 300.6 244.3 312.2 253.5 312.2" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 203.1 519.3 C 212.3 519.3 216.9 514.6 226.1 514.6 C 235.3 514.6 239.9 524.1 249.1 524.1 C 258.3 524.1 262.9 511.9 272.1 511.9 C 281.3 511.9 285.9 521.0 295.1 521.0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      </g>
+    </svg></div>
+  </div>
+  <div class="lane">
+    <div class="lab">Filler &middot; beneath the skin</div>
+    <div class="panel"><svg viewBox="0 0 480 560" width="320" height="373" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g transform="translate(0,120)"><g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
+      <line x1="30.0" y1="30.0" x2="135.0" y2="30.0"/>
+      <line x1="30.0" y1="30.0" x2="30.0" y2="125.0"/>
+      <line x1="30.0" y1="30.0" x2="135.0" y2="125.0" class="xl"/>
+      <line x1="135.0" y1="30.0" x2="240.0" y2="30.0"/>
+      <line x1="135.0" y1="30.0" x2="135.0" y2="125.0"/>
+      <line x1="135.0" y1="30.0" x2="240.0" y2="125.0" class="xl"/>
+      <line x1="240.0" y1="30.0" x2="345.0" y2="30.0"/>
+      <line x1="240.0" y1="30.0" x2="240.0" y2="125.0"/>
+      <line x1="240.0" y1="30.0" x2="345.0" y2="125.0" class="xl"/>
+      <line x1="345.0" y1="30.0" x2="450.0" y2="30.0"/>
+      <line x1="345.0" y1="30.0" x2="345.0" y2="125.0"/>
+      <line x1="345.0" y1="30.0" x2="450.0" y2="125.0" class="xl"/>
+      <line x1="450.0" y1="30.0" x2="450.0" y2="125.0"/>
+      <line x1="30.0" y1="125.0" x2="135.0" y2="125.0"/>
+      <line x1="30.0" y1="125.0" x2="30.0" y2="220.0"/>
+      <line x1="30.0" y1="125.0" x2="135.0" y2="220.0" class="xl"/>
+      <line x1="135.0" y1="125.0" x2="240.0" y2="125.0"/>
+      <line x1="135.0" y1="125.0" x2="135.0" y2="220.0"/>
+      <line x1="135.0" y1="125.0" x2="240.0" y2="220.0" class="xl"/>
+      <line x1="240.0" y1="125.0" x2="345.0" y2="125.0"/>
+      <line x1="240.0" y1="125.0" x2="240.0" y2="220.0"/>
+      <line x1="240.0" y1="125.0" x2="345.0" y2="220.0" class="xl"/>
+      <line x1="345.0" y1="125.0" x2="450.0" y2="125.0"/>
+      <line x1="345.0" y1="125.0" x2="345.0" y2="220.0"/>
+      <line x1="345.0" y1="125.0" x2="450.0" y2="220.0" class="xl"/>
+      <line x1="450.0" y1="125.0" x2="450.0" y2="220.0"/>
+      <line x1="30.0" y1="220.0" x2="135.0" y2="220.0"/>
+      <line x1="30.0" y1="220.0" x2="30.0" y2="315.0"/>
+      <line x1="30.0" y1="220.0" x2="135.0" y2="315.0" class="xl"/>
+      <line x1="135.0" y1="220.0" x2="240.0" y2="220.0"/>
+      <line x1="135.0" y1="220.0" x2="135.0" y2="315.0"/>
+      <line x1="135.0" y1="220.0" x2="240.0" y2="315.0" class="xl"/>
+      <line x1="240.0" y1="220.0" x2="345.0" y2="220.0"/>
+      <line x1="240.0" y1="220.0" x2="240.0" y2="315.0"/>
+      <line x1="240.0" y1="220.0" x2="345.0" y2="315.0" class="xl"/>
+      <line x1="345.0" y1="220.0" x2="450.0" y2="220.0"/>
+      <line x1="345.0" y1="220.0" x2="345.0" y2="315.0"/>
+      <line x1="345.0" y1="220.0" x2="450.0" y2="315.0" class="xl"/>
+      <line x1="450.0" y1="220.0" x2="450.0" y2="315.0"/>
+      <line x1="30.0" y1="315.0" x2="135.0" y2="315.0"/>
+      <line x1="30.0" y1="315.0" x2="30.0" y2="410.0"/>
+      <line x1="30.0" y1="315.0" x2="135.0" y2="410.0" class="xl"/>
+      <line x1="135.0" y1="315.0" x2="240.0" y2="315.0"/>
+      <line x1="135.0" y1="315.0" x2="135.0" y2="410.0"/>
+      <line x1="135.0" y1="315.0" x2="240.0" y2="410.0" class="xl"/>
+      <line x1="240.0" y1="315.0" x2="345.0" y2="315.0"/>
+      <line x1="240.0" y1="315.0" x2="240.0" y2="410.0"/>
+      <line x1="240.0" y1="315.0" x2="345.0" y2="410.0" class="xl"/>
+      <line x1="345.0" y1="315.0" x2="450.0" y2="315.0"/>
+      <line x1="345.0" y1="315.0" x2="345.0" y2="410.0"/>
+      <line x1="345.0" y1="315.0" x2="450.0" y2="410.0" class="xl"/>
+      <line x1="450.0" y1="315.0" x2="450.0" y2="410.0"/>
+      <line x1="30.0" y1="410.0" x2="135.0" y2="410.0"/>
+      <line x1="135.0" y1="410.0" x2="240.0" y2="410.0"/>
+      <line x1="240.0" y1="410.0" x2="345.0" y2="410.0"/>
+      <line x1="345.0" y1="410.0" x2="450.0" y2="410.0"/>
+      </g>
+      <g class="net-nod" fill="currentColor">
+      <circle cx="30.0" cy="30.0" r="9"/>
+      <circle cx="135.0" cy="30.0" r="9"/>
+      <circle cx="240.0" cy="30.0" r="9"/>
+      <circle cx="345.0" cy="30.0" r="9"/>
+      <circle cx="450.0" cy="30.0" r="9"/>
+      <circle cx="30.0" cy="125.0" r="9"/>
+      <circle cx="135.0" cy="125.0" r="9"/>
+      <circle cx="240.0" cy="125.0" r="9"/>
+      <circle cx="345.0" cy="125.0" r="9"/>
+      <circle cx="450.0" cy="125.0" r="9"/>
+      <circle cx="30.0" cy="220.0" r="9"/>
+      <circle cx="135.0" cy="220.0" r="9"/>
+      <circle cx="240.0" cy="220.0" r="9"/>
+      <circle cx="345.0" cy="220.0" r="9"/>
+      <circle cx="450.0" cy="220.0" r="9"/>
+      <circle cx="30.0" cy="315.0" r="9"/>
+      <circle cx="135.0" cy="315.0" r="9"/>
+      <circle cx="240.0" cy="315.0" r="9"/>
+      <circle cx="345.0" cy="315.0" r="9"/>
+      <circle cx="450.0" cy="315.0" r="9"/>
+      <circle cx="30.0" cy="410.0" r="9"/>
+      <circle cx="135.0" cy="410.0" r="9"/>
+      <circle cx="240.0" cy="410.0" r="9"/>
+      <circle cx="345.0" cy="410.0" r="9"/>
+      <circle cx="450.0" cy="410.0" r="9"/>
+      </g></g>
+      <path d="M 0.0 26.0 L 48.0 32.3 L 96.0 33.8 L 144.0 29.4 L 192.0 22.5 L 240.0 18.2 L 288.0 19.8 L 336.0 26.1 L 384.0 32.3 L 432.0 33.8 L 480.0 29.3" fill="none" stroke="currentColor" stroke-width="4" opacity="0.7"/>
+      <line class="skin" x1="0" y1="112.0" x2="480" y2="112.0" stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>
+      <text x="16" y="96.0" font-size="22" fill="currentColor" opacity="0.55" style="font-family:var(--font-mono)">EPIDERMIS</text>
+      <text x="16" y="540.0" font-size="22" fill="currentColor" opacity="0.55" style="font-family:var(--font-mono)">DERMIS</text>
+    </svg></div>
+  </div>
+</div>
+<div class="note">
+  <strong>API.</strong> <code>skin_band(w, h, boundary_frac=0.30)</code> returns
+  the wavy surface line, the dashed epidermis/dermis boundary at
+  <code>h * boundary_frac</code>, and both layer labels as one SVG fragment --
+  compose it inside any <code>viewBox</code>, with other actors (free coils,
+  a lattice, water dots) drawn above or below the boundary line as the claim
+  requires. Labels are plain <code>&lt;text&gt;</code> at 22px / 55% opacity,
+  never the citation-chip typography.<br><br>
+  <strong>Two things measured, not assumed:</strong>
+  <ol>
+    <li><strong>Compose the lattice BEFORE the band, not after, when both share
+    a viewBox.</strong> The band's own text labels must paint on top so they
+    stay legible over a dense grid -- confirmed by a real bug during authoring:
+    calling the band twice (once inside a shifted group, once again unshifted)
+    produced two overlapping "EPIDERMIS" labels at different y-offsets, caught
+    on an extracted frame, invisible to <code>hyperframes check</code> (which
+    has no notion of "the same label drawn twice").</li>
+    <li><strong>The boundary line is a design fact, not a decoration</strong> --
+    <code>boundary_frac</code> should match what the beat is actually claiming
+    (a serum panel wants the boundary high, near the surface; a filler panel
+    wants structures shown reaching well beneath it). Getting this wrong makes
+    an accurate label sit over the wrong geometry.</li>
+  </ol>
+</div>

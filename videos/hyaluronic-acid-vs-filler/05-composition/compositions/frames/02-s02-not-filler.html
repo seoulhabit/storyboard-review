@@ -10,7 +10,7 @@
     --safe-top: 54px; --safe-bottom: 108px; --safe-right: 96px; --safe-left: 96px;
     --ink: #131516; --accent: #59B8AE; --muted: #6B6B6B;
     position: relative; width: 1920px; height: 1080px; overflow: hidden;
-    background: #131516; font-family: 'Inter', system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    background: #F7F5F0; font-family: 'Inter', system-ui, -apple-system, Helvetica, Arial, sans-serif;
   }
   .clip { position: absolute; inset: 0; }
 
@@ -43,7 +43,13 @@
             text-transform: uppercase; color: var(--accent); }
   .stat   { font-weight: 800; font-size: 150px; line-height: 1; color: var(--accent); }
   .caption{ font-weight: 600; font-size: 44px; line-height: 1.25; color: var(--ink); }
-
+  /* `wipe` resting state: clipped, not transparent. Authored in CSS so a
+     cold seek to 0 paints the clip, and re-stated with gsap.set(). */
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  /* `swap`: both states share one grid cell and one transform-origin, so
+     the exchange reads as one thing changing rather than two things. */
+  .slot { display: grid; }
+  .slot > * { grid-area: 1 / 1; }
   /* Debug overlay lives on #root, never on <body>: a sub-composition's own
      renderable surface IS #root. Confirm it is off by looking at frame zero. */
   #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
@@ -63,21 +69,24 @@
   /* [K-4] one citation treatment for the whole video. */
   .cite { font-family:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
           font-weight:500; font-size:32px; letter-spacing:.04em;
-          text-transform:none; color:#878B8C; border:2px solid #333333;
+          text-transform:none; color:#6B6B6B; border:2px solid #D9D3C6;
           border-radius:999px; padding:10px 26px; width:max-content;
-          background:#211F1B; display:inline-block; }
+          background:#F0EBE1; display:inline-block; }
 
-  /* [S7/R-1] dark-ground ink flip: the generator leaves --ink at
-     #131516 on a #131516 ground -> 1:1, invisible text. */
-  #root { --ink: #F7F5F0; --muted: #878B8C; }
+  /* [S6/A-7] same defect as .cite: --accent (#59B8AE) on a light
+     generated ground measures 2.17:1 against the 3:1 floor. Same
+     suggestedColor as the hand-authored .kicker fix. */
+  .kicker { color:#4B9B93; }
 </style>
 
-<div id="root" data-composition-id="s04-named" data-width="1920" data-height="1080"
-     data-duration="11.156">
-    <div class="clip stage" id="s04-named-stage" data-start="0" data-duration="11.156">
-      <div class="beat caption" id="s04-named-b0">“This could be a forty-dollar face serum?”</div>
-      <div class="beat head is-entering" id="s04-named-b3">Not immediately</div>
-      <div class="beat caption is-entering" id="s04-named-b4">Unsettling foresight</div>
+<div id="root" data-composition-id="s02-not-filler" data-width="1920" data-height="1080"
+     data-duration="8.248">
+    <div class="clip stage" id="s02-not-filler-stage" data-start="0" data-duration="8.248">
+      <div class="beat head" id="s02-not-filler-b0">And the mix-up is expensive</div>
+      <div class="slot">
+        <div class="beat body is-wiping" id="s02-not-filler-b2">People buy a serum expecting what an injection does</div>
+        <div class="beat head is-entering" id="s02-not-filler-b3">A serum is not filler in a bottle</div>
+      </div>
     </div>
 </div>
 <script>
@@ -85,21 +94,20 @@
   // docs/gsap.md: create paused, register on window.__timelines[compositionId].
   // Supported methods are set / to / from / fromTo — nothing else is emitted.
   // Initial states first, immediate and outside the timeline.
-  gsap.set('#s04-named-b3', { opacity: 0, scale: 1.03, y: -18 });
-  gsap.set('#s04-named-b4', { opacity: 0, y: 32 });
+  gsap.set('#s02-not-filler-b2', { clipPath: 'inset(0 100% 0 0)', y: 22 });
+  gsap.set('#s02-not-filler-b3', { opacity: 0, scale: 0.6 });
   // NO `defaults: { ease }` on this timeline. An inherited ease is an
   // UNCOUNTED ease: it is how a video ends up with 65% of its real tweens
   // sharing one entrance signature while every explicit-ease grep says
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s04-named-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 2.500);
-  tl.to('#s04-named-stage', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 5.300);
-  tl.to('#s04-named-b3', { opacity: 1, scale: 1, y: 0, duration: 0.800, ease: 'power4.out' }, 6.262);
-  tl.to('#s04-named-b4', { opacity: 1, y: 0, duration: 1.100, ease: 'power3.out' }, 7.542);
-  tl.to('#s04-named-stage', { x: 7, y: 8, scale: 1.014, duration: 0.500, ease: 'sine.inOut' }, 10.206);
-  tl.to({}, { duration: 11.156, ease: 'none' }, 0);   // anchor — always last, always at 0
+  tl.to('#s02-not-filler-stage', { x: 10, y: -7, scale: 1.018, duration: 0.105, ease: 'sine.inOut' }, 2.500);
+  tl.to('#s02-not-filler-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 2.605);
+  tl.to('#s02-not-filler-b2', { scale: 0.6, opacity: 0, duration: 0.250, ease: 'power2.in' }, 4.743);
+  tl.to('#s02-not-filler-b3', { opacity: 1, scale: 1, duration: 1.600, ease: 'back.out(1.6)' }, 4.863);
+  tl.to({}, { duration: 8.248, ease: 'none' }, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {};
-  window.__timelines['s04-named'] = tl;
+  window.__timelines['s02-not-filler'] = tl;
 })();
 </script>
 </template>

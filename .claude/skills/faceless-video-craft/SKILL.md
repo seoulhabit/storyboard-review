@@ -1853,12 +1853,38 @@ format-blind.**
   gate runs on a real render, which is why it survived a clean preview and a
   clean `check` before being caught.
 
-  Two caveats on the wipe. It only clips, so it cannot place content anywhere
-  a settled frame does not already have it — that is the whole argument, and
-  it holds only if the settled frames are themselves compliant. And an
-  animated clip over a **raster** is the `drawElement` capture bug above: safe
-  on a browser-drawn piece (confirmed by grepping every scene for `<img>` and
-  finding none), suspect the moment a plate is inside the wiped region.
+  Three caveats on the wipe. It only clips, so it cannot place content
+  anywhere a settled frame does not already have it — that is the whole
+  argument, and it holds only if the settled frames are themselves compliant.
+  An animated clip over a **raster** is the `drawElement` capture bug above:
+  safe on a browser-drawn piece (confirmed by grepping every scene for `<img>`
+  and finding none), suspect the moment a plate is inside the wiped region.
+
+  And **the engine's own layout pass reports a wipe boundary as
+  `content_overlap` / `text_occluded`, which is a false positive you have to
+  expect rather than fix.** That pass tests bounding-box geometry and does not
+  model `clip-path`, so a clipped incoming wrapper still presents a full-canvas
+  opaque box over the outgoing scene's text. The rendered frames show both
+  scenes correctly with a clean seam; nothing is occluded.
+
+  What makes it a trap is that **its severity moves with sampling density, not
+  with the composition.** Severity is persistence-aware, so a finding seen in
+  one sample demotes to info and one seen in several is an error. Measured on
+  the same generated 3-scene proof, wipes versus cuts:
+
+  | | layout errors |
+  |---|---|
+  | cuts, any `--samples` | 0 |
+  | wipes, `--samples 9` | 1 |
+  | wipes, `--samples 20` | 3 |
+  | wipes, `--samples 60` | 3 |
+
+  A 340s piece with 28 wipes reported **0 errors and 26 info** at `--samples
+  40`, because a 0.45s window is rarely hit twice when samples sit 8.5s apart.
+  So the same technique passes on the long piece you developed against and
+  gates on a short one, or starts gating the moment someone raises
+  `--samples`. Confirm the boundary on an extracted frame, record the finding
+  with its reason, and do not restructure the composition to satisfy it.
 
 The registry holds exactly five — `crossfade`, `blur-crossfade`, `push-slide`,
 `zoom-through`, `squeeze` — and **which of them can cross a ground change is a

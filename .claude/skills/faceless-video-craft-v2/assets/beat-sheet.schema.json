@@ -47,7 +47,7 @@
     "vo_duration_s": {
       "type": "number",
       "exclusiveMinimum": 0,
-      "description": "Measured voiceover duration \u2014 the master clock."
+      "description": "Measured voiceover duration — the master clock."
     },
     "presenter": {
       "enum": [
@@ -200,7 +200,7 @@
           },
           "transition": {
             "type": "object",
-            "description": "The ENTERING transition for this scene (registry convention: a scene names the transition that brings it ON). Omit to accept the derived default: `short` format → `cut`; `long` → `push-slide LEFT` inside a section and `zoom-through` 0.4s at a section start. The first scene's transition must be absent or `cut`. Authored time still TILES — scenes have no gap and no overlap in the beat sheet; the generator DERIVES the overlap window (outgoing `data-duration` extended by d, incoming `data-start` pulled earlier by d, track ping-pong, the registry `gsap_template` stamped on `window.__timelines['main']` at T = overlap start). Never author the overlap yourself. More than 3 distinct non-cut types in one video is warned — pick 2-3 and repeat them. Exit animations are never emitted: the transition IS the exit. [S6/A-8, TRANSITION-REGISTRY.md]",
+            "description": "The ENTERING transition for this scene (registry convention: a scene names the transition that brings it ON). Omit to accept the derived default: `short` format → `cut`; `long` → `wipe-left` 0.45s inside a section and `wipe-up` 0.60s at a section start. The two wipes are clip-only: nothing translates, so unlike push-slide/zoom-through/squeeze they cannot drag content into a reserved safe-area zone (measured 0 vs 99 flagged frames on the same composition). Unsafe over a raster inside the wiped region. The first scene's transition must be absent or `cut`. Authored time still TILES — scenes have no gap and no overlap in the beat sheet; the generator DERIVES the overlap window (outgoing `data-duration` extended by d, incoming `data-start` pulled earlier by d, track ping-pong, the registry `gsap_template` stamped on `window.__timelines['main']` at T = overlap start). Never author the overlap yourself. More than 3 distinct non-cut types in one video is warned — pick 2-3 and repeat them. Exit animations are never emitted: the transition IS the exit. [S6/A-8, TRANSITION-REGISTRY.md]",
             "required": [
               "type"
             ],
@@ -208,6 +208,8 @@
               "type": {
                 "enum": [
                   "cut",
+                  "wipe-up",
+                  "wipe-left",
                   "push-slide",
                   "blur-crossfade",
                   "zoom-through",
@@ -328,7 +330,7 @@
     },
     "audio": {
       "type": "object",
-      "description": "Optional bed mounted on the root. Plain data-volume only \u2014 a data-automation lane REPLACES it on this engine.",
+      "description": "Optional bed mounted on the root. Plain data-volume only — a data-automation lane REPLACES it on this engine.",
       "properties": {
         "src": {
           "type": "string",
@@ -343,7 +345,7 @@
     },
     "muted": {
       "type": "string",
-      "description": "Muted ink for disclosure flags. Never the accent \u2014 a flag in the accent colour reads as a citation."
+      "description": "Muted ink for disclosure flags. Never the accent — a flag in the accent colour reads as a citation."
     }
   }
 }

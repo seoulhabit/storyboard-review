@@ -50,10 +50,11 @@ Three beat-sheet fields and one derived quantity close that gap.
 
   scene.transition  {type, direction?, duration?}   [S6/A-8]
         The ENTERING transition (registry convention: a scene names what
-        brings it ON). type is one of cut / push-slide / blur-crossfade /
-        zoom-through / squeeze / crossfade. Omit it and the generator derives
-        one: `short` -> cut everywhere; `long` -> push-slide LEFT inside a
-        section and zoom-through at a section start, so transition strength
+        brings it ON). type is one of cut / wipe-left / wipe-up /
+        push-slide / blur-crossfade / zoom-through / squeeze / crossfade.
+        Omit it and the generator derives one: `short` -> cut everywhere;
+        `long` -> wipe-left inside a section and wipe-up at a section
+        start, so transition strength
         serves the re-hook. A plain `crossfade` across a ground change is a
         generation ERROR (its midpoint is a muddy blend of two grounds);
         `blur-crossfade` is the sanctioned soft option and its midpoint is
@@ -255,6 +256,36 @@ TRANSITIONS = {
             'tl.fromTo(__NEW__, { scaleX: 0, transformOrigin: "right center", opacity: 1 }, { scaleX: 1, transformOrigin: "right center", duration: __DUR__, ease: "power3.inOut" }, __T__);',
         ],
     },
+    # The two long-form defaults. NOT in the engine's Tier-B registry: those five
+    # all translate or scale a wrapper, and a translating transition drags scene
+    # content through the reserved safe-area zones. Measured on a 29-scene
+    # 1920x1080 piece, push-slide vs a wipe, same composition, one render each:
+    # push failed the hard safe-area gate on 99 frames (real text, up to 6.2%
+    # edge density in the top band) against a hard-cut baseline that passed all
+    # 1361; the wipe measured 0. Both render correctly and both pass `check`, so
+    # nothing before the safe-area scan tells them apart [S6/A-8].
+    #
+    # A wipe only CLIPS: the incoming scene sits at its own resting position and
+    # is progressively revealed, so it cannot put content anywhere a settled
+    # frame does not already have it. Only the incoming wrapper is touched --
+    # the outgoing needs no tween at all, because later scenes paint above
+    # earlier ones and the extended clip simply holds its final frame beneath.
+    #
+    # Unsafe over a RASTER inside the wiped region (the drawElement capture bug
+    # in /hyperframes-cli); validate_transitions() warns when a scene carries a
+    # plate and a wipe at once.
+    "wipe-left": {
+        "default_duration": 0.45,
+        "template": [
+            'tl.fromTo(__NEW__, { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: __DUR__, ease: "power3.inOut" }, __T__);',
+        ],
+    },
+    "wipe-up": {
+        "default_duration": 0.60,
+        "template": [
+            'tl.fromTo(__NEW__, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: __DUR__, ease: "power3.inOut" }, __T__);',
+        ],
+    },
 }
 TRANSITION_TYPES = sorted(TRANSITIONS)
 
@@ -314,7 +345,7 @@ def resolve_transitions(bs: dict, scenes: list) -> list:
 
     Derived when the scene omits `transition`:
       short -> cut everywhere (cuts on the timing grid are the Shorts default)
-      long  -> push-slide LEFT inside a section; zoom-through at a section
+      long  -> wipe-left inside a section; wipe-up at a section
                start, where the accent serves the re-hook.
     """
     fmt = bs["format"]
@@ -335,9 +366,9 @@ def resolve_transitions(bs: dict, scenes: list) -> list:
             if fmt == "short":
                 t = {"type": "cut"}
             elif prev_section is not None and section != prev_section:
-                t = {"type": "zoom-through"}
+                t = {"type": "wipe-up"}
             else:
-                t = {"type": "push-slide", "direction": "LEFT"}
+                t = {"type": "wipe-left"}
         kind = t.get("type", "cut")
         if kind not in TRANSITIONS:
             die(
@@ -373,6 +404,30 @@ def resolve_transitions(bs: dict, scenes: list) -> list:
             direction = None
         if kind == "push-slide" and direction not in ("LEFT", "RIGHT", "UP", "DOWN"):
             die(f"scene {sc['id']!r}: push-slide direction {direction!r} is not one of LEFT/RIGHT/UP/DOWN")
+        # A wipe animates a clip over whatever the incoming scene draws. Over a
+        # RASTER that is the drawElement capture bug: the region can render
+        # frozen while the DOM reports correct geometry and `check` passes.
+        # Browser-drawn scenes are unaffected, which is why this warns rather
+        # than dies -- but verify the boundary on an extracted frame.
+        if kind.startswith("wipe-") and sc.get("plate"):
+            warn(
+                f"scene {sc['id']!r}: {kind} reveals a scene carrying a plate "
+                f"({sc['plate']}). An animated clip over a raster can capture "
+                f"frozen on the drawElement path — extract this boundary's "
+                f"midpoint from the render before trusting it, or use `cut` here."
+            )
+        # A translating transition drags scene content through the reserved
+        # safe-area zones; a wipe cannot. Measured: 99 flagged frames vs 0 on
+        # the same 29-scene composition [S6/A-8]. Allowed, because a piece whose
+        # settled frames leave the zones clear by a wide margin can afford it --
+        # but it has to be a choice, and [S7/R-2]'s safe-area gate has to run.
+        if kind in ("push-slide", "zoom-through", "squeeze"):
+            warn(
+                f"scene {sc['id']!r}: {kind!r} translates or scales whole scene "
+                f"wrappers, which moves content through the reserved zones. The "
+                f"safe-area gate will judge it — prefer wipe-left/wipe-up unless "
+                f"you have a reason and have run [S7/R-2] on a real render."
+            )
         out.append({"type": kind, "direction": direction, "duration": dur})
         prev_section = section
     return out

@@ -532,10 +532,40 @@ the interview. Each field is resolved from data already in hand:
 - rule: **short — every boundary is a `cut`. Long — a transition SYSTEM: 2-3
   types for the whole video, one primary carrying ~60-70% of boundaries plus
   1-2 accents, never a different transition per scene.** The derivation the
-  generator applies when a scene names none: `push-slide LEFT` inside a
-  section, `zoom-through 0.4` at a section start — the boundary where a viewer
+  generator applies when a scene names none: `wipe-left 0.45` inside a
+  section, `wipe-up 0.60` at a section start — the boundary where a viewer
   decides to leave, so the strongest transition serves the re-hook instead of
-  decorating it. A plain `crossfade` where the two scenes' grounds differ is a
+  decorating it.
+- **A wipe, not a push, and this corrects an earlier version of this rule.**
+  A clip-path wipe reveals the incoming scene at its own resting position; a
+  push *translates* whole scenes, which drags their content through the
+  reserved safe-area zones. Confirmed by rendering both on the same 29-scene
+  1920×1080 piece: the push failed the hard safe-area gate `[S7/R-2]` on **99
+  frames** — real text, up to 6.2% edge density inside the top band — against
+  a hard-cut baseline that passed all 1361; the wipe measured **0**. Both
+  render correctly and both pass `check`, so nothing before the safe-area
+  scan distinguishes them. Ground-blending and safe-area transit are
+  independent axes: `push-slide` is clean on the first and dirty on the
+  second. A wipe only clips, so it cannot place content anywhere a settled
+  frame does not already have it — which holds only while the settled frames
+  are themselves compliant, and is unsafe over a **raster** (the
+  `drawElement` capture bug), so check for `<img>` inside the wiped region
+  before choosing it.
+- **Expect `[S7/R-1]` to report a wipe boundary as `content_overlap` /
+  `text_occluded`, and do not restructure the composition to satisfy it.**
+  `check`'s layout pass tests bounding-box geometry and does not model
+  `clip-path`, so a clipped incoming wrapper still presents a full-canvas
+  opaque box over the outgoing scene's text. The rendered frames show both
+  scenes with a clean seam. The trap is that severity is persistence-aware, so
+  the verdict tracks **sampling density rather than the composition**:
+  measured on one generated 3-scene proof, cuts gave 0 layout errors at any
+  `--samples` while wipes gave 1 at 9, 3 at 20 and 3 at 60 — and a 340s piece
+  with 28 wipes gave 0 errors / 26 info at `--samples 40`, because a 0.45s
+  window is rarely sampled twice when samples sit 8.5s apart. So a run can
+  pass on a long piece and halt on a short one for the same technique. This is
+  the one place `[S7/R-1]`'s "errors gate the run" needs a named exception:
+  confirm the boundary on an extracted frame, ledger the finding with this
+  reason, and continue. A plain `crossfade` where the two scenes' grounds differ is a
   **generation error**, not a warning: both layers sit near 50% opacity over an
   unrelated canvas colour and the midpoint frame is muddy. `blur-crossfade` is
   the sanctioned soft option across a ground change — the blur masks the clash

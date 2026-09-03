@@ -356,7 +356,7 @@ above is the only thing that actually answers the static-hold question.
 
 **Gates at:** S5 — the beat sheet names each scene's transition; S6 — the generator derives the overlap window
 **Written for:** `videos/ectoin-survival-molecule`, 28 of 28 boundaries hard cut on a 340s long-form piece by correct application of v1's Shorts-derived rule. Every gate passed; the review called it "a sequence of separate slides".
-**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1734-1830, verbatim.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1813-1968, verbatim.
 
 **The hard rule first, because it is the one part a frame can settle: a plain
 crossfade across a ground change produces a muddy midpoint.** Both layers sit
@@ -378,19 +378,72 @@ format-blind.**
   **2-3 types**, one primary carrying ~60-70% of boundaries plus 1-2 accents
   (`hyperframes-animation`'s `transitions/overview.md` sets that budget —
   "Pick ONE primary … + 1-2 accents. Never use a different transition for
-  every scene."). For an editorial explainer the primary is **`push-slide`**,
-  one direction held per chapter; **`blur-crossfade`** is the sanctioned soft
-  option across a ground change, and **`zoom-through`** / **`squeeze`** are the
-  accent slots. Give the accent to **chapter boundaries** so transition
-  strength serves the re-hook (*Long-form structure* below) rather than
-  decorating an arbitrary scene change — or let a camera leg land on the next
-  act's payoff and carry the boundary that way. Hard cuts survive as
-  **deliberate emphasis**: a few per piece, chosen, not defaulted.
+  every scene."). For an editorial explainer the primary is a **clip-path
+  wipe** — `inset()` opened along one axis on the incoming clip wrapper, one
+  direction held per chapter — with a longer wipe on the other axis as the
+  accent. Give the accent to **chapter boundaries** so transition strength
+  serves the re-hook (*Long-form structure* below) rather than decorating an
+  arbitrary scene change — or let a camera leg land on the next act's payoff
+  and carry the boundary that way. Hard cuts survive as **deliberate
+  emphasis**: a few per piece, chosen, not defaulted.
+
+  **Not `push-slide`, and this corrects an earlier version of this section.**
+  A wipe reveals the incoming scene at its own resting position; a push
+  *translates* whole scenes, which drags their content through the reserved
+  safe-area zones on the way in and out. Confirmed by building both on the
+  same 29-scene 1920×1080 piece and rendering each: the push failed the hard
+  safe-area gate on **99 frames** — real text, up to 6.2% edge density inside
+  the top band — against a hard-cut baseline that passed all 1361. The wipe
+  build measured **0**. Both render correctly, both pass `check`, and both are
+  equally safe on grounds; the difference is invisible until the safe-area
+  gate runs on a real render, which is why it survived a clean preview and a
+  clean `check` before being caught.
+
+  Three caveats on the wipe. It only clips, so it cannot place content
+  anywhere a settled frame does not already have it — that is the whole
+  argument, and it holds only if the settled frames are themselves compliant.
+  An animated clip over a **raster** is the `drawElement` capture bug above:
+  safe on a browser-drawn piece (confirmed by grepping every scene for `<img>`
+  and finding none), suspect the moment a plate is inside the wiped region.
+
+  And **the engine's own layout pass reports a wipe boundary as
+  `content_overlap` / `text_occluded`, which is a false positive you have to
+  expect rather than fix.** That pass tests bounding-box geometry and does not
+  model `clip-path`, so a clipped incoming wrapper still presents a full-canvas
+  opaque box over the outgoing scene's text. The rendered frames show both
+  scenes correctly with a clean seam; nothing is occluded.
+
+  What makes it a trap is that **its severity moves with sampling density, not
+  with the composition.** Severity is persistence-aware, so a finding seen in
+  one sample demotes to info and one seen in several is an error. Measured on
+  the same generated 3-scene proof, wipes versus cuts:
+
+  | | layout errors |
+  |---|---|
+  | cuts, any `--samples` | 0 |
+  | wipes, `--samples 9` | 1 |
+  | wipes, `--samples 20` | 3 |
+  | wipes, `--samples 60` | 3 |
+
+  A 340s piece with 28 wipes reported **0 errors and 26 info** at `--samples
+  40`, because a 0.45s window is rarely hit twice when samples sit 8.5s apart.
+  So the same technique passes on the long piece you developed against and
+  gates on a short one, or starts gating the moment someone raises
+  `--samples`. Confirm the boundary on an extracted frame, record the finding
+  with its reason, and do not restructure the composition to satisfy it.
 
 The registry holds exactly five — `crossfade`, `blur-crossfade`, `push-slide`,
 `zoom-through`, `squeeze` — and **which of them can cross a ground change is a
 property of their GSAP templates, not of their names**, computed at the
 midpoint (`p = 0.5`) from the registry's own `gsap_template` lines:
+
+**Ground-blending and safe-area transit are independent axes, and a
+transition can be clean on one and dirty on the other.** `push-slide` is the
+worked example: it never composites two grounds *and* it drags content through
+every reserved zone. Only the first column below was measured from the GSAP
+templates; the second was measured on rendered frames, and only for the two
+marked, so treat the rest as suspect until checked — all three translate or
+scale their wrappers, which is the mechanism.
 
 | Transition | Both wrappers at midpoint | Blends grounds? |
 |---|---|---|
@@ -399,6 +452,12 @@ midpoint (`p = 0.5`) from the registry's own `gsap_template` lines:
 | `zoom-through` | 0.875 / 0.875 (asymmetric `power3.in` out, `power3.out` in) | Mildly — ~11% outgoing ground, ~2% raw canvas |
 | `blur-crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — the 10px blur masks it, nothing more |
 | `crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — this is the muddy case |
+
+| Transition | Drags content into reserved zones? |
+|---|---|
+| clip-path wipe (authored, not in the registry) | **No** — measured, 0 flagged frames. Nothing moves. |
+| `push-slide` | **Yes** — measured, 99 flagged frames on a full-canvas scene |
+| `zoom-through`, `squeeze`, `blur-crossfade` | Unmeasured. All three translate or scale a wrapper, so assume yes until a render says otherwise. |
 
 `push-slide` takes a `direction` of `LEFT`/`RIGHT`/`UP`/`DOWN` ("vertical
 push" is a direction, not a separate transition); there is no named `cut`,

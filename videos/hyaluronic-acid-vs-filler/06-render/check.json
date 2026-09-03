@@ -1,0 +1,803 @@
+{
+  "ok": true,
+  "strict": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "overlapping_gsap_tweens",
+        "severity": "warning",
+        "message": "GSAP tweens overlap on \"#s10-crosslink-panel\" for x, scale between 1.20s and 1.30s.",
+        "selector": "#s10-crosslink-panel",
+        "dataAttributes": {},
+        "sourceFile": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/05-composition/compositions/frames/10-s10-crosslink.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Shorten the earlier tween, move the later tween, or add `overwrite: \"auto\"`."
+      }
+    ],
+    "filesScanned": 15
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 3,
+    "infoCount": 12,
+    "findings": [
+      {
+        "code": "container_overflow",
+        "severity": "warning",
+        "time": 105.75,
+        "selector": "#s08-binds-water-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -13.8,
+          "top": 3.3,
+          "right": 1915.8,
+          "bottom": 1088.7,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "containerSelector": "#scene-s08-binds-water > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 13.8,
+          "bottom": 8.7
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "16.021"
+        },
+        "sourceFile": "compositions/frames/08-s08-binds-water.html",
+        "bbox": {
+          "x": -13.8,
+          "y": 3.3,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "firstSeen": 105.75,
+        "lastSeen": 110.25,
+        "occurrences": 2
+      },
+      {
+        "code": "container_overflow",
+        "severity": "warning",
+        "time": 146.25,
+        "selector": "#s12-do-not-inject-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.28,
+          "top": -16.72,
+          "right": 1947.28,
+          "bottom": 1082.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "containerSelector": "#scene-s12-do-not-inject > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.28,
+          "right": 27.28,
+          "top": 16.72,
+          "bottom": 2.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "16.311"
+        },
+        "sourceFile": "compositions/frames/12-s12-do-not-inject.html",
+        "bbox": {
+          "x": -7.28,
+          "y": -16.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "firstSeen": 146.25,
+        "lastSeen": 155.25,
+        "occurrences": 3
+      },
+      {
+        "code": "container_overflow",
+        "severity": "warning",
+        "time": 164.25,
+        "selector": "#s13-badges-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -3.52,
+          "top": -12.48,
+          "right": 1939.52,
+          "bottom": 1080.48,
+          "width": 1943.04,
+          "height": 1092.96
+        },
+        "containerSelector": "#scene-s13-badges > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 3.52,
+          "right": 19.52,
+          "top": 12.48
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "13.246"
+        },
+        "sourceFile": "compositions/frames/13-s13-badges.html",
+        "bbox": {
+          "x": -3.52,
+          "y": -12.48,
+          "width": 1943.04,
+          "height": 1092.96
+        },
+        "firstSeen": 164.25,
+        "lastSeen": 168.75,
+        "occurrences": 2
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 2.25,
+        "selector": "#s01-lineup-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.87,
+          "top": -8.54,
+          "right": 1927.87,
+          "bottom": 1080.32,
+          "width": 1935.74,
+          "height": 1088.86
+        },
+        "containerSelector": "#scene-s01-lineup > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.87,
+          "right": 7.87,
+          "top": 8.54
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "13.255"
+        },
+        "sourceFile": "compositions/frames/01-s01-lineup.html",
+        "bbox": {
+          "x": -7.87,
+          "y": -8.54,
+          "width": 1935.74,
+          "height": 1088.86
+        },
+        "firstSeen": 2.25,
+        "lastSeen": 2.25,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 15.75,
+        "selector": "#s02-cousins-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -5.22,
+          "top": -11.98,
+          "right": 1939.55,
+          "bottom": 1081.95,
+          "width": 1944.77,
+          "height": 1093.93
+        },
+        "containerSelector": "#scene-s02-cousins > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 5.22,
+          "right": 19.55,
+          "top": 11.98
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "12.982"
+        },
+        "sourceFile": "compositions/frames/02-s02-cousins.html",
+        "bbox": {
+          "x": -5.22,
+          "y": -11.98,
+          "width": 1944.77,
+          "height": 1093.93
+        },
+        "firstSeen": 15.75,
+        "lastSeen": 15.75,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 20.25,
+        "selector": "#s02-cousins-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.28,
+          "top": -16.72,
+          "right": 1947.28,
+          "bottom": 1082.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "containerSelector": "#scene-s02-cousins > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.28,
+          "right": 27.28,
+          "top": 16.72,
+          "bottom": 2.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "12.982"
+        },
+        "sourceFile": "compositions/frames/02-s02-cousins.html",
+        "bbox": {
+          "x": -7.28,
+          "y": -16.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "firstSeen": 20.25,
+        "lastSeen": 20.25,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 24.75,
+        "selector": "#s02-cousins-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -13.8,
+          "top": 3.3,
+          "right": 1915.8,
+          "bottom": 1088.7,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "containerSelector": "#scene-s02-cousins > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 13.8,
+          "bottom": 8.7
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "12.982"
+        },
+        "sourceFile": "compositions/frames/02-s02-cousins.html",
+        "bbox": {
+          "x": -13.8,
+          "y": 3.3,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "firstSeen": 24.75,
+        "lastSeen": 24.75,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 42.75,
+        "selector": "#s04-named-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -13.8,
+          "top": 3.3,
+          "right": 1915.8,
+          "bottom": 1088.7,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "containerSelector": "#scene-s04-named > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 13.8,
+          "bottom": 8.7
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "11.156"
+        },
+        "sourceFile": "compositions/frames/04-s04-named.html",
+        "bbox": {
+          "x": -13.8,
+          "y": 3.3,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "firstSeen": 42.75,
+        "lastSeen": 42.75,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 87.75,
+        "selector": "#s07-plumping-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.28,
+          "top": -16.72,
+          "right": 1947.28,
+          "bottom": 1082.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "containerSelector": "#scene-s07-plumping > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.28,
+          "right": 27.28,
+          "top": 16.72,
+          "bottom": 2.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "14.971"
+        },
+        "sourceFile": "compositions/frames/07-s07-plumping.html",
+        "bbox": {
+          "x": -7.28,
+          "y": -16.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "firstSeen": 87.75,
+        "lastSeen": 87.75,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 92.25,
+        "selector": "#s07-plumping-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -13.8,
+          "top": 3.3,
+          "right": 1915.8,
+          "bottom": 1088.7,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "containerSelector": "#scene-s07-plumping > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 13.8,
+          "bottom": 8.7
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "14.971"
+        },
+        "sourceFile": "compositions/frames/07-s07-plumping.html",
+        "bbox": {
+          "x": -13.8,
+          "y": 3.3,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "firstSeen": 92.25,
+        "lastSeen": 92.25,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 101.25,
+        "selector": "#s08-binds-water-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.28,
+          "top": -16.72,
+          "right": 1947.28,
+          "bottom": 1082.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "containerSelector": "#scene-s08-binds-water > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.28,
+          "right": 27.28,
+          "top": 16.72,
+          "bottom": 2.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "16.021"
+        },
+        "sourceFile": "compositions/frames/08-s08-binds-water.html",
+        "bbox": {
+          "x": -7.28,
+          "y": -16.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "firstSeen": 101.25,
+        "lastSeen": 101.25,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 114.75,
+        "selector": "#s09-lifeguard-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.28,
+          "top": -16.72,
+          "right": 1947.28,
+          "bottom": 1082.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "containerSelector": "#scene-s09-lifeguard > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.28,
+          "right": 27.28,
+          "top": 16.72,
+          "bottom": 2.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "9.598"
+        },
+        "sourceFile": "compositions/frames/09-s09-lifeguard.html",
+        "bbox": {
+          "x": -7.28,
+          "y": -16.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "firstSeen": 114.75,
+        "lastSeen": 114.75,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 119.25,
+        "selector": "#s09-lifeguard-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -13.8,
+          "top": 3.3,
+          "right": 1915.8,
+          "bottom": 1088.7,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "containerSelector": "#scene-s09-lifeguard > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 13.8,
+          "bottom": 8.7
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "9.598"
+        },
+        "sourceFile": "compositions/frames/09-s09-lifeguard.html",
+        "bbox": {
+          "x": -13.8,
+          "y": 3.3,
+          "width": 1929.6,
+          "height": 1085.4
+        },
+        "firstSeen": 119.25,
+        "lastSeen": 119.25,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 141.75,
+        "selector": "#s11-needle-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -7.28,
+          "top": -16.72,
+          "right": 1947.28,
+          "bottom": 1082.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "containerSelector": "#scene-s11-needle > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 7.28,
+          "right": 27.28,
+          "top": 16.72,
+          "bottom": 2.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "6.669"
+        },
+        "sourceFile": "compositions/frames/11-s11-needle.html",
+        "bbox": {
+          "x": -7.28,
+          "y": -16.72,
+          "width": 1954.56,
+          "height": 1099.44
+        },
+        "firstSeen": 141.75,
+        "lastSeen": 141.75,
+        "occurrences": 1
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 159.75,
+        "selector": "#s13-badges-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": -3.02,
+          "top": -10.72,
+          "right": 1936.76,
+          "bottom": 1080.41,
+          "width": 1939.78,
+          "height": 1091.12
+        },
+        "containerSelector": "#scene-s13-badges > div:nth-of-type(1)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "left": 3.02,
+          "right": 16.76,
+          "top": 10.72
+        },
+        "dataAttributes": {
+          "data-start": "0",
+          "data-duration": "13.246"
+        },
+        "sourceFile": "compositions/frames/13-s13-badges.html",
+        "bbox": {
+          "x": -3.02,
+          "y": -10.72,
+          "width": 1939.78,
+          "height": 1091.12
+        },
+        "firstSeen": 159.75,
+        "lastSeen": 159.75,
+        "occurrences": 1
+      }
+    ],
+    "duration": 180,
+    "samples": [
+      2.25,
+      6.75,
+      11.25,
+      15.75,
+      20.25,
+      24.75,
+      29.25,
+      33.75,
+      38.25,
+      42.75,
+      47.25,
+      51.75,
+      56.25,
+      60.75,
+      65.25,
+      69.75,
+      74.25,
+      78.75,
+      83.25,
+      87.75,
+      92.25,
+      96.75,
+      101.25,
+      105.75,
+      110.25,
+      114.75,
+      119.25,
+      123.75,
+      128.25,
+      132.75,
+      137.25,
+      141.75,
+      146.25,
+      150.75,
+      155.25,
+      159.75,
+      164.25,
+      168.75,
+      173.25,
+      177.75
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 15,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "specPath": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/05-composition/index.motion.json",
+    "samples": 300
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      2.25,
+      42.75,
+      87.75,
+      132.75,
+      177.75
+    ],
+    "checked": 13,
+    "passed": 13
+  },
+  "snapshots": {
+    "enabled": true,
+    "files": [
+      "snapshots/frame-00-at-2.3s.png",
+      "snapshots/frame-01-at-42.8s.png",
+      "snapshots/frame-02-at-87.8s.png",
+      "snapshots/frame-03-at-132.8s.png",
+      "snapshots/frame-04-at-177.8s.png"
+    ],
+    "times": [
+      2.25,
+      42.75,
+      87.75,
+      132.75,
+      177.75
+    ],
+    "findingFiles": []
+  },
+  "_meta": {
+    "version": "0.8.22",
+    "latestVersion": "0.8.26",
+    "updateAvailable": true
+  }
+}

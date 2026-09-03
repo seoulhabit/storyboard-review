@@ -1,0 +1,20 @@
+# Regenerable intermediates. What IS committed: the 25 raw TTS stems (they cost
+# Higgsfield credits to recreate and are not reproducible byte-for-byte), the
+# mux-source vo.mp3, and the deliverable final.mp4 (via LFS).
+
+# Rebuilt by 04-assets/build_vo.py from vo/s*.wav
+04-assets/vo/trimmed/
+04-assets/vo.wav
+
+# Rebuilt by the one ffmpeg in 04-assets/manifest.json, from an in-repo source
+# bed (videos/snail-mucin-truth/assets/bgm/track.loop.mp3)
+04-assets/music.wav
+
+# Silent pre-mux intermediate; final.mp4 is the deliverable. The 2026-09-01
+# pipeline output left its own raw.mp4 untracked for the same reason.
+06-render/raw.mp4
+
+# Frame extractions and render logs — re-derived from final.mp4 on demand
+06-render/frames/
+06-render/render.log
+06-render/check.stderr.txt

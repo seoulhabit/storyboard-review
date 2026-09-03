@@ -17,11 +17,18 @@
 # - `overrides` is append-only; it is the audit trail of every rule that changed.
 
 populated: true
-updated: 2026-09-01
+updated: 2026-09-03             # S0 refresh; prior state 2026-09-01, preserved below
 channel:
   id: UCzqEGQ9uAU43AgyxGtLT7MA
   handle: SeoulHabit
-  subs: 8                       # channel created 2026-07-07; 2,693 lifetime views
+  subs: 8                       # channel created 2026-07-07
+  # --- 2026-09-03 S0 refresh (vidiq_channel_stats) ---
+  views_total: 2834             # was 2,693 on 2026-09-01
+  videos_public: 17             # was 14. Volatile: 24 on 08-22, 0 on 08-25, 17 today.
+                                # `corpus.public: 14` below is the 09-01 figure the
+                                # medians in that block were computed over — do NOT
+                                # re-read it as current.
+  authenticated_as: hello@seoulhabit.com
 
 # --- Not in the shipped template, kept deliberately -------------------------
 # `corpus` and `views` are absent from the template's field list. They are kept
@@ -53,7 +60,24 @@ traffic:                        # share of views, last 90 d, n=4756 views — [S
   suggested: 0.0025             # RELATED_VIDEO
   search: 0.042                 # YT_SEARCH
   external: 0.015               # EXT_URL
-  other: {}                     # no further labels returned
+  # --- 2026-09-03 S0 refresh: [S0/B-3] verbatim labels -----------------------
+  # B-3 requires EVERY source recorded with ITS OWN label. The four slots above
+  # are a lossy roll-up kept for rules that read them; these are what YouTube
+  # actually returned (2026-06-05..2026-09-03, n=4756). Note there is NO browse
+  # row and NO suggested row at all: `browse: 0.925` above is a CONSTRUCTED sum,
+  # not a measurement, and `suggested` is RELATED_VIDEO standing in for a slot
+  # YouTube never filled.
+  other:
+    SHORTS: 0.8814                # 4192
+    YT_SEARCH: 0.0416             # 198
+    YT_CHANNEL: 0.0383            # 182
+    EXT_URL: 0.0154               # 73
+    SUBSCRIBER: 0.0067            # 32
+    PLAYLIST: 0.0055              # 26
+    YT_OTHER_PAGE: 0.0053         # 25
+    NO_LINK_OTHER: 0.0029         # 14
+    RELATED_VIDEO: 0.0025         # 12
+    SHORTS_CONTENT_LINKS: 0.0004  # 2
 curve:                          # vidiq_channel_performance_trends — SHORTS, not long-form
                                 # built from PUBLIC view counts, same family as
                                 # vidiq_video_stats — NOT from channel_analytics
@@ -109,6 +133,24 @@ retention:
   section_curve:
     top:    []                  # not available via vidIQ
     bottom: []                  # not available via vidIQ
+  # --- 2026-09-03 S0 refresh (report=top_videos + explicit averageViewPercentage,
+  #     365 d window, n=39 vs the 09-01 n=34). Recorded ALONGSIDE the 09-01
+  #     figures rather than replacing them: the windows and n differ, and the
+  #     older ones are what `corpus`/`views` above were computed against.
+  refresh_2026_09_03:
+    n_videos: 39
+    avg_view_pct_median: 48.81        # vs 61.28 at n=34 on 09-01
+    median_views: 34.0
+    replay_inflated_share: 0.154      # same 6 videos over a larger denominator (was 6/34)
+    median_duration_top_quartile_curve_s_FIXED_DENOM: 39.8
+    # ^ RECOMPUTED WITH THE SUPERSEDED METHOD, FOR CROSS-CHECK ONLY. It divides by
+    #   a fixed curve.p50_7d; `curve.ratio_method: age-matched` above says that is
+    #   wrong and baseline-notes.md §Correction 3 explains why. The live field
+    #   `median_duration_top_quartile_curve_s: 49.0` stands unchanged.
+    # Independent reproduction of [S1/S-2]'s own stated reasoning: ranking the
+    # quartile by avg-view-% instead gives 18.9 s here, against the 19 s the rule
+    # records — below the rule's own 30 s clamp floor, on fresh data, exactly as
+    # the rule predicts. The avp path stays forbidden for shorts.
 packaging:
   median_ctr: null              # not available via vidIQ (Studio only)
   title_scorer_discriminative: false      # [S3/P-1] — ranked the failing title above every
@@ -117,14 +159,29 @@ packaging:
   median_title_score_top_quartile: null   # not measured; bar held open, see note
   median_thumb_score_top_quartile: null   # n/a — Shorts use frame 0
 voice:
-  id: null                      # vidiq_voiceover_list_voices not called this run
+  # Filled 2026-09-03 from Higgsfield list_voices (providers.yaml §tts `current-vo`;
+  # [PR-2] fell back to it because GEMINI_API_KEY is unset).
+  id: 674b71b8-1d2e-4087-8567-d1f53c0b9f3c
+  name: Kimberly
+  provider: higgsfield
+  voice_type: element
   words_per_minute: 150         # [default], unmeasured
+  # Second voice added for a two-character script. [S1/S-4] ("once chosen, never
+  # rotate") has no rule for a two-hander — see policy-change-proposals.md.
+  # Kimberly is NOT rotated: she remains the channel narrator and speaks SoulHabit.
+  cast:
+    SoulHabit: 674b71b8-1d2e-4087-8567-d1f53c0b9f3c   # Kimberly (element)
+    Jay: e2a2d2e6-9ed2-59cd-82af-feaa27f8a678         # Grady (preset, male)
 music:
   track_url: null
 best_publish_windows:           # vidiq_subscriber_insights, tz -04:00
   - { day: Friday,   start: 12, end: 15, activity: 63 }
   - { day: Friday,   start: 9,  end: 12, activity: 59 }
   - { day: Saturday, start: 0,  end: 3,  activity: 58 }
+  # Re-pulled 2026-09-03 at tz +05:00: Fri 21-24 (63), Fri 18-21 (59), Sat 9-12 (58).
+  # Identical activity counts, shifted exactly +9 h — same underlying histogram,
+  # so the windows are confirmed, not superseded. Whichever offset is used, state
+  # it: the hour numbers are meaningless without it.
 overrides:                      # [S9/L-2] write-back; append-only
   - field: duration_threshold_28_45s_with_50s_ceiling
     old: "diagnostic — >50s needs a reason"

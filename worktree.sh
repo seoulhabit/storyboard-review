@@ -38,6 +38,33 @@ die() { echo "${c_red}error:${c_off} $*" >&2; exit 2; }
 
 git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo: $ROOT"
 
+# Divergence from origin is invisible to `git status`, and it is where work is
+# actually lost: an unpushed commit on a branch someone later resets is gone with
+# no reflog entry its author can find. Tonight master sat 2-ahead/2-behind
+# unnoticed, on a branch that had been reset --hard twice. Seeing it took an
+# explicit rev-list, so status runs it for every tree.
+_ahead_behind() {
+  local dir="$1" br="$2" pad="$3" counts a b
+  if [ "$br" = "HEAD" ] || [ -z "$br" ]; then return 0; fi
+  if ! git -C "$dir" rev-parse --verify -q "refs/remotes/origin/$br" >/dev/null 2>&1; then
+    local unmerged; unmerged="$(git -C "$dir" rev-list --count master.."$br" 2>/dev/null || echo 0)"
+    if [ "${unmerged:-0}" -gt 0 ]; then
+      echo "${pad}${c_yel}!${c_off} no origin/$br, and $unmerged commit(s) not on master —"
+      echo "${pad}  they exist ONLY in this worktree. Merge or push before anyone removes it."
+    else
+      echo "${pad}${c_dim}local-only branch, nothing ahead of master${c_off}"
+    fi
+    return 0
+  fi
+  counts="$(git -C "$dir" rev-list --left-right --count "origin/$br...$br" 2>/dev/null)" || return 0
+  b="${counts%%	*}"; a="${counts##*	}"
+  [ "${a:-0}" = 0 ] && [ "${b:-0}" = 0 ] && { echo "${pad}${c_dim}in sync with origin/$br${c_off}"; return 0; }
+  echo "${pad}${c_yel}!${c_off} $a ahead / $b behind origin/$br"
+  [ "${a:-0}" -gt 0 ] && echo "${pad}  $a unpushed commit(s) — a reset of this branch orphans them"
+  [ "${b:-0}" -gt 0 ] && echo "${pad}  $b behind — pull before committing or you diverge further"
+  return 0
+}
+
 # ---------------------------------------------------------------- status
 
 cmd_status() {
@@ -47,6 +74,7 @@ cmd_status() {
   shared_branch="$(git -C "$MAIN" rev-parse --abbrev-ref HEAD)"
   dirty="$(git -C "$MAIN" status --porcelain | grep -vc '^??' || true)"
   printf '    branch %s   uncommitted %s\n' "$shared_branch" "$dirty"
+  _ahead_behind "$MAIN" "$shared_branch" "    "
   if [ "$shared_branch" != "master" ]; then
     echo "    ${c_yel}!${c_off} shared tree is NOT on master. Any session committing here"
     echo "      right now lands on '$shared_branch' without meaning to."
@@ -71,6 +99,7 @@ cmd_status() {
     printf '    %-30s %-38s\n' "$(basename "$path")" "$br"
     printf '      %slast commit %s   unmerged %s   uncommitted %s%s\n' \
            "$c_dim" "$age" "$ahead" "$dirty" "$c_off"
+    _ahead_behind "$path" "$br" "      "
     if [ "$ahead" -gt 0 ] || [ "$dirty" -gt 0 ]; then
       echo "      ${c_yel}holds work not on master — do not remove without reading it${c_off}"
     else

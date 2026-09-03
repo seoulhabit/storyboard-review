@@ -94,6 +94,31 @@ _self_check() {
   return 0
 }
 
+# Untracked work is the most exposed thing in any tree and was invisible here:
+# `uncommitted` counts TRACKED changes only, so a session building a new video
+# project -- 274 files, 149M in the case that surfaced this -- read as
+# "uncommitted 0" and therefore safe, while having neither reflog nor stash to
+# fall back on. A checker that reports clean without measuring the thing most at
+# risk is the failure this whole script exists to answer, so it was worth fixing
+# in the script itself rather than only in the guidance.
+#
+# -uall counts files rather than collapsed directories: one `??` line can hide
+# hundreds of files, which is exactly how 274 of them read as a single entry.
+_untracked() {
+  local n
+  n="$(git -C "$1" status --porcelain -uall 2>/dev/null | grep -c '^??')" || true
+  echo "${n:-0}"
+}
+
+_untracked_warn() {
+  local n="$1" pad="$2"
+  [ "${n:-0}" -gt 0 ] || return 0
+  echo "${pad}${c_yel}!${c_off} $n untracked file(s) — no reflog, no stash, no recovery."
+  echo "${pad}  A stray 'git clean' or checkout takes them silently. Copy them"
+  echo "${pad}  OUT of the repo before any git operation, then commit them somewhere."
+  return 0
+}
+
 # ---------------------------------------------------------------- status
 
 cmd_status() {
@@ -102,7 +127,9 @@ cmd_status() {
   echo "  SHARED TREE  $MAIN"
   shared_branch="$(git -C "$MAIN" rev-parse --abbrev-ref HEAD)"
   dirty="$(git -C "$MAIN" status --porcelain | grep -vc '^??' || true)"
-  printf '    branch %s   uncommitted %s\n' "$shared_branch" "$dirty"
+  local untr; untr="$(_untracked "$MAIN")"
+  printf '    branch %s   uncommitted %s   untracked %s\n' "$shared_branch" "$dirty" "$untr"
+  _untracked_warn "$untr" "    "
   _ahead_behind "$MAIN" "$shared_branch" "    "
   if [ "$shared_branch" != "master" ]; then
     echo "    ${c_yel}!${c_off} shared tree is NOT on master. Any session committing here"
@@ -126,8 +153,10 @@ cmd_status() {
     ahead="$(git -C "$path" log --oneline master.."$br" 2>/dev/null | wc -l | tr -d ' ')"
     local age; age="$(git -C "$path" log -1 --format='%cr' 2>/dev/null || echo '?')"
     printf '    %-30s %-38s\n' "$(basename "$path")" "$br"
-    printf '      %slast commit %s   unmerged %s   uncommitted %s%s\n' \
-           "$c_dim" "$age" "$ahead" "$dirty" "$c_off"
+    local untr; untr="$(_untracked "$path")"
+    printf '      %slast commit %s   unmerged %s   uncommitted %s   untracked %s%s\n' \
+           "$c_dim" "$age" "$ahead" "$dirty" "$untr" "$c_off"
+    _untracked_warn "$untr" "      "
     _ahead_behind "$path" "$br" "      "
     if [ "$ahead" -gt 0 ] || [ "$dirty" -gt 0 ]; then
       echo "      ${c_yel}holds work not on master — do not remove without reading it${c_off}"

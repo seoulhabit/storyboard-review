@@ -618,10 +618,9 @@ def build_compare():
     serum_inner = boundary_panel(rng_s, 420, 460)
     serum_svg = (f'<svg class="actor" viewBox="0 0 420 460" width="420" height="460" '
                  f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {serum_inner}\n    </svg>')
-    filler_inner = skin_band(420, 460, boundary_frac=0.20) + "\n      " + lattice(420, 460 - 120, 5, 5, pad=30)
     filler_svg = (f'<svg class="actor" viewBox="0 0 420 460" width="420" height="460" '
                   f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
-                  f'      <g transform="translate(0,120)">{filler_inner}</g>\n'
+                  f'      <g transform="translate(0,120)">{lattice(420, 460 - 120, 5, 5, pad=30)}</g>\n'
                   f'      {skin_band(420, 460, boundary_frac=0.20)}\n    </svg>')
 
     title = ""

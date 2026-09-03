@@ -116,7 +116,7 @@ SCENES = [
         (at(10,0.00), 1.50, "arrive", "head", "A filler is chemically different"),
         (at(10,0.30), 1.80, "swap",   "body", "Cross-linked into a stable, connected grid"),
         (at(10,0.60), 1.00, "arrive", "cite", "J Cosmet Dermatol · 2024"),
-        (at(10,0.78), 1.40, "wipe",   "sub",  "Holds its own shape, once placed beneath the skin"),
+        (at(10,0.78), 1.40, "wipe",   "sub",  "Holds its own shape"),
       ]),
  dict(id="s11-do-not-inject", actor="warning", section="application", layout="full-bleed", bg=INK,
       start=S[11]["start"], end=S[12]["start"], beats=[

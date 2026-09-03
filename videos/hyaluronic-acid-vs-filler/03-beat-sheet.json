@@ -646,9 +646,9 @@
           "dur": 1.4,
           "idiom": "wipe",
           "role": "sub",
-          "text": "Holds its own shape, once placed beneath the skin",
+          "text": "Holds its own shape",
           "actor": "ha-filler",
-          "intent": "Holds its own shape, once placed beneath the skin"
+          "intent": "Holds its own shape"
         }
       ]
     },

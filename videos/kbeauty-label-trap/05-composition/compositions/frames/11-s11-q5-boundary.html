@@ -1,0 +1,111 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--paper); color:var(--ink); }
+
+  .barrier { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .skin-band { width:1400px; height:280px; position:relative; }
+  .fissure { position:absolute; top:40%; stroke:var(--rule-dark); stroke-width:2; opacity:0; fill:none; }
+  .boundary-ring { position:absolute; left:50%; top:38%; width:900px; height:220px; transform:translate(-50%,-50%);
+    border:4px solid var(--celadon); border-radius:200px; opacity:0; }
+  .icon-row { display:flex; gap:80px; margin-top:56px; }
+  .icon-item { text-align:center; opacity:0; }
+  .icon-item .label { margin-top:12px; }
+  .tag5 { text-align:center; margin-top:40px; opacity:0; }
+  .tag5 .sub { font-size:56px; color:var(--vermilion); }
+
+</style>
+
+<div id="root" data-composition-id="s11-q5-boundary" data-width="1920" data-height="1080" data-duration="25.242">
+  <div class="clip stage" id="s11-q5-boundary-stage" data-start="0" data-duration="25.242">
+
+    <div class="barrier" id="s11-camera" style="transform-origin:50% 40%;">
+      <div class="skin-band">
+        <svg width="1400" height="280" viewBox="0 0 1400 280">
+          <path d="M0 90 Q175 70 350 90 T700 90 T1050 90 T1400 90" fill="none" stroke="var(--ink)" stroke-width="4" opacity="0.7"/>
+          <line x1="0" y1="150" x2="1400" y2="150" stroke="var(--ink)" stroke-width="2" stroke-dasharray="14 10" opacity="0.4"/>
+          <path class="fissure" id="s11-fissure-0" d="M 150 60 L 170 120 L 140 180"/>
+<path class="fissure" id="s11-fissure-1" d="M 370 60 L 390 120 L 360 180"/>
+<path class="fissure" id="s11-fissure-2" d="M 590 60 L 610 120 L 580 180"/>
+<path class="fissure" id="s11-fissure-3" d="M 810 60 L 830 120 L 800 180"/>
+<path class="fissure" id="s11-fissure-4" d="M 1030 60 L 1050 120 L 1020 180"/>
+<path class="fissure" id="s11-fissure-5" d="M 1250 60 L 1270 120 L 1240 180"/>
+        </svg>
+      </div>
+      <div class="boundary-ring" id="s11-ring"></div>
+      <div class="icon-row" id="s11-icons">
+        <div class="icon-item" id="s11-icon-0"><svg width="70" height="70" viewBox="0 0 70 70"><rect x="14" y="14" width="42" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><path d="M24 35 L32 43 L48 27" fill="none" stroke="var(--celadon)" stroke-width="4"/></svg><div class="label">PATCH</div></div>
+<div class="icon-item" id="s11-icon-1"><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="24" fill="none" stroke="currentColor" stroke-width="4"/><path d="M35 20 L35 35 L46 42" stroke="currentColor" stroke-width="4" fill="none"/></svg><div class="label">ROUTINE</div></div>
+<div class="icon-item" id="s11-icon-2"><svg width="70" height="70" viewBox="0 0 70 70"><polygon points="22,10 48,10 60,22 60,48 48,60 22,60 10,48 10,22" fill="none" stroke="currentColor" stroke-width="4"/><line x1="24" y1="24" x2="46" y2="46" stroke="currentColor" stroke-width="4"/></svg><div class="label">STOP</div></div>
+<div class="icon-item" id="s11-icon-3"><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="4"/><path d="M15 58 Q35 38 55 58" fill="none" stroke="currentColor" stroke-width="4"/></svg><div class="label">CLINICIAN</div></div>
+      </div>
+      <div class="tag5" id="s11-tag"><div class="sub">THE BOUNDARY IS THE ANSWER.</div></div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('.fissure', { opacity: 0 });
+  gsap.set('#s11-camera', { scale: 1.09, y: 26 });
+  gsap.set('#s11-ring', { opacity: 0, scale: 0.9 });
+  gsap.set('.icon-item', { opacity: 0, y: 16 });
+  gsap.set('#s11-tag', { opacity: 0, y: 16 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s11-camera', { scale: 1.0, y: 0, duration: 1.2, ease: 'power2.out' }, 0.0);
+  tl.to('#s11-fissure-0', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 2.00);
+  tl.to('#s11-fissure-1', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 2.50);
+  tl.to('#s11-fissure-2', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 3.00);
+  tl.to('#s11-fissure-3', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 3.50);
+  tl.to('#s11-fissure-4', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 4.00);
+  tl.to('#s11-fissure-5', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 4.50);
+  tl.to('#s11-ring', { opacity: 1, scale: 1, duration: 0.9, ease: 'power2.out' }, 7.0);
+  tl.to('#s11-icon-0', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.00);
+  tl.to('#s11-icon-1', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.30);
+  tl.to('#s11-icon-2', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.60);
+  tl.to('#s11-icon-3', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.90);
+  tl.to('#s11-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 17.0);
+  tl.to({}, { duration: 25.242, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s11-q5-boundary'] = tl;
+
+})();
+</script>
+</template>

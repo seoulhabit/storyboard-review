@@ -1,0 +1,106 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--paper); color:var(--ink); }
+
+  .leaf-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .leaf-head { text-align:center; margin-bottom:40px; opacity:0; }
+  .chambers { display:flex; justify-content:center; gap:64px; }
+  .chamber { width:420px; border:2px solid var(--rule-strong); border-radius:20px; padding:32px;
+    text-align:center; opacity:0; }
+  .chamber-vial { width:120px; height:180px; margin:0 auto 20px; border-radius:16px;
+    border:3px solid var(--ink-3); position:relative; overflow:hidden; }
+  .chamber-fill { position:absolute; left:0; right:0; bottom:0; }
+  .chamber-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); letter-spacing:.06em; }
+  .collapse-label { text-align:center; margin-top:44px; opacity:0; }
+  .collapse-label .head { font-size:64px; }
+  .rail { position:absolute; left:50%; bottom:calc(var(--safe-bottom) + 30px); width:0; height:5px;
+    background:var(--celadon); transform:translateX(-50%); }
+
+</style>
+
+<div id="root" data-composition-id="s06-q2-leaf-chambers" data-width="1920" data-height="1080" data-duration="20.554">
+  <div class="clip stage" id="s06-q2-leaf-chambers-stage" data-start="0" data-duration="20.554">
+
+    <div class="leaf-stage" id="s06-camera" style="transform-origin:50% 45%;">
+      <div class="leaf-head" id="s06-head"><div class="kicker">CENTELLA ASIATICA EXTRACT — ONE NAME, THREE PROCESSES</div></div>
+      <div class="chambers">
+        <div class="chamber" id="s06-chamber-0">
+      <div class="chamber-vial"><div class="chamber-fill" style="height:55%; background:#93B896;"></div></div>
+      <div class="chamber-label">WATER EXTRACT</div>
+    </div>
+<div class="chamber" id="s06-chamber-1">
+      <div class="chamber-vial"><div class="chamber-fill" style="height:72%; background:#4F6B52;"></div></div>
+      <div class="chamber-label">SOLVENT EXTRACT</div>
+    </div>
+<div class="chamber" id="s06-chamber-2">
+      <div class="chamber-vial"><div class="chamber-fill" style="height:30%; background:#131516;"></div></div>
+      <div class="chamber-label">PURIFIED COMPOUND</div>
+    </div>
+      </div>
+      <div class="rail" id="s06-rail"></div>
+      <div class="collapse-label" id="s06-collapse"><div class="head">CENTELLA ASIATICA EXTRACT</div></div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('.chamber', { opacity: 0, y: 30 });
+  gsap.set('#s06-head', { opacity: 0, y: -10 });
+  gsap.set('#s06-camera', { scale: 1.10, y: -30 });
+  gsap.set('#s06-rail', { width: 0 });
+  gsap.set('#s06-collapse', { opacity: 0, scale: 0.9 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s06-camera', { scale: 1.0, y: 0, duration: 1.1, ease: 'power2.out' }, 0.0);
+  tl.to('#s06-head', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
+  tl.to('#s06-chamber-0', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.00);
+  tl.to('#s06-chamber-1', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.50);
+  tl.to('#s06-chamber-2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 3.00);
+  tl.to('#s06-rail', { width: 900, duration: 0.9, ease: 'power2.inOut' }, 14.5);
+  tl.to('.chamber', { opacity: 0.25, duration: 0.6, ease: 'power2.inOut' }, 15.6);
+  tl.to('#s06-collapse', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }, 16.2);
+  tl.to({}, { duration: 20.554, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s06-q2-leaf-chambers'] = tl;
+
+})();
+</script>
+</template>

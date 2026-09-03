@@ -1,0 +1,126 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--ink); color:var(--paper); }
+
+  .endcard { position:relative; height:100%; width:100%;
+    background: radial-gradient(120% 90% at 50% 20%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .lock-ring { position:relative; width:340px; height:340px; }
+  .mark { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:120px; color:var(--celadon); opacity:0; }
+  .end-head { text-align:center; margin-top:56px; opacity:0; }
+  .end-head .head { color:var(--paper); font-size:64px; max-width:1300px; }
+  .footer { margin-top:28px; opacity:0; color:var(--ink-3); font-size:30px; }
+
+</style>
+
+<div id="root" data-composition-id="s14-landing" data-width="1920" data-height="1080" data-duration="9.451">
+  <div class="clip stage" id="s14-landing-stage" data-start="0" data-duration="9.451">
+
+    <div class="endcard">
+      <div class="lock-ring">
+        <div id="s14-seals" style="display:flex; gap:14px; position:absolute; inset:0; align-items:center; justify-content:center;"><svg class="stamp" id="s14-seal-0" viewBox="0 0 64 64" width="64" height="64"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 32.0 32.0)">
+    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">1</text>
+  </g>
+</svg><svg class="stamp" id="s14-seal-1" viewBox="0 0 64 64" width="64" height="64"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 32.0 32.0)">
+    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">2</text>
+  </g>
+</svg><svg class="stamp" id="s14-seal-2" viewBox="0 0 64 64" width="64" height="64"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 32.0 32.0)">
+    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">3</text>
+  </g>
+</svg><svg class="stamp" id="s14-seal-3" viewBox="0 0 64 64" width="64" height="64"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 32.0 32.0)">
+    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">4</text>
+  </g>
+</svg><svg class="stamp" id="s14-seal-4" viewBox="0 0 64 64" width="64" height="64"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 32.0 32.0)">
+    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">5</text>
+  </g>
+</svg></div>
+        <div class="mark" id="s14-mark">습</div>
+      </div>
+      <div class="end-head" id="s14-head"><div class="head">DON'T FOLLOW THE HYPE. FOLLOW THE QUESTION.</div></div>
+      <div class="footer" id="s14-footer">Educational, not diagnostic.</div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('#s14-seals', { opacity: 1, scale: 1 });
+  gsap.set('#s14-mark', { opacity: 0, scale: 0.6 });
+  gsap.set('#s14-head', { opacity: 0, y: 16 });
+  gsap.set('#s14-footer', { opacity: 0 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s14-seals', { scale: 0.7, opacity: 0, duration: 0.8, ease: 'power2.in' }, 3.0);
+  tl.to('#s14-mark', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.6)' }, 3.4);
+  tl.to('#s14-head', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 5.0);
+  tl.to('#s14-footer', { opacity: 1, duration: 0.8, ease: 'power2.out' }, 6.6);
+  tl.to({}, { duration: 9.451, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s14-landing'] = tl;
+
+})();
+</script>
+</template>

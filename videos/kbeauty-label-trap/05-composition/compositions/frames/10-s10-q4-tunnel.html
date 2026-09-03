@@ -1,0 +1,98 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--paper); color:var(--ink); }
+
+  .tunnel { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .tunnel-head { text-align:center; opacity:0; margin-bottom:10px; }
+  .tunnel-row { display:flex; justify-content:center; align-items:flex-end; gap:0; position:relative; }
+  .tstage { width:380px; text-align:center; opacity:0; position:relative; }
+  .tstage-icon { width:110px; height:110px; margin:0 auto 18px; }
+  .tstage-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); }
+  .tgap { width:60px; height:3px; background:var(--rule-strong); align-self:center; opacity:0; }
+  .cards { display:flex; justify-content:center; gap:40px; margin-top:56px; }
+  .card { font-family:var(--font-mono); font-size:30px; color:var(--ink); border:2px solid var(--ink);
+    border-radius:10px; padding:14px 22px; opacity:0; }
+
+</style>
+
+<div id="root" data-composition-id="s10-q4-tunnel" data-width="1920" data-height="1080" data-duration="39.983">
+  <div class="clip stage" id="s10-q4-tunnel-stage" data-start="0" data-duration="39.983">
+
+    <div class="tunnel">
+      <div class="tunnel-head" id="s10-head"><div class="kicker">THE EVIDENCE TUNNEL</div></div>
+      <div class="tunnel-row" id="s10-row">
+        <div class="tstage" id="s10-stage-0"><svg class="tstage-icon" viewBox="0 0 110 110"><ellipse cx="55" cy="55" rx="45" ry="45" fill="none" stroke="currentColor" stroke-width="4"/><ellipse cx="55" cy="55" rx="35" ry="35" fill="var(--celadon)" opacity="0.25"/></svg><div class="tstage-label">PETRI DISH</div></div><div class="tgap" id="s10-gap-0"></div><div class="tstage" id="s10-stage-1"><svg class="tstage-icon" viewBox="0 0 110 110"><circle cx="55" cy="55" r="18" fill="var(--celadon)"/><circle cx="55" cy="55" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/></svg><div class="tstage-label">ISOLATED INGREDIENT</div></div><div class="tgap" id="s10-gap-1"></div><div class="tstage" id="s10-stage-2"><svg class="tstage-icon" viewBox="0 0 110 110"><path d="M20 70 Q55 20 90 70" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="55" cy="55" r="8" fill="var(--celadon)"/></svg><div class="tstage-label">HUMAN SKIN STUDY</div></div><div class="tgap" id="s10-gap-2"></div><div class="tstage" id="s10-stage-3"><svg class="tstage-icon" viewBox="0 0 110 110"><rect x="35" y="20" width="40" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect x="42" y="30" width="26" height="45" fill="var(--celadon)" opacity="0.4"/></svg><div class="tstage-label">FINISHED PRODUCT TEST</div></div>
+      </div>
+      <div class="cards" id="s10-cards">
+        <div class="card">TESTED WHAT?</div><div class="card">PEOPLE?</div>
+        <div class="card">HOW LONG?</div><div class="card">MEASURED?</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('#s10-head', { opacity: 0, y: -10 });
+  gsap.set('.tstage', { opacity: 0, y: 20 });
+  gsap.set('.tgap', { opacity: 0 });
+  gsap.set('.card', { opacity: 0, y: 14 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s10-head', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.4);
+  tl.to('#s10-stage-0', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.00);
+  tl.to('#s10-stage-1', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 4.00);
+  tl.to('#s10-stage-2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 6.00);
+  tl.to('#s10-stage-3', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 8.00);
+  tl.to('#s10-gap-0', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 4.00);
+  tl.to('#s10-gap-1', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 6.00);
+  tl.to('#s10-gap-2', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 8.00);
+  tl.to('#s10-row', { x: -40, duration: 1.0, ease: 'power2.inOut' }, 30.0);
+  tl.to('.card:nth-child(1)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.50);
+  tl.to('.card:nth-child(2)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.85);
+  tl.to('.card:nth-child(3)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 25.20);
+  tl.to('.card:nth-child(4)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 25.55);
+  tl.to({}, { duration: 39.983, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s10-q4-tunnel'] = tl;
+
+})();
+</script>
+</template>

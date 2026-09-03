@@ -1,0 +1,86 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--paper); color:var(--ink); }
+
+  .recap { position:relative; height:100%; width:100%; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; }
+  .recap-card { width:1500px; border:2px solid var(--rule-strong); border-radius:24px; padding:60px;
+    background: var(--mist, #F0EBE1); opacity:0; }
+  .recap-row { display:flex; justify-content:space-between; padding:22px 0; border-bottom:1px solid var(--rule-strong); }
+  .recap-row:last-child { border-bottom:none; }
+  .recap-num { font-family:var(--font-mono); font-size:34px; color:var(--vermilion); width:60px; }
+  .recap-q { font-family:var(--font-display); font-size:42px; }
+
+</style>
+
+<div id="root" data-composition-id="s13-recap-questions" data-width="1920" data-height="1080" data-duration="11.994">
+  <div class="clip stage" id="s13-recap-questions-stage" data-start="0" data-duration="11.994">
+
+    <div class="recap">
+      <div class="recap-card" id="s13-card">
+        <div class="recap-row" id="s13-row-0" style="opacity:0"><div class="recap-num">1</div><div class="recap-q">How much is there?</div></div>
+<div class="recap-row" id="s13-row-1" style="opacity:0"><div class="recap-num">2</div><div class="recap-q">Which version is it?</div></div>
+<div class="recap-row" id="s13-row-2" style="opacity:0"><div class="recap-num">3</div><div class="recap-q">What formula carries it?</div></div>
+<div class="recap-row" id="s13-row-3" style="opacity:0"><div class="recap-num">4</div><div class="recap-q">What evidence matches the claim?</div></div>
+<div class="recap-row" id="s13-row-4" style="opacity:0"><div class="recap-num">5</div><div class="recap-q">Where does the answer stop?</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('#s13-card', { opacity: 0, y: 20 });
+  gsap.set('.recap-row', { opacity: 0 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s13-card', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.0);
+  tl.to('#s13-row-0', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 1.20);
+  tl.to('#s13-row-1', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 2.10);
+  tl.to('#s13-row-2', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 3.00);
+  tl.to('#s13-row-3', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 3.90);
+  tl.to('#s13-row-4', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 4.80);
+  tl.to({}, { duration: 11.994, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s13-recap-questions'] = tl;
+
+})();
+</script>
+</template>

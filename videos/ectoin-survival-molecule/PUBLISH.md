@@ -124,6 +124,108 @@ set leans barrier-side. That is also the argument the title makes.
 
 ---
 
+## Pinned comment
+
+Picks up the question the final scene already asks on screen ("Would you put a
+bacteria-made survival molecule on your face?") rather than introducing a
+different one — the video poses it, so the comment should answer to it.
+
+```
+The video ends on a real question, so let me ask it properly: would you put a
+bacteria-made survival molecule on your face — and did anything in here change
+your answer?
+
+Two things worth knowing if you're deciding:
+
+• The 104-woman study reported a subject PREFERENCE for the ectoin arm. It did
+  not report instrumented gains in moisturisation or skin appearance. Those are
+  different findings and they get quoted as if they were the same one.
+• PubMed indexes 12 ectoine clinical trials in total. That is a small evidence
+  base, and bitop AG, Merck KGaA and Kao Corporation all appear in the author
+  affiliations of papers cited in this video. It doesn't make the work wrong.
+  It does mean it isn't independent.
+
+All eight sources, with PMIDs, are in the description.
+
+The practical bit from 4:03: the number on the front of the bottle often isn't
+the ectoin number. Abib's "Ectoin Panthenol 11%" is 10% panthenol and 1%
+ectoin. Turn the bottle around and read the INCI.
+
+Which ingredient should I take apart next?
+```
+
+---
+
+## End screen
+
+**Window: 5:29.4 – 5:40.2** (scene 29, `data-start="329.383"`,
+`data-duration="10.771"`) — 10.8s, inside the 8–20s guidance.
+
+**Clear space, measured on the shipped render at t=335s, not assumed from
+tokens:**
+
+| Region | Ink | Verdict |
+|---|---:|---|
+| Right third, x 1184–1824, y 54–972 | **0.00%** | 640×918 clear |
+| Lower band, x 96–1824, y 772–972 | **0.00%** | clear |
+| Content area, x 96–1184, y 54–972 | 35.56% | occupied |
+
+Rightmost ink sits at x=1183 — the reserve boundary is exact to the pixel.
+Left column clears from y=728, giving a 244px band.
+
+**What actually fits in the 918px-tall reserve:**
+
+```
+2 video elements   (343 + 343)  = 686  + gap   FITS
+1 video + subscribe (343 + 298) = 641  + gap   FITS
+2 videos + subscribe            = 984  EXCEEDS by 66px, even at zero gap
+```
+
+Subscribe cannot go in the left-column band either: 298px element, 244px band,
+short by 54. So this is a genuine two-of-three choice, not a layout to fiddle
+with.
+
+### Recommended: 1 video + subscribe
+
+| Element | Target | Placement (1920×1080) |
+|---|---|---|
+| Video | `cGbokt_B_vE` — *The 1% trick K-Beauty brands don't want you to know* | x 1184–1797, y 54–397 |
+| Subscribe | channel | x 1184–1482, y 430–728 |
+
+`cGbokt_B_vE` is the right chain and not a guess: the final scene's own
+instruction is *"Turn the bottle around and find the actual percentage"*, and
+that Short is precisely about front-label percentages. It is also one of the
+channel's stronger performers (151 views, 8.85× its age-matched median).
+
+Subscribe is included over a second video because a viewer who finished 5:40 of
+dense evidence content is the highest-intent subscriber this channel gets, and
+the channel's first long-form is where that conversion is worth spending an
+element on.
+
+### Alternative: 2 videos, no subscribe
+
+If session time is preferred over subscriber conversion:
+
+| Element | Target | Placement |
+|---|---|---|
+| Video 1 | `cGbokt_B_vE` — *The 1% trick…* | x 1184–1797, y 54–397 |
+| Video 2 | `lhFQzV5_BrA` — *Why you're applying Hyaluronic Acid wrong* | x 1184–1797, y 430–773 |
+
+`lhFQzV5_BrA` chains off chapter 2, "Why it is not just another hyaluronic
+acid" — the comparison the video itself draws.
+
+**Note.** All 14 public videos on this channel are Shorts; this is its first
+long-form, so there is no long-form "watch next" to point at. End-screen
+elements linking to Shorts do work, but the click lands the viewer in the
+Shorts player, which ends the long-form session rather than extending it. That
+is an argument for the subscribe layout, and it resolves on its own once a
+second long-form exists.
+
+**Element sizes (613×343 video, 298 subscribe) are the documented approximations
+and scale with player size — verify in Studio before publishing.**
+
+---
+
 ## Still open
 
 - **Thumbnail CTR score.** `vidiq_score_thumbnail` needs a published `videoId`

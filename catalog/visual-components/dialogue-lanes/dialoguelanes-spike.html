@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DialogueLanes — two-speaker dialogue, faceless</title>
+<style>
+  *,*::before,*::after { box-sizing:border-box; }
+  html,body { margin:0; padding:0; background:#111; }
+  #root {
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --coral:#C97A5C; --coral-tint:#F6E7E0; --coral-name:#8A4A30;
+    --ink-2-mist:#626262; --ink-3-dark-safe:#93989A;
+    --font-body:"Inter",system-ui,-apple-system,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    --t-body:40px; --t-label:32px; --lh-body:1.45; --tr-mono-wide:0.1em;
+    --s-3:12px; --s-4:20px; --s-5:32px; --s-6:60px; --r-3:10px;
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    background:var(--paper); transform-origin:0 0;
+  }
+  .stage { position:relative; width:100%; height:100%;
+           padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+  .stage > * { overflow:hidden; }
+  .world { position:relative; width:100%; height:100%; overflow:hidden; }
+
+  /* --- the component ------------------------------------------------------
+     The lane VIEWPORT is a fixed window; the STACK inside it is translated.
+     Never collapse a spent card's height/margin/padding to make room: layout
+     properties snap to integer device pixels and stutter under a seek-by-frame
+     capture (rejected 31x by `hyperframes check` as gsap_non_transform_motion). */
+  .lanes { position:absolute; right:0; top:0; bottom:0; width:46%;
+           padding-left:var(--s-6); overflow:hidden;
+           display:flex; align-items:center; }
+  .lane-stack { display:flex; flex-direction:column; gap:var(--s-4);
+                width:100%; will-change:transform; }
+  .lane { opacity:0; position:relative; border-radius:var(--r-3);
+          padding:var(--s-5) var(--s-6); max-width:1080px; overflow:hidden; }
+  .lane p { margin:0; }
+  .lane .say em { font-style:normal; font-weight:800; }
+  .lane-name { font-family:var(--font-mono); font-size:var(--t-label);
+               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+               margin:0 0 var(--s-3); }
+
+  /* speaker A -- the authority lane. Carries claims and citations. */
+  .lane-a { align-self:flex-start; background:var(--mist);
+            border-left:8px solid var(--ink); }
+  .lane-a .say { font-family:var(--font-body); font-weight:600;
+                 font-size:var(--t-body); line-height:var(--lh-body); color:var(--ink); }
+  .lane-a .lane-name { color:var(--ink-2-mist); }   /* 5.13:1 -- NOT --ink-2, 4.49:1 */
+
+  /* speaker B -- the foil. Never carries a citation. */
+  .lane-b { align-self:flex-end; background:var(--coral-tint);
+            border-right:8px solid var(--coral); text-align:right; }
+  .lane-b .say { font-family:var(--font-body); font-weight:400; font-style:italic;
+                 font-size:var(--t-body); line-height:var(--lh-body); color:var(--ink); }
+  .lane-b .lane-name { color:var(--coral-name); }   /* 5.62:1 on the tint */
+
+  /* inverted ground: BOTH lanes need a variant, re-measured, not assumed */
+  #root.on-ink { background:var(--ink); }
+  #root.on-ink .lane-a { background:var(--ink-soft); border-left-color:var(--paper); }
+  #root.on-ink .lane-a .say { color:var(--paper); }                 /* 15.10:1 */
+  #root.on-ink .lane-a .lane-name { color:var(--ink-3-dark-safe); } /* 5.64:1  */
+  #root.on-ink .lane-b { background:#33251F; border-right-color:var(--coral); }
+  #root.on-ink .lane-b .say { color:#F0D9CE; }                      /* 10.89:1 */
+  #root.on-ink .lane-b .lane-name { color:#C98F76; }                /*  5.38:1 */
+
+  .demo-actor { position:absolute; left:0; top:0; bottom:0; width:52%;
+                display:flex; align-items:center; justify-content:center; }
+  .demo-note { font-family:var(--font-mono); font-size:28px; color:#9C978D;
+               text-align:center; line-height:1.6; }
+
+  /* scrubber, revealed by ?debug=1 and PRE-APPLIED by the loader below so a
+     reader does not have to discover the flag by accident */
+  #scrub { display:none; position:fixed; left:0; right:0; bottom:0; z-index:99;
+           background:#000; color:#eee; padding:10px 16px; gap:14px;
+           align-items:center; font:13px/1.4 ui-monospace,monospace; }
+  #root.debug ~ #scrub { display:flex; }
+  #scrub input { flex:1; }
+</style>
+</head>
+<body>
+<div id="root">
+  <div class="stage"><div class="world">
+    <div class="demo-actor">
+      <p class="demo-note">the actor / diagram lives here<br>(52% of the frame)</p>
+    </div>
+    <div class="lanes"><div class="lane-stack" id="stack"></div></div>
+  </div></div>
+</div>
+<div id="scrub">
+  <span id="t">0.00s</span>
+  <input id="r" type="range" min="0" max="12" step="0.01" value="0">
+  <button id="ink">toggle ink ground</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.2/gsap.min.js"></script>
+<script>
+// ---- FIELD CONTRACT: swap this array, change nothing else -------------------
+var LINES = [
+  { who:"a", name:"SoulHabit", at:0.30,  text:"Collagen is a <em>structural protein</em>. It keeps skin firm." },
+  { who:"b", name:"Jay",       at:2.30,  text:"So it's the <em>scaffolding</em> holding up my face?" },
+  { who:"a", name:"SoulHabit", at:4.10,  text:"Basically." },
+  { who:"b", name:"Jay",       at:5.40,  text:"That explains the <em>renovation notices</em> from gravity." },
+  { who:"a", name:"SoulHabit", at:7.60,  text:"Keeping collagen is <em>easier than replacing it</em>." },
+  { who:"b", name:"Jay",       at:9.90,  text:"Protect the building before buying <em>powdered bricks</em>." }
+];
+var DURATION = 12.0;
+
+// Six idioms, six DIFFERENT eases. Deliberately NO timeline-level
+// `defaults: {ease}` -- one inherited ease is what makes every beat in a piece
+// share a signature while a grep for an explicit `ease:` finds almost nothing.
+var EASE = { arrive:"power2.out", slam:"back.out(1.7)", swap:"expo.inOut" };
+
+var stack = document.getElementById("stack");
+LINES.forEach(function (l, i) {
+  var d = document.createElement("div");
+  d.className = "lane lane-" + l.who;
+  d.id = "ln-" + i;
+  d.innerHTML = '<p class="lane-name">' + l.name + '</p>' +
+                '<p class="say">' + l.text + '</p>';
+  // copy is always WRAPPED. A bare text node has nothing to carry z-index, so an
+  // animated background paints straight over it -- and a layout auditor that
+  // walks text ELEMENTS cannot see text that never became one.
+  stack.appendChild(d);
+});
+
+// Positions are MEASURED from the laid-out DOM, never hand-derived: card height
+// depends on copy length and on the webfont. offsetHeight forces a layout flush.
+var LP = (function () {
+  var vp = stack.parentElement, mid = vp.clientHeight / 2, m = {};
+  // Walk the offsetParent chain to the viewport rather than trusting one
+  // offsetTop: .lane-stack carries will-change:transform, which makes it a
+  // containing block and therefore an offsetParent, so a card's offsetTop is
+  // measured against the STACK. The stack's own offset within the viewport
+  // (negative, because a stack taller than its viewport centres by overflowing
+  // both ends) is then silently dropped and every card sits high in the frame.
+  function topWithin(el, anc) {
+    var t = 0;
+    while (el && el !== anc) { t += el.offsetTop; el = el.offsetParent; }
+    return t;
+  }
+  for (var i = 0; i < stack.children.length; i++) {
+    var c = stack.children[i];
+    m[c.id] = -(topWithin(c, vp) + c.offsetHeight / 2 - mid);
+  }
+  return m;
+})();
+
+window.__timelines = window.__timelines || {};
+var tl = gsap.timeline({ paused: true });
+LINES.forEach(function (l, i) {
+  var id = "#ln-" + i;
+  tl.to("#stack", { y: LP["ln-" + i], duration: 0.46, ease: EASE.swap }, l.at);
+  if (l.who === "a") {
+    tl.fromTo(id, { opacity:0, x:-70 },
+              { opacity:1, x:0, duration:0.42, ease:EASE.arrive }, l.at);
+  } else {
+    tl.fromTo(id, { opacity:0, x:70, scale:0.9 },
+              { opacity:1, x:0, scale:1, duration:0.38, ease:EASE.slam }, l.at);
+  }
+  if (i)     tl.to("#ln-" + (i-1), { opacity:0.38, duration:0.30, ease:EASE.swap }, l.at);
+  if (i > 1) tl.to("#ln-" + (i-2), { opacity:0,    duration:0.30, ease:EASE.swap }, l.at);
+});
+tl.to({}, { duration: DURATION }, 0);   // full-span anchor -- always last
+window.__timelines["dialogue-lanes"] = tl;
+
+// ---- review harness only; a real composition is seeked by the engine --------
+(function () {
+  var p = new URLSearchParams(location.search);
+  if (!p.has("debug")) { location.search = (location.search ? "&" : "?") + "debug=1"; return; }
+  document.getElementById("root").classList.add("debug");
+  var r = document.getElementById("r"), t = document.getElementById("t");
+  r.max = DURATION;
+  function seek() { tl.seek(+r.value); t.textContent = (+r.value).toFixed(2) + "s"; }
+  r.addEventListener("input", seek);
+  document.getElementById("ink").addEventListener("click", function () {
+    document.getElementById("root").classList.toggle("on-ink");
+  });
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, (window.innerHeight - 48) / 1080);
+    document.getElementById("root").style.transform = "scale(" + s + ")";
+  }
+  window.addEventListener("resize", fit); fit(); seek();
+})();
+</script>
+</body>
+</html>

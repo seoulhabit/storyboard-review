@@ -8,6 +8,28 @@ reproduced here **verbatim** from `.claude/skills/faceless-video-craft/SKILL.md`
 off. `decision-policy.md` carries each one as a numbered rule at the stage where
 it gates and points back here.
 
+**Every `Source:` line below is a coupling, and it breaks silently.** Each
+section reproduces a v1 span verbatim AND cites it by line number. Any edit to
+v1 above a cited span shifts it; nothing errors; the file then claims a range
+that no longer holds what it reproduces. Guard it with:
+
+```bash
+python3 scripts/check_restored_citations.py          # verify all eight
+python3 scripts/check_restored_citations.py --fix    # renumber pointer drift
+python3 scripts/test_restored_citations.py           # controls for the checker
+```
+
+It distinguishes the two failure modes, because only one is safe to automate:
+**pointer drift** (the body still exists contiguously in v1, just elsewhere —
+`--fix` renumbers) and **fragmentation** (prose was inserted mid-span, so the
+body matches no contiguous range — reported and left alone, since deciding how
+much new material belongs to the rule is a content call).
+
+Written after a partial guard covering only R7 and R8 reported `identical=True`
+while five of the other six were drifted, several by more than 1,500 lines. It
+was accurate about what it checked and silent about what it did not, which
+reads identically from outside. Check all eight or none.
+
 Two of the six are now enforced by a tool rather than by reading. The rule stays
 either way: `check` tells you a threshold was crossed, this file tells you why
 the threshold is where it is.

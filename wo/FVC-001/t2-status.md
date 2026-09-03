@@ -18,7 +18,15 @@ Fixed by scaffolding a minimal real project around it (three authored scenes, a 
 
 PSNR avg 15.35 (finite = differs; a t=0-vs-itself control gave `inf`, confirming the method detects identity correctly rather than always reporting difference). The caveat: the skeleton's own root-timeline transitions sit at 2.500s and 5.400s — nothing in the root timeline itself moves between 0 and 1s. The measured difference at that pair comes from the authored *sub-composition* scene content, not the skeleton's own choreography. `t=2.5` vs `t=2.73` (inside the actual push-slide transition) is the pair that exercises the root timeline, and gives PSNR 15.76 — also finite, also a genuine difference, just a more honest test of what this Accept item claims to check.
 
-## 4. Lint vs `check` agreement on three fixtures — **FAIL, a real and reproducible disagreement**
+## 4. Lint vs `check` agreement on three fixtures — resolved 2026-09-03, not a disagreement after all
+
+**Superseded by `story-board-78`'s finding, independently verified.** What follows below was accurate as a measurement but wrong as a diagnosis: I framed this as two tools disagreeing, requiring Kim to pick a side. It isn't that. `hyperframes-engine.md` §10 Images was the only section in that file with no `*(source)*` line — the lazy/decoding rule was never transcribed from the engine at all, it's a project craft rule that got filed as if it were. Checked directly against installed 0.8.26: its shipped docs (`dist/docs`, `dist/skills`, `dist/templates` — topics `data-attributes`, `examples`, `rendering`, `gsap`, `troubleshooting`, `compositions`) say nothing about image loading, and none of `check`'s 248 lint rule ids covers it. `check` doesn't enforce the rule because it was never the engine's rule to enforce — the tools were never in conflict.
+
+This also rules out the fix that looked cleanest (deleting `lint_composition.py`'s check to buy agreement) — that would drop a real check on a real defect (a headless renderer skips unpainted images; `SKILL.md`'s mandatory render rule 2 exists because of exactly this). Fixed properly: `claude-skills` commit `39b4692` adds a Provenance note to §10 stating the rule is a deliberate craft-layer superset, not engine contract, and that the delta with `check` is expected. `docs/wo/WO-FVC-001.md` (this repo) commit `068fbb7` corrects T2's *Do* ("reconcile until findings agree" → "record each delta with its cause") and *Accept* (all three command mis-specifications from §2-3 above, fixed in the same pass). Delta re-verified after the change, unchanged as intended: `lint_composition.py` exit 1, `hyperframes check` exit 0.
+
+No longer needs Kim's decision. Original write-up kept below for the record.
+
+### Original finding (superseded diagnosis, measurements still correct)
 
 - `clean.html`: lint 0 err / exit 0 · `check` 0 findings / exit 0 → agree.
 - `fail_banned_raf.html`: lint 1 err / exit 1 · `check` reports `requestanimationframe_in_composition`, exit 1 → agree.

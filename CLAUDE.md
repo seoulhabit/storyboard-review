@@ -47,6 +47,22 @@ Two habits for whatever you cannot isolate:
   recovery path. Every irrecoverable loss in the incident above was work that
   had not been committed; everything committed was recovered.
 
+### Moving out of the shared checkout
+
+**If your work is untracked, copy it out of the repo before you touch git.**
+"Commit first, then move" is wrong for untracked work: committing means either
+landing on whatever branch the shared tree happens to be on — likely someone
+else's — or running `git checkout -b` in the shared tree, which is the thing
+this whole convention exists to stop. There is no safe in-tree commit for
+untracked work when the tree is on a branch you did not choose. Copy the files
+somewhere outside the repo, make your worktree, copy them in, verify, commit.
+
+That is not hypothetical: a session began on `master`, built ~40 untracked
+files, and found the tree had been switched to someone else's feature branch
+underneath it with no signal that anything had happened.
+
+If your work is already tracked and committed, just make the worktree.
+
 ### What a worktree does NOT protect
 
 A worktree isolates the **checkout**, not the **refs**. Both limits below were

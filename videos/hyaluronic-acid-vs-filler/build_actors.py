@@ -596,15 +596,25 @@ def build_body_cross():
     return html.replace(HEROSPLIT_CSS, BODYCROSS_CSS, 1) if HEROSPLIT_CSS in html else html
 
 # ---- s05-compare: side-by-side cross-section, serum vs filler -------------
+# [S7/R-2] measured: the original budget (104px title + 340px actor + 3-line
+# 52px body) summed to ~700px of content inside a 560px lane row -- the
+# safe-area gate caught it as real ink 10427px deep in the reserved bottom
+# zone at t=51.5s. Recomputed against the ACTUAL 798px stage content height:
+# a 64px 2-line title + 260px actor + 40px (the [S6/A-6] body floor, not
+# below it) text fits with headroom per column, verified on the pixel gate.
 COMPARE_CSS = """
-  .cmp-wrap { display:flex; flex-direction:column; gap:22px; width:100%; height:100%; }
+  .cmp-wrap { display:flex; flex-direction:column; gap:20px; width:100%; height:100%; }
+  .cmp-title { font-family:var(--font-display); font-weight:600; font-size:64px;
+               line-height:1.08; letter-spacing:-.012em; margin:0; }
   .cmp-lanes { display:grid; grid-template-columns:1fr 1fr; gap:56px; flex:1 1 auto; min-height:0; }
   .cmp-col { display:flex; flex-direction:column; align-items:center; justify-content:center;
-             gap:14px; border:2px solid var(--rule-strong); border-radius:16px; padding:20px; }
+             gap:14px; border:2px solid var(--rule-strong); border-radius:16px; padding:20px;
+             overflow:hidden; }
   .cmp-col.on { border-color:var(--aqua); }
   .cmp-label { font-weight:700; font-size:32px; letter-spacing:.12em;
                text-transform:uppercase; color:var(--ink-2); }
-  .cmp-col .actor { color:var(--ink); height:340px; width:auto; }
+  .cmp-col .actor { color:var(--ink); height:260px; width:auto; }
+  .cmp-col .body { font-size:40px; line-height:1.18; }
 """
 def build_compare():
     sid = "s05-compare"
@@ -627,7 +637,7 @@ def build_compare():
     titled = None
     if head_i and abs(beats[head_i[0]]["offset"]) < 1e-6:
         titled = head_i[0]
-        title = f'      <h1 class="head beat" id="{sid}-b{titled}">{txt(beats[titled])}</h1>'
+        title = f'      <h1 class="cmp-title beat" id="{sid}-b{titled}">{txt(beats[titled])}</h1>'
 
     body_rows = []
     for n, i in enumerate(body_i[:1]):

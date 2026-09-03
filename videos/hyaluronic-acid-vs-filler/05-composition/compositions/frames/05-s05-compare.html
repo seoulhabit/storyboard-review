@@ -49,14 +49,18 @@
   .beat.is-wiping { clip-path: inset(0 100% 0 0); }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
-  .cmp-wrap { display:flex; flex-direction:column; gap:22px; width:100%; height:100%; }
+  .cmp-wrap { display:flex; flex-direction:column; gap:20px; width:100%; height:100%; }
+  .cmp-title { font-family:var(--font-display); font-weight:600; font-size:64px;
+               line-height:1.08; letter-spacing:-.012em; margin:0; }
   .cmp-lanes { display:grid; grid-template-columns:1fr 1fr; gap:56px; flex:1 1 auto; min-height:0; }
   .cmp-col { display:flex; flex-direction:column; align-items:center; justify-content:center;
-             gap:14px; border:2px solid var(--rule-strong); border-radius:16px; padding:20px; }
+             gap:14px; border:2px solid var(--rule-strong); border-radius:16px; padding:20px;
+             overflow:hidden; }
   .cmp-col.on { border-color:var(--aqua); }
   .cmp-label { font-weight:700; font-size:32px; letter-spacing:.12em;
                text-transform:uppercase; color:var(--ink-2); }
-  .cmp-col .actor { color:var(--ink); height:340px; width:auto; }
+  .cmp-col .actor { color:var(--ink); height:260px; width:auto; }
+  .cmp-col .body { font-size:40px; line-height:1.18; }
 
 </style>
 
@@ -64,7 +68,7 @@
      data-duration="14.378">
   <div class="clip stage" id="s05-compare-stage" data-start="0" data-duration="14.378">
     <div class="cmp-wrap">
-      <h1 class="head beat" id="s05-compare-b0">Here's where the two versions really split</h1>
+      <h1 class="cmp-title beat" id="s05-compare-b0">Here's where the two versions really split</h1>
       <div class="cmp-lanes">
         <div class="cmp-col" id="s05-compare-colL">
           <div class="cmp-label">Serum — surface</div>

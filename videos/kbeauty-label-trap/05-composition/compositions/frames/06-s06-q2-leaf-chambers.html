@@ -74,7 +74,10 @@
     </div>
       </div>
       <div class="rail" id="s06-rail"></div>
-      <div class="collapse-label" id="s06-collapse"><div class="head">CENTELLA ASIATICA EXTRACT</div></div>
+      <div class="collapse-label" id="s06-collapse">
+        <div class="head">CENTELLA ASIATICA EXTRACT</div>
+        <div class="cite" id="s06-cite" style="margin:20px auto 0;">J Cosmet Sci · 2020</div>
+      </div>
     </div>
 
   </div>
@@ -87,6 +90,7 @@
   gsap.set('#s06-camera', { scale: 1.10, y: -30 });
   gsap.set('#s06-rail', { width: 0 });
   gsap.set('#s06-collapse', { opacity: 0, scale: 0.9 });
+  gsap.set('#s06-cite', { opacity: 0 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s06-camera', { scale: 1.0, y: 0, duration: 1.1, ease: 'power2.out' }, 0.0);
@@ -97,6 +101,7 @@
   tl.to('#s06-rail', { width: 900, duration: 0.9, ease: 'power2.inOut' }, 14.5);
   tl.to('.chamber', { opacity: 0.25, duration: 0.6, ease: 'power2.inOut' }, 15.6);
   tl.to('#s06-collapse', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }, 16.2);
+  tl.to('#s06-cite', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 17.4);
   tl.to({}, { duration: 20.554, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s06-q2-leaf-chambers'] = tl;

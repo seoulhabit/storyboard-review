@@ -89,17 +89,22 @@ body = f'''
           <svg viewBox="0 0 480 380" width="440" height="330">{orderly_lines}</svg>
         </div>
       </div>
-      <div class="tag4" id="s09-tag"><div class="sub">THE VEHICLE MATTERS.</div></div>
+      <div class="tag4" id="s09-tag">
+        <div class="sub">THE VEHICLE MATTERS.</div>
+        <div class="cite" id="s09-cite" style="margin:16px auto 0;">Int J Cosmet Sci · 2009</div>
+      </div>
     </div>
 '''
 script = """
   gsap.set('.transit-col', { opacity: 0, y: 24 });
   gsap.set('#s09-tag', { opacity: 0, y: 16 });
+  gsap.set('#s09-cite', { opacity: 0 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s09-colA', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
   tl.to('#s09-colB', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.7);
   tl.to('#s09-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 6.0);
+  tl.to('#s09-cite', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 7.2);
   tl.to({}, { duration: 15.048, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s09-q3-transit'] = tl;
@@ -186,6 +191,8 @@ style = """
   .icon-item .label { margin-top:12px; }
   .tag5 { text-align:center; margin-top:40px; opacity:0; }
   .tag5 .sub { font-size:56px; color:var(--vermilion); }
+  .gentle-row { position:absolute; left:0; right:0; top:calc(var(--safe-top) + 30px); text-align:center; opacity:0; }
+  .gentle-row .body { font-size:44px; margin-bottom:14px; }
 """
 icons = [
     ("PATCH", '<svg width="70" height="70" viewBox="0 0 70 70"><rect x="14" y="14" width="42" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><path d="M24 35 L32 43 L48 27" fill="none" stroke="var(--celadon)" stroke-width="4"/></svg>'),
@@ -203,6 +210,10 @@ fissures = "\n".join(
 )
 body = f'''
     <div class="barrier" id="s11-camera" style="transform-origin:50% 40%;">
+      <div class="gentle-row" id="s11-gentle">
+        <div class="body">"Gentle" isn't a fixed property</div>
+        <div class="uf-badge" id="s11-flag" style="margin:0 auto;">○ UNSOURCED — no record in this system</div>
+      </div>
       <div class="skin-band">
         <svg width="1400" height="280" viewBox="0 0 1400 280">
           <path d="M0 90 Q175 70 350 90 T700 90 T1050 90 T1400 90" fill="none" stroke="var(--ink)" stroke-width="4" opacity="0.7"/>
@@ -231,9 +242,14 @@ script = f"""
   gsap.set('#s11-ring', {{ opacity: 0, scale: 0.9 }});
   gsap.set('.icon-item', {{ opacity: 0, y: 16 }});
   gsap.set('#s11-tag', {{ opacity: 0, y: 16 }});
+  gsap.set('#s11-gentle', {{ opacity: 0, y: -10 }});
 
   var tl = gsap.timeline({{ paused: true }});
   tl.to('#s11-camera', {{ scale: 1.0, y: 0, duration: 1.2, ease: 'power2.out' }}, 0.0);
+  // [K-2] flag fires CONCURRENTLY with the C15 claim per 01-story-brief.md --
+  // narrated right after "where does the answer stop applying?", ~0.9-6s in.
+  tl.to('#s11-gentle', {{ opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }}, 0.9);
+  tl.to('#s11-gentle', {{ opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }}, 5.8);
 {fissure_tweens}
   tl.to('#s11-ring', {{ opacity: 1, scale: 1, duration: 0.9, ease: 'power2.out' }}, 7.0);
 {icon_tweens}

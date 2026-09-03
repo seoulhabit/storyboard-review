@@ -32,6 +32,10 @@ body = f'''
         <div class="cutoff-rule" id="s04-cutoff"></div>
         <div class="cutoff-label" id="s04-cutoff-label">1% — ORDER NO LONGER GUARANTEED</div>
         {rows_below}
+        <div style="display:flex; gap:20px; margin-top:24px;">
+          <div class="cite" id="s04-cite-fda">FDA · 21 CFR 701.3</div>
+          <div class="cite" id="s04-cite-eu">EU · Reg. 1223/2009 Art. 19</div>
+        </div>
       </div>
       <div class="tag-row" id="s04-tag1"><div class="sub">ORDER ≠ EXACT DOSE</div></div>
     </div>
@@ -56,6 +60,8 @@ script = f"""
   gsap.set('#s04-cutoff-label', {{ opacity: 0 }});
   gsap.set('#s04-tag1', {{ opacity: 0, y: 16 }});
   gsap.set('#s04-camera', {{ scale: 1.12, y: 40 }});
+  gsap.set('#s04-cite-fda', {{ opacity: 0 }});
+  gsap.set('#s04-cite-eu', {{ opacity: 0 }});
 
   var tl = gsap.timeline({{ paused: true }});
   // Camera dive into the canyon: whole-stage push-in, not an element reveal
@@ -64,6 +70,8 @@ script = f"""
 {above_tweens}
   tl.fromTo('#s04-cutoff', {{ scaleX: 0 }}, {{ scaleX: 1, duration: 0.3, ease: 'power2.in' }}, 4.2);
   tl.to('#s04-cutoff-label', {{ opacity: 1, duration: 0.3, ease: 'power2.out' }}, 4.5);
+  tl.to('#s04-cite-fda', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 5.0);
+  tl.to('#s04-cite-eu', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 5.3);
 {below_tweens}
 {scramble}
   tl.to('#s04-tag1', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 9.0);
@@ -97,7 +105,8 @@ body = '''
         </div>
         <div class="dose-item">
           <div class="dose-dot small" id="s05-smalldot"></div>
-          <div class="dose-label">near the end — not automatically useless</div>
+          <div class="dose-label">may be active at low levels</div>
+          <div class="uf-badge" id="s05-flag" style="margin:14px auto 0;">○ UNSOURCED — no record in this system</div>
         </div>
       </div>
       <div class="msg" id="s05-msg"><div class="body">Unless a brand publishes the percentage — don't invent a number.</div></div>
@@ -109,9 +118,14 @@ script = """
   gsap.set('#s05-smalldot', { opacity: 0.5, scale: 1 });
   gsap.set('#s05-msg', { opacity: 0, y: 14 });
   gsap.set('#s05-tag2', { opacity: 0, y: 16 });
+  gsap.set('#s05-flag', { opacity: 0 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s05-smalldot', { opacity: 1, scale: 1.3, duration: 0.5, ease: 'power2.out' }, 0.4);
+  // [K-2] flag fires CONCURRENTLY with the claim it discloses, per C6 in
+  // 01-story-brief.md -- not before, not after.
+  tl.to('#s05-flag', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.6);
+  tl.to('#s05-flag', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 10.5);
   tl.to('#s05-smalldot', { boxShadow: '0 0 0 24px rgba(147,184,150,0)', duration: 1.1, ease: 'power2.out' }, 0.4);
   tl.to('#s05-smalldot', { scale: 1, duration: 0.4, ease: 'power2.inOut' }, 0.9);
   tl.to('#s05-bigdot', { opacity: 0.2, duration: 0.8, ease: 'power2.out' }, 1.2);
@@ -158,7 +172,10 @@ body = f'''
         {chamber_html}
       </div>
       <div class="rail" id="s06-rail"></div>
-      <div class="collapse-label" id="s06-collapse"><div class="head">CENTELLA ASIATICA EXTRACT</div></div>
+      <div class="collapse-label" id="s06-collapse">
+        <div class="head">CENTELLA ASIATICA EXTRACT</div>
+        <div class="cite" id="s06-cite" style="margin:20px auto 0;">J Cosmet Sci · 2020</div>
+      </div>
     </div>
 '''
 chamber_tweens = "\n".join(
@@ -171,6 +188,7 @@ script = f"""
   gsap.set('#s06-camera', {{ scale: 1.10, y: -30 }});
   gsap.set('#s06-rail', {{ width: 0 }});
   gsap.set('#s06-collapse', {{ opacity: 0, scale: 0.9 }});
+  gsap.set('#s06-cite', {{ opacity: 0 }});
 
   var tl = gsap.timeline({{ paused: true }});
   tl.to('#s06-camera', {{ scale: 1.0, y: 0, duration: 1.1, ease: 'power2.out' }}, 0.0);
@@ -179,6 +197,7 @@ script = f"""
   tl.to('#s06-rail', {{ width: 900, duration: 0.9, ease: 'power2.inOut' }}, 14.5);
   tl.to('.chamber', {{ opacity: 0.25, duration: 0.6, ease: 'power2.inOut' }}, 15.6);
   tl.to('#s06-collapse', {{ opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }}, 16.2);
+  tl.to('#s06-cite', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, 17.4);
   tl.to({{}}, {{ duration: 20.554, ease: 'none' }}, 0);
   window.__timelines = window.__timelines || {{}};
   window.__timelines['s06-q2-leaf-chambers'] = tl;

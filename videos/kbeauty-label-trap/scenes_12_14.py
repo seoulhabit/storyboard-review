@@ -28,6 +28,30 @@ style = """
   .card-focus .head { font-size:60px; color:var(--paper); }
 """
 seal_row = "".join(stamp_svg(f"s12-sealf-{i}", str(i+1), size=80) for i in range(5))
+
+# Idle beat for the two long holds (0.25-7.0s and 8.4-18.2s, per cadence gate):
+# a slow, very subtle stagger-pulse across the five seal stamps, one at a time,
+# repeated as three short waves timed into the gaps around the existing
+# verdict-tag beat (7.0/7.6s) and before the card-focus beat (18.2s). Chained
+# .to() calls, not GSAP repeat, per this engine's paused-timeline model.
+SEAL_IDS = [f"s12-sealf-{i}" for i in range(5)]
+_seal_wave_starts = [1.0, 9.0, 13.6]
+_seal_stagger = 0.6
+_seal_pulse_dur = 0.9
+_seal_pulse_lines = []
+for _ws in _seal_wave_starts:
+    for _i, _sid in enumerate(SEAL_IDS):
+        _t0 = _ws + _i * _seal_stagger
+        _t1 = _t0 + _seal_pulse_dur + 0.02
+        _seal_pulse_lines.append(
+            f"  tl.to('#{_sid}', {{ scale: 1.05, duration: {_seal_pulse_dur}, ease: 'sine.inOut' }}, {_t0:.2f});"
+        )
+        _seal_pulse_lines.append(
+            f"  tl.to('#{_sid}', {{ scale: 1.0, duration: {_seal_pulse_dur}, ease: 'sine.inOut' }}, {_t1:.2f});"
+        )
+seal_pulse_js = "\n".join(_seal_pulse_lines)
+seal_ids_js = ", ".join(f"'#{sid}'" for sid in SEAL_IDS)
+
 body = f'''
     <div class="bench">
       <div class="bench-surface"></div>
@@ -47,21 +71,23 @@ body = f'''
       <div class="card-focus" id="s12-card"><div class="head">FIVE QUESTIONS. ONE VERDICT.</div></div>
     </div>
 '''
-script = """
-  gsap.set('#s12-bottles', { opacity: 1 });
-  gsap.set('.verdict', { opacity: 0, y: 16 });
-  gsap.set('#s12-card', { opacity: 0, y: 16 });
-  gsap.set('#s12-seals', { opacity: 0.9 });
+script = f"""
+  gsap.set('#s12-bottles', {{ opacity: 1 }});
+  gsap.set('.verdict', {{ opacity: 0, y: 16 }});
+  gsap.set('#s12-card', {{ opacity: 0, y: 16 }});
+  gsap.set('#s12-seals', {{ opacity: 0.9 }});
+  gsap.set([{seal_ids_js}], {{ scale: 1, transformOrigin: '50% 50%' }});
 
-  var tl = gsap.timeline({ paused: true });
-  tl.to('#s12-bottles', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0.0);
-  tl.to('.verdict.a', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 7.0);
-  tl.to('.verdict.b', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 7.6);
-  tl.to('#s12-bottles', { opacity: 0.25, duration: 1.0, ease: 'power2.inOut' }, 17.0);
-  tl.to('.verdict', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 17.0);
-  tl.to('#s12-card', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 18.2);
-  tl.to({}, { duration: 25.425, ease: 'none' }, 0);
-  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({{ paused: true }});
+  tl.to('#s12-bottles', {{ opacity: 1, duration: 0.6, ease: 'power2.out' }}, 0.0);
+  tl.to('.verdict.a', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 7.0);
+  tl.to('.verdict.b', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 7.6);
+{seal_pulse_js}
+  tl.to('#s12-bottles', {{ opacity: 0.25, duration: 1.0, ease: 'power2.inOut' }}, 17.0);
+  tl.to('.verdict', {{ opacity: 0, duration: 0.6, ease: 'power2.in' }}, 17.0);
+  tl.to('#s12-card', {{ opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }}, 18.2);
+  tl.to({{}}, {{ duration: 25.425, ease: 'none' }}, 0);
+  window.__timelines = window.__timelines || {{}};
   window.__timelines['s12-reveal'] = tl;
 """
 write("s12-reveal", style, body, script, bg="dark")
@@ -99,13 +125,37 @@ row_tweens = "\n".join(
     f"  tl.to('#s13-row-{i}', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, {1.2+i*0.9:.2f});"
     for i in range(5)
 )
+
+# Idle beat for the long hold after all five rows have landed (~5.3s) through
+# the end of the scene's own timeline (11.994s), per cadence gate: a soft,
+# slow pulse on the vermilion numerals, in sequence, echoing the stamp motif
+# used elsewhere. Two short waves, chained .to() calls (not GSAP repeat).
+NUM_SELECTORS = [f"#s13-row-{i} .recap-num" for i in range(5)]
+_num_wave_starts = [6.0, 9.0]
+_num_stagger = 0.4
+_num_pulse_dur = 0.5
+_num_pulse_lines = []
+for _ws in _num_wave_starts:
+    for _i, _sel in enumerate(NUM_SELECTORS):
+        _t0 = _ws + _i * _num_stagger
+        _t1 = _t0 + _num_pulse_dur + 0.02
+        _num_pulse_lines.append(
+            f"  tl.to('{_sel}', {{ scale: 1.18, duration: {_num_pulse_dur}, ease: 'sine.inOut' }}, {_t0:.2f});"
+        )
+        _num_pulse_lines.append(
+            f"  tl.to('{_sel}', {{ scale: 1.0, duration: {_num_pulse_dur}, ease: 'sine.inOut' }}, {_t1:.2f});"
+        )
+num_pulse_js = "\n".join(_num_pulse_lines)
+
 script = f"""
   gsap.set('#s13-card', {{ opacity: 0, y: 20 }});
   gsap.set('.recap-row', {{ opacity: 0 }});
+  gsap.set('.recap-num', {{ scale: 1, transformOrigin: '50% 50%' }});
 
   var tl = gsap.timeline({{ paused: true }});
   tl.to('#s13-card', {{ opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }}, 0.0);
 {row_tweens}
+{num_pulse_js}
   tl.to({{}}, {{ duration: 11.994, ease: 'none' }}, 0);
   window.__timelines = window.__timelines || {{}};
   window.__timelines['s13-recap-questions'] = tl;

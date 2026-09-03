@@ -86,7 +86,7 @@
   gsap.set('.canyon-row', { opacity: 0, y: 10 });
   gsap.set('#s04-cutoff', { scaleX: 0 });
   gsap.set('#s04-cutoff-label', { opacity: 0 });
-  gsap.set('#s04-tag1', { opacity: 0, y: 16 });
+  gsap.set('#s04-tag1', { opacity: 0, y: 16, scale: 1 });
   gsap.set('#s04-camera', { scale: 1.12, y: 40 });
   gsap.set('#s04-cite-fda', { opacity: 0 });
   gsap.set('#s04-cite-eu', { opacity: 0 });
@@ -116,7 +116,13 @@
   // underneath it (caught on an extracted frame, not by `check`'s sampling).
   tl.to('.canyon-list', { opacity: 0.1, duration: 0.5, ease: 'power2.inOut' }, 8.5);
   tl.to('#s04-tag1', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 9.0);
-  tl.to('#s04-tag1', { opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }, 12.5);
+  // Idle ambient: the tag holds a slow breathing scale through the long dim
+  // stretch, and its fade is pushed to just before the scene ends instead of
+  // sitting fully static from ~13s -- fills what was otherwise a dead tail.
+  tl.to('#s04-tag1', { scale: 1.035, duration: 3.2, ease: 'sine.inOut' }, 9.8);
+  tl.to('#s04-tag1', { scale: 1.0, duration: 3.2, ease: 'sine.inOut' }, 13.0);
+  tl.to('#s04-tag1', { scale: 1.03, duration: 3.0, ease: 'sine.inOut' }, 16.2);
+  tl.to('#s04-tag1', { opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }, 19.4);
   tl.to({}, { duration: 20.319, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s04-q1-canyon'] = tl;

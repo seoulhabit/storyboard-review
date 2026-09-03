@@ -68,12 +68,15 @@
   gsap.set('.traveler', { opacity: 0, x: -400 });
   gsap.set('#s07-tag', { opacity: 0, y: 16 });
 
+  // Staggered so the LAST traveler is still crossing well into the window
+  // instead of all three arriving together and leaving the rest of this
+  // (shortest) scene static -- each one also takes longer to cross.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s07-trav-0', { opacity: 1, x: 700, duration: 3.0, ease: 'power1.inOut' }, 0.3);
-  tl.to('#s07-trav-1', { opacity: 1, x: 700, duration: 3.0, ease: 'power1.inOut' }, 0.7);
-  tl.to('#s07-trav-2', { opacity: 1, x: 700, duration: 3.0, ease: 'power1.inOut' }, 1.1);
-  tl.to('.traveler', { opacity: 0, duration: 0.4 }, 4.4);
-  tl.to('#s07-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 4.9);
+  tl.to('#s07-trav-0', { opacity: 1, x: 700, duration: 4.2, ease: 'power1.inOut' }, 0.3);
+  tl.to('#s07-trav-1', { opacity: 1, x: 700, duration: 4.4, ease: 'power1.inOut' }, 0.9);
+  tl.to('#s07-trav-2', { opacity: 1, x: 700, duration: 4.8, ease: 'power1.inOut' }, 1.5);
+  tl.to('.traveler', { opacity: 0, duration: 0.4 }, 6.5);
+  tl.to('#s07-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 7.0);
   tl.to({}, { duration: 8.012, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s07-q2-travelers'] = tl;

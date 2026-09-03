@@ -45,7 +45,7 @@
     text-align:center; opacity:0; }
   .chamber-vial { width:120px; height:180px; margin:0 auto 20px; border-radius:16px;
     border:3px solid var(--ink-3); position:relative; overflow:hidden; }
-  .chamber-fill { position:absolute; left:0; right:0; bottom:0; }
+  .chamber-fill { position:absolute; left:0; right:0; bottom:0; transform-origin:bottom center; }
   .chamber-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); letter-spacing:.06em; }
   .collapse-label { text-align:center; margin-top:44px; opacity:0; }
   .collapse-label .head { font-size:64px; }
@@ -61,15 +61,15 @@
       <div class="leaf-head" id="s06-head"><div class="kicker">CENTELLA ASIATICA EXTRACT — ONE NAME, THREE PROCESSES</div></div>
       <div class="chambers">
         <div class="chamber" id="s06-chamber-0">
-      <div class="chamber-vial"><div class="chamber-fill" style="height:55%; background:#93B896;"></div></div>
+      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-0" style="height:55%; background:#93B896;"></div></div>
       <div class="chamber-label">WATER EXTRACT</div>
     </div>
 <div class="chamber" id="s06-chamber-1">
-      <div class="chamber-vial"><div class="chamber-fill" style="height:72%; background:#4F6B52;"></div></div>
+      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-1" style="height:72%; background:#4F6B52;"></div></div>
       <div class="chamber-label">SOLVENT EXTRACT</div>
     </div>
 <div class="chamber" id="s06-chamber-2">
-      <div class="chamber-vial"><div class="chamber-fill" style="height:30%; background:#131516;"></div></div>
+      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-2" style="height:30%; background:#131516;"></div></div>
       <div class="chamber-label">PURIFIED COMPOUND</div>
     </div>
       </div>
@@ -86,6 +86,7 @@
 (function () {
 
   gsap.set('.chamber', { opacity: 0, y: 30 });
+  gsap.set('.chamber-fill', { scaleY: 1 });
   gsap.set('#s06-head', { opacity: 0, y: -10 });
   gsap.set('#s06-camera', { scale: 1.10, y: -30 });
   gsap.set('#s06-rail', { width: 0 });
@@ -98,6 +99,18 @@
   tl.to('#s06-chamber-0', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.00);
   tl.to('#s06-chamber-1', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.50);
   tl.to('#s06-chamber-2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 3.00);
+  tl.to('#s06-fill-0', { scaleY: 1.035, duration: 2.58, ease: 'sine.inOut' }, 4.20);
+  tl.to('#s06-fill-0', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 6.80);
+  tl.to('#s06-fill-0', { scaleY: 1.03, duration: 2.58, ease: 'sine.inOut' }, 9.40);
+  tl.to('#s06-fill-0', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 12.00);
+  tl.to('#s06-fill-1', { scaleY: 1.035, duration: 2.58, ease: 'sine.inOut' }, 4.80);
+  tl.to('#s06-fill-1', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 7.40);
+  tl.to('#s06-fill-1', { scaleY: 1.03, duration: 2.58, ease: 'sine.inOut' }, 10.00);
+  tl.to('#s06-fill-1', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 12.60);
+  tl.to('#s06-fill-2', { scaleY: 1.035, duration: 2.58, ease: 'sine.inOut' }, 5.40);
+  tl.to('#s06-fill-2', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 8.00);
+  tl.to('#s06-fill-2', { scaleY: 1.03, duration: 2.58, ease: 'sine.inOut' }, 10.60);
+  tl.to('#s06-fill-2', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 13.20);
   tl.to('#s06-rail', { width: 900, duration: 0.9, ease: 'power2.inOut' }, 14.5);
   tl.to('.chamber', { opacity: 0.25, duration: 0.6, ease: 'power2.inOut' }, 15.6);
   tl.to('#s06-collapse', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }, 16.2);

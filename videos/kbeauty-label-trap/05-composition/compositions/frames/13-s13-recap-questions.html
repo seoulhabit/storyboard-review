@@ -69,6 +69,7 @@
 
   gsap.set('#s13-card', { opacity: 0, y: 20 });
   gsap.set('.recap-row', { opacity: 0 });
+  gsap.set('.recap-num', { scale: 1, transformOrigin: '50% 50%' });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s13-card', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.0);
@@ -77,6 +78,26 @@
   tl.to('#s13-row-2', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 3.00);
   tl.to('#s13-row-3', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 3.90);
   tl.to('#s13-row-4', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 4.80);
+  tl.to('#s13-row-0 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 6.00);
+  tl.to('#s13-row-0 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 6.52);
+  tl.to('#s13-row-1 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 6.40);
+  tl.to('#s13-row-1 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 6.92);
+  tl.to('#s13-row-2 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 6.80);
+  tl.to('#s13-row-2 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 7.32);
+  tl.to('#s13-row-3 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 7.20);
+  tl.to('#s13-row-3 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 7.72);
+  tl.to('#s13-row-4 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 7.60);
+  tl.to('#s13-row-4 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 8.12);
+  tl.to('#s13-row-0 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 9.00);
+  tl.to('#s13-row-0 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 9.52);
+  tl.to('#s13-row-1 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 9.40);
+  tl.to('#s13-row-1 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 9.92);
+  tl.to('#s13-row-2 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 9.80);
+  tl.to('#s13-row-2 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 10.32);
+  tl.to('#s13-row-3 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 10.20);
+  tl.to('#s13-row-3 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 10.72);
+  tl.to('#s13-row-4 .recap-num', { scale: 1.18, duration: 0.5, ease: 'sine.inOut' }, 10.60);
+  tl.to('#s13-row-4 .recap-num', { scale: 1.0, duration: 0.5, ease: 'sine.inOut' }, 11.12);
   tl.to({}, { duration: 11.994, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s13-recap-questions'] = tl;

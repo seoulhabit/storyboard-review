@@ -166,7 +166,7 @@
 (function () {
 
   gsap.set('#s03-scanner', { opacity: 0, y: -10 });
-  gsap.set('#s03-bottles', { opacity: 0.9 });
+  gsap.set('#s03-bottles', { opacity: 0.9, scale: 1 });
   gsap.set('#s03-head', { opacity: 0, y: 16 });
   gsap.set('#s03-seal-0', { opacity: 0, scale: 0.4, rotation: -30 });
   gsap.set('#s03-seal-1', { opacity: 0, scale: 0.4, rotation: -30 });
@@ -181,6 +181,9 @@
   tl.to('#s03-seal-2', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 6.94);
   tl.to('#s03-seal-3', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 7.16);
   tl.to('#s03-seal-4', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 7.38);
+  tl.to('#s03-bottles', { scale: 1.02, duration: 2.98, ease: 'sine.inOut' }, 2.6);
+  tl.to('#s03-bottles', { scale: 1.0, duration: 2.7, ease: 'sine.inOut' }, 5.62);
+
   tl.to('#s03-head', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 8.5);
   tl.to({}, { duration: 15.136, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};

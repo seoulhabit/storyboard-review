@@ -2,6 +2,30 @@
 """Scenes s08-s11: Q3 (vehicle journey), Q4 (evidence tunnel), Q5 (boundary)."""
 from build_composition import write, stamp_svg
 
+
+def chain_tweens(sel, start, end, seg, keyframes, ease="sine.inOut"):
+    """Build restrained ambient idle motion as a chain of literal tl.to()
+    calls on `sel` -- cycling through `keyframes` (a list of {gsap-var: value}
+    dicts; duration/ease are supplied here, not per-keyframe), each held for
+    `seg` seconds, from `start` up to `end` (the final segment is truncated to
+    land exactly on `end`, never overshoots it). Deliberately built as
+    explicit chained tweens -- each one starting exactly where the previous
+    ends -- rather than GSAP's `repeat`, per this project's paused-timeline
+    seek(t) render engine. Used to answer the cadence gate's flagged dead
+    windows in s08/s09/s10/s11 with small, secondary, non-narrative motion."""
+    GAP = 0.02  # hairline buffer so consecutive segments never touch at the same t
+    lines = []
+    t = start
+    i = 0
+    while t < end - GAP:
+        dur = min(seg, end - t)
+        vars_str = ", ".join(f"{k}: {v}" for k, v in keyframes[i % len(keyframes)].items())
+        lines.append(f"  tl.to('{sel}', {{ {vars_str}, duration: {dur:.2f}, ease: '{ease}' }}, {t:.2f});")
+        t += dur + GAP
+        i += 1
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------- s08 -----
 # The shared "travel-corridor" pattern (also used at s10) -- camera travels
 # through N successive stages with one persistent traveling actor.
@@ -35,17 +59,26 @@ def leg_svg(kind):
     return '<svg class="leg-icon" viewBox="0 0 90 90"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M0 30 Q22 20 45 30 T90 30" /><path d="M0 55 Q22 45 45 55 T90 55" stroke-dasharray="5 6"/></g></svg>'
 kinds = ["water", "gel", "emulsion", "skin"]
 legs_html = "\n".join(
-    f'<div class="leg" style="background:{color}22;"><div class="leg-fill" style="background:{color};"></div>{leg_svg(k)}<div class="leg-label">{label}</div></div>'
-    for (label, color), k in zip(legs, kinds)
+    f'<div class="leg" id="s08-leg-{i}" style="background:{color}22;"><div class="leg-fill" style="background:{color};"></div>{leg_svg(k)}<div class="leg-label">{label}</div></div>'
+    for i, ((label, color), k) in enumerate(zip(legs, kinds))
 )
-script = """
-  gsap.set('#s08-passenger', { opacity: 0, x: 0 });
+# Cadence gate: the four legs sit fully static for the whole 18-19s crossing
+# (only the passenger itself moves). Give each leg icon a slow, staggered
+# scale breathe -- ambient, not a new beat -- spanning nearly the full window.
+s08_leg_tweens = "\n".join(
+    chain_tweens(f"#s08-leg-{i} .leg-icon", 0.6 + i * 0.35, 18.9, 3.5,
+                 [{"scale": 1.035}, {"scale": 0.975}])
+    for i in range(4)
+)
+script = f"""
+  gsap.set('#s08-passenger', {{ opacity: 0, x: 0 }});
 
-  var tl = gsap.timeline({ paused: true });
-  tl.to('#s08-passenger', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2);
-  tl.to('#s08-passenger', { x: 1450, duration: 18.0, ease: 'power1.inOut' }, 0.3);
-  tl.to({}, { duration: 19.16, ease: 'none' }, 0);
-  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({{ paused: true }});
+  tl.to('#s08-passenger', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 0.2);
+  tl.to('#s08-passenger', {{ x: 1450, duration: 18.0, ease: 'power1.inOut' }}, 0.3);
+{s08_leg_tweens}
+  tl.to({{}}, {{ duration: 19.16, ease: 'none' }}, 0);
+  window.__timelines = window.__timelines || {{}};
   window.__timelines['s08-q3-journey'] = tl;
 """
 body = f'''
@@ -71,11 +104,11 @@ style = """
   .tag4 .sub { font-size:56px; color:var(--vermilion); }
 """
 chaotic_lines = "\n".join(
-    f'<path class="map-line" stroke="var(--ink-3)" d="M {20+i*15} {30+((i*47)%320)} L {200+((i*61)%260)} {60+((i*83)%300)} L {380+((i*29)%100)} {(i*97)%360+30}"/>'
+    f'<path class="map-line" id="s09-chaotic-{i}" stroke="var(--ink-3)" d="M {20+i*15} {30+((i*47)%320)} L {200+((i*61)%260)} {60+((i*83)%300)} L {380+((i*29)%100)} {(i*97)%360+30}"/>'
     for i in range(9)
 )
 orderly_lines = "\n".join(
-    f'<path class="map-line" stroke="var(--celadon)" d="M 20 {60+i*70} L 460 {60+i*70}"/>' for i in range(5)
+    f'<path class="map-line" id="s09-orderly-{i}" stroke="var(--celadon)" d="M 20 {60+i*70} L 460 {60+i*70}"/>' for i in range(5)
 )
 body = f'''
     <div class="transit">
@@ -95,18 +128,34 @@ body = f'''
       </div>
     </div>
 '''
-script = """
-  gsap.set('.transit-col', { opacity: 0, y: 24 });
-  gsap.set('#s09-tag', { opacity: 0, y: 16 });
-  gsap.set('#s09-cite', { opacity: 0 });
+# Cadence gate: once both cards + the citation land (~7.7s in), the scene is
+# static to the end (~15.5s). Give each map its own idle beat -- Bottle A's
+# chaotic lines dimly flicker out of sync (still "rerouting"), Bottle B's
+# orderly lines pulse together, calmly, as a contrast. Both stay well under
+# the citation's and tag's opacity -- different elements, no shared property.
+s09_chaotic_tweens = "\n".join(
+    chain_tweens(f"#s09-chaotic-{i}", 1.7, 14.0, 1.8,
+                 [{"opacity": 0.55}, {"opacity": 1.0}] if i % 2 == 0
+                 else [{"opacity": 1.0}, {"opacity": 0.55}])
+    for i in range(9)
+)
+_s09_orderly_sel = ", ".join(f"#s09-orderly-{i}" for i in range(5))
+s09_orderly_tweens = chain_tweens(_s09_orderly_sel, 2.0, 14.5, 2.6,
+                                   [{"opacity": 1.0}, {"opacity": 0.8}])
+script = f"""
+  gsap.set('.transit-col', {{ opacity: 0, y: 24 }});
+  gsap.set('#s09-tag', {{ opacity: 0, y: 16 }});
+  gsap.set('#s09-cite', {{ opacity: 0 }});
 
-  var tl = gsap.timeline({ paused: true });
-  tl.to('#s09-colA', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
-  tl.to('#s09-colB', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.7);
-  tl.to('#s09-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 6.0);
-  tl.to('#s09-cite', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 7.2);
-  tl.to({}, { duration: 15.048, ease: 'none' }, 0);
-  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({{ paused: true }});
+  tl.to('#s09-colA', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 0.3);
+  tl.to('#s09-colB', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 0.7);
+  tl.to('#s09-tag', {{ opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }}, 6.0);
+  tl.to('#s09-cite', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, 7.2);
+{s09_chaotic_tweens}
+{s09_orderly_tweens}
+  tl.to({{}}, {{ duration: 15.048, ease: 'none' }}, 0);
+  window.__timelines = window.__timelines || {{}};
   window.__timelines['s09-q3-transit'] = tl;
 """
 write("s09-q3-transit", style, body, script, bg="paper")
@@ -127,10 +176,10 @@ style = """
     border-radius:10px; padding:14px 22px; opacity:0; }
 """
 tstages = [
-    ("PETRI DISH", '<svg class="tstage-icon" viewBox="0 0 110 110"><ellipse cx="55" cy="55" rx="45" ry="45" fill="none" stroke="currentColor" stroke-width="4"/><ellipse cx="55" cy="55" rx="35" ry="35" fill="var(--celadon)" opacity="0.25"/></svg>'),
-    ("ISOLATED INGREDIENT", '<svg class="tstage-icon" viewBox="0 0 110 110"><circle cx="55" cy="55" r="18" fill="var(--celadon)"/><circle cx="55" cy="55" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/></svg>'),
-    ("HUMAN SKIN STUDY", '<svg class="tstage-icon" viewBox="0 0 110 110"><path d="M20 70 Q55 20 90 70" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="55" cy="55" r="8" fill="var(--celadon)"/></svg>'),
-    ("FINISHED PRODUCT TEST", '<svg class="tstage-icon" viewBox="0 0 110 110"><rect x="35" y="20" width="40" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect x="42" y="30" width="26" height="45" fill="var(--celadon)" opacity="0.4"/></svg>'),
+    ("PETRI DISH", '<svg class="tstage-icon" viewBox="0 0 110 110"><ellipse cx="55" cy="55" rx="45" ry="45" fill="none" stroke="currentColor" stroke-width="4"/><ellipse id="s10-stage-0-fill" cx="55" cy="55" rx="35" ry="35" fill="var(--celadon)" opacity="0.25"/></svg>'),
+    ("ISOLATED INGREDIENT", '<svg class="tstage-icon" viewBox="0 0 110 110"><circle id="s10-stage-1-fill" cx="55" cy="55" r="18" fill="var(--celadon)"/><circle cx="55" cy="55" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/></svg>'),
+    ("HUMAN SKIN STUDY", '<svg class="tstage-icon" viewBox="0 0 110 110"><path d="M20 70 Q55 20 90 70" fill="none" stroke="currentColor" stroke-width="4"/><circle id="s10-stage-2-fill" cx="55" cy="55" r="8" fill="var(--celadon)"/></svg>'),
+    ("FINISHED PRODUCT TEST", '<svg class="tstage-icon" viewBox="0 0 110 110"><rect x="35" y="20" width="40" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect id="s10-stage-3-fill" x="42" y="30" width="26" height="45" fill="var(--celadon)" opacity="0.4"/></svg>'),
 ]
 stages_html = []
 for i, (label, icon) in enumerate(tstages):
@@ -161,6 +210,18 @@ card_tweens = "\n".join(
     f"  tl.to('.card:nth-child({i+1})', {{ opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }}, {24.5+i*0.35:.2f});"
     for i in range(4)
 )
+# Cadence gate: this is the longest dead window in the video (30s) -- the four
+# stages land 8s apart and then just sit there. Give each stage's filled
+# icon shape a slow pulse once it lands, continuing well past the last stage
+# reveal (up to just before the sideways camera pull at t=30) so there is
+# always something small still moving between the main beats. Does not touch
+# the forensic cards or their timing.
+_s10_land = [2.0, 4.0, 6.0, 8.0]
+stage_fill_tweens = "\n".join(
+    chain_tweens(f"#s10-stage-{i}-fill", _s10_land[i] + 1.0, 35.0, 4.0,
+                 [{"scale": 1.12}, {"scale": 0.94}])
+    for i in range(4)
+)
 script = f"""
   gsap.set('#s10-head', {{ opacity: 0, y: -10 }});
   gsap.set('.tstage', {{ opacity: 0, y: 20 }});
@@ -171,6 +232,7 @@ script = f"""
   tl.to('#s10-head', {{ opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }}, 0.4);
 {stage_tweens}
 {gap_tweens}
+{stage_fill_tweens}
   tl.to('#s10-row', {{ x: -40, duration: 1.0, ease: 'power2.inOut' }}, 30.0);
 {card_tweens}
   tl.to({{}}, {{ duration: 39.983, ease: 'none' }}, 0);
@@ -236,6 +298,14 @@ icon_tweens = "\n".join(
     f"  tl.to('#s11-icon-{i}', {{ opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }}, {12.0+i*0.3:.2f});"
     for i in range(4)
 )
+# Cadence gate: after the ring/icons finish landing (~21s) the scene holds
+# static to the end. The ring is the scene's central metaphor, so give it a
+# slow scale+opacity breathe spanning the dead window -- starting after its
+# own arrival tween finishes (7.9s) and ending before the scene's own close
+# (25.242s). Does not touch #s11-flag or #s11-camera.
+s11_ring_tweens = chain_tweens("#s11-ring", 8.2, 25.0, 2.8,
+                                [{"scale": 1.035, "opacity": 1.0},
+                                 {"scale": 0.975, "opacity": 0.88}])
 script = f"""
   gsap.set('.fissure', {{ opacity: 0 }});
   gsap.set('#s11-camera', {{ scale: 1.09, y: 26 }});
@@ -252,6 +322,7 @@ script = f"""
   tl.to('#s11-gentle', {{ opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }}, 5.8);
 {fissure_tweens}
   tl.to('#s11-ring', {{ opacity: 1, scale: 1, duration: 0.9, ease: 'power2.out' }}, 7.0);
+{s11_ring_tweens}
 {icon_tweens}
   tl.to('#s11-tag', {{ opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }}, 17.0);
   tl.to({{}}, {{ duration: 25.242, ease: 'none' }}, 0);

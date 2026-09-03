@@ -34,5 +34,21 @@ COMPANION-RESOLVED:frontend-design (skill-tool)
 
 [S3/P-4] description skeleton + tags → drafted at `07-publish-envelope.md` (S8), sources rendered human-readable (FDA · 21 CFR 701.3, EU · Reg. 1223/2009 Art. 19, MFDS, two journal citations), chapters filled once S5 measures real timestamps.
 
+## §Chapters — filled from `03-beat-sheet.json` at S5
+
+| Time | Chapter |
+|---|---|
+| 0:00 | Two Bottles, One Question |
+| 0:16 | The List Is a Passport, Not a Scorecard |
+| 0:43 | Why Order Isn't Random |
+| 1:22 | Same Name, Different Extract |
+| 1:51 | What Carries the Ingredient In |
+| 2:25 | How Far Is the Evidence, Really |
+| 3:05 | Where the Claim Stops |
+| 3:30 | Back to the Two Bottles |
+| 4:08 | What to Actually Check |
+
+Min gap 15.777s (≥10s floor), first at 0:00, 9 chapters (≥3 floor) — payoff-named, derived from beat-sheet section/sub-section starts, not hand-written.
+
 ## §Thumbnail concept image
 See `04-assets/thumbnail.png`.

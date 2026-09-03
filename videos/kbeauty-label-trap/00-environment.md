@@ -26,16 +26,23 @@ CLAUDE.md concurrency convention — not the shared checkout).
 **Providers reachable:**
 - vidIQ: `ok` — `vidiq_balance` → 2246 credits (1446/2000 renewable, resets
   2026-10-01; 800 add-on).
-- HyperFrames: `ok` — global CLI on PATH, `hyperframes --version` → **0.8.26**.
-  This diverges from the two prior long-form runs' pin (`0.8.22`, taken from
-  `ectoin-survival-molecule/package.json` and a machine-written `check.json`).
-  Per this repo's own memory (`project-hyperframes-cli-global`), the CLI is
-  invoked bare, never via `npx hyperframes@<pin>` — `npx` re-accumulates a
-  ~364MB cache per run. This run pins **0.8.26** (the actually-installed
-  version) and reads `hyperframes docs <topic>` for 0.8.26 before any markup,
-  rather than carrying the stale 0.8.22 pin forward unverified. Logged as a
-  `[NOT IN SKILL]` divergence from `pipeline-runbook.md`'s literal `npx
-  hyperframes@<pin>` wording — see `videos/_channel/policy-change-proposals.md`.
+- HyperFrames: `ok` — global CLI on PATH. `hyperframes --version` first read
+  **0.8.26**, then (at the start of S5, no action taken by this run in
+  between) read **0.8.27** and has been stable there since — another
+  concurrent session in this shared account upgraded the global install
+  mid-run. One `hyperframes docs compositions` call failed transiently
+  during the exact window of that upgrade (`ERR_MODULE_NOT_FOUND` on
+  `esbuild`, package.json already at 0.8.27 but `node_modules/esbuild` not
+  yet written) — retried clean 3/3 afterward. **Pin for this run: 0.8.27**,
+  the version actually installed and stable, not the 0.8.22 the two prior
+  long-form runs recorded. Per this repo's own memory
+  (`project-hyperframes-cli-global`), the CLI is invoked bare, never via
+  `npx hyperframes@<pin>` — `npx` re-accumulates a ~364MB cache per run.
+  Reads `hyperframes docs <topic>` for 0.8.27 before writing markup, rather
+  than carrying a stale pin forward unverified. Both the pin divergence from
+  `pipeline-runbook.md`'s literal `npx hyperframes@<pin>` wording and this
+  transient concurrent-upgrade hiccup are logged as `[NOT IN SKILL]` — see
+  `videos/_channel/policy-change-proposals.md`.
 - Higgsfield: `ok` — 2344.95 credits, plan `free`. `list_voices` confirms
   **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (`voice_type: element`)
   still exists, as `providers.yaml` §tts `current-vo` requires and as the

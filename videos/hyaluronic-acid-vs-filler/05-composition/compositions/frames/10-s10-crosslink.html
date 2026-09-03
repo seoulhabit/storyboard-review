@@ -28,8 +28,12 @@
           text-transform:uppercase; }
   .body { font-weight:600; font-size:52px; line-height:1.24; }
   .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
   .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
-            text-transform:uppercase; color:var(--aqua); }
+            text-transform:uppercase; color:#4B9B93; }
   .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
   /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
      those live in the brief's claim table and the video description. */
@@ -45,13 +49,12 @@
   .beat.is-wiping { clip-path: inset(0 100% 0 0); }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
-  .two { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
-         align-items:center; }
+  .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+            align-items:center; }
   .col { display:flex; flex-direction:column; gap:26px; }
   .panel { position:relative; display:flex; align-items:center; justify-content:center;
            border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
            background:rgba(0,0,0,0.015); }
-  .panel.on { border-color:var(--aqua); }
   .panel .actor { color:var(--ink); }
 
   /* Flip the TOKEN, not just #root's colour: .actor strokes and
@@ -63,164 +66,169 @@
 </style>
 
 <div id="root" data-composition-id="s10-crosslink" data-width="1920" data-height="1080"
-     data-duration="16.305">
-  <div class="clip stage" id="s10-crosslink-stage" data-start="0" data-duration="16.305">
-    <div class="two">
+     data-duration="8.970">
+  <div class="clip stage" id="s10-crosslink-stage" data-start="0" data-duration="8.970">
+    <div class="split2">
       <div class="col" id="s10-crosslink-col">
-        <div class="head beat is-entering" id="s10-crosslink-b1">A filler is chemically different</div>
-        <div class="body beat is-entering" id="s10-crosslink-b2">Its chains are cross-linked into a gel that holds its shape</div>
+        <div class="head beat is-entering" id="s10-crosslink-b0">A filler is chemically different</div>
+        <div class="body beat is-entering" id="s10-crosslink-b2">Cross-linked into a stable, connected grid</div>
         <div class="cite beat is-entering" id="s10-crosslink-b3">J Cosmet Dermatol · 2024</div>
-        <div class="body beat is-entering" id="s10-crosslink-b4">Placed beneath the skin, it can physically add volume</div>
+        <div class="sub beat is-entering" id="s10-crosslink-b4">Holds its own shape, once placed beneath the skin</div>
       </div>
       <div class="panel" id="s10-crosslink-panel">
-        <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
-      <line x1="40.0" y1="40.0" x2="128.0" y2="40.0"/>
-      <line x1="40.0" y1="40.0" x2="40.0" y2="130.0"/>
-      <line x1="40.0" y1="40.0" x2="128.0" y2="130.0" class="xl"/>
-      <line x1="128.0" y1="40.0" x2="216.0" y2="40.0"/>
-      <line x1="128.0" y1="40.0" x2="128.0" y2="130.0"/>
-      <line x1="128.0" y1="40.0" x2="216.0" y2="130.0" class="xl"/>
-      <line x1="216.0" y1="40.0" x2="304.0" y2="40.0"/>
-      <line x1="216.0" y1="40.0" x2="216.0" y2="130.0"/>
-      <line x1="216.0" y1="40.0" x2="304.0" y2="130.0" class="xl"/>
-      <line x1="304.0" y1="40.0" x2="392.0" y2="40.0"/>
-      <line x1="304.0" y1="40.0" x2="304.0" y2="130.0"/>
-      <line x1="304.0" y1="40.0" x2="392.0" y2="130.0" class="xl"/>
-      <line x1="392.0" y1="40.0" x2="480.0" y2="40.0"/>
-      <line x1="392.0" y1="40.0" x2="392.0" y2="130.0"/>
-      <line x1="392.0" y1="40.0" x2="480.0" y2="130.0" class="xl"/>
-      <line x1="480.0" y1="40.0" x2="480.0" y2="130.0"/>
-      <line x1="40.0" y1="130.0" x2="128.0" y2="130.0"/>
-      <line x1="40.0" y1="130.0" x2="40.0" y2="220.0"/>
-      <line x1="40.0" y1="130.0" x2="128.0" y2="220.0" class="xl"/>
-      <line x1="128.0" y1="130.0" x2="216.0" y2="130.0"/>
-      <line x1="128.0" y1="130.0" x2="128.0" y2="220.0"/>
-      <line x1="128.0" y1="130.0" x2="216.0" y2="220.0" class="xl"/>
-      <line x1="216.0" y1="130.0" x2="304.0" y2="130.0"/>
-      <line x1="216.0" y1="130.0" x2="216.0" y2="220.0"/>
-      <line x1="216.0" y1="130.0" x2="304.0" y2="220.0" class="xl"/>
-      <line x1="304.0" y1="130.0" x2="392.0" y2="130.0"/>
-      <line x1="304.0" y1="130.0" x2="304.0" y2="220.0"/>
-      <line x1="304.0" y1="130.0" x2="392.0" y2="220.0" class="xl"/>
-      <line x1="392.0" y1="130.0" x2="480.0" y2="130.0"/>
-      <line x1="392.0" y1="130.0" x2="392.0" y2="220.0"/>
-      <line x1="392.0" y1="130.0" x2="480.0" y2="220.0" class="xl"/>
-      <line x1="480.0" y1="130.0" x2="480.0" y2="220.0"/>
-      <line x1="40.0" y1="220.0" x2="128.0" y2="220.0"/>
-      <line x1="40.0" y1="220.0" x2="40.0" y2="310.0"/>
-      <line x1="40.0" y1="220.0" x2="128.0" y2="310.0" class="xl"/>
-      <line x1="128.0" y1="220.0" x2="216.0" y2="220.0"/>
-      <line x1="128.0" y1="220.0" x2="128.0" y2="310.0"/>
-      <line x1="128.0" y1="220.0" x2="216.0" y2="310.0" class="xl"/>
-      <line x1="216.0" y1="220.0" x2="304.0" y2="220.0"/>
-      <line x1="216.0" y1="220.0" x2="216.0" y2="310.0"/>
-      <line x1="216.0" y1="220.0" x2="304.0" y2="310.0" class="xl"/>
-      <line x1="304.0" y1="220.0" x2="392.0" y2="220.0"/>
-      <line x1="304.0" y1="220.0" x2="304.0" y2="310.0"/>
-      <line x1="304.0" y1="220.0" x2="392.0" y2="310.0" class="xl"/>
-      <line x1="392.0" y1="220.0" x2="480.0" y2="220.0"/>
-      <line x1="392.0" y1="220.0" x2="392.0" y2="310.0"/>
-      <line x1="392.0" y1="220.0" x2="480.0" y2="310.0" class="xl"/>
-      <line x1="480.0" y1="220.0" x2="480.0" y2="310.0"/>
-      <line x1="40.0" y1="310.0" x2="128.0" y2="310.0"/>
-      <line x1="40.0" y1="310.0" x2="40.0" y2="400.0"/>
-      <line x1="40.0" y1="310.0" x2="128.0" y2="400.0" class="xl"/>
-      <line x1="128.0" y1="310.0" x2="216.0" y2="310.0"/>
-      <line x1="128.0" y1="310.0" x2="128.0" y2="400.0"/>
-      <line x1="128.0" y1="310.0" x2="216.0" y2="400.0" class="xl"/>
-      <line x1="216.0" y1="310.0" x2="304.0" y2="310.0"/>
-      <line x1="216.0" y1="310.0" x2="216.0" y2="400.0"/>
-      <line x1="216.0" y1="310.0" x2="304.0" y2="400.0" class="xl"/>
-      <line x1="304.0" y1="310.0" x2="392.0" y2="310.0"/>
-      <line x1="304.0" y1="310.0" x2="304.0" y2="400.0"/>
-      <line x1="304.0" y1="310.0" x2="392.0" y2="400.0" class="xl"/>
-      <line x1="392.0" y1="310.0" x2="480.0" y2="310.0"/>
-      <line x1="392.0" y1="310.0" x2="392.0" y2="400.0"/>
-      <line x1="392.0" y1="310.0" x2="480.0" y2="400.0" class="xl"/>
-      <line x1="480.0" y1="310.0" x2="480.0" y2="400.0"/>
-      <line x1="40.0" y1="400.0" x2="128.0" y2="400.0"/>
-      <line x1="40.0" y1="400.0" x2="40.0" y2="490.0"/>
-      <line x1="40.0" y1="400.0" x2="128.0" y2="490.0" class="xl"/>
-      <line x1="128.0" y1="400.0" x2="216.0" y2="400.0"/>
-      <line x1="128.0" y1="400.0" x2="128.0" y2="490.0"/>
-      <line x1="128.0" y1="400.0" x2="216.0" y2="490.0" class="xl"/>
-      <line x1="216.0" y1="400.0" x2="304.0" y2="400.0"/>
-      <line x1="216.0" y1="400.0" x2="216.0" y2="490.0"/>
-      <line x1="216.0" y1="400.0" x2="304.0" y2="490.0" class="xl"/>
-      <line x1="304.0" y1="400.0" x2="392.0" y2="400.0"/>
-      <line x1="304.0" y1="400.0" x2="304.0" y2="490.0"/>
-      <line x1="304.0" y1="400.0" x2="392.0" y2="490.0" class="xl"/>
-      <line x1="392.0" y1="400.0" x2="480.0" y2="400.0"/>
-      <line x1="392.0" y1="400.0" x2="392.0" y2="490.0"/>
-      <line x1="392.0" y1="400.0" x2="480.0" y2="490.0" class="xl"/>
-      <line x1="480.0" y1="400.0" x2="480.0" y2="490.0"/>
-      <line x1="40.0" y1="490.0" x2="128.0" y2="490.0"/>
-      <line x1="40.0" y1="490.0" x2="40.0" y2="580.0"/>
-      <line x1="40.0" y1="490.0" x2="128.0" y2="580.0" class="xl"/>
-      <line x1="128.0" y1="490.0" x2="216.0" y2="490.0"/>
-      <line x1="128.0" y1="490.0" x2="128.0" y2="580.0"/>
-      <line x1="128.0" y1="490.0" x2="216.0" y2="580.0" class="xl"/>
-      <line x1="216.0" y1="490.0" x2="304.0" y2="490.0"/>
-      <line x1="216.0" y1="490.0" x2="216.0" y2="580.0"/>
-      <line x1="216.0" y1="490.0" x2="304.0" y2="580.0" class="xl"/>
-      <line x1="304.0" y1="490.0" x2="392.0" y2="490.0"/>
-      <line x1="304.0" y1="490.0" x2="304.0" y2="580.0"/>
-      <line x1="304.0" y1="490.0" x2="392.0" y2="580.0" class="xl"/>
-      <line x1="392.0" y1="490.0" x2="480.0" y2="490.0"/>
-      <line x1="392.0" y1="490.0" x2="392.0" y2="580.0"/>
-      <line x1="392.0" y1="490.0" x2="480.0" y2="580.0" class="xl"/>
-      <line x1="480.0" y1="490.0" x2="480.0" y2="580.0"/>
-      <line x1="40.0" y1="580.0" x2="128.0" y2="580.0"/>
-      <line x1="128.0" y1="580.0" x2="216.0" y2="580.0"/>
-      <line x1="216.0" y1="580.0" x2="304.0" y2="580.0"/>
-      <line x1="304.0" y1="580.0" x2="392.0" y2="580.0"/>
-      <line x1="392.0" y1="580.0" x2="480.0" y2="580.0"/>
+        <svg class="actor" viewBox="0 0 480 560" width="480" height="560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g class="loose-state" id="s10-crosslink-loose"><path d="M 119.1 86.3 C 139.1 86.3 149.1 83.1 169.1 83.1 C 189.1 83.1 199.1 105.1 219.1 105.1 C 239.1 105.1 249.1 63.8 269.1 63.8 C 289.1 63.8 299.1 111.4 319.1 111.4 C 339.1 111.4 349.1 54.0 369.1 54.0 C 389.1 54.0 399.1 112.5 419.1 112.5" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 27.3 369.8 C 47.3 369.8 57.3 356.0 77.3 356.0 C 97.3 356.0 107.3 380.0 127.3 380.0 C 147.3 380.0 157.3 352.0 177.3 352.0 C 197.3 352.0 207.3 391.6 227.3 391.6 C 247.3 391.6 257.3 349.4 277.3 349.4 C 297.3 349.4 307.3 405.0 327.3 405.0" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 144.1 75.4 C 164.1 75.4 174.1 72.0 194.1 72.0 C 214.1 72.0 224.1 95.5 244.1 95.5 C 264.1 95.5 274.1 67.2 294.1 67.2 C 314.1 67.2 324.1 115.0 344.1 115.0 C 364.1 115.0 374.1 57.5 394.1 57.5 C 414.1 57.5 424.1 114.4 444.1 114.4" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 101.7 56.9 C 121.7 56.9 131.7 43.2 151.7 43.2 C 171.7 43.2 181.7 69.3 201.7 69.3 C 221.7 69.3 231.7 26.3 251.7 26.3 C 271.7 26.3 281.7 84.3 301.7 84.3 C 321.7 84.3 331.7 37.0 351.7 37.0 C 371.7 37.0 381.7 75.8 401.7 75.8" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 102.8 48.4 C 122.8 48.4 132.8 37.0 152.8 37.0 C 172.8 37.0 182.8 72.9 202.8 72.9 C 222.8 72.9 232.8 35.3 252.8 35.3 C 272.8 35.3 282.8 83.9 302.8 83.9 C 322.8 83.9 332.8 18.3 352.8 18.3 C 372.8 18.3 382.8 83.5 402.8 83.5" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" opacity="0.9"/></g>
+      <g class="net-state" id="s10-crosslink-net" opacity="0" transform="scale(0.92)" transform-origin="240 280"><g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
+      <line x1="40.0" y1="40.0" x2="120.0" y2="40.0"/>
+      <line x1="40.0" y1="40.0" x2="40.0" y2="120.0"/>
+      <line x1="40.0" y1="40.0" x2="120.0" y2="120.0" class="xl"/>
+      <line x1="120.0" y1="40.0" x2="200.0" y2="40.0"/>
+      <line x1="120.0" y1="40.0" x2="120.0" y2="120.0"/>
+      <line x1="120.0" y1="40.0" x2="200.0" y2="120.0" class="xl"/>
+      <line x1="200.0" y1="40.0" x2="280.0" y2="40.0"/>
+      <line x1="200.0" y1="40.0" x2="200.0" y2="120.0"/>
+      <line x1="200.0" y1="40.0" x2="280.0" y2="120.0" class="xl"/>
+      <line x1="280.0" y1="40.0" x2="360.0" y2="40.0"/>
+      <line x1="280.0" y1="40.0" x2="280.0" y2="120.0"/>
+      <line x1="280.0" y1="40.0" x2="360.0" y2="120.0" class="xl"/>
+      <line x1="360.0" y1="40.0" x2="440.0" y2="40.0"/>
+      <line x1="360.0" y1="40.0" x2="360.0" y2="120.0"/>
+      <line x1="360.0" y1="40.0" x2="440.0" y2="120.0" class="xl"/>
+      <line x1="440.0" y1="40.0" x2="440.0" y2="120.0"/>
+      <line x1="40.0" y1="120.0" x2="120.0" y2="120.0"/>
+      <line x1="40.0" y1="120.0" x2="40.0" y2="200.0"/>
+      <line x1="40.0" y1="120.0" x2="120.0" y2="200.0" class="xl"/>
+      <line x1="120.0" y1="120.0" x2="200.0" y2="120.0"/>
+      <line x1="120.0" y1="120.0" x2="120.0" y2="200.0"/>
+      <line x1="120.0" y1="120.0" x2="200.0" y2="200.0" class="xl"/>
+      <line x1="200.0" y1="120.0" x2="280.0" y2="120.0"/>
+      <line x1="200.0" y1="120.0" x2="200.0" y2="200.0"/>
+      <line x1="200.0" y1="120.0" x2="280.0" y2="200.0" class="xl"/>
+      <line x1="280.0" y1="120.0" x2="360.0" y2="120.0"/>
+      <line x1="280.0" y1="120.0" x2="280.0" y2="200.0"/>
+      <line x1="280.0" y1="120.0" x2="360.0" y2="200.0" class="xl"/>
+      <line x1="360.0" y1="120.0" x2="440.0" y2="120.0"/>
+      <line x1="360.0" y1="120.0" x2="360.0" y2="200.0"/>
+      <line x1="360.0" y1="120.0" x2="440.0" y2="200.0" class="xl"/>
+      <line x1="440.0" y1="120.0" x2="440.0" y2="200.0"/>
+      <line x1="40.0" y1="200.0" x2="120.0" y2="200.0"/>
+      <line x1="40.0" y1="200.0" x2="40.0" y2="280.0"/>
+      <line x1="40.0" y1="200.0" x2="120.0" y2="280.0" class="xl"/>
+      <line x1="120.0" y1="200.0" x2="200.0" y2="200.0"/>
+      <line x1="120.0" y1="200.0" x2="120.0" y2="280.0"/>
+      <line x1="120.0" y1="200.0" x2="200.0" y2="280.0" class="xl"/>
+      <line x1="200.0" y1="200.0" x2="280.0" y2="200.0"/>
+      <line x1="200.0" y1="200.0" x2="200.0" y2="280.0"/>
+      <line x1="200.0" y1="200.0" x2="280.0" y2="280.0" class="xl"/>
+      <line x1="280.0" y1="200.0" x2="360.0" y2="200.0"/>
+      <line x1="280.0" y1="200.0" x2="280.0" y2="280.0"/>
+      <line x1="280.0" y1="200.0" x2="360.0" y2="280.0" class="xl"/>
+      <line x1="360.0" y1="200.0" x2="440.0" y2="200.0"/>
+      <line x1="360.0" y1="200.0" x2="360.0" y2="280.0"/>
+      <line x1="360.0" y1="200.0" x2="440.0" y2="280.0" class="xl"/>
+      <line x1="440.0" y1="200.0" x2="440.0" y2="280.0"/>
+      <line x1="40.0" y1="280.0" x2="120.0" y2="280.0"/>
+      <line x1="40.0" y1="280.0" x2="40.0" y2="360.0"/>
+      <line x1="40.0" y1="280.0" x2="120.0" y2="360.0" class="xl"/>
+      <line x1="120.0" y1="280.0" x2="200.0" y2="280.0"/>
+      <line x1="120.0" y1="280.0" x2="120.0" y2="360.0"/>
+      <line x1="120.0" y1="280.0" x2="200.0" y2="360.0" class="xl"/>
+      <line x1="200.0" y1="280.0" x2="280.0" y2="280.0"/>
+      <line x1="200.0" y1="280.0" x2="200.0" y2="360.0"/>
+      <line x1="200.0" y1="280.0" x2="280.0" y2="360.0" class="xl"/>
+      <line x1="280.0" y1="280.0" x2="360.0" y2="280.0"/>
+      <line x1="280.0" y1="280.0" x2="280.0" y2="360.0"/>
+      <line x1="280.0" y1="280.0" x2="360.0" y2="360.0" class="xl"/>
+      <line x1="360.0" y1="280.0" x2="440.0" y2="280.0"/>
+      <line x1="360.0" y1="280.0" x2="360.0" y2="360.0"/>
+      <line x1="360.0" y1="280.0" x2="440.0" y2="360.0" class="xl"/>
+      <line x1="440.0" y1="280.0" x2="440.0" y2="360.0"/>
+      <line x1="40.0" y1="360.0" x2="120.0" y2="360.0"/>
+      <line x1="40.0" y1="360.0" x2="40.0" y2="440.0"/>
+      <line x1="40.0" y1="360.0" x2="120.0" y2="440.0" class="xl"/>
+      <line x1="120.0" y1="360.0" x2="200.0" y2="360.0"/>
+      <line x1="120.0" y1="360.0" x2="120.0" y2="440.0"/>
+      <line x1="120.0" y1="360.0" x2="200.0" y2="440.0" class="xl"/>
+      <line x1="200.0" y1="360.0" x2="280.0" y2="360.0"/>
+      <line x1="200.0" y1="360.0" x2="200.0" y2="440.0"/>
+      <line x1="200.0" y1="360.0" x2="280.0" y2="440.0" class="xl"/>
+      <line x1="280.0" y1="360.0" x2="360.0" y2="360.0"/>
+      <line x1="280.0" y1="360.0" x2="280.0" y2="440.0"/>
+      <line x1="280.0" y1="360.0" x2="360.0" y2="440.0" class="xl"/>
+      <line x1="360.0" y1="360.0" x2="440.0" y2="360.0"/>
+      <line x1="360.0" y1="360.0" x2="360.0" y2="440.0"/>
+      <line x1="360.0" y1="360.0" x2="440.0" y2="440.0" class="xl"/>
+      <line x1="440.0" y1="360.0" x2="440.0" y2="440.0"/>
+      <line x1="40.0" y1="440.0" x2="120.0" y2="440.0"/>
+      <line x1="40.0" y1="440.0" x2="40.0" y2="520.0"/>
+      <line x1="40.0" y1="440.0" x2="120.0" y2="520.0" class="xl"/>
+      <line x1="120.0" y1="440.0" x2="200.0" y2="440.0"/>
+      <line x1="120.0" y1="440.0" x2="120.0" y2="520.0"/>
+      <line x1="120.0" y1="440.0" x2="200.0" y2="520.0" class="xl"/>
+      <line x1="200.0" y1="440.0" x2="280.0" y2="440.0"/>
+      <line x1="200.0" y1="440.0" x2="200.0" y2="520.0"/>
+      <line x1="200.0" y1="440.0" x2="280.0" y2="520.0" class="xl"/>
+      <line x1="280.0" y1="440.0" x2="360.0" y2="440.0"/>
+      <line x1="280.0" y1="440.0" x2="280.0" y2="520.0"/>
+      <line x1="280.0" y1="440.0" x2="360.0" y2="520.0" class="xl"/>
+      <line x1="360.0" y1="440.0" x2="440.0" y2="440.0"/>
+      <line x1="360.0" y1="440.0" x2="360.0" y2="520.0"/>
+      <line x1="360.0" y1="440.0" x2="440.0" y2="520.0" class="xl"/>
+      <line x1="440.0" y1="440.0" x2="440.0" y2="520.0"/>
+      <line x1="40.0" y1="520.0" x2="120.0" y2="520.0"/>
+      <line x1="120.0" y1="520.0" x2="200.0" y2="520.0"/>
+      <line x1="200.0" y1="520.0" x2="280.0" y2="520.0"/>
+      <line x1="280.0" y1="520.0" x2="360.0" y2="520.0"/>
+      <line x1="360.0" y1="520.0" x2="440.0" y2="520.0"/>
       </g>
       <g class="net-nod" fill="currentColor">
       <circle cx="40.0" cy="40.0" r="9"/>
-      <circle cx="128.0" cy="40.0" r="9"/>
-      <circle cx="216.0" cy="40.0" r="9"/>
-      <circle cx="304.0" cy="40.0" r="9"/>
-      <circle cx="392.0" cy="40.0" r="9"/>
-      <circle cx="480.0" cy="40.0" r="9"/>
-      <circle cx="40.0" cy="130.0" r="9"/>
-      <circle cx="128.0" cy="130.0" r="9"/>
-      <circle cx="216.0" cy="130.0" r="9"/>
-      <circle cx="304.0" cy="130.0" r="9"/>
-      <circle cx="392.0" cy="130.0" r="9"/>
-      <circle cx="480.0" cy="130.0" r="9"/>
-      <circle cx="40.0" cy="220.0" r="9"/>
-      <circle cx="128.0" cy="220.0" r="9"/>
-      <circle cx="216.0" cy="220.0" r="9"/>
-      <circle cx="304.0" cy="220.0" r="9"/>
-      <circle cx="392.0" cy="220.0" r="9"/>
-      <circle cx="480.0" cy="220.0" r="9"/>
-      <circle cx="40.0" cy="310.0" r="9"/>
-      <circle cx="128.0" cy="310.0" r="9"/>
-      <circle cx="216.0" cy="310.0" r="9"/>
-      <circle cx="304.0" cy="310.0" r="9"/>
-      <circle cx="392.0" cy="310.0" r="9"/>
-      <circle cx="480.0" cy="310.0" r="9"/>
-      <circle cx="40.0" cy="400.0" r="9"/>
-      <circle cx="128.0" cy="400.0" r="9"/>
-      <circle cx="216.0" cy="400.0" r="9"/>
-      <circle cx="304.0" cy="400.0" r="9"/>
-      <circle cx="392.0" cy="400.0" r="9"/>
-      <circle cx="480.0" cy="400.0" r="9"/>
-      <circle cx="40.0" cy="490.0" r="9"/>
-      <circle cx="128.0" cy="490.0" r="9"/>
-      <circle cx="216.0" cy="490.0" r="9"/>
-      <circle cx="304.0" cy="490.0" r="9"/>
-      <circle cx="392.0" cy="490.0" r="9"/>
-      <circle cx="480.0" cy="490.0" r="9"/>
-      <circle cx="40.0" cy="580.0" r="9"/>
-      <circle cx="128.0" cy="580.0" r="9"/>
-      <circle cx="216.0" cy="580.0" r="9"/>
-      <circle cx="304.0" cy="580.0" r="9"/>
-      <circle cx="392.0" cy="580.0" r="9"/>
-      <circle cx="480.0" cy="580.0" r="9"/>
-      </g>
+      <circle cx="120.0" cy="40.0" r="9"/>
+      <circle cx="200.0" cy="40.0" r="9"/>
+      <circle cx="280.0" cy="40.0" r="9"/>
+      <circle cx="360.0" cy="40.0" r="9"/>
+      <circle cx="440.0" cy="40.0" r="9"/>
+      <circle cx="40.0" cy="120.0" r="9"/>
+      <circle cx="120.0" cy="120.0" r="9"/>
+      <circle cx="200.0" cy="120.0" r="9"/>
+      <circle cx="280.0" cy="120.0" r="9"/>
+      <circle cx="360.0" cy="120.0" r="9"/>
+      <circle cx="440.0" cy="120.0" r="9"/>
+      <circle cx="40.0" cy="200.0" r="9"/>
+      <circle cx="120.0" cy="200.0" r="9"/>
+      <circle cx="200.0" cy="200.0" r="9"/>
+      <circle cx="280.0" cy="200.0" r="9"/>
+      <circle cx="360.0" cy="200.0" r="9"/>
+      <circle cx="440.0" cy="200.0" r="9"/>
+      <circle cx="40.0" cy="280.0" r="9"/>
+      <circle cx="120.0" cy="280.0" r="9"/>
+      <circle cx="200.0" cy="280.0" r="9"/>
+      <circle cx="280.0" cy="280.0" r="9"/>
+      <circle cx="360.0" cy="280.0" r="9"/>
+      <circle cx="440.0" cy="280.0" r="9"/>
+      <circle cx="40.0" cy="360.0" r="9"/>
+      <circle cx="120.0" cy="360.0" r="9"/>
+      <circle cx="200.0" cy="360.0" r="9"/>
+      <circle cx="280.0" cy="360.0" r="9"/>
+      <circle cx="360.0" cy="360.0" r="9"/>
+      <circle cx="440.0" cy="360.0" r="9"/>
+      <circle cx="40.0" cy="440.0" r="9"/>
+      <circle cx="120.0" cy="440.0" r="9"/>
+      <circle cx="200.0" cy="440.0" r="9"/>
+      <circle cx="280.0" cy="440.0" r="9"/>
+      <circle cx="360.0" cy="440.0" r="9"/>
+      <circle cx="440.0" cy="440.0" r="9"/>
+      <circle cx="40.0" cy="520.0" r="9"/>
+      <circle cx="120.0" cy="520.0" r="9"/>
+      <circle cx="200.0" cy="520.0" r="9"/>
+      <circle cx="280.0" cy="520.0" r="9"/>
+      <circle cx="360.0" cy="520.0" r="9"/>
+      <circle cx="440.0" cy="520.0" r="9"/>
+      </g></g>
     </svg>
       </div>
     </div>
@@ -229,21 +237,23 @@
 <script>
 (function () {
   gsap.set('#s10-crosslink-panel', { opacity: 0, x: 60, scale: 0.94 });
-  gsap.set('#s10-crosslink-b1', { opacity: 0, y: 30 });
-  gsap.set('#s10-crosslink-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s10-crosslink-net', { opacity: 0, scale: 0.92 });
+  gsap.set('#s10-crosslink-b0', { opacity: 0, y: 30 });
+  gsap.set('#s10-crosslink-b2', { opacity: 0, scale: 0.86 });
   gsap.set('#s10-crosslink-b3', { opacity: 0, y: 30 });
   gsap.set('#s10-crosslink-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
   tl.to('#s10-crosslink-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
-  tl.to('#s10-crosslink-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.200);
-  tl.to('#s10-crosslink-b1', { opacity: 1, y: 0, duration: 1.500, ease: 'power3.out' }, 3.401);
-  tl.to('#s10-crosslink-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.800, ease: 'power2.inOut' }, 6.494);
-  tl.to('#s10-crosslink-b3', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 9.586);
-  tl.to('#s10-crosslink-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 11.750);
-  tl.to('#s10-crosslink-panel', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 15.250);
-  tl.to({}, { duration: 16.305, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s10-crosslink-loose', { opacity: 0, scale: 0.94, duration: 1.800, ease: 'power2.inOut' }, 2.413);
+  tl.to('#s10-crosslink-net', { opacity: 1, scale: 1, duration: 1.800, ease: 'power2.inOut' }, 2.413);
+  tl.to('#s10-crosslink-b0', { opacity: 1, y: 0, duration: 1.500, ease: 'power3.out' }, 0.000);
+  tl.to('#s10-crosslink-b2', { opacity: 1, scale: 1, duration: 1.800, ease: 'back.out(1.6)' }, 2.413);
+  tl.to('#s10-crosslink-b3', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 4.825);
+  tl.to('#s10-crosslink-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 6.273);
+  tl.to('#s10-crosslink-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
+  tl.to({}, { duration: 8.970, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s10-crosslink'] = tl;
 })();

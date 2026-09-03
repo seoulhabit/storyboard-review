@@ -1,0 +1,125 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#131516; color:#F7F5F0;
+  }
+  .clip { position:absolute; inset:0; }
+  /* DRIFT BUDGET, not decoration: a transform on a padded box moves the padded
+     edge outward, so the pad must absorb (max scale - 1)/2 * canvas + max
+     translate. 1.03 scale = 28.8px/side horizontally, 16.2px vertically. */
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:#4B9B93; }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
+     those live in the brief's claim table and the video description. */
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+            align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel .actor { color:var(--ink); }
+
+  .warn-wrap { display:flex; flex-direction:column; gap:34px; width:100%; height:100%;
+               justify-content:center; }
+  .warn-top { display:flex; align-items:center; gap:48px; }
+  .warn-top .actor { color:var(--ink); height:220px; width:auto; opacity:0.9; }
+  .warn-head { font-family:var(--font-display); font-weight:600; font-size:132px;
+               line-height:0.98; letter-spacing:-.01em; color:var(--coral); margin:0; }
+
+  /* Flip the TOKEN, not just #root's colour: .actor strokes and
+     .badge borders read var(--ink) and would stay dark-on-dark. */
+  #root { --ink: #F7F5F0; --ink-2: #878B8C; }
+  .cite { color:var(--ink-2-dark); border-color:var(--rule-dark); background:var(--ink-soft); }
+  .kicker { color:var(--aqua); }
+
+</style>
+
+<div id="root" data-composition-id="s11-do-not-inject" data-width="1920" data-height="1080"
+     data-duration="21.081">
+  <div class="clip stage" id="s11-do-not-inject-stage" data-start="0" data-duration="21.081">
+    <div class="warn-wrap">
+      <div class="warn-top" id="s11-do-not-inject-top">
+        <svg class="actor" viewBox="0 0 520 260" width="520" height="260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <rect x="20" y="180" width="480" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="5"/>
+      <g transform="translate(60,120)"><rect x="0" y="0" width="220" height="34" rx="8" fill="none" stroke="currentColor" stroke-width="5"/><line x1="30" y1="0" x2="30" y2="34" stroke="currentColor" stroke-width="3" opacity="0.5"/><line x1="60" y1="0" x2="60" y2="34" stroke="currentColor" stroke-width="3" opacity="0.5"/><rect x="-46" y="8" width="46" height="18" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><rect x="220" y="10" width="34" height="14" rx="4" fill="currentColor" opacity="0.35"/></g>
+      <g transform="translate(340,90)"><rect x="0" y="0" width="46" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="5"/><rect x="6" y="30" width="34" height="34" fill="currentColor" opacity="0.16"/><rect x="10" y="-10" width="26" height="12" rx="3" fill="currentColor" opacity="0.5"/></g>
+      <g transform="translate(420,150)"><path d="M0 60 Q-10 10 30 6 Q34 -6 46 4 Q52 -6 62 6 Q70 -4 76 8 Q92 10 86 40 Q90 70 60 76 L10 76 Q0 74 0 60 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></g>
+    </svg>
+        <div class="col" style="gap:18px">
+          <div class="caption beat" id="s11-do-not-inject-b0">Is a filler just serum with a needle? Not even close.</div>
+          <div class="kicker beat" id="s11-do-not-inject-b2">Worth putting in very large letters</div>
+        </div>
+      </div>
+      <h1 class="warn-head beat is-entering" id="s11-do-not-inject-b3">DO NOT INJECT YOURSELF</h1>
+      <div class="cite beat is-entering" id="s11-do-not-inject-b4">FDA · Dermal Fillers</div>
+      <div class="body beat is-entering" id="s11-do-not-inject-b5">Dermal fillers are a medical procedure with real risks</div>
+      <div class="body beat is-entering" id="s11-do-not-inject-b7">Including tissue death, vision loss and stroke</div>
+      <div class="sub beat is-entering" id="s11-do-not-inject-b9">Choose a provider trained to perform the injection</div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s11-do-not-inject-top', { opacity: 0, y: -20 });
+  gsap.set('#s11-do-not-inject-b3', { opacity: 0, scale: 1.06, y: -18 });
+  gsap.set('#s11-do-not-inject-b4', { opacity: 0, y: 30 });
+  gsap.set('#s11-do-not-inject-b5', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s11-do-not-inject-b7', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s11-do-not-inject-b9', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s11-do-not-inject-top', { opacity: 1, y: 0, duration: 1.100, ease: 'power2.inOut' }, 0.001);
+  tl.to('#s11-do-not-inject-b3', { opacity: 1, scale: 1, y: 0, duration: 1.000, ease: 'power4.out' }, 6.046);
+  tl.to('#s11-do-not-inject-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 8.464);
+  tl.to('#s11-do-not-inject-b5', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 10.076);
+  tl.to('#s11-do-not-inject-b7', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 13.703);
+  tl.to('#s11-do-not-inject-b9', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 17.331);
+  tl.to('#s11-do-not-inject-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
+  tl.to('#s11-do-not-inject-stage', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 13.576);
+  tl.to('#s11-do-not-inject-stage', { x: 7, y: 8, scale: 1.014, duration: 0.900, ease: 'sine.inOut' }, 17.103);
+  tl.to('#s11-do-not-inject-stage', { x: -6, y: -6, scale: 1.01, duration: 0.500, ease: 'sine.inOut' }, 20.581);
+  tl.to({}, { duration: 21.081, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s11-do-not-inject'] = tl;
+})();
+</script>
+</template>

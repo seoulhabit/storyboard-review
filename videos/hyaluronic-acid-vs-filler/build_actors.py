@@ -101,6 +101,126 @@ def boundary_panel(rng, w, h):
             f'stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>\n'
             f'      <g class="small">\n      ' + "\n      ".join(small) + "\n      </g>")
 
+# ------------------------------------------------------------- v2 geometry --
+# Added for the v2 revision's ten named visuals. Same discipline as the block
+# above: deterministic, seeded, static SVG path data computed here in Python.
+
+def skin_band(w, h, boundary_frac=0.30):
+    """A two-layer skin cross-section: a thin epidermis band over a deeper
+    dermis, with a gently wavy surface line. Reused by every scene that needs
+    an honest (labelled) skin cross-section rather than a flat backdrop."""
+    by = h * boundary_frac
+    # wavy surface, low-amplitude, deterministic (no rng — it is a fixed motif)
+    pts = []
+    n = 10
+    for i in range(n + 1):
+        x = w * i / n
+        y = 26 + math.sin(i * 0.9) * 8
+        pts.append((x, y))
+    top = f"M {pts[0][0]:.1f} {pts[0][1]:.1f}"
+    for i in range(1, len(pts)):
+        px, py = pts[i-1]; cx, cy = pts[i]
+        top += f" L {cx:.1f} {cy:.1f}"
+    return (f'<path d="{top}" fill="none" stroke="currentColor" stroke-width="4" opacity="0.7"/>\n'
+            f'      <line class="skin" x1="0" y1="{by:.1f}" x2="{w}" y2="{by:.1f}" '
+            f'stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>\n'
+            f'      <text x="16" y="{by-16:.1f}" font-size="22" fill="currentColor" '
+            f'opacity="0.55" style="font-family:var(--font-mono)">EPIDERMIS</text>\n'
+            f'      <text x="16" y="{h-20:.1f}" font-size="22" fill="currentColor" '
+            f'opacity="0.55" style="font-family:var(--font-mono)">DERMIS</text>')
+
+def eye_glassware_svg():
+    """A tasteful, non-photorealistic 1930s-style illustration: an almond eye
+    (outline + iris) beside a simple Erlenmeyer flask. Elegant, no gore, no
+    likeness of a real person or animal in distress -- pure line art in the
+    house idiom, the same restraint the channel uses everywhere else."""
+    rng = random.Random(1934)
+    # the eye: almond outline via two symmetric arcs, iris circle, three
+    # short lash strokes -- the "tasteful, elegant" 1930s-plate register
+    eye = (
+        '<g transform="translate(40,120)">'
+        '<path d="M0 90 C 60 10, 220 10, 280 90 C 220 170, 60 170, 0 90 Z" '
+        'fill="none" stroke="currentColor" stroke-width="6"/>'
+        '<circle cx="140" cy="90" r="46" fill="none" stroke="currentColor" stroke-width="6"/>'
+        '<circle cx="140" cy="90" r="16" fill="currentColor" opacity="0.85"/>'
+        + "".join(f'<path d="M {20+i*18} 24 q 6 -18 14 -22" fill="none" '
+                  f'stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity="0.6"/>'
+                  for i in range(4))
+        + '</g>'
+    )
+    # the flask: Erlenmeyer outline, a liquid fill, and a stopper -- lab
+    # glassware, not medical equipment; nothing pierces anything.
+    flask = (
+        '<g transform="translate(330,60)">'
+        '<path d="M60 0 L60 60 L20 220 Q20 250 60 250 L140 250 Q180 250 180 220 L140 60 L140 0" '
+        'fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/>'
+        '<path d="M30 190 Q100 210 170 190 L 140 220 Q 180 250 140 250 L 60 250 Q 20 250 60 220 Z" '
+        'fill="currentColor" opacity="0.18"/>'
+        '<rect x="50" y="-14" width="20" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="6"/>'
+        '<rect x="130" y="-14" width="20" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="6"/>'
+        + "".join(f'<line x1="{34+i*10}" y1="{170-i*4}" x2="{50+i*10}" y2="{170-i*4}" '
+                  f'stroke="currentColor" stroke-width="3" opacity="0.35"/>' for i in range(6))
+        + '</g>'
+    )
+    return (f'<svg class="actor" viewBox="0 0 560 320" width="560" height="320" '
+            f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {eye}\n      {flask}\n    </svg>')
+
+def water_drop(cx, cy, r=8, eid=""):
+    idattr = f' id="{eid}"' if eid else ""
+    return f'<circle{idattr} cx="{cx:.1f}" cy="{cy:.1f}" r="{r}" fill="currentColor" opacity="0.85"/>'
+
+def clinical_vignette_svg():
+    """Calm, professional, non-graphic: a prepared tray, a capped/sealed
+    syringe lying flat (never entering skin), a small vial, a gloved hand
+    resting beside the tray. No face, no needle piercing anything."""
+    rng = random.Random(2024)
+    tray = '<rect x="20" y="180" width="480" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="5"/>'
+    # capped syringe, lying flat on the tray -- barrel + plunger + a CAPPED tip
+    syringe = (
+        '<g transform="translate(60,120)">'
+        '<rect x="0" y="0" width="220" height="34" rx="8" fill="none" stroke="currentColor" stroke-width="5"/>'
+        '<line x1="30" y1="0" x2="30" y2="34" stroke="currentColor" stroke-width="3" opacity="0.5"/>'
+        '<line x1="60" y1="0" x2="60" y2="34" stroke="currentColor" stroke-width="3" opacity="0.5"/>'
+        '<rect x="-46" y="8" width="46" height="18" rx="6" fill="none" stroke="currentColor" stroke-width="5"/>'
+        '<rect x="220" y="10" width="34" height="14" rx="4" fill="currentColor" opacity="0.35"/>'  # cap, sealed
+        '</g>'
+    )
+    vial = ('<g transform="translate(340,90)">'
+            '<rect x="0" y="0" width="46" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="5"/>'
+            '<rect x="6" y="30" width="34" height="34" fill="currentColor" opacity="0.16"/>'
+            '<rect x="10" y="-10" width="26" height="12" rx="3" fill="currentColor" opacity="0.5"/>'
+            '</g>')
+    # a gloved hand resting beside the tray: a simple rounded mitten shape,
+    # never touching the syringe tip -- calm, not mid-procedure.
+    glove = ('<g transform="translate(420,150)">'
+             '<path d="M0 60 Q-10 10 30 6 Q34 -6 46 4 Q52 -6 62 6 Q70 -4 76 8 Q92 10 86 40 '
+             'Q90 70 60 76 L10 76 Q0 74 0 60 Z" fill="none" stroke="currentColor" stroke-width="5" '
+             'stroke-linejoin="round"/></g>')
+    return (f'<svg class="actor" viewBox="0 0 520 260" width="520" height="260" '
+            f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+            f'      {tray}\n      {syringe}\n      {vial}\n      {glove}\n    </svg>')
+
+def icon_body(size=96):
+    return (f'<svg class="icon" viewBox="0 0 96 96" width="{size}" height="{size}" aria-hidden="true">'
+            '<circle cx="48" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="5"/>'
+            '<path d="M48 32 L48 62 M48 40 L26 56 M48 40 L70 56 M48 62 L32 92 M48 62 L64 92" '
+            'fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>')
+
+def icon_bottle(size=96):
+    return (f'<svg class="icon" viewBox="0 0 96 96" width="{size}" height="{size}" aria-hidden="true">'
+            '<rect x="30" y="4" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="5"/>'
+            '<path d="M32 16 L32 30 L22 46 L22 88 Q22 92 26 92 L70 92 Q74 92 74 88 L74 46 L64 30 L64 16" '
+            'fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>'
+            '<rect x="26" y="58" width="44" height="26" fill="currentColor" opacity="0.14"/></svg>')
+
+def icon_syringe(size=96):
+    return (f'<svg class="icon" viewBox="0 0 96 96" width="{size}" height="{size}" aria-hidden="true">'
+            '<g transform="translate(6,40) rotate(-28 42 8)">'
+            '<rect x="0" y="0" width="60" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>'
+            '<rect x="-14" y="3" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="5"/>'
+            '<line x1="60" y1="8" x2="82" y2="8" stroke="currentColor" stroke-width="4"/>'
+            '</g></svg>')
+
 # --------------------------------------------------------------- the actors --
 PW, PH = 520, 620          # actor panel viewBox
 
@@ -144,8 +264,12 @@ BASE_CSS = """
           text-transform:uppercase; }
   .body { font-weight:600; font-size:52px; line-height:1.24; }
   .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
   .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
-            text-transform:uppercase; color:var(--aqua); }
+            text-transform:uppercase; color:#4B9B93; }
   .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
   /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
      those live in the brief's claim table and the video description. */
@@ -212,6 +336,12 @@ LANE_CSS = """
   .lane + .lane::before { content:""; position:absolute; left:0; top:8%;
           bottom:8%; width:2px; background:var(--rule-strong); }
   .lane .actor { height:440px; width:auto; max-width:100%; flex:0 0 auto; }
+  /* Absolutely positioned so the icon adds ZERO height to the lane's flex
+     budget -- v1's proven 440px-actor layout already fills the available
+     798px column exactly; anything added in-flow overflows into .foot. */
+  .lane-icon { position:absolute; top:6px; left:50%; transform:translateX(-50%);
+               color:var(--kicker-color, #4B9B93); opacity:0.85; z-index:1; }
+  .lane-icon svg { display:block; width:52px; height:52px; }
   .lane-copy { font-weight:700; font-size:34px; letter-spacing:.12em;
                text-transform:uppercase; color:var(--ink-2); text-align:center; }
   .badge { font-weight:700; font-size:34px; letter-spacing:.10em;
@@ -220,7 +350,7 @@ LANE_CSS = """
   .foot { display:flex; align-items:baseline; gap:28px; flex-wrap:wrap; }
 """
 
-def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False):
+def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=None):
     """Three lanes of the SAME molecule in three states, plus title and payoff.
 
     Beat -> element mapping is by ORDER of the non-hold beats, so the ids match
@@ -249,7 +379,12 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False):
         if badge_roles and bi is not None:
             lab = (f'<div class="badge beat is-entering" id="{sid}-b{bi}">'
                    f'{txt(beats[bi])}</div>')
+        # [visual #1] category icon above the molecule actor: a bottle, a body
+        # silhouette, a syringe -- the three CATEGORIES, composed at rest
+        # alongside the existing molecular-form diagram, not replacing it.
+        icon = f'<div class="lane-icon">{icons[n]()}</div>' if icons else ""
         lanes.append(f'        <div class="lane" id="{sid}-lane{n}">\n'
+                     f'          {icon}\n'
                      f'          {actor_svg(kind)}\n'
                      f'          {lab}\n'
                      f'        </div>')
@@ -297,8 +432,9 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False):
                   f"duration: {b['dur']:.3f}, ease: 'sine.inOut' }}, {b['offset']:.3f});")
     return scene_shell(sid, LANE_CSS, markup, sets, tw)
 
-def build_lineup(): return lane_scene("s01-lineup")
-def build_badges(): return lane_scene("s13-badges", badge_roles=True)
+def build_lineup():
+    return lane_scene("s01-lineup", icons=(icon_body, icon_bottle, icon_syringe))
+def build_badges(): return lane_scene("s12-badges", badge_roles=True)
 
 # ------------------------------------------------- 05 / 06 / 10 : two-column --
 TWOCOL_CSS = """
@@ -359,12 +495,317 @@ def two_col(sid, kind, panel_on=False):
             tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
     return scene_shell(sid, TWOCOL_CSS, markup, sets, tw)
 
+
+# ------------------------------------------------------- v2 bespoke scenes --
+ROLE_CLASS_MAP = {"head":"head","sub":"sub","body":"body","caption":"caption",
+                   "cite":"cite","kicker":"kicker","stat":"stat"}
+
+def _rows(sid, skip_roles=()):
+    """Shared beat->row-markup pass used by every text column below."""
+    out = []
+    for i, bt in enumerate(beats_of(sid)):
+        if bt["idiom"] == "hold" or bt.get("role") in skip_roles:
+            continue
+        cls = ROLE_CLASS_MAP.get(bt.get("role","body"), "body")
+        out.append((i, bt, f'        <div class="{cls} beat is-entering" id="{sid}-b{i}">{txt(bt)}</div>'))
+    return out
+
+def _row_tweens(sid, rows_used):
+    """Shared enter-tween pass matching two_col()'s idiom handling, reused by
+    every bespoke hero-left/split scene so beats behave identically everywhere."""
+    sets, tw = [], []
+    for i, bt, _ in rows_used:
+        ease = IDIOM_EASE[bt["idiom"]]; off, d = bt["offset"], bt["dur"]
+        if bt["idiom"] == "wipe":
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ clipPath: 'inset(0 0% 0 0)', y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+        elif bt["idiom"] == "swap":
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 0.86 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+        elif bt["idiom"] == "slam":
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 1.03, y: -18 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+        elif bt["idiom"] == "count":
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 0.86 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+        else:
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 30 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+    return sets, tw
+
+def _hold_drift(sid, target_sel):
+    sets, tw = [], []
+    DRIFTS = [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
+    drift = 0
+    for bt in beats_of(sid):
+        if bt["idiom"] != "hold": continue
+        dx, dy, ds = DRIFTS[drift % len(DRIFTS)]; drift += 1
+        tw.append(f"tl.to('{target_sel}', {{ x: {dx}, y: {dy}, scale: {ds}, "
+                  f"duration: {bt['dur']:.3f}, ease: 'sine.inOut' }}, {bt['offset']:.3f});")
+    return sets, tw
+
+HEROSPLIT_CSS = """
+  .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+            align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel .actor { color:var(--ink); }
+"""
+
+def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None):
+    """head/sub/body/caption/cite text in a left column, one illustration
+    panel on the right. The shared shape behind s03/s04/s08/s09."""
+    rows = _rows(sid)
+    markup = ('    <div class="split2">\n'
+              f'      <div class="col" id="{sid}-col">\n'
+              + "\n".join(r[2] for r in rows) + "\n      </div>\n"
+              f'      <div class="panel" id="{sid}-panel">\n'
+              f'        {panel_markup}\n'
+              "      </div>\n"
+              "    </div>")
+    sets = [f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});"]
+    tw = [f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);"]
+    if panel_setup_sets: sets += panel_setup_sets
+    if panel_extra_tweens: tw += panel_extra_tweens
+    rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
+    hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
+    return scene_shell(sid, HEROSPLIT_CSS, markup, sets, tw)
+
+# ---- s03-origin: 1934, cow-eye vitreous, drawn in a tasteful 1930s idiom ---
+def build_origin():
+    return _hero_left("s03-origin", eye_glassware_svg())
+
+# ---- s04-body: natural HA in a skin cross-section, water molecules --------
+BODYCROSS_CSS = HEROSPLIT_CSS + """
+  .cross { width:100%; height:100%; }
+"""
+def build_body_cross():
+    sid = "s04-body"
+    rng = random.Random(11)
+    inner = (skin_band(480, 560, boundary_frac=0.22)
+             + "\n      " + free_coils(rng, 4, 480, 560, 260, 24, sw=6)
+             + "\n      " + water_dots(rng, 20, 480, 560, r=6))
+    panel = (f'<svg class="actor cross" viewBox="0 0 480 560" width="480" height="560" '
+             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {inner}\n    </svg>')
+    html = _hero_left(sid, panel)
+    return html.replace(HEROSPLIT_CSS, BODYCROSS_CSS, 1) if HEROSPLIT_CSS in html else html
+
+# ---- s05-compare: side-by-side cross-section, serum vs filler -------------
+COMPARE_CSS = """
+  .cmp-wrap { display:flex; flex-direction:column; gap:22px; width:100%; height:100%; }
+  .cmp-lanes { display:grid; grid-template-columns:1fr 1fr; gap:56px; flex:1 1 auto; min-height:0; }
+  .cmp-col { display:flex; flex-direction:column; align-items:center; justify-content:center;
+             gap:14px; border:2px solid var(--rule-strong); border-radius:16px; padding:20px; }
+  .cmp-col.on { border-color:var(--aqua); }
+  .cmp-label { font-weight:700; font-size:32px; letter-spacing:.12em;
+               text-transform:uppercase; color:var(--ink-2); }
+  .cmp-col .actor { color:var(--ink); height:340px; width:auto; }
+"""
+def build_compare():
+    sid = "s05-compare"
+    beats = beats_of(sid)
+    idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
+    head_i = [i for i in idx if beats[i].get("role") == "head"]
+    body_i = [i for i in idx if beats[i].get("role") == "body"]
+    cite_i = [i for i in idx if beats[i].get("role") == "cite"]
+
+    rng_s, rng_f = random.Random(23), random.Random(37)
+    serum_inner = boundary_panel(rng_s, 420, 460)
+    serum_svg = (f'<svg class="actor" viewBox="0 0 420 460" width="420" height="460" '
+                 f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {serum_inner}\n    </svg>')
+    filler_inner = skin_band(420, 460, boundary_frac=0.20) + "\n      " + lattice(420, 460 - 120, 5, 5, pad=30)
+    filler_svg = (f'<svg class="actor" viewBox="0 0 420 460" width="420" height="460" '
+                  f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+                  f'      <g transform="translate(0,120)">{filler_inner}</g>\n'
+                  f'      {skin_band(420, 460, boundary_frac=0.20)}\n    </svg>')
+
+    title = ""
+    titled = None
+    if head_i and abs(beats[head_i[0]]["offset"]) < 1e-6:
+        titled = head_i[0]
+        title = f'      <h1 class="head beat" id="{sid}-b{titled}">{txt(beats[titled])}</h1>'
+
+    body_rows = []
+    for n, i in enumerate(body_i[:1]):
+        pass  # left column gets the first body line, right gets the second
+    left_body = (f'<div class="body beat is-entering" id="{sid}-b{body_i[0]}">{txt(beats[body_i[0]])}</div>'
+                 if len(body_i) > 0 else "")
+    left_cite = (f'<div class="cite beat is-entering" id="{sid}-b{cite_i[0]}">{txt(beats[cite_i[0]])}</div>'
+                 if len(cite_i) > 0 else "")
+    right_body = (f'<div class="body beat is-entering" id="{sid}-b{body_i[1]}">{txt(beats[body_i[1]])}</div>'
+                  if len(body_i) > 1 else "")
+    right_cite = (f'<div class="cite beat is-entering" id="{sid}-b{cite_i[1]}">{txt(beats[cite_i[1]])}</div>'
+                  if len(cite_i) > 1 else "")
+
+    markup = (
+        '    <div class="cmp-wrap">\n' + title + '\n'
+        '      <div class="cmp-lanes">\n'
+        f'        <div class="cmp-col" id="{sid}-colL">\n'
+        '          <div class="cmp-label">Serum — surface</div>\n'
+        f'          {serum_svg}\n          {left_body}\n          {left_cite}\n'
+        '        </div>\n'
+        f'        <div class="cmp-col" id="{sid}-colR">\n'
+        '          <div class="cmp-label">Filler — beneath the skin</div>\n'
+        f'          {filler_svg}\n          {right_body}\n          {right_cite}\n'
+        '        </div>\n'
+        '      </div>\n    </div>'
+    )
+
+    sets, tw = [], []
+    for n, colsel in enumerate((f"#{sid}-colL", f"#{sid}-colR")):
+        sets.append(f"gsap.set('{colsel}', {{ opacity: 0, y: 40, scale: 0.96 }});")
+        tw.append(f"tl.to('{colsel}', {{ opacity: 1, y: 0, scale: 1, duration: 1.200, "
+                  f"ease: 'power2.inOut' }}, {0.20 + n*0.35:.3f});")
+    for i in idx:
+        if i == titled: continue
+        b = beats[i]
+        sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 26 }});")
+        tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {b['dur']:.3f}, "
+                  f"ease: '{IDIOM_EASE[b['idiom']]}' }}, {b['offset']:.3f});")
+    hs, ht = _hold_drift(sid, f"#{sid}-colR" ); sets += hs; tw += ht
+    return scene_shell(sid, COMPARE_CSS, markup, sets, tw)
+
+# ---- s08-binds-water: HA attracting/holding water, animated droplets ------
+def build_binds_water():
+    sid = "s08-binds-water"
+    rng = random.Random(23)
+    chain = f'<path d="{coil(30, 260, 380, 30, 50, rng)}" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>'
+    # droplets start scattered AWAY from the chain and are pulled toward it
+    # on the "It binds water" swap beat -- genuine x/y motion, not a static
+    # illustration standing in for the mechanism.
+    starts = [(60,60),(380,50),(420,180),(40,420),(400,430),(220,40),(60,340),(430,300)]
+    ends   = [(70,230),(150,230),(280,250),(120,300),(320,280),(200,220),(90,270),(340,240)]
+    drops = []
+    for i, (sx, sy) in enumerate(starts):
+        drops.append(water_drop(sx, sy, r=9, eid=f"{sid}-drop{i}"))
+    panel = (f'<svg class="actor" viewBox="0 0 460 460" width="460" height="460" '
+             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+             f'      {chain}\n      ' + "\n      ".join(drops) + '\n    </svg>')
+
+    beats = beats_of(sid)
+    idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
+    swap_i = [i for i in idx if beats[i]["idiom"] == "swap"]
+    swap_off = beats[swap_i[0]]["offset"] if swap_i else 2.0
+
+    drop_sets, drop_tw = [], []
+    for i, ((sx, sy), (ex, ey)) in enumerate(zip(starts, ends)):
+        drop_sets.append(f"gsap.set('#{sid}-drop{i}', {{ opacity: 0.35 }});")
+        drop_tw.append(f"tl.to('#{sid}-drop{i}', {{ x: {ex-sx}, y: {ey-sy}, opacity: 1, scale: 1.15, "
+                       f"duration: 1.400, ease: 'power2.inOut' }}, {swap_off + i*0.05:.3f});")
+    return _hero_left(sid, panel, panel_setup_sets=drop_sets, panel_extra_tweens=drop_tw)
+
+# ---- s09-lifeguard: moisturiser seal slowing water loss --------------------
+def build_lifeguard():
+    sid = "s09-lifeguard"
+    rng = random.Random(23)
+    band = skin_band(460, 420, boundary_frac=0.55)
+    chain = f'<path d="{coil(30, 260, 340, 22, 46, rng)}" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>'
+    seal = ('<path d="M20 150 Q230 110 440 150 L440 175 Q230 140 20 175 Z" '
+            'fill="currentColor" opacity="0.14"/>'
+            '<text x="20" y="130" font-size="22" fill="currentColor" opacity="0.6" '
+            'style="font-family:var(--font-mono)">MOISTURISER — SLOWS WATER LOSS</text>')
+    panel = (f'<svg class="actor" viewBox="0 0 460 420" width="460" height="420" '
+             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+             f'      {band}\n      {chain}\n      {seal}\n    </svg>')
+    return _hero_left(sid, panel)
+
+# ---- s10-crosslink: loose chains TRANSFORM into a connected grid ----------
+def build_crosslink_transform():
+    sid = "s10-crosslink"
+    rng = random.Random(37)
+    loose = free_coils(rng, 5, 480, 560, 300, 28, sw=8)
+    net = lattice(480, 560, 6, 7)
+    panel = (f'<svg class="actor" viewBox="0 0 480 560" width="480" height="560" '
+             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+             f'      <g class="loose-state" id="{sid}-loose">{loose}</g>\n'
+             f'      <g class="net-state" id="{sid}-net" opacity="0" transform="scale(0.92)" '
+             f'transform-origin="240 280">{net}</g>\n    </svg>')
+
+    beats = beats_of(sid)
+    idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
+    swap_i = [i for i in idx if beats[i]["idiom"] == "swap"]
+    off = beats[swap_i[0]]["offset"] if swap_i else 1.0
+    d = beats[swap_i[0]]["dur"] if swap_i else 1.5
+
+    xform_sets = [f"gsap.set('#{sid}-net', {{ opacity: 0, scale: 0.92 }});"]
+    xform_tw = [
+        f"tl.to('#{sid}-loose', {{ opacity: 0, scale: 0.94, duration: {d:.3f}, ease: 'power2.inOut' }}, {off:.3f});",
+        f"tl.to('#{sid}-net', {{ opacity: 1, scale: 1, duration: {d:.3f}, ease: 'power2.inOut' }}, {off:.3f});",
+    ]
+    return _hero_left(sid, panel, panel_setup_sets=xform_sets, panel_extra_tweens=xform_tw)
+
+# ---- s11-do-not-inject: clinical vignette, then the full-bleed warning ----
+WARNING_CSS = """
+  .warn-wrap { display:flex; flex-direction:column; gap:34px; width:100%; height:100%;
+               justify-content:center; }
+  .warn-top { display:flex; align-items:center; gap:48px; }
+  .warn-top .actor { color:var(--ink); height:220px; width:auto; opacity:0.9; }
+  .warn-head { font-family:var(--font-display); font-weight:600; font-size:132px;
+               line-height:0.98; letter-spacing:-.01em; color:var(--coral); margin:0; }
+"""
+def build_warning():
+    sid = "s11-do-not-inject"
+    beats = beats_of(sid)
+    idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
+    by_role = {r: [i for i in idx if beats[i].get("role") == r]
+               for r in ("caption","kicker","head","cite","body","sub")}
+
+    vign = clinical_vignette_svg()
+    cap_i = by_role["caption"][0] if by_role["caption"] else None
+    kick_i = by_role["kicker"][0] if by_role["kicker"] else None
+    top = (f'      <div class="warn-top" id="{sid}-top">\n'
+           f'        {vign}\n'
+           '        <div class="col" style="gap:18px">\n'
+           + (f'          <div class="caption beat is-entering" id="{sid}-b{cap_i}">{txt(beats[cap_i])}</div>\n' if cap_i is not None else '')
+           + (f'          <div class="kicker beat is-entering" id="{sid}-b{kick_i}">{txt(beats[kick_i])}</div>\n' if kick_i is not None else '')
+           + '        </div>\n      </div>')
+
+    head_i = by_role["head"][0] if by_role["head"] else None
+    cite_i = by_role["cite"][0] if by_role["cite"] else None
+    body_rows = "\n".join(f'      <div class="body beat is-entering" id="{sid}-b{i}">{txt(beats[i])}</div>'
+                          for i in by_role["body"])
+    sub_rows = "\n".join(f'      <div class="sub beat is-entering" id="{sid}-b{i}">{txt(beats[i])}</div>'
+                         for i in by_role["sub"])
+    head_md = (f'      <h1 class="warn-head beat is-entering" id="{sid}-b{head_i}">{txt(beats[head_i])}</h1>'
+              if head_i is not None else "")
+    cite_md = (f'      <div class="cite beat is-entering" id="{sid}-b{cite_i}">{txt(beats[cite_i])}</div>'
+              if cite_i is not None else "")
+
+    markup = ('    <div class="warn-wrap">\n' + top + '\n' + head_md + '\n' + cite_md
+              + '\n' + body_rows + '\n' + sub_rows + '\n    </div>')
+
+    # #top itself is static (always opacity 1) -- only the vignette
+    # illustration it wraps; the caption/kicker inside it get their own
+    # tweens below like every other beat, so each keeps its own timing.
+    sets, tw = [], []
+    for i in idx:
+        b = beats[i]
+        ease = IDIOM_EASE[b["idiom"]]; off, d = b["offset"], b["dur"]
+        if b["idiom"] == "slam":
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 1.06, y: -18 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+        elif b["idiom"] == "wipe":
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ clipPath: 'inset(0 0% 0 0)', y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+        else:
+            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 30 }});")
+            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
+    hs, ht = _hold_drift(sid, f"#{sid}-stage"); sets += hs; tw += ht
+    return scene_shell(sid, HEROSPLIT_CSS + WARNING_CSS, markup, sets, tw)
+
 BUILD = {
-  "s01-lineup":     build_lineup,
-  "s13-badges":     build_badges,
-  "s05-body":       lambda: two_col("s05-body", "body"),
-  "s06-serum-size": lambda: two_col("s06-serum-size", "serum", panel_on=True),
-  "s10-crosslink":  lambda: two_col("s10-crosslink", "filler"),
+  "s01-lineup":       build_lineup,
+  "s12-badges":       build_badges,
+  "s03-origin":       build_origin,
+  "s04-body":         build_body_cross,
+  "s05-compare":       build_compare,
+  "s06-serum-size":   lambda: two_col("s06-serum-size", "serum", panel_on=True),
+  "s08-binds-water":  build_binds_water,
+  "s09-lifeguard":    build_lifeguard,
+  "s10-crosslink":    build_crosslink_transform,
+  "s11-do-not-inject":build_warning,
 }
 
 def fix_generated_grounds():
@@ -400,9 +841,10 @@ def fix_generated_grounds():
                    "     #131516 on a #131516 ground -> 1:1, invisible text. */\n"
                    "  #root { --ink: #F7F5F0; --muted: #878B8C; }\n")
         else:
-            css = pad + "\n  /* [K-4] one citation treatment for the whole video. */\n" + """  .cite { font-family:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;\n          font-weight:500; font-size:32px; letter-spacing:.04em;\n          text-transform:none; color:#6B6B6B; border:2px solid #D9D3C6;\n          border-radius:999px; padding:10px 26px; width:max-content;\n          background:#F0EBE1; display:inline-block; }\n""" + ("\n  /* [S6/A-7] superseded by the pill above; kept for the record:\n"
-                   "     this is check's own suggestedColor. */\n"
-                   "")
+            css = pad + "\n  /* [K-4] one citation treatment for the whole video. */\n" + """  .cite { font-family:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;\n          font-weight:500; font-size:32px; letter-spacing:.04em;\n          text-transform:none; color:#6B6B6B; border:2px solid #D9D3C6;\n          border-radius:999px; padding:10px 26px; width:max-content;\n          background:#F0EBE1; display:inline-block; }\n""" + ("\n  /* [S6/A-7] same defect as .cite: --accent (#59B8AE) on a light\n"
+                   "     generated ground measures 2.17:1 against the 3:1 floor. Same\n"
+                   "     suggestedColor as the hand-authored .kicker fix. */\n"
+                   "  .kicker { color:#4B9B93; }\n")
         html = html.replace("</style>", css + "</style>", 1)
 
         # A `wipe` beat emits a clipPath-ONLY tween. clipPath changes what is

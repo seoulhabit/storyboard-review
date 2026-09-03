@@ -18,65 +18,61 @@
 <body>
   <!-- GENERATED from 03-beat-sheet.json by scripts/beats_to_composition.py.
        Do not hand-edit timing here; edit the beat sheet and re-run. -->
-  <div id="root" data-composition-id="main" data-start="0" data-duration="180.000"
+  <div id="root" data-composition-id="main" data-start="0" data-duration="160.000"
        data-width="1920" data-height="1080">
 
     <div class="scene clip" id="scene-s01-lineup" data-composition-id="s01-lineup"
          data-composition-src="compositions/frames/01-s01-lineup.html"
-         data-start="0.000" data-duration="13.855"
+         data-start="0.000" data-duration="15.334"
          data-track-index="0"></div>
-    <div class="scene clip" id="scene-s02-cousins" data-composition-id="s02-cousins"
-         data-composition-src="compositions/frames/02-s02-cousins.html"
-         data-start="12.655" data-duration="12.982"
+    <div class="scene clip" id="scene-s02-not-filler" data-composition-id="s02-not-filler"
+         data-composition-src="compositions/frames/02-s02-not-filler.html"
+         data-start="14.134" data-duration="8.248"
          data-track-index="1"></div>
     <div class="scene clip" id="scene-s03-origin" data-composition-id="s03-origin"
          data-composition-src="compositions/frames/03-s03-origin.html"
-         data-start="24.737" data-duration="12.130"
+         data-start="21.482" data-duration="7.831"
          data-track-index="0"></div>
-    <div class="scene clip" id="scene-s04-named" data-composition-id="s04-named"
-         data-composition-src="compositions/frames/04-s04-named.html"
-         data-start="35.667" data-duration="11.156"
+    <div class="scene clip" id="scene-s04-body" data-composition-id="s04-body"
+         data-composition-src="compositions/frames/04-s04-body.html"
+         data-start="28.113" data-duration="11.263"
          data-track-index="1"></div>
-    <div class="scene clip" id="scene-s05-body" data-composition-id="s05-body"
-         data-composition-src="compositions/frames/05-s05-body.html"
-         data-start="45.923" data-duration="15.372"
+    <div class="scene clip" id="scene-s05-compare" data-composition-id="s05-compare"
+         data-composition-src="compositions/frames/05-s05-compare.html"
+         data-start="38.476" data-duration="15.278"
          data-track-index="0"></div>
     <div class="scene clip" id="scene-s06-serum-size" data-composition-id="s06-serum-size"
          data-composition-src="compositions/frames/06-s06-serum-size.html"
-         data-start="60.395" data-duration="23.034"
+         data-start="52.854" data-duration="15.632"
          data-track-index="1"></div>
     <div class="scene clip" id="scene-s07-plumping" data-composition-id="s07-plumping"
          data-composition-src="compositions/frames/07-s07-plumping.html"
-         data-start="82.529" data-duration="14.971"
+         data-start="67.586" data-duration="13.294"
          data-track-index="0"></div>
     <div class="scene clip" id="scene-s08-binds-water" data-composition-id="s08-binds-water"
          data-composition-src="compositions/frames/08-s08-binds-water.html"
-         data-start="96.300" data-duration="16.021"
+         data-start="79.680" data-duration="14.123"
          data-track-index="1"></div>
     <div class="scene clip" id="scene-s09-lifeguard" data-composition-id="s09-lifeguard"
          data-composition-src="compositions/frames/09-s09-lifeguard.html"
-         data-start="111.421" data-duration="9.598"
+         data-start="92.903" data-duration="13.490"
          data-track-index="0"></div>
     <div class="scene clip" id="scene-s10-crosslink" data-composition-id="s10-crosslink"
          data-composition-src="compositions/frames/10-s10-crosslink.html"
-         data-start="120.119" data-duration="17.355"
+         data-start="105.493" data-duration="10.020"
          data-track-index="1"></div>
-    <div class="scene clip" id="scene-s11-needle" data-composition-id="s11-needle"
-         data-composition-src="compositions/frames/11-s11-needle.html"
-         data-start="136.274" data-duration="6.669"
+    <div class="scene clip" id="scene-s11-do-not-inject" data-composition-id="s11-do-not-inject"
+         data-composition-src="compositions/frames/11-s11-do-not-inject.html"
+         data-start="114.313" data-duration="22.281"
          data-track-index="0"></div>
-    <div class="scene clip" id="scene-s12-do-not-inject" data-composition-id="s12-do-not-inject"
-         data-composition-src="compositions/frames/12-s12-do-not-inject.html"
-         data-start="142.043" data-duration="16.311"
+    <div class="scene clip" id="scene-s12-badges" data-composition-id="s12-badges"
+         data-composition-src="compositions/frames/12-s12-badges.html"
+         data-start="135.394" data-duration="15.945"
          data-track-index="1"></div>
-    <div class="scene clip" id="scene-s13-badges" data-composition-id="s13-badges"
-         data-composition-src="compositions/frames/13-s13-badges.html"
-         data-start="157.154" data-duration="14.296"
+    <div class="scene clip" id="scene-s13-endcard" data-composition-id="s13-endcard"
+         data-composition-src="compositions/frames/13-s13-endcard.html"
+         data-start="150.439" data-duration="9.561"
          data-track-index="0"></div>
-    <div class="scene clip" id="scene-s14-endcard" data-composition-id="s14-endcard"
-         data-composition-src="compositions/frames/14-s14-endcard.html"
-         data-start="170.550" data-duration="9.450"
-         data-track-index="1"></div>
   </div>
 
   <!-- GSAP from CDN is the shipped template's own pattern
@@ -90,33 +86,31 @@
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true });
 
-    // wipe-up 0.600s: s01-lineup -> s02-cousins, overlap opens at 12.655s
-    tl.fromTo('#scene-s02-cousins', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 12.655);
-    // wipe-left 0.450s: s02-cousins -> s03-origin, overlap opens at 24.737s
-    tl.fromTo('#scene-s03-origin', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 24.737);
-    // wipe-up 0.600s: s03-origin -> s04-named, overlap opens at 35.667s
-    tl.fromTo('#scene-s04-named', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 35.667);
-    // wipe-left 0.450s: s04-named -> s05-body, overlap opens at 45.923s
-    tl.fromTo('#scene-s05-body', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 45.923);
-    // wipe-left 0.450s: s05-body -> s06-serum-size, overlap opens at 60.395s
-    tl.fromTo('#scene-s06-serum-size', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 60.395);
-    // wipe-left 0.450s: s06-serum-size -> s07-plumping, overlap opens at 82.529s
-    tl.fromTo('#scene-s07-plumping', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 82.529);
-    // wipe-up 0.600s: s07-plumping -> s08-binds-water, overlap opens at 96.300s
-    tl.fromTo('#scene-s08-binds-water', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 96.300);
-    // wipe-left 0.450s: s08-binds-water -> s09-lifeguard, overlap opens at 111.421s
-    tl.fromTo('#scene-s09-lifeguard', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 111.421);
-    // wipe-left 0.450s: s09-lifeguard -> s10-crosslink, overlap opens at 120.119s
-    tl.fromTo('#scene-s10-crosslink', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 120.119);
-    // wipe-up 0.600s: s10-crosslink -> s11-needle, overlap opens at 136.274s
-    tl.fromTo('#scene-s11-needle', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 136.274);
-    // wipe-left 0.450s: s11-needle -> s12-do-not-inject, overlap opens at 142.043s
-    tl.fromTo('#scene-s12-do-not-inject', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 142.043);
-    // wipe-up 0.600s: s12-do-not-inject -> s13-badges, overlap opens at 157.154s
-    tl.fromTo('#scene-s13-badges', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 157.154);
-    // wipe-left 0.450s: s13-badges -> s14-endcard, overlap opens at 170.550s
-    tl.fromTo('#scene-s14-endcard', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 170.550);
-    tl.to({}, { duration: 180.000, ease: 'none' }, 0);   // anchor: tl.duration() === root duration
+    // wipe-up 0.600s: s01-lineup -> s02-not-filler, overlap opens at 14.134s
+    tl.fromTo('#scene-s02-not-filler', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 14.134);
+    // wipe-left 0.450s: s02-not-filler -> s03-origin, overlap opens at 21.482s
+    tl.fromTo('#scene-s03-origin', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 21.482);
+    // wipe-up 0.600s: s03-origin -> s04-body, overlap opens at 28.113s
+    tl.fromTo('#scene-s04-body', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 28.113);
+    // wipe-left 0.450s: s04-body -> s05-compare, overlap opens at 38.476s
+    tl.fromTo('#scene-s05-compare', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 38.476);
+    // wipe-left 0.450s: s05-compare -> s06-serum-size, overlap opens at 52.854s
+    tl.fromTo('#scene-s06-serum-size', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 52.854);
+    // wipe-left 0.450s: s06-serum-size -> s07-plumping, overlap opens at 67.586s
+    tl.fromTo('#scene-s07-plumping', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 67.586);
+    // wipe-up 0.600s: s07-plumping -> s08-binds-water, overlap opens at 79.680s
+    tl.fromTo('#scene-s08-binds-water', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 79.680);
+    // wipe-left 0.450s: s08-binds-water -> s09-lifeguard, overlap opens at 92.903s
+    tl.fromTo('#scene-s09-lifeguard', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 92.903);
+    // wipe-left 0.450s: s09-lifeguard -> s10-crosslink, overlap opens at 105.493s
+    tl.fromTo('#scene-s10-crosslink', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 105.493);
+    // wipe-up 0.600s: s10-crosslink -> s11-do-not-inject, overlap opens at 114.313s
+    tl.fromTo('#scene-s11-do-not-inject', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 114.313);
+    // wipe-up 0.600s: s11-do-not-inject -> s12-badges, overlap opens at 135.394s
+    tl.fromTo('#scene-s12-badges', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 135.394);
+    // wipe-left 0.450s: s12-badges -> s13-endcard, overlap opens at 150.439s
+    tl.fromTo('#scene-s13-endcard', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 150.439);
+    tl.to({}, { duration: 160.000, ease: 'none' }, 0);   // anchor: tl.duration() === root duration
     window.__timelines['main'] = tl;
   </script>
 </body>

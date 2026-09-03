@@ -96,9 +96,23 @@ cmd_new() {
   local base; base="$(git -C "$ROOT" rev-parse --verify -q origin/master || git -C "$ROOT" rev-parse master)"
 
   mkdir -p "$WT_DIR"
-  git -C "$ROOT" worktree add -q -b "$br" "$path" "$base" || die "worktree add failed"
+  # git-lfs prints a long "Encountered N files that should have been pointers"
+  # block here for blobs predating .gitattributes. It is pre-existing, it is not
+  # an error, and printed raw it buries the success message -- a session read it
+  # as a failure and nearly backed out of a step that had worked. Capture, then
+  # summarise.
+  local out
+  if ! out="$(git -C "$ROOT" worktree add -q -b "$br" "$path" "$base" 2>&1)"; then
+    echo "$out" >&2
+    die "worktree add failed"
+  fi
+  local lfs_n
+  lfs_n="$(grep -c "should have been pointers" <<<"$out" || true)"
 
   echo
+  if [ "${lfs_n:-0}" -gt 0 ]; then
+    echo "  ${c_dim}(git-lfs pointer warning suppressed — pre-existing, not an error)${c_off}"
+  fi
   echo "  ${c_grn}created${c_off}  $path"
   echo "  branch   $br  (from $(git -C "$ROOT" rev-parse --short "$base"))"
   echo

@@ -47,5 +47,43 @@ Two habits for whatever you cannot isolate:
   recovery path. Every irrecoverable loss in the incident above was work that
   had not been committed; everything committed was recovered.
 
+### Moving out of the shared checkout
+
+**If your work is untracked, copy it out of the repo before you touch git.**
+"Commit first, then move" is wrong for untracked work: committing means either
+landing on whatever branch the shared tree happens to be on — likely someone
+else's — or running `git checkout -b` in the shared tree, which is the thing
+this whole convention exists to stop. There is no safe in-tree commit for
+untracked work when the tree is on a branch you did not choose. Copy the files
+somewhere outside the repo, make your worktree, copy them in, verify, commit.
+
+That is not hypothetical: a session began on `master`, built ~40 untracked
+files, and found the tree had been switched to someone else's feature branch
+underneath it with no signal that anything had happened.
+
+If your work is already tracked and committed, just make the worktree.
+
+### What a worktree does NOT protect
+
+A worktree isolates the **checkout**, not the **refs**. Both limits below were
+hit within an hour of the worktrees going in, so treat them as live:
+
+- **Ref surgery reaches into any tree.** `reset`, `rebase`, `cherry-pick` and
+  `branch -f` run from anywhere move a branch even when another worktree has it
+  checked out — a session watched a cherry-pick, a reset and a rebase land on
+  the `master` its own worktree was on, mid-operation. The worktree lock only
+  stops another tree from *checking out* that branch. **Do not do ref surgery on
+  a branch you do not have checked out**, and prefer merging your own branch
+  over rewriting a shared one. `./worktree.sh guard` cannot catch this: it tests
+  where you are, and this damage comes from ref writes, not from location. A
+  `reference-transaction` hook refusing writes to `master` from a tree that does
+  not have it checked out would.
+
+- **The index is shared too.** In the shared checkout, `git add -A` and
+  `git commit -a` sweep up whatever another session has staged. One session
+  watched another's `PUBLISH.md` sit staged in the shared index while it worked;
+  had it committed with `-A`, it would have taken that file. **Stage by explicit
+  path**, always, and check the branch as well as the diff before committing.
+
 `./worktree.sh` never deletes a worktree or moves a ref. `status` reports stale
 trees along with what would be lost, and removing one is a human decision.

@@ -169,5 +169,10 @@ the operator's explicit request. No two-hander gap to log (unlike the
 words** (unchanged by the hook/misconception restructure — words moved, none
 added or cut) — **29 words under the floor**, logged as a deviation per the
 operator's pre-run decision: the measured VO is the real clock, not padded to
-hit the word/time target. Expect a real runtime below 5:00; exact figure is
-`vo-timing.json`'s output at S4, not estimated here.
+hit the word/time target.
+
+**Measured at S4: 257.120s (4:17.12)** — 42.88s (12.5%) under the nominal 5:00
+target, consistent with the word-budget shortfall above. Not padded, per the
+operator's decision. Sits between the channel's two long-form precedents
+(`hyaluronic-acid-vs-filler` 2:40, `ectoin-survival-molecule` 5:40), closer to
+the latter. See `04-assets/vo-timing.json` and `04-assets/script.md`.

@@ -1,0 +1,11 @@
+{
+  "name": "hyaluronic-acid-vs-filler",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.22 preview",
+    "check": "npx --yes hyperframes@0.8.22 check --samples 40",
+    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o ../06-render/raw.mp4",
+    "postrender": "python3 ../../../catalog/tooling/check-static-hold.py . ../06-render/final.mp4 --landscape && python3 ../../../catalog/tooling/check-safe-area.py . ../06-render/final.mp4 --landscape && python3 ../../../catalog/tooling/check-cadence.py . ../06-render/final.mp4 --longform"
+  }
+}

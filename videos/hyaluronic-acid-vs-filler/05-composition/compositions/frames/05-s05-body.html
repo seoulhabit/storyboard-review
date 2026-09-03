@@ -1,0 +1,135 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#F7F5F0; color:#131516;
+  }
+  .clip { position:absolute; inset:0; }
+  /* DRIFT BUDGET, not decoration: a transform on a padded box moves the padded
+     edge outward, so the pad must absorb (max scale - 1)/2 * canvas + max
+     translate. 1.03 scale = 28.8px/side horizontally, 16.2px vertically. */
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:var(--aqua); }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
+     those live in the brief's claim table and the video description. */
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .two { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+         align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel.on { border-color:var(--aqua); }
+  .panel .actor { color:var(--ink); }
+
+</style>
+
+<div id="root" data-composition-id="s05-body" data-width="1920" data-height="1080"
+     data-duration="14.472">
+  <div class="clip stage" id="s05-body-stage" data-start="0" data-duration="14.472">
+    <div class="two">
+      <div class="col" id="s05-body-col">
+        <div class="head beat is-entering" id="s05-body-b0">Your body already makes it</div>
+        <div class="body beat is-entering" id="s05-body-b2">Most of it sits in your skin, holding water</div>
+        <div class="cite beat is-entering" id="s05-body-b3">Dermatoendocrinol · 2012</div>
+        <div class="body beat is-entering" id="s05-body-b4">It also lubricates your joints</div>
+        <div class="cite beat is-entering" id="s05-body-b5">Front Vet Sci · 2019</div>
+        <div class="caption beat is-entering" id="s05-body-b6">Part sponge, part cushion</div>
+      </div>
+      <div class="panel" id="s05-body-panel">
+        <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path d="M 86.9 351.2 C 105.8 351.2 115.2 339.2 134.0 339.2 C 152.9 339.2 162.3 347.1 181.2 347.1 C 200.0 347.1 209.5 337.2 228.3 337.2 C 247.2 337.2 256.6 344.9 275.5 344.9 C 294.3 344.9 303.8 331.1 322.6 331.1 C 341.5 331.1 350.9 358.5 369.8 358.5 C 388.6 358.5 398.0 332.8 416.9 332.8" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 26.0 195.2 C 44.9 195.2 54.3 208.0 73.1 208.0 C 92.0 208.0 101.4 212.6 120.3 212.6 C 139.1 212.6 148.6 187.3 167.4 187.3 C 186.3 187.3 195.7 223.2 214.6 223.2 C 233.4 223.2 242.9 202.2 261.7 202.2 C 280.6 202.2 290.0 220.6 308.9 220.6 C 327.7 220.6 337.1 190.7 356.0 190.7" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 36.8 48.7 C 55.6 48.7 65.1 36.5 83.9 36.5 C 102.8 36.5 112.2 46.3 131.1 46.3 C 149.9 46.3 159.3 35.7 178.2 35.7 C 197.1 35.7 206.5 47.4 225.3 47.4 C 244.2 47.4 253.6 35.9 272.5 35.9 C 291.3 35.9 300.8 60.4 319.6 60.4 C 338.5 60.4 347.9 39.7 366.8 39.7" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 98.3 385.8 C 117.1 385.8 126.5 386.8 145.4 386.8 C 164.3 386.8 173.7 389.5 192.5 389.5 C 211.4 389.5 220.8 374.1 239.7 374.1 C 258.5 374.1 268.0 405.4 286.8 405.4 C 305.7 405.4 315.1 384.8 334.0 384.8 C 352.8 384.8 362.3 406.4 381.1 406.4 C 400.0 406.4 409.4 374.5 428.3 374.5" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 63.6 159.6 C 82.5 159.6 91.9 152.7 110.7 152.7 C 129.6 152.7 139.0 174.3 157.9 174.3 C 176.7 174.3 186.2 155.0 205.0 155.0 C 223.9 155.0 233.3 180.5 252.2 180.5 C 271.0 180.5 280.5 150.2 299.3 150.2 C 318.2 150.2 327.6 187.2 346.5 187.2 C 365.3 187.2 374.7 155.7 393.6 155.7" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+      <circle cx="20.3" cy="141.6" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="456.9" cy="292.6" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="490.6" cy="250.5" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="55.1" cy="385.1" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="393.7" cy="176.5" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="61.8" cy="212.9" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="482.8" cy="459.7" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="76.6" cy="162.9" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="68.5" cy="54.7" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="402.6" cy="123.1" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="288.5" cy="279.5" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="111.5" cy="444.5" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="82.9" cy="393.4" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="75.9" cy="264.0" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="122.2" cy="176.5" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="486.0" cy="486.0" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="166.0" cy="533.2" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="121.1" cy="248.7" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="430.1" cy="392.3" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="68.2" cy="593.8" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="122.4" cy="169.8" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="390.9" cy="210.8" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="162.2" cy="62.6" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="63.3" cy="358.0" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="136.6" cy="368.7" r="7" fill="currentColor" opacity="0.28"/>
+      <circle cx="198.4" cy="282.9" r="7" fill="currentColor" opacity="0.28"/>
+    </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s05-body-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s05-body-b0', { opacity: 0, y: 30 });
+  gsap.set('#s05-body-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s05-body-b3', { opacity: 0, y: 30 });
+  gsap.set('#s05-body-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s05-body-b5', { opacity: 0, y: 30 });
+  gsap.set('#s05-body-b6', { opacity: 0, y: 30 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s05-body-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
+  tl.to('#s05-body-b0', { opacity: 1, y: 0, duration: 1.400, ease: 'power3.out' }, 0.000);
+  tl.to('#s05-body-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
+  tl.to('#s05-body-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 3.035);
+  tl.to('#s05-body-b3', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 5.260);
+  tl.to('#s05-body-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 6.677);
+  tl.to('#s05-body-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 8.902);
+  tl.to('#s05-body-b6', { opacity: 1, y: 0, duration: 1.100, ease: 'power3.out' }, 10.585);
+  tl.to('#s05-body-panel', { x: -9, y: 6, scale: 1.005, duration: 0.887, ease: 'sine.inOut' }, 13.585);
+  tl.to({}, { duration: 14.472, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s05-body'] = tl;
+})();
+</script>
+</template>

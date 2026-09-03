@@ -1,0 +1,251 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#131516; color:#F7F5F0;
+  }
+  .clip { position:absolute; inset:0; }
+  /* DRIFT BUDGET, not decoration: a transform on a padded box moves the padded
+     edge outward, so the pad must absorb (max scale - 1)/2 * canvas + max
+     translate. 1.03 scale = 28.8px/side horizontally, 16.2px vertically. */
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:var(--aqua); }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
+     those live in the brief's claim table and the video description. */
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .two { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+         align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel.on { border-color:var(--aqua); }
+  .panel .actor { color:var(--ink); }
+
+  /* Flip the TOKEN, not just #root's colour: .actor strokes and
+     .badge borders read var(--ink) and would stay dark-on-dark. */
+  #root { --ink: #F7F5F0; --ink-2: #878B8C; }
+  .cite { color:var(--ink-2-dark); border-color:var(--rule-dark); background:var(--ink-soft); }
+  .kicker { color:var(--aqua); }
+
+</style>
+
+<div id="root" data-composition-id="s10-crosslink" data-width="1920" data-height="1080"
+     data-duration="16.305">
+  <div class="clip stage" id="s10-crosslink-stage" data-start="0" data-duration="16.305">
+    <div class="two">
+      <div class="col" id="s10-crosslink-col">
+        <div class="head beat is-entering" id="s10-crosslink-b1">A filler is chemically different</div>
+        <div class="body beat is-entering" id="s10-crosslink-b2">Its chains are cross-linked into a gel that holds its shape</div>
+        <div class="cite beat is-entering" id="s10-crosslink-b3">J Cosmet Dermatol · 2024</div>
+        <div class="body beat is-entering" id="s10-crosslink-b4">Placed beneath the skin, it can physically add volume</div>
+      </div>
+      <div class="panel" id="s10-crosslink-panel">
+        <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
+      <line x1="40.0" y1="40.0" x2="128.0" y2="40.0"/>
+      <line x1="40.0" y1="40.0" x2="40.0" y2="130.0"/>
+      <line x1="40.0" y1="40.0" x2="128.0" y2="130.0" class="xl"/>
+      <line x1="128.0" y1="40.0" x2="216.0" y2="40.0"/>
+      <line x1="128.0" y1="40.0" x2="128.0" y2="130.0"/>
+      <line x1="128.0" y1="40.0" x2="216.0" y2="130.0" class="xl"/>
+      <line x1="216.0" y1="40.0" x2="304.0" y2="40.0"/>
+      <line x1="216.0" y1="40.0" x2="216.0" y2="130.0"/>
+      <line x1="216.0" y1="40.0" x2="304.0" y2="130.0" class="xl"/>
+      <line x1="304.0" y1="40.0" x2="392.0" y2="40.0"/>
+      <line x1="304.0" y1="40.0" x2="304.0" y2="130.0"/>
+      <line x1="304.0" y1="40.0" x2="392.0" y2="130.0" class="xl"/>
+      <line x1="392.0" y1="40.0" x2="480.0" y2="40.0"/>
+      <line x1="392.0" y1="40.0" x2="392.0" y2="130.0"/>
+      <line x1="392.0" y1="40.0" x2="480.0" y2="130.0" class="xl"/>
+      <line x1="480.0" y1="40.0" x2="480.0" y2="130.0"/>
+      <line x1="40.0" y1="130.0" x2="128.0" y2="130.0"/>
+      <line x1="40.0" y1="130.0" x2="40.0" y2="220.0"/>
+      <line x1="40.0" y1="130.0" x2="128.0" y2="220.0" class="xl"/>
+      <line x1="128.0" y1="130.0" x2="216.0" y2="130.0"/>
+      <line x1="128.0" y1="130.0" x2="128.0" y2="220.0"/>
+      <line x1="128.0" y1="130.0" x2="216.0" y2="220.0" class="xl"/>
+      <line x1="216.0" y1="130.0" x2="304.0" y2="130.0"/>
+      <line x1="216.0" y1="130.0" x2="216.0" y2="220.0"/>
+      <line x1="216.0" y1="130.0" x2="304.0" y2="220.0" class="xl"/>
+      <line x1="304.0" y1="130.0" x2="392.0" y2="130.0"/>
+      <line x1="304.0" y1="130.0" x2="304.0" y2="220.0"/>
+      <line x1="304.0" y1="130.0" x2="392.0" y2="220.0" class="xl"/>
+      <line x1="392.0" y1="130.0" x2="480.0" y2="130.0"/>
+      <line x1="392.0" y1="130.0" x2="392.0" y2="220.0"/>
+      <line x1="392.0" y1="130.0" x2="480.0" y2="220.0" class="xl"/>
+      <line x1="480.0" y1="130.0" x2="480.0" y2="220.0"/>
+      <line x1="40.0" y1="220.0" x2="128.0" y2="220.0"/>
+      <line x1="40.0" y1="220.0" x2="40.0" y2="310.0"/>
+      <line x1="40.0" y1="220.0" x2="128.0" y2="310.0" class="xl"/>
+      <line x1="128.0" y1="220.0" x2="216.0" y2="220.0"/>
+      <line x1="128.0" y1="220.0" x2="128.0" y2="310.0"/>
+      <line x1="128.0" y1="220.0" x2="216.0" y2="310.0" class="xl"/>
+      <line x1="216.0" y1="220.0" x2="304.0" y2="220.0"/>
+      <line x1="216.0" y1="220.0" x2="216.0" y2="310.0"/>
+      <line x1="216.0" y1="220.0" x2="304.0" y2="310.0" class="xl"/>
+      <line x1="304.0" y1="220.0" x2="392.0" y2="220.0"/>
+      <line x1="304.0" y1="220.0" x2="304.0" y2="310.0"/>
+      <line x1="304.0" y1="220.0" x2="392.0" y2="310.0" class="xl"/>
+      <line x1="392.0" y1="220.0" x2="480.0" y2="220.0"/>
+      <line x1="392.0" y1="220.0" x2="392.0" y2="310.0"/>
+      <line x1="392.0" y1="220.0" x2="480.0" y2="310.0" class="xl"/>
+      <line x1="480.0" y1="220.0" x2="480.0" y2="310.0"/>
+      <line x1="40.0" y1="310.0" x2="128.0" y2="310.0"/>
+      <line x1="40.0" y1="310.0" x2="40.0" y2="400.0"/>
+      <line x1="40.0" y1="310.0" x2="128.0" y2="400.0" class="xl"/>
+      <line x1="128.0" y1="310.0" x2="216.0" y2="310.0"/>
+      <line x1="128.0" y1="310.0" x2="128.0" y2="400.0"/>
+      <line x1="128.0" y1="310.0" x2="216.0" y2="400.0" class="xl"/>
+      <line x1="216.0" y1="310.0" x2="304.0" y2="310.0"/>
+      <line x1="216.0" y1="310.0" x2="216.0" y2="400.0"/>
+      <line x1="216.0" y1="310.0" x2="304.0" y2="400.0" class="xl"/>
+      <line x1="304.0" y1="310.0" x2="392.0" y2="310.0"/>
+      <line x1="304.0" y1="310.0" x2="304.0" y2="400.0"/>
+      <line x1="304.0" y1="310.0" x2="392.0" y2="400.0" class="xl"/>
+      <line x1="392.0" y1="310.0" x2="480.0" y2="310.0"/>
+      <line x1="392.0" y1="310.0" x2="392.0" y2="400.0"/>
+      <line x1="392.0" y1="310.0" x2="480.0" y2="400.0" class="xl"/>
+      <line x1="480.0" y1="310.0" x2="480.0" y2="400.0"/>
+      <line x1="40.0" y1="400.0" x2="128.0" y2="400.0"/>
+      <line x1="40.0" y1="400.0" x2="40.0" y2="490.0"/>
+      <line x1="40.0" y1="400.0" x2="128.0" y2="490.0" class="xl"/>
+      <line x1="128.0" y1="400.0" x2="216.0" y2="400.0"/>
+      <line x1="128.0" y1="400.0" x2="128.0" y2="490.0"/>
+      <line x1="128.0" y1="400.0" x2="216.0" y2="490.0" class="xl"/>
+      <line x1="216.0" y1="400.0" x2="304.0" y2="400.0"/>
+      <line x1="216.0" y1="400.0" x2="216.0" y2="490.0"/>
+      <line x1="216.0" y1="400.0" x2="304.0" y2="490.0" class="xl"/>
+      <line x1="304.0" y1="400.0" x2="392.0" y2="400.0"/>
+      <line x1="304.0" y1="400.0" x2="304.0" y2="490.0"/>
+      <line x1="304.0" y1="400.0" x2="392.0" y2="490.0" class="xl"/>
+      <line x1="392.0" y1="400.0" x2="480.0" y2="400.0"/>
+      <line x1="392.0" y1="400.0" x2="392.0" y2="490.0"/>
+      <line x1="392.0" y1="400.0" x2="480.0" y2="490.0" class="xl"/>
+      <line x1="480.0" y1="400.0" x2="480.0" y2="490.0"/>
+      <line x1="40.0" y1="490.0" x2="128.0" y2="490.0"/>
+      <line x1="40.0" y1="490.0" x2="40.0" y2="580.0"/>
+      <line x1="40.0" y1="490.0" x2="128.0" y2="580.0" class="xl"/>
+      <line x1="128.0" y1="490.0" x2="216.0" y2="490.0"/>
+      <line x1="128.0" y1="490.0" x2="128.0" y2="580.0"/>
+      <line x1="128.0" y1="490.0" x2="216.0" y2="580.0" class="xl"/>
+      <line x1="216.0" y1="490.0" x2="304.0" y2="490.0"/>
+      <line x1="216.0" y1="490.0" x2="216.0" y2="580.0"/>
+      <line x1="216.0" y1="490.0" x2="304.0" y2="580.0" class="xl"/>
+      <line x1="304.0" y1="490.0" x2="392.0" y2="490.0"/>
+      <line x1="304.0" y1="490.0" x2="304.0" y2="580.0"/>
+      <line x1="304.0" y1="490.0" x2="392.0" y2="580.0" class="xl"/>
+      <line x1="392.0" y1="490.0" x2="480.0" y2="490.0"/>
+      <line x1="392.0" y1="490.0" x2="392.0" y2="580.0"/>
+      <line x1="392.0" y1="490.0" x2="480.0" y2="580.0" class="xl"/>
+      <line x1="480.0" y1="490.0" x2="480.0" y2="580.0"/>
+      <line x1="40.0" y1="580.0" x2="128.0" y2="580.0"/>
+      <line x1="128.0" y1="580.0" x2="216.0" y2="580.0"/>
+      <line x1="216.0" y1="580.0" x2="304.0" y2="580.0"/>
+      <line x1="304.0" y1="580.0" x2="392.0" y2="580.0"/>
+      <line x1="392.0" y1="580.0" x2="480.0" y2="580.0"/>
+      </g>
+      <g class="net-nod" fill="currentColor">
+      <circle cx="40.0" cy="40.0" r="9"/>
+      <circle cx="128.0" cy="40.0" r="9"/>
+      <circle cx="216.0" cy="40.0" r="9"/>
+      <circle cx="304.0" cy="40.0" r="9"/>
+      <circle cx="392.0" cy="40.0" r="9"/>
+      <circle cx="480.0" cy="40.0" r="9"/>
+      <circle cx="40.0" cy="130.0" r="9"/>
+      <circle cx="128.0" cy="130.0" r="9"/>
+      <circle cx="216.0" cy="130.0" r="9"/>
+      <circle cx="304.0" cy="130.0" r="9"/>
+      <circle cx="392.0" cy="130.0" r="9"/>
+      <circle cx="480.0" cy="130.0" r="9"/>
+      <circle cx="40.0" cy="220.0" r="9"/>
+      <circle cx="128.0" cy="220.0" r="9"/>
+      <circle cx="216.0" cy="220.0" r="9"/>
+      <circle cx="304.0" cy="220.0" r="9"/>
+      <circle cx="392.0" cy="220.0" r="9"/>
+      <circle cx="480.0" cy="220.0" r="9"/>
+      <circle cx="40.0" cy="310.0" r="9"/>
+      <circle cx="128.0" cy="310.0" r="9"/>
+      <circle cx="216.0" cy="310.0" r="9"/>
+      <circle cx="304.0" cy="310.0" r="9"/>
+      <circle cx="392.0" cy="310.0" r="9"/>
+      <circle cx="480.0" cy="310.0" r="9"/>
+      <circle cx="40.0" cy="400.0" r="9"/>
+      <circle cx="128.0" cy="400.0" r="9"/>
+      <circle cx="216.0" cy="400.0" r="9"/>
+      <circle cx="304.0" cy="400.0" r="9"/>
+      <circle cx="392.0" cy="400.0" r="9"/>
+      <circle cx="480.0" cy="400.0" r="9"/>
+      <circle cx="40.0" cy="490.0" r="9"/>
+      <circle cx="128.0" cy="490.0" r="9"/>
+      <circle cx="216.0" cy="490.0" r="9"/>
+      <circle cx="304.0" cy="490.0" r="9"/>
+      <circle cx="392.0" cy="490.0" r="9"/>
+      <circle cx="480.0" cy="490.0" r="9"/>
+      <circle cx="40.0" cy="580.0" r="9"/>
+      <circle cx="128.0" cy="580.0" r="9"/>
+      <circle cx="216.0" cy="580.0" r="9"/>
+      <circle cx="304.0" cy="580.0" r="9"/>
+      <circle cx="392.0" cy="580.0" r="9"/>
+      <circle cx="480.0" cy="580.0" r="9"/>
+      </g>
+    </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s10-crosslink-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s10-crosslink-b1', { opacity: 0, y: 30 });
+  gsap.set('#s10-crosslink-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s10-crosslink-b3', { opacity: 0, y: 30 });
+  gsap.set('#s10-crosslink-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s10-crosslink-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
+  tl.to('#s10-crosslink-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.200);
+  tl.to('#s10-crosslink-b1', { opacity: 1, y: 0, duration: 1.500, ease: 'power3.out' }, 3.401);
+  tl.to('#s10-crosslink-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.800, ease: 'power2.inOut' }, 6.494);
+  tl.to('#s10-crosslink-b3', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 9.586);
+  tl.to('#s10-crosslink-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 11.750);
+  tl.to('#s10-crosslink-panel', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 15.250);
+  tl.to({}, { duration: 16.305, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s10-crosslink'] = tl;
+})();
+</script>
+</template>

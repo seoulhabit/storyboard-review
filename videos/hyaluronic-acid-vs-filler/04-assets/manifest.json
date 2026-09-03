@@ -1,0 +1,86 @@
+{
+  "slug": "hyaluronic-acid-vs-filler",
+  "generated": "2026-09-03",
+  "_note": "[S6/A-1] discover -> reuse -> build -> contribute. `reused` names the exact repo path a file came from; nothing here was generated that an existing asset already covered.",
+  "assets": [
+    {
+      "file": "vo.wav",
+      "role": "voiceover",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/vo.wav",
+      "dur_s": 180.0,
+      "bytes": 17280090,
+      "source": "BUILT \u2014 25 Higgsfield seed_audio stems, silence-trimmed and placed with computed gaps",
+      "provider": "higgsfield generate_audio (providers.yaml \u00a7tts current-vo)",
+      "licence": "generated for this channel",
+      "voices": {
+        "SoulHabit": "Kimberly 674b71b8-1d2e-4087-8567-d1f53c0b9f3c (element)",
+        "Jay": "Grady e2a2d2e6-9ed2-59cd-82af-feaa27f8a678 (preset)"
+      },
+      "cost_credits": 25,
+      "reused": false
+    },
+    {
+      "file": "vo.mp3",
+      "role": "voiceover (mux source)",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/vo.mp3",
+      "dur_s": 180.001,
+      "bytes": 4321773,
+      "reused": false
+    },
+    {
+      "file": "music.wav",
+      "role": "music bed",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/music.wav",
+      "dur_s": 184.95,
+      "bytes": 17755268,
+      "source": "REUSED \u2014 videos/snail-mucin-truth/assets/bgm/track.loop.mp3, an existing channel bed, looped x3 to 185s with a 1.5s in / 2.0s out fade",
+      "licence": "same as the source project (existing channel asset)",
+      "cost_credits": 0,
+      "reused": true,
+      "_why": "[S4/V-3] takes an already-sourced bed in the repo over generating one. Ducked to 0.25 under VO at the mux."
+    },
+    {
+      "file": "thumbnail.png",
+      "role": "thumbnail",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/thumbnail.png",
+      "bytes": 791235,
+      "source": "GENERATED \u2014 vidiq_generate_thumbnail, 1280x720",
+      "score": 77,
+      "cost_credits": 22,
+      "reused": false
+    },
+    {
+      "file": "tokens/tokens.css",
+      "role": "design tokens",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/tokens/tokens.css",
+      "bytes": 11997,
+      "source": "REUSED VERBATIM \u2014 videos/ectoin-survival-molecule/assets/tokens/tokens.css",
+      "_why": "the repo's only landscape-calibrated token set: 1920x1080 canvas, safe areas 54/108/96/96, the type scale that deliberately does NOT rescale between 9:16 and 16:9, and the measured wash/text contrast contracts.",
+      "cost_credits": 0,
+      "reused": true
+    },
+    {
+      "file": "fonts/*.woff2",
+      "role": "self-hosted faces",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/fonts/",
+      "source": "REUSED \u2014 videos/ectoin-survival-molecule/assets/fonts/ (4 subset faces)",
+      "_note": "NotoSansKR was REMOVED from the shipped font stack: no Korean glyph appears in this video and a family without an @font-face is a hard lint error (9 of them). Faces are kept here for provenance; the render resolves EB Garamond / Inter / JetBrains Mono through the engine-supported Google Fonts path, which injects deterministic @font-face at render time.",
+      "cost_credits": 0,
+      "reused": true
+    },
+    {
+      "file": "vo-stems.json / vo-timing.json",
+      "role": "master clock",
+      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/vo-timing.json",
+      "source": "BUILT by build_vo.py",
+      "_why": "vo-timing.json IS the master clock [S4/V-2]; 03-beat-sheet.json is derived from it, never hand-typed.",
+      "reused": false
+    }
+  ],
+  "totals": {
+    "files": 7,
+    "reused": 3,
+    "built_or_generated": 4,
+    "credits_spent_on_assets": 47
+  }
+}

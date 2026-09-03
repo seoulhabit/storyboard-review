@@ -730,7 +730,16 @@ one new short scene — cascades further than it looks:
    re-derive its timing table from the actual `index.html`, don't hand-edit
    estimates. A drifted storyboard stops being useful as a spec the moment one
    real timing changes and the doc isn't re-synced.
-7. Any in-scene motion beat hand-timed against a *specific VO word's*
+7. **The audio master, which a re-render silently resets.** Mastering is a
+   post-render step (*Audio mastering*), so a fresh render carries the mix at
+   whatever level the composition produced and none of the loudness work.
+   Confirmed: a re-render measured **-24.2 LUFS** against the previous
+   deliverable's **-14.6**, a 9.6 LU gap, on a file that was otherwise ready
+   to ship and was about to be handed over as the publish candidate. Nothing
+   in the render output says so; only `ffmpeg ebur128` on the new file does.
+   Re-master after every re-render, and re-measure the shipped file rather
+   than assuming the pass ran.
+8. Any in-scene motion beat hand-timed against a *specific VO word's*
    timestamp — a chip that appears on "because," a stagger that lands on a
    clause. A new take's word timings rarely fall at the same offsets as the
    old ones, even when the scene's own start/duration don't change (a
@@ -753,6 +762,37 @@ leaving three clicks with no corresponding visual event. Any pass that
 deletes, merges, or retimes a visual beat needs the same SFX-spotting
 re-check as a VO change — grep the scene's `data-start` audio cues against
 what actually still animates at each of those timestamps.
+
+## Is the file you are about to edit generated?
+
+Ask before the first edit, not after the next build. A mature project in this
+repo generates its compositions: one script emits `index.html` from a scene
+table, another emits every `compositions/frames/*.html` from a spec module.
+Editing the output looks like it worked — the change is on disk, the render
+shows it, `check` passes — and the next `npm run build` silently discards it.
+
+Confirmed the expensive way: a payoff-line fix and a 28-boundary transition
+system were both authored into generated files first. Neither would have
+survived. The tell was in `package.json` all along (`"build": "python3
+scripts/build_frames.py && python3 scripts/build_index.py"`), and one `grep -n
+"write_text\|\.html" scripts/*.py` would have shown which files each script
+owns.
+
+Two habits close it:
+
+- **Grep the build scripts for the file you are about to touch** before you
+  touch it. If a generator writes it, edit the generator and re-run.
+- **Diff the regenerated output against what you verified.** After moving both
+  fixes into their generators and re-running the build, the emitted
+  `index.html` differed from the hand-edited one only in comment wording, and
+  the scene file was byte-identical — which is the check that the generator
+  actually reproduces what you looked at, rather than something close to it.
+
+The inverse of this file's find-and-replace rule (*verify against the
+generated file, not the generator*) is not its opposite: verify output, edit
+source. Both halves are needed, and a project can be generated in one layer
+and hand-authored in another — here scenes 01-07 and 08-29 came from two
+different generators, and a third script consumed both.
 
 ## Layout validation and debug strategy
 
@@ -1360,6 +1400,45 @@ different geometry or a different colour distribution.** A checker inherited fro
 another format is not validated for yours until something in yours has actually
 violated its premises.
 
+**A hard gate's background assumption will break a second time, in the same
+place, unless you fix the CLASS rather than the instance.** `check-safe-area.py`
+derives "page ground" so it can call everything else ink. That estimator has now
+been wrong twice, both times blocking a clean render:
+
+1. the whole-frame modal, broken by a busy landscape frame (two 45%-of-frame
+   panels made the modal a *panel* colour; all four zones reported 100% ink
+   across 136 frames with nothing out of place);
+2. the outer-border-ring median that replaced it, broken by a **transition
+   frame** — which legitimately contains two grounds, so the ring goes bimodal,
+   the median lands on whichever ground holds more of it, and the other ground
+   differs from the reference everywhere it appears. Measured: the entire
+   54×1920 top band reported as 103680px of ink at a timestamp where that band
+   is uniformly luma 19, min == max, zero variation. 70 frames, all clean.
+
+Both fixes were locally correct. What carried the bug forward was the shape of
+the assumption — *there is one background* — surviving the rewrite. The third
+version clusters the ring and treats a pixel as ink only when it matches no
+ground, which is the first version that does not assume a count.
+
+**On a hard gate, a false positive is worse than a miss**, because the
+wave-through it earns is what lets a real one through later. So when a gate
+fails, check its assumption against the frame before changing the composition:
+here the first instinct was to go hunting for the offending element twice, and
+both times there wasn't one.
+
+**Two negative controls, not one, for anything that exits non-zero.** A gate
+that only proves it can fail is not validated; neither is one that only proves
+it can pass. The safe-area controls pin three behaviours: text in a reserved
+zone must fail (the gate still works), **a bounded solid block must fail** (the
+fix did not over-suppress), and two flat grounds meeting at a straight seam must
+pass (the regression). The middle one is the one that catches a plausible wrong
+fix — an edge-density or "does this region have internal detail" test passes
+every synthetic case and silently waves through a solid graphic sitting in the
+zone. A first attempt here excluded masked rows spanning the band edge-to-edge;
+it read as principled, worked on the bands parallel to the seam, and failed on
+the rails crossing it, where a flat ground bounded by the seam is
+indistinguishable from content. The control caught it in one run.
+
 **A checker's summary line is part of the checker, and it is where a coverage
 gap ships as a false all-clear.** `check-static-hold.py` used to end with
 *"Overall: clean (whole-frame and region-aware checks both clean)"* — which
@@ -1753,19 +1832,46 @@ format-blind.**
   **2-3 types**, one primary carrying ~60-70% of boundaries plus 1-2 accents
   (`hyperframes-animation`'s `transitions/overview.md` sets that budget —
   "Pick ONE primary … + 1-2 accents. Never use a different transition for
-  every scene."). For an editorial explainer the primary is **`push-slide`**,
-  one direction held per chapter; **`blur-crossfade`** is the sanctioned soft
-  option across a ground change, and **`zoom-through`** / **`squeeze`** are the
-  accent slots. Give the accent to **chapter boundaries** so transition
-  strength serves the re-hook (*Long-form structure* below) rather than
-  decorating an arbitrary scene change — or let a camera leg land on the next
-  act's payoff and carry the boundary that way. Hard cuts survive as
-  **deliberate emphasis**: a few per piece, chosen, not defaulted.
+  every scene."). For an editorial explainer the primary is a **clip-path
+  wipe** — `inset()` opened along one axis on the incoming clip wrapper, one
+  direction held per chapter — with a longer wipe on the other axis as the
+  accent. Give the accent to **chapter boundaries** so transition strength
+  serves the re-hook (*Long-form structure* below) rather than decorating an
+  arbitrary scene change — or let a camera leg land on the next act's payoff
+  and carry the boundary that way. Hard cuts survive as **deliberate
+  emphasis**: a few per piece, chosen, not defaulted.
+
+  **Not `push-slide`, and this corrects an earlier version of this section.**
+  A wipe reveals the incoming scene at its own resting position; a push
+  *translates* whole scenes, which drags their content through the reserved
+  safe-area zones on the way in and out. Confirmed by building both on the
+  same 29-scene 1920×1080 piece and rendering each: the push failed the hard
+  safe-area gate on **99 frames** — real text, up to 6.2% edge density inside
+  the top band — against a hard-cut baseline that passed all 1361. The wipe
+  build measured **0**. Both render correctly, both pass `check`, and both are
+  equally safe on grounds; the difference is invisible until the safe-area
+  gate runs on a real render, which is why it survived a clean preview and a
+  clean `check` before being caught.
+
+  Two caveats on the wipe. It only clips, so it cannot place content anywhere
+  a settled frame does not already have it — that is the whole argument, and
+  it holds only if the settled frames are themselves compliant. And an
+  animated clip over a **raster** is the `drawElement` capture bug above: safe
+  on a browser-drawn piece (confirmed by grepping every scene for `<img>` and
+  finding none), suspect the moment a plate is inside the wiped region.
 
 The registry holds exactly five — `crossfade`, `blur-crossfade`, `push-slide`,
 `zoom-through`, `squeeze` — and **which of them can cross a ground change is a
 property of their GSAP templates, not of their names**, computed at the
 midpoint (`p = 0.5`) from the registry's own `gsap_template` lines:
+
+**Ground-blending and safe-area transit are independent axes, and a
+transition can be clean on one and dirty on the other.** `push-slide` is the
+worked example: it never composites two grounds *and* it drags content through
+every reserved zone. Only the first column below was measured from the GSAP
+templates; the second was measured on rendered frames, and only for the two
+marked, so treat the rest as suspect until checked — all three translate or
+scale their wrappers, which is the mechanism.
 
 | Transition | Both wrappers at midpoint | Blends grounds? |
 |---|---|---|
@@ -1774,6 +1880,12 @@ midpoint (`p = 0.5`) from the registry's own `gsap_template` lines:
 | `zoom-through` | 0.875 / 0.875 (asymmetric `power3.in` out, `power3.out` in) | Mildly — ~11% outgoing ground, ~2% raw canvas |
 | `blur-crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — the 10px blur masks it, nothing more |
 | `crossfade` | 0.500 / 0.500 (`power2.inOut`) | **Yes, fully** — this is the muddy case |
+
+| Transition | Drags content into reserved zones? |
+|---|---|
+| clip-path wipe (authored, not in the registry) | **No** — measured, 0 flagged frames. Nothing moves. |
+| `push-slide` | **Yes** — measured, 99 flagged frames on a full-canvas scene |
+| `zoom-through`, `squeeze`, `blur-crossfade` | Unmeasured. All three translate or scale a wrapper, so assume yes until a render says otherwise. |
 
 `push-slide` takes a `direction` of `LEFT`/`RIGHT`/`UP`/`DOWN` ("vertical
 push" is a direction, not a separate transition); there is no named `cut`,
@@ -2934,7 +3046,26 @@ either pattern as "the" approach, and the majority of projects had neither.
   reviewer describing what a viewer sees is making a claim about pixels, and
   only pixels answer it. Verifying a report is not the same as reaching for
   the nearest available number, and a project's own delivery doc is a claim
-  too.
+  too. **The rule binds when you CITE a number, not only when you measure
+  it** — the same session that wrote this bullet then sent a peer a line
+  range for one of its own cross-references that was four hours stale, quoted
+  from working notes rather than re-read from the file, and was corrected by
+  the peer. A measurement decays the moment anything upstream of it changes;
+  re-read before repeating, including your own.
+- Authoring a fix into a generated file. The change is on disk, the render
+  shows it, `check` passes, and the next `npm run build` discards it — grep the
+  build scripts for the filename before the first edit, not after.
+- Choosing a transition on its ground behaviour alone. Ground-blending and
+  safe-area transit are independent: a translating push never composites two
+  grounds and still drags text through every reserved zone.
+- Handing over a fresh render as a publish candidate. Mastering is a
+  post-render step, so a re-render silently reverts it — measured at 9.6 LU
+  below the previous deliverable on a file otherwise ready to ship.
+- Re-fixing a gate's broken assumption in the same shape it broke in. Twice
+  here the estimator was rewritten and the premise "there is one background"
+  survived; only the version that stopped assuming a count held.
+- Shipping a hard-gate fix behind a single negative control. Two are needed:
+  one proving it still fires, one proving the fix did not over-suppress.
 - Glow used to create hierarchy. Use elevation, weight, and contrast instead.
 - Rendering at 60fps for content that has no fast motion — doubles cost, changes
   nothing a viewer can see.

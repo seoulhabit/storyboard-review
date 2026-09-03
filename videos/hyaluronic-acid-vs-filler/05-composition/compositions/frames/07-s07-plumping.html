@@ -43,6 +43,9 @@
             text-transform: uppercase; color: var(--accent); }
   .stat   { font-weight: 800; font-size: 150px; line-height: 1; color: var(--accent); }
   .caption{ font-weight: 600; font-size: 44px; line-height: 1.25; color: var(--ink); }
+  /* `wipe` resting state: clipped, not transparent. Authored in CSS so a
+     cold seek to 0 paints the clip, and re-stated with gsap.set(). */
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
   /* `swap`: both states share one grid cell and one transform-origin, so
      the exchange reads as one thing changing rather than two things. */
   .slot { display: grid; }
@@ -70,17 +73,19 @@
           border-radius:999px; padding:10px 26px; width:max-content;
           background:#F0EBE1; display:inline-block; }
 
-  /* [S6/A-7] superseded by the pill above; kept for the record:
-     this is check's own suggestedColor. */
+  /* [S6/A-7] same defect as .cite: --accent (#59B8AE) on a light
+     generated ground measures 2.17:1 against the 3:1 floor. Same
+     suggestedColor as the hand-authored .kicker fix. */
+  .kicker { color:#4B9B93; }
 </style>
 
 <div id="root" data-composition-id="s07-plumping" data-width="1920" data-height="1080"
-     data-duration="14.971">
-    <div class="clip stage" id="s07-plumping-stage" data-start="0" data-duration="14.971">
-      <div class="beat head" id="s07-plumping-b0">Hydrated surface cells can temporarily make fine lines appear softer</div>
-      <div class="beat cite is-entering" id="s07-plumping-b2">Dermatoendocrinol · 2012</div>
+     data-duration="13.294">
+    <div class="clip stage" id="s07-plumping-stage" data-start="0" data-duration="13.294">
+      <div class="beat head" id="s07-plumping-b0">So why does the bottle say plumping?</div>
+      <div class="beat body is-wiping" id="s07-plumping-b2">Hydrated surface cells can temporarily make fine lines appear softer</div>
       <div class="slot">
-        <div class="beat caption is-entering" id="s07-plumping-b3">Like watering a tired houseplant</div>
+        <div class="beat caption is-entering" id="s07-plumping-b4">Like watering a tired houseplant</div>
         <div class="beat sub is-entering" id="s07-plumping-b5">Not like adding a new branch</div>
       </div>
     </div>
@@ -90,8 +95,8 @@
   // docs/gsap.md: create paused, register on window.__timelines[compositionId].
   // Supported methods are set / to / from / fromTo — nothing else is emitted.
   // Initial states first, immediate and outside the timeline.
-  gsap.set('#s07-plumping-b2', { opacity: 0, y: 32 });
-  gsap.set('#s07-plumping-b3', { opacity: 0, y: 32 });
+  gsap.set('#s07-plumping-b2', { clipPath: 'inset(0 100% 0 0)', y: 22 });
+  gsap.set('#s07-plumping-b4', { opacity: 0, y: 32 });
   gsap.set('#s07-plumping-b5', { opacity: 0, scale: 0.6 });
   // NO `defaults: { ease }` on this timeline. An inherited ease is an
   // UNCOUNTED ease: it is how a video ends up with 65% of its real tweens
@@ -99,13 +104,12 @@
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
   var tl = gsap.timeline({ paused: true });
   tl.to('#s07-plumping-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 2.350);
-  tl.to('#s07-plumping-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 3.255);
-  tl.to('#s07-plumping-b3', { opacity: 1, y: 0, duration: 1.300, ease: 'power3.out' }, 4.926);
-  tl.to('#s07-plumping-stage', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 8.126);
-  tl.to('#s07-plumping-b3', { scale: 0.6, opacity: 0, duration: 0.250, ease: 'power2.in' }, 9.656);
-  tl.to('#s07-plumping-b5', { opacity: 1, scale: 1, duration: 1.300, ease: 'back.out(1.6)' }, 9.776);
-  tl.to('#s07-plumping-stage', { x: 7, y: 8, scale: 1.014, duration: 0.900, ease: 'sine.inOut' }, 12.856);
-  tl.to({}, { duration: 14.971, ease: 'none' }, 0);   // anchor — always last, always at 0
+  tl.to('#s07-plumping-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 3.279);
+  tl.to('#s07-plumping-stage', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 6.679);
+  tl.to('#s07-plumping-b4', { opacity: 1, y: 0, duration: 1.300, ease: 'power3.out' }, 7.240);
+  tl.to('#s07-plumping-b4', { scale: 0.6, opacity: 0, duration: 0.250, ease: 'power2.in' }, 10.069);
+  tl.to('#s07-plumping-b5', { opacity: 1, scale: 1, duration: 1.300, ease: 'back.out(1.6)' }, 10.189);
+  tl.to({}, { duration: 13.294, ease: 'none' }, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s07-plumping'] = tl;
 })();

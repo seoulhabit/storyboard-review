@@ -18,7 +18,7 @@ import json, subprocess, sys, os, math
 HERE = os.path.dirname(os.path.abspath(__file__))
 STEMS = json.load(open(os.path.join(HERE, "vo-stems.json")))
 VO = os.path.join(HERE, "vo")
-TARGET = 180.0
+TARGET = 160.0
 # Gap grammar: a reply to a question lands faster than a new statement.
 GAP_SAME_SPEAKER = 0.45   # never used - consecutive turns always change speaker
 GAP_TURN         = 1.00   # base inter-speaker beat, scaled below to hit TARGET

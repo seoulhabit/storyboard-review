@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 """Derive 03-beat-sheet.json from the MEASURED voiceover timing.
 
+v2 REVISION 2026-09-03: single narrator, 13 scenes, ~160s (target band
+2:20-2:40; trimmed speech alone measures 151.75s, so 160s is the tightest
+target that leaves any gap budget at all -- see 04-assets/build_vo.py).
+
 Nothing here is hand-typed timing. Scene and beat times are computed from
 04-assets/vo-timing.json, which is the master clock [S4/V-2]. Change the VO and
 re-run; never edit a time in the JSON.
 
 Scenes are split by ACTOR CONTINUITY, not by narration sentence [S6/A-9]. The
 three morphology actors -- ha-body / ha-serum / ha-filler -- persist across the
-piece and are rearranged rather than redrawn, which is what stops a long-form
-piece reading as separate slides.
+piece and are rearranged rather than redrawn.
 
-Cadence [S5/C-2]: every spoken stem start gets a content beat; long stems are
-kept alive by `hold` beats (bounded camera drift, which the generator counts as
-a real beat) at <= 2.0s spacing. That is the cap the generator enforces.
+Cadence [S5/C-2]: every spoken stem start gets a content beat; the fill pass
+below inserts `hold` beats (bounded camera drift, which the generator counts as
+a real beat) wherever a gap would exceed the format's cap. Content beats only
+need to be written here -- the fill pass is unchanged from v1 and applies
+uniformly to every scene, hand-authored or generated.
 """
 import json, os
 
@@ -38,111 +43,103 @@ SECTIONS[-1]["end"] = round(TOTAL, 3)
 SECTIONS[0]["start"] = 0.0
 
 # ---- scenes: id, actor, section, layout, bg, and the content beats ---------
-# `t` is absolute; the builder converts to scene-relative offsets and inserts
-# hold beats wherever a gap would breach the cadence cap.
 PAPER, INK, MIST = "#F7F5F0", "#131516", "#F0EBE1"
 
 SCENES = [
  dict(id="s01-lineup", actor="lineup", section="hook", layout="three-lane", bg=PAPER,
-      start=0.0, end=S[4]["start"], beats=[
-        (at(1,0.00), 1.20, "arrive", "head",  "Hyaluronic acid"),
-        (at(1,0.22), 1.40, "wipe",   "sub",   "The kind your body makes"),
-        (at(1,0.52), 1.40, "wipe",   "sub",   "The kind in your serum"),
-        (at(1,0.80), 1.40, "wipe",   "sub",   "The kind a doctor injects"),
-        (at(2,0.00), 1.00, "arrive", "kicker","Same name"),
-        (at(3,0.00), 0.80, "slam",   "head",  "Different jobs"),
+      start=0.0, end=S[2]["start"], beats=[
+        (at(1,0.00), 1.40, "arrive", "head",   "Your hyaluronic-acid serum cannot do what filler does."),
+        (at(1,0.10), 1.00, "arrive", "kicker", "Same name"),
+        (at(1,0.28), 1.30, "slam",   "sub",    "The kind your body makes"),
+        (at(1,0.47), 1.30, "wipe",   "sub",    "The kind in your serum"),
+        (at(1,0.66), 1.30, "wipe",   "sub",    "The kind a doctor injects"),
+        (at(1,0.90), 1.00, "slam",   "head",   "Three completely different jobs"),
       ]),
- dict(id="s02-cousins", actor="lineup", section="misconception", layout="three-lane", bg=PAPER,
-      start=S[4]["start"], end=at(5,0.436), beats=[
-        (at(4,0.00), 1.10, "arrive", "caption","Three cousins, one name"),
-        (at(5,0.00), 1.30, "arrive", "body",  "People buy a serum expecting what an injection does"),
-        (at(5,0.28), 1.60, "swap",   "head",  "A serum is not filler in a bottle"),
+ dict(id="s02-not-filler", actor="misconception", section="misconception", layout="hero-left", bg=PAPER,
+      start=S[2]["start"], end=S[3]["start"], beats=[
+        (at(2,0.00), 1.30, "arrive", "head", "And the mix-up is expensive"),
+        (at(2,0.30), 1.40, "wipe",   "body", "People buy a serum expecting what an injection does"),
+        (at(2,0.62), 1.60, "swap",   "head", "A serum is not filler in a bottle"),
       ]),
  dict(id="s03-origin", actor="vitreous", section="misconception", layout="hero-left", bg=INK,
-      start=at(5,0.436), end=S[6]["start"], beats=[
-        (at(5,0.44), 1.60, "count",  "stat",  "1934"),
-        (at(5,0.62), 1.30, "arrive", "sub",   "Karl Meyer and John Palmer"),
-        (at(5,0.80), 1.40, "wipe",   "body",  "Isolated from the vitreous of a cow's eye"),
-        (at(5,0.95), 1.00, "arrive", "cite",  "J Biol Chem · 1934"),
+      start=S[3]["start"], end=S[4]["start"], beats=[
+        (at(3,0.00), 1.30, "count",  "stat", "1934"),
+        (at(3,0.30), 1.40, "wipe",   "body", "Isolated from the clear jelly inside a cow's eye"),
+        (at(3,0.75), 1.00, "arrive", "cite", "J Biol Chem · 1934"),
       ]),
- dict(id="s04-named", actor="vitreous", section="mechanism", layout="hero-left", bg=INK,
-      start=S[6]["start"], end=S[9]["start"], beats=[
-        (at(6,0.00), 1.20, "arrive", "caption","“This could be a forty-dollar face serum?”"),
-        (at(7,0.00), 0.80, "slam",   "head",  "Not immediately"),
-        (at(8,0.00), 1.10, "arrive", "caption","Unsettling foresight"),
+ dict(id="s04-body", actor="ha-body", section="mechanism", layout="hero-left", bg=PAPER,
+      start=S[4]["start"], end=S[5]["start"], beats=[
+        (at(4,0.00), 1.40, "arrive", "head", "Your body already makes its own"),
+        (at(4,0.30), 1.40, "wipe",   "body", "Most of it sits in your skin, holding water"),
+        (at(4,0.50), 1.00, "arrive", "cite", "Dermatoendocrinol · 2012"),
+        (at(4,0.66), 1.40, "wipe",   "body", "It also lubricates your joints and eye"),
+        (at(4,0.86), 1.00, "arrive", "cite", "Front Vet Sci · 2019"),
       ]),
- dict(id="s05-body", actor="ha-body", section="mechanism", layout="hero-left", bg=PAPER,
-      start=S[9]["start"], end=S[11]["start"], beats=[
-        (at(9,0.00), 1.40, "arrive", "head",  "Your body already makes it"),
-        (at(9,0.30), 1.40, "wipe",   "body",  "Most of it sits in your skin, holding water"),
-        (at(9,0.52), 1.00, "arrive", "cite",  "Dermatoendocrinol · 2012"),
-        (at(9,0.66), 1.40, "wipe",   "body",  "It also lubricates your joints"),
-        (at(9,0.88), 1.00, "arrive", "cite",  "Front Vet Sci · 2019"),
-        (at(10,0.00),1.10, "arrive", "caption","Part sponge, part cushion"),
+ dict(id="s05-compare", actor="ha-compare", section="mechanism", layout="split", bg=PAPER,
+      start=S[5]["start"], end=S[6]["start"], beats=[
+        (at(5,0.00), 1.50, "arrive", "head", "Here's where the two versions really split"),
+        (at(5,0.22), 1.50, "wipe",   "body", "A serum's version stays mostly at the surface, supporting hydration"),
+        (at(5,0.55), 1.00, "arrive", "cite", "Skin Res Technol · 2015"),
+        (at(5,0.66), 1.60, "wipe",   "body", "A filler's version is cross-linked into a gel, placed beneath the skin"),
+        (at(5,0.90), 1.00, "arrive", "cite", "J Cosmet Dermatol · 2024"),
       ]),
  dict(id="s06-serum-size", actor="ha-serum", section="mechanism", layout="two-column", bg=PAPER,
-      start=S[11]["start"], end=S[13]["start"], beats=[
-        (at(11,0.10), 1.50, "arrive", "head",  "In a serum, size decides almost everything"),
-        (at(11,0.36), 1.60, "wipe",   "body",  "Large chains mostly stay near the surface"),
-        (at(11,0.58), 1.60, "wipe",   "body",  "Smaller ones may travel farther into the upper layers"),
-        (at(11,0.78), 1.00, "arrive", "cite",  "Skin Res Technol · 2015"),
-        (at(11,0.90), 1.20, "slam",   "sub",   "Neither behaves like a filler"),
-        (at(12,0.00), 1.10, "arrive", "caption","“So why does my bottle say plumping?”"),
+      start=S[6]["start"], end=S[7]["start"], beats=[
+        (at(6,0.05), 1.50, "arrive", "head",   "In a serum, size decides almost everything"),
+        (at(6,0.15), 1.00, "arrive", "kicker", "Simplified illustration"),
+        (at(6,0.30), 1.60, "wipe",   "body",   "Large chains mostly stay near the surface, forming a hydrating film"),
+        (at(6,0.58), 1.60, "wipe",   "body",   "Smaller ones may travel farther into the upper layers of skin"),
+        (at(6,0.80), 1.00, "arrive", "cite",   "Skin Res Technol · 2015"),
+        (at(6,0.92), 1.20, "slam",   "sub",    "Neither behaves like a filler"),
       ]),
  dict(id="s07-plumping", actor="ha-serum", section="mechanism", layout="two-column", bg=PAPER,
-      start=S[13]["start"], end=S[15]["start"], beats=[
-        (at(13,0.00), 1.50, "arrive", "head",  "Hydrated surface cells can temporarily make fine lines appear softer"),
-        (at(13,0.70), 1.00, "arrive", "cite",  "Dermatoendocrinol · 2012"),
-        (at(14,0.00), 1.30, "arrive", "caption","Like watering a tired houseplant"),
-        (at(14,0.55), 1.30, "swap",   "sub",   "Not like adding a new branch"),
+      start=S[7]["start"], end=S[8]["start"], beats=[
+        (at(7,0.00), 1.30, "arrive", "head",    "So why does the bottle say plumping?"),
+        (at(7,0.25), 1.50, "wipe",   "body",    "Hydrated surface cells can temporarily make fine lines appear softer"),
+        (at(7,0.60), 1.30, "arrive", "caption", "Like watering a tired houseplant"),
+        (at(7,0.85), 1.30, "swap",   "sub",     "Not like adding a new branch"),
       ]),
  dict(id="s08-binds-water", actor="ha-serum", section="proof", layout="hero-left", bg=MIST,
-      start=S[15]["start"], end=S[16]["start"], beats=[
-        (at(15,0.18), 1.50, "arrive", "head",  "It binds water and holds it"),
-        (at(15,0.48), 1.60, "swap",   "head",  "It does not make water"),
-        (at(15,0.66), 1.00, "arrive", "cite",  "ChemRxiv · 2023"),
-        (at(15,0.80), 1.50, "wipe",   "body",  "A complete formula still needs something that stops it leaving"),
+      start=S[8]["start"], end=S[9]["start"], beats=[
+        (at(8,0.05), 1.50, "arrive", "head", "Here's the part the marketing skips"),
+        (at(8,0.30), 1.60, "swap",   "head", "It binds water. It does not make water."),
+        (at(8,0.55), 1.00, "arrive", "cite", "ChemRxiv · 2023"),
+        (at(8,0.72), 1.60, "wipe",   "body", "A complete formula still needs something that stops it leaving"),
       ]),
  dict(id="s09-lifeguard", actor="ha-serum", section="proof", layout="hero-left", bg=MIST,
-      start=S[16]["start"], end=S[17]["start"], beats=[
-        (at(16,0.00), 1.40, "arrive", "caption","A lifeguard for an empty swimming pool"),
-        (at(16,0.72), 1.10, "slam",   "sub",   "Strange image. Correct principle."),
+      start=S[9]["start"], end=S[10]["start"], beats=[
+        (at(9,0.00), 1.40, "arrive", "caption", "Skip that step, and you're hiring a lifeguard for an empty swimming pool"),
+        (at(9,0.60), 1.10, "slam",   "sub",     "Strange image. Correct principle."),
       ]),
  dict(id="s10-crosslink", actor="ha-filler", section="proof", layout="two-column", bg=INK,
-      start=S[17]["start"], end=S[18]["start"], beats=[
-        (at(17,0.22), 1.50, "arrive", "head",  "A filler is chemically different"),
-        (at(17,0.42), 1.80, "wipe",   "body",  "Its chains are cross-linked into a gel that holds its shape"),
-        (at(17,0.62), 1.00, "arrive", "cite",  "J Cosmet Dermatol · 2024"),
-        (at(17,0.76), 1.60, "wipe",   "body",  "Placed beneath the skin, it can physically add volume"),
+      start=S[10]["start"], end=S[11]["start"], beats=[
+        (at(10,0.00), 1.50, "arrive", "head", "A filler is chemically different"),
+        (at(10,0.30), 1.80, "swap",   "body", "Cross-linked into a stable, connected grid"),
+        (at(10,0.60), 1.00, "arrive", "cite", "J Cosmet Dermatol · 2024"),
+        (at(10,0.78), 1.40, "wipe",   "sub",  "Holds its own shape, once placed beneath the skin"),
       ]),
- dict(id="s11-needle", actor="ha-filler", section="application", layout="hero-left", bg=INK,
-      start=S[18]["start"], end=S[20]["start"], beats=[
-        (at(18,0.00), 1.30, "arrive", "caption","“So it is not just serum with a needle?”"),
-        (at(19,0.00), 0.90, "slam",   "head",  "Absolutely not"),
+ dict(id="s11-do-not-inject", actor="warning", section="application", layout="full-bleed", bg=INK,
+      start=S[11]["start"], end=S[12]["start"], beats=[
+        (at(11,0.00), 1.30, "arrive", "caption", "Is a filler just serum with a needle? Not even close."),
+        (at(11,0.22), 1.20, "arrive", "kicker",  "Worth putting in very large letters"),
+        (at(11,0.30), 1.00, "slam",   "head",    "DO NOT INJECT YOURSELF"),
+        (at(11,0.42), 1.00, "arrive", "cite",    "FDA · Dermal Fillers"),
+        (at(11,0.50), 1.60, "wipe",   "body",    "Dermal fillers are a medical procedure with real risks"),
+        (at(11,0.68), 1.50, "wipe",   "body",    "Including tissue death, vision loss and stroke"),
+        (at(11,0.86), 1.40, "wipe",   "sub",     "Choose a provider trained to perform the injection"),
       ]),
- dict(id="s12-do-not-inject", actor="warning", section="application", layout="full-bleed", bg=INK,
-      start=S[20]["start"], end=SECTIONS[-1]["start"], beats=[
-        (at(20,0.00), 1.20, "arrive", "caption","“Put that in very large letters.”"),
-        (at(21,0.00), 1.00, "slam",   "head",  "DO NOT INJECT YOURSELF"),
-        (at(21,0.18), 1.00, "arrive", "cite",  "FDA · Dermal Fillers"),
-        (at(21,0.36), 1.60, "wipe",   "body",  "Dermal fillers are a medical procedure with real risks"),
-        (at(21,0.58), 1.50, "wipe",   "body",  "Including tissue death, vision loss and stroke"),
-        (at(21,0.82), 1.40, "wipe",   "sub",   "Choose a provider trained to perform the injection"),
+ dict(id="s12-badges", actor="lineup", section="recap", layout="three-lane", bg=PAPER,
+      start=S[12]["start"], end=S[13]["start"], beats=[
+        (at(12,0.00), 1.30, "arrive", "sub",  "Body version — resident"),
+        (at(12,0.20), 1.30, "arrive", "sub",  "Serum version — moisturiser"),
+        (at(12,0.38), 1.30, "arrive", "sub",  "Filler version — construction project"),
+        (at(12,0.60), 1.50, "arrive", "head", "Same family"),
+        (at(12,0.75), 1.60, "swap",   "head", "Different size, structure and location"),
       ]),
- dict(id="s13-badges", actor="lineup", section="recap", layout="three-lane", bg=PAPER,
-      start=SECTIONS[-1]["start"], end=171.0, beats=[
-        (at(22,0.00), 1.20, "arrive", "sub",   "Body version — resident"),
-        (at(22,0.34), 1.20, "arrive", "sub",   "Serum version — moisturiser"),
-        (at(22,0.66), 1.20, "arrive", "sub",   "Filler version — construction project"),
-        (at(23,0.00), 1.50, "arrive", "head",  "Same family"),
-        (at(23,0.34), 1.60, "swap",   "head",  "Different size, structure and location"),
-      ]),
- dict(id="s14-endcard", actor="endcard", section="recap", layout="full-bleed", bg=PAPER,
-      start=171.0, end=TOTAL, beats=[
-        (at(23,0.72), 1.30, "wipe",   "sub",   "So, a different result"),
-        (at(24,0.00), 1.20, "arrive", "caption","“And it started in a cow's eyeball.”"),
-        (at(25,0.00), 1.60, "arrive", "head",  "Hyaluronic acid isn't misleading"),
-        (at(25,0.45), 1.60, "wipe",   "sub",   "Giving every version the same job description is"),
+ dict(id="s13-endcard", actor="endcard", section="recap", layout="full-bleed", bg=PAPER,
+      start=S[13]["start"], end=TOTAL, beats=[
+        (at(13,0.00), 1.20, "arrive", "kicker", "One more thing — it started in a cow's eye"),
+        (at(13,0.18), 1.80, "slam",   "head",   "Serum hydrates. Filler adds volume. Same name, different jobs."),
       ]),
 ]
 
@@ -162,12 +159,6 @@ for sc in SCENES:
     beats.sort(key=lambda b: b["offset"])
 
     # insert `hold` beats so no still window breaches the cap
-    # A beat at offset 0 is COMPOSED at frame zero and the generator emits no
-    # tween for it -- so it changes no pixels, even though the generator's own
-    # cadence check counts it as covering [0, dur]. Treat its coverage as a
-    # point. And the clip starts up to `transition.duration` (<=0.6s) BEFORE the
-    # scene's beat-sheet start, so the first gap is that much longer again:
-    # the first fill step is tightened to keep 0+0.6 under the 2.0s cap.
     FIRST_STEP = 1.2
     filled, cursor = [], 0.0
     for k, b in enumerate(beats):
@@ -181,10 +172,10 @@ for sc in SCENES:
                            "intent": f"camera drift on {sc['actor']}"})
             cursor = round(cursor + 0.9, 3)
         filled.append(b)
-        end = b["offset"] + b["dur"]
+        end2 = b["offset"] + b["dur"]
         if k == 0 and abs(b["offset"]) < 1e-6:
-            end = 0.0
-        cursor = max(cursor, round(end, 3))
+            end2 = 0.0
+        cursor = max(cursor, round(end2, 3))
     while dur - cursor > CAP - 1e-6:
         off = min(round(cursor + HOLD_STEP, 3), round(dur - 0.5, 3))
         if off <= cursor + 1e-6:
@@ -198,24 +189,28 @@ for sc in SCENES:
         cursor = round(off + bdur, 3)
     filled.sort(key=lambda b: b["offset"])
 
-    DIAGRAM = {"s01-lineup", "s05-body", "s06-serum-size", "s10-crosslink", "s13-badges"}
+    DIAGRAM = {"s01-lineup", "s03-origin", "s04-body", "s05-compare",
+               "s06-serum-size", "s08-binds-water", "s09-lifeguard",
+               "s10-crosslink", "s11-do-not-inject", "s12-badges"}
     out_scenes.append({"id": sc["id"], "start": start, "duration": dur,
                        "section": sc["section"], "layout": sc["layout"],
                        "bg": sc["bg"],
                        "handoff": "hand-authored" if sc["id"] in DIAGRAM else "generated",
                        "beats": filled})
 
-CHAPTERS = [
- {"t": 0.0,                       "title": "Three things, one name"},
- {"t": round(S[4]["start"],3),    "title": "Not filler in a bottle"},
- {"t": round(at(5,0.436),3),      "title": "It came out of a cow's eye"},
- {"t": round(S[9]["start"],3),    "title": "The version already in you"},
- {"t": round(S[11]["start"],3),   "title": "Why size decides everything"},
- {"t": round(S[15]["start"],3),   "title": "It cannot make water"},
- {"t": round(S[17]["start"],3),   "title": "What a filler actually is"},
- {"t": round(S[20]["start"],3),   "title": "Do not inject yourself"},
- {"t": round(SECTIONS[-1]["start"],3), "title": "Same family, different jobs"},
-]
+# One chapter per spine SECTION, not per scene: three scenes in a row
+# (s02/s03, the compressed misconception+origin pair) run 7-8s apiece, well
+# under youtube-delivery.md's >=10s chapter floor. Sections are the correct
+# grain -- each already runs comfortably over it.
+CHAPTER_TITLE = {
+  "hook": "Three things, one name",
+  "misconception": "Not filler in a bottle",
+  "mechanism": "The version already in you",
+  "proof": "It cannot make water",
+  "application": "Do not inject yourself",
+  "recap": "Same family, different jobs",
+}
+CHAPTERS = [{"t": s["start"], "title": CHAPTER_TITLE[s["name"]]} for s in SECTIONS]
 
 bs = {
  "slug": "hyaluronic-acid-vs-filler",
@@ -234,8 +229,8 @@ bs = {
  "sections": [{"name": s["name"], "start": s["start"], "end": s["end"]} for s in SECTIONS],
  "scenes": out_scenes,
  "chapters": CHAPTERS,
- "end_scene": {"start": 171.0,
-               "duration": round(TOTAL - 171.0,3),
+ "end_scene": {"start": S[13]["start"],
+               "duration": round(TOTAL - S[13]["start"],3),
                "overlay_zones_clear": True},
 }
 json.dump(bs, open(f"{HERE}/03-beat-sheet.json","w"), indent=2)
@@ -244,11 +239,11 @@ nb = sum(len(s["beats"]) for s in out_scenes)
 nh = sum(1 for s in out_scenes for b in s["beats"] if b["idiom"]=="hold")
 print("scenes    : %d" % len(out_scenes))
 print("beats     : %d  (%d content, %d hold)" % (nb, nb-nh, nh))
-print("beats/s   : %.2f  (ectoin long-form comparator: 0.71)" % (nb/TOTAL))
+print("beats/s   : %.2f" % (nb/TOTAL))
 print("chapters  : %d, first at %.1fs, min gap %.1fs"
       % (len(CHAPTERS), CHAPTERS[0]["t"],
          min(CHAPTERS[i+1]["t"]-CHAPTERS[i]["t"] for i in range(len(CHAPTERS)-1))))
 print("total     : %.3fs vs VO %.3fs" % (sum(s["duration"] for s in out_scenes), TOTAL))
 from collections import Counter
 print("idioms    : %s" % dict(Counter(b["idiom"] for s in out_scenes for b in s["beats"])))
-print("actors    : %s" % dict(Counter(s["beats"][0]["actor"] for s in out_scenes)))
+print("end scene : %.3fs" % bs["end_scene"]["duration"])

@@ -40,7 +40,7 @@ the threshold is where it is.
 | R2 | Contrast 4.5:1 on rendered pixels | `[S6/A-7]` | S6 authoring, S7 gate | `hyperframes check` Contrast pass |
 | R3 | `box-sizing: border-box` | `[S6/A-5]` | S6, first CSS rule | generator emits it; read frame 0 |
 | R4 | Catalog discover / reuse / contribute | `[S6/A-1]` | S6 entry and run exit | reading |
-| R5 | Post-render static-hold / cadence | `[S7/R-2]` | S7, on the muxed file | `check` `sweep_static` + `catalog/tooling/check-static-hold.py` |
+| R5 | Post-render static-hold / cadence, and how its gates fail | `[S7/R-2]` | S7, on the muxed file | `check` `sweep_static` + `catalog/tooling/check-static-hold.py` |
 | R6 | AAC true-peak headroom | `[S7/R-3]` | S7 audio master | `ffmpeg ebur128` on the shipped file |
 | R7 | Cuts, crossfades, and transitions | `[S6/A-8]` | S5 beat sheet, S6 emission | generator derives the overlap; `[S7/R-2]` extracts each midpoint |
 | R8 | Motion idiom by narrative function | `[S6/A-10]` | S6, per beat | `catalog/tooling/continuity-audit.py` counts signatures |
@@ -246,7 +246,7 @@ future reader discover that flag by accident — load it pre-applied.
 ## R5 · Post-render static-hold / cadence pixel diff — `[S7/R-2]`
 
 **Gates at:** S7 — after the render, on the muxed deliverable
-**Written for:** Four of six scenes frozen 2.0-7.5s on a project that passed `check` with 0 errors.
+**Written for:** Four of six scenes frozen 2.0-7.5s on a project that passed `check` with 0 errors — the founding case, and now the smallest part of this rule. The body has since absorbed the lessons that came from building and repeatedly fixing the tools that detect that defect: a gate hard-coded to one canvas failing OPEN on another, `int()` truncation manufacturing a finding at three cuts in four, binary ink presence being the wrong primitive for animated alpha, a background estimator breaking twice in the same shape, why a false positive on a hard gate is worse than a miss, and why anything that exits non-zero needs two negative controls rather than one. Read it as *how a post-render pixel gate goes wrong*, not only as *scenes can freeze*.
 **Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1180-1484, verbatim.
 
 **Static-hold detection.** A frozen-but-fully-populated frame looks identical

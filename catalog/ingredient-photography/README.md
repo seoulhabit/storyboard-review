@@ -19,7 +19,7 @@ than raster.
 | # | Ingredient | File | Depicted as |
 |---|---|---|---|
 | 1 | AHA/BHA | `01-aha-bha.png` | glass dish of clear exfoliating liquid, willow bark + citrus slice |
-| 2 | Centella Asiatica | `02-centella-asiatica.png` | fresh cica leaf sprig |
+| 2 | Centella Asiatica | `02-centella-asiatica.png` | fresh cica leaf sprig* |
 | 3 | Bamboo Extract | `03-bamboo-extract.png` | bamboo stalk segments + extract dish |
 | 4 | Green Tea | `04-green-tea.png` | loose dried leaves + brewed tea dish |
 | 5 | Birch Sap | `05-birch-sap.png` | birch bark strip + sap vial |
@@ -29,7 +29,7 @@ than raster.
 | 9 | Ceramides | `09-ceramides.png` | glass dish of white waxy lipid balm |
 | 10 | Niacinamide | `10-niacinamide.png` | glass dish of clear liquid essence |
 | 11 | Peptides | `11-peptides.png` | glass dish of blue-tinted serum + microbeads |
-| 12 | Snail Mucin | `12-snail-mucin.png` | glass dish of glossy stretching gel |
+| 12 | Snail Mucin | `12-snail-mucin.png` | glass dish, clear liquid mid-pour |
 | 12b | Snail Mucin (source) | `12b-snail-mucin-source.png` | companion shot — the live snail on a leaf, same cream backdrop |
 | 13 | Panthenol | `13-panthenol.png` | glass dish of white lotion |
 | 14 | Soybean Extract | `14-soybean-extract.png` | soybean pods, one split open |
@@ -39,6 +39,12 @@ than raster.
 | 18 | Mugwort | `18-mugwort.png` | fresh silvery-green leaf sprig |
 | 19 | Rice Extract | `19-rice-extract.png` | rice grains + rice-water dish |
 | 20 | Vitamin C | `20-vitamin-c.png` | halved fresh orange |
+
+\* `02-centella-asiatica.png`'s native green is much more saturated than the
+design system's `--leaf` token (`#6F8F72`, HSL ~126°/12.6%/49.8%, from
+`videos/*/assets/tokens/tokens.css`). Usable as-is, but grade it first before
+pulling it directly into a `--leaf`-toned graphic — verified working grade:
+`ffmpeg -vf "hue=h=42:s=0.28,eq=brightness=0.02:contrast=0.98"`.
 
 ## seoulhabit-learn additions (2026-08-30)
 

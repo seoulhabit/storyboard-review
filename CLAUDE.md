@@ -87,3 +87,33 @@ hit within an hour of the worktrees going in, so treat them as live:
 
 `./worktree.sh` never deletes a worktree or moves a ref. `status` reports stale
 trees along with what would be lost, and removing one is a human decision.
+
+## The preview server rewrites your files while it runs
+
+The HyperFrames preview server edits composition files **in place** as it
+serves them, injecting `data-hf-id` as the **first attribute on every tag** in
+`index.html` and `compositions/frames/*.html`:
+
+```html
+<div data-hf-id="hf-6axv" id="root" class="clip">
+```
+
+This is not transient. **204 files in this repo already carry injected ids**,
+committed — so it is the normal state of a composition here, not a temporary
+dirty edit waiting to be cleaned up.
+
+Two consequences:
+
+- **Generated composition files show as dirty for reasons unrelated to your
+  edits.** Stop the preview before you diff or commit, or you cannot tell your
+  own change from the server's. If a generator owns the file, re-run the
+  generator and diff *that* output rather than trusting the working copy.
+- **Anything matching on attribute order breaks.** A parser keyed on
+  `<div id="root"` silently stopped matching once `data-hf-id` was inserted
+  ahead of `id`. Match on the attribute itself (`id="root"`, a class, a
+  `data-*` name) and never on it being first, or on a tag's opening byte
+  sequence.
+
+The second one is the expensive kind: it does not error, it just quietly stops
+finding things, and a parser that finds nothing looks exactly like a file with
+nothing in it.

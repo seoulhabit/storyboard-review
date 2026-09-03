@@ -47,5 +47,27 @@ Two habits for whatever you cannot isolate:
   recovery path. Every irrecoverable loss in the incident above was work that
   had not been committed; everything committed was recovered.
 
+### What a worktree does NOT protect
+
+A worktree isolates the **checkout**, not the **refs**. Both limits below were
+hit within an hour of the worktrees going in, so treat them as live:
+
+- **Ref surgery reaches into any tree.** `reset`, `rebase`, `cherry-pick` and
+  `branch -f` run from anywhere move a branch even when another worktree has it
+  checked out — a session watched a cherry-pick, a reset and a rebase land on
+  the `master` its own worktree was on, mid-operation. The worktree lock only
+  stops another tree from *checking out* that branch. **Do not do ref surgery on
+  a branch you do not have checked out**, and prefer merging your own branch
+  over rewriting a shared one. `./worktree.sh guard` cannot catch this: it tests
+  where you are, and this damage comes from ref writes, not from location. A
+  `reference-transaction` hook refusing writes to `master` from a tree that does
+  not have it checked out would.
+
+- **The index is shared too.** In the shared checkout, `git add -A` and
+  `git commit -a` sweep up whatever another session has staged. One session
+  watched another's `PUBLISH.md` sit staged in the shared index while it worked;
+  had it committed with `-A`, it would have taken that file. **Stage by explicit
+  path**, always, and check the branch as well as the diff before committing.
+
 `./worktree.sh` never deletes a worktree or moves a ref. `status` reports stale
 trees along with what would be lost, and removing one is a human decision.

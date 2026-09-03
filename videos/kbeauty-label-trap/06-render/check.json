@@ -19,33 +19,33 @@
   "layout": {
     "ok": true,
     "errorCount": 0,
-    "warningCount": 3,
-    "infoCount": 4,
+    "warningCount": 6,
+    "infoCount": 18,
     "findings": [
       {
         "code": "content_overlap",
         "severity": "warning",
         "time": 15.882,
-        "selector": "#s01-ribbon-l",
+        "selector": "#s01-ribbon-l-0",
         "message": "Two text blocks overlap and may render unreadable.",
         "rect": {
-          "left": 619.61,
+          "left": 560,
           "top": 211.31,
-          "right": 774,
-          "bottom": 646.92,
-          "width": 154.39,
-          "height": 435.61
+          "right": 760.27,
+          "bottom": 261.95,
+          "width": 200.27,
+          "height": 50.64
         },
         "containerSelector": "div.lb-row > span:nth-of-type(1)",
-        "text": "CENTELLA ASIATICA EXTRACT · WATER · GLYCERIN · NIACINAMIDE · PANTHENOL · SODIUM HYALURONATE · ALLANTOIN · FRAGRANCE",
+        "text": "CENTELLA ASIATICA EXTRACT",
         "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
         "dataAttributes": {},
         "sourceFile": "compositions/frames/01-s01-bench-hook.html",
         "bbox": {
-          "x": 619.61,
+          "x": 560,
           "y": 211.31,
-          "width": 154.39,
-          "height": 435.61
+          "width": 200.27,
+          "height": 50.64
         },
         "firstSeen": 15.882,
         "lastSeen": 16.311,
@@ -55,26 +55,26 @@
         "code": "content_overlap",
         "severity": "warning",
         "time": 15.882,
-        "selector": "#s01-ribbon-l",
+        "selector": "#s01-ribbon-l-2",
         "message": "Two text blocks overlap and may render unreadable.",
         "rect": {
-          "left": 619.61,
-          "top": 211.31,
-          "right": 774,
-          "bottom": 646.92,
-          "width": 154.39,
-          "height": 435.61
+          "left": 560,
+          "top": 308.23,
+          "right": 654.25,
+          "bottom": 333.23,
+          "width": 94.25,
+          "height": 25
         },
-        "containerSelector": "div.lb-row > span:nth-of-type(2)",
-        "text": "CENTELLA ASIATICA EXTRACT · WATER · GLYCERIN · NIACINAMIDE · PANTHENOL · SODIUM HYALURONATE · ALLANTOIN · FRAGRANCE",
+        "containerSelector": "div.lb-row > span:nth-of-type(1)",
+        "text": "GLYCERIN",
         "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
         "dataAttributes": {},
         "sourceFile": "compositions/frames/01-s01-bench-hook.html",
         "bbox": {
-          "x": 619.61,
-          "y": 211.31,
-          "width": 154.39,
-          "height": 435.61
+          "x": 560,
+          "y": 308.23,
+          "width": 94.25,
+          "height": 25
         },
         "firstSeen": 15.882,
         "lastSeen": 16.311,
@@ -84,26 +84,113 @@
         "code": "content_overlap",
         "severity": "warning",
         "time": 15.882,
-        "selector": "#s01-ribbon-r",
+        "selector": "#s01-ribbon-l-3",
         "message": "Two text blocks overlap and may render unreadable.",
         "rect": {
-          "left": 1199.61,
-          "top": 211.31,
-          "right": 1354,
-          "bottom": 646.92,
-          "width": 154.39,
-          "height": 435.61
+          "left": 560,
+          "top": 343.88,
+          "right": 689.59,
+          "bottom": 368.88,
+          "width": 129.59,
+          "height": 25
         },
-        "containerSelector": "div.lb-row > span:nth-of-type(2)",
-        "text": "CENTELLA ASIATICA EXTRACT · WATER · BUTYLENE GLYCOL · NIACINAMIDE · MADECASSOSIDE · PANTHENOL · ALLANTOIN · FRAGRANCE",
+        "containerSelector": "div.lb-row > span:nth-of-type(1)",
+        "text": "NIACINAMIDE",
         "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
         "dataAttributes": {},
         "sourceFile": "compositions/frames/01-s01-bench-hook.html",
         "bbox": {
-          "x": 1199.61,
+          "x": 560,
+          "y": 343.88,
+          "width": 129.59,
+          "height": 25
+        },
+        "firstSeen": 15.882,
+        "lastSeen": 16.311,
+        "occurrences": 3
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 15.882,
+        "selector": "#s01-ribbon-r-0",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1140,
+          "top": 211.31,
+          "right": 1340.27,
+          "bottom": 261.95,
+          "width": 200.27,
+          "height": 50.64
+        },
+        "containerSelector": "div.lb-row > span:nth-of-type(2)",
+        "text": "CENTELLA ASIATICA EXTRACT",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
           "y": 211.31,
-          "width": 154.39,
-          "height": 435.61
+          "width": 200.27,
+          "height": 50.64
+        },
+        "firstSeen": 15.882,
+        "lastSeen": 16.311,
+        "occurrences": 3
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 15.882,
+        "selector": "#s01-ribbon-r-2",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1140,
+          "top": 308.23,
+          "right": 1316.7,
+          "bottom": 333.23,
+          "width": 176.7,
+          "height": 25
+        },
+        "containerSelector": "div.lb-row > span:nth-of-type(2)",
+        "text": "BUTYLENE GLYCOL",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 308.23,
+          "width": 176.7,
+          "height": 25
+        },
+        "firstSeen": 15.882,
+        "lastSeen": 16.311,
+        "occurrences": 3
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 15.882,
+        "selector": "#s01-ribbon-r-3",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1140,
+          "top": 343.88,
+          "right": 1269.59,
+          "bottom": 368.88,
+          "width": 129.59,
+          "height": 25
+        },
+        "containerSelector": "div.lb-row > span:nth-of-type(2)",
+        "text": "NIACINAMIDE",
+        "fixHint": "Give each block its own zone, or mark intentional layering with data-layout-allow-overlap.",
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 343.88,
+          "width": 129.59,
+          "height": 25
         },
         "firstSeen": 15.882,
         "lastSeen": 16.311,
@@ -113,27 +200,27 @@
         "code": "text_occluded",
         "severity": "info",
         "time": 16.07,
-        "selector": "#s01-ribbon-l",
+        "selector": "#s01-ribbon-l-0",
         "message": "Text is hidden beneath an opaque element.",
         "rect": {
-          "left": 619.61,
+          "left": 560,
           "top": 211.31,
-          "right": 774,
-          "bottom": 646.92,
-          "width": 154.39,
-          "height": 435.61
+          "right": 760.27,
+          "bottom": 261.95,
+          "width": 200.27,
+          "height": 50.64
         },
         "containerSelector": "div.pass-stage",
-        "text": "CENTELLA ASIATICA EXTRACT · WATER · GLYCERIN · NIACINAMIDE · PANTHENOL · SODIUM HYALURONATE · ALLANTOIN · FRAGRANCE",
+        "text": "CENTELLA ASIATICA EXTRACT",
         "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
         "coveredFraction": 1,
         "dataAttributes": {},
         "sourceFile": "compositions/frames/01-s01-bench-hook.html",
         "bbox": {
-          "x": 619.61,
+          "x": 560,
           "y": 211.31,
-          "width": 154.39,
-          "height": 435.61
+          "width": 200.27,
+          "height": 50.64
         },
         "firstSeen": 16.07,
         "lastSeen": 16.07,
@@ -143,27 +230,447 @@
         "code": "text_occluded",
         "severity": "info",
         "time": 16.07,
-        "selector": "#s01-ribbon-r",
+        "selector": "#s01-ribbon-l-1",
         "message": "Text is hidden beneath an opaque element.",
         "rect": {
-          "left": 1199.61,
-          "top": 211.31,
-          "right": 1354,
-          "bottom": 646.92,
-          "width": 154.39,
-          "height": 435.61
+          "left": 560,
+          "top": 272.59,
+          "right": 618.91,
+          "bottom": 297.59,
+          "width": 58.91,
+          "height": 25
         },
         "containerSelector": "div.pass-stage",
-        "text": "CENTELLA ASIATICA EXTRACT · WATER · BUTYLENE GLYCOL · NIACINAMIDE · MADECASSOSIDE · PANTHENOL · ALLANTOIN · FRAGRANCE",
+        "text": "WATER",
         "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
         "coveredFraction": 1,
         "dataAttributes": {},
         "sourceFile": "compositions/frames/01-s01-bench-hook.html",
         "bbox": {
-          "x": 1199.61,
+          "x": 560,
+          "y": 272.59,
+          "width": 58.91,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l-2",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 560,
+          "top": 308.23,
+          "right": 654.25,
+          "bottom": 333.23,
+          "width": 94.25,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "GLYCERIN",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 560,
+          "y": 308.23,
+          "width": 94.25,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l-3",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 560,
+          "top": 343.88,
+          "right": 689.59,
+          "bottom": 368.88,
+          "width": 129.59,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "NIACINAMIDE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 560,
+          "y": 343.88,
+          "width": 129.59,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l-4",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 560,
+          "top": 379.52,
+          "right": 666.03,
+          "bottom": 404.52,
+          "width": 106.03,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "PANTHENOL",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 560,
+          "y": 379.52,
+          "width": 106.03,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l-5",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 560,
+          "top": 415.16,
+          "right": 772.05,
+          "bottom": 440.16,
+          "width": 212.05,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "SODIUM HYALURONATE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 560,
+          "y": 415.16,
+          "width": 212.05,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l-6",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 560,
+          "top": 450.8,
+          "right": 666.03,
+          "bottom": 475.8,
+          "width": 106.03,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "ALLANTOIN",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 560,
+          "y": 450.8,
+          "width": 106.03,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-l-7",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 560,
+          "top": 486.44,
+          "right": 666.03,
+          "bottom": 511.44,
+          "width": 106.03,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "FRAGRANCE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 560,
+          "y": 486.44,
+          "width": 106.03,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-0",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 211.31,
+          "right": 1340.27,
+          "bottom": 261.95,
+          "width": 200.27,
+          "height": 50.64
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "CENTELLA ASIATICA EXTRACT",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
           "y": 211.31,
-          "width": 154.39,
-          "height": 435.61
+          "width": 200.27,
+          "height": 50.64
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-1",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 272.59,
+          "right": 1198.91,
+          "bottom": 297.59,
+          "width": 58.91,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "WATER",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 272.59,
+          "width": 58.91,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-2",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 308.23,
+          "right": 1316.7,
+          "bottom": 333.23,
+          "width": 176.7,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "BUTYLENE GLYCOL",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 308.23,
+          "width": 176.7,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-3",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 343.88,
+          "right": 1269.59,
+          "bottom": 368.88,
+          "width": 129.59,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "NIACINAMIDE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 343.88,
+          "width": 129.59,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-4",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 379.52,
+          "right": 1293.14,
+          "bottom": 404.52,
+          "width": 153.14,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "MADECASSOSIDE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 379.52,
+          "width": 153.14,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-5",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 415.16,
+          "right": 1246.03,
+          "bottom": 440.16,
+          "width": 106.03,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "PANTHENOL",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 415.16,
+          "width": 106.03,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-6",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 450.8,
+          "right": 1246.03,
+          "bottom": 475.8,
+          "width": 106.03,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "ALLANTOIN",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 450.8,
+          "width": 106.03,
+          "height": 25
+        },
+        "firstSeen": 16.07,
+        "lastSeen": 16.07,
+        "occurrences": 1
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 16.07,
+        "selector": "#s01-ribbon-r-7",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 1140,
+          "top": 486.44,
+          "right": 1246.03,
+          "bottom": 511.44,
+          "width": 106.03,
+          "height": 25
+        },
+        "containerSelector": "div.pass-stage",
+        "text": "FRAGRANCE",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 1,
+        "dataAttributes": {},
+        "sourceFile": "compositions/frames/01-s01-bench-hook.html",
+        "bbox": {
+          "x": 1140,
+          "y": 486.44,
+          "width": 106.03,
+          "height": 25
         },
         "firstSeen": 16.07,
         "lastSeen": 16.07,
@@ -176,12 +683,12 @@
         "selector": "div.emboss",
         "message": "Text is hidden beneath an opaque element.",
         "rect": {
-          "left": 692.36,
-          "top": 901.47,
-          "right": 777.64,
-          "bottom": 936.47,
-          "width": 85.28,
-          "height": 35
+          "left": 692.57,
+          "top": 901.31,
+          "right": 777.79,
+          "bottom": 936.29,
+          "width": 85.21,
+          "height": 34.97
         },
         "containerSelector": "div.pass-stage",
         "text": "CICA",
@@ -190,10 +697,10 @@
         "dataAttributes": {},
         "sourceFile": "compositions/frames/01-s01-bench-hook.html",
         "bbox": {
-          "x": 692.36,
-          "y": 901.47,
-          "width": 85.28,
-          "height": 35
+          "x": 692.57,
+          "y": 901.31,
+          "width": 85.21,
+          "height": 34.97
         },
         "firstSeen": 16.07,
         "lastSeen": 16.07,
@@ -276,7 +783,7 @@
     "transitionSamples": [],
     "transitionSamplesDropped": 0,
     "tolerance": 2,
-    "totalIssueCount": 7,
+    "totalIssueCount": 24,
     "truncated": false
   },
   "motion": {
@@ -302,8 +809,8 @@
       189.626,
       253.906
     ],
-    "checked": 23,
-    "passed": 23
+    "checked": 24,
+    "passed": 24
   },
   "snapshots": {
     "enabled": false,

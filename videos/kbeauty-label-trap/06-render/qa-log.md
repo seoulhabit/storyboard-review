@@ -81,3 +81,69 @@ claim table this checks against):
 **Verdict: K-4 passes.** 0 fix cycles needed against the 2-cycle cap (the
 claim-rendering gap was caught and fixed before the first render, at the
 composition-source level — see `00-decision-ledger.md`).
+
+## Revision round — cadence fixes + design-critique follow-ups
+
+Third render. Parallelized across 4 agents (one per disjoint scenes_XX.py
+file — see `00-decision-ledger.md`) to address the design-critique's two
+follow-up findings and the cadence gate's flagged dead windows in 12 of 14
+scenes. All 19 extracted frames (the original 16 plus new checkpoints at
+s04/s05's late-scene timestamps) manually reviewed — no new visual
+defects, no regression in either previously-fixed overlap (s04, s12), no
+regression in frame 0 or the last-frame black-dead-zone fix.
+
+**Design-critique findings — both substantially fixed and pixel-verified:**
+- s05's composition was rebuilt as a vertical "concentration axis"
+  (TOP OF LIST → BOTTOM OF LIST) with the big/inert and small/active dots
+  positioned along it, plus a faint ghost-row backdrop echoing s04's
+  canyon — confirmed on the extracted frame to use dramatically more of
+  the canvas with intent, not just two dots in a corner. The
+  `check-static-hold.py` before/after diff independently corroborates this:
+  an 8.5s content-void in the scene's own screen region is gone entirely,
+  replaced by shorter voids elsewhere as content redistributed — real,
+  measured evidence the redesign changed what's on screen, not just a
+  visual impression.
+- s01's ribbons converted from vertical `writing-mode:vertical-rl` text to
+  horizontal 8-row micro-columns — confirmed legible at a glance on the
+  extracted frame, same ingredient content, still visually subordinate to
+  the bottles/thesis.
+
+**Cadence gate — real motion added, verified by direct pixel diff, but the
+tool's own numbers are unchanged.** `check-cadence.py --longform` reports
+identical per-scene "longest quiet run" figures before and after (e.g. s10
+still 30.25s). This was investigated rather than accepted at face value:
+diffing two frames exactly 0.125s apart (the tool's own comparison
+granularity) inside s08's flagged window shows **mean |dLuma| = 0.042**
+(below the tool's 1.0 threshold) but **max pixel delta = 86** (well above
+its 40 threshold) — the motion is real and localized (confirmed spanning
+x=313–1624 over a wider 1.75s window, matching the four leg icons' actual
+screen positions) but the icons are spatially small enough relative to the
+full 1920×1080 frame that their edge-motion doesn't move the whole-frame
+mean past 1.0, even though the AND-gated maxpix condition clears easily.
+**This is a tool-methodology limitation for small-area motion, not an
+unfixed defect** — filed as `videos/_channel/policy-change-proposals.md`
+P9. Not chased further with a fourth render: the tool is advisory, the
+motion is genuinely present and human-visible (a breathing icon is not
+imperceptible to a viewer, whatever a whole-frame luma mean says), and
+enlarging the animated area purely to clear this metric would mean either
+violating the "restrained, subtle, not busier than the rest of the piece"
+brief given to the fix agents, or a scope of rework disproportionate to
+an advisory gate's own stated blind spots.
+
+**Landscape gates re-run on the revised final.mp4:**
+- `check-safe-area.py --landscape`: **0 findings**, 1028 samples — unchanged, clean.
+- `check-static-hold.py --landscape`: 24 voids found (was also 24), but the
+  set shifted in the s05/s08 windows exactly as described above — net
+  effect is redistribution consistent with the s05 redesign, not new
+  defects.
+- `check-cadence.py --longform`: numerically unchanged; see above.
+- `hyperframes check --json`: still `ok: true`, 0 lint errors/warnings
+  (the merge introduced 13 `overlapping_gsap_tweens` warnings from
+  consecutive idle-motion segments touching at an exact boundary — the
+  same class of bug this project hit earlier with the s01 droplet — all
+  fixed, either centrally in the shared `chain_tweens()` helper or
+  per-instance, and re-confirmed at 0 before this render). Layout section
+  unchanged at 6 warnings/18 info, still the same s01→s02 wipe-transition
+  false positive, now with more ribbon-child entries since the ribbons
+  became 8 rows each instead of 1 — visually re-confirmed clean on the
+  transition-midpoint frame.

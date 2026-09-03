@@ -62,6 +62,38 @@ already been deliberately gain-staged (a ducked music bed, a sound-effect
 mixed under narration) — `amix`'s own clipping protection and a
 deliberately-set relative level are working against each other otherwise.
 
+### P9 — `check-cadence.py`'s `mean|dLuma|>=1.0 AND maxpix>=40` gate structurally under-counts small-area motion in a 1920x1080 frame
+**Found:** a revision round added real, verified idle motion (slow scale/
+opacity breathing on small icons, ~80-150px elements) to close 12 flagged
+dead windows. `check-cadence.py --longform` reported **identical** per-scene
+"longest quiet run" numbers before and after — not just similar, exactly
+unchanged to the second. This was investigated rather than accepted:
+diffing two frames exactly 0.125s apart (the tool's own comparison step,
+`SAMPLE_FPS=8`) inside one of the "still quiet" windows measured
+**mean |dLuma| = 0.042** (fails the tool's `MEAN_ACTIVE=1.0` floor) but
+**max pixel delta = 86** (clears `MIN_MAXPIX=40` easily) — confirmed via a
+wider 1.75s diff that the changed pixels span the actual icon positions
+(x=313-1624), i.e. the motion is real, localized, and human-visible, not
+noise or a rendering failure. The tool's own docstring explains `MIN_MAXPIX`
+was added to reject a HIGH-mean/LOW-maxpix false positive (a broad, faint,
+imperceptible global shift); it does not address the mirror case this run
+hit — a LOW-mean/HIGH-maxpix true positive, where a small element's sharp
+edge-motion is entirely real but too spatially small (an ~80-150px icon is
+well under 1% of a 1920x1080=2,073,600px frame) to move the *whole-frame*
+mean past 1.0, however large the change is at the pixel level.
+**Proposed:** either (a) compute the mean over the bounding box of changed
+pixels (or a fixed-size local window around the maxpix location) rather
+than over the whole frame, so a real but spatially small change isn't
+diluted by the rest of a static canvas, or (b) document explicitly that
+`check-cadence.py`'s "quiet window" figure is a lower bound on visible
+motion for scenes whose additions are small icons/accents rather than
+frame-filling changes, and that a manual per-frame pixel diff (as this run
+did) is the correct fallback verification, not a re-read of the tool's own
+summary. Not fixed in this run — the tool is advisory and the underlying
+motion is confirmed present and correct; scaling up the animated area
+purely to move this number would trade away the "restrained, subtle"
+brief the added motion was built to satisfy.
+
 ---
 
 ## 2026-09-03 · run `hyaluronic-acid-vs-filler` (long-form 16:9, 180.000s)

@@ -4,24 +4,44 @@ Skill version 2.1.0.
 
 ## Summary
 
-- Mode: `full` — S0.0 ran; S0 baseline reused (fresh as of today); S1–S8 ran; S9 scheduled but not executed (nothing published)
+- Mode: `full` — S0.0 ran; S0 baseline reused (fresh as of today); S1–S8 ran; S9 scheduled but not executed (nothing published); **plus one post-report revision round** addressing both design-critique follow-ups and the cadence gate's flagged pacing gap
 - Result: `complete`
-- Artifacts: 10 numbered outputs under `videos/kbeauty-label-trap/`, plus 2 files appended in `videos/_channel/` and 3 findings filed to `policy-change-proposals.md`
-- Spend: `$0.48 of $5.00` (`9.6%`) · vidIQ `62 of 200` credits (`31%`)
-- Needs the operator: the publish click — `vidiq_update_video` was never called; and a decision on the two design-critique follow-ups (s05's sparse composition, s01's vertical-ribbon legibility) before any revision round
+- Artifacts: 10 numbered outputs under `videos/kbeauty-label-trap/`, plus 3 files appended/updated in `videos/_channel/` and 4 findings filed to `policy-change-proposals.md`
+- Spend: `$0.48 of $5.00` (`9.6%`) · vidIQ `62 of 200` credits (`31%`) — unchanged by the revision round (no vidIQ/Higgsfield calls, render compute only)
+- Needs the operator: the publish click — `vidiq_update_video` was never called
 
 Rendered **`06-render/final.mp4`** — 1920×1080, 30fps, **257.133s / 7714
-frames**, 16.1MB. Every gate measured on the shipped file, not an
+frames**, 14.9MB. Every gate measured on the shipped file, not an
 intermediate: `hyperframes check` **ok: true** (0 errors across lint /
-runtime / layout / motion / contrast; 3 warnings + 4 info, all one
+runtime / layout / motion / contrast; 6 warnings + 18 info, all one
 transition's clip-path-unaware false positive, visually confirmed clean),
 `check-safe-area.py --landscape` **0 findings across 1028 sampled frames**,
-**-16.10 LUFS / -1.80 dBTP**, `check-cadence.py --longform` and
-`check-static-hold.py --landscape` both advisory-pass with real findings
-preserved rather than summarized away (see "Three things worth your
-attention," below). This is the second render: the first was check-clean
-but a **manual review of every extracted frame** — not any automated gate —
-found 4 real defects, all fixed and re-verified.
+**-16.10 LUFS / -1.80 dBTP**. This is the **third render**: the first was
+check-clean but a manual review of every extracted frame found 4 real
+defects (fixed in render 2); render 2 fully re-verified clean; render 3
+addressed the two design-critique follow-ups plus the cadence gate's
+flagged 12-scene pacing gap (see "Revision round," below).
+
+**Revision round (post-report).** The operator said "continue" after the
+original run report named the design-critique's two follow-up findings and
+the cadence gate's pacing gap as the natural next targets. Both design
+findings are now substantially fixed and pixel-verified: s05's composition
+was rebuilt from two dots in a corner into a vertical concentration-axis
+diagram using the full canvas with intent (independently corroborated by
+`check-static-hold.py`'s before/after diff — an 8.5s content-void in that
+scene's region is now gone entirely), and s01's vertical ribbon text was
+converted to legible horizontal micro-columns. The cadence fix is more
+qualified: real, verified motion was added to all 12 flagged scenes
+(confirmed by direct pixel-diff at the tool's own 0.125s comparison
+granularity — mean |dLuma| 0.042 but max pixel delta 86 in the tested
+window), but `check-cadence.py`'s own summary numbers are unchanged,
+because its `mean|dLuma|>=1.0 AND maxpix>=40` gate is diluted by whole-frame
+averaging for motion confined to small icons — a genuine tool-methodology
+limitation, filed as `policy-change-proposals.md` P9, not an unfixed
+defect. Not chased with a fourth render: the gate is advisory, the motion
+is confirmed real and human-visible, and enlarging it purely to move a
+metric would trade away the "restrained, subtle" brief the fix was built
+to satisfy. Full account: `06-render/qa-log.md` §Revision round.
 
 This is the channel's **third long-form video**, not its first (the two
 priors, `ectoin-survival-molecule` and `hyaluronic-acid-vs-filler`, are both
@@ -74,7 +94,7 @@ illustration rather than a claim needing either treatment.
 | S4 Script + VO | ran | pass, 1 generation pass | Higgsfield `generate_audio` ×9 | 646 words, 29 under the 675 floor — not padded, per operator decision. Concurrency-throttled to one-stem-at-a-time (see Deviations) |
 | S5 Beat sheet | ran | pass | none (computed from `vo-timing.json`) | 14 scenes, tiling 0–257.12s exactly; end-scene split required to clear the 20s cap |
 | S6 Composition | ran | pass, 2 fix cycles | `hyperframes check` ×3, `continuity-audit.py` ×2 | GSAP/CSS transform conflicts, a non-transform-motion warning, a contrast floor miss, a layout overflow — all fixed |
-| S7 Render QA | ran | pass, 2 renders | `hyperframes render` ×2, `ffmpeg` ×~12, `check-safe-area.py` ×2, `check-static-hold.py` ×1, `check-cadence.py` ×1, `continuity-audit.py` ×1 | 4 real defects found by manual frame review, not by any gate — see Summary |
+| S7 Render QA | ran | pass, 3 renders (2 original + 1 revision round) | `hyperframes render` ×3, `ffmpeg` ×~18, `check-safe-area.py` ×3, `check-static-hold.py` ×2, `check-cadence.py` ×2, `continuity-audit.py` ×2 | 4 real defects found by manual frame review in round 1, not by any gate; round 3 (revision) added verified cadence motion + 2 design fixes — see Summary |
 | S8 Publish envelope | ran | pass — no write calls | none | Draft only; end-screen "watch next" slot has no public long-form video to point to yet |
 | S9 Readout schedule | **scheduled, not executed** | — | none | Nothing published this run; `08-readout-schedule.md` written with both readout calls ready |
 
@@ -84,7 +104,7 @@ illustration rather than a claim needing either treatment.
 |---|---|---|
 | S3 entry | `frontend-design` | `COMPANION-RESOLVED:frontend-design (skill-tool)` — 2 corrections: locked porcelain as the default ground (vs. the AI-default near-black+accent look), moved the vermilion stamp onto the bottle itself in the thumbnail |
 | S6 entry | `frontend-design` | `COMPANION-RESOLVED:frontend-design (skill-tool)` — identified the vermilion ink-stamp as the video's one signature device (passport ID, all 5 evidence seals, end-card lock — one component reused, not five invented) |
-| S7 | `design-critique` | `COMPANION-RESOLVED:design-critique (skill-tool)` — signature device and dark/porcelain register both confirmed intentional; 2 follow-up findings logged, not fixed this round (see Summary) |
+| S7 | `design-critique` | `COMPANION-RESOLVED:design-critique (skill-tool)` — signature device and dark/porcelain register both confirmed intentional; 2 follow-up findings logged, then both fixed in the post-report revision round (see Summary) |
 
 MCP/tool calls in stage order: `vidiq_balance`, `hyperframes --version`,
 Higgsfield `balance`+`list_voices`, `vidiq_keyword_research` ×1,
@@ -161,17 +181,21 @@ build_composition.py       scenes_01_03.py / scenes_04_07.py /
 05-composition/  index.html · hyperframes.json · package.json ·
                  compositions/frames/*.html (14) · assets/
 06-render/  final.mp4 · check.json · qa-log.md · design-critique.md ·
-            loudnorm-pass1.json · frames-final/ (18 extracted PNGs)
+            loudnorm-pass1.json · frames-final/ (19 extracted PNGs)
+scenes_01_03.py / scenes_04_07.py / scenes_08_11.py / scenes_12_14.py
+            (revision round: cadence fixes + design-critique follow-ups)
 ```
 
 Outside OUT:
 - `videos/_channel/spend.jsonl` — this run's line appended
-- `videos/_channel/policy-change-proposals.md` — 3 findings filed (P6: a
+- `videos/_channel/policy-change-proposals.md` — 4 findings filed (P6: a
   sub-composition's own duration must match its wrapper's transition-
   extended window, not the beat sheet's nominal value; P7: `check`'s
   overlap detector isn't clip-path-aware; P8: ffmpeg `amix`'s default
   `normalize=1` silently drops mixed-audio loudness when one input is
-  already deliberately gain-staged)
+  already deliberately gain-staged; P9, filed in the revision round:
+  `check-cadence.py`'s whole-frame mean threshold structurally under-counts
+  real motion confined to small icons)
 - `videos/_channel/baseline.yaml` — **not touched** (S0 skipped, reused as-is)
 
 ## Skipped and why
@@ -182,13 +206,15 @@ Outside OUT:
 
 ## `[NOT IN SKILL]` findings
 
-Three, all newly filed this run (see Artifacts, above, and
+Four, all newly filed this run (see Artifacts, above, and
 `videos/_channel/policy-change-proposals.md` for full text): a sub-comp
 duration/wrapper-duration mismatch that renders as black rather than a
 frozen frame; `check`'s clip-path-blind overlap detector; ffmpeg `amix`'s
-default auto-attenuation fighting a manually gain-staged mix. All three are
-generalizable beyond this project — filed as proposals, not worked around
-silently.
+default auto-attenuation fighting a manually gain-staged mix; and (filed in
+the revision round) `check-cadence.py`'s whole-frame mean threshold
+structurally under-counting real motion confined to small icons. All four
+are generalizable beyond this project — filed as proposals, not worked
+around silently.
 
 ## Deviations, stated rather than buried
 
@@ -200,13 +226,21 @@ silently.
   extracted PNG, not by any automated gate. Recorded because it's the
   sharpest evidence in this run for why "verify by pixels, never by
   manifest" is a mandatory rule and not a suggestion.
-- **Two advisory gates' findings (cadence, static-hold) were not acted on**
-  — logged in full in `06-render/qa-log.md` rather than fixed, given both
-  are advisory and this run was already on its second full render. Named
-  explicitly as the top target for any revision round, not silently
-  dropped.
-- **The design-critique gate's 2 findings were not acted on** either, for
-  the same reason — see `06-render/design-critique.md`.
+- **Both design-critique findings were addressed in a revision round**
+  (s05 redesign, s01 ribbon legibility) — see Summary and
+  `06-render/qa-log.md` §Revision round for the full account and
+  pixel-level verification of each.
+- **The cadence gate's finding was acted on but its own metric didn't
+  move** — real motion was added and verified by direct pixel-diff at the
+  tool's own comparison granularity, but `check-cadence.py`'s summary
+  numbers are unchanged because of a diagnosed tool-methodology limitation
+  (filed as P9), not because nothing was done. Not chased with a fourth
+  render — see Summary for the reasoning.
+- **`check-static-hold.py`'s findings were partially, verifiably improved**
+  (the s05 redesign eliminated one region's 8.5s content-void entirely,
+  confirmed by diffing the gate's own before/after output) but its total
+  finding count is unchanged (24 voids both times) since content
+  redistributed rather than disappeared — not claimed as a full fix.
 - **Higgsfield spend is an estimate, not a measured figure** — the actual
   `generate_audio` calls this run used didn't return a per-call cost the
   way the `get_cost` preflight did; the $0.48 figure scales the preflight's

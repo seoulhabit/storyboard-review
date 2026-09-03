@@ -62,6 +62,10 @@ SAMPLE_FPS = 4                  # finer than static-hold's 2fps -- a fast Ken Bu
                                  # drift can cross the line between two 2fps samples
 CANVAS_W, CANVAS_H = 1080, 1920   # portrait default; override with --canvas-w/--canvas-h
 INK_THRESHOLD = 28              # |luma - background| above this counts as "ink"
+GROUND_MIN_SHARE = 0.15         # a luma cluster holding this much of the border ring
+                                 # is a page ground in its own right -- a transition
+                                 # frame has two, one per scene
+MAX_GROUNDS = 3                 # two scenes plus a letterbox is the realistic ceiling
 MIN_EDGE_RUN = 8                # a row/col needs >=8 masked px before it's a real
                                  # edge, not antialiasing noise, matching the method
                                  # used to diagnose this project's own round-6 defect
@@ -90,34 +94,88 @@ def render_dimensions(render_path):
         return None
 
 
-def page_ground(frame_gray):
-    """Luma of the PAGE GROUND, from the outer border ring.
+def page_grounds(frame_gray):
+    """Every PAGE GROUND present in the outer border ring, not just one.
 
-    The whole-frame modal fails as soon as content covers more than half the
-    canvas: two 45%-of-frame panels make the modal a PANEL colour, every margin
-    then differs from it by more than the ink threshold, and all four reserved
-    zones report 100% ink. Measured on a real landscape render -- modal 151
-    against a true ground of 243, a 92-luma disagreement, producing 136 flagged
-    frames with nothing actually in a reserved zone. On a hard gate that is worse
-    than a miss: it blocks a clean render.
+    page_ground() used to return a single median, which is correct only while
+    the frame HAS a single ground. A transition frame legitimately has two --
+    the outgoing scene and the incoming one -- so the ring goes bimodal, the
+    median lands on whichever ground holds more of it, and the other ground
+    then differs from the reference everywhere it appears. The zone reports
+    100% ink with nothing in it. Measured on a real 29-scene wipe render: the
+    gate called the entire 54x1920 top band inked (103680px) at t=73.50s, where
+    that band is uniformly luma 19 -- a flat scene ground, min == max, zero
+    variation. 70 frames flagged, every one of them a transition frame.
 
-    The outer ring is the right reference precisely BECAUSE reserved margins
-    exist: the extreme edge of the canvas is page ground by construction in any
-    composition that respects them. Median, not modal, so a few stray edge pixels
-    cannot move it.
+    That is the second time this estimator has been wrong in the same
+    direction (the whole-frame modal it replaced broke on a busy landscape
+    frame), and on a HARD gate a false positive is worse than a miss: it
+    blocks a clean render, and the wave-through it earns is what lets the next
+    real one through.
+
+    So: cluster the ring instead of averaging it. Any luma level holding at
+    least GROUND_MIN_SHARE of the ring is a ground, up to MAX_GROUNDS of them,
+    and a pixel is ink only when it differs from ALL of them. A single-ground
+    frame yields exactly one cluster and behaves as before.
+
+    History, because this estimator has now been wrong twice and the reason
+    matters more than the fix: the whole-frame modal it started as failed as
+    soon as content covered more than half the canvas (two 45%-of-frame panels
+    made the modal a PANEL colour -- modal 151 against a true ground of 243 --
+    and all four zones reported 100% ink across 136 frames with nothing out of
+    place). The outer ring replaced it because reserved margins mean the
+    extreme edge IS page ground by construction. That reasoning still holds;
+    what it missed is that the edge can be page ground for TWO pages at once.
+
+    Returns a list of luma levels, most common first.
     """
     ring = np.concatenate([frame_gray[:4, :].ravel(), frame_gray[-4:, :].ravel(),
                            frame_gray[:, :4].ravel(), frame_gray[:, -4:].ravel()])
-    return int(np.median(ring))
+    hist = np.bincount(ring, minlength=256).astype(float)
+    total = hist.sum()
+    grounds = []
+    for _ in range(MAX_GROUNDS):
+        peak = int(hist.argmax())
+        lo, hi = max(0, peak - INK_THRESHOLD), min(255, peak + INK_THRESHOLD)
+        share = hist[lo:hi + 1].sum() / total
+        if share < GROUND_MIN_SHARE:
+            break
+        grounds.append(peak)
+        hist[lo:hi + 1] = 0                 # absorb this cluster, look for the next
+    return grounds or [int(np.median(ring))]
 
 
-def ink_mask(frame_gray):
-    bg = page_ground(frame_gray)
-    diff = np.abs(frame_gray.astype(int) - bg)
-    raw = diff > INK_THRESHOLD
-    row_ok = raw.sum(axis=1) >= MIN_EDGE_RUN
-    col_ok = raw.sum(axis=0) >= MIN_EDGE_RUN
-    return raw & row_ok[:, None] & col_ok[None, :]
+def ink_raw(frame_gray):
+    """Pixels belonging to no page ground. No run-filter yet -- see zone_ink()."""
+    grounds = page_grounds(frame_gray)
+    g = frame_gray.astype(int)
+    # ink only where the pixel differs from EVERY ground present in the frame
+    diff = np.min([np.abs(g - b) for b in grounds], axis=0)
+    return diff > INK_THRESHOLD
+
+
+def zone_ink(raw_zone):
+    """Masked px in one reserved zone, run-filtered WITHIN that zone.
+
+    MIN_EDGE_RUN exists to drop antialiasing: a real edge puts several masked
+    pixels in a row, a resampling fringe puts one. That test used to be
+    computed across the FULL FRAME, which quietly defeats it at a zone
+    boundary -- a row crossing a scene seam carries one masked pixel inside a
+    96px rail, but the same row has real content elsewhere in the 1920px
+    frame, so the row passes and the lone fringe pixel survives into the zone.
+
+    Measured: the multi-ground estimator took a 29-scene wipe render from 70
+    flagged frames to 8, and those 8 were the seam's own antialiasing -- worst
+    case 1184px inside a 103680px rail, about one pixel per row. Scoping the
+    run test to the zone removes them without touching anything bounded: real
+    content in a rail spans many pixels per row, and the smallest genuine
+    finding on the known-dirty push build was 12636px.
+    """
+    if not raw_zone.size:
+        return 0
+    row_ok = raw_zone.sum(axis=1) >= MIN_EDGE_RUN
+    col_ok = raw_zone.sum(axis=0) >= MIN_EDGE_RUN
+    return int((raw_zone & row_ok[:, None] & col_ok[None, :]).sum())
 
 
 def main():
@@ -196,12 +254,12 @@ def main():
         for i, p in enumerate(frame_paths):
             t = i / SAMPLE_FPS
             gray = np.asarray(Image.open(p).convert("L"), dtype=np.uint8)
-            mask = ink_mask(gray)
+            raw = ink_raw(gray)
 
-            top_px = int(mask[:y_top, :].sum())
-            bot_px = int(mask[y_bot:, :].sum())
-            right_px = int(mask[:, x_right:].sum())
-            left_px = int(mask[:, :x_left].sum()) if x_left else 0
+            top_px = zone_ink(raw[:y_top, :])
+            bot_px = zone_ink(raw[y_bot:, :])
+            right_px = zone_ink(raw[:, x_right:])
+            left_px = zone_ink(raw[:, :x_left]) if x_left else 0
 
             if top_px > MIN_INTRUSION_PX:
                 zones["top"].append((t, top_px))

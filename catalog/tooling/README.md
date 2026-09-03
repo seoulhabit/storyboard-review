@@ -562,3 +562,92 @@ tempdir; no ffmpeg, no assets:
   must exit **2**, and the plain run must still exit 0.
 
 All three control scripts in this directory pass as of 2026-09-02.
+
+## 2026-09-02 (later still) — the safe-area gate's background estimator broke on a TRANSITION frame
+
+Same estimator, second failure, opposite trigger — and worth reading next to the
+busy-frame entry above, because the fix for that one is what set this one up.
+
+The outer-border-ring median assumes the frame has **one** page ground. A
+transition frame legitimately has two: the outgoing scene and the incoming one
+are both on screen. The ring goes bimodal, the median lands on whichever ground
+holds more of it, and the other ground then differs from the reference
+everywhere it appears — so a reserved zone that contains nothing but flat scene
+background reports as 100% ink.
+
+Measured on a real 29-scene 1920x1080 render whose 28 boundaries all carry a
+clip-path wipe:
+
+```
+gate says: top zone, worst at t=73.50s, 103680px masked in-zone  (= 54 x 1920, the WHOLE band)
+actual   : top zone luma min 19, max 19, std 0.0 — a flat ground, zero variation
+           rows in 0-53 containing any horizontal edge: 0
+```
+
+70 frames flagged, every one inside a wipe window, nothing out of place in any
+of them. On a hard gate that is the expensive kind of wrong: it blocks a clean
+render, and the wave-through it earns is what lets a real one through later.
+
+**Fix: cluster the ring instead of averaging it.** Any luma level holding at
+least `GROUND_MIN_SHARE` (0.15) of the border ring is a page ground in its own
+right, up to `MAX_GROUNDS` (3), and a pixel counts as ink only when it differs
+from **every** ground present. A single-ground frame yields exactly one cluster
+and behaves precisely as before, so nothing about the existing pass changes.
+
+**Second half of the fix: scope the antialiasing run-filter to the zone.**
+`MIN_EDGE_RUN` exists to drop a resampling fringe — a real edge puts several
+masked pixels in a row, antialiasing puts one. It was computed across the FULL
+FRAME, which quietly defeats it at a zone boundary: a row crossing a scene seam
+carries one masked pixel inside a 96px rail, but that same row has real content
+elsewhere in the 1920px frame, so the row passes and the lone fringe pixel
+survives into the zone. The clustering fix alone took the wipe render from 70
+flagged frames to 8, and those 8 were exactly this — worst case 1184px inside a
+103680px rail, about one pixel per row. Applying the run test within each zone
+removes them and touches nothing bounded.
+
+**Validated in both directions, on three renders of the same composition:**
+
+| render | expected | result |
+|---|---|---|
+| baseline, 28 hard cuts | clean before the fix, must stay clean | 0 findings |
+| translating push, genuinely dragged text through the zones | **must still FAIL** | 35 frames, smallest real finding 12636px |
+| clip-path wipe, clean by independent measurement | should now pass | 0 findings |
+
+The middle row is the one that matters. A gate that has just been "fixed" is
+exactly as suspect as a scanner reporting nothing, and the only thing that
+makes the two clean rows evidence is that the dirty one still fires.
+
+A first attempt fixed the symptom instead and is worth recording as a wrong
+turn: excluding masked rows/columns that span the band edge-to-edge. That works
+for the bands parallel to the seam and silently fails for the rails crossing it,
+where a flat ground is bounded by the seam and so looks exactly like content.
+The `two-ground` control below is what caught it — the fix was written, looked
+right, and the control failed it in one run.
+
+## Controls — `test-safe-area-controls.py`
+
+```bash
+python3 catalog/tooling/test-safe-area-controls.py
+```
+
+Run after **any** change to the ink mask, the background estimator, or the
+thresholds. This is the only hard gate in this directory, so it carries two
+NEGATIVE controls, not one — a gate that only proves it can fail is not
+validated.
+
+- **positive** — text-like glyph boxes inside the bottom reserved zone → **must
+  FAIL**. The thing the gate exists for; if it stops firing, every "no findings"
+  it prints is worthless.
+- **solid-block** — one bounded solid rectangle in the bottom zone → **must
+  FAIL**. Guards the estimator against over-suppressing. A structure- or
+  edge-density test would wave this through, since a solid block has no internal
+  detail, which is exactly why the fix keys on ground membership rather than on
+  how much detail a region contains.
+- **two-ground** — two flat grounds meeting at a straight seam, as a wipe or a
+  cut boundary produces → **must PASS**. The regression above.
+
+Fixtures are `drawbox` only: this repo's ffmpeg is built without libfreetype, so
+`drawtext` is unavailable. A run of glyph-sized boxes is what the gate sees in a
+line of text anyway — many partially-masked rows.
+
+All four control scripts in this directory pass as of 2026-09-02.

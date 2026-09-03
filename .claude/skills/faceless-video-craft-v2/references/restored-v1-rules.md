@@ -30,7 +30,7 @@ the threshold is where it is.
 
 **Gates at:** S6 — Composition, before any type is sized
 **Written for:** Six sub-floor type declarations shipped in the 2026-08-31 target.
-**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1309-1323, verbatim.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 2328-2342, verbatim.
 
 - **Type floor for phone viewing.** Hero/headline text: roughly 96-160px at
   1080 width depending on line count. Reading/body text: 40px minimum.
@@ -55,7 +55,7 @@ the threshold is where it is.
 
 **Gates at:** S6 authoring; gated by `check` at S7
 **Written for:** A shipped frame measuring 1.44:1 that the engine's own contrast checker passed 13/13.
-**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1324-1370, verbatim.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 2343-2389, verbatim.
 
 - **Contrast floor: 4.5:1 for any text meant to be read, measured against
   the actual pixels behind it, not the design token alone.** The type-size
@@ -147,7 +147,7 @@ the threshold is where it is.
 
 **Gates at:** S6 asset+mechanism strategy, and the closing step of a run
 **Written for:** The same term/definition card rebuilt five times across five videos; BarrierWall found only on the sixth.
-**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 738-807 (§*Catalog lifecycle: discover, reuse, build, contribute*), verbatim — the section heading is this rule's title above.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 845-914 (§*Catalog lifecycle: discover, reuse, build, contribute*), verbatim — the section heading is this rule's title above.
 
 A shared catalog only compounds in value if the loop actually closes. Three
 failure points break it, and each has already happened in a real project
@@ -225,7 +225,7 @@ future reader discover that flag by accident — load it pre-applied.
 
 **Gates at:** S7 — after the render, on the muxed deliverable
 **Written for:** Four of six scenes frozen 2.0-7.5s on a project that passed `check` with 0 errors.
-**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1005-1101, verbatim.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1180-1484, verbatim.
 
 **Static-hold detection.** A frozen-but-fully-populated frame looks identical
 to a healthy one on any brightness/contrast/luma-variance metric — a scanner
@@ -307,6 +307,215 @@ confirmed cases:
   warn if a burned-in caption composition exists but the flag is `False`)
   — fail loud rather than silently trusting inherited constants.
 
+**A QC script calibrated for one canvas does not merely mis-measure another —
+it can report a clean pass on a defect it structurally cannot see.** Confirmed,
+and worse than the caption-band inheritance bug above because no comment
+anywhere would have caught it: `catalog/tooling/check-safe-area.py` and
+`check-static-hold.py` both hard-coded `CANVAS_W, CANVAS_H = 1080, 1920` as
+module constants with no override. Run against a 1920×1080 render they did not
+error. Measured, on a fully-inked landscape frame:
+
+```
+bottom zone  mask[1536:, :]   -> shape (0, 1920)     sum=0        FAIL-OPEN
+right  zone  mask[:, 918:]    -> shape (1080, 1002)  sum=1082160  wrong region
+```
+
+The bottom slice runs past the end of a 1080-tall array, so numpy returns an
+**empty view** — the *hard gate* printed "no findings" and exited 0. The right
+slice silently measured the right 52% of the frame instead of a 162px rail, so
+the same run would fire spuriously on the other axis. A gate that fails open on
+one edge and fails loud-but-wrong on another is worse than no gate, because its
+clean exit is read as evidence.
+
+Note what did **not** prevent this: the script's own docstring already said it
+assumed a portrait canvas. Documentation of an assumption is not enforcement of
+it — the same lesson the caption-band constants taught one section above, which
+is why the fix here is an `ffprobe` dimension probe that **refuses to run**
+(exit 2) on a mismatch, not a louder comment. Before trusting any gate's clean
+result, confirm it actually measured the canvas you rendered.
+
+A second, independent bug surfaced while testing that one, and it is worth
+naming separately because it is the kind that hides inside a passing run: the
+scene-boundary regex required a literal attribute order
+(`data-composition-src` → `data-start` → `data-duration`). The repo's newest
+project writes `data-start` first, so the scene list came back **empty** and the
+region-aware check silently degraded to "treat the whole render as one scene" —
+the exact mode whose own warning text says cross-cut false positives are
+possible. Parse the tag, then pull each attribute out of it independently; never
+assume authored attribute order, since nothing enforces it. Note a project's own
+copy of a shared script may already carry an independent fix — this one's did —
+so a bug in the shared copy does not automatically discredit that project's
+published numbers. Check the copy in front of you before crediting or
+discrediting a specific past measurement.
+
+**A third bug, found by a reviewer asking why one finding crossed a cut, and the
+most damaging of the three: a per-scene check can manufacture a false positive at
+almost every boundary through nothing worse than integer truncation.** The
+windowing read:
+
+```python
+i0 = max(1, int(scene_start * REGION_FPS))     # 13.200 * 4 = 52.8 -> 52 -> t=13.00s
+```
+
+`int()` truncates, so whenever a scene start did not land exactly on the sampling
+grid the window opened **one sample early**, on a frame still showing the
+*previous* scene. That frame set the run's "has content" flag, and the new
+scene's legitimately-empty cell then read as "content, then empty" — a defect
+invented by the measurement, at exactly the boundary the per-scene windowing
+existed to respect. **711 of 936 `data-start` values across the repo (76 %) are
+off the 4 fps grid**, so it fired at roughly three cuts in four; fixing it cut
+one project's findings from 10 to 3 and removed another's entirely, with no real
+finding lost. Use half-open `[start, end)` semantics — `math.ceil` on both
+bounds — so a window holds only frames whose timestamp is genuinely inside the
+scene.
+
+Two lessons generalise past this script:
+
+- **Check the arithmetic at the boundaries of a windowed measurement, not just
+  its thresholds.** Threshold tuning gets all the attention; an off-by-one in
+  frame-index conversion is invisible in the output, survives every threshold
+  change, and produces findings indistinguishable from real ones.
+- **A finding that spans a boundary the tool claims to respect is itself evidence
+  of a tool bug**, and is worth chasing before explaining it away as content.
+
+Corollary for reading history: an "N content-voids" count from before such a fix
+is not comparable to one after it. Re-run rather than compare.
+
+**And a third class, which no threshold tuning can reach: binary ink presence is
+the wrong primitive for an element whose ALPHA is animated.** A card whose
+background sits at `rgba(247,245,240,0.06)` at rest and `rgba(...,0.18)` while
+highlighted straddles any fixed ink threshold, so its entire area enters and
+leaves the ink mask on a legitimate highlight-then-release cycle while the
+element never moves. Measured on a synthetic card: ink swings **26,576 →
+111,044 (4.2×)** between those two alphas while edge density stays **flat at
+6,116**; only genuine removal collapses both to zero. Hysteresis between
+enter/exit ink thresholds does not save this — the swing dwarfs any sane gap.
+
+Borders and glyph strokes survive an alpha change, so **require a structural
+signal as well**: a cell counts as empty only when its ink delta is low *and*
+its edge density has fallen to a small fraction of that scene's own peak. This
+class fires on anything that dims, highlights, or pulls focus — an opacity
+1 → 0.45 focus pull is the same shape as a card highlight — so a project using
+any of those idioms will see it.
+
+**And the payoff for keeping the region-aware check honest rather than deleting
+it: it caught a real defect the ENGINE'S OWN auditor missed.** After two rounds
+of fixing its false positives it flagged three cards as content-then-empty; frame
+extraction showed they were rendering **completely blank**. The cause was a bare
+text node — copy written directly inside a container rather than wrapped in an
+element:
+
+```html
+<!-- wrong: the copy is a TEXT NODE, so `.wash ~ *` has nothing to match -->
+<div class="card"><div class="wash"></div>Fragrance-free?</div>
+<!-- right -->
+<div class="card"><div class="wash"></div><span>Fragrance-free?</span></div>
+```
+
+A sibling selector that lifts content above an animated background can only
+raise **elements**. A text node has nothing to carry `position`/`z-index`, so the
+background paints over it and the card renders empty. `check`'s own
+`text_occluded` pass caught the same mistake where the copy *was* wrapped, and
+did not catch it here — which is the general lesson: **a layout auditor that
+walks text elements is blind to text that never became one.**
+
+Two things follow. Wrap copy in an element inside any container with an animated
+background, always. And treat a content-void finding as worth one frame
+extraction even after a run of false positives — the run is exactly what makes
+the real one easy to wave away.
+
+**A gate's own background estimator is an assumption, and on a hard gate a false
+positive is worse than a miss.** The safe-area check took "page background" as
+the whole-frame modal luma — fine while the ground is most of the canvas, wrong
+the moment it is not. On a landscape scene with two ~45%-of-frame panels the
+modal became a *panel* colour (151 against a true ground of 243), every margin
+differed from "background" by 92 luma, and **all four reserved zones reported
+100% ink** across 136 frames with nothing actually out of place. Deriving the
+ground from the **median of the outer 4px border ring** fixes it, and is the
+right reference precisely because reserved margins exist: the extreme edge is
+page ground by construction in any composition that respects them.
+
+Why this matters more than an equivalent miss: a hard gate that cries wolf gets
+waved through, and the next wave-through is the real one. When a gate fails,
+**check its assumptions against the frame before changing the composition** — the
+first instinct here was to go hunting for the offending element, and there wasn't
+one.
+
+That was the fourth distinct defect found in one checker family in a single day
+— attribute-order parsing, `int()` window truncation, ink-presence as the wrong
+primitive for animated alpha, and the background estimator. The common thread is
+worth more than any of them individually: **each assumption held for the portrait
+Shorts the tool was written against, and broke on the first composition with
+different geometry or a different colour distribution.** A checker inherited from
+another format is not validated for yours until something in yours has actually
+violated its premises.
+
+**A hard gate's background assumption will break a second time, in the same
+place, unless you fix the CLASS rather than the instance.** `check-safe-area.py`
+derives "page ground" so it can call everything else ink. That estimator has now
+been wrong twice, both times blocking a clean render:
+
+1. the whole-frame modal, broken by a busy landscape frame (two 45%-of-frame
+   panels made the modal a *panel* colour; all four zones reported 100% ink
+   across 136 frames with nothing out of place);
+2. the outer-border-ring median that replaced it, broken by a **transition
+   frame** — which legitimately contains two grounds, so the ring goes bimodal,
+   the median lands on whichever ground holds more of it, and the other ground
+   differs from the reference everywhere it appears. Measured: the entire
+   54×1920 top band reported as 103680px of ink at a timestamp where that band
+   is uniformly luma 19, min == max, zero variation. 70 frames, all clean.
+
+Both fixes were locally correct. What carried the bug forward was the shape of
+the assumption — *there is one background* — surviving the rewrite. The third
+version clusters the ring and treats a pixel as ink only when it matches no
+ground, which is the first version that does not assume a count.
+
+**On a hard gate, a false positive is worse than a miss**, because the
+wave-through it earns is what lets a real one through later. So when a gate
+fails, check its assumption against the frame before changing the composition:
+here the first instinct was to go hunting for the offending element twice, and
+both times there wasn't one.
+
+**Two negative controls, not one, for anything that exits non-zero.** A gate
+that only proves it can fail is not validated; neither is one that only proves
+it can pass. The safe-area controls pin three behaviours: text in a reserved
+zone must fail (the gate still works), **a bounded solid block must fail** (the
+fix did not over-suppress), and two flat grounds meeting at a straight seam must
+pass (the regression). The middle one is the one that catches a plausible wrong
+fix — an edge-density or "does this region have internal detail" test passes
+every synthetic case and silently waves through a solid graphic sitting in the
+zone. A first attempt here excluded masked rows spanning the band edge-to-edge;
+it read as principled, worked on the bands parallel to the seam, and failed on
+the rails crossing it, where a flat ground bounded by the seam is
+indistinguishable from content. The control caught it in one run.
+
+**A checker's summary line is part of the checker, and it is where a coverage
+gap ships as a false all-clear.** `check-static-hold.py` used to end with
+*"Overall: clean (whole-frame and region-aware checks both clean)"* — which
+reads as a verdict on the **render**, not on the two passes that ran. A region
+that stays frozen while still *carrying* content is invisible to both: the
+whole-frame diff stays alive on any other moving element, and the region pass
+only looks for content-then-**empty**, which never happens. So a render with an
+entirely dead scene printed "Overall: clean". Confirmed on a synthetic (a
+populated region frozen for a whole clip beside an animating one) and
+independently on another project's real known-broken repro.
+
+The logic was right and the sentence was wrong, which is the general shape:
+**state what was covered and what was not, and never let the absence of findings
+render as a verdict.** A scope line costs nothing and is the difference between
+"these two checks found nothing" and an all-clear the tool was never entitled to
+give. Name the uncovered mode explicitly, so the next reader can go look for it
+by hand instead of trusting the banner.
+
+**Then validate the fix in both directions, and treat the negative result as the
+weaker half.** After adding the structural signal, two real projects went to
+zero findings; that is only trustworthy because a synthetic control — a
+structured block genuinely removed at t=5.0 of a 12 s clip — was **still
+flagged**, at the right time and in the right cells. A scanner reporting nothing
+is exactly as suspect as one crying wolf, and the discipline this file already
+demands of external QC reports applies with equal force to a checker
+immediately after it has been "fixed."
+
 **Source-level cadence measurement is an authoring-time aid, never a
 substitute for the check above.** Extracting every GSAP tween position from a
 scene's own `<script>` block is the fast way to get a rough cadence read
@@ -331,7 +540,7 @@ above is the only thing that actually answers the static-hold question.
 
 **Gates at:** S7 — the audio master
 **Written for:** A two-pass `loudnorm` hit -1.50 dBTP on PCM; the shipped AAC file measured +0.5 dBFS.
-**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 1536-1550, verbatim.
+**Source:** `.claude/skills/faceless-video-craft/SKILL.md` lines 2558-2572, verbatim.
 
 - Master audio to YouTube's ~-14 LUFS integrated / -1.5 dBTP normalization
   target as a **post-render** step; louder than that is simply turned down by

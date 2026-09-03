@@ -19,6 +19,13 @@
       "runtimeArgs": ["--yes", "hyperframes@0.8.22", "preview", "--port", "5599"],
       "cwd": "videos/exosome-label-decode",
       "port": 5599
+    },
+    {
+      "name": "collagen",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "hyperframes@0.8.22", "preview", "--port", "5601"],
+      "cwd": "videos/collagen-where-did-it-go",
+      "port": 5601
     }
   ]
 }

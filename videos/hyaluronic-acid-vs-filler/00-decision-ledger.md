@@ -251,3 +251,75 @@ this project itself) reused unchanged.
   the target far more precisely than the single-pass estimate did.
 [S7/R-3] duration → video 160.000000s / 4800 frames @30fps == VO 160.000s
   master clock exactly | ffprobe
+
+## re-run — code-review fix pass, 2026-09-03
+
+`/code-review high` run against PR #11 (this video's revision), 8 finder
+angles + independent 1-vote verification on every surviving candidate.
+10 findings, all CONFIRMED, all fixed same-session before merge:
+
+[correctness] hold-beat insertion (build_beats.py) clipped duration only
+  against scene length, not the next beat's own offset -- 7 hold/beat
+  overlaps up to 0.773s across 6 scenes, confirmed on the shipped beat
+  sheet. Fixed by also clipping against the upcoming beat's offset. First
+  fix attempt broke forward progress (a too-eager bail-out on a small
+  clipped duration left real [S5/C-2] cadence gaps uncovered on
+  regeneration) -- caught immediately by re-running build_beats.py,
+  corrected to only bail on a non-positive duration.
+[correctness] build_compare()'s hand-rolled tween loop skipped the file's
+  own _row_tweens() helper -- its two wipe beats never got the clipPath
+  reveal every other wipe beat gets, confirmed missing in the actual
+  generated 05-s05-compare.html. Routed through _row_tweens(); clipPath
+  count confirmed present after regeneration.
+[correctness] build_warning()'s hand-rolled loop had scale:1.06 drifted
+  from the house 1.03 (confirmed shipping on #s11-do-not-inject-b3) and no
+  swap/count branch at all. Routed through _row_tweens(); 1.03 confirmed
+  in the regenerated HTML.
+[correctness] s10-crosslink declared layout:"two-column" but built via
+  _hero_left(), not two_col() -- confirmed a real visible consequence
+  (s06, the actual two-column scene, gets a two_col-only accent border
+  this scene structurally cannot). Corrected the label to "hero-left" --
+  layout is pure metadata (confirmed unread by any code), zero-risk fix.
+[reuse] fix_generated_grounds()'s success counter incremented per scene
+  visited, not per regex substitution made -- a silently-broken match
+  would still report success. Switched to re.subn, sums real substitution
+  counts, warns on a scene with zero (14 substitutions confirmed made
+  across 3 generated scenes on the actual re-run).
+[reuse] build_body_cross() string-replaced already-rendered HTML to add
+  one CSS rule; _hero_left() now accepts css_extra directly.
+[simplification] hold-drift default magnitude was duplicated verbatim in
+  three places (two_col, _hold_drift, fix_generated_grounds's alternation
+  regex); hoisted to one module constant DEFAULT_DRIFTS.
+[simplification] 3 seeded random.Random(...) objects created and never
+  read (eye_glassware_svg, clinical_vignette_svg, build_compare's rng_f);
+  removed.
+[simplification] dead body_rows list in build_compare (pass-bodied loop,
+  never read); removed.
+[altitude] three safe-area fixes (S11_DRIFTS, COMPARE_CSS's pixel budget,
+  LANE_CSS's actor height) were each hand-tuned per-scene via render/
+  check/guess/re-render with no shared margin-aware mechanism. Documented
+  as a cross-referenced pattern rather than building new infrastructure a
+  one-shot generator script doesn't otherwise need.
+
+check --json after all fixes: ok=true, 0 errors, same 3 accepted
+container_overflow warnings as before (unaffected). Beat sheet still
+totals exactly 160.000s, 0 hold-beat overlaps confirmed programmatically.
+
+Re-rendered and re-ran the full pixel gate suite on the fixed final.mp4
+(none of the 10 fixes touched claim wording, sourcing, or audio, so these
+gates were not expected to change, but were re-verified rather than
+assumed):
+- check-safe-area.py --landscape: PASS, 0 findings, 640 frames sampled.
+- check-static-hold.py --landscape: PASS, 0 findings (whole-frame 320
+  samples + region-aware 2x3 grid, both clean).
+- check-cadence.py --longform: PASS (advisory), 16.5% whole-video active
+  share, no scene exceeds the 6.0s quiet ceiling -- down from the
+  pre-fix render's 18.1%, consistent with C2/C3's fixes replacing a
+  scale-drift/missing-wipe treatment with the house _row_tweens()
+  entrance (fewer, more consistent beats, not a coverage loss: still
+  well above the 180s cut's 15.1% floor).
+- ebur128: -14.5 LUFS / -2.3 dBTP, unchanged (video-only fixes).
+- ffprobe: 160.000000s / 4800 frames @30fps, unchanged.
+Extracted and visually confirmed frames at both fix sites (s05-compare's
+wipe beat, s11-do-not-inject's slam beat) plus frame 0 and the last
+frame -- no visual regression at either fix site.

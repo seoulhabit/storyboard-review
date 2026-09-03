@@ -7,7 +7,7 @@
 | `hyperframes@0.8.22 check` | **ok: true**, 0 errors across lint / runtime / layout / motion / contrast, 3 accepted warnings | the composition under seek, 40 samples |
 | `check-safe-area.py --landscape` | **PASS — no findings, 640 frames sampled** | `06-render/final.mp4` |
 | `check-static-hold.py --landscape` | advisory (exit 0); **no findings** — whole-frame pass (320 samples, 10.0s ceiling) and region-aware pass (2×3 grid, 1.0s content-then-empty ceiling) both clean | `final.mp4` |
-| `check-cadence.py --longform` | advisory (exit 0); **18.1% whole-video active share**, no scene exceeds the 6.0s quiet ceiling | `final.mp4` |
+| `check-cadence.py --longform` | advisory (exit 0); **16.5% whole-video active share**, no scene exceeds the 6.0s quiet ceiling | `final.mp4` |
 | `continuity-audit.py` | 12/12 boundaries transitioned · top entrance signature 23.0% · top raw ease 40.0% · 0 rebuilt actors · 14 camera-move tweens · 0 plain-crossfade-across-ground violations | source |
 | `ebur128` | **−14.5 LUFS integrated, −2.3 dBTP, LRA 2.0** | `final.mp4`, not the loudnorm intermediate |
 | `ffprobe` duration | video **160.000000 s / 4800 frames @ 30 fps** == VO master clock exactly | `final.mp4` |
@@ -21,12 +21,26 @@ pass checks declared containers; it has no notion of the canvas edge or the
 reserved safe-area zones, which is exactly why `check-safe-area.py` is the
 authoritative gate and not a formality after `check` passes.
 
-**Cadence, in context.** 18.1% of 8fps steps carry a perceptible, localised
+**Cadence, in context.** 16.5% of 8fps steps carry a perceptible, localised
 change — higher than this project's own 180s cut (15.1%) and the long-form
 comparator `ectoin-survival-molecule` (14.0%), consistent with a materially
 denser scene count per minute (13 scenes / 160s = one scene every 12.3s,
 vs the 180s cut's one every 12.9s) and several newly-added animated elements
 (droplet convergence in s08, the loose-to-lattice crossfade in s10).
+
+**Post-code-review re-render.** `/code-review high` on PR #11 surfaced 10
+findings, all fixed same-session (see `00-decision-ledger.md`'s
+`## re-run — code-review fix pass` section for the full list and root
+causes). Two of the ten (C2, C3) changed rendered output: `s05-compare`'s
+wipe beat and `s11-do-not-inject`'s slam beat now go through the file's
+own `_row_tweens()` helper instead of hand-rolled loops, which is why
+cadence moved from the pre-fix render's 18.1% to 16.5% — fewer,
+more consistent beats from the house entrance treatment, not a coverage
+loss (still above the 180s cut's 15.1%). All gates in the table above are
+measured on this post-fix `final.mp4`, not the pre-fix render; safe-area,
+static-hold, loudness and duration were unaffected as expected, since none
+of the 10 fixes touched claim wording, sourcing, layout dimensions, or
+audio — but all three pixel gates were re-run rather than assumed clean.
 
 ## `[K-4]` — rendered-claim check, on the extracted frames
 

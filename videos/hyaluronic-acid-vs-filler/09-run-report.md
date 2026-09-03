@@ -15,7 +15,10 @@ frames**, 27.4 MB. Every gate measured on the shipped file, not an
 intermediate: `hyperframes check` **ok: true** (0 errors across lint /
 runtime / layout / motion / contrast, 3 accepted warnings), safe-area
 **no findings across 640 sampled frames**, **−14.5 LUFS / −2.3 dBTP**, cadence
-**18.1%** active share against the long-form comparators' 14.0-15.1%.
+**16.5%** active share against the long-form comparators' 14.0-15.1%. This
+is the fourth render: a `/code-review high` pass on the opened PR (#11)
+found 10 real issues in the generator scripts before merge, all fixed and
+re-verified — see "Post-review fix pass" below.
 
 This is a **revision**, not a fresh build: operator feedback on the shipped
 180 s two-hander (commit `48c29d9`) asked for one female narrator, a tighter
@@ -50,7 +53,7 @@ re-scoring would have spent credits to re-derive the same answer.
 | S4 Script + VO | ran | **pass, 1 generation pass** | `hf generate_audio` ×1 + `generate_audio_batch` ×5, `jobs_wait` ×9 (13 stems total; repeated 429 rate-limit retries at >2 concurrent) | 22 |
 | S5 Beat sheet | ran | pass after 1 revision (chapter floor) | `build_beats.py` ×2 | 4 |
 | S6 Composition | ran | pass | `beats_to_composition.py` ×4, `build_actors.py` ×5, `continuity-audit.py` | 41 |
-| S7 Render QA | ran | **pass after 3 renders / 4 check-fix cycles** | `check` ×6, `render` ×3, `ffmpeg` ×8, `check-safe-area.py` ×3, `check-static-hold.py` ×1, `check-cadence.py` ×1, `continuity-audit.py` ×1 | 58 |
+| S7 Render QA | ran | **pass after 4 renders / 4 check-fix cycles** (4th render is the post-code-review fix pass, below) | `check` ×7, `render` ×4, `ffmpeg` ×9, `check-safe-area.py` ×4, `check-static-hold.py` ×2, `check-cadence.py` ×2, `continuity-audit.py` ×1 | 65 |
 | S8 Publish envelope | ran — **updated in place** | pass — no write calls | manual edit: chapters, description opening, `[K-5]` count, end-screen scene ref | 5 |
 | S9 Readout schedule | **skipped** | — | nothing published; `08-readout-schedule.md` unchanged, still valid (relative to publish moment, not to cut version) | 0 |
 
@@ -103,13 +106,45 @@ The five that changed what got produced (full list carried in
    logged rather than silently substituted. `continuity-audit.py` still
    measured 0 rebuilt-actor pairs.
 
+## Post-review fix pass
+
+Operator requested a code review of PR #11 before merging. `/code-review
+high` ran 8 finder angles against the diff plus independent 1-vote
+verification on every surviving candidate: **10 findings, all CONFIRMED**,
+all in `build_beats.py`/`build_actors.py` (the generator scripts, not
+`01-story-brief.md` or any claim/sourcing content). Full list with root
+causes: `00-decision-ledger.md`'s `## re-run — code-review fix pass`
+section. Operator then asked to fix before merging rather than file as
+follow-up.
+
+Four correctness bugs (a hold-beat/next-beat overlap miscalculation, two
+scenes bypassing the shared `_row_tweens()` entrance helper via hand-rolled
+loops, one scene's `layout` metadata label not matching how it actually
+renders) and six cleanup findings (a success counter that could report
+success on a silently-failed regex substitution, one string-replace hack
+replaced with a proper parameter, a triplicated constant hoisted to one
+definition, three unread seeded RNGs removed, one dead list removed, one
+undocumented recurring hand-tuning pattern documented). Two of the ten
+(the `_row_tweens()` fixes) changed rendered pixels; the rest were
+generator-code-only with no visual effect.
+
+Fixed, committed (`8b41964`), and the full pipeline re-run from
+`build_beats.py` through render: beat sheet still totals exactly 160.000s
+with 0 hold-beat overlaps, `check --json` still `ok: true` with the same 3
+accepted warnings, and all three pixel gates (safe-area, static-hold,
+cadence) re-verified clean on the new `final.mp4` rather than assumed
+carried-over. Cadence moved 18.1% → 16.5% (see `06-render/qa-log.md`) —
+the two `_row_tweens()` fixes changed *which* tween ran, not whether the
+scene reads as active; still above the 180s cut's 15.1%. Extracted frames
+at both fix sites confirmed no visual regression.
+
 ## Spend
 
 | Provider | Stage | Measured |
 |---|---|---|
 | Higgsfield `generate_audio` (seed_audio, Kimberly) | S4 | **16.1 credits = $0.322** — measured via the `transactions` tool, not estimated |
 | vidIQ | — | 0 credits (S0–S3 all reused, not re-fetched) |
-| HyperFrames render | S7 | 24 render-minutes; `providers.yaml` has no per-minute rate, minutes logged not priced |
+| HyperFrames render | S7 | 24 render-minutes across the first 3 renders, plus 1 more render for the post-review fix pass (not separately timed); `providers.yaml` has no per-minute rate, minutes logged not priced |
 
 Total **$0.32 of $5.00 (6.4%)**. `BUDGET-WARN` and `BUDGET-CAP` did not fire.
 Appended to `videos/_channel/spend.jsonl`.

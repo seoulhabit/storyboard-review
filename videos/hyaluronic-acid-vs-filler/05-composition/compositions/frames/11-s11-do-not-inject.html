@@ -84,8 +84,8 @@
       <g transform="translate(420,150)"><path d="M0 60 Q-10 10 30 6 Q34 -6 46 4 Q52 -6 62 6 Q70 -4 76 8 Q92 10 86 40 Q90 70 60 76 L10 76 Q0 74 0 60 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></g>
     </svg>
         <div class="col" style="gap:18px">
-          <div class="caption beat" id="s11-do-not-inject-b0">Is a filler just serum with a needle? Not even close.</div>
-          <div class="kicker beat" id="s11-do-not-inject-b2">Worth putting in very large letters</div>
+          <div class="caption beat is-entering" id="s11-do-not-inject-b0">Is a filler just serum with a needle? Not even close.</div>
+          <div class="kicker beat is-entering" id="s11-do-not-inject-b2">Worth putting in very large letters</div>
         </div>
       </div>
       <h1 class="warn-head beat is-entering" id="s11-do-not-inject-b3">DO NOT INJECT YOURSELF</h1>
@@ -98,7 +98,8 @@
 </div>
 <script>
 (function () {
-  gsap.set('#s11-do-not-inject-top', { opacity: 0, y: -20 });
+  gsap.set('#s11-do-not-inject-b0', { opacity: 0, y: 30 });
+  gsap.set('#s11-do-not-inject-b2', { opacity: 0, y: 30 });
   gsap.set('#s11-do-not-inject-b3', { opacity: 0, scale: 1.06, y: -18 });
   gsap.set('#s11-do-not-inject-b4', { opacity: 0, y: 30 });
   gsap.set('#s11-do-not-inject-b5', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
@@ -107,7 +108,8 @@
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s11-do-not-inject-top', { opacity: 1, y: 0, duration: 1.100, ease: 'power2.inOut' }, 0.001);
+  tl.to('#s11-do-not-inject-b0', { opacity: 1, y: 0, duration: 1.300, ease: 'power3.out' }, 0.000);
+  tl.to('#s11-do-not-inject-b2', { opacity: 1, y: 0, duration: 1.200, ease: 'power3.out' }, 4.433);
   tl.to('#s11-do-not-inject-b3', { opacity: 1, scale: 1, y: 0, duration: 1.000, ease: 'power4.out' }, 6.046);
   tl.to('#s11-do-not-inject-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 8.464);
   tl.to('#s11-do-not-inject-b5', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 10.076);

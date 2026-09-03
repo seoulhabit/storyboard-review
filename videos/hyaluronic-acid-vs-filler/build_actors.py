@@ -327,7 +327,7 @@ def txt(b):
 # 9.0s, 16 occurrences). Nothing here is absolutely positioned.
 LANE_CSS = """
   .col-wrap { display:flex; flex-direction:column; width:100%; height:100%;
-              justify-content:space-between; gap:18px; }
+              justify-content:space-between; gap:32px; }
   .lanes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0;
            width:100%; flex:0 1 auto; min-height:0; align-items:center;
            overflow:hidden; }
@@ -335,7 +335,10 @@ LANE_CSS = """
           padding:0 26px; position:relative; height:100%; justify-content:center; }
   .lane + .lane::before { content:""; position:absolute; left:0; top:8%;
           bottom:8%; width:2px; background:var(--rule-strong); }
-  .lane .actor { height:440px; width:auto; max-width:100%; flex:0 0 auto; }
+  /* [S7/R-2] measured: 440px + the foot's 76px punchline left only ~20px
+     clearance -- check flagged content_overlap between the lane0 label and
+     the foot head at their closest approach. 380px restores real clearance. */
+  .lane .actor { height:380px; width:auto; max-width:100%; flex:0 0 auto; }
   /* Absolutely positioned so the icon adds ZERO height to the lane's flex
      budget -- v1's proven 440px-actor layout already fills the available
      798px column exactly; anything added in-flow overflows into .foot. */

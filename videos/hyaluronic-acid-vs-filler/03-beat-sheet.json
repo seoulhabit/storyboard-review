@@ -127,9 +127,9 @@
           "dur": 1.0,
           "idiom": "slam",
           "role": "head",
-          "text": "Three completely different jobs",
+          "text": "Different jobs",
           "actor": "lineup",
-          "intent": "Three completely different jobs"
+          "intent": "Different jobs"
         }
       ]
     },

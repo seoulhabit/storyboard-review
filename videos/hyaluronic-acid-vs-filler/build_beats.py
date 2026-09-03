@@ -53,7 +53,7 @@ SCENES = [
         (at(1,0.28), 1.30, "slam",   "sub",    "The kind your body makes"),
         (at(1,0.47), 1.30, "wipe",   "sub",    "The kind in your serum"),
         (at(1,0.66), 1.30, "wipe",   "sub",    "The kind a doctor injects"),
-        (at(1,0.90), 1.00, "slam",   "head",   "Three completely different jobs"),
+        (at(1,0.90), 1.00, "slam",   "head",   "Different jobs"),
       ]),
  dict(id="s02-not-filler", actor="misconception", section="misconception", layout="hero-left", bg=PAPER,
       start=S[2]["start"], end=S[3]["start"], beats=[

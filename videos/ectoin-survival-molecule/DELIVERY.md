@@ -240,8 +240,9 @@ still zero camera moves.
 
 ## Still outstanding
 
-- **Thumbnail.** Long-form generates and scores one (`[S3/P-3]`); frame 0 is the
-  Shorts branch and does not apply. Not produced.
+- **Thumbnail.** Produced 2026-09-03 — see *Packaging* below. The CTR score
+  (`[S3/P-3]`) is still outstanding: `vidiq_score_thumbnail` needs a published
+  `videoId` or a hosted image URL, and this video is unpublished.
 - **BGM and SFX.** The mix is voiceover only. Mastering is correct for that mix
   and must be re-run if a music bed is added.
 - **Description, tags, pinned comment, end-screen targets.**
@@ -260,3 +261,44 @@ Gates need their profile flags — `--landscape` for safe-area and static-hold,
 `--longform` for cadence. Without them the portrait defaults produce a **silent
 false pass**: the bottom-zone slice `mask[1536:, :]` on a 1080-tall frame is an
 empty numpy view.
+
+
+## Packaging — 2026-09-03
+
+**Title (scored, `[S3/P-1]`).** `Ectoin: How Salt Lake Bacteria Made a Skin
+Barrier Ingredient` — 61 chars (limit 70), seed keyword `Ectoin` at position 1
+(must be inside the first 60). Chosen by measurement, not preference; four
+candidates scored against the channel via `vidiq_score_title`:
+
+| Title | Score |
+|---|---|
+| Ectoin: How Salt Lake Bacteria Made a Skin Barrier Ingredient | **93** |
+| Ectoin: How Desert Bacteria Made a Skin Barrier Ingredient | 89 |
+| Ectoin: The Skin Barrier Molecule Bacteria Invented to Survive | 82 |
+| Ectoin: The Survival Molecule Behind Skin Barrier Repair | 73 |
+
+The 20-point spread runs along one axis: the origin-story framing beats the
+benefit framing every time. That matches the packaging research — both ranking
+competitors are product roundups, and nobody owns the origin/mechanism angle,
+which is exactly this script's.
+
+**Thumbnail.** `thumbnail/thumb-1280x720.{html,png,jpg}`, browser-drawn per the
+PDRN/betaine precedent and rendered through headless Chrome at exactly
+1280x720.
+
+- Overlay text is **WHERE NOTHING LIVES** — three words (`[S3/P-2]` ceiling)
+  sharing no word with the title, so the pair carries two different hooks
+  rather than one repeated twice.
+- **No ingredient pill**, which departs from house style deliberately: the pill
+  would take total overlay text to four words, and at feed size the chip costs
+  more legibility than naming the ingredient buys when the title already opens
+  with it.
+- The salt-flat ground and horizon were added after the first render, where a
+  bare gradient carried no place at all. Verified by downscaling the real PNG
+  to 168px (mobile feed width): headline still reads, molecule holds as a
+  glowing form, horizon survives.
+- The art is the mechanism, not decoration — a molecule inside its own ordered
+  water shell, which is the video's actual claim.
+
+**Still open.** Thumbnail CTR score, description, tags, pinned comment,
+end-screen targets, and the first outing for `brand/channel/watermark-150.png`.

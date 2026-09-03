@@ -43,3 +43,18 @@ Companion gates: `COMPANION-RESOLVED:<name> (skill-tool|file)` or `COMPANION-MIS
 [K-2b] ratio limb → does NOT fire | Mechanism 6 sourced : 1 unsourced (C6); Proof 0:0 editorial-only | computed
 [K-3] reword 1 → "'Gentle' is never universal" → "'Gentle' isn't a fixed property" | drops K-2a absolute language, keeps the point | —
 [S4/V-1] word budget → 750±10% (675-825) target vs **646 actual**, 29 words under floor | logged deviation, not padded per operator decision | wc
+
+## S2 Topic gate
+[S2/T-1] seed → `k-beauty ingredient label` | shortest phrase naming the mechanism, no brand | —
+[S2/T-2] demand → FAIL then SWAP → PASS | seed volume 0/<750mo/no overall; swapped to `k beauty` (overall 65.96, volume 69.74, competition 39.7) — passes both limbs, specificity loss logged plainly | vidiq_keyword_research
+[S2] slug DIVERGES from seed → kept `kbeauty-label-trap` (fixed at S0.0) | shorter, more distinctive than seed-derived form | —
+[S2/T-3] outliers → PASS in letter, degraded in substance | top breakout results are noise (lyric video, Tyler Perry review); one real comparator (Skinvestigation "beauty industry exposed" investigative format, breakout 120.49) | vidiq_outliers
+[S2/T-3] reframe → NOT opened | T-2 passed after swap; run not tagged `experiment` | —
+[S2/T-4] title shape → N-red-flags/safer-choice investigative frame, adapted not copied (this video's shape is N-questions) | —
+
+## S3 Packaging
+COMPANION-RESOLVED:frontend-design (skill-tool)
+[S3] frontend-design → 2 corrections applied: (1) porcelain locked as default ground, ink-black reserved for bench-only scenes (avoids AI-default cluster #2); (2) vermilion stamp moved onto the bottle itself in the thumbnail, tying accent to the passport-motif signature rather than arbitrary color | frontend-design
+[S3/P-1] titles → 5 shapes scored, one round: negative-capability **96** (winner, = operator's primary) · question 92 · exposé 87 · myth-bust 85 · listicle 77 | vidiq_score_title x5
+[S3/P-2] concept → two bottles, scanner split, vermilion stamp on glass, `THE LABEL ≠ THE FORMULA` overlay | saturation 0/10 near-identical | vidiq_similar_thumbnails
+[S3/P-3] thumbnail → generated 1, self-score 89, independent score 89 (agree), ≥70 → no refine | 1280×720 saved `04-assets/thumbnail.png` | vidiq_generate_thumbnail, vidiq_score_thumbnail

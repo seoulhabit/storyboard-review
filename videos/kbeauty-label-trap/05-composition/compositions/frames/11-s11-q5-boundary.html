@@ -117,6 +117,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s11-q5-boundary'] = tl;
 
+
+  tl.to({}, { duration: 25.242, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

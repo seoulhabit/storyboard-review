@@ -50,8 +50,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s09-q3-transit" data-width="1920" data-height="1080" data-duration="15.048">
-  <div class="clip stage" id="s09-q3-transit-stage" data-start="0" data-duration="15.048">
+<div id="root" data-composition-id="s09-q3-transit" data-width="1920" data-height="1080" data-duration="15.498">
+  <div class="clip stage" id="s09-q3-transit-stage" data-start="0" data-duration="15.498">
 
     <div class="transit">
       <div class="transit-row">
@@ -100,6 +100,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s09-q3-transit'] = tl;
 
+
+  tl.to({}, { duration: 15.498, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

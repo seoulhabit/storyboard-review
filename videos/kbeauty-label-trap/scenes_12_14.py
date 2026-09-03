@@ -12,7 +12,7 @@ style = """
   .bench-surface { position:absolute; left:0; right:0; bottom:0; height:38%;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
     border-top:1px solid rgba(255,255,255,0.06); }
-  .bottle-pair { position:absolute; left:50%; top:46%; transform:translate(-50%,-40%);
+  .bottle-pair { position:absolute; left:50%; top:36%; transform:translate(-50%,-50%);
     display:flex; gap:220px; }
   .bottle-label { text-align:center; margin-top:18px; }
   .verdict-row { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 60px);
@@ -34,10 +34,10 @@ body = f'''
       <div class="seal-row" id="s12-seals">{seal_row}</div>
       <div class="bottle-pair" id="s12-bottles">
         <div class="bottle-label">
-          {bottle_svg("s12-bottle-a", 0, 0, 380, 190, "lattice")}
+          {bottle_svg("s12-bottle-a", 0, 0, 300, 150, "lattice")}
         </div>
         <div class="bottle-label">
-          {bottle_svg("s12-bottle-b", 0, 0, 380, 190, "water")}
+          {bottle_svg("s12-bottle-b", 0, 0, 300, 150, "water")}
         </div>
       </div>
       <div class="verdict-row" id="s12-verdicts">

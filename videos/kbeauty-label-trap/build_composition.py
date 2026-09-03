@@ -17,6 +17,29 @@ BS = json.load(open(os.path.join(ROOT, "03-beat-sheet.json")))
 SCENES = {s["id"]: s for s in BS["scenes"]}
 OUTDIR = os.path.join(ROOT, "05-composition", "compositions", "frames")
 
+def _d_in(sc):
+    t = sc.get("transition")
+    if not t or t.get("type") in (None, "hard-cut", "cut"):
+        return 0.0
+    return float(t.get("dur", 0.0))
+
+_scene_list = BS["scenes"]
+_D_IN = {s["id"]: _d_in(s) for s in _scene_list}
+_ids_in_order = [s["id"] for s in _scene_list]
+_D_OUT = {}
+for _i, _sid in enumerate(_ids_in_order):
+    _D_OUT[_sid] = _D_IN[_ids_in_order[_i + 1]] if _i + 1 < len(_ids_in_order) else 0.0
+
+def extended_duration(scene_id):
+    """The scene's REAL on-screen lifetime, per index.html's own transition-
+    overlap formula (nominal + d_in + d_out) -- not the beat sheet's nominal
+    duration. A sub-composition's own `data-duration`/anchor tween must match
+    this or the wrapper keeps it mounted past its internal timeline's declared
+    end, which renders as a black dead zone for the overlap tail (confirmed:
+    the video's own last ~0.45s went solid black before this fix)."""
+    sc = SCENES[scene_id]
+    return round(sc["duration"] + _D_IN[scene_id] + _D_OUT[scene_id], 3)
+
 SHARED_CSS = """
   *, *::before, *::after { box-sizing: border-box; }
   #root {
@@ -135,8 +158,17 @@ def bottle_svg(uid, cx, top, height, width, liquid_kind, cap_color="#8A9498"):
 def wrap(scene_id, style_extra, body_html, script_js, bg="paper"):
     sc = SCENES[scene_id]
     dur = sc["duration"]
+    ext_dur = extended_duration(scene_id)
     bg_color = "var(--ink)" if bg == "dark" else "var(--paper)"
     fg_color = "var(--paper)" if bg == "dark" else "var(--ink)"
+    # Force the registered timeline length to the EXTENDED duration regardless
+    # of what anchor tween the scene's own script declared -- see
+    # extended_duration()'s docstring. A second same-target anchor tween at
+    # position 0 just raises tl.duration() to the max of the two; harmless.
+    forced_anchor = (
+        f"\n  tl.to({{}}, {{ duration: {ext_dur:.3f}, ease: 'none' }}, 0); "
+        f"// [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration\n"
+    )
     return f'''<template>
 <style>
 {SHARED_CSS}
@@ -144,15 +176,15 @@ def wrap(scene_id, style_extra, body_html, script_js, bg="paper"):
 {style_extra}
 </style>
 
-<div id="root" data-composition-id="{scene_id}" data-width="1920" data-height="1080" data-duration="{dur:.3f}">
-  <div class="clip stage" id="{scene_id}-stage" data-start="0" data-duration="{dur:.3f}">
+<div id="root" data-composition-id="{scene_id}" data-width="1920" data-height="1080" data-duration="{ext_dur:.3f}">
+  <div class="clip stage" id="{scene_id}-stage" data-start="0" data-duration="{ext_dur:.3f}">
 {body_html}
   </div>
 </div>
 <script>
 (function () {{
 {script_js}
-}})();
+{forced_anchor}}})();
 </script>
 </template>
 '''

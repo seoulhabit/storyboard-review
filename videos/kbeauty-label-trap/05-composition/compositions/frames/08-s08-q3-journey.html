@@ -53,8 +53,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s08-q3-journey" data-width="1920" data-height="1080" data-duration="19.160">
-  <div class="clip stage" id="s08-q3-journey-stage" data-start="0" data-duration="19.160">
+<div id="root" data-composition-id="s08-q3-journey" data-width="1920" data-height="1080" data-duration="19.610">
+  <div class="clip stage" id="s08-q3-journey-stage" data-start="0" data-duration="19.610">
 
     <div class="corridor">
       <div class="lane">
@@ -80,6 +80,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s08-q3-journey'] = tl;
 
+
+  tl.to({}, { duration: 19.610, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

@@ -51,8 +51,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s03-promise-seals" data-width="1920" data-height="1080" data-duration="15.136">
-  <div class="clip stage" id="s03-promise-seals-stage" data-start="0" data-duration="15.136">
+<div id="root" data-composition-id="s03-promise-seals" data-width="1920" data-height="1080" data-duration="16.186">
+  <div class="clip stage" id="s03-promise-seals-stage" data-start="0" data-duration="16.186">
 
     <div class="promise-stage">
       <div class="scanner-line" id="s03-scanner"></div>
@@ -186,6 +186,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s03-promise-seals'] = tl;
 
+
+  tl.to({}, { duration: 16.186, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

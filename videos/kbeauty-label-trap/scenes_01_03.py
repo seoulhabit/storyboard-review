@@ -49,7 +49,9 @@ body = f'''
     </div>
 '''
 script = """
-  gsap.set('#s01-droplet', { opacity: 0, y: -20 });
+  // [R-1] frame 0 must never be blank: the droplet starts already visible
+  // (this IS the hook), not faded in from opacity 0.
+  gsap.set('#s01-droplet', { opacity: 1, y: -20 });
   gsap.set('#s01-ripple', { opacity: 0, scale: 0.3 });
   gsap.set('#s01-bottles', { opacity: 0, y: 30 });
   gsap.set('#s01-ribbon-l', { opacity: 0, x: -20 });

@@ -52,8 +52,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s05-q1-dose" data-width="1920" data-height="1080" data-duration="18.762">
-  <div class="clip stage" id="s05-q1-dose-stage" data-start="0" data-duration="18.762">
+<div id="root" data-composition-id="s05-q1-dose" data-width="1920" data-height="1080" data-duration="19.212">
+  <div class="clip stage" id="s05-q1-dose-stage" data-start="0" data-duration="19.212">
 
     <div class="dose-stage">
       <div class="dose-row">
@@ -97,6 +97,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s05-q1-dose'] = tl;
 
+
+  tl.to({}, { duration: 19.212, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

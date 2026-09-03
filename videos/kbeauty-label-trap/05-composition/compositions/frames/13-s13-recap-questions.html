@@ -49,8 +49,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s13-recap-questions" data-width="1920" data-height="1080" data-duration="11.994">
-  <div class="clip stage" id="s13-recap-questions-stage" data-start="0" data-duration="11.994">
+<div id="root" data-composition-id="s13-recap-questions" data-width="1920" data-height="1080" data-duration="12.894">
+  <div class="clip stage" id="s13-recap-questions-stage" data-start="0" data-duration="12.894">
 
     <div class="recap">
       <div class="recap-card" id="s13-card">
@@ -81,6 +81,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s13-recap-questions'] = tl;
 
+
+  tl.to({}, { duration: 12.894, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

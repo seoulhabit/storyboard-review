@@ -93,6 +93,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s10-q4-tunnel'] = tl;
 
+
+  tl.to({}, { duration: 39.983, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

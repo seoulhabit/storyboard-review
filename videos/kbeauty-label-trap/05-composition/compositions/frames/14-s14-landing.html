@@ -50,8 +50,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s14-landing" data-width="1920" data-height="1080" data-duration="9.451">
-  <div class="clip stage" id="s14-landing-stage" data-start="0" data-duration="9.451">
+<div id="root" data-composition-id="s14-landing" data-width="1920" data-height="1080" data-duration="9.901">
+  <div class="clip stage" id="s14-landing-stage" data-start="0" data-duration="9.901">
 
     <div class="endcard">
       <div class="lock-ring">
@@ -121,6 +121,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s14-landing'] = tl;
 
+
+  tl.to({}, { duration: 9.901, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

@@ -54,8 +54,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s06-q2-leaf-chambers" data-width="1920" data-height="1080" data-duration="20.554">
-  <div class="clip stage" id="s06-q2-leaf-chambers-stage" data-start="0" data-duration="20.554">
+<div id="root" data-composition-id="s06-q2-leaf-chambers" data-width="1920" data-height="1080" data-duration="21.004">
+  <div class="clip stage" id="s06-q2-leaf-chambers-stage" data-start="0" data-duration="21.004">
 
     <div class="leaf-stage" id="s06-camera" style="transform-origin:50% 45%;">
       <div class="leaf-head" id="s06-head"><div class="kicker">CENTELLA ASIATICA EXTRACT — ONE NAME, THREE PROCESSES</div></div>
@@ -106,6 +106,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s06-q2-leaf-chambers'] = tl;
 
+
+  tl.to({}, { duration: 21.004, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

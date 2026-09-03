@@ -47,8 +47,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s07-q2-travelers" data-width="1920" data-height="1080" data-duration="8.012">
-  <div class="clip stage" id="s07-q2-travelers-stage" data-start="0" data-duration="8.012">
+<div id="root" data-composition-id="s07-q2-travelers" data-width="1920" data-height="1080" data-duration="8.462">
+  <div class="clip stage" id="s07-q2-travelers-stage" data-start="0" data-duration="8.462">
 
     <div class="gate-stage">
       <div class="gate-wrap">
@@ -78,6 +78,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s07-q2-travelers'] = tl;
 
+
+  tl.to({}, { duration: 8.462, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

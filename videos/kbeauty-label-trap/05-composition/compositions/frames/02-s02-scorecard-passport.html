@@ -56,8 +56,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s02-scorecard-passport" data-width="1920" data-height="1080" data-duration="12.257">
-  <div class="clip stage" id="s02-scorecard-passport-stage" data-start="0" data-duration="12.257">
+<div id="root" data-composition-id="s02-scorecard-passport" data-width="1920" data-height="1080" data-duration="13.307">
+  <div class="clip stage" id="s02-scorecard-passport-stage" data-start="0" data-duration="13.307">
 
     <div class="pass-stage">
       <div class="leaderboard" id="s02-leaderboard">
@@ -105,6 +105,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s02-scorecard-passport'] = tl;
 
+
+  tl.to({}, { duration: 13.307, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

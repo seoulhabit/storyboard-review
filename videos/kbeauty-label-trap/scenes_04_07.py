@@ -74,6 +74,10 @@ script = f"""
   tl.to('#s04-cite-eu', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 5.3);
 {below_tweens}
 {scramble}
+  // The tag sits over the list's own bottom rows at this canvas size --
+  // dim the list first so the tag never visually collides with live text
+  // underneath it (caught on an extracted frame, not by `check`'s sampling).
+  tl.to('.canyon-list', {{ opacity: 0.1, duration: 0.5, ease: 'power2.inOut' }}, 8.5);
   tl.to('#s04-tag1', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 9.0);
   tl.to('#s04-tag1', {{ opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }}, 12.5);
   tl.to({{}}, {{ duration: 20.319, ease: 'none' }}, 0);

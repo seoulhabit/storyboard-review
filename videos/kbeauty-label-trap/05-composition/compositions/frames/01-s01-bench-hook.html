@@ -62,8 +62,8 @@
 
 </style>
 
-<div id="root" data-composition-id="s01-bench-hook" data-width="1920" data-height="1080" data-duration="15.777">
-  <div class="clip stage" id="s01-bench-hook-stage" data-start="0" data-duration="15.777">
+<div id="root" data-composition-id="s01-bench-hook" data-width="1920" data-height="1080" data-duration="16.377">
+  <div class="clip stage" id="s01-bench-hook-stage" data-start="0" data-duration="16.377">
 
     <div class="bench">
       <div class="bench-surface"></div>
@@ -139,7 +139,9 @@
 <script>
 (function () {
 
-  gsap.set('#s01-droplet', { opacity: 0, y: -20 });
+  // [R-1] frame 0 must never be blank: the droplet starts already visible
+  // (this IS the hook), not faded in from opacity 0.
+  gsap.set('#s01-droplet', { opacity: 1, y: -20 });
   gsap.set('#s01-ripple', { opacity: 0, scale: 0.3 });
   gsap.set('#s01-bottles', { opacity: 0, y: 30 });
   gsap.set('#s01-ribbon-l', { opacity: 0, x: -20 });
@@ -159,6 +161,8 @@
   window.__timelines = window.__timelines || {};
   window.__timelines['s01-bench-hook'] = tl;
 
+
+  tl.to({}, { duration: 16.377, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
 })();
 </script>
 </template>

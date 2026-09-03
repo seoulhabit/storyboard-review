@@ -22,6 +22,11 @@
 #   ./worktree.sh new <name>      create an isolated worktree off origin/master
 #   ./worktree.sh guard           exit 1 if run from the shared tree (for hooks)
 #
+# `guard` tests your CURRENT WORKING DIRECTORY, not where this script lives.
+# Invoking a worktree's copy while cd'd to the shared tree correctly reports the
+# shared tree; that is right for hook use, where cwd is what matters, but it
+# reads as a false positive if you expect it to check the script's own path.
+#
 # This script never deletes a worktree or moves a ref. Stale trees are reported
 # with what would be lost; removing them is a human decision.
 
@@ -62,6 +67,30 @@ _ahead_behind() {
   echo "${pad}${c_yel}!${c_off} $a ahead / $b behind origin/$br"
   [ "${a:-0}" -gt 0 ] && echo "${pad}  $a unpushed commit(s) — a reset of this branch orphans them"
   [ "${b:-0}" -gt 0 ] && echo "${pad}  $b behind — pull before committing or you diverge further"
+  return 0
+}
+
+# A stale copy of this script is most likely to be run by exactly the people it
+# is for: the shared tree sits on a feature branch that predates these fixes, so
+# `./worktree.sh` there is an older version -- LFS wall, no divergence check.
+# Compare the running file against origin's blob and say so.
+#
+# Bootstrapping limit, stated rather than hidden: a copy older than this check
+# cannot perform it. This protects future drift, not the drift that already
+# exists. It also reads the LOCAL origin/master ref, so it is as fresh as your
+# last fetch.
+_self_check() {
+  local mine theirs
+  mine="$(git -C "$ROOT" hash-object "${BASH_SOURCE[0]}" 2>/dev/null)" || return 0
+  theirs="$(git -C "$ROOT" rev-parse -q --verify origin/master:worktree.sh 2>/dev/null)" || return 0
+  [ -z "$theirs" ] && return 0
+  if [ "$mine" != "$theirs" ]; then
+    echo
+    echo "  ${c_yel}!${c_off} this copy of worktree.sh differs from origin/master's."
+    echo "    Running: ${BASH_SOURCE[0]}"
+    echo "    If it is older you may be missing fixes. Compare with:"
+    echo "      git show origin/master:worktree.sh | diff - \"${BASH_SOURCE[0]}\""
+  fi
   return 0
 }
 
@@ -168,7 +197,7 @@ cmd_guard() {
 }
 
 case "${1:-status}" in
-  status) cmd_status ;;
+  status) _self_check; cmd_status ;;
   new)    shift; cmd_new "$@" ;;
   guard)  cmd_guard ;;
   *)      die "unknown command: $1 (status | new <name> | guard)" ;;

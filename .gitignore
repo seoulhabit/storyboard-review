@@ -32,3 +32,16 @@ node_modules/
 
 # macOS
 .DS_Store
+
+# HyperFrames render scratch. `hyperframes render` writes per-worker capture
+# frames into renders/work-<uuid>/ for the whole duration of a render, so a
+# 6-minute 1080p render is a ~15-minute window in which any broad `git add` in
+# a project directory sweeps them into the commit. That is a property of the
+# tool, not of any one video, which is why these live at the repo root.
+#
+# Cost of not having this: one session committed 6,844 capture frames, 556 MB,
+# via `git add -A` while a render was in flight. Caught only because the branch
+# happened to be under review before pushing; on origin it would have needed a
+# history rewrite to remove.
+videos/*/renders/work-*/
+videos/*/renders/.*hf-transaction*

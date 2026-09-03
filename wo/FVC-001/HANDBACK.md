@@ -16,8 +16,8 @@ Every command below was re-run fresh for this handback, just now — not pasted 
 | T1 | Release script + zip | `scripts/release.sh && ls -la dist/` | `✔ Validation passed` → `Wrote .../dist/faceless-video-craft-2.1.0.zip` |
 | T1 | Validator exit code | (part of release.sh) | exit 0 |
 | T2 | merge-matrix.md fully resolved | `grep -c '\| merge \|\|\| keep \|\|confirmed correct' merge-matrix.md` | `29` (every rule-ID row carries a verdict; 0 empty cells) |
-| T2 | `hyperframes check` on the skeleton | — | **Blocked.** HyperFrames CLI not installed on this machine (confirmed, `00-inventory.md` §0.5). Engine contract verified *as documented* (cross-referenced against `hyperframes-engine.md`), not *as executed*. |
-| T2 | Lint vs `check` agreement | — | **Blocked**, same reason. |
+| T2 | `hyperframes check` on the skeleton | `hyperframes check .` (scaffolded — the bare skeleton needs a real project directory and authored sub-compositions, not a bare file) | **PASS**, run for real 2026-09-03 once the CLI was installed here. `0 errors, 0 warnings` across lint/runtime/layout(9)/motion/contrast. See `t2-status.md`. |
+| T2 | Lint vs `check` agreement | `python3 scripts/lint_composition.py fail_lazy_image.html` vs `hyperframes check .` on the same fixture | **FAIL, real and reproduced independently.** lint: 2 errors, exit 1. `check`: 0 findings, exit 0. Genuine contradiction between T5's own spec (which requires this check) and the installed CLI's actual behavior — not a bug, a WO-internal conflict needing Kim's call. See `t2-status.md` §4. |
 | T3 | Description ≤ 500 chars | `python3 -c "...len(desc)..."` | `chars: 479` |
 | T3 | Only guarded `/mnt` patterns remain | `grep -rn '/mnt' faceless-video-craft/` | 8 hits, all conditional (`if that directory exists`), a documented fallback, or an explicit prohibition — none assume `/mnt` exists |
 | T3 | Five wrappers exist | `ls wrappers/` | `produce video-audit video-package video-readout video-render` |
@@ -25,7 +25,7 @@ Every command below was re-run fresh for this handback, just now — not pasted 
 | T4 | `COMPANION` MISSING line with plugin disabled | — | **Blocked**, same reason. |
 | T5 | `tests/run.sh` exit 0 | `bash tests/run.sh` | `15 passed, 0 failed` |
 | T5 | Each failing fixture exits 1, named | (part of tests/run.sh) | all 8 fixture-based assertions pass |
-| T6 | Render dry run produces both files, Stages table correct | — | **Not executed** (same HyperFrames blocker); hand-traced against the spec instead — see `t6-status.md` for the traced table. |
+| T6 | Render dry run produces both files, Stages table correct | Full `render`-mode run against a scratchpad copy (`00-environment.md` + `09-run-report.md`) | **PASS**, run for real 2026-09-03. All 11 stage rows present; `skipped (mode=render)` exact-match on S0-S4/S8/S9; `ran` on S0.0/S5-S7; S7's `hyperframes check` gate exit 0. Original pre-T6 render directory confirmed untouched. See `t6-status.md`. |
 | T7 | Dry-run price matches the yaml | `provider_call.py gemini text --dry-run --in 1000 --out 1000` | `est=$0.0045` (hand-computed: `1000/1e6*0.75 + 1000/1e6*3.75 = 0.0045` — matches) |
 | T7 | Real Gemini calls produce three cost-log lines | — | **Blocked.** `GEMINI_API_KEY` genuinely unset on this machine (Kim's ☐ item, not yet done). |
 | T7 | Run report Spend table | — | Built into `assets/run-report.template.md` (T6); not populated by a real run. |

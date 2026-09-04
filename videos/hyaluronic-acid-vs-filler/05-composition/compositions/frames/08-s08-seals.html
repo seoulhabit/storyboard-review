@@ -1,0 +1,110 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#F0EBE1; color:#131516;
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:#4B9B93; }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+            align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel .actor { color:var(--ink); }
+
+</style>
+
+<div id="root" data-composition-id="s08-seals" data-width="1920" data-height="1080"
+     data-duration="7.821">
+  <div class="clip stage" id="s08-seals-stage" data-start="0" data-duration="7.821">
+    <div class="split2">
+      <div class="col" id="s08-seals-col">
+        <div class="head beat is-entering" id="s08-seals-b0">A complete formula still needs something else</div>
+        <div class="body beat is-entering" id="s08-seals-b1">An ingredient that seals that water in</div>
+        <div class="cite beat is-entering" id="s08-seals-b2">ChemRxiv · 2023</div>
+        <div class="sub beat is-entering" id="s08-seals-b3">So it doesn't evaporate away</div>
+      </div>
+      <div class="panel" id="s08-seals-panel">
+        <svg class="actor" viewBox="0 0 460 460" width="460" height="460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path id="s08-seals-chain" d="M 30.0 268.9 C 51.7 268.9 62.6 261.4 84.3 261.4 C 106.0 261.4 116.9 283.6 138.6 283.6 C 160.3 283.6 171.1 229.6 192.9 229.6 C 214.6 229.6 225.4 288.4 247.1 288.4 C 268.9 288.4 279.7 229.2 301.4 229.2 C 323.1 229.2 334.0 290.6 355.7 290.6 C 377.4 290.6 388.3 223.7 410.0 223.7" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+      <circle id="s08-seals-drop0" cx="70.0" cy="230.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop1" cx="150.0" cy="230.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop2" cx="280.0" cy="250.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop3" cx="120.0" cy="300.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop4" cx="320.0" cy="280.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop5" cx="200.0" cy="220.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop6" cx="90.0" cy="270.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s08-seals-drop7" cx="340.0" cy="240.0" r="9" fill="currentColor" opacity="0.85"/>
+    </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s08-seals-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s08-seals-drop0', { opacity: 1 });
+  gsap.set('#s08-seals-drop1', { opacity: 1 });
+  gsap.set('#s08-seals-drop2', { opacity: 1 });
+  gsap.set('#s08-seals-drop3', { opacity: 1 });
+  gsap.set('#s08-seals-drop4', { opacity: 1 });
+  gsap.set('#s08-seals-drop5', { opacity: 1 });
+  gsap.set('#s08-seals-drop6', { opacity: 1 });
+  gsap.set('#s08-seals-drop7', { opacity: 1 });
+  gsap.set('#s08-seals-b0', { opacity: 0, y: 30 });
+  gsap.set('#s08-seals-b1', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s08-seals-b2', { opacity: 0, y: 30 });
+  gsap.set('#s08-seals-b3', { opacity: 0, scale: 0.86 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s08-seals-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
+  tl.to('#s08-seals-drop0', { x: -40, y: -120, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 6.843);
+  tl.to('#s08-seals-drop3', { x: 90, y: -210, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 6.963);
+  tl.to('#s08-seals-drop6', { x: 270, y: -120, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 7.083);
+  tl.to('#s08-seals-b0', { opacity: 1, y: 0, duration: 1.500, ease: 'power3.out' }, 0.624);
+  tl.to('#s08-seals-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.334);
+  tl.to('#s08-seals-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 5.726);
+  tl.to('#s08-seals-b3', { opacity: 1, scale: 1, duration: 0.978, ease: 'back.out(1.6)' }, 6.843);
+  tl.to({}, { duration: 7.821, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s08-seals'] = tl;
+})();
+</script>
+</template>

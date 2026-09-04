@@ -323,3 +323,118 @@ assumed):
 Extracted and visually confirmed frames at both fix sites (s05-compare's
 wipe beat, s11-do-not-inject's slam beat) plus frame 0 and the last
 frame -- no visual regression at either fix site.
+
+## re-run — v3 revision, 2026-09-04 (retention rewrite, VO-driven re-time)
+
+Operator brief: rewrite for retention. Front-load the myth-correction thesis
+and all three identities, move the 1934 history to after the mechanism
+explanation, cut to one analogy, replace container-level drift with
+mechanism-specific motion, and let the measured VO duration drive the
+timeline rather than stretching to a fixed target. v2 (single narrator,
+160.0s, 388w, 13 scenes) is the stated baseline; v1's 180s two-hander is
+`git show 48c29d9:videos/hyaluronic-acid-vs-filler` and untouched.
+
+`[S1/S-2]` length: no fixed target this time. `04-assets/build_vo.py`
+rewritten from a stretch-to-TARGET model (both v1's 180.0 and v2's 160.0
+absorbed the gap between speech and target into one global `scale`, with NO
+GUARD against `scale` going negative if speech ever exceeded target -- a
+real defect, never triggered, now closed) to ABSOLUTE gaps in seconds
+(`GAP_STEM=0.50`, `GAP_SECTION=1.10`, both fixed constants chosen from what
+v1/v2's own stretch-fits realized naturally, not solved backward from a
+number). Measured total is whatever speech + fixed gaps comes to: **120.359s**
+for the final script, landing inside the requested 120-135s band by 0.359s
+after one deliberate constant nudge (`GAP_SECTION` 0.95->1.10, a longer
+breath specifically at topic-shift boundaries, not a stretch-to-fit).
+
+`[S4/V-2]` VO: 12 Kimberly-only stems, 309 words (target 300-330, verified
+programmatically -- word count and colon count both asserted by script, not
+eyeballed). Stem 1 (myth-correction thesis) and stem 2 (three identities)
+were split from what would otherwise have been one combined hook stem,
+specifically so "central answer in 3-5s" and "identities within 10s" are
+each independently measurable against real recorded audio: measured 5.411s
+and 10.095s respectively, not a character-proportional estimate inside a
+longer stem. Higgsfield seed_audio, same voice id, 21.5 credits total
+(cost-log.jsonl) -- preflighted with `get_cost:true` before the first spend.
+
+`[S5/C-1]` beat sheet: 14 scenes (up from 13), 62 beats (50 content, 12
+hold) derived from vo-timing.json via `at(stem,frac)`. Two scenes split a
+single VO stem's audio at a character-proportional point INSIDE the stem
+(not at a stem boundary) because leaving them whole reproduced the exact
+defect being fixed: stem 7 (water, 15.946s) -> s07-binds/s08-seals; stem 12
+(recap, 17.133s) -> s13-badges/s14-endcard. Longest scene is now 12.717s
+(s12-risks, clip-padded 13.767s), down from v2's 22.281s
+(s11-do-not-inject) and v1's 23.034s (s06-serum-size) -- a scene held that
+long is exactly the "several scenes last 15-24 seconds" complaint the brief
+opened with.
+
+`[S6/A-9]` composition: regenerated from scratch (`beats_to_composition.py`
+then `build_actors.py`), not hand-edited. The generator's own [S6/A-9]
+actor-continuity lint fired once, correctly, on a false positive: s11 and
+s12 both used `actor: "warning"` though neither carries a drawn diagram --
+renamed s12's actor to `"risks"` in the beat sheet and the warning cleared,
+rather than merging two unrelated text cards into one hand-authored scene
+to satisfy a check that didn't apply to them.
+
+**The core animation finding, confirmed by grep before writing a line of
+new code:** v2's composition had 27 container-level x/y/scale drift tweens
+and ZERO tweens on any actor sub-element -- no chain, no water dot, no
+lattice node ever moved independently; the three morphology actors were
+baked static plates the whole video only ever panned or zoomed. `build_actors.py`
+rewritten to keep the actors themselves static-and-deterministic (same
+seeded geometry, seeds 11/23/37 unchanged, so continuity-audit still reports
+zero rebuilt-actor pairs) while animating their SUB-ELEMENTS:
+- s05-size: the boundary panel's `.big`/`.small` chain groups translate
+  independently -- large decelerates and stops above the skin boundary,
+  small continues past it -- instead of the whole panel merely fading in.
+- s07-binds/s08-seals: water-dot circles translate onto a chain and bind
+  (kept from v2, which already did this one correctly), then in s08 a
+  subset of the SAME bound dots detaches and drifts away, continuing the
+  s07 state rather than starting a new illustration.
+- s09-crosslink: 14 of 42 lattice nodes get individual staggered
+  scale-in-with-overshoot tweens (`back.out(2.4)`, 0.06s apart) as the loose
+  chains fade, instead of the net cross-fading in as one flat block.
+- s04-split (new scene, not in v2): free chains get an idle undulation, the
+  mesh's nodes pop in staggered -- the categorical contrast the brief's
+  suggested treatment asks for, on screen by 25.6s (clip start).
+Caught by `check`'s motion pass on the first run: two caption beats in
+s04-split had markup and a mechanism-motion cue but no `gsap.set`/tween of
+their own, so they never left `opacity:0` -- `motion_appears_late` at
+27.49s and 30.42s. Fixed by adding the missing reveal tweens; confirmed
+clean by full regeneration (not a re-run onto already-patched files --
+`fix_generated_grounds()`'s regexes are not idempotent and would have
+duplicated the ground-fix CSS block on the 4 generated scenes had the
+generator not been re-run from a clean `rm -rf` first).
+
+`[S7/R-1b]` motion sidecar: v1 and v2 both re-pointed the generator's 2.0s
+Shorts default to 6.0s, matched to a video whose real motion source was a
+handful of container drifts. This cut's 50 content beats average one every
+~2.4s (empirically confirmed via `hyperframes keyframes --json`: 127
+distinct tween-start events across the piece, largest gap anywhere 3.50s,
+largest gap in the first 30s 3.27s -- both inside the brief's 2-4s ask).
+Re-pointed to **3.0s** instead of 6.0s, close to the piece's own measured
+cadence rather than the loosest number the format tolerates, since drift is
+no longer the primary motion source.
+
+`[youtube-delivery.md]` chapter floor (>=10s, first at 0:00): the new
+"history" section is 6.092s, below the floor. Rather than pad an aside the
+brief explicitly asks to compress, `build_beats.py` now merges any section
+shorter than the floor into the PRECEDING chapter for the public chapter
+list only -- "history" keeps its own `section` value for scene/actor
+bookkeeping, but the chapter marker at its start is dropped, and
+"mechanism"'s chapter continues through it. 5 chapters, min gap 10.7s, all
+clear.
+
+check --json --samples 40: ok=true, 0 errors across lint/runtime/layout/
+motion/contrast on the first clean-regeneration pass after the s04-split
+fix. 5 warnings accepted as-is: 1 lint (`overlapping_gsap_tweens` on
+`#s13-badges-stage`, inherited unchanged from `lane_scene()`'s own
+breathe+hold-drift pattern, present in v1/v2 too) + 4 layout
+`container_overflow` on stage-level elements (the drift-budget padding's
+own known side effect -- a scale>1 transform's bounding box exceeds its
+CSS container by design; the authoritative check is the pixel-level
+`check-safe-area.py` on the rendered MP4, not this bounding-box heuristic).
+
+Studio preview watched end-to-end (8 checkpoints, 0s/2s/21s/41s/60s/78s/97s/
+117s) after stopping and re-regenerating to clear `data-hf-id` injection
+(CLAUDE.md's documented preview-server behavior, confirmed present after
+stopping the server and absent after a clean re-run of both generators).

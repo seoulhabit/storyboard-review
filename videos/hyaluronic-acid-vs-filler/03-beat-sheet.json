@@ -6,7 +6,7 @@
     "w": 1920,
     "h": 1080
   },
-  "vo_duration_s": 160.0,
+  "vo_duration_s": 120.359,
   "presenter": "moving-diagram",
   "bg": "#F7F5F0",
   "ink": "#131516",
@@ -31,39 +31,39 @@
     {
       "name": "hook",
       "start": 0.0,
-      "end": 14.734
+      "end": 11.195
     },
     {
       "name": "misconception",
-      "start": 14.734,
-      "end": 28.713
+      "start": 11.195,
+      "end": 21.901
     },
     {
       "name": "mechanism",
-      "start": 28.713,
-      "end": 80.28
+      "start": 21.901,
+      "end": 78.044
     },
     {
-      "name": "proof",
-      "start": 80.28,
-      "end": 114.913
+      "name": "history",
+      "start": 78.044,
+      "end": 84.136
     },
     {
       "name": "application",
-      "start": 114.913,
-      "end": 135.994
+      "start": 84.136,
+      "end": 103.226
     },
     {
       "name": "recap",
-      "start": 135.994,
-      "end": 160.0
+      "start": 103.226,
+      "end": 120.359
     }
   ],
   "scenes": [
     {
-      "id": "s01-lineup",
+      "id": "s01-thesis",
       "start": 0.0,
-      "duration": 14.734,
+      "duration": 5.911,
       "section": "hook",
       "layout": "three-lane",
       "bg": "#F7F5F0",
@@ -71,16 +71,7 @@
       "beats": [
         {
           "offset": 0.0,
-          "dur": 1.4,
-          "idiom": "arrive",
-          "role": "head",
-          "text": "Your hyaluronic-acid serum cannot do what filler does.",
-          "actor": "lineup",
-          "intent": "Your hyaluronic-acid serum cannot do what filler does."
-        },
-        {
-          "offset": 1.381,
-          "dur": 1.0,
+          "dur": 1.1,
           "idiom": "arrive",
           "role": "kicker",
           "text": "Same name",
@@ -88,17 +79,46 @@
           "intent": "Same name"
         },
         {
-          "offset": 3.866,
-          "dur": 1.3,
+          "offset": 1.894,
+          "dur": 1.4,
+          "idiom": "wipe",
+          "role": "head",
+          "text": "Two completely different jobs",
+          "actor": "lineup",
+          "intent": "Two completely different jobs"
+        },
+        {
+          "offset": 4.058,
+          "dur": 1.0,
           "idiom": "slam",
+          "role": "sub",
+          "text": "SERUM \u2260 FILLER",
+          "actor": "lineup",
+          "intent": "SERUM \u2260 FILLER"
+        }
+      ]
+    },
+    {
+      "id": "s02-identities",
+      "start": 5.911,
+      "duration": 5.284,
+      "section": "hook",
+      "layout": "three-lane",
+      "bg": "#F7F5F0",
+      "handoff": "hand-authored",
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 1.2,
+          "idiom": "arrive",
           "role": "sub",
           "text": "The kind your body makes",
           "actor": "lineup",
           "intent": "The kind your body makes"
         },
         {
-          "offset": 6.489,
-          "dur": 1.3,
+          "offset": 1.423,
+          "dur": 1.2,
           "idiom": "wipe",
           "role": "sub",
           "text": "The kind in your serum",
@@ -106,37 +126,20 @@
           "intent": "The kind in your serum"
         },
         {
-          "offset": 9.112,
-          "dur": 1.3,
+          "offset": 2.845,
+          "dur": 1.2,
           "idiom": "wipe",
           "role": "sub",
           "text": "The kind a doctor injects",
           "actor": "lineup",
           "intent": "The kind a doctor injects"
-        },
-        {
-          "offset": 12.312,
-          "dur": 0.113,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "lineup",
-          "intent": "camera drift on lineup"
-        },
-        {
-          "offset": 12.425,
-          "dur": 1.0,
-          "idiom": "slam",
-          "role": "head",
-          "text": "Different jobs",
-          "actor": "lineup",
-          "intent": "Different jobs"
         }
       ]
     },
     {
-      "id": "s02-not-filler",
-      "start": 14.734,
-      "duration": 7.198,
+      "id": "s03-not-filler",
+      "start": 11.195,
+      "duration": 10.706,
       "section": "misconception",
       "layout": "hero-left",
       "bg": "#F7F5F0",
@@ -153,24 +156,33 @@
         },
         {
           "offset": 1.9,
-          "dur": 0.105,
+          "dur": 0.79,
           "idiom": "hold",
           "role": "body",
           "actor": "misconception",
           "intent": "camera drift on misconception"
         },
         {
-          "offset": 2.005,
-          "dur": 1.4,
+          "offset": 2.69,
+          "dur": 1.5,
           "idiom": "wipe",
           "role": "body",
-          "text": "People buy a serum expecting what an injection does",
+          "text": "People buy a serum expecting the results of an injection",
           "actor": "misconception",
-          "intent": "People buy a serum expecting what an injection does"
+          "intent": "People buy a serum expecting the results of an injection"
         },
         {
-          "offset": 4.143,
-          "dur": 1.6,
+          "offset": 5.956,
+          "dur": 1.5,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "Then wonder why nothing changed",
+          "actor": "misconception",
+          "intent": "Then wonder why nothing changed"
+        },
+        {
+          "offset": 7.685,
+          "dur": 1.7,
           "idiom": "swap",
           "role": "head",
           "text": "A serum is not filler in a bottle",
@@ -180,111 +192,9 @@
       ]
     },
     {
-      "id": "s03-origin",
-      "start": 21.932,
-      "duration": 6.781,
-      "section": "misconception",
-      "layout": "hero-left",
-      "bg": "#131516",
-      "handoff": "hand-authored",
-      "beats": [
-        {
-          "offset": 0.0,
-          "dur": 1.3,
-          "idiom": "count",
-          "role": "stat",
-          "text": "1934",
-          "actor": "vitreous",
-          "intent": "1934"
-        },
-        {
-          "offset": 1.756,
-          "dur": 1.4,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "Isolated from the clear jelly inside a cow's eye",
-          "actor": "vitreous",
-          "intent": "Isolated from the clear jelly inside a cow's eye"
-        },
-        {
-          "offset": 4.39,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "cite",
-          "text": "J Biol Chem \u00b7 1934",
-          "actor": "vitreous",
-          "intent": "J Biol Chem \u00b7 1934"
-        }
-      ]
-    },
-    {
-      "id": "s04-body",
-      "start": 28.713,
-      "duration": 10.213,
-      "section": "mechanism",
-      "layout": "hero-left",
-      "bg": "#F7F5F0",
-      "handoff": "hand-authored",
-      "beats": [
-        {
-          "offset": 0.0,
-          "dur": 1.4,
-          "idiom": "arrive",
-          "role": "head",
-          "text": "Your body already makes its own",
-          "actor": "ha-body",
-          "intent": "Your body already makes its own"
-        },
-        {
-          "offset": 1.9,
-          "dur": 0.9,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "ha-body",
-          "intent": "camera drift on ha-body"
-        },
-        {
-          "offset": 2.909,
-          "dur": 1.4,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "Most of it sits in your skin, holding water",
-          "actor": "ha-body",
-          "intent": "Most of it sits in your skin, holding water"
-        },
-        {
-          "offset": 4.849,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "cite",
-          "text": "Dermatoendocrinol \u00b7 2012",
-          "actor": "ha-body",
-          "intent": "Dermatoendocrinol \u00b7 2012"
-        },
-        {
-          "offset": 6.4,
-          "dur": 1.4,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "It also lubricates your joints and eye",
-          "actor": "ha-body",
-          "intent": "It also lubricates your joints and eye"
-        },
-        {
-          "offset": 8.339,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "cite",
-          "text": "Front Vet Sci \u00b7 2019",
-          "actor": "ha-body",
-          "intent": "Front Vet Sci \u00b7 2019"
-        }
-      ]
-    },
-    {
-      "id": "s05-compare",
-      "start": 38.926,
-      "duration": 14.378,
+      "id": "s04-split",
+      "start": 21.901,
+      "duration": 9.394,
       "section": "mechanism",
       "layout": "split",
       "bg": "#F7F5F0",
@@ -292,11 +202,11 @@
       "beats": [
         {
           "offset": 0.0,
-          "dur": 1.5,
+          "dur": 1.4,
           "idiom": "arrive",
           "role": "head",
           "text": "Here's where the two versions really split",
-          "actor": "ha-compare",
+          "actor": "ha-split",
           "intent": "Here's where the two versions really split"
         },
         {
@@ -304,67 +214,41 @@
           "dur": 0.9,
           "idiom": "hold",
           "role": "body",
-          "actor": "ha-compare",
-          "intent": "camera drift on ha-compare"
+          "actor": "ha-split",
+          "intent": "camera drift on ha-split"
         },
         {
-          "offset": 3.05,
-          "dur": 1.5,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "A serum's version stays mostly at the surface, supporting hydration",
-          "actor": "ha-compare",
-          "intent": "A serum's version stays mostly at the surface, supporting hydration"
-        },
-        {
-          "offset": 6.45,
-          "dur": 0.9,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "ha-compare",
-          "intent": "camera drift on ha-compare"
-        },
-        {
-          "offset": 7.625,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "cite",
-          "text": "Skin Res Technol \u00b7 2015",
-          "actor": "ha-compare",
-          "intent": "Skin Res Technol \u00b7 2015"
-        },
-        {
-          "offset": 9.15,
+          "offset": 3.735,
           "dur": 1.6,
           "idiom": "wipe",
-          "role": "body",
-          "text": "A filler's version is cross-linked into a gel, placed beneath the skin",
-          "actor": "ha-compare",
-          "intent": "A filler's version is cross-linked into a gel, placed beneath the skin"
+          "role": "caption",
+          "text": "One stays a loose, flowing molecule",
+          "actor": "ha-split",
+          "intent": "One stays a loose, flowing molecule"
         },
         {
-          "offset": 12.477,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "cite",
-          "text": "J Cosmet Dermatol \u00b7 2024",
-          "actor": "ha-compare",
-          "intent": "J Cosmet Dermatol \u00b7 2024"
+          "offset": 6.671,
+          "dur": 1.6,
+          "idiom": "wipe",
+          "role": "caption",
+          "text": "The other gets locked into a rigid mesh",
+          "actor": "ha-split",
+          "intent": "The other gets locked into a rigid mesh"
         }
       ]
     },
     {
-      "id": "s06-serum-size",
-      "start": 53.304,
-      "duration": 14.732,
+      "id": "s05-size",
+      "start": 31.295,
+      "duration": 11.785,
       "section": "mechanism",
       "layout": "two-column",
       "bg": "#F7F5F0",
       "handoff": "hand-authored",
       "beats": [
         {
-          "offset": 0.711,
-          "dur": 1.5,
+          "offset": 0.0,
+          "dur": 1.4,
           "idiom": "arrive",
           "role": "head",
           "text": "In a serum, size decides almost everything",
@@ -372,68 +256,58 @@
           "intent": "In a serum, size decides almost everything"
         },
         {
-          "offset": 2.132,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "kicker",
-          "text": "Simplified illustration",
-          "actor": "ha-serum",
-          "intent": "Simplified illustration"
-        },
-        {
-          "offset": 4.265,
-          "dur": 1.6,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "Large chains mostly stay near the surface, forming a hydrating film",
-          "actor": "ha-serum",
-          "intent": "Large chains mostly stay near the surface, forming a hydrating film"
-        },
-        {
-          "offset": 7.765,
-          "dur": 0.48,
+          "offset": 1.9,
+          "dur": 0.9,
           "idiom": "hold",
           "role": "body",
           "actor": "ha-serum",
           "intent": "camera drift on ha-serum"
         },
         {
-          "offset": 8.245,
+          "offset": 3.16,
           "dur": 1.6,
           "idiom": "wipe",
           "role": "body",
-          "text": "Smaller ones may travel farther into the upper layers of skin",
+          "text": "Large chains mostly stay near the surface",
           "actor": "ha-serum",
-          "intent": "Smaller ones may travel farther into the upper layers of skin"
+          "intent": "Large chains mostly stay near the surface"
         },
         {
-          "offset": 11.373,
+          "offset": 6.545,
+          "dur": 1.6,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "Smaller ones may travel farther into the upper layers",
+          "actor": "ha-serum",
+          "intent": "Smaller ones may travel farther into the upper layers"
+        },
+        {
+          "offset": 10.045,
+          "dur": 0.112,
+          "idiom": "hold",
+          "role": "body",
+          "actor": "ha-serum",
+          "intent": "camera drift on ha-serum"
+        },
+        {
+          "offset": 10.157,
           "dur": 1.0,
           "idiom": "arrive",
           "role": "cite",
           "text": "Skin Res Technol \u00b7 2015",
           "actor": "ha-serum",
           "intent": "Skin Res Technol \u00b7 2015"
-        },
-        {
-          "offset": 13.079,
-          "dur": 1.2,
-          "idiom": "slam",
-          "role": "sub",
-          "text": "Neither behaves like a filler",
-          "actor": "ha-serum",
-          "intent": "Neither behaves like a filler"
         }
       ]
     },
     {
-      "id": "s07-plumping",
-      "start": 68.036,
-      "duration": 12.244,
+      "id": "s06-plumping",
+      "start": 43.08,
+      "duration": 8.127,
       "section": "mechanism",
       "layout": "two-column",
       "bg": "#F7F5F0",
-      "handoff": "generated",
+      "handoff": "hand-authored",
       "beats": [
         {
           "offset": 0.0,
@@ -453,8 +327,8 @@
           "intent": "camera drift on ha-serum"
         },
         {
-          "offset": 2.829,
-          "dur": 1.5,
+          "offset": 3.051,
+          "dur": 1.6,
           "idiom": "wipe",
           "role": "body",
           "text": "Hydrated surface cells can temporarily make fine lines appear softer",
@@ -462,93 +336,21 @@
           "intent": "Hydrated surface cells can temporarily make fine lines appear softer"
         },
         {
-          "offset": 6.229,
-          "dur": 0.561,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "ha-serum",
-          "intent": "camera drift on ha-serum"
-        },
-        {
-          "offset": 6.79,
-          "dur": 1.3,
-          "idiom": "arrive",
-          "role": "caption",
-          "text": "Like watering a tired houseplant",
-          "actor": "ha-serum",
-          "intent": "Like watering a tired houseplant"
-        },
-        {
-          "offset": 9.619,
-          "dur": 1.3,
+          "offset": 6.483,
+          "dur": 1.2,
           "idiom": "swap",
           "role": "sub",
-          "text": "Not like adding a new branch",
+          "text": "That's hydration, not correction",
           "actor": "ha-serum",
-          "intent": "Not like adding a new branch"
+          "intent": "That's hydration, not correction"
         }
       ]
     },
     {
-      "id": "s08-binds-water",
-      "start": 80.28,
-      "duration": 13.073,
-      "section": "proof",
-      "layout": "hero-left",
-      "bg": "#F0EBE1",
-      "handoff": "hand-authored",
-      "beats": [
-        {
-          "offset": 0.628,
-          "dur": 1.5,
-          "idiom": "arrive",
-          "role": "head",
-          "text": "Here's the part the marketing skips",
-          "actor": "ha-serum",
-          "intent": "Here's the part the marketing skips"
-        },
-        {
-          "offset": 3.767,
-          "dur": 1.6,
-          "idiom": "swap",
-          "role": "head",
-          "text": "It binds water. It does not make water.",
-          "actor": "ha-serum",
-          "intent": "It binds water. It does not make water."
-        },
-        {
-          "offset": 6.906,
-          "dur": 1.0,
-          "idiom": "arrive",
-          "role": "cite",
-          "text": "ChemRxiv \u00b7 2023",
-          "actor": "ha-serum",
-          "intent": "ChemRxiv \u00b7 2023"
-        },
-        {
-          "offset": 9.041,
-          "dur": 1.6,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "A complete formula still needs something that stops it leaving",
-          "actor": "ha-serum",
-          "intent": "A complete formula still needs something that stops it leaving"
-        },
-        {
-          "offset": 12.541,
-          "dur": 0.532,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "ha-serum",
-          "intent": "camera drift on ha-serum"
-        }
-      ]
-    },
-    {
-      "id": "s09-lifeguard",
-      "start": 93.353,
-      "duration": 12.59,
-      "section": "proof",
+      "id": "s07-binds",
+      "start": 51.207,
+      "duration": 8.625,
+      "section": "mechanism",
       "layout": "hero-left",
       "bg": "#F0EBE1",
       "handoff": "hand-authored",
@@ -557,58 +359,107 @@
           "offset": 0.0,
           "dur": 1.4,
           "idiom": "arrive",
-          "role": "caption",
-          "text": "Skip that step, and you're hiring a lifeguard for an empty swimming pool",
-          "actor": "ha-serum",
-          "intent": "Skip that step, and you're hiring a lifeguard for an empty swimming pool"
+          "role": "head",
+          "text": "Here's the part the marketing skips",
+          "actor": "ha-body",
+          "intent": "Here's the part the marketing skips"
         },
         {
           "offset": 1.9,
-          "dur": 0.9,
+          "dur": 0.811,
           "idiom": "hold",
           "role": "body",
-          "actor": "ha-serum",
-          "intent": "camera drift on ha-serum"
+          "actor": "ha-body",
+          "intent": "camera drift on ha-body"
         },
         {
-          "offset": 4.7,
-          "dur": 0.9,
-          "idiom": "hold",
+          "offset": 2.711,
+          "dur": 1.6,
+          "idiom": "wipe",
           "role": "body",
-          "actor": "ha-serum",
-          "intent": "camera drift on ha-serum"
+          "text": "Hyaluronic acid binds water",
+          "actor": "ha-body",
+          "intent": "Hyaluronic acid binds water"
         },
         {
-          "offset": 7.245,
-          "dur": 1.1,
-          "idiom": "slam",
+          "offset": 4.784,
+          "dur": 1.5,
+          "idiom": "swap",
           "role": "sub",
-          "text": "Strange image. Correct principle.",
-          "actor": "ha-serum",
-          "intent": "Strange image. Correct principle."
+          "text": "It doesn't manufacture it",
+          "actor": "ha-body",
+          "intent": "It doesn't manufacture it"
         },
         {
-          "offset": 10.245,
-          "dur": 0.9,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "ha-serum",
-          "intent": "camera drift on ha-serum"
+          "offset": 7.176,
+          "dur": 1.449,
+          "idiom": "arrive",
+          "role": "caption",
+          "text": "Think of it as a sponge, not a water factory",
+          "actor": "ha-body",
+          "intent": "Think of it as a sponge, not a water factory"
         }
       ]
     },
     {
-      "id": "s10-crosslink",
-      "start": 105.943,
-      "duration": 8.97,
-      "section": "proof",
+      "id": "s08-seals",
+      "start": 59.832,
+      "duration": 7.821,
+      "section": "mechanism",
       "layout": "hero-left",
+      "bg": "#F0EBE1",
+      "handoff": "hand-authored",
+      "beats": [
+        {
+          "offset": 0.624,
+          "dur": 1.5,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "A complete formula still needs something else",
+          "actor": "ha-body",
+          "intent": "A complete formula still needs something else"
+        },
+        {
+          "offset": 3.334,
+          "dur": 1.6,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "An ingredient that seals that water in",
+          "actor": "ha-body",
+          "intent": "An ingredient that seals that water in"
+        },
+        {
+          "offset": 5.726,
+          "dur": 1.0,
+          "idiom": "arrive",
+          "role": "cite",
+          "text": "ChemRxiv \u00b7 2023",
+          "actor": "ha-body",
+          "intent": "ChemRxiv \u00b7 2023"
+        },
+        {
+          "offset": 6.843,
+          "dur": 0.978,
+          "idiom": "swap",
+          "role": "sub",
+          "text": "So it doesn't evaporate away",
+          "actor": "ha-body",
+          "intent": "So it doesn't evaporate away"
+        }
+      ]
+    },
+    {
+      "id": "s09-crosslink",
+      "start": 67.653,
+      "duration": 10.391,
+      "section": "mechanism",
+      "layout": "two-column",
       "bg": "#131516",
       "handoff": "hand-authored",
       "beats": [
         {
           "offset": 0.0,
-          "dur": 1.5,
+          "dur": 1.4,
           "idiom": "arrive",
           "role": "head",
           "text": "A filler is chemically different",
@@ -617,23 +468,23 @@
         },
         {
           "offset": 1.9,
-          "dur": 0.513,
+          "dur": 0.423,
           "idiom": "hold",
           "role": "body",
           "actor": "ha-filler",
           "intent": "camera drift on ha-filler"
         },
         {
-          "offset": 2.413,
+          "offset": 2.323,
           "dur": 1.8,
-          "idiom": "swap",
+          "idiom": "wipe",
           "role": "body",
-          "text": "Cross-linked into a stable, connected grid",
+          "text": "Its chains are cross-linked into a gel that holds its own shape",
           "actor": "ha-filler",
-          "intent": "Cross-linked into a stable, connected grid"
+          "intent": "Its chains are cross-linked into a gel that holds its own shape"
         },
         {
-          "offset": 4.825,
+          "offset": 5.575,
           "dur": 1.0,
           "idiom": "arrive",
           "role": "cite",
@@ -642,54 +493,100 @@
           "intent": "J Cosmet Dermatol \u00b7 2024"
         },
         {
-          "offset": 6.273,
-          "dur": 1.4,
+          "offset": 6.69,
+          "dur": 1.6,
           "idiom": "wipe",
           "role": "sub",
-          "text": "Holds its own shape",
+          "text": "Placed beneath the skin, it can physically add volume",
           "actor": "ha-filler",
-          "intent": "Holds its own shape"
+          "intent": "Placed beneath the skin, it can physically add volume"
+        },
+        {
+          "offset": 9.891,
+          "dur": 0.5,
+          "idiom": "hold",
+          "role": "body",
+          "actor": "ha-filler",
+          "intent": "camera drift on ha-filler"
         }
       ]
     },
     {
-      "id": "s11-do-not-inject",
-      "start": 114.913,
-      "duration": 21.081,
-      "section": "application",
-      "layout": "full-bleed",
+      "id": "s10-origin",
+      "start": 78.044,
+      "duration": 6.092,
+      "section": "history",
+      "layout": "hero-left",
       "bg": "#131516",
       "handoff": "hand-authored",
       "beats": [
         {
           "offset": 0.0,
-          "dur": 1.3,
+          "dur": 1.4,
+          "idiom": "count",
+          "role": "stat",
+          "text": "1934",
+          "actor": "vitreous",
+          "intent": "1934"
+        },
+        {
+          "offset": 1.747,
+          "dur": 1.5,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "Isolated from the clear jelly inside a cow's eye",
+          "actor": "vitreous",
+          "intent": "Isolated from the clear jelly inside a cow's eye"
+        },
+        {
+          "offset": 3.994,
+          "dur": 1.0,
+          "idiom": "arrive",
+          "role": "cite",
+          "text": "J Biol Chem \u00b7 1934",
+          "actor": "vitreous",
+          "intent": "J Biol Chem \u00b7 1934"
+        }
+      ]
+    },
+    {
+      "id": "s11-warning",
+      "start": 84.136,
+      "duration": 6.373,
+      "section": "application",
+      "layout": "full-bleed",
+      "bg": "#131516",
+      "handoff": "generated",
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 1.2,
           "idiom": "arrive",
           "role": "caption",
-          "text": "Is a filler just serum with a needle? Not even close.",
+          "text": "Is a filler just serum with a needle?",
           "actor": "warning",
-          "intent": "Is a filler just serum with a needle? Not even close."
+          "intent": "Is a filler just serum with a needle?"
         },
         {
           "offset": 1.9,
-          "dur": 0.9,
+          "dur": 0.156,
           "idiom": "hold",
           "role": "body",
           "actor": "warning",
           "intent": "camera drift on warning"
         },
         {
-          "offset": 4.433,
-          "dur": 1.2,
+          "offset": 2.056,
+          "dur": 1.0,
           "idiom": "arrive",
-          "role": "kicker",
-          "text": "Worth putting in very large letters",
+          "role": "caption",
+          "text": "Not even close.",
           "actor": "warning",
-          "intent": "Worth putting in very large letters"
+          "intent": "Not even close."
         },
         {
-          "offset": 6.046,
-          "dur": 1.0,
+          "offset": 3.23,
+          "dur": 1.1,
           "idiom": "slam",
           "role": "head",
           "text": "DO NOT INJECT YOURSELF",
@@ -697,71 +594,75 @@
           "intent": "DO NOT INJECT YOURSELF"
         },
         {
-          "offset": 8.464,
+          "offset": 4.698,
           "dur": 1.0,
           "idiom": "arrive",
           "role": "cite",
           "text": "FDA \u00b7 Dermal Fillers",
           "actor": "warning",
           "intent": "FDA \u00b7 Dermal Fillers"
-        },
-        {
-          "offset": 10.076,
-          "dur": 1.6,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "Dermal fillers are a medical procedure with real risks",
-          "actor": "warning",
-          "intent": "Dermal fillers are a medical procedure with real risks"
-        },
-        {
-          "offset": 13.576,
-          "dur": 0.127,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "warning",
-          "intent": "camera drift on warning"
-        },
-        {
-          "offset": 13.703,
-          "dur": 1.5,
-          "idiom": "wipe",
-          "role": "body",
-          "text": "Including tissue death, vision loss and stroke",
-          "actor": "warning",
-          "intent": "Including tissue death, vision loss and stroke"
-        },
-        {
-          "offset": 17.103,
-          "dur": 0.228,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "warning",
-          "intent": "camera drift on warning"
-        },
-        {
-          "offset": 17.331,
-          "dur": 1.4,
-          "idiom": "wipe",
-          "role": "sub",
-          "text": "Choose a provider trained to perform the injection",
-          "actor": "warning",
-          "intent": "Choose a provider trained to perform the injection"
-        },
-        {
-          "offset": 20.581,
-          "dur": 0.5,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "warning",
-          "intent": "camera drift on warning"
         }
       ]
     },
     {
-      "id": "s12-badges",
-      "start": 135.994,
-      "duration": 14.895,
+      "id": "s12-risks",
+      "start": 90.509,
+      "duration": 12.717,
+      "section": "application",
+      "layout": "hero-left",
+      "bg": "#131516",
+      "handoff": "generated",
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 1.4,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "That's the F D A's own wording, not ours",
+          "actor": "risks",
+          "intent": "That's the F D A's own wording, not ours"
+        },
+        {
+          "offset": 1.9,
+          "dur": 0.9,
+          "idiom": "hold",
+          "role": "body",
+          "actor": "risks",
+          "intent": "camera drift on risks"
+        },
+        {
+          "offset": 2.904,
+          "dur": 1.6,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "Dermal fillers are a medical procedure with real risks",
+          "actor": "risks",
+          "intent": "Dermal fillers are a medical procedure with real risks"
+        },
+        {
+          "offset": 6.389,
+          "dur": 1.6,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "Including tissue death, vision loss and stroke",
+          "actor": "risks",
+          "intent": "Including tissue death, vision loss and stroke"
+        },
+        {
+          "offset": 9.294,
+          "dur": 1.5,
+          "idiom": "wipe",
+          "role": "sub",
+          "text": "Choose a provider trained to perform the injection",
+          "actor": "risks",
+          "intent": "Choose a provider trained to perform the injection"
+        }
+      ]
+    },
+    {
+      "id": "s13-badges",
+      "start": 103.226,
+      "duration": 12.658,
       "section": "recap",
       "layout": "three-lane",
       "bg": "#F7F5F0",
@@ -771,10 +672,10 @@
           "offset": 0.0,
           "dur": 1.3,
           "idiom": "arrive",
-          "role": "sub",
-          "text": "Body version \u2014 resident",
+          "role": "head",
+          "text": "Same ingredient family",
           "actor": "lineup",
-          "intent": "Body version \u2014 resident"
+          "intent": "Same ingredient family"
         },
         {
           "offset": 1.9,
@@ -785,93 +686,77 @@
           "intent": "camera drift on lineup"
         },
         {
-          "offset": 2.876,
-          "dur": 1.3,
-          "idiom": "arrive",
-          "role": "sub",
-          "text": "Serum version \u2014 moisturiser",
+          "offset": 3.084,
+          "dur": 1.4,
+          "idiom": "wipe",
+          "role": "kicker",
+          "text": "Different size, different structure, different location",
           "actor": "lineup",
-          "intent": "Serum version \u2014 moisturiser"
+          "intent": "Different size, different structure, different location"
         },
         {
-          "offset": 5.464,
-          "dur": 1.3,
-          "idiom": "arrive",
-          "role": "sub",
-          "text": "Filler version \u2014 construction project",
-          "actor": "lineup",
-          "intent": "Filler version \u2014 construction project"
-        },
-        {
-          "offset": 8.628,
-          "dur": 1.5,
-          "idiom": "arrive",
-          "role": "head",
-          "text": "Same family",
-          "actor": "lineup",
-          "intent": "Same family"
-        },
-        {
-          "offset": 10.785,
-          "dur": 1.6,
-          "idiom": "swap",
-          "role": "head",
-          "text": "Different size, structure and location",
-          "actor": "lineup",
-          "intent": "Different size, structure and location"
-        },
-        {
-          "offset": 14.285,
-          "dur": 0.61,
+          "offset": 6.384,
+          "dur": 0.469,
           "idiom": "hold",
           "role": "body",
           "actor": "lineup",
           "intent": "camera drift on lineup"
+        },
+        {
+          "offset": 6.853,
+          "dur": 1.3,
+          "idiom": "arrive",
+          "role": "sub",
+          "text": "Body version \u2014 resident",
+          "actor": "lineup",
+          "intent": "Body version \u2014 resident"
+        },
+        {
+          "offset": 9.423,
+          "dur": 1.3,
+          "idiom": "arrive",
+          "role": "sub",
+          "text": "Serum version \u2014 hydration",
+          "actor": "lineup",
+          "intent": "Serum version \u2014 hydration"
+        },
+        {
+          "offset": 11.65,
+          "dur": 1.008,
+          "idiom": "arrive",
+          "role": "sub",
+          "text": "Filler version \u2014 volume",
+          "actor": "lineup",
+          "intent": "Filler version \u2014 volume"
         }
       ]
     },
     {
-      "id": "s13-endcard",
-      "start": 150.889,
-      "duration": 9.111,
+      "id": "s14-endcard",
+      "start": 115.884,
+      "duration": 4.475,
       "section": "recap",
       "layout": "full-bleed",
       "bg": "#F7F5F0",
       "handoff": "generated",
       "beats": [
         {
-          "offset": 0.0,
-          "dur": 1.2,
-          "idiom": "arrive",
-          "role": "kicker",
-          "text": "One more thing \u2014 it started in a cow's eye",
-          "actor": "endcard",
-          "intent": "One more thing \u2014 it started in a cow's eye"
-        },
-        {
-          "offset": 1.64,
-          "dur": 1.8,
+          "offset": 0.192,
+          "dur": 1.3,
           "idiom": "slam",
           "role": "head",
-          "text": "Serum hydrates. Filler adds volume. Same name, different jobs.",
+          "text": "Serum hydrates. Filler adds volume.",
           "actor": "endcard",
-          "intent": "Serum hydrates. Filler adds volume. Same name, different jobs."
+          "intent": "Serum hydrates. Filler adds volume."
         },
         {
-          "offset": 5.34,
-          "dur": 0.9,
-          "idiom": "hold",
-          "role": "body",
+          "offset": 2.762,
+          "dur": 1.4,
+          "idiom": "arrive",
+          "role": "sub",
+          "text": "Same name, different jobs",
           "actor": "endcard",
-          "intent": "camera drift on endcard"
-        },
-        {
-          "offset": 8.14,
-          "dur": 0.9,
-          "idiom": "hold",
-          "role": "body",
-          "actor": "endcard",
-          "intent": "camera drift on endcard"
+          "intent": "Same name, different jobs"
         }
       ]
     }
@@ -879,32 +764,28 @@
   "chapters": [
     {
       "t": 0.0,
-      "title": "Three things, one name"
+      "title": "Same name, different jobs"
     },
     {
-      "t": 14.734,
+      "t": 11.195,
       "title": "Not filler in a bottle"
     },
     {
-      "t": 28.713,
-      "title": "The version already in you"
+      "t": 21.901,
+      "title": "Size, water, and the cross-link"
     },
     {
-      "t": 80.28,
-      "title": "It cannot make water"
-    },
-    {
-      "t": 114.913,
+      "t": 84.136,
       "title": "Do not inject yourself"
     },
     {
-      "t": 135.994,
+      "t": 103.226,
       "title": "Same family, different jobs"
     }
   ],
   "end_scene": {
-    "start": 150.889,
-    "duration": 9.111,
+    "start": 103.226,
+    "duration": 17.133,
     "overlay_zones_clear": true
   }
 }

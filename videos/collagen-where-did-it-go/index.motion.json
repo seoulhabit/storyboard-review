@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#L1 .say",
+      "bySec": 7.42
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L5 .say",
+      "bySec": 19.95
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L11 .say",
+      "bySec": 42.57
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L17 .say",
+      "bySec": 66.61
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L23 .say",
+      "bySec": 102.69
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L25 .say",
+      "bySec": 115.32
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L31 .say",
+      "bySec": 138.69
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#L38 .say",
+      "bySec": 174.84
+    },
+    {
+      "kind": "before",
+      "a": "#L1 .say",
+      "b": "#L5 .say"
+    },
+    {
+      "kind": "before",
+      "a": "#L11 .say",
+      "b": "#L17 .say"
+    },
+    {
+      "kind": "before",
+      "a": "#L23 .say",
+      "b": "#L25 .say"
+    },
+    {
+      "kind": "before",
+      "a": "#L25 .say",
+      "b": "#L31 .say"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#L4 .say"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#L20 .say"
+    },
+    {
+      "kind": "staysInFrame",
+      "selector": "#L41 .say"
+    },
+    {
+      "kind": "keepsMoving",
+      "withinSelector": "#root",
+      "maxStaticSec": 6.0
+    }
+  ]
+}

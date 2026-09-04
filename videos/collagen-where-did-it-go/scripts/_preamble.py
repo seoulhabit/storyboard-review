@@ -1,0 +1,310 @@
+"""Shared CSS/HTML preamble for every scene file in this project.
+
+Adapted from videos/ectoin-survival-molecule/scripts/_preamble.py, which is the
+only other landscape project in this repo. Three deliberate divergences, each
+recorded because each one is a correction to something that project shipped:
+
+1. NO timeline-level `defaults: {ease}`. Ectoin declared `power3.out` on all 29
+   of its scene timelines; 128 of 196 real tweens inherited it (65%) while a
+   grep for an explicit `ease:` found only 8. The continuity audit reads that as
+   one house template, and an external review read the render the same way.
+   Here every tween names its own ease, drawn from the six-idiom vocabulary in
+   EASE below.
+2. A two-lane dialogue system (.lane-soul / .lane-jay). No precedent exists
+   anywhere in this repo -- see BRIEF.md "First of kind".
+3. Tokens carry the caption band, because this project burns in captions and
+   ectoin did not.
+
+Tokens are INLINED, not linked. A <link rel="stylesheet"> to the shared
+assets/tokens/tokens.css is confirmed not to resolve custom properties through
+this render pipeline (measured empty on a compiled render), so the values are
+copied with that file as the single source of truth. Grep for a distinguishing
+value (e.g. --safe-bottom: 108px) to check a scene is in sync with it.
+"""
+
+GSAP = '<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>'
+
+# Paths are ROOT-RELATIVE: sub-compositions are served with the PROJECT ROOT as
+# their base URL, not compositions/. A "../../assets/..." path traverses above
+# the root and `check` flags invalid_parent_traversal_in_asset_path.
+FONTS = """
+    @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2");
+                 font-weight:400; font-display:block; }
+    @font-face { font-family:"Inter"; src:url("assets/fonts/inter-800.woff2") format("woff2");
+                 font-weight:800; font-display:block; }
+    @font-face { font-family:"JetBrains Mono"; src:url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+                 font-weight:500; font-display:block; }
+"""
+
+# --- tokens, inlined from assets/tokens/tokens.css -------------------------
+# Type scale is UNCHANGED from the Shorts projects: 1080x1920 and 1920x1080
+# share a 1080px short edge and type size is a fraction of the short edge, so
+# the scale transfers one-for-one. Layout gets a landscape variant; type does not.
+TOKENS = """
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
+    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
+    --moss:#4F6B52; --celadon:#93B896;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
+       under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
+       uses this instead (5.13:1). Measured, not assumed: the channel's
+       --ink-2/--ink-2-dark split exists for exactly this reason. */
+    --ink-2-mist:#626262;
+    --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
+
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
+    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
+    --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
+
+    --s-2:8px; --s-3:12px; --s-4:20px; --s-5:32px; --s-6:60px; --s-7:96px; --s-8:144px;
+    --r-2:6px; --r-3:10px; --r-pill:999px;
+
+    /* landscape canvas + reserved zones -- see tokens.css for the derivation */
+    --canvas-w:1920px; --canvas-h:1080px;
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --safe-margin:6px;
+    /* End-screen reserve -- SCENE-SCOPED, consumed by 05-verdict alone. Present
+       in EVERY scene because an inlined token block that omits a token used by
+       any scene fails SILENTLY: the calc() is invalid and the whole declaration
+       is dropped. That shipped 41 frames of safe-area intrusion on ectoin. */
+    --endscreen-right:640px; --endscreen-bottom:200px;
+    /* NO burned-in caption band in this project, so no --cap-band-* tokens.
+       The on-screen language IS the two-lane dialogue card system; a caption
+       band would restate words already in frame, which is the one thing the
+       caption rules say not to spend a frame on. The caption DELIVERABLE is a
+       real sidecar .srt/.vtt built from the same line table -- required for
+       long-form, which is watched in a player that surfaces it.
+       Consequence for QC: check-static-hold.py's CAPTION_BAND_EXCLUDE must be
+       False here, and it asserts that against index.html at runtime. */
+"""
+
+# `box-sizing` first rule in EVERY composition -- a project missing it passes
+# `check` completely clean and still lays a stage out taller than declared.
+# `min-height:0` on flex children with an explicit small basis, for the same reason.
+BASE = """
+    *,*::before,*::after { box-sizing:border-box; }
+    html,body { margin:0; padding:0; width:1920px; height:1080px; overflow:hidden; }
+    #root { position:absolute; inset:0; overflow:hidden; background:var(--paper); }
+    .stage { position:relative; width:100%; height:100%;
+             padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+    /* The stage's single child fills the SAFE BOX exactly, so clipping it clips
+       at the safe line. Confirmed necessary on the ectoin build: the hard
+       safe-area gate found 81 frames with ink in a reserved zone, all of them
+       entrance-transform or scale transients. Containment beats a bigger margin
+       -- a margin is sized against today's token and goes stale silently. */
+    .stage > * { overflow: hidden; }
+    .flexmin { min-height:0; }
+
+    /* ---- camera ----------------------------------------------------------
+       One .world wrapper, one cam {scale,x,y} state per scene. Consecutive
+       scenes are framings of ONE space, not separate slides. .world sits INSIDE
+       .stage so the safe-box clip above still bounds every camera move. */
+    /* TWO layers, and the split is load-bearing.
+       .worldclip is a NORMAL block filling the stage's CONTENT box -- never
+       `position:absolute; inset:0`, because an abspos child with inset:0
+       resolves against the containing block's PADDING box and would spill
+       straight back over the safe-area padding the stage just reserved. As a
+       flow child at 100%/100% it fills the content box exactly, so clipping it
+       clips AT the safe line.
+       .world carries the CAMERA and must be a separate, inner element. Putting
+       `overflow:hidden` and the camera transform on the SAME element does not
+       work: a transform scales the element's own clip boundary with it, so a
+       camera at scale 1.045 moves the clip edge ~39px OUTSIDE the safe box and
+       the containment quietly stops containing. Measured on the first full
+       render -- the hard safe-area gate found ink in a reserved zone on 460
+       frames, and an independent per-frame check against a uniform border ring
+       reproduced it (left 5774px at t=38.0s), so it was the composition and not
+       the estimator. */
+    .worldclip { position:relative; width:100%; height:100%; overflow:hidden; }
+    .world { position:relative; width:100%; height:100%;
+             transform-origin:50% 50%; will-change:transform; }
+
+    /* Citation chip: `Journal / Year` ONLY. Never an internal id or a PMID --
+       those live in BRIEF.md's claim table and the video description. */
+    .cite { font-family:var(--font-mono); font-weight:500; font-size:var(--t-chip);
+            letter-spacing:var(--tr-mono); color:var(--ink-2);
+            border:2px solid var(--rule-strong); border-radius:var(--r-pill);
+            padding:10px 26px; right:auto; width:max-content; bottom:auto;
+            background:var(--mist); }
+    .cite.on-ink { color:var(--ink-2-dark); border-color:var(--rule-dark);
+                   background:var(--ink-soft); }
+
+    /* ---- panel-scale beat primitives -------------------------------------
+       Ectoin's Act 1 measured 5.8% active steps against 11.7-23.1% on shipped
+       9:16 projects. Cause: on a 1920-wide frame a headline sits in a grid cell,
+       so a text fade changes ~0.7% of the pixels. These move a whole panel or
+       column instead -- which is what actually reads, and what the cadence
+       check can actually see. Working rule: area >= 8% AND luma delta >= 80,
+       inside <= 0.8s. */
+    .panel { position:relative; background:var(--mist); border-radius:var(--r-3);
+             padding:var(--s-6); min-height:0; overflow:hidden; }
+    .panel.on-ink { background:var(--ink-soft); }
+    .wash { position:absolute; inset:0; transform:scaleX(0); transform-origin:0% 50%;
+            border-radius:inherit; z-index:0; }
+    /* Every following sibling of a wash sits ABOVE it.
+       CAVEAT this rule cannot cover: a BARE TEXT NODE has no element to carry
+       position/z-index, so a wash paints straight over it and the card renders
+       EMPTY. The engine's own text_occluded pass walks text ELEMENTS and is
+       blind to text that never became one -- it survived into ectoin's shipped
+       payoff line at 1.72:1. ALWAYS wrap copy in an element inside a washed
+       container; the :only-child guard below makes a stray case visible. */
+    .wash ~ * { position:relative; z-index:1; }
+    .wash:only-child { outline:3px dashed #C97A5C; }
+    .wash.aqua { background:var(--aqua); } .wash.coral { background:var(--coral); }
+    .wash.moss { background:var(--moss); } .wash.dim { background:var(--ink-3); }
+    .wash.ink  { background:var(--ink); }
+    .wash.paper { background:var(--paper); }   /* the only light wash: used to
+       invert a panel on an INK ground, which is a 214-luma step -- the largest
+       beat available anywhere in the palette. */
+    /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
+       text, so a token that passed against the panel's ORIGINAL ground can fail
+       against the wash -- measured on ectoin: --ink-2 on aqua is 2.26:1, --paper
+       on aqua ~1.9:1. Safe pairings only:
+         light ground -> .wash.aqua / .wash.coral / .wash.dim -> --ink text
+         dark  ground -> .wash.moss / .wash.ink              -> --paper text
+       Anything else must be re-measured against the wash, not the panel. */
+    .wash.aqua ~ *, .wash.coral ~ *, .wash.dim ~ *, .wash.paper ~ *, .washed-light { color:var(--ink) !important; }
+    .wash.moss ~ *, .wash.ink ~ *, .washed-dark { color:var(--paper) !important; }
+
+    /* A panel-sized strike: covers the whole card, not a 5px line through a word. */
+    .void { position:absolute; inset:0; background:var(--coral); opacity:0;
+            border-radius:inherit; }
+
+    .p-title { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame);
+               line-height:var(--lh-snug); margin:0 0 var(--s-3); }
+    .p-body { font-family:var(--font-display); font-size:var(--t-body);
+              line-height:var(--lh-body); margin:0; color:var(--ink-2); }
+    .p-body.on-ink { color:var(--ink-2-dark); }
+    .kicker { font-family:var(--font-mono); font-size:var(--t-label);
+              letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+              color:var(--ink-2); margin:0; }
+    .kicker.on-ink { color:var(--ink-3-dark); }
+    .hero { font-family:var(--font-display); font-size:var(--t-hero);
+            line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
+    .fig { font-family:var(--font-display); font-size:var(--t-figure);
+           line-height:var(--lh-snug); margin:0; }
+    .col { display:flex; flex-direction:column; min-height:0; }
+    .row { display:flex; min-width:0; }
+    .grow { flex:1 1 0; min-height:0; min-width:0; }
+
+    /* ---- THE TWO-LANE DIALOGUE SYSTEM ------------------------------------
+       The characters are faceless: no avatar, no glyph, no portrait. They are
+       carried by VOICE and by which lane their copy lands in.
+
+         SoulHabit  left  --ink    Inter 600   carries claims AND citations
+         Jay        right --coral  Inter 400i  carries jokes, NEVER a citation
+
+       Both lanes are PANELS, not bare type. A punchline set as a line of text
+       on a 1920-wide frame moves ~0.7% of the pixels and is invisible to the
+       cadence check; as a card entering, it moves 15-30%. That is the whole
+       reason the lanes are boxes. */
+    .lane { position:relative; border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+            max-width:1080px; overflow:hidden; }
+    .lane p { margin:0; }
+    .lane-soul { background:var(--mist); border-left:8px solid var(--ink); }
+    .lane-soul .say { font-family:var(--font-body); font-weight:600;
+                      font-size:var(--t-body); line-height:var(--lh-body);
+                      color:var(--ink); }
+    .lane-jay { background:#F6E7E0; border-right:8px solid var(--coral);
+                text-align:right; }
+    /* #F6E7E0 is a coral TINT, not --coral itself. NOT for contrast reasons --
+       --ink on full --coral measures 5.60:1 and would pass. The reason is accent
+       discipline: Jay speaks ~20 times, and 20 full-saturation coral cards would
+       make coral the dominant colour of the video, competing with its actual job
+       (a limitation or a refusal -- it carries the strike in 02-door and the
+       stripped rows in 04-evidence). The coral identity is carried by the 8px
+       rule and the italic; the fill stays quiet. Tint measures 15.20:1. */
+    .lane-jay .say { font-family:var(--font-body); font-weight:400; font-style:italic;
+                     font-size:var(--t-body); line-height:var(--lh-body);
+                     color:var(--ink); }
+    .lane-name { font-family:var(--font-mono); font-size:var(--t-label);
+                 letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+                 margin:0 0 var(--s-3); }
+    .lane-soul .lane-name { color:var(--ink-2-mist); }   /* 5.13:1 on --mist */
+    .lane-jay  .lane-name { color:#8A4A30; }   /* 5.62:1 on the tint -- measured */
+
+    /* Debug overlay -- toggled by a class on #root, never on <body>.
+       Confirm it is OFF by checking frame zero before any real render. */
+    #root.debug-layout * { outline:1px solid rgba(255,0,0,.55) !important; }
+    #root.debug-layout::after {
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:99;
+      background:
+        linear-gradient(to bottom, rgba(255,0,168,.22) var(--safe-top), transparent var(--safe-top)),
+        linear-gradient(to top,    rgba(255,0,168,.22) var(--safe-bottom), transparent var(--safe-bottom)),
+        linear-gradient(to right,  rgba(255,0,168,.22) var(--safe-left), transparent var(--safe-left)),
+        linear-gradient(to left,   rgba(255,0,168,.22) var(--safe-right), transparent var(--safe-right));
+    }
+"""
+
+# --- entrance idiom vocabulary ---------------------------------------------
+# Six idioms, six DIFFERENT eases. This replaces a single timeline-level
+# `defaults: {ease}` on purpose: the point of the vocabulary is that the
+# continuity audit's "top effective ease" share stays low, which is the number
+# that exposes a house template. Pick from what the beat is DOING, not from
+# which one is nearest.
+EASE = {
+    "arrive": "power2.out",        # a SoulHabit claim settling in
+    "slam":   "back.out(1.7)",     # a Jay punchline landing
+    "wipe":   "power4.inOut",      # something being stripped away / revealed
+    "count":  "none",              # a numeral counting -- linear, or it lies
+    "swap":   "expo.inOut",        # one state correcting into another
+    "exit":   "power2.in",         # something leaving for good (not stepping back)
+    "hold":   "sine.inOut",        # a deliberate, slow drift
+    "camera": "power2.inOut",      # a camera leg
+}
+
+
+def scene(cid, duration, body, css, timeline):
+    """Emit one sub-composition file.
+
+    THE <template> IS THE TRANSPORT CONTAINER, and this is the detail that bites:
+    the runtime fetches the file, parses it, and clones ONLY the template's
+    CONTENTS into the host slot. Everything outside it -- the whole <head>
+    included -- is DISCARDED.
+
+    So the <style>, the root div, the GSAP tag AND the timeline script must all
+    live INSIDE the template. Putting the scripts after </template> (the natural
+    place, and what a standalone HTML file wants) means they are thrown away: the
+    scene then renders at its static CSS state with no timeline at all. Measured
+    on ectoin before the fix -- t=0.0s and t=8.5s of scene 01 came out
+    PIXEL-IDENTICAL, and the render logged `sub_timeline_readiness_timeout`.
+
+    There is also no importNode/appendChild bootstrap: the runtime does the
+    cloning. Adding one is what makes the file look right when opened standalone
+    and wrong when rendered.
+
+    NOTE the timeline is created with NO `defaults`. See the module docstring.
+    """
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>{cid}</title></head>
+<body>
+<template>
+  <div id="root" data-composition-id="{cid}"
+       data-width="1920" data-height="1080" data-duration="{duration:.3f}">
+    <style>
+      #root {{{TOKENS}}}
+{FONTS}
+{BASE}
+{css}
+    </style>
+{body}
+  </div>
+  {GSAP}
+  <script>
+    window.__timelines = window.__timelines || {{}};
+    // No `defaults: {{ease}}` -- every tween names its own. See _preamble.py.
+    var tl = gsap.timeline({{ paused: true }});
+{timeline}
+    tl.to({{}}, {{ duration: {duration:.3f} }}, 0);   // full-span anchor -- always last
+    window.__timelines["{cid}"] = tl;
+  </script>
+</template>
+</body>
+</html>
+"""

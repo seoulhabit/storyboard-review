@@ -27,7 +27,7 @@ VIDEOS = [
     ("V07-osmosis.mp4",   RAW / "V07-osmosis.mp4",   10.0, 0.85),
     ("V08-hydration.mp4", RAW / "V08-hydration.mp4", 11.2, 0.80),
     ("V10-escape.mp4",    RAW / "V10-escape.mp4",    7.8,  0.85),
-    ("V11-stabilise.mp4", RAW / "V11-stabilise.mp4", 17.6, 0.60),
+    ("V11-stabilise.mp4", RAW / "V11-stabilise.mp4", 17.6, 0.50),
     ("V12-turn.mp4",      RAW / "V12-turn.mp4",      9.6,  1.00),
     ("V13-serum.mp4",     RAW / "V13-serum.mp4",     5.6,  1.00),
     ("V14-toner.mp4",     RAW / "V14-toner.mp4",     5.4,  1.00),

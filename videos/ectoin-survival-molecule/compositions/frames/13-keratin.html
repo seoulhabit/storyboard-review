@@ -208,7 +208,8 @@
     .g13 .fig em { font-style:normal; color:var(--aqua); }
 
     </style>
-    <div class="plate" id="pl-a"><video class="clip" id="pv-a" src="assets/plates/V11-stabilise.mp4" data-start="0.000" data-duration="17.400" muted playsinline></video></div>
+    <div class="plate" id="pl-a"><img id="pi-a" src="assets/plates/I16-barrier-calm.jpg" alt=""></div>
+    <div class="plate" id="pl-b"><video class="clip" id="pv-b" src="assets/plates/V11-stabilise.mp4" data-start="9.000" data-duration="8.400" muted playsinline></video></div>
     <div class="scrim l"></div>
     <div class="stage">
       <div class="g13">
@@ -232,8 +233,13 @@
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
-  tl.fromTo('#pv-a', { scale:1.0, x:0, y:0 }, { scale:1.09, x:0, y:0, duration:17.400, ease:'none' }, 0);
+  tl.fromTo('#pi-a', { scale:1.0, x:0, y:0 }, { scale:1.1, x:20, y:-24, duration:9.600, ease:'none' }, 0);
   tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 0.3);
+
+  // "One study found": dissolve from the calm cross-section still to the
+  // moving barrier plate.
+  tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.45 }, 9.466-0.35);
+  tl.fromTo('#pv-b', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:8.400, ease:'none' }, 9.0);
 
   tl.fromTo('#k-h0', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, 1.049-0.30);
   tl.to('#k-h0', { opacity:0.45, duration:0.5 }, 9.466-0.2);

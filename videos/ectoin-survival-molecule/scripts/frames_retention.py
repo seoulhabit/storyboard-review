@@ -608,7 +608,8 @@ S13 = dict(css=PLATE_CSS + """
     .g13 .p-body { color:rgba(247,245,240,.82); }
     .g13 .fig em { font-style:normal; color:var(--aqua); }
 """, body=(
-    pv("a", "V11-stabilise.mp4", 0.0, 17.4)
+    pi("a", "I16-barrier-calm.jpg")
+    + pv("b", "V11-stabilise.mp4", 9.0, 8.4)
     + scrim("l")
     + """    <div class="stage">
       <div class="g13">
@@ -627,7 +628,11 @@ S13 = dict(css=PLATE_CSS + """
     </div>
 """
     + CV
-), tl=kb('#pv-a', 0, 17.4, 1.0, 1.09) + cv_in(0.3) + """
+), tl=kb('#pi-a', 0, 9.6, 1.0, 1.10, 0, 20, 0, -24) + cv_in(0.3) + """
+  // "One study found": dissolve from the calm cross-section still to the
+  // moving barrier plate.
+  tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.45 }, @w(One)-0.35);
+""" + kb('#pv-b', 9.0, 8.4, 1.0, 1.08) + """
   tl.fromTo('#k-h0', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, @w(suggests)-0.30);
   tl.to('#k-h0', { opacity:0.45, duration:0.5 }, @w(One)-0.2);
   tl.fromTo('#k-h', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, @w(One)-0.10);

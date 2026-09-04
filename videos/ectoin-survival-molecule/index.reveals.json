@@ -611,6 +611,13 @@
   {
     "scene": "13-keratin",
     "kind": "w",
+    "word": "One",
+    "occurrence": 1,
+    "seconds": 9.466
+  },
+  {
+    "scene": "13-keratin",
+    "kind": "w",
     "word": "suggests",
     "occurrence": 1,
     "seconds": 1.049

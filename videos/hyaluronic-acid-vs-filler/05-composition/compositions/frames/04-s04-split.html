@@ -14,10 +14,21 @@
     font-family:var(--font-body); background:#F7F5F0; color:#131516;
   }
   .clip { position:absolute; inset:0; }
+  /* The stage is the CAMERA HOUSING: it is full-frame, padded to the drift
+     budget, and it clips. It carries no transform of its own -- a transform
+     on a full-frame box maps its edges outside the frame by definition, and
+     that is what produced 13 container_overflow warnings in the v3 check.
+     Two nested layers inside the padding do the moving instead [S7/R-2]. */
   .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
                    calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
-           height:100%; display:flex; }
+           height:100%; display:flex; overflow:hidden; }
   .stage > * { min-width:0; }
+  /* .cam owns the SETTLE (the title punch); .cam-in owns the DRIFT. One
+     transform channel has exactly one owner, so no two tweens can write
+     scale/y on the same element at the same time -- the overlapping_gsap_tweens
+     warning on #s13-badges-stage was precisely that collision. */
+  .cam, .cam-in { flex:1 1 auto; min-width:0; display:flex; width:100%;
+                  transform-origin:50% 50%; }
   /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
   .head { font-family:var(--font-display); font-weight:600; font-size:104px;
           line-height:1.04; letter-spacing:-.018em; margin:0; }
@@ -53,6 +64,7 @@
 <div id="root" data-composition-id="s04-split" data-width="1920" data-height="1080"
      data-duration="9.394">
   <div class="clip stage" id="s04-split-stage" data-start="0" data-duration="9.394">
+    <div class="cam" id="s04-split-cam"><div class="cam-in" id="s04-split-cam-in">
     <div class="split-two">
       <h1 class="head beat is-entering split-title" id="s04-split-b0">Here's where the two versions really split</h1>
       <div class="split-panel" id="s04-split-left">
@@ -172,6 +184,7 @@
         <div class="caption beat is-entering" id="s04-split-b3">The other gets locked into a rigid mesh</div>
       </div>
     </div>
+    </div></div>
   </div>
 </div>
 <script>
@@ -217,7 +230,7 @@
   tl.to('#s04-split-rnode24', { scale: 1, duration: 0.500, ease: 'back.out(2.2)' }, 7.131);
   gsap.set('#s04-split-rnode27', { transformOrigin: 'center', scale: 0.3 });
   tl.to('#s04-split-rnode27', { scale: 1, duration: 0.500, ease: 'back.out(2.2)' }, 7.176);
-  tl.to('#s04-split-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
+  tl.to('#s04-split-cam-in', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
   tl.to({}, { duration: 9.394, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s04-split'] = tl;

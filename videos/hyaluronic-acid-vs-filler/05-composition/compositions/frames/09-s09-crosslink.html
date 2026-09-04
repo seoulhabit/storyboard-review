@@ -14,10 +14,21 @@
     font-family:var(--font-body); background:#131516; color:#F7F5F0;
   }
   .clip { position:absolute; inset:0; }
+  /* The stage is the CAMERA HOUSING: it is full-frame, padded to the drift
+     budget, and it clips. It carries no transform of its own -- a transform
+     on a full-frame box maps its edges outside the frame by definition, and
+     that is what produced 13 container_overflow warnings in the v3 check.
+     Two nested layers inside the padding do the moving instead [S7/R-2]. */
   .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
                    calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
-           height:100%; display:flex; }
+           height:100%; display:flex; overflow:hidden; }
   .stage > * { min-width:0; }
+  /* .cam owns the SETTLE (the title punch); .cam-in owns the DRIFT. One
+     transform channel has exactly one owner, so no two tweens can write
+     scale/y on the same element at the same time -- the overlapping_gsap_tweens
+     warning on #s13-badges-stage was precisely that collision. */
+  .cam, .cam-in { flex:1 1 auto; min-width:0; display:flex; width:100%;
+                  transform-origin:50% 50%; }
   /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
   .head { font-family:var(--font-display); font-weight:600; font-size:104px;
           line-height:1.04; letter-spacing:-.018em; margin:0; }
@@ -59,6 +70,7 @@
 <div id="root" data-composition-id="s09-crosslink" data-width="1920" data-height="1080"
      data-duration="10.391">
   <div class="clip stage" id="s09-crosslink-stage" data-start="0" data-duration="10.391">
+    <div class="cam" id="s09-crosslink-cam"><div class="cam-in" id="s09-crosslink-cam-in">
     <div class="split2">
       <div class="col" id="s09-crosslink-col">
         <div class="head beat is-entering" id="s09-crosslink-b0">A filler is chemically different</div>
@@ -223,6 +235,7 @@
     </svg>
       </div>
     </div>
+    </div></div>
   </div>
 </div>
 <script>

@@ -71,13 +71,27 @@
      generated ground measures 2.17:1 against the 3:1 floor. Same
      suggestedColor as the hand-authored .kicker fix. */
   .kicker { color:#4B9B93; }
+/* build_actors:fix_generated_grounds v3.1 */
+  /* [S7/R-2] the drift used to run on #<sid>-stage, a full-frame box: a
+     1.018 scale on 1920x1080 maps 17px past each edge by construction, which
+     is where every container_overflow warning in the v3 check came from. The
+     stage now clips and holds still; .cam-in drifts INSIDE the padding, so
+     the same move costs 15px of a 156px pad instead of 17px of frame. */
+  .stage { overflow: hidden; }
+  .cam { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+         transform-origin: 50% 50%; }
+  .cam-in { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+            flex-direction: column; justify-content: center; gap: 28px;
+            transform-origin: 50% 50%; }
 </style>
 
 <div id="root" data-composition-id="s14-endcard" data-width="1920" data-height="1080"
      data-duration="4.925">
     <div class="clip stage" id="s14-endcard-stage" data-start="0" data-duration="4.925">
+      <div class="cam" id="s14-endcard-cam"><div class="cam-in" id="s14-endcard-cam-in">
       <div class="beat head is-entering" id="s14-endcard-b0">Serum hydrates. Filler adds volume.</div>
       <div class="beat sub is-entering" id="s14-endcard-b1">Same name, different jobs</div>
+      </div></div>
     </div>
 </div>
 <script>

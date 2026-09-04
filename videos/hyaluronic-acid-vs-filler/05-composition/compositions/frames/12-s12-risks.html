@@ -72,15 +72,29 @@
   /* [S7/R-1] dark-ground ink flip: the generator leaves --ink at
      #131516 on a #131516 ground -> 1:1, invisible text. */
   #root { --ink: #F7F5F0; --muted: #878B8C; }
+/* build_actors:fix_generated_grounds v3.1 */
+  /* [S7/R-2] the drift used to run on #<sid>-stage, a full-frame box: a
+     1.018 scale on 1920x1080 maps 17px past each edge by construction, which
+     is where every container_overflow warning in the v3 check came from. The
+     stage now clips and holds still; .cam-in drifts INSIDE the padding, so
+     the same move costs 15px of a 156px pad instead of 17px of frame. */
+  .stage { overflow: hidden; }
+  .cam { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+         transform-origin: 50% 50%; }
+  .cam-in { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+            flex-direction: column; justify-content: center; gap: 28px;
+            transform-origin: 50% 50%; }
 </style>
 
 <div id="root" data-composition-id="s12-risks" data-width="1920" data-height="1080"
      data-duration="13.767">
     <div class="clip stage" id="s12-risks-stage" data-start="0" data-duration="13.767">
+      <div class="cam" id="s12-risks-cam"><div class="cam-in" id="s12-risks-cam-in">
       <div class="beat head" id="s12-risks-b0">That&#x27;s the F D A&#x27;s own wording, not ours</div>
       <div class="beat body is-wiping" id="s12-risks-b2">Dermal fillers are a medical procedure with real risks</div>
       <div class="beat body is-wiping" id="s12-risks-b3">Including tissue death, vision loss and stroke</div>
       <div class="beat sub is-wiping" id="s12-risks-b4">Choose a provider trained to perform the injection</div>
+      </div></div>
     </div>
 </div>
 <script>
@@ -96,7 +110,7 @@
   // sharing one entrance signature while every explicit-ease grep says
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s12-risks-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 2.350);
+  tl.to('#s12-risks-cam-in', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 2.350);
   tl.to('#s12-risks-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.354);
   tl.to('#s12-risks-b3', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 6.839);
   tl.to('#s12-risks-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 9.744);

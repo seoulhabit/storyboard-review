@@ -126,10 +126,19 @@ def lattice(w, h, cols, rows, pad=40, node_id_prefix=None):
             'stroke-linecap="round">\n      ' + "\n      ".join(seg) + "\n      </g>\n"
             '      <g class="net-nod" fill="currentColor">\n      ' + "\n      ".join(nod) + "\n      </g>")
 
-def boundary_panel(rng, w, h, big_id_prefix=None, small_id_prefix=None):
+def boundary_panel(rng, w, h, big_id_prefix=None, small_id_prefix=None,
+                   bottom_reserve=0):
     """Two chain sizes meeting a skin boundary — the serum state. Each big and
     small chain can carry its own id so large/small groups can be animated
-    both as a group AND (for size/plumping) with per-chain stagger."""
+    both as a group AND (for size/plumping) with per-chain stagger.
+
+    `bottom_reserve` keeps the lowest small chain that far above the box floor.
+    s05 translates the small group +54px down to show "smaller ones travel
+    farther"; without the reserve the lowest chain finishes ~10px BELOW the
+    actor's own viewBox and is clipped mid-move -- the one moment the scene
+    most needs to be legible. Scenes that do not animate the group pass 0, so
+    their geometry (and the continuity audit's pixel match) is untouched.
+    """
     by = h * 0.46
     big = []
     for i in range(3):
@@ -138,7 +147,9 @@ def boundary_panel(rng, w, h, big_id_prefix=None, small_id_prefix=None):
                    f'fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>')
     small = []
     for i in range(9):
-        x = rng.uniform(20, w - 120); y = rng.uniform(by + 40, h - 40)
+        # The draw COUNT is fixed regardless of the reserve, so narrowing
+        # this band shifts these chains without resequencing the stream.
+        x = rng.uniform(20, w - 120); y = rng.uniform(by + 40, h - 40 - bottom_reserve)
         idattr = f' id="{small_id_prefix}{i}"' if small_id_prefix else ""
         small.append(f'<path{idattr} d="{coil(x, y, 92, 11, 22, rng)}" fill="none" '
                      f'stroke="currentColor" stroke-width="6" stroke-linecap="round"/>')
@@ -217,7 +228,10 @@ def icon_bottle(size=96):
 
 def icon_syringe(size=96):
     return (f'<svg class="icon" viewBox="0 0 96 96" width="{size}" height="{size}" aria-hidden="true">'
-            '<g transform="translate(6,40) rotate(-28 42 8)">'
+            # translate(6,...) put the rotated plunger flange 2.7px outside the
+            # icon's own viewBox -- 171 sampled frames of clipped ink. The
+            # needle tip still lands at ~94 of 96 at translate(14,...).
+            '<g transform="translate(14,40) rotate(-28 42 8)">'
             '<rect x="0" y="0" width="60" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>'
             '<rect x="-14" y="3" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="5"/>'
             '<line x1="60" y1="8" x2="82" y2="8" stroke="currentColor" stroke-width="4"/>'
@@ -261,10 +275,21 @@ BASE_CSS = """
     font-family:var(--font-body); background:%(bg)s; color:%(ink)s;
   }
   .clip { position:absolute; inset:0; }
+  /* The stage is the CAMERA HOUSING: it is full-frame, padded to the drift
+     budget, and it clips. It carries no transform of its own -- a transform
+     on a full-frame box maps its edges outside the frame by definition, and
+     that is what produced 13 container_overflow warnings in the v3 check.
+     Two nested layers inside the padding do the moving instead [S7/R-2]. */
   .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
                    calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
-           height:100%%; display:flex; }
+           height:100%%; display:flex; overflow:hidden; }
   .stage > * { min-width:0; }
+  /* .cam owns the SETTLE (the title punch); .cam-in owns the DRIFT. One
+     transform channel has exactly one owner, so no two tweens can write
+     scale/y on the same element at the same time -- the overlapping_gsap_tweens
+     warning on #s13-badges-stage was precisely that collision. */
+  .cam, .cam-in { flex:1 1 auto; min-width:0; display:flex; width:100%%;
+                  transform-origin:50%% 50%%; }
   /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
   .head { font-family:var(--font-display); font-weight:600; font-size:104px;
           line-height:1.04; letter-spacing:-.018em; margin:0; }
@@ -304,7 +329,9 @@ def scene_shell(sid, css_extra, markup, sets, tweens):
          f'<div id="root" data-composition-id="{sid}" data-width="1920" data-height="1080"',
          f'     data-duration="{dur:.3f}">',
          f'  <div class="clip stage" id="{sid}-stage" data-start="0" data-duration="{dur:.3f}">',
-         markup, "  </div>", "</div>", "<script>", "(function () {"]
+         f'    <div class="cam" id="{sid}-cam"><div class="cam-in" id="{sid}-cam-in">',
+         markup,
+         "    </div></div>", "  </div>", "</div>", "<script>", "(function () {"]
     for x in sets: s.append("  " + x)
     s.append("  // No timeline `defaults: { ease }` — an inherited ease is an uncounted")
     s.append("  // one, and that is how a project ships a single entrance signature.")
@@ -408,14 +435,14 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
         tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {b['dur']:.3f}, "
                   f"ease: '{IDIOM_EASE[b['idiom']]}' }}, {b['offset']:.3f});")
     if titled is not None:
-        tw.insert(0, f"tl.to('#{sid}-stage', {{ scale: 1.014, y: -7, duration: 1.500, "
+        tw.insert(0, f"tl.to('#{sid}-cam', {{ scale: 1.014, y: -7, duration: 1.500, "
                      f"ease: 'sine.inOut' }}, 0.150);")
-        tw.insert(1, f"tl.to('#{sid}-stage', {{ scale: 1.0, y: 0, duration: 1.200, "
+        tw.insert(1, f"tl.to('#{sid}-cam', {{ scale: 1.0, y: 0, duration: 1.200, "
                      f"ease: 'sine.inOut' }}, 1.700);")
     LDRIFT = [(8, -6, 1.012), (-7, 5, 1.004), (6, 6, 1.009), (-5, -5, 1.006)]
     for n_, b in enumerate([x for x in beats if x["idiom"] == "hold"]):
         dx, dy, ds = LDRIFT[n_ % len(LDRIFT)]
-        tw.append(f"tl.to('#{sid}-stage', {{ x: {dx}, y: {dy}, scale: {ds}, "
+        tw.append(f"tl.to('#{sid}-cam-in', {{ x: {dx}, y: {dy}, scale: {ds}, "
                   f"duration: {b['dur']:.3f}, ease: 'sine.inOut' }}, {b['offset']:.3f});")
     return sets, tw, markup, lanes
 
@@ -632,7 +659,7 @@ def build_split():
             tw.append(f"gsap.set('#{sid}-rnode{node_i}', {{ transformOrigin: 'center', scale: 0.3 }});")
             tw.append(f"tl.to('#{sid}-rnode{node_i}', {{ scale: 1, duration: 0.500, "
                       f"ease: 'back.out(2.2)' }}, {t:.3f});")
-    hs, ht = _hold_drift(sid, f"#{sid}-stage"); sets += hs; tw += ht
+    hs, ht = _hold_drift(sid, f"#{sid}-cam-in"); sets += hs; tw += ht
     return scene_shell(sid, SPLIT_CSS, markup, sets, tw)
 
 # ---- s05-size: big chains stop above the boundary, small cross below it ---
@@ -642,7 +669,8 @@ def build_size():
     idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
     body_i = [i for i in idx if beats[i].get("role") == "body"]
     rng = random.Random(23)
-    bp, by = boundary_panel(rng, 480, 560, big_id_prefix=f"{sid}-big", small_id_prefix=f"{sid}-small")
+    bp, by = boundary_panel(rng, 480, 560, big_id_prefix=f"{sid}-big",
+                            small_id_prefix=f"{sid}-small", bottom_reserve=24)
     panel = (f'<svg class="actor" viewBox="0 0 480 560" width="480" height="560" '
              f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {bp}\n    </svg>')
 
@@ -678,7 +706,8 @@ def build_plumping():
     sid = "s06-plumping"
     beats = beats_of(sid)
     rng = random.Random(23)   # SAME seed as s05 -- the actor is REUSED, not redrawn
-    bp, by = boundary_panel(rng, 480, 560, small_id_prefix=f"{sid}-small")
+    bp, by = boundary_panel(rng, 480, 560, small_id_prefix=f"{sid}-small",
+                            bottom_reserve=24)   # SAME reserve as s05: same actor
     panel = (f'<svg class="actor" viewBox="0 0 480 560" width="480" height="560" '
              f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {bp}\n    </svg>')
 
@@ -823,6 +852,24 @@ BUILD = {
   "s13-badges":       build_badges,
 }
 
+FIXED_MARK = "/* build_actors:fix_generated_grounds v3.1 */"
+
+# Same two-layer camera the hand-authored scenes get from scene_shell: the
+# padded full-frame .stage clips and never moves; .cam-in moves inside it.
+GEN_CAM_CSS = """
+  /* [S7/R-2] the drift used to run on #<sid>-stage, a full-frame box: a
+     1.018 scale on 1920x1080 maps 17px past each edge by construction, which
+     is where every container_overflow warning in the v3 check came from. The
+     stage now clips and holds still; .cam-in drifts INSIDE the padding, so
+     the same move costs 15px of a 156px pad instead of 17px of frame. */
+  .stage { overflow: hidden; }
+  .cam { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+         transform-origin: 50% 50%; }
+  .cam-in { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+            flex-direction: column; justify-content: center; gap: 28px;
+            transform-origin: 50% 50%; }
+"""
+
 def fix_generated_grounds():
     """Mechanical [S7/R-1] fix on the GENERATED scenes (s03, s11, s12, s14).
 
@@ -841,7 +888,17 @@ def fix_generated_grounds():
         path = f"{OUT}/{i:02d}-{sid}.html"
         html = open(path).read()
         scene_subs = 0
-        pad = ("\n  /* [S7/R-2] a slam parked at scale 1.12 on a full-width block\n"
+        # This fixer APPENDS css and REWRITES tweens, so running it twice on
+        # its own output doubles the stylesheet. The external generator
+        # (beats_to_composition.py) is not vendored in this repo, so these
+        # four files cannot simply be regenerated from scratch -- which makes
+        # a re-run of build_actors.py a live hazard rather than a hypothetical
+        # one. Stamp the output and skip anything already stamped [S7/R-1].
+        if FIXED_MARK in html:
+            print("  %s already ground-fixed; skipping (idempotent)" % sid)
+            continue
+        pad = (FIXED_MARK + GEN_CAM_CSS +
+               "\n  /* [S7/R-2] a slam parked at scale 1.12 on a full-width block\n"
                "     grows 6% past each edge -- 370px of ink inside left<96 at\n"
                "     t=117.75s. Origin-left pins the edge; the punch goes vertical. */\n"
                "  .beat { transform-origin: left center; }\n"
@@ -859,6 +916,12 @@ def fix_generated_grounds():
                    "     generated ground measures 2.17:1 against the 3:1 floor. Same\n"
                    "     suggestedColor as the hand-authored .kicker fix. */\n"
                    "  .kicker { color:#4B9B93; }\n")
+        # The v3 ground/contrast block is already baked into the four files
+        # committed at f319ed7 (they predate the stamp), so re-adding it would
+        # duplicate the stylesheet and look exactly like the non-idempotence
+        # bug this stamp exists to prevent. Detect it and add only what is new.
+        if "[S7/R-2] drift budget" in html:
+            css = FIXED_MARK + GEN_CAM_CSS
         html, n = html.replace("</style>", css + "</style>", 1), ("</style>" in html)
         scene_subs += int(n)
 
@@ -880,9 +943,27 @@ def fix_generated_grounds():
         cnt = [0]
         def _drift(m):
             dx, dy, ds = DEFAULT_DRIFTS[cnt[0] % len(DEFAULT_DRIFTS)]; cnt[0] += 1
-            return "%sx: %d, y: %d, scale: %s%s" % (m.group(1), dx, dy, ds, m.group(3))
-        html, n = re.subn(r"(tl\.to\('#[^']+-stage', \{ )(x: -?[\d.]+, y: -?[\d.]+, scale: [\d.]+)(, duration)",
+            # Retarget onto the inner camera layer at the same time as the
+            # drift values are cycled: the move is identical, the box it runs
+            # on is now inside the padding instead of being the frame itself.
+            return "tl.to('#%s-cam-in', { x: %d, y: %d, scale: %s%s" % (
+                m.group(1), dx, dy, ds, m.group(2))
+        html, n = re.subn(r"tl\.to\('#([a-z0-9-]+)-stage', \{ "
+                          r"x: -?[\d.]+, y: -?[\d.]+, scale: [\d.]+(, duration)",
                       _drift, html)
+        scene_subs += n
+
+        # Wrap the stage's children in the two camera layers. The stage keeps
+        # its padding and now clips; nothing that moves is full-frame any more.
+        html, n = re.subn(
+            r"(<div class=\"clip stage\"[^>]*>\n)(.*?)(\n    </div>\n</div>\n<script>)",
+            lambda m: (m.group(1)
+                       + '      <div class="cam" id="%s-cam"><div class="cam-in" id="%s-cam-in">\n'
+                         % (sid, sid)
+                       + m.group(2)
+                       + '\n      </div></div>' + m.group(3)),
+            html, flags=re.S)
+        assert n == 1, "camera wrap did not match on %s" % sid
         scene_subs += n
 
         open(path, "w").write(html)

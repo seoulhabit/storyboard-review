@@ -7,22 +7,26 @@ Skill version: 2.1.0.
 
 - Mode: `full (revision)` — S0.0 ran; S1 (claims) ran fresh against live
   data; S2 (script) ran; S3 (VO) ran; S4/S5 (storyboard/composition) ran;
-  S6 (validation) ran to a clean gate; S7 (preview) opened — **render not
-  run, awaiting explicit operator approval per non-negotiable #14**; S8/S9
-  out of scope for this request.
-- Result: **complete except the render itself**, which is gated on approval
-  by design, not by an unresolved defect.
+  S6 (validation) ran to a clean gate; S7 (preview) opened, operator
+  reviewed the pixel evidence and approved; **S8 (render, master, postrender
+  gates) ran and passed.** S9 out of scope for this request.
+- Result: **complete.** `renders/ectoin-normal-person.mp4` is the publish
+  candidate — 241.3s, 1920×1080, h264/AAC, 67.6 MB, 7238 frames.
 - Artifacts: source restored/located (no `.pyc` problem existed — see
   §Restoration below), `CLAIMS.md` (new), `SCRIPT.md` + `scripts/vo_lines.py`
   rewritten, 16 of 44 VO takes regenerated, `frames_spec.py` rewritten for
   8 units, GSAP vendored, DOM ids prefixed project-wide, music bed + 14 SFX
   cues added, `hyperframes check` clean (`ok: true`), pixel-verified against
   all 17 sub-compositions plus the verdict window, Studio preview opened
-  and confirmed live.
+  and confirmed live, final render mastered and gated clean (safe-area hard
+  gate 0/965, continuity `--gate` pass), `DELIVERY.md` rewritten with real
+  results.
 - Spend: ~2.1 Higgsfield credits (21 `generate_audio` calls at 0.1 each,
   including retries against a persistent rate limit) against a 2275.25-credit
   balance. Negligible against the $5.00/200-credit per-run cap.
-- Needs the operator: **render approval.**
+- Needs the operator: nothing further for this request. S8 packaging
+  (thumbnail, description, tags) and S9 readout are separate, unrequested
+  work.
 
 This is a **second revision** of an already-shipped, gate-clean build. The
 first (cold-open) revision moved the "11% bottle → blend → turn it around"
@@ -59,8 +63,8 @@ not checked out here).
 | S3 VO | ran | 16/44 turns regenerated (Higgsfield `generate_audio`); 5 first-pass takes failed this project's own mid-word QC and were re-rolled clean; 0 dead takes, 0 mid-word takes in the final set |
 | S4/S5 Storyboard + composition | ran | `frames_spec.py` rewritten for 8 units; GSAP vendored; DOM ids prefixed centrally (2 dynamic-selector bugs found and fixed after the first pass shipped 156 runtime warnings); 3 redundant CSS transform initializers removed; music bed + 14 SFX cues added |
 | S6 Validation | ran | `check-tokens.py`/`contrast.py`/`check-dead-sets.py` clean; `hyperframes check --samples 60`: **ok: true**, 0 errors (3 real bugs found and fixed by the check itself, not assumed clean); `continuity-audit.py --gate`: pass; pixel-verified against all 17 sub-compositions + frame 0 + the verdict window; phone-scale (25%) legibility confirmed |
-| S7 Preview | ran | Studio opened (`hyperframes preview`, port 5677), live playback/scrubbing confirmed, matches pixel verification. **Render not run — awaiting approval** |
-| S8 Publish envelope | not run this request | out of scope |
+| S7 Preview | ran | Studio opened (`hyperframes preview`, port 5677), live playback/scrubbing confirmed, matches pixel verification. Operator approved the render |
+| S8 Render + gates | ran | render 241.262s/7238 frames; master PASS (−14.5 LUFS, −3.1 dBTP); static-hold whole-frame PASS 0/483, region-aware 5 findings all verified benign; safe-area (HARD GATE) PASS 0/965; cadence 15.7% active (2 scenes over the quiet ceiling, both verified benign); continuity `--gate` PASS. Publish envelope (thumbnail/description/tags) not run — out of scope for this request |
 | S9 Readout | not run this request | out of scope |
 
 ## Companion-skill gates

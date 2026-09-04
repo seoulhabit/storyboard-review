@@ -260,3 +260,43 @@ on the actual composition, which is 0 errors.
 
 **S7 — STOPPING HERE per non-negotiable #14.** No render has been run.
 Awaiting explicit operator approval before `hyperframes render`.
+
+### [S8] render, master, gate chain — completed, operator-approved
+
+Operator approved rendering ("go") after reviewing the pixel evidence and
+run summary above.
+
+`hyperframes render --quality high`: 241.262s composed duration, 7238
+frames, 67.5 MB raw, rendered in 7m 27s. `scripts/master-audio.py`: PASS,
+−14.5 LUFS integrated (target −14.0 ±1.0), −3.1 dBTP (must be < −1.0),
+measured on the decoded shipped file, not the PCM intermediate.
+
+Full postrender gate chain run explicitly, in order, against the MASTERED
+file (not via npm's `postrender` lifecycle hook, which this project's own
+prior-revision record documents as scanning the stale pre-master file):
+
+- `check-static-hold.py --landscape`: whole-frame PASS (0/483 frames);
+  region-aware 5 findings, all verified benign by frame extraction (see
+  `DELIVERY.md` for the per-finding breakdown) — none required a fix.
+- `check-safe-area.py --landscape` (the HARD gate): **PASS, 0 findings
+  across 965 sampled frames.**
+- `check-cadence.py --longform`: 15.7% whole-video active share (up from
+  the prior revision's shipped 13.0–13.7%). 2 scenes over the 6.0s quiet
+  ceiling, both verified, neither fixed: `05-skin` is pre-existing code
+  this revision did not touch (same finding the prior revision logged as
+  out of scope); `13-kbeauty`'s quiet window was confirmed on extracted
+  frames to carry real content (the format chips do appear) — a known
+  luma-delta measurement gap for small mist-on-paper pills, not a dead
+  scene.
+- `continuity-audit.py --gate`: **PASS** (no plain crossfade across a
+  ground change — the one hard rule this gate enforces).
+
+`renders/ectoin-normal-person.mp4` — 1920×1080, 30fps, h264/AAC, 241.3s,
+67.6 MB, 7238 frames. This is the publish candidate.
+`renders/ectoin-normal-person.raw.mp4` (the pre-master intermediate) is
+also committed, following this repo's own actual precedent (other projects
+track their `.raw.mp4` too, despite one BRIEF.md's comment claiming
+otherwise) — both go through git-lfs per `.gitattributes`.
+
+`DELIVERY.md` rewritten with this revision's real results at the top;
+prior revision's own record kept below as history, clearly marked.

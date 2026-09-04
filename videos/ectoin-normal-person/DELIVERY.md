@@ -1,32 +1,42 @@
 # DELIVERY — Ectoin: Explained by SoulHabit, and Then by a Normal Person
 
-**STALE — describes the cold-open revision's render (4:57.02), which this
-project has since moved past.** The current revision (verdict-compression,
-44 turns/489 words, measured 4:01.26, not yet rendered) has its own record
-in `00-decision-ledger.md` and `09-run-report.md` — read those for current
-status. This file is kept as-is below for the prior render's own history;
-it will be superseded by a fresh `DELIVERY.md` once the current revision is
-approved and rendered.
-
 **Slug** `ectoin-normal-person` · **Branch** `claude/ectoin-explainer-rebuild-ad081f`
-**Format** 1920×1080, 30fps, **4:57.02** (cold-open revision; was 5:59.01) · **Engine** `hyperframes@0.8.22`
+**Format** 1920×1080, 30fps, **4:01.26** (verdict-compression revision; was
+4:57.02, was 5:59.01 before that) · **Engine** `hyperframes@0.8.27`
 
-## Status — COMPLETE (cold-open revision, 2026-09-03) — SUPERSEDED, see note above
+## Status — COMPLETE (verdict-compression revision, 2026-09-04)
 
 | Deliverable | State |
 |---|---|
-| Render | **`renders/ectoin-normal-person.mp4`** — 4:57.02, 1920×1080, h264/AAC, 75.3 MB, 8911 frames |
-| Master | **PASS** — −14.7 LUFS integrated, −2.2 dBTP, measured on the decoded shipped file |
-| Safe-area (hard gate) | **PASS** — 0 findings across 1188 sampled frames |
-| Static-hold (whole-frame) | **PASS** — 0 findings, 594 frames sampled |
-| Static-hold (region-aware) | 4 findings, all confirmed benign on extracted frames (empty grid cells with no content in that stretch, or the by-design endscreen right-third reserve) |
-| Cadence | 13.7% whole-video active share (>= the shipped 13.0% baseline); 2 scenes over the 6.0s quiet ceiling, one pre-existing/out of scope (`05-skin`), one 0.25s over (`12-bottle`, advisory) |
-| Continuity `--gate` | **PASS** — 16/16 boundaries transitioned, 0 hard cuts, 0 crossfade-across-ground violations, top entrance signature 15.5%, 0 timelines with `defaults:{ease}`, 5 merged scenes, 0 rebuilt-actor pairs, 11 camera moves |
-| Captions | `captions/ectoin-normal-person.srt` + `.vtt`, 88 cues, none under 1.10s |
-| Thumbnail | `assets/thumbnail/final.png`, 1280×720, grid-checked at 120×67 — rebuilt this revision around the new hook |
-| Storyboard | `STORYBOARD.md`, generated from real `data-start` values |
-| Motion sidecar | `index.motion.json`, 22 assertions, all passing |
-| Catalog | unchanged this revision — see the shipped-cut catalog note below |
+| Render | **`renders/ectoin-normal-person.mp4`** — 241.3s (4:01.3), 1920×1080, h264/AAC 30fps, 67.6 MB, 7238 frames |
+| Master | **PASS** — −14.5 LUFS integrated, −3.1 dBTP, measured on the decoded shipped file (target −14.0 ±1.0, TP must be < −1.0) |
+| Safe-area (hard gate) | **PASS** — 0 findings across 965 sampled frames |
+| Static-hold (whole-frame) | **PASS** — 0 findings, 483 frames sampled |
+| Static-hold (region-aware) | 5 findings, all confirmed benign on extracted frames: 2 a quiet pre-transition stretch in `02-origin` (asymmetric layout, text occupies the left/centre, nothing to the right), 2 the who-it's-for chips clearing before `12-bottle`'s INCI reveal (by design), 1 the deliberate end-screen right-third reserve in `18-endscreen` |
+| Cadence | **15.7%** whole-video active share (up from the shipped 13.0–13.7% baseline on the prior revision); 2 scenes over the 6.0s quiet ceiling — `05-skin` (7.88s, pre-existing code this revision did not touch, same finding the prior revision logged as out of scope) and `13-kbeauty` (6.75s, verified on extracted frames to carry real content — the format chips *do* appear, but small mist-on-paper pills are a known measurement gap for this luma-delta-based checker, documented elsewhere in this codebase's own `beat_budget.py` commentary) |
+| Continuity `--gate` | **PASS** — 16/16 boundaries transitioned, 0 hard cuts, 0 crossfade-across-ground violations, top entrance signature 16.7%, 0 timelines with `defaults:{ease}`, 5 merged scenes, 0 rebuilt-actor pairs, 11 camera moves |
+| `hyperframes check` | **ok: true**, 0 errors across lint/runtime/layout/motion/contrast (`--samples 60 --json --snapshots`) |
+| Captions | `captions/ectoin-normal-person.srt` + `.vtt`, 70 cues, none under 1.10s |
+| Storyboard | `STORYBOARD.md`, generated from real `data-start` values, 339 beats |
+| Motion sidecar | `index.motion.json`, 23 assertions, all passing (added 1: the verdict text must appear by 18.55s) |
+| Claim ledger | `CLAIMS.md`, new this revision — every claim re-verified live against PubMed 2026-09-03 |
+| Thumbnail | not regenerated this revision — out of scope for this request (S8 packaging) |
+
+Full account of every fix this revision required — the id-prefixing bugs,
+the CSS transform-initializer cleanup, the GSAP vendoring, the music/SFX
+additions, the two dynamic-selector bugs `hyperframes check` caught — is in
+`00-decision-ledger.md` and the git history on
+`claude/ectoin-explainer-rebuild-ad081f` (one commit per stage, S0 through
+S8).
+
+---
+
+## Prior revision's own delivery record (history, below this line)
+
+The rest of this file describes the **cold-open revision**'s render
+(4:57.02, superseded above). Kept for provenance — the render it describes
+no longer exists on disk (overwritten by this revision's own render at the
+same path) and none of the numbers below are current.
 
 `renders/*.raw.mp4` is the pre-master intermediate and is gitignored. **The
 publish candidate is `ectoin-normal-person.mp4`** — the one without `.raw`.

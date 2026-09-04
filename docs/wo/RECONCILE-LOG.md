@@ -21,3 +21,8 @@
   the user/Kim rather than merging PR #1 as originally planned. PR #1 itself
   should likely be closed on GitHub with this explanation, not merged — that
   action (closing a PR) wasn't taken here, only proposed.
+
+## Merge 1 — `claude/snail-mucin-bottle-animation-1d3308` (PR #14)
+
+- **Result:** `b3cbede`, clean merge, no conflicts.
+- **Checks:** ruff/mypy/pytest all pass; `hyperframes check videos/snail-mucin-medical-secret-v2` → 0 errors (7 info-level layout-overflow advisories, pre-existing style notes, not merge-introduced).

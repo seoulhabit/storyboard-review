@@ -4,7 +4,7 @@
 re-derives this from `index.html` and the scene files, so it cannot drift
 from what actually renders.
 
-**Canvas** 1920x1080 landscape · **fps** 30 · **duration** 5:10.07 (310.069s) · **scenes** 28
+**Canvas** 1920x1080 landscape · **fps** 30 · **duration** 5:38.14 (338.145s) · **scenes** 28
 
 ## Chapters
 
@@ -12,12 +12,12 @@ Paste-ready for the description. First at 0:00, each >= 10s.
 
 ```
 0:00 A molecule invented by bacteria trying not to die
-1:05 Why it is not just another hyaluronic acid
-1:55 What it might actually do for skin
-2:39 What the human evidence really says
-3:37 How to read an ectoin label
-4:24 Why K-beauty picked it up
-4:45 The verdict
+1:09 Why it is not just another hyaluronic acid
+2:01 What it might actually do for skin
+2:49 What the human evidence really says
+3:53 How to read an ectoin label
+4:44 Why K-beauty picked it up
+5:09 The verdict
 ```
 
 ## Scene table
@@ -28,33 +28,33 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 
 | # | scene | start | dur | beats | beats/s |
 |---|---|---|---|---|---|
-| 01 | `01-hook` | 0:00.00 | 10.00s | 13 | 1.30 |
-| 02 | `02-osmosis` | 0:09.60 | 9.52s | 12 | 1.26 |
-| 03 | `03-now` | 0:18.72 | 9.47s | 12 | 1.27 |
-| 04 | `04-extremolyte` | 0:27.79 | 11.16s | 9 | 0.81 |
-| 05 | `05-halomonas` | 0:38.55 | 9.73s | 8 | 0.82 |
-| 06 | `06-mechanism` | 0:47.88 | 9.47s | 17 | 1.80 |
-| 07 | `07-question` | 0:56.95 | 9.65s | 6 | 0.62 |
-| 08 | `08-humectant` | 1:05.99 | 16.11s | 11 | 0.68 |
-| 09 | `09-exclusion` | 1:21.71 | 21.83s | 15 | 0.69 |
-| 10 | `11-analogy` | 1:43.13 | 12.56s | 7 | 0.56 |
-| 11 | `12-load` | 1:55.09 | 15.65s | 7 | 0.45 |
-| 12 | `13-keratin` | 2:10.34 | 13.14s | 8 | 0.61 |
-| 13 | `14-notforce` | 2:23.08 | 9.20s | 4 | 0.43 |
-| 14 | `15-framing` | 2:31.89 | 7.82s | 6 | 0.77 |
-| 15 | `16-trial104` | 2:39.11 | 12.46s | 11 | 0.88 |
-| 16 | `17-preference` | 2:51.06 | 8.45s | 8 | 0.95 |
-| 17 | `18-eczema` | 2:59.11 | 13.27s | 10 | 0.75 |
-| 18 | `19-limits` | 3:11.98 | 7.59s | 4 | 0.53 |
-| 19 | `20-twelve` | 3:19.17 | 8.09s | 8 | 0.99 |
-| 20 | `21-verdict` | 3:26.75 | 11.84s | 6 | 0.51 |
-| 21 | `22-whofor` | 3:37.99 | 13.40s | 6 | 0.45 |
-| 22 | `23-numbers` | 3:51.00 | 9.86s | 7 | 0.71 |
-| 23 | `24-eleven` | 4:00.35 | 12.41s | 12 | 0.97 |
-| 24 | `25-formula` | 4:12.37 | 12.97s | 5 | 0.39 |
-| 25 | `26-kbeauty` | 4:24.74 | 9.00s | 6 | 0.67 |
-| 26 | `27-resilience` | 4:33.34 | 13.08s | 8 | 0.61 |
-| 27 | `28-remember` | 4:45.72 | 13.82s | 6 | 0.43 |
-| 28 | `29-cta` | 4:58.74 | 11.33s | 5 | 0.44 |
+| 01 | `01-hook` | 0:00.00 | 11.66s | 15 | 1.29 |
+| 02 | `02-osmosis` | 0:11.26 | 9.21s | 12 | 1.30 |
+| 03 | `03-now` | 0:20.07 | 10.91s | 12 | 1.10 |
+| 04 | `04-extremolyte` | 0:30.58 | 9.88s | 9 | 0.91 |
+| 05 | `05-halomonas` | 0:40.07 | 11.05s | 8 | 0.72 |
+| 06 | `06-mechanism` | 0:50.71 | 9.62s | 17 | 1.77 |
+| 07 | `07-question` | 0:59.93 | 10.32s | 6 | 0.58 |
+| 08 | `08-humectant` | 1:09.66 | 14.57s | 13 | 0.89 |
+| 09 | `09-exclusion` | 1:23.82 | 24.22s | 15 | 0.62 |
+| 10 | `11-analogy` | 1:47.64 | 14.57s | 7 | 0.48 |
+| 11 | `12-load` | 2:01.61 | 13.52s | 9 | 0.67 |
+| 12 | `13-keratin` | 2:14.73 | 17.28s | 12 | 0.69 |
+| 13 | `14-notforce` | 2:31.61 | 10.54s | 4 | 0.38 |
+| 14 | `15-framing` | 2:41.75 | 8.62s | 6 | 0.70 |
+| 15 | `16-trial104` | 2:49.77 | 12.66s | 13 | 1.03 |
+| 16 | `17-preference` | 3:01.93 | 12.09s | 10 | 0.83 |
+| 17 | `18-eczema` | 3:13.62 | 15.60s | 10 | 0.64 |
+| 18 | `19-limits` | 3:28.82 | 7.76s | 4 | 0.52 |
+| 19 | `20-twelve` | 3:36.18 | 9.07s | 9 | 0.99 |
+| 20 | `21-verdict` | 3:44.74 | 9.65s | 12 | 1.24 |
+| 21 | `22-whofor` | 3:53.79 | 11.76s | 8 | 0.68 |
+| 22 | `23-numbers` | 4:05.16 | 12.74s | 7 | 0.55 |
+| 23 | `24-eleven` | 4:17.40 | 15.02s | 17 | 1.13 |
+| 24 | `25-formula` | 4:32.02 | 13.51s | 5 | 0.37 |
+| 25 | `26-kbeauty` | 4:44.93 | 9.95s | 8 | 0.80 |
+| 26 | `27-resilience` | 4:54.48 | 16.15s | 10 | 0.62 |
+| 27 | `28-remember` | 5:09.92 | 15.25s | 9 | 0.59 |
+| 28 | `29-cta` | 5:24.37 | 13.78s | 5 | 0.36 |
 
-**237 authored beats across 310.1s (0.76/s average).**
+**272 authored beats across 338.1s (0.80/s average).**

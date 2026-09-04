@@ -2,323 +2,757 @@
   {
     "scene": "01-hook",
     "kind": "w",
+    "word": "may",
+    "occurrence": 1,
+    "seconds": 2.2
+  },
+  {
+    "scene": "01-hook",
+    "kind": "w",
+    "word": "bacteria",
+    "occurrence": 1,
+    "seconds": 3.52
+  },
+  {
+    "scene": "01-hook",
+    "kind": "w",
     "word": "Not",
     "occurrence": 2,
-    "seconds": 5.216
+    "seconds": 5.753
   },
   {
     "scene": "01-hook",
     "kind": "w",
     "word": "Not",
     "occurrence": 3,
-    "seconds": 6.147
+    "seconds": 6.804
   },
   {
     "scene": "01-hook",
     "kind": "w",
     "word": "Not",
     "occurrence": 4,
-    "seconds": 7.307
+    "seconds": 8.602
   },
   {
     "scene": "01-hook",
     "kind": "we",
     "word": "mucin",
     "occurrence": 1,
-    "seconds": 5.957
+    "seconds": 6.804
   },
   {
     "scene": "01-hook",
     "kind": "we",
     "word": "mucin",
     "occurrence": 1,
-    "seconds": 5.957
+    "seconds": 6.804
   },
   {
     "scene": "01-hook",
     "kind": "we",
     "word": "DNA",
     "occurrence": 1,
-    "seconds": 7.087
+    "seconds": 8.242
   },
   {
     "scene": "01-hook",
     "kind": "we",
     "word": "DNA",
     "occurrence": 1,
-    "seconds": 7.087
+    "seconds": 8.242
   },
   {
     "scene": "01-hook",
     "kind": "we",
     "word": "acid",
     "occurrence": 1,
-    "seconds": 9.547
+    "seconds": 11.212
   },
   {
     "scene": "01-hook",
     "kind": "we",
     "word": "acid",
     "occurrence": 1,
-    "seconds": 9.547
+    "seconds": 11.212
   },
   {
     "scene": "02-osmosis",
     "kind": "w",
     "word": "stop",
     "occurrence": 1,
-    "seconds": 8.03
+    "seconds": 7.69
   },
   {
     "scene": "03-now",
     "kind": "w",
     "word": "ectoin",
     "occurrence": 1,
-    "seconds": 6.55
+    "seconds": 6.812
   },
   {
     "scene": "03-now",
     "kind": "w",
     "word": "stranger",
     "occurrence": 1,
-    "seconds": 7.918
+    "seconds": 8.612
   },
   {
     "scene": "03-now",
     "kind": "w",
-    "word": "market",
+    "word": "marketing",
     "occurrence": 1,
-    "seconds": 8.868
+    "seconds": 9.572
   },
   {
     "scene": "03-now",
     "kind": "w",
     "word": "ectoin",
     "occurrence": 1,
-    "seconds": 6.55
+    "seconds": 6.812
   },
   {
     "scene": "03-now",
     "kind": "w",
     "word": "stranger",
     "occurrence": 1,
-    "seconds": 7.918
+    "seconds": 8.612
   },
   {
     "scene": "03-now",
     "kind": "w",
     "word": "stranger",
     "occurrence": 1,
-    "seconds": 7.918
+    "seconds": 8.612
   },
   {
     "scene": "04-extremolyte",
     "kind": "w",
     "word": "superhero",
     "occurrence": 1,
-    "seconds": 6.069
+    "seconds": 3.93
   },
   {
     "scene": "04-extremolyte",
     "kind": "we",
     "word": "superhero",
     "occurrence": 1,
-    "seconds": 6.289
+    "seconds": 4.382
   },
   {
     "scene": "04-extremolyte",
     "kind": "we",
     "word": "superhero",
     "occurrence": 1,
-    "seconds": 6.289
+    "seconds": 4.382
   },
   {
     "scene": "04-extremolyte",
     "kind": "w",
     "word": "protective",
     "occurrence": 1,
-    "seconds": 6.993
+    "seconds": 5.252
   },
   {
     "scene": "04-extremolyte",
     "kind": "w",
     "word": "protective",
     "occurrence": 1,
-    "seconds": 6.993
+    "seconds": 5.252
   },
   {
     "scene": "04-extremolyte",
     "kind": "w",
     "word": "extreme",
     "occurrence": 1,
-    "seconds": 10.283
+    "seconds": 8.592
   },
   {
     "scene": "05-halomonas",
     "kind": "w",
     "word": "Lives",
     "occurrence": 1,
-    "seconds": 4.741
+    "seconds": 5.537
   },
   {
     "scene": "05-halomonas",
     "kind": "w",
     "word": "floods",
     "occurrence": 1,
-    "seconds": 7.872
+    "seconds": 8.937
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "Lose",
     "occurrence": 1,
-    "seconds": 3.208
+    "seconds": 2.647
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "membranes",
     "occurrence": 1,
-    "seconds": 5.532
+    "seconds": 5.838
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "unstable",
     "occurrence": 1,
-    "seconds": 6.356
+    "seconds": 6.358
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "Lose",
     "occurrence": 1,
-    "seconds": 3.208
+    "seconds": 2.647
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "Lose",
     "occurrence": 1,
-    "seconds": 3.208
+    "seconds": 2.647
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "stops",
     "occurrence": 1,
-    "seconds": 7.642
+    "seconds": 7.968
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "Lose",
     "occurrence": 1,
-    "seconds": 3.208
+    "seconds": 2.647
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "Lose",
     "occurrence": 1,
-    "seconds": 3.208
+    "seconds": 2.647
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "stops",
     "occurrence": 1,
-    "seconds": 7.642
+    "seconds": 7.968
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "stops",
     "occurrence": 1,
-    "seconds": 7.642
+    "seconds": 7.968
   },
   {
     "scene": "06-mechanism",
     "kind": "w",
     "word": "stops",
     "occurrence": 1,
-    "seconds": 7.642
+    "seconds": 7.968
   },
   {
     "scene": "07-question",
     "kind": "w",
     "word": "Could",
     "occurrence": 1,
-    "seconds": 6.356
+    "seconds": 6.824
   },
   {
     "scene": "07-question",
     "kind": "w",
     "word": "Could",
     "occurrence": 1,
-    "seconds": 6.356
+    "seconds": 6.824
   },
   {
     "scene": "07-question",
     "kind": "w",
     "word": "stressed",
     "occurrence": 1,
-    "seconds": 7.658
+    "seconds": 8.154
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "version",
     "occurrence": 1,
-    "seconds": 3.402
+    "seconds": 3.627
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "honest",
     "occurrence": 1,
-    "seconds": 9.754
+    "seconds": 10.807
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "simulations",
     "occurrence": 1,
-    "seconds": 11.566
+    "seconds": 13.156
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "simulations",
     "occurrence": 1,
-    "seconds": 11.566
+    "seconds": 13.156
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "attraction",
     "occurrence": 1,
-    "seconds": 13.154
+    "seconds": 15.586
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "attraction",
     "occurrence": 1,
-    "seconds": 13.154
+    "seconds": 15.586
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "depends",
     "occurrence": 1,
-    "seconds": 16.156
+    "seconds": 18.838
   },
   {
     "scene": "09-exclusion",
     "kind": "w",
     "word": "arranged",
     "occurrence": 1,
-    "seconds": 20.938
+    "seconds": 22.818
+  },
+  {
+    "scene": "11-analogy",
+    "kind": "w",
+    "word": "security",
+    "occurrence": 1,
+    "seconds": 2.16
+  },
+  {
+    "scene": "11-analogy",
+    "kind": "w",
+    "word": "hangs",
+    "occurrence": 1,
+    "seconds": 6.11
+  },
+  {
+    "scene": "11-analogy",
+    "kind": "w",
+    "word": "hangs",
+    "occurrence": 1,
+    "seconds": 6.11
+  },
+  {
+    "scene": "11-analogy",
+    "kind": "w",
+    "word": "hold",
+    "occurrence": 1,
+    "seconds": 8.31
+  },
+  {
+    "scene": "13-keratin",
+    "kind": "w",
+    "word": "keratin",
+    "occurrence": 1,
+    "seconds": 11.561
+  },
+  {
+    "scene": "13-keratin",
+    "kind": "w",
+    "word": "keratin",
+    "occurrence": 1,
+    "seconds": 11.561
+  },
+  {
+    "scene": "13-keratin",
+    "kind": "w",
+    "word": "water",
+    "occurrence": 1,
+    "seconds": 16.302
+  },
+  {
+    "scene": "13-keratin",
+    "kind": "w",
+    "word": "water",
+    "occurrence": 1,
+    "seconds": 16.302
+  },
+  {
+    "scene": "16-trial104",
+    "kind": "we",
+    "word": "104",
+    "occurrence": 1,
+    "seconds": 7.57
+  },
+  {
+    "scene": "16-trial104",
+    "kind": "we",
+    "word": "104",
+    "occurrence": 1,
+    "seconds": 7.57
+  },
+  {
+    "scene": "16-trial104",
+    "kind": "w",
+    "word": "against",
+    "occurrence": 1,
+    "seconds": 9.92
+  },
+  {
+    "scene": "16-trial104",
+    "kind": "w",
+    "word": "against",
+    "occurrence": 1,
+    "seconds": 9.92
+  },
+  {
+    "scene": "16-trial104",
+    "kind": "w",
+    "word": "against",
+    "occurrence": 1,
+    "seconds": 9.92
+  },
+  {
+    "scene": "16-trial104",
+    "kind": "w",
+    "word": "against",
+    "occurrence": 1,
+    "seconds": 9.92
+  },
+  {
+    "scene": "17-preference",
+    "kind": "w",
+    "word": "preferred",
+    "occurrence": 1,
+    "seconds": 3.482
+  },
+  {
+    "scene": "20-twelve",
+    "kind": "w",
+    "word": "12",
+    "occurrence": 1,
+    "seconds": 5.783
+  },
+  {
+    "scene": "20-twelve",
+    "kind": "w",
+    "word": "12",
+    "occurrence": 1,
+    "seconds": 5.783
+  },
+  {
+    "scene": "20-twelve",
+    "kind": "w",
+    "word": "12",
+    "occurrence": 1,
+    "seconds": 5.783
+  },
+  {
+    "scene": "20-twelve",
+    "kind": "w",
+    "word": "12",
+    "occurrence": 2,
+    "seconds": 8.027
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "Some",
+    "occurrence": 1,
+    "seconds": 0.15
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "Some",
+    "occurrence": 1,
+    "seconds": 0.15
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "BTOP",
+    "occurrence": 1,
+    "seconds": 3.92
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "Merk",
+    "occurrence": 1,
+    "seconds": 4.22
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "Cow",
+    "occurrence": 1,
+    "seconds": 4.43
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "Promising",
+    "occurrence": 1,
+    "seconds": 5.265
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "yes",
+    "occurrence": 1,
+    "seconds": 6.843
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "Miracle",
+    "occurrence": 1,
+    "seconds": 7.313
+  },
+  {
+    "scene": "21-verdict",
+    "kind": "w",
+    "word": "no",
+    "occurrence": 1,
+    "seconds": 8.563
+  },
+  {
+    "scene": "23-numbers",
+    "kind": "w",
+    "word": "Paula's",
+    "occurrence": 1,
+    "seconds": 8.328
+  },
+  {
+    "scene": "23-numbers",
+    "kind": "w",
+    "word": "Paula's",
+    "occurrence": 1,
+    "seconds": 8.328
+  },
+  {
+    "scene": "23-numbers",
+    "kind": "w",
+    "word": "Ordinary",
+    "occurrence": 1,
+    "seconds": 10.79
+  },
+  {
+    "scene": "23-numbers",
+    "kind": "w",
+    "word": "Ordinary",
+    "occurrence": 1,
+    "seconds": 10.79
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 2.35
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 2.35
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 2.35
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 2.35
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 2.35
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 2.35
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "added",
+    "occurrence": 1,
+    "seconds": 5.32
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "added",
+    "occurrence": 1,
+    "seconds": 5.32
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "second",
+    "occurrence": 1,
+    "seconds": 9.101
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "eleventh",
+    "occurrence": 1,
+    "seconds": 10.257
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "big",
+    "occurrence": 1,
+    "seconds": 10.869
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "big",
+    "occurrence": 1,
+    "seconds": 10.869
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "big",
+    "occurrence": 1,
+    "seconds": 10.869
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "big",
+    "occurrence": 1,
+    "seconds": 10.869
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
+    "word": "big",
+    "occurrence": 1,
+    "seconds": 10.869
+  },
+  {
+    "scene": "27-resilience",
+    "kind": "w",
+    "word": "comfortable",
+    "occurrence": 1,
+    "seconds": 6.772
+  },
+  {
+    "scene": "27-resilience",
+    "kind": "w",
+    "word": "comfortable",
+    "occurrence": 1,
+    "seconds": 6.772
+  },
+  {
+    "scene": "27-resilience",
+    "kind": "w",
+    "word": "comfortable",
+    "occurrence": 1,
+    "seconds": 6.772
+  },
+  {
+    "scene": "27-resilience",
+    "kind": "w",
+    "word": "serums",
+    "occurrence": 1,
+    "seconds": 10.077
+  },
+  {
+    "scene": "27-resilience",
+    "kind": "w",
+    "word": "toners",
+    "occurrence": 1,
+    "seconds": 10.747
+  },
+  {
+    "scene": "27-resilience",
+    "kind": "w",
+    "word": "sun",
+    "occurrence": 1,
+    "seconds": 11.506
+  },
+  {
+    "scene": "28-remember",
+    "kind": "w",
+    "word": "survival",
+    "occurrence": 1,
+    "seconds": 5.382
+  },
+  {
+    "scene": "28-remember",
+    "kind": "w",
+    "word": "remember",
+    "occurrence": 1,
+    "seconds": 3.723
+  },
+  {
+    "scene": "28-remember",
+    "kind": "w",
+    "word": "Not",
+    "occurrence": 1,
+    "seconds": 8.532
+  },
+  {
+    "scene": "28-remember",
+    "kind": "w",
+    "word": "Not",
+    "occurrence": 2,
+    "seconds": 10.426
+  },
+  {
+    "scene": "28-remember",
+    "kind": "w",
+    "word": "genuinely",
+    "occurrence": 1,
+    "seconds": 11.466
+  },
+  {
+    "scene": "29-cta",
+    "kind": "w",
+    "word": "percentage",
+    "occurrence": 1,
+    "seconds": 4.795
+  },
+  {
+    "scene": "29-cta",
+    "kind": "w",
+    "word": "would",
+    "occurrence": 1,
+    "seconds": 7.231
   }
 ]

@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="20-twelve"
-       data-width="1920" data-height="1080" data-duration="8.085">
+       data-width="1920" data-height="1080" data-duration="9.066">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -173,23 +173,30 @@
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
+  // Count reaches 12 exactly on the word that first names the number; the
+  // second "Twelve." (the standalone sentence) instead PULSES the tiles --
+  // a distinct beat, not a repeat of the same reveal.
   var t = document.getElementById('tw-tiles');
   for (var i = 0; i < 12; i++) {
     var d = document.createElement('div'); d.className = 'tile'; d.id = 'tl-' + i;
     t.appendChild(d);
     tl.set('#tl-' + i, { opacity:0, scaleY:0, transformOrigin:'50% 100%' }, 0);
     tl.to('#tl-' + i, { opacity:1, scaleY:1, duration:0.40, ease:'back.out(1.5)' },
-          2.60 + i*0.30);
+          0.100 + i*0.30);
   }
   var c = { v:0 }, el = document.getElementById('tw-n');
   tl.set('#tw-n', { opacity:0 }, 0);   // restates the CSS default, never the sole source
-  tl.to('#tw-n', { opacity:1, duration:0.30 }, 2.60);
-  tl.to(c, { v:12, duration:3.60, ease:'none',
-             onUpdate:function(){ el.textContent = Math.round(c.v); } }, 2.60);
-  tl.fromTo('#tw-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 6.40);
-  tl.fromTo('#tw-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 7.60);
+  tl.to('#tw-n', { opacity:1, duration:0.30 }, 0.100);
+  tl.to(c, { v:12, duration:(5.783 - 0.100), ease:'none',
+             onUpdate:function(){ el.textContent = Math.round(c.v); } }, 0.100);
+  tl.fromTo('#tw-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 5.783+0.20);
+  tl.fromTo('#tw-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 5.783+1.40);
+  // The standalone second "Twelve." pulses the whole tile grid -- the tiles
+  // are already there; this is emphasis, a large-area beat, not a re-entrance.
+  tl.to('.tile', { scale:1.14, duration:0.22, yoyo:true, repeat:1,
+                   ease:'power1.inOut', transformOrigin:'50% 50%' }, 8.027);
 
-    tl.to({}, { duration: 8.085 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 9.066 }, 0);   // full-span anchor -- always last
     window.__timelines["20-twelve"] = tl;
   </script>
 </template>

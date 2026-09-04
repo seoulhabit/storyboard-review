@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="03-now"
-       data-width="1920" data-height="1080" data-duration="9.468">
+       data-width="1920" data-height="1080" data-duration="10.912">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -221,25 +221,22 @@
   // settling-in read and interpolates smoothly.
   tl.fromTo('#s3-mark', { opacity:0, scaleX:1.16 },
                         { opacity:1, scaleX:1, duration:0.90, ease:'power3.out',
-                          transformOrigin:'50% 50%' }, 6.550-0.35);
-  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, 7.918-0.30);
-  // ASR on this take reads "market." not "marketing." (whisper small.en
-  // clipping a fast "-ing"; a human listen would confirm which one was
-  // actually spoken) -- bound to the word that is actually IN the manifest.
-  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, 8.868-0.40);
+                          transformOrigin:'50% 50%' }, 6.812-0.35);
+  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, 8.612-0.30);
+  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, 9.572-0.40);
   // Vessels drain back slightly on the closing beat -- a real state change tied to
   // the line ("stranger than the marketing"), across the otherwise-dead tail.
   tl.to(['#s3-f1','#s3-f2','#s3-f3'], { scaleY:0.30, duration:1.70,
-                                         ease:'power1.inOut', stagger:0.10 }, 9.018-0.6);
+                                         ease:'power1.inOut', stagger:0.10 }, 10.462-0.6);
   // The lockup arrives as a full-width dark band, then floods aqua -- two
   // large-area beats replacing a wordmark fade that measured as nothing.
   tl.fromTo('#s3-lockup', { opacity:0, scaleY:0.4, transformOrigin:'50% 50%' },
-                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, 6.550-0.60);
+                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, 6.812-0.60);
   tl.fromTo('#s3-wash', { scaleX:0 }, { scaleX:1, duration:0.90,
-                                        ease:'power2.inOut' }, 7.918-0.20);
-  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, 7.918);
+                                        ease:'power2.inOut' }, 8.612-0.20);
+  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, 8.612);
 
-    tl.to({}, { duration: 9.468 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 10.912 }, 0);   // full-span anchor -- always last
     window.__timelines["03-now"] = tl;
   </script>
 </template>

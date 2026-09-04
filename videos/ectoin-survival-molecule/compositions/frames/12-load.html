@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="12-load"
-       data-width="1920" data-height="1080" data-duration="15.654">
+       data-width="1920" data-height="1080" data-duration="13.521">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -162,7 +162,22 @@
     .barrier .brick { position:absolute; background:var(--celadon);
                       border:3px solid var(--paper); }
 
+    /* top/left/right are offset from #root's own edge (the chband div is a
+       sibling of .stage, not nested inside it), so the safe-area tokens are
+       spelled out explicitly here -- never 0, which would bleed the wash to
+       the true canvas edge. See the hard safe-area gate note above. */
+    .chband { position:absolute; top:var(--safe-top); left:var(--safe-left);
+              right:var(--safe-right); height:112px;
+              display:flex; align-items:center; overflow:hidden;
+              border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }
+    .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
+                       letter-spacing:var(--tr-mono); }
+
     </style>
+      <div class="chband" id="ch-band">
+        <div class="wash moss" id="ch-wash"></div>
+        <p class="kicker" id="ch-title">What it might actually do for skin</p>
+      </div>
     <div class="stage">
       <div class="g12">
         <p class="fig" id="l-h">Your outer barrier is under constant load.</p>
@@ -201,7 +216,8 @@
     b.style.width = '8%'; b.style.height = '50px';
     b.id = 'bk-' + r + '-' + c; wall.appendChild(b);
   }
-  tl.fromTo('#l-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 0.15);
+  // Chapter opener: first spoken beat bound to 0.450.
+  tl.fromTo('#l-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 0.450);
   // the wall visibly loosens as the stressors land -- one large synchronised move
   for (var r2 = 0; r2 < 3; r2++) for (var c2 = 0; c2 < 12; c2++) {
     tl.to('#bk-' + r2 + '-' + c2,
@@ -226,7 +242,11 @@
           14.10 + c3*0.05);
   }
 
-    tl.to({}, { duration: 15.654 }, 0);   // full-span anchor -- always last
+  // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
+  tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
+  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
+
+    tl.to({}, { duration: 13.521 }, 0);   // full-span anchor -- always last
     window.__timelines["12-load"] = tl;
   </script>
 </template>

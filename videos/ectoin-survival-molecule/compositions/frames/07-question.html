@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="07-question"
-       data-width="1920" data-height="1080" data-duration="9.648">
+       data-width="1920" data-height="1080" data-duration="10.324">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -189,18 +189,18 @@
   // underline landing under "stressed human skin?" on its own word.
   tl.fromTo('#s7-k',    { opacity:0, y:30 }, { opacity:1, y:0, duration:0.40 }, 0.20);
   tl.fromTo('#s7-line', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, 0.55);
-  tl.fromTo('#s7-q',    { opacity:0, y:58 }, { opacity:1, y:0, duration:0.70 }, 6.356-0.05);
+  tl.fromTo('#s7-q',    { opacity:0, y:58 }, { opacity:1, y:0, duration:0.70 }, 6.824-0.05);
   // "Could" lands late in this take (this scene's own gap before it runs
   // ~6.3s, past the 6.0s cadence ceiling on its own) -- a slow, continuous
   // dim on #s7-line spans the wait instead of one beat landing right before
   // #s7-q, so nothing on #root sits frozen for the whole gap.
-  tl.to('#s7-line', { opacity:0.42, duration:6.356-1.6 }, 1.6);
+  tl.to('#s7-line', { opacity:0.42, duration:6.824-1.6 }, 1.6);
   tl.fromTo('#s7-under', { backgroundImage:
       'linear-gradient(#C97A5C,#C97A5C)', backgroundRepeat:'no-repeat',
       backgroundSize:'0% 4px', backgroundPosition:'0% 100%' },
-    { backgroundSize:'100% 4px', duration:0.55, ease:'power2.inOut' }, 7.658);
+    { backgroundSize:'100% 4px', duration:0.55, ease:'power2.inOut' }, 8.154);
 
-    tl.to({}, { duration: 9.648 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 10.324 }, 0);   // full-span anchor -- always last
     window.__timelines["07-question"] = tl;
   </script>
 </template>

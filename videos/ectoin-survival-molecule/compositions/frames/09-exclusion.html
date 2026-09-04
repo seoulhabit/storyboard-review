@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="09-exclusion"
-       data-width="1920" data-height="1080" data-duration="21.827">
+       data-width="1920" data-height="1080" data-duration="24.218">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -217,7 +217,7 @@
     d.id = 'x-' + i; ring.appendChild(d);
     tl.to('#x-' + i, { opacity:1, duration:0.35 }, 4.20 + i*0.05);
   }
-  tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, 3.402-0.30);
+  tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, 3.627-0.30);
   tl.to('#e-shell', { attr:{ 'stroke-width':78 }, opacity:0.55, duration:1.40,
                       ease:'power2.inOut' }, 5.20);
 
@@ -225,7 +225,7 @@
   // beat: a full-frame clip-path sweep, paired with a small child travel on
   // the ring (pairs a clipPath-only tween with real motion, per this
   // project's keepsMoving rule) and the headline settling in from y:24. ----
-  var inv = 9.754-0.45;
+  var inv = 10.807-0.45;
   tl.fromTo('#w-ink', { clipPath:'inset(0% 0% 0% 100%)' },
                       { clipPath:'inset(0% 0% 0% 0%)', duration:0.60,
                         ease:'power3.inOut' }, inv);
@@ -236,9 +236,9 @@
                                              ease:'power2.out' }, inv);
 
   // ---- w-ink: the honest correction, on the SAME diagram geometry. ----
-  // Ring rebuild timed to 11.566 -- that is the word that names
+  // Ring rebuild timed to 13.156 -- that is the word that names
   // the evidence backing the correction, not the ground-flip itself.
-  var sim = 11.566;
+  var sim = 13.156;
   var mring = document.getElementById('m-ring');
   for (var j = 0; j < 18; j++) {
     var aj = j * 20 * Math.PI/180;
@@ -250,20 +250,20 @@
     e.setAttribute('transform', 'rotate(45 ' + xj.toFixed(1) + ' ' + yj.toFixed(1) + ')');
     e.id = 'y-' + j; mring.appendChild(e);
     tl.to('#y-' + j, { opacity:1, duration:0.30 }, sim + j*0.03);
-    // a third break ranks toward the protein surface -- 13.154, the
+    // a third break ranks toward the protein surface -- 15.586, the
     // actual finding named in the VO, drawn as real motion, not decoration.
     if (j % 3 === 0) {
       tl.to('#y-' + j, { x:-Math.cos(aj)*140, y:-Math.sin(aj)*140, fill:'#E0A32B',
-                         duration:1.4, ease:'power2.inOut' }, 13.154-0.8);
+                         duration:1.4, ease:'power2.inOut' }, 15.586-0.8);
     }
   }
   // "depends on how tightly ... already arranged" -- the shell itself
   // destabilises, a full-annulus rotation timed to the closing clause.
   tl.to('#m-ring', { rotation:14, transformOrigin:'310px 310px', duration:2.60,
-                     ease:'power1.inOut' }, 16.156);
-  tl.to('#m-note', { opacity:0.75, duration:0.60 }, 20.938);
+                     ease:'power1.inOut' }, 18.838);
+  tl.to('#m-note', { opacity:0.75, duration:0.60 }, 22.818);
 
-    tl.to({}, { duration: 21.827 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 24.218 }, 0);   // full-span anchor -- always last
     window.__timelines["09-exclusion"] = tl;
   </script>
 </template>

@@ -8,14 +8,12 @@ MP4. Ported from videos/ectoin-normal-person/scripts/build_motion.py; see that
 file for the schema note (FLAT with an explicit `kind`, verified against
 hyperframes@0.8.22's own validator, NOT the nested {"appearsBy": {...}} form).
 
-CURRENT SCOPE: only the root-scoped `keepsMoving` cadence ceiling and the two
-`appearsBy` assertions this project's plan calls HARD (see PLAN's Verification
-section, item 4): the 09-exclusion ground inversion and the 07 question mark,
-both authored with real @w() bindings in build_frames.py/frames_a27.py. The
-remaining per-scene appearsBy/before assertions (21 #v-box, 28 #nx-0/#nx-1, 29
-#c-q, 01 chunk 3) apply to scenes NOT YET word-bound in this pass -- add them
-here as each scene gets its bespoke word-binding, mirroring the COPY table
-pattern below.
+SCOPE: the root-scoped `keepsMoving` cadence ceiling plus every `appearsBy`
+assertion this project's plan calls HARD (see PLAN's Verification section,
+item 4): 09-exclusion's ground inversion, 07's question mark, 21's verdict
+box, 28's two negation voids, 29's closing question, and 01's "bacteria"
+span -- all authored with real @w()/@first bindings in
+build_frames.py/frames_a27.py.
 
 Four rules ported unchanged from the sibling, still true here:
 
@@ -41,6 +39,11 @@ COPY = [
     ("09-exclusion", "#m-h", "the ground-inversion headline -- must appear "
                               "at or after the clip-path sweep begins"),
     ("07-question",  "#s7-q", "the act's closing question"),
+    ("21-verdict",   "#v-box", "the verdict panel, bound to \"Promising\""),
+    ("28-remember",  "#nx-0", "the first negation void, bound to \"Not\" (1st)"),
+    ("28-remember",  "#nx-1", "the second negation void, bound to \"Not\" (2nd)"),
+    ("29-cta",       "#c-q", "the closing question, bound to \"would\""),
+    ("01-hook",      "#s1-bacteria", "the hook's \"bacteria\" span"),
 ]
 
 

@@ -33,6 +33,7 @@ S1_CSS = """
                 line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                 margin:0; }
     .s1-claim em { font-style:normal; color:var(--aqua); }
+    .s1-claim span { display:inline; }
     .s1-neg { display:flex; flex-direction:column; gap:var(--s-4);
               min-height:0; height:100%; justify-content:center; }
     .s1-neg-h { flex:0 0 auto; font-family:var(--font-mono); font-size:var(--t-label);
@@ -63,8 +64,9 @@ S1_CSS = """
 S1_BODY = """    <div class="stage">
       <div class="s1">
         <div class="s1-claim-wrap">
-          <h1 class="s1-claim" id="s1-claim">Your next favourite skincare
-            ingredient may have been invented by <em>bacteria trying not to die.</em></h1>
+          <h1 class="s1-claim" id="s1-claim"><span id="s1-c1">Your next favourite
+            skincare ingredient</span><span id="s1-c2"> may have been invented
+            by </span><em id="s1-bacteria">bacteria trying not to die.</em></h1>
         </div>
         <div class="s1-neg flexmin">
           <p class="s1-neg-h">Not this</p>
@@ -76,10 +78,17 @@ S1_BODY = """    <div class="stage">
       <p class="s1-mark" id="s1-mark">ECTOIN</p>
     </div>"""
 S1_TL = """
-  // FRAME ZERO IS THE HOOK: the claim is already at rest at t=0, not mid-fade.
-  // Only the strike-throughs are animated, so the export's literal first frame
-  // is the composed hook and a viable thumbnail candidate.
-  tl.set('#s1-claim', { opacity: 1, y: 0 }, 0);
+  // FRAME ZERO IS THE HOOK: chunk 1 of the claim is already at rest at t=0,
+  // not mid-fade (a separate still is the thumbnail asset, so the export's
+  // literal first frame does not have to carry that job alone). Chunks 2/3
+  // reveal on their own words -- real early motion instead of the whole
+  // claim landing as one inert block, and keeps #root moving well inside
+  // the 6.0s cadence ceiling (previously the first beat was the "Not snail"
+  // card at ~5.65s, which the newest take's timing pushed close enough to
+  // the ceiling to read as a static hold).
+  tl.set('#s1-c1', { opacity: 1, y: 0 }, 0);
+  tl.fromTo('#s1-c2', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.45 }, @w(may)-0.10);
+  tl.fromTo('#s1-bacteria', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.45 }, @w(bacteria)-0.10);
   // "not to die" is occurrence 1 of "not" -- not one of the three negated
   // items below, which are occurrences 2/3/4 ("not snail" / "not salmon" /
   // "and not another [hyaluronic acid]").
@@ -246,10 +255,7 @@ S3_TL = """
                         { opacity:1, scaleX:1, duration:0.90, ease:'power3.out',
                           transformOrigin:'50% 50%' }, @w(ectoin)-0.35);
   tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, @w(stranger)-0.30);
-  // ASR on this take reads "market." not "marketing." (whisper small.en
-  // clipping a fast "-ing"; a human listen would confirm which one was
-  // actually spoken) -- bound to the word that is actually IN the manifest.
-  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, @w(market)-0.40);
+  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, @w(marketing)-0.40);
   // Vessels drain back slightly on the closing beat -- a real state change tied to
   // the line ("stranger than the marketing"), across the otherwise-dead tail.
   tl.to(['#s3-f1','#s3-f2','#s3-f3'], { scaleY:0.30, duration:1.70,

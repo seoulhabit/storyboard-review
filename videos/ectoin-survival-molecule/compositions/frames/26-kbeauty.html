@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="26-kbeauty"
-       data-width="1920" data-height="1080" data-duration="8.998">
+       data-width="1920" data-height="1080" data-duration="9.946">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -157,7 +157,22 @@
     .pos { position:relative; background:var(--ink); color:var(--paper);
            border-radius:var(--r-3); padding:var(--s-7); overflow:hidden; }
 
+    /* top/left/right are offset from #root's own edge (the chband div is a
+       sibling of .stage, not nested inside it), so the safe-area tokens are
+       spelled out explicitly here -- never 0, which would bleed the wash to
+       the true canvas edge. See the hard safe-area gate note above. */
+    .chband { position:absolute; top:var(--safe-top); left:var(--safe-left);
+              right:var(--safe-right); height:112px;
+              display:flex; align-items:center; overflow:hidden;
+              border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }
+    .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
+                       letter-spacing:var(--tr-mono); }
+
     </style>
+      <div class="chband" id="ch-band">
+        <div class="wash moss" id="ch-wash"></div>
+        <p class="kicker" id="ch-title">Why K-beauty picked it up</p>
+      </div>
     <div class="stage">
       <div class="g26">
         <div class="neg" id="kb-neg">
@@ -181,13 +196,18 @@
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
   // Half-frame panel voided, half-frame panel washed. Two ~22% area beats.
-  tl.fromTo('#kb-neg', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 0.15);
-  tl.fromTo('#kb-void', { opacity:0 }, { opacity:0.85, duration:0.45 }, 2.30);
-  tl.fromTo('#kb-pos', { opacity:0, x:90 }, { opacity:1, x:0, duration:0.55 }, 3.60);
-  tl.fromTo('#kb-wash', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 4.40);
-  tl.to('#kb-neg', { opacity:0.35, duration:0.70 }, 4.40);
+  // Chapter opener: first spoken beat bound to 0.350.
+  tl.fromTo('#kb-neg', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 0.350);
+  tl.fromTo('#kb-void', { opacity:0 }, { opacity:0.85, duration:0.45 }, 0.350+2.15);
+  tl.fromTo('#kb-pos', { opacity:0, x:90 }, { opacity:1, x:0, duration:0.55 }, 0.350+3.45);
+  tl.fromTo('#kb-wash', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 0.350+4.25);
+  tl.to('#kb-neg', { opacity:0.35, duration:0.70 }, 0.350+4.25);
 
-    tl.to({}, { duration: 8.998 }, 0);   // full-span anchor -- always last
+  // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
+  tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
+  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
+
+    tl.to({}, { duration: 9.946 }, 0);   // full-span anchor -- always last
     window.__timelines["26-kbeauty"] = tl;
   </script>
 </template>

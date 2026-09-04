@@ -1,486 +1,503 @@
 1
-00:00:00,100 --> 00:00:03,610
+00:00:00,100 --> 00:00:04,060
 Your next favourite skincare ingredient may
 have been invented by bacteria
 
 2
-00:00:03,900 --> 00:00:07,087
-trying not to die. Not
-snail mucin. Not salmon DNA.
+00:00:04,060 --> 00:00:05,371
+trying not to die.
 
 3
-00:00:07,087 --> 00:00:09,547
+00:00:05,753 --> 00:00:06,804
+Not snail mucin.
+
+4
+00:00:06,804 --> 00:00:08,242
+Not salmon DNA.
+
+5
+00:00:08,242 --> 00:00:11,212
 And not another form
 of hyaluronic acid.
 
-4
-00:00:09,797 --> 00:00:14,827
+6
+00:00:11,362 --> 00:00:16,062
 This tiny molecule helps microorganisms survive
 places so salty and so
 
-5
-00:00:14,827 --> 00:00:18,667
+7
+00:00:16,242 --> 00:00:20,022
 dry that an ordinary cell would
 lose its water and stop functioning.
 
-6
-00:00:18,817 --> 00:00:20,727
+8
+00:00:20,172 --> 00:00:22,482
 And it is now turning up,
 
-7
-00:00:20,727 --> 00:00:24,017
+9
+00:00:22,482 --> 00:00:26,044
 quietly, in Korean serums,
 creams and sunscreens.
 
-8
-00:00:24,017 --> 00:00:27,735
-It is called ectoin, and the real
-science is stranger than the marketing.
+10
+00:00:26,044 --> 00:00:29,304
+It is called ectoin, and the
+real science is stranger than
 
-9
-00:00:27,965 --> 00:00:32,537
+11
+00:00:29,304 --> 00:00:30,534
+the marketing.
+
+12
+00:00:30,684 --> 00:00:33,488
 Ectoin is what researchers
 call an extremolyte.
 
-10
-00:00:32,617 --> 00:00:34,074
+13
+00:00:33,488 --> 00:00:34,966
 That sounds like a superhero.
 
-11
-00:00:34,178 --> 00:00:38,498
+14
+00:00:34,966 --> 00:00:40,016
 It just means a protective molecule
 made by microbes living somewhere extreme.
 
-12
-00:00:38,748 --> 00:00:41,611
+15
+00:00:40,266 --> 00:00:43,576
 The bacterium we get most of
 it from has a name.
 
-13
-00:00:41,611 --> 00:00:44,224
-Halomonas elongata. It lives in salt.
-
-14
-00:00:44,474 --> 00:00:46,420
-When the salt outside gets punishing,
-
-15
-00:00:46,420 --> 00:00:47,826
-it floods itself with ectoin.
-
 16
-00:00:48,076 --> 00:00:49,076
-Why?
+00:00:43,576 --> 00:00:45,551
+Halomonas elongata.
 
 17
-00:00:49,096 --> 00:00:51,084
+00:00:45,551 --> 00:00:46,633
+It lives in salt.
+
+18
+00:00:46,633 --> 00:00:48,873
+When the salt outside gets punishing,
+
+19
+00:00:48,873 --> 00:00:50,663
+it floods itself with ectoin.
+
+20
+00:00:50,913 --> 00:00:51,913
+Why?
+
+21
+00:00:51,933 --> 00:00:53,360
 Because salt pulls water
 out of cells.
 
-18
-00:00:51,084 --> 00:00:53,121
+22
+00:00:53,360 --> 00:00:56,191
 Lose enough water and proteins
 start to lose their shape,
 
-19
-00:00:53,408 --> 00:00:56,896
+23
+00:00:56,551 --> 00:00:59,881
 membranes get unstable, and
 the cell stops working.
 
-20
-00:00:57,066 --> 00:01:00,682
-keeps the space around
+24
+00:01:00,131 --> 00:01:03,892
+Ectoin keeps the space around
 those fragile structures survivable.
 
-21
-00:01:00,682 --> 00:01:03,282
+25
+00:01:03,892 --> 00:01:06,755
 Which led skincare researchers
 to an obvious question.
 
-22
-00:01:03,302 --> 00:01:05,894
+26
+00:01:06,755 --> 00:01:09,555
 Could it do the same
 for stressed human skin?
 
-23
-00:01:06,434 --> 00:01:10,621
+27
+00:01:10,105 --> 00:01:13,748
 Here is where ectoin stops
 behaving like a normal moisturiser.
 
-24
-00:01:10,621 --> 00:01:12,714
-A familiar humectant, like glycerin,
-
-25
-00:01:12,904 --> 00:01:16,178
-or hyaluronic acid, attracts water
-and holds onto onto it.
-
-26
-00:01:16,178 --> 00:01:20,005
-Ectoin seems to work on how
-water arranges itself around proteins
-
-27
-00:01:20,005 --> 00:01:21,657
-and membranes.
-
 28
-00:01:21,907 --> 00:01:25,538
-Scientists call the idea preferential
-exclusion. The tidy version.
+00:01:13,748 --> 00:01:17,464
+A familiar humectant, glycerin, hyaluronic acid,
 
 29
-00:01:25,669 --> 00:01:28,139
+00:01:17,754 --> 00:01:19,227
+attracts water and holds onto it.
+
+30
+00:01:19,227 --> 00:01:23,771
+Ectoin seems to work on how water
+arranges itself around proteins and membranes.
+
+31
+00:01:24,021 --> 00:01:26,808
+Scientists call the idea preferential exclusion.
+
+32
+00:01:26,838 --> 00:01:27,991
+The tidy version.
+
+33
+00:01:27,991 --> 00:01:31,197
 Ectoin protects proteins by
 staying off their surface,
 
-30
-00:01:28,139 --> 00:01:30,968
+34
+00:01:31,197 --> 00:01:34,118
 which helps the water
 around them stay organised.
 
-31
-00:01:31,043 --> 00:01:32,535
+35
+00:01:34,138 --> 00:01:36,467
 The honest version is messier.
 
-32
-00:01:32,535 --> 00:01:36,439
+36
+00:01:36,487 --> 00:01:41,159
 In the simulations, ectoin also showed
 some attraction to that surface.
 
-33
-00:01:36,439 --> 00:01:39,666
+37
+00:01:41,159 --> 00:01:44,419
 And how far it stays back
 depends on how tightly the
 
-34
-00:01:39,666 --> 00:01:43,084
+38
+00:01:44,419 --> 00:01:47,589
 protein's own water is already arranged.
 
-35
-00:01:43,334 --> 00:01:46,308
+39
+00:01:47,739 --> 00:01:50,609
 Think of a celebrity inside
 a ring of security.
 
-36
-00:01:46,308 --> 00:01:47,743
+40
+00:01:50,629 --> 00:01:53,209
 Ectoin is not hugging the celebrity.
 
-37
-00:01:47,799 --> 00:01:50,317
+41
+00:01:53,269 --> 00:01:56,580
 It hangs back, and helps
 the ring hold its shape.
 
-38
-00:01:50,705 --> 00:01:54,990
+42
+00:01:56,590 --> 00:02:01,510
 Which is why calling it another
 hydrating ingredient misses the interesting part.
 
-39
-00:01:55,540 --> 00:01:58,621
+43
+00:02:02,060 --> 00:02:04,970
 Your outer skin barrier
 is under constant load.
 
-40
-00:01:58,860 --> 00:02:03,426
+44
+00:02:05,000 --> 00:02:08,299
 Dry air, cleansing, pollution,
 sun, strong actives.
 
-41
-00:02:03,426 --> 00:02:06,450
+45
+00:02:08,312 --> 00:02:10,908
 When it struggles, water
 escapes more easily,
 
-42
-00:02:06,450 --> 00:02:08,101
-and skin can feel tight,
-
-43
-00:02:08,101 --> 00:02:10,294
-rough, or unusually reactive.
-
-44
-00:02:10,544 --> 00:02:15,194
-Lab research suggests ectoin can help
-stabilise biological structures and improve
-
-45
-00:02:15,444 --> 00:02:17,094
-hydration in that outer layer.
-
 46
-00:02:17,094 --> 00:02:19,444
+00:02:10,981 --> 00:02:12,851
+and skin can feel tight, rough,
+
+47
+00:02:12,851 --> 00:02:14,681
+or unusually reactive.
+
+48
+00:02:14,831 --> 00:02:20,444
+Lab research suggests ectoin can
+help stabilise biological structures and
+
+49
+00:02:20,444 --> 00:02:24,197
+improve hydration in that outer layer.
+
+50
+00:02:24,197 --> 00:02:26,913
 One study found it
 changed how keratin,
 
-47
-00:02:19,444 --> 00:02:21,804
+51
+00:02:27,087 --> 00:02:29,987
 the main protein in
 our outer skin cells,
 
-48
-00:02:21,934 --> 00:02:23,034
+52
+00:02:29,987 --> 00:02:31,564
 behaves with water.
 
-49
-00:02:23,284 --> 00:02:26,364
+53
+00:02:31,714 --> 00:02:35,135
 Though in that same
 study, in punishing dryness,
 
-50
-00:02:26,424 --> 00:02:30,437
+54
+00:02:35,135 --> 00:02:39,525
 below five humidity, one stress
 measure actually got worse.
 
-51
-00:02:30,437 --> 00:02:31,837
+55
+00:02:39,535 --> 00:02:41,701
 It is not a force field.
 
-52
-00:02:31,987 --> 00:02:35,327
+56
+00:02:41,911 --> 00:02:45,491
 It is better understood as a
 supporting ingredient that may help
 
-53
-00:02:35,577 --> 00:02:39,007
+57
+00:02:45,771 --> 00:02:49,671
 skin handle dehydration and
 environmental stress more comfortably.
 
-54
-00:02:39,517 --> 00:02:42,730
+58
+00:02:50,121 --> 00:02:54,301
 So does it do
 anything to actual people?
 
-55
-00:02:42,790 --> 00:02:44,970
-In one randomised, double blind study,
+59
+00:02:54,301 --> 00:02:56,681
+In one randomised, double study,
 
-56
-00:02:44,970 --> 00:02:49,904
+60
+00:02:56,681 --> 00:03:00,841
 a women used a cream with
 two ectoin against the same
 
-57
-00:02:49,904 --> 00:02:51,014
+61
+00:03:00,841 --> 00:03:01,879
 cream without it.
 
-58
-00:02:51,314 --> 00:02:52,926
+62
+00:03:02,079 --> 00:03:03,946
 On the study's own measure,
 
-59
-00:02:52,926 --> 00:02:56,639
+63
+00:03:03,946 --> 00:03:09,041
 the women themselves preferred the ectoin
 version. That is a real result.
 
-60
-00:02:56,639 --> 00:02:59,059
-And it is a preference, not
-a machine reading their skin.
+64
+00:03:09,041 --> 00:03:10,727
+And it is a preference,
 
-61
-00:02:59,209 --> 00:03:03,589
+65
+00:03:10,727 --> 00:03:13,566
+not a machine reading their skin.
+
+66
+00:03:13,716 --> 00:03:18,730
 A second randomised study followed sixty
 people with mild to moderate
 
-62
-00:03:03,669 --> 00:03:05,289
+67
+00:03:18,730 --> 00:03:20,274
 atopic dermatitis, eczema.
 
-63
-00:03:05,289 --> 00:03:08,881
+68
+00:03:20,274 --> 00:03:23,556
 Over four weeks, an ectoin cream
 performed about as well as
 
-64
-00:03:08,881 --> 00:03:11,926
-the barrier cream it was tested
-against, and was well tolerated.
+69
+00:03:23,603 --> 00:03:26,243
+the barrier cream it
+was tested against,
 
-65
-00:03:12,176 --> 00:03:13,176
+70
+00:03:26,243 --> 00:03:28,768
+and was well tolerated.
+
+71
+00:03:28,918 --> 00:03:29,918
 Encouraging.
 
-66
-00:03:13,176 --> 00:03:15,366
-Not proof that ectoin eczema,
+72
+00:03:29,938 --> 00:03:31,893
+Not proof that ectoin cures eczema,
 
-67
-00:03:15,366 --> 00:03:19,116
+73
+00:03:32,130 --> 00:03:36,125
 reverses ageing, or replaces
 anything a dermatologist prescribes.
 
-68
-00:03:19,366 --> 00:03:22,043
+74
+00:03:36,275 --> 00:03:38,697
 And the evidence base
 is genuinely small.
 
-69
-00:03:22,043 --> 00:03:26,701
+75
+00:03:38,698 --> 00:03:44,691
 Search PubMed today and you will
 find twelve ectoin clinical trials. Twelve.
 
-70
-00:03:26,981 --> 00:03:31,041
-Some of that research also comes
-from people who sell the ingredient.
+76
+00:03:44,891 --> 00:03:50,006
+Some of that research also comes from people
+who sell the ingredient. Bitop, Merck, Kao. So.
 
-71
-00:03:31,221 --> 00:03:33,136
-Bitop, Merck, Kao. So.
-
-72
-00:03:33,581 --> 00:03:35,672
+77
+00:03:50,006 --> 00:03:52,044
 Promising supporting ingredient, yes.
 
-73
-00:03:35,672 --> 00:03:37,892
+78
+00:03:52,054 --> 00:03:53,694
 Miracle molecule, no.
 
-74
-00:03:38,432 --> 00:03:42,102
+79
+00:03:54,144 --> 00:03:57,171
 Ectoin is most interesting if
 your skin runs dry,
 
-75
-00:03:42,242 --> 00:03:46,326
+80
+00:03:57,200 --> 00:04:00,642
 sensitive, over cleansed, or irritated
 by a strong routine.
 
-76
-00:03:46,416 --> 00:03:48,796
+81
+00:04:00,664 --> 00:04:02,889
 It sits comfortably alongside panthenol,
 
-77
-00:03:48,796 --> 00:03:50,946
+82
+00:04:02,889 --> 00:04:05,106
 glycerin, squalane and ceramides.
 
-78
-00:03:51,196 --> 00:03:54,585
-But do not buy it off the
-front of the bottle. Turn it around.
+83
+00:04:05,356 --> 00:04:09,027
+But do not buy it off
+the front of the bottle.
 
-79
-00:03:54,715 --> 00:03:56,605
+84
+00:04:09,132 --> 00:04:10,384
+Turn it around.
+
+85
+00:04:10,684 --> 00:04:12,884
 Plenty of brands do
 print a number.
 
-80
-00:03:56,735 --> 00:04:00,305
+86
+00:04:13,484 --> 00:04:17,346
 Paula's Choice says seven
 The Ordinary says two.
 
-81
-00:04:00,595 --> 00:04:04,723
+87
+00:04:17,546 --> 00:04:22,276
 And Abib's Ectoin Panthenol eleven That
 eleven is the two of
 
-82
-00:04:04,723 --> 00:04:05,743
+88
+00:04:22,606 --> 00:04:23,692
 them added together.
 
-83
-00:04:05,972 --> 00:04:08,446
-On the ingredient list,
-panthenol is second.
+89
+00:04:23,692 --> 00:04:27,901
+On the ingredient list, panthenol
+is second. Ectoin is eleventh.
 
-84
-00:04:08,446 --> 00:04:09,628
-Ectoin is eleventh.
-
-85
-00:04:09,628 --> 00:04:12,319
+90
+00:04:27,901 --> 00:04:31,968
 The big number on the front
 is not always the ectoin number.
 
-86
-00:04:12,469 --> 00:04:16,188
+91
+00:04:32,218 --> 00:04:35,028
 The rest is judgement, not evidence.
 
-87
-00:04:16,188 --> 00:04:18,325
-Is it fragrance if
-fragrance bothers you?
+92
+00:04:35,028 --> 00:04:38,368
+Is it fragrance free,
+if fragrance bothers you?
 
-88
-00:04:18,617 --> 00:04:21,081
+93
+00:04:38,368 --> 00:04:41,559
 Does the formula carry
 other useful moisturisers?
 
-89
-00:04:21,081 --> 00:04:24,643
+94
+00:04:41,559 --> 00:04:44,829
 One good ingredient cannot rescue
 a badly built product.
 
-90
-00:04:25,143 --> 00:04:27,531
+95
+00:04:45,279 --> 00:04:48,335
 K did not invent ectoin.
 
-91
-00:04:27,781 --> 00:04:31,111
+96
+00:04:48,335 --> 00:04:51,635
 What Korean formulators are doing well
 is pairing it with barrier
 
-92
-00:04:31,111 --> 00:04:33,291
+97
+00:04:52,215 --> 00:04:54,425
 ingredients in light, wearable textures.
 
-93
-00:04:33,541 --> 00:04:37,131
+98
+00:04:54,675 --> 00:04:59,493
 That fits the wider move away
 from aggressive transformation and towards
 
-94
-00:04:37,211 --> 00:04:38,951
+99
+00:04:59,493 --> 00:05:02,291
 skin that simply stays comfortable.
 
-95
-00:04:38,951 --> 00:04:41,498
+100
+00:05:02,291 --> 00:05:05,143
 You will already find it
 in Korean barrier serums,
 
-96
-00:04:41,608 --> 00:04:45,568
+101
+00:05:05,222 --> 00:05:09,774
 toners and sun products, often in
 smaller type than the trend suggests.
 
-97
-00:04:46,168 --> 00:04:49,171
+102
+00:05:10,274 --> 00:05:13,427
 So next time you see
 ectoin on an ingredient list,
 
-98
-00:04:49,171 --> 00:04:50,630
+103
+00:05:13,647 --> 00:05:15,294
 remember what you are looking at.
 
-99
-00:04:50,630 --> 00:04:53,345
+104
+00:05:15,294 --> 00:05:18,456
 A survival strategy, borrowed from bacteria.
 
-100
-00:04:53,345 --> 00:04:55,305
-Not the new hyaluronic acid.
+105
+00:05:18,456 --> 00:05:20,909
+Not the new hyaluronic
+acid. Not a miracle.
 
-101
-00:04:55,305 --> 00:04:56,427
-Not a miracle.
-
-102
-00:04:56,427 --> 00:04:58,642
+106
+00:05:20,909 --> 00:05:24,270
 A genuinely interesting supporting molecule.
 
-103
-00:04:59,142 --> 00:05:00,970
+107
+00:05:24,770 --> 00:05:26,945
 Here is the one
 thing worth doing.
 
-104
-00:05:01,190 --> 00:05:04,532
+108
+00:05:26,945 --> 00:05:31,095
 Turn the bottle around and find
 the actual percentage before you buy.
 
-105
-00:05:04,532 --> 00:05:08,569
-And tell me, would you put a
-bacteria survival molecule on your face?
+109
+00:05:31,095 --> 00:05:34,963
+And tell me, would you put
+a bacteria made survival molecule
+
+110
+00:05:34,963 --> 00:05:36,645
+on your face?

@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="28-remember"
-       data-width="1920" data-height="1080" data-duration="13.824">
+       data-width="1920" data-height="1080" data-duration="15.246">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -184,14 +184,19 @@
   // structure, same aqua accent. The two negations are VOIDED at panel scale
   // (scene 01 used 5px bars, which measured as no beat at all); the third is
   // affirmed with a wash instead.
-  tl.fromTo('#rm-h', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 0.20);
+  tl.fromTo('#rm-h', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 5.382);
+  // The three cards enter DIM on "remember" -- not yet resolved -- each then
+  // lights fully to opacity 1 exactly when its own void/wash beat lands.
   for (var i = 0; i < 3; i++)
-    tl.fromTo('#nt-' + i, { opacity:0, x:70 }, { opacity:1, x:0, duration:0.45 }, 1.30 + i*0.45);
-  tl.fromTo('#nx-0', { opacity:0 }, { opacity:0.85, duration:0.38 }, 5.20);
-  tl.fromTo('#nx-1', { opacity:0 }, { opacity:0.85, duration:0.38 }, 6.30);
-  tl.fromTo('#nx-2', { scaleX:0 }, { scaleX:1, duration:0.75, ease:'power2.inOut' }, 7.60);
+    tl.fromTo('#nt-' + i, { opacity:0, x:70 }, { opacity:0.55, x:0, duration:0.45 }, 3.723+i*0.45);
+  tl.fromTo('#nx-0', { opacity:0 }, { opacity:0.85, duration:0.38 }, 8.532);
+  tl.to('#nt-0', { opacity:1, duration:0.30 }, "<");
+  tl.fromTo('#nx-1', { opacity:0 }, { opacity:0.85, duration:0.38 }, 10.426);
+  tl.to('#nt-1', { opacity:1, duration:0.30 }, "<");
+  tl.fromTo('#nx-2', { scaleX:0 }, { scaleX:1, duration:0.75, ease:'power2.inOut' }, 11.466);
+  tl.to('#nt-2', { opacity:1, duration:0.30 }, "<");
 
-    tl.to({}, { duration: 13.824 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 15.246 }, 0);   // full-span anchor -- always last
     window.__timelines["28-remember"] = tl;
   </script>
 </template>

@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="23-numbers"
-       data-width="1920" data-height="1080" data-duration="9.859">
+       data-width="1920" data-height="1080" data-duration="12.740">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -182,13 +182,14 @@
 
   tl.fromTo('#nb-h', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
   tl.fromTo('#nb-s', { opacity:0 }, { opacity:1, duration:0.45 }, 3.40);
-  // two half-width cards, each ~18% of the frame, entering then washing
-  tl.fromTo('#bd-0', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 5.20);
-  tl.fromTo('#bw-0', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, 5.70);
-  tl.fromTo('#bd-1', { opacity:0, x:90 },  { opacity:1, x:0, duration:0.55 }, 7.30);
-  tl.fromTo('#bw-1', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, 7.80);
+  // two half-width cards, each ~18% of the frame, entering on the brand's own
+  // name, then washing
+  tl.fromTo('#bd-0', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 8.328);
+  tl.fromTo('#bw-0', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, 8.328+0.50);
+  tl.fromTo('#bd-1', { opacity:0, x:90 },  { opacity:1, x:0, duration:0.55 }, 10.790);
+  tl.fromTo('#bw-1', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, 10.790+0.50);
 
-    tl.to({}, { duration: 9.859 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 12.740 }, 0);   // full-span anchor -- always last
     window.__timelines["23-numbers"] = tl;
   </script>
 </template>

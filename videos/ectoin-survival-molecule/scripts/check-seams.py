@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
-from timing import walk, END_TAIL
+from timing import walk, END_TAIL, LEAD_KEEP
 from vo_lines import EVIDENCE
 
 CONTINUE_CARRY_GAP = (0.15, 0.35)
@@ -105,13 +105,29 @@ def check_reveals():
 
 def check_gaps_render(scenes, mp4):
     """Measure quiet in each gap window on the DECODED render (not just claimed
-    by construction) -- gap window >=12dB below the adjacent narrated window."""
+    by construction) -- gap window >=12dB below the adjacent narrated window.
+
+    The measured window stops LEAD_KEEP before first_word_abs, not AT it.
+    LEAD_KEEP (timing.py) is the deliberate ~100ms of real audio every scene's
+    <audio> clip keeps BEFORE its first word's ASR-marked start, specifically
+    so the natural onset of that word (a leading consonant/breath ASR's
+    vowel-anchored timestamp doesn't fully credit) isn't clipped -- ref.
+    build_index.py's automation() fade-in and every vo-*'s data-start
+    (= first_word_abs - LEAD_KEEP). That audio is a real, audible word
+    beginning, not bleed-through, and it lands inside a 0.25-0.30s continue/
+    carry gap window almost by construction. Measuring it as "not quiet
+    enough" repeatedly flagged scenes where sample-accurate inspection
+    (05-halomonas -> 06-mechanism, 24-eleven -> 25-formula, both spot-checked
+    against the raw NN.wav clip content and the final render's own decoded
+    PCM) showed the loudness was exactly this onset, not a defect. Excluding
+    it restores the check's real purpose: catching dead-tail/bleed bugs in
+    the part of the gap that is supposed to be silent by construction."""
     hard = []
     print(f"\n  boundary gaps (render, measured on {mp4}):")
     for i in range(len(scenes) - 1):
         s, nxt = scenes[i], scenes[i + 1]
         gap_start = round(s.vo_start + s.words[-1]["end"], 3)
-        gap_end = round(nxt.vo_start + nxt.words[0]["start"], 3)
+        gap_end = round(nxt.vo_start + nxt.words[0]["start"] - LEAD_KEEP, 3)
         L = max(0.05, gap_end - gap_start)
         r = sh("ffmpeg", "-nostdin", "-ss", f"{gap_start:.3f}", "-t", f"{L:.3f}",
                "-i", str(mp4), "-af",

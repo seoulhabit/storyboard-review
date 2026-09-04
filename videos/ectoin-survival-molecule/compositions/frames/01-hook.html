@@ -232,7 +232,13 @@
   tl.fromTo('#s1-b3', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 11.212+0.10);
   tl.to('#s1-i3', { color:'#131516', duration:0.30 }, 11.212+0.10);  // --ink on coral = 5.60:1
   // The mark lands late enough to fill the tail rather than the hold going dead.
-  tl.fromTo('#s1-mark', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.60 }, 11.212-0.4);
+  // Enters from ABOVE (y:-24 -> 0), not below: #s1-mark rests with its own
+  // bottom edge AT the safe-bottom line, so a y:+N->0 entrance would start
+  // the whole element N px LOWER than rest, transiently pushing it into the
+  // reserved bottom margin while opacity ramps up together with position --
+  // caught by the hard safe-area gate at 642px inside the zone at t=10.75s.
+  // Sliding down into place from above never crosses that line.
+  tl.fromTo('#s1-mark', { opacity:0, y:-24 }, { opacity:1, y:0, duration:0.60 }, 11.212-0.4);
   tl.fromTo('#s1-claim', { y:0 }, { y:-14, duration:1.60, ease:'power1.inOut' }, 11.212-0.4);
 
     tl.to({}, { duration: 11.662 }, 0);   // full-span anchor -- always last

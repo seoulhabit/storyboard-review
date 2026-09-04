@@ -159,7 +159,12 @@
        sibling of .stage, not nested inside it), so the safe-area tokens are
        spelled out explicitly here -- never 0, which would bleed the wash to
        the true canvas edge. See the hard safe-area gate note above. */
-    .chband { position:absolute; top:var(--safe-top); left:var(--safe-left);
+    /* top:calc(safe-top + 3px), not bare var(--safe-top): the hard safe-area
+       gate measured this band's own rendered edge 2px into the reserved zone
+       (rounded-corner antialiasing/H.264 edge blur softening a couple of
+       rows outward beyond the CSS-computed line) -- a small buffer absorbs
+       that without being visible. */
+    .chband { position:absolute; top:calc(var(--safe-top) + 3px); left:var(--safe-left);
               right:var(--safe-right); height:112px;
               display:flex; align-items:center; overflow:hidden;
               border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }

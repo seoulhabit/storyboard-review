@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="24-eleven"
-       data-width="1920" data-height="1080" data-duration="13.615">
+       data-width="1920" data-height="1080" data-duration="15.022">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -146,6 +152,23 @@
     #root { background:var(--ink); color:var(--paper); }
     .g24 { display:grid; grid-template-columns:48fr 52fr; gap:var(--s-8);
            align-items:center; height:100%; }
+    /* CARRY from 23-numbers: its two brand cards (7%/2%), same dark-card
+       styling, pixel-identical at t=0 -- PLUS the 11% card the act's payoff
+       needs, in the same row, so the row reads as one continuous lineup
+       rather than a fresh scene. */
+    .carry23 { position:absolute; top:var(--safe-top); left:var(--safe-left);
+               right:var(--safe-right); display:grid;
+               grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5; }
+    .c23-card { background:var(--ink-soft); border-radius:var(--r-3);
+                padding:var(--s-5); text-align:center; }
+    .c23-card .pc { font-family:var(--font-display); font-size:64px; line-height:1;
+                     color:var(--aqua); }
+    .c23-card .nm { font-family:var(--font-mono); font-size:var(--t-caption);
+                     letter-spacing:var(--tr-mono-wide); color:var(--ink-3-dark);
+                     margin-top:var(--s-2); }
+    .c23-card.eleven { background:var(--aqua); color:var(--ink); }
+    .c23-card.eleven .pc { color:var(--ink); }
+    .c23-card.eleven .nm { color:var(--ink); opacity:0.7; }
     .split { display:flex; gap:var(--s-4); }
     .half { position:relative; flex:1 1 0; min-width:0; border-radius:var(--r-3);
             padding:var(--s-6); text-align:center; }
@@ -173,10 +196,15 @@
 
     </style>
     <div class="stage">
+      <div class="carry23" id="carry-row">
+        <div class="c23-card" id="c23-0"><div class="pc">7%</div><div class="nm">PAULA&rsquo;S CHOICE</div></div>
+        <div class="c23-card" id="c23-1"><div class="pc">2%</div><div class="nm">THE ORDINARY</div></div>
+        <div class="c23-card eleven" id="c23-2"><div class="pc">11%</div><div class="nm">ABIB</div></div>
+      </div>
       <div class="g24">
         <div class="col">
           <p class="kicker on-ink">Abib &middot; Ectoin Panthenol 11%</p>
-          <p class="hero" id="el-n">11%</p>
+          <p class="hero" id="el-n" style="opacity:0">11%</p>
           <div class="split" id="el-split" style="margin-top:24px;opacity:0">
             <div class="half p"><div class="v">10%</div><div class="k">PANTHENOL</div></div>
             <div class="half e"><div class="v">1%</div><div class="k">ECTOIN</div></div>
@@ -206,27 +234,33 @@
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
-  // The 11% SPLITTING into its two parts is the act's payoff, and it is a
-  // panel-scale move: a hero number replaced by two filled cards.
+  // CARRY: the row is already there at t=0, pixel-identical to how 23-numbers
+  // ended (plus the 11% card). On "eleven" the two brand cards dim and the
+  // 11% card scales up into the hero position -- the hand-off beat.
+  tl.set(['#c23-0','#c23-1','#c23-2'], { opacity:1, y:0, scale:1 }, 0);
+  tl.to(['#c23-0','#c23-1'], { opacity:0.30, duration:0.50 }, 2.350);
+  tl.to('#c23-2', { scale:1.14, duration:0.45, ease:'power2.out' }, 2.350);
+  tl.to('#c23-2', { opacity:0, scale:1.6, duration:0.45, ease:'power2.in' }, 2.350+0.55);
   tl.fromTo('#el-n', { opacity:0, scale:0.7, transformOrigin:'0% 50%' },
-                     { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, 0.30);
-  tl.to('#el-n', { opacity:0.25, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, 3.60);
-  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 3.80);
-  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, 6.00);
+                     { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, 2.350+0.55);
+  tl.to('#carry-row', { opacity:0, duration:0.01 }, 2.350+1.05);
+  tl.to('#el-n', { opacity:0.25, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, 2.350+2.85);
+  // "That eleven is the two of them added together" -- the split reveals on "added".
+  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 5.320);
+  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, 5.320+2.20);
+  // "panthenol is second" / "Ectoin is eleventh" -- each highlight lands on its own word.
   tl.fromTo('#in-p', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 7.60);
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 9.101);
   tl.fromTo('#in-e', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 9.00);
-  tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, 10.40);
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 10.257);
+  tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, 10.869-0.20);
   // The two halves of the 11% resolve at panel scale in the back half.
-  // The proportion bar draws across the full column in the back half, where the
-  // scene previously held for 7.25s on two small chip highlights.
-  tl.to('#el-prop', { opacity:1, duration:0.30 }, 9.40);
-  tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, 9.50);
-  tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, 10.60);
-  tl.to('#el-inci', { opacity:0.40, duration:1.10 }, 11.60);
+  tl.to('#el-prop', { opacity:1, duration:0.30 }, 10.869+0.80);
+  tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, 10.869+0.90);
+  tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, 10.869+2.00);
+  tl.to('#el-inci', { opacity:0.40, duration:1.10 }, 10.869+3.00);
 
-    tl.to({}, { duration: 13.615 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 15.022 }, 0);   // full-span anchor -- always last
     window.__timelines["24-eleven"] = tl;
   </script>
 </template>

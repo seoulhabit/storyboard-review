@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="03-now"
-       data-width="1920" data-height="1080" data-duration="10.215">
+       data-width="1920" data-height="1080" data-duration="10.912">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -215,22 +221,22 @@
   // settling-in read and interpolates smoothly.
   tl.fromTo('#s3-mark', { opacity:0, scaleX:1.16 },
                         { opacity:1, scaleX:1, duration:0.90, ease:'power3.out',
-                          transformOrigin:'50% 50%' }, 5.40);
-  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, 6.50);
-  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, 7.20);
+                          transformOrigin:'50% 50%' }, 6.812-0.35);
+  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, 8.612-0.30);
+  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, 9.572-0.40);
   // Vessels drain back slightly on the closing beat -- a real state change tied to
   // the line ("stranger than the marketing"), across the otherwise-dead tail.
   tl.to(['#s3-f1','#s3-f2','#s3-f3'], { scaleY:0.30, duration:1.70,
-                                         ease:'power1.inOut', stagger:0.10 }, 8.20);
+                                         ease:'power1.inOut', stagger:0.10 }, 10.462-0.6);
   // The lockup arrives as a full-width dark band, then floods aqua -- two
   // large-area beats replacing a wordmark fade that measured as nothing.
   tl.fromTo('#s3-lockup', { opacity:0, scaleY:0.4, transformOrigin:'50% 50%' },
-                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, 5.10);
+                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, 6.812-0.60);
   tl.fromTo('#s3-wash', { scaleX:0 }, { scaleX:1, duration:0.90,
-                                        ease:'power2.inOut' }, 6.90);
-  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, 7.10);
+                                        ease:'power2.inOut' }, 8.612-0.20);
+  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, 8.612);
 
-    tl.to({}, { duration: 10.215 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 10.912 }, 0);   // full-span anchor -- always last
     window.__timelines["03-now"] = tl;
   </script>
 </template>

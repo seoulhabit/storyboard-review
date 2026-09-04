@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="17-preference"
-       data-width="1920" data-height="1080" data-duration="9.198">
+       data-width="1920" data-height="1080" data-duration="12.087">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -152,9 +158,18 @@
     .arm .lbl { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame); }
     .qual { position:relative; background:var(--ink); color:var(--paper);
             border-radius:var(--r-3); padding:var(--s-6) var(--s-7); }
+    /* CARRY from 16-trial104: its cohort grid, same 13-column geometry and
+       final split colours, held in the same screen quadrant it ended in --
+       pixel-identical at t=0, no entrance fade -- then collapses into the
+       ectoin arm on the word that names the finding. */
+    .carry16 { position:absolute; top:var(--safe-top); right:var(--safe-right);
+               width:40%; display:grid; grid-template-columns:repeat(13,1fr);
+               gap:7px; z-index:5; }
+    .carry16 i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%; }
 
     </style>
     <div class="stage">
+      <div class="carry16" id="carry-grid" data-layout-allow-occlusion="true"></div>
       <div class="g17">
         <div class="arms">
           <div class="arm" id="pr-a"><div class="wash mist" id="pr-wa"
@@ -175,17 +190,32 @@
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
+  // CARRY: build the handed-off grid already in its 16-trial104 end state --
+  // split two-tone, fully opaque, no entrance -- so frame zero here reads as
+  // a continuation of the previous scene, not a fresh one.
+  var cg = document.getElementById('carry-grid');
+  for (var k = 0; k < 52; k++) {
+    var ci = document.createElement('i'); ci.id = 'cg-' + k;
+    ci.style.background = k % 2 ? '#59B8AE' : '#9C978D';
+    cg.appendChild(ci);
+    tl.set('#cg-' + k, { opacity:1, scale:1 }, 0);
+  }
   tl.fromTo('#pr-a', { opacity:0, y:50 }, { opacity:1, y:0, duration:0.50 }, 0.15);
   tl.fromTo('#pr-b', { opacity:0, y:50 }, { opacity:1, y:0, duration:0.50 }, 0.35);
   tl.fromTo('#pr-h', { opacity:0 }, { opacity:1, duration:0.50 }, 1.20);
   // the winning arm floods with colour -- a whole half-width panel, ~20% of frame
   tl.fromTo('#pr-wa', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 3.00);
   tl.to('#pr-b', { opacity:0.40, duration:0.70 }, 3.20);
+  // The carried grid COLLAPSES into the ectoin arm on "preferred" -- the word
+  // that states the finding the grid was standing in for.
+  tl.to('#carry-grid', { scale:0.18, x:-360, y:60, opacity:0,
+                         transformOrigin:'50% 0%', duration:0.65,
+                         ease:'power2.inOut' }, 3.482);
   // the qualifier slides up over the result -- the honest beat, and a big one
   tl.set('#pr-q', { opacity:0, y:90 }, 0);
   tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, 5.90);
 
-    tl.to({}, { duration: 9.198 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 12.087 }, 0);   // full-span anchor -- always last
     window.__timelines["17-preference"] = tl;
   </script>
 </template>

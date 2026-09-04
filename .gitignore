@@ -45,3 +45,8 @@ node_modules/
 # history rewrite to remove.
 videos/*/renders/work-*/
 videos/*/renders/.*hf-transaction*
+
+# scripts/gen_vo.py --from-takes staging cache (concatenated source takes +
+# their raw ASR transcripts, keyed by scene id) -- regenerable from the
+# committed per-scene takes, not canonical project output.
+videos/*/assets/voice/acts/_takes/

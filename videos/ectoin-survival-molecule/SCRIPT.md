@@ -1,5 +1,17 @@
 # SCRIPT — Ectoin: the survival molecule
 
+**NARRATIVE REFERENCE ONLY — not the source of truth.** As of the v2
+voice-continuity rebuild (2026-09-04), `scripts/vo_lines.py`'s `LINES` is
+what's actually spoken: it holds the real, TTS-safe, scene-by-scene text
+(29→28 scenes after the 09/10 merge), and `scripts/timing.py`'s `walk()`
+derives every scene's timing from the ASR-measured, cut voiceover — not from
+the `**Time:**` estimates below. This file is kept for the read-through
+narrative (act structure, delivery notes, the pre-cut framing) but its
+per-line text and timings can and do diverge from what ships. To see what's
+actually said and when, read `scripts/vo_lines.py` and
+`assets/voice/NN.words.json`, or run `python3 scripts/timing.py` for the
+table.
+
 **Voice:** standing series voice `674b71b8-1d2e-4087-8567-d1f53c0b9f3c`, `element`
 **Voice direction:** measured, curious, unhurried. This is a story about a molecule,
 not a sales pitch. Land the hedges — they are the point of the channel.

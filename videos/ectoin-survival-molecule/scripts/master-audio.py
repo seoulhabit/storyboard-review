@@ -5,11 +5,18 @@
 
 Targets -14 LUFS integrated (YouTube normalises louder material down anyway).
 
-TP=-2.5, NOT -1.5. AAC encoding raises intersample true peak: a file measured at
--1.50 dBTP on the PCM intermediate has shipped at +0.5 dBFS. The margin is there
-so the DELIVERED file lands under -1.0. The video stream is copied through
-untouched, and the measurement that counts is taken by decoding the finished MP4
-back -- a number from the intermediate is not evidence about the deliverable.
+TP=-4.0, NOT -2.5. This project's first master (VO only, no bed) shipped at
+TP=-2.5 and measured -1.9 dBTP on the decoded deliverable -- inside spec on
+the number the old script reported, but the true peak that matters (the
+DELIVERED, AAC-encoded file, decoded back) was already eating most of its
+-1.0 dBTP margin before a music bed and SFX cues stack on top of the VO. AAC
+encoding raises intersample true peak regardless of source TP, and adding a
+bed raises the source TP itself (two signals summing). -4.0 is the plan's
+adopted margin for a mixed VO+bed+SFX master, per the sibling project
+ectoin-normal-person's build (see that project's own master-audio.py and
+DELIVERY.md for its measured numbers) -- RE-MEASURE this project's own
+decoded deliverable below rather than trusting either project's number by
+analogy; that is what this script's final assertion is for.
 """
 import json
 import re
@@ -17,7 +24,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-I, TP, LRA = -14.0, -2.5, 11.0
+I, TP, LRA = -14.0, -4.0, 11.0
 
 
 def measure(path):

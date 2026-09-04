@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 scripts/build_frames.py && python3 scripts/build_index.py",
-    "dev": "npx --yes hyperframes@0.8.22 preview",
-    "check": "npx --yes hyperframes@0.8.22 check --samples 40",
-    "render": "npx --yes hyperframes@0.8.22 render --quality high -o renders/ectoin-act1.mp4",
-    "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . renders/ectoin-act1.mp4 --landscape && python3 scripts/check-safe-area.py . renders/ectoin-act1.mp4 --landscape && python3 scripts/check-cadence.py . renders/ectoin-act1.mp4 --longform"
+    "build": "python3 scripts/build_frames.py && python3 scripts/build_index.py && python3 scripts/build_motion.py && python3 scripts/build_captions.py && python3 scripts/build_storyboard.py",
+    "dev": "hyperframes preview",
+    "check": "hyperframes check --samples 60",
+    "render": "hyperframes render --quality high --workers 1 -o renders/ectoin-survival-molecule_v2_raw.mp4",
+    "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . renders/ectoin-survival-molecule_v2_final.mp4 --landscape && python3 scripts/check-safe-area.py . renders/ectoin-survival-molecule_v2_final.mp4 --landscape && python3 scripts/check-cadence.py . renders/ectoin-survival-molecule_v2_final.mp4 --longform && python3 scripts/check-seams.py . --render renders/ectoin-survival-molecule_v2_final.mp4"
   },
   "devDependencies": { "@hyperframes/core": "^0.8.20" }
 }

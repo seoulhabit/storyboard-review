@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="06-mechanism"
-       data-width="1920" data-height="1080" data-duration="9.957">
+       data-width="1920" data-height="1080" data-duration="9.618">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -217,37 +223,37 @@
     c.id = 'w-' + i; wg.appendChild(c);
     tl.set('#w-' + i, { opacity: 1, x: 0, y: 0 }, 0);
     tl.to('#w-' + i, { x: 150, y: -22, opacity: 0, duration: 1.25,
-                       ease: 'power1.in' }, 4.30 + i * 0.11);
+                       ease: 'power1.in' }, 2.647+0.30 + i * 0.11);
     // Second wave: refill, then leave again. Without it the middle column is
     // genuinely empty for the back half of the scene -- caught by the
     // region-aware content-void check, not by the whole-frame one.
-    tl.to('#w-' + i, { x: 0, y: 0, opacity: 0.55, duration: 0.01 }, 7.30 + i * 0.04);
+    tl.to('#w-' + i, { x: 0, y: 0, opacity: 0.55, duration: 0.01 }, 5.838-0.20 + i * 0.04);
     tl.to('#w-' + i, { x: 150, y: -22, opacity: 0, duration: 1.30,
-                       ease: 'power1.in' }, 7.90 + i * 0.09);
+                       ease: 'power1.in' }, 6.358+0.20 + i * 0.09);
   }
   // The vessel outline persists for the whole scene, so the step never goes blank.
   // Hidden state is authored in the SVG attribute, NOT tl.set(...,0): a zero-duration
   // set at position 0 does not render while the playhead sits exactly at 0, so frame 0
   // would show it un-hidden (engine lint: gsap_timeline_set_initial_hide).
-  tl.to('#s6-vessel', { opacity: 1, duration: 0.45 }, 3.70);
+  tl.to('#s6-vessel', { opacity: 1, duration: 0.45 }, 2.647-0.30);
   tl.fromTo('#s6-h',  { opacity:0, y:20 }, { opacity:1, y:0, duration:0.50 }, 0.15);
   tl.fromTo('#s6-s1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 1.30);
-  tl.fromTo('#s6-s2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 3.60);
-  tl.fromTo('#s6-s3', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 7.10);
+  tl.fromTo('#s6-s2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 2.647-0.60);
+  tl.fromTo('#s6-s3', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 7.968-0.50);
   // Each card's ground fills as its step becomes active -- three ~11%-of-frame
   // beats spread across the hold, where the SVG strokes alone were invisible.
   tl.fromTo('#s6-fill1', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out' }, 2.20);
-  tl.fromTo('#s6-fill2', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out' }, 4.60);
-  tl.to('#s6-fill1', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, 4.60);
+  tl.fromTo('#s6-fill2', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out' }, 2.647-0.40);
+  tl.to('#s6-fill1', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, 2.647-0.40);
   tl.fromTo('#s6-fill3', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out',
-                                         backgroundColor:'#C97A5C' }, 7.90);
-  tl.to('#s6-fill2', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, 7.90);
+                                         backgroundColor:'#C97A5C' }, 7.968-0.30);
+  tl.to('#s6-fill2', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, 7.968-0.30);
   // The protein visibly loses its fold -- the claim the label makes, drawn.
   tl.fromTo('#s6-p3', { attr:{ d:'M40,150 C70,60 110,60 150,105 C190,150 230,150 260,60' } },
                       { attr:{ d:'M40,150 C86,128 96,168 150,138 C206,108 214,166 260,132' },
-                        duration:1.60, ease:'power2.inOut' }, 7.70);
+                        duration:1.60, ease:'power2.inOut' }, 7.968-0.50);
 
-    tl.to({}, { duration: 9.957 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 9.618 }, 0);   // full-span anchor -- always last
     window.__timelines["06-mechanism"] = tl;
   </script>
 </template>

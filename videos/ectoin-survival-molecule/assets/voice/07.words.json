@@ -1,0 +1,155 @@
+{
+  "scene": "07-question",
+  "block": "act1",
+  "cut": {
+    "start": 62.94,
+    "end": 73.68
+  },
+  "gain_db": 9.7,
+  "lufs": -20.3,
+  "wpm": 163.8,
+  "words": [
+    {
+      "text": "Ectoin",
+      "start": 0.1,
+      "end": 0.52
+    },
+    {
+      "text": "keeps",
+      "start": 0.52,
+      "end": 0.72
+    },
+    {
+      "text": "the",
+      "start": 0.97,
+      "end": 1.08
+    },
+    {
+      "text": "space",
+      "start": 1.08,
+      "end": 1.46
+    },
+    {
+      "text": "around",
+      "start": 1.46,
+      "end": 1.82
+    },
+    {
+      "text": "those",
+      "start": 2.18,
+      "end": 2.25
+    },
+    {
+      "text": "fragile",
+      "start": 2.25,
+      "end": 2.84
+    },
+    {
+      "text": "structures",
+      "start": 2.89,
+      "end": 3.851
+    },
+    {
+      "text": "survivable,",
+      "start": 3.851,
+      "end": 3.861
+    },
+    {
+      "text": "which",
+      "start": 3.861,
+      "end": 4.221
+    },
+    {
+      "text": "led",
+      "start": 4.221,
+      "end": 4.291
+    },
+    {
+      "text": "skincare",
+      "start": 4.291,
+      "end": 4.721
+    },
+    {
+      "text": "researchers",
+      "start": 4.731,
+      "end": 5.341
+    },
+    {
+      "text": "to",
+      "start": 5.411,
+      "end": 5.521
+    },
+    {
+      "text": "an",
+      "start": 5.521,
+      "end": 5.661
+    },
+    {
+      "text": "obvious",
+      "start": 5.711,
+      "end": 6.251
+    },
+    {
+      "text": "question.",
+      "start": 6.251,
+      "end": 6.724
+    },
+    {
+      "text": "Could",
+      "start": 6.724,
+      "end": 7.094
+    },
+    {
+      "text": "it",
+      "start": 7.094,
+      "end": 7.214
+    },
+    {
+      "text": "do",
+      "start": 7.214,
+      "end": 7.344
+    },
+    {
+      "text": "the",
+      "start": 7.344,
+      "end": 7.594
+    },
+    {
+      "text": "same",
+      "start": 7.594,
+      "end": 7.844
+    },
+    {
+      "text": "for",
+      "start": 7.844,
+      "end": 8.054
+    },
+    {
+      "text": "stressed",
+      "start": 8.054,
+      "end": 8.624
+    },
+    {
+      "text": "human",
+      "start": 8.624,
+      "end": 8.914
+    },
+    {
+      "text": "skin?",
+      "start": 9.094,
+      "end": 9.524
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 6.724,
+      "text": "Ectoin keeps the space around those fragile structures survivable, which led skincare researchers to an obvious question."
+    },
+    {
+      "start": 6.724,
+      "end": 9.524,
+      "text": "Could it do the same for stressed human skin?"
+    }
+  ]
+}

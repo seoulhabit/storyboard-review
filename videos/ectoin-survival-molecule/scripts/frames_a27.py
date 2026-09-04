@@ -10,6 +10,48 @@ So the rule for everything below: A BEAT MOVES A PANEL OR A COLUMN, never a word
 Washes sweeping across a card, whole panels entering and leaving, grounds
 inverting, grids filling. Text still animates, but never as a scene's only beat.
 """
+from build_storyboard import CHAPTERS
+
+# ---- shared chapter-band component (into 08, 12, 16, 22, 26; see
+# scripts/transitions.py KIND["chapter"]) ---------------------------------
+# An in-scene overlay carrying the CHAPTERS title as a kicker: washes in
+# (moss fill, paper text -- the project's one safe dark-wash pairing) at
+# 0.05s, holds through the wipe, then recedes at 1.6s so it never competes
+# with the scene's own content, which lands on its own word-bound beats
+# underneath. Kept INSIDE the safe box (never full-bleed) -- a full-bleed
+# band was the exact shape of failure the hard safe-area gate caught before
+# (see _preamble.py's BASE comment on the first render's 81 flagged frames).
+CHBAND_CSS = """
+    /* top/left/right are offset from #root's own edge (the chband div is a
+       sibling of .stage, not nested inside it), so the safe-area tokens are
+       spelled out explicitly here -- never 0, which would bleed the wash to
+       the true canvas edge. See the hard safe-area gate note above. */
+    /* top:calc(safe-top + 3px), not bare var(--safe-top): the hard safe-area
+       gate measured this band's own rendered edge 2px into the reserved zone
+       (rounded-corner antialiasing/H.264 edge blur softening a couple of
+       rows outward beyond the CSS-computed line) -- a small buffer absorbs
+       that without being visible. */
+    .chband { position:absolute; top:calc(var(--safe-top) + 3px); left:var(--safe-left);
+              right:var(--safe-right); height:112px;
+              display:flex; align-items:center; overflow:hidden;
+              border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }
+    .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
+                       letter-spacing:var(--tr-mono); }
+"""
+
+
+def chband_body(cid):
+    return (f'      <div class="chband" id="ch-band">\n'
+            f'        <div class="wash moss" id="ch-wash"></div>\n'
+            f'        <p class="kicker" id="ch-title">{CHAPTERS[cid]}</p>\n'
+            f'      </div>')
+
+
+CHBAND_TL = """
+  // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
+  tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
+  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
+"""
 
 # NOTE (2026-09-02): copy inside a washed container is ALWAYS wrapped in an
 # element. `.wash ~ *` can only lift an ELEMENT above the wash, and
@@ -26,7 +68,8 @@ S08 = dict(css="""
     .g2.tilt { grid-template-columns:0.62fr 1.38fr; }
     .g2 .panel { display:flex; flex-direction:column; }
     .drop { position:absolute; border-radius:50%; background:var(--aqua); }
-""", body="""    <div class="stage">
+""" + CHBAND_CSS, body=chband_body("08-humectant") + """
+    <div class="stage">
       <div class="g2" id="g2-grid">
         <div class="panel" id="p-hum">
           <div class="wash dim" id="w-hum"></div>
@@ -50,7 +93,8 @@ S08 = dict(css="""
     </div>""", tl="""
   // PANEL-SCALE: each panel is ~45% of the frame; its entrance and its colour
   // wash are the beats. The dot behaviour is the explanation on top of them.
-  tl.fromTo('#p-hum', { opacity:0, x:-120 }, { opacity:1, x:0, duration:0.65 }, 0.10);
+  // Chapter opener: first spoken beat bound to @first.
+  tl.fromTo('#p-hum', { opacity:0, x:-120 }, { opacity:1, x:0, duration:0.65 }, @first);
   tl.fromTo('#w-hum', { scaleX:0 }, { scaleX:1, duration:0.80, ease:'power2.inOut' }, 2.40);
   var hd = document.getElementById('hum-dots'), ed = document.getElementById('ect-dots');
   for (var i = 0; i < 14; i++) {
@@ -84,15 +128,24 @@ S08 = dict(css="""
   tl.to('#p-ect', { scaleX:1.30, x:-150, transformOrigin:'100% 50%', duration:1.10,
                     ease:'power2.inOut' }, 11.90);
   tl.to('#p-hum', { opacity:0.18, duration:1.20 }, 14.30);
-""")
+""" + CHBAND_TL)
 
-# ---------------------------------------------------------------- 09 exclusion
+# ------------------------------------------------------- 09-exclusion (merged)
+# Scenes 09 and 10 merged into one continuous scene/diagram (external review,
+# approved cut): the tidy version and the honest correction now share a single
+# annular diagram at identical geometry, and the correction arrives as a
+# GROUND INVERSION -- a clip-path sweep of the ink layer over the paper one --
+# rather than a hard scene cut. Word-bound to the real cut voiceover
+# (assets/voice/09.words.json); tokens confirmed against
+# `python3 scripts/timing.py --words 09-exclusion` before writing.
 S09 = dict(css="""
     #root { background:var(--paper); color:var(--ink); }
+    .world.ink { background:var(--ink); color:var(--paper); clip-path:inset(0% 0% 0% 100%); }
     .g9 { display:grid; grid-template-columns:44fr 56fr; gap:var(--s-8);
           align-items:center; height:100%; }
-""", body="""    <div class="stage">
-      <div class="g9">
+    .g9 .stage { padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+""", body="""    <div class="world" id="w-paper">
+      <div class="stage"><div class="g9">
         <div class="col">
           <p class="kicker">The mechanism</p>
           <p class="hero" id="e-term">Preferential<br>exclusion</p>
@@ -107,10 +160,26 @@ S09 = dict(css="""
                 font-family="Inter, sans-serif" font-weight="800" font-size="34"
                 opacity="0">PROTEIN</text>
         </svg>
-      </div>
+      </div></div>
+    </div>
+    <div class="world ink" id="w-ink">
+      <div class="stage"><div class="g9">
+        <div class="col">
+          <p class="kicker on-ink">The mechanism</p>
+          <p class="hero" id="m-h">The honest version<br>is <em style="font-style:normal;color:var(--coral)">messier.</em></p>
+          <p class="p-body on-ink" id="m-note" style="margin-top:20px">In the simulations,
+            ectoin also showed some attraction to that surface. And how far it stays back
+            depends on how tightly the protein&rsquo;s own water is already arranged.</p>
+        </div>
+        <svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true">
+          <circle cx="310" cy="310" r="190" fill="none" stroke="#59B8AE"
+                  stroke-width="46" opacity="0.30"/>
+          <circle cx="310" cy="310" r="112" fill="#F7F5F0"/>
+          <g id="m-ring"></g>
+        </svg>
+      </div></div>
     </div>""", tl="""
-  // The diagram assembles in three LARGE annular layers -- each one is a big
-  // area change, which is the beat. Text rides along; it is not the beat.
+  // ---- w-paper: the tidy version. Same three-layer diagram build as before. ----
   tl.fromTo('#e-term', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
   tl.fromTo('#e-prot', { attr:{ r:0 } }, { attr:{ r:112 }, duration:0.75,
                                            ease:'back.out(1.4)' }, 1.30);
@@ -128,88 +197,53 @@ S09 = dict(css="""
     d.setAttribute('fill', '#C97A5C'); d.setAttribute('opacity', 0);
     d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
     d.id = 'x-' + i; ring.appendChild(d);
-    tl.to('#x-' + i, { opacity:1, duration:0.35 }, 6.00 + i*0.055);
+    tl.to('#x-' + i, { opacity:1, duration:0.35 }, 4.20 + i*0.05);
   }
-  tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, 8.20);
-  // The hydration shell thickens and saturates -- a large annulus, not 18 dots.
+  tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, @w(version)-0.30);
   tl.to('#e-shell', { attr:{ 'stroke-width':78 }, opacity:0.55, duration:1.40,
-                      ease:'power2.inOut' }, 6.10);
-  tl.to('#e-shell', { attr:{ r:214 }, duration:1.60, ease:'power2.inOut' }, 8.60);
-""")
+                      ease:'power2.inOut' }, 5.20);
 
-# ---------------------------------------------------------------- 10 messier
-S10 = dict(css="""
-    #root { background:var(--ink); color:var(--paper); }
-    .g10 { display:grid; grid-template-columns:52fr 48fr; gap:var(--s-8);
-           align-items:center; height:100%; }
-    .swap { position:relative; }
-    .swap .old { position:absolute; inset:0; }
-    /* A full-width PAPER band on the ink ground: a 225-luma step over ~17% of the
-       frame. The ring of 18 small squares it replaces measured as no beat. */
-    .m-band { background:var(--paper); border-radius:var(--r-3);
-              padding:var(--s-5) var(--s-6); margin-top:var(--s-5);
-              transform:scaleY(0); transform-origin:50% 0%; }
-""", body="""    <div class="stage">
-      <div class="g10">
-        <div class="col">
-          <p class="kicker on-ink">Correction</p>
-          <div class="swap" style="min-height:300px">
-            <div class="old" id="m-old"><p class="hero" style="color:var(--ink-2-dark)">The tidy version.</p></div>
-            <div id="m-new" style="opacity:0"><p class="hero">The honest one<br>is <em style="font-style:normal;color:var(--coral)">messier.</em></p></div>
-          </div>
-          <div class="m-band" id="m-band">
-            <p class="p-body" id="m-note" style="color:var(--ink)">In the simulations ectoin
-              also showed some attraction to that surface.</p>
-          </div>
-        </div>
-        <svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true">
-          <circle cx="310" cy="310" r="190" fill="none" stroke="#59B8AE"
-                  stroke-width="46" opacity="0.22"/>
-          <circle cx="310" cy="310" r="112" fill="#F7F5F0"/>
-          <g id="m-ring"></g>
-        </svg>
-      </div>
-    </div>""", tl="""
-  // Ground is INK -- the whole-frame inversion from scene 09 is itself the
-  // largest beat in the piece so far, and it lands on "the honest version".
-  tl.to('#m-old', { opacity:0, y:-30, duration:0.50 }, 2.30);
-  tl.fromTo('#m-new', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.60 }, 2.55);
-  var ring = document.getElementById('m-ring');
-  for (var i = 0; i < 18; i++) {
-    var a = i * 20 * Math.PI/180;
-    var x = 310 + Math.cos(a)*268, y = 310 + Math.sin(a)*268;
-    var d = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    d.setAttribute('x', x-13); d.setAttribute('y', y-13);
-    d.setAttribute('width', 26); d.setAttribute('height', 26);
-    d.setAttribute('fill', '#C97A5C');
-    d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-    d.id = 'y-' + i; ring.appendChild(d);
-    // A THIRD of them break ranks and move to the protein surface -- the actual
-    // finding, drawn. Not decoration: this is what the correction says.
-    if (i % 3 === 0) {
-      tl.to('#y-' + i, { x:-Math.cos(a)*140, y:-Math.sin(a)*140, fill:'#E0A32B',
-                         duration:1.5, ease:'power2.inOut' }, 4.60 + (i/3)*0.12);
+  // ---- ground inversion on "the honest version" -- the scene's single largest
+  // beat: a full-frame clip-path sweep, paired with a small child travel on
+  // the ring (pairs a clipPath-only tween with real motion, per this
+  // project's keepsMoving rule) and the headline settling in from y:24. ----
+  var inv = @w(honest)-0.45;
+  tl.fromTo('#w-ink', { clipPath:'inset(0% 0% 0% 100%)' },
+                      { clipPath:'inset(0% 0% 0% 0%)', duration:0.60,
+                        ease:'power3.inOut' }, inv);
+  tl.fromTo('#m-ring', { rotation:0, transformOrigin:'310px 310px' },
+                       { rotation:6, transformOrigin:'310px 310px', duration:1.40,
+                         ease:'power2.out' }, inv);
+  tl.fromTo('#m-h', { y:24, opacity:0.4 }, { y:0, opacity:1, duration:0.60,
+                                             ease:'power2.out' }, inv);
+
+  // ---- w-ink: the honest correction, on the SAME diagram geometry. ----
+  // Ring rebuild timed to @w(simulations) -- that is the word that names
+  // the evidence backing the correction, not the ground-flip itself.
+  var sim = @w(simulations);
+  var mring = document.getElementById('m-ring');
+  for (var j = 0; j < 18; j++) {
+    var aj = j * 20 * Math.PI/180;
+    var xj = 310 + Math.cos(aj)*268, yj = 310 + Math.sin(aj)*268;
+    var e = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    e.setAttribute('x', xj-13); e.setAttribute('y', yj-13);
+    e.setAttribute('width', 26); e.setAttribute('height', 26);
+    e.setAttribute('fill', '#C97A5C'); e.setAttribute('opacity', 0);
+    e.setAttribute('transform', 'rotate(45 ' + xj.toFixed(1) + ' ' + yj.toFixed(1) + ')');
+    e.id = 'y-' + j; mring.appendChild(e);
+    tl.to('#y-' + j, { opacity:1, duration:0.30 }, sim + j*0.03);
+    // a third break ranks toward the protein surface -- @w(attraction), the
+    // actual finding named in the VO, drawn as real motion, not decoration.
+    if (j % 3 === 0) {
+      tl.to('#y-' + j, { x:-Math.cos(aj)*140, y:-Math.sin(aj)*140, fill:'#E0A32B',
+                         duration:1.4, ease:'power2.inOut' }, @w(attraction)-0.8);
     }
   }
-  tl.fromTo('#m-band', { scaleY:0 }, { scaleY:1, duration:0.60,
-                                       ease:'power3.out' }, 5.20);
-  // The protein's own shell destabilises -- a full-annulus change in the back half.
-  tl.to('#m-ring', { rotation:9, transformOrigin:'310px 310px', duration:3.20,
-                     ease:'power1.inOut' }, 7.40);
-  // The band recedes and the correction takes the frame -- a second large beat
-  // in the back half rather than a 1.04 text scale.
-  // RECOLOUR the band, do not scale it. Two earlier versions of this beat were
-  // both wrong: retracting to zero left the lower-left sixth at 0.00% ink for
-  // 2.5s (a real region void), and retracting to a residual strip squashed the
-  // band's own text to 16% height -- illegible, and visibly worse than the void
-  // it fixed. A paper->moss recolour is a 140-luma step over ~17% of the frame
-  // (per-step ~4.2, comfortably over the floor), keeps the region occupied, and
-  // does not deform any type.
-  tl.to('#m-band', { backgroundColor:'#4F6B52', duration:0.70,
-                     ease:'power2.inOut' }, 10.20);
-  tl.to('#m-note', { color:'#F7F5F0', duration:0.70 }, 10.20);
-  tl.to('#m-new', { scale:1.10, transformOrigin:'0% 50%', duration:1.30,
-                    ease:'power3.out' }, 10.60);
+  // "depends on how tightly ... already arranged" -- the shell itself
+  // destabilises, a full-annulus rotation timed to the closing clause.
+  tl.to('#m-ring', { rotation:14, transformOrigin:'310px 310px', duration:2.60,
+                     ease:'power1.inOut' }, @w(depends));
+  tl.to('#m-note', { opacity:0.75, duration:0.60 }, @w(arranged));
 """)
 
 # ---------------------------------------------------------------- 11 analogy
@@ -234,8 +268,10 @@ S11 = dict(css="""
       </div>
     </div>""", tl="""
   tl.fromTo('#a-l1', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
-  tl.fromTo('#a-star', { opacity:0, scale:0.4, transformOrigin:'310px 280px' },
-                       { opacity:1, scale:1, duration:0.60, ease:'back.out(1.6)' }, 1.20);
+  // power3.out, not back.out -- a settling entrance rather than an overshoot,
+  // to read as arriving INSIDE the ring rather than bouncing into place.
+  tl.fromTo('#a-star', { opacity:0, scale:0.86, transformOrigin:'310px 280px' },
+                       { opacity:1, scale:1, duration:0.60, ease:'power3.out' }, 1.20);
   var g = document.getElementById('a-guard'), e = document.getElementById('a-ect');
   for (var i = 0; i < 12; i++) {
     var a = i * 30 * Math.PI/180;
@@ -243,7 +279,8 @@ S11 = dict(css="""
     c.setAttribute('cx', 310 + Math.cos(a)*150); c.setAttribute('cy', 280 + Math.sin(a)*150);
     c.setAttribute('r', 30); c.setAttribute('fill', '#4F6B52'); c.setAttribute('opacity', 0);
     c.id = 'g-' + i; g.appendChild(c);
-    tl.to('#g-' + i, { opacity:1, duration:0.30 }, 2.30 + i*0.06);
+    // The guard ring lands on the word that names it.
+    tl.to('#g-' + i, { opacity:1, duration:0.30 }, @w(security) + i*0.06);
     var d = document.createElementNS('http://www.w3.org/2000/svg','rect');
     var x = 310 + Math.cos(a+0.26)*250, y = 280 + Math.sin(a+0.26)*250;
     d.setAttribute('x', x-13); d.setAttribute('y', y-13);
@@ -251,12 +288,14 @@ S11 = dict(css="""
     d.setAttribute('fill', '#C97A5C'); d.setAttribute('opacity', 0);
     d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
     d.id = 'ee-' + i; e.appendChild(d);
-    tl.to('#ee-' + i, { opacity:1, duration:0.30 }, 5.60 + i*0.06);
+    // The ectoin squares land on "hangs" (back) -- the beat that describes them.
+    tl.to('#ee-' + i, { opacity:1, duration:0.30 }, @w(hangs) + i*0.06);
   }
-  tl.fromTo('#a-l2', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 7.20);
-  // the ring visibly TIGHTENS -- a large synchronised move, the scene's last beat
+  tl.fromTo('#a-l2', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, @w(hangs)+1.60);
+  // the ring visibly TIGHTENS on "hold" -- a large synchronised move, the
+  // scene's last beat, landing exactly on the word it illustrates.
   tl.to('#a-guard', { scale:0.94, transformOrigin:'310px 280px', duration:1.6,
-                      ease:'power2.inOut' }, 9.40);
+                      ease:'power2.inOut' }, @w(hold));
 """)
 
 # ---------------------------------------------------------------- 12 load
@@ -273,7 +312,8 @@ S12 = dict(css="""
                border-radius:var(--r-3); overflow:hidden; }
     .barrier .brick { position:absolute; background:var(--celadon);
                       border:3px solid var(--paper); }
-""", body="""    <div class="stage">
+""" + CHBAND_CSS, body=chband_body("12-load") + """
+    <div class="stage">
       <div class="g12">
         <p class="fig" id="l-h">Your outer barrier is under constant load.</p>
         <div class="stressors">
@@ -305,7 +345,8 @@ S12 = dict(css="""
     b.style.width = '8%'; b.style.height = '50px';
     b.id = 'bk-' + r + '-' + c; wall.appendChild(b);
   }
-  tl.fromTo('#l-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 0.15);
+  // Chapter opener: first spoken beat bound to @first.
+  tl.fromTo('#l-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, @first);
   // the wall visibly loosens as the stressors land -- one large synchronised move
   for (var r2 = 0; r2 < 3; r2++) for (var c2 = 0; c2 < 12; c2++) {
     tl.to('#bk-' + r2 + '-' + c2,
@@ -329,7 +370,7 @@ S12 = dict(css="""
             rotation: (c3 % 5 - 2) * 3, duration:1.70, ease:'power2.inOut' },
           14.10 + c3*0.05);
   }
-""")
+""" + CHBAND_TL)
 
 # ---------------------------------------------------------------- 13 keratin
 S13 = dict(css="""
@@ -368,6 +409,13 @@ S13 = dict(css="""
     tl.to('#ks-' + i, { x:(i%6)*84 - 210, y:(Math.floor(i/6)%4)*26 - 30,
                         rotation:(i%5-2)*14, transformOrigin:'50% 50%',
                         duration:1.9, ease:'power2.inOut' }, 6.30 + (i%6)*0.07);
+    // Second large-area beat, back half of the scene: the field itself is
+    // what "keratin, the main protein" refers to on screen, so it pulses on
+    // that word rather than sitting inert while the sentence keeps going.
+    tl.to('#ks-' + i, { scale:1.14, duration:0.40, ease:'power2.out',
+                        transformOrigin:'50% 50%' }, @w(keratin) + i*0.02);
+    tl.to('#ks-' + i, { scale:1, duration:0.55, ease:'power2.inOut' },
+                        @w(keratin) + i*0.02 + 0.40);
   }
   tl.fromTo('#k-h', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, 0.20);
   tl.fromTo('#k-s', { opacity:0 }, { opacity:1, duration:0.45 }, 4.60);
@@ -377,6 +425,14 @@ S13 = dict(css="""
                           { scale:1, opacity:1, duration:1.60,
                             ease:'power3.out' }, 2.30);
   tl.fromTo('#k-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 8.60);
+  // Third beat, spans "behaves with water": the whole field tints toward
+  // hydrated blue-green and back, a real colour change across every strand
+  // rather than a caption update, carrying the otherwise-dead close of a
+  // scene this take reads much slower than the copy was first blocked for.
+  tl.to('#k-strands', { filter:'saturate(1.6) hue-rotate(-12deg)',
+                        duration:0.55, ease:'power2.inOut' }, @w(water)-0.35);
+  tl.to('#k-strands', { filter:'saturate(1) hue-rotate(0deg)',
+                        duration:0.80, ease:'power2.inOut' }, @w(water)+0.20);
 """)
 
 # ---------------------------------------------------------------- 14 not a force field
@@ -450,7 +506,8 @@ S16 = dict(css="""
     .cohort { display:grid; grid-template-columns:repeat(13,1fr); gap:7px; }
     .cohort i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%;
                 background:var(--ink-3); }
-""", body="""    <div class="stage">
+""" + CHBAND_CSS, body=chband_body("16-trial104") + """
+    <div class="stage">
       <div class="g16">
         <div class="col">
           <p class="kicker">Does it do anything to people?</p>
@@ -463,33 +520,36 @@ S16 = dict(css="""
       </div>
     </div>""", tl="""
   // 104 dots filling a 58% column is the biggest single area change in the video.
-  // The count-up rides it; the GRID is the beat.
+  // The count-up rides it; the GRID is the beat. Chapter opener: first spoken
+  // beat bound to @first. Count-up ENDS on the word that names the number, so
+  // the counter never finishes before or after "a hundred and four" is said.
   var grid = document.getElementById('t-grid');
   for (var i = 0; i < 104; i++) {
     var d = document.createElement('i'); d.id = 'ct-' + i; grid.appendChild(d);
     tl.set('#ct-' + i, { opacity:0, scale:0.3, transformOrigin:'50% 50%' }, 0);
-    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, 1.60 + i*0.022);
+    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, @first + i*0.022);
   }
   var counter = { v:0 }, el = document.getElementById('t-n');
   tl.set('#t-n', { opacity:0 }, 0);   // restates the CSS default, never the sole source
-  tl.to('#t-n', { opacity:1, duration:0.30 }, 1.60);
-  tl.to(counter, { v:104, duration:2.30, ease:'power1.out',
-                   onUpdate:function(){ el.textContent = Math.round(counter.v); } }, 1.60);
-  tl.fromTo('#t-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 4.60);
-  // split the cohort into the two arms -- a whole-grid recolour
+  tl.to('#t-n', { opacity:1, duration:0.30 }, @first);
+  tl.to(counter, { v:104, duration:(@we(104) - @first), ease:'power1.out',
+                   onUpdate:function(){ el.textContent = Math.round(counter.v); } }, @first);
+  tl.fromTo('#t-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, @we(104)+0.70);
+  // split the cohort into the two arms -- a whole-grid recolour, on the word
+  // that introduces the comparison arm ("against the same cream without it").
   for (var j = 0; j < 104; j++) {
     tl.to('#ct-' + j, { backgroundColor: (j % 2 ? '#59B8AE' : '#9C978D'),
-                        duration:0.50 }, 6.90 + (j % 13) * 0.05);
+                        duration:0.50 }, @w(against) + (j % 13) * 0.05);
   }
-  tl.fromTo('#t-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 8.40);
+  tl.fromTo('#t-cite', { opacity:0 }, { opacity:1, duration:0.45 }, @w(against)+1.50);
   // The grid physically SPLITS into its two arms -- a whole-column move, where
   // recolouring 104 small dots measured as nothing.
   tl.to('#t-grid', { scaleX:0.92, x:-26, transformOrigin:'50% 50%', duration:1.50,
-                     ease:'power2.inOut' }, 9.60);
-  tl.to('#t-grid', { scaleY:1.10, duration:1.80, ease:'power2.inOut' }, 12.60);
-""")
+                     ease:'power2.inOut' }, @w(against)+2.70);
+  tl.to('#t-grid', { scaleY:1.10, duration:1.80, ease:'power2.inOut' }, @w(against)+5.70);
+""" + CHBAND_TL)
 
-# ---------------------------------------------------------------- 17 preference
+# ---------------------------------------------------------------- 17 preference (carry)
 S17 = dict(css="""
     #root { background:var(--paper); color:var(--ink); }
     .g17 { display:flex; flex-direction:column; justify-content:center;
@@ -500,7 +560,16 @@ S17 = dict(css="""
     .arm .lbl { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame); }
     .qual { position:relative; background:var(--ink); color:var(--paper);
             border-radius:var(--r-3); padding:var(--s-6) var(--s-7); }
+    /* CARRY from 16-trial104: its cohort grid, same 13-column geometry and
+       final split colours, held in the same screen quadrant it ended in --
+       pixel-identical at t=0, no entrance fade -- then collapses into the
+       ectoin arm on the word that names the finding. */
+    .carry16 { position:absolute; top:var(--safe-top); right:var(--safe-right);
+               width:40%; display:grid; grid-template-columns:repeat(13,1fr);
+               gap:7px; z-index:5; }
+    .carry16 i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%; }
 """, body="""    <div class="stage">
+      <div class="carry16" id="carry-grid" data-layout-allow-occlusion="true"></div>
       <div class="g17">
         <div class="arms">
           <div class="arm" id="pr-a"><div class="wash mist" id="pr-wa"
@@ -515,12 +584,27 @@ S17 = dict(css="""
         </div>
       </div>
     </div>""", tl="""
+  // CARRY: build the handed-off grid already in its 16-trial104 end state --
+  // split two-tone, fully opaque, no entrance -- so frame zero here reads as
+  // a continuation of the previous scene, not a fresh one.
+  var cg = document.getElementById('carry-grid');
+  for (var k = 0; k < 52; k++) {
+    var ci = document.createElement('i'); ci.id = 'cg-' + k;
+    ci.style.background = k % 2 ? '#59B8AE' : '#9C978D';
+    cg.appendChild(ci);
+    tl.set('#cg-' + k, { opacity:1, scale:1 }, 0);
+  }
   tl.fromTo('#pr-a', { opacity:0, y:50 }, { opacity:1, y:0, duration:0.50 }, 0.15);
   tl.fromTo('#pr-b', { opacity:0, y:50 }, { opacity:1, y:0, duration:0.50 }, 0.35);
   tl.fromTo('#pr-h', { opacity:0 }, { opacity:1, duration:0.50 }, 1.20);
   // the winning arm floods with colour -- a whole half-width panel, ~20% of frame
   tl.fromTo('#pr-wa', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 3.00);
   tl.to('#pr-b', { opacity:0.40, duration:0.70 }, 3.20);
+  // The carried grid COLLAPSES into the ectoin arm on "preferred" -- the word
+  // that states the finding the grid was standing in for.
+  tl.to('#carry-grid', { scale:0.18, x:-360, y:60, opacity:0,
+                         transformOrigin:'50% 0%', duration:0.65,
+                         ease:'power2.inOut' }, @w(preferred));
   // the qualifier slides up over the result -- the honest beat, and a big one
   tl.set('#pr-q', { opacity:0, y:90 }, 0);
   tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, 5.90);
@@ -635,24 +719,31 @@ S20 = dict(css="""
         <div class="tiles" id="tw-tiles"></div>
       </div>
     </div>""", tl="""
+  // Count reaches 12 exactly on the word that first names the number; the
+  // second "Twelve." (the standalone sentence) instead PULSES the tiles --
+  // a distinct beat, not a repeat of the same reveal.
   var t = document.getElementById('tw-tiles');
   for (var i = 0; i < 12; i++) {
     var d = document.createElement('div'); d.className = 'tile'; d.id = 'tl-' + i;
     t.appendChild(d);
     tl.set('#tl-' + i, { opacity:0, scaleY:0, transformOrigin:'50% 100%' }, 0);
     tl.to('#tl-' + i, { opacity:1, scaleY:1, duration:0.40, ease:'back.out(1.5)' },
-          2.60 + i*0.30);
+          @first + i*0.30);
   }
   var c = { v:0 }, el = document.getElementById('tw-n');
   tl.set('#tw-n', { opacity:0 }, 0);   // restates the CSS default, never the sole source
-  tl.to('#tw-n', { opacity:1, duration:0.30 }, 2.60);
-  tl.to(c, { v:12, duration:3.60, ease:'none',
-             onUpdate:function(){ el.textContent = Math.round(c.v); } }, 2.60);
-  tl.fromTo('#tw-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 6.40);
-  tl.fromTo('#tw-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 7.60);
+  tl.to('#tw-n', { opacity:1, duration:0.30 }, @first);
+  tl.to(c, { v:12, duration:(@w(12,1) - @first), ease:'none',
+             onUpdate:function(){ el.textContent = Math.round(c.v); } }, @first);
+  tl.fromTo('#tw-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, @w(12,1)+0.20);
+  tl.fromTo('#tw-cite', { opacity:0 }, { opacity:1, duration:0.45 }, @w(12,1)+1.40);
+  // The standalone second "Twelve." pulses the whole tile grid -- the tiles
+  // are already there; this is emphasis, a large-area beat, not a re-entrance.
+  tl.to('.tile', { scale:1.14, duration:0.22, yoyo:true, repeat:1,
+                   ease:'power1.inOut', transformOrigin:'50% 50%' }, @w(12,2));
 """)
 
-# ---------------------------------------------------------------- 21 verdict
+# ---------------------------------------------------------------- 21 verdict (carry)
 S21 = dict(css="""
     #root { background:var(--ink); color:var(--paper); }
     .g21 { display:flex; flex-direction:column; justify-content:center;
@@ -663,7 +754,16 @@ S21 = dict(css="""
           font-size:var(--t-frame); }
     .verdict { position:relative; border-radius:var(--r-3); padding:var(--s-7);
                overflow:hidden; background:var(--ink-soft); text-align:center; }
+    /* CARRY from 20-twelve: the same hero "12", same size, same corner it
+       held at t=0 -- pixel-identical, no entrance -- then shrinks into the
+       kicker it becomes part of. */
+    .ghost12 { position:absolute; top:var(--safe-top); left:var(--safe-left);
+               font-family:var(--font-display); font-size:180px; line-height:1;
+               color:var(--paper); margin:0; z-index:5; }
+    .void-flash { position:absolute; inset:-8px -16px; background:var(--coral);
+                  opacity:0; border-radius:var(--r-2); z-index:-1; }
 """, body="""    <div class="stage">
+      <div class="ghost12" id="ghost-12">12</div>
       <div class="g21">
         <p class="kicker on-ink" id="v-k">Some of that research comes from people who sell it</p>
         <div class="makers">
@@ -673,19 +773,39 @@ S21 = dict(css="""
         </div>
         <div class="verdict" id="v-box">
           <div class="wash moss" id="v-wash"></div>
-          <p class="hero" id="v-h">Promising supporting ingredient.<br>
-            <em style="font-style:normal;color:var(--coral)">Not a miracle molecule.</em></p>
+          <p class="hero" id="v-h">Promising supporting ingredient. <span id="v-yes"
+            style="position:relative">Yes.</span><br>
+            Miracle molecule. <span id="v-no" style="position:relative;color:var(--coral)">
+            <span class="void-flash" id="v-no-flash"></span>No.</span></p>
         </div>
       </div>
     </div>""", tl="""
-  tl.fromTo('#v-k', { opacity:0 }, { opacity:1, duration:0.40 }, 0.15);
-  for (var i = 0; i < 3; i++)
-    tl.fromTo('#mk-' + i, { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 0.70 + i*0.55);
+  // CARRY: the ghost 12 shrinks into the kicker it becomes part of, on "Some".
+  tl.set('#ghost-12', { opacity:1, scale:1, x:0, y:0 }, 0);
+  tl.fromTo('#v-k', { opacity:0 }, { opacity:1, duration:0.40 }, @w(Some));
+  tl.to('#ghost-12', { scale:0.16, x:40, y:-30, opacity:0, transformOrigin:'0% 0%',
+                       duration:0.55, ease:'power2.inOut' }, @w(Some));
+  // ASR on this take mis-hears the three brand names ("Bitop, Merck, Kao")
+  // as "BTOP Merk Cow." -- bound to what is actually in the manifest, same
+  // as any other scene; a human listen confirms the SPOKEN audio still says
+  // the real names correctly, this is a whisper/small.en transcription miss
+  // on unfamiliar proper nouns, not a TTS defect.
+  tl.fromTo('#mk-0', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(BTOP));
+  tl.fromTo('#mk-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(Merk));
+  tl.fromTo('#mk-2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(Cow));
   // The verdict panel enters full-width and then washes -- two large beats on the
   // line the whole act has been building to.
   tl.set('#v-box', { opacity:0, y:70 }, 0);
-  tl.to('#v-box', { opacity:1, y:0, duration:0.60, ease:'power3.out' }, 4.10);
-  tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, 5.40);
+  tl.to('#v-box', { opacity:1, y:0, duration:0.60, ease:'power3.out' }, @w(Promising));
+  // "yes" gets an underline highlight -- the affirming half of the verdict.
+  tl.fromTo('#v-yes', { backgroundImage:'linear-gradient(#4F6B52,#4F6B52)',
+      backgroundRepeat:'no-repeat', backgroundSize:'0% 4px',
+      backgroundPosition:'0% 100%' },
+    { backgroundSize:'100% 4px', duration:0.45, ease:'power2.inOut' }, @w(yes));
+  // "Miracle" is where the panel washes moss -- the coral line + wash beat.
+  tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, @w(Miracle));
+  // "no" gets a coral void flash -- the negating half of the verdict.
+  tl.fromTo('#v-no-flash', { opacity:0 }, { opacity:0.85, duration:0.30 }, @w(no));
 """)
 
 # ---------------------------------------------------------------- 22 who it suits
@@ -702,7 +822,8 @@ S22 = dict(css="""
     .fr { background:var(--ink); color:var(--paper); border-radius:var(--r-pill);
           padding:var(--s-4) var(--s-3); text-align:center;
           font-family:var(--font-mono); font-size:var(--t-label); }
-""", body="""    <div class="stage">
+""" + CHBAND_CSS, body=chband_body("22-whofor") + """
+    <div class="stage">
       <div class="g22">
         <p class="fig" id="wf-h">Most interesting if your skin runs&hellip;</p>
         <div class="states">
@@ -718,17 +839,18 @@ S22 = dict(css="""
         </div>
       </div>
     </div>""", tl="""
-  tl.fromTo('#wf-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 0.15);
+  // Chapter opener: first spoken beat bound to @first.
+  tl.fromTo('#wf-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, @first);
   for (var i = 0; i < 4; i++) {
-    tl.fromTo('#ss-' + i, { opacity:0, y:56 }, { opacity:1, y:0, duration:0.42 }, 0.70 + i*0.42);
+    tl.fromTo('#ss-' + i, { opacity:0, y:56 }, { opacity:1, y:0, duration:0.42 }, @first+0.55 + i*0.42);
     // each card washes as its word is said -- four large area changes, spread
     tl.fromTo('#sw-' + i, { scaleX:0 }, { scaleX:1, duration:0.55,
-                                          ease:'power2.inOut' }, 2.70 + i*0.62);
+                                          ease:'power2.inOut' }, @first+2.55 + i*0.62);
   }
   tl.fromTo('#wf-s', { opacity:0 }, { opacity:1, duration:0.45 }, 8.20);
   for (var j = 0; j < 4; j++)
     tl.fromTo('#fr-' + j, { opacity:0, y:34 }, { opacity:1, y:0, duration:0.40 }, 8.70 + j*0.45);
-""")
+""" + CHBAND_TL)
 
 # ---------------------------------------------------------------- 23 the numbers
 S23 = dict(css="""
@@ -757,18 +879,36 @@ S23 = dict(css="""
     </div>""", tl="""
   tl.fromTo('#nb-h', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
   tl.fromTo('#nb-s', { opacity:0 }, { opacity:1, duration:0.45 }, 3.40);
-  // two half-width cards, each ~18% of the frame, entering then washing
-  tl.fromTo('#bd-0', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 5.20);
-  tl.fromTo('#bw-0', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, 5.70);
-  tl.fromTo('#bd-1', { opacity:0, x:90 },  { opacity:1, x:0, duration:0.55 }, 7.30);
-  tl.fromTo('#bw-1', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, 7.80);
+  // two half-width cards, each ~18% of the frame, entering on the brand's own
+  // name, then washing
+  tl.fromTo('#bd-0', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, @w(Paula's));
+  tl.fromTo('#bw-0', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, @w(Paula's)+0.50);
+  tl.fromTo('#bd-1', { opacity:0, x:90 },  { opacity:1, x:0, duration:0.55 }, @w(Ordinary));
+  tl.fromTo('#bw-1', { scaleX:0 }, { scaleX:1, duration:0.60, ease:'power2.inOut' }, @w(Ordinary)+0.50);
 """)
 
-# ---------------------------------------------------------------- 24 the eleven
+# ---------------------------------------------------------------- 24 the eleven (carry)
 S24 = dict(css="""
     #root { background:var(--ink); color:var(--paper); }
     .g24 { display:grid; grid-template-columns:48fr 52fr; gap:var(--s-8);
            align-items:center; height:100%; }
+    /* CARRY from 23-numbers: its two brand cards (7%/2%), same dark-card
+       styling, pixel-identical at t=0 -- PLUS the 11% card the act's payoff
+       needs, in the same row, so the row reads as one continuous lineup
+       rather than a fresh scene. */
+    .carry23 { position:absolute; top:var(--safe-top); left:var(--safe-left);
+               right:var(--safe-right); display:grid;
+               grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5; }
+    .c23-card { background:var(--ink-soft); border-radius:var(--r-3);
+                padding:var(--s-5); text-align:center; }
+    .c23-card .pc { font-family:var(--font-display); font-size:64px; line-height:1;
+                     color:var(--aqua); }
+    .c23-card .nm { font-family:var(--font-mono); font-size:var(--t-caption);
+                     letter-spacing:var(--tr-mono-wide); color:var(--ink-3-dark);
+                     margin-top:var(--s-2); }
+    .c23-card.eleven { background:var(--aqua); color:var(--ink); }
+    .c23-card.eleven .pc { color:var(--ink); }
+    .c23-card.eleven .nm { color:var(--ink); opacity:0.7; }
     .split { display:flex; gap:var(--s-4); }
     .half { position:relative; flex:1 1 0; min-width:0; border-radius:var(--r-3);
             padding:var(--s-6); text-align:center; }
@@ -794,10 +934,15 @@ S24 = dict(css="""
     .prop-p { flex:10 1 0; background:var(--paper); color:var(--ink); }
     .prop-e { flex:1 1 0; background:var(--aqua); color:var(--ink); }
 """, body="""    <div class="stage">
+      <div class="carry23" id="carry-row">
+        <div class="c23-card" id="c23-0"><div class="pc">7%</div><div class="nm">PAULA&rsquo;S CHOICE</div></div>
+        <div class="c23-card" id="c23-1"><div class="pc">2%</div><div class="nm">THE ORDINARY</div></div>
+        <div class="c23-card eleven" id="c23-2"><div class="pc">11%</div><div class="nm">ABIB</div></div>
+      </div>
       <div class="g24">
         <div class="col">
           <p class="kicker on-ink">Abib &middot; Ectoin Panthenol 11%</p>
-          <p class="hero" id="el-n">11%</p>
+          <p class="hero" id="el-n" style="opacity:0">11%</p>
           <div class="split" id="el-split" style="margin-top:24px;opacity:0">
             <div class="half p"><div class="v">10%</div><div class="k">PANTHENOL</div></div>
             <div class="half e"><div class="v">1%</div><div class="k">ECTOIN</div></div>
@@ -821,25 +966,31 @@ S24 = dict(css="""
         </div>
       </div>
     </div>""", tl="""
-  // The 11% SPLITTING into its two parts is the act's payoff, and it is a
-  // panel-scale move: a hero number replaced by two filled cards.
+  // CARRY: the row is already there at t=0, pixel-identical to how 23-numbers
+  // ended (plus the 11% card). On "eleven" the two brand cards dim and the
+  // 11% card scales up into the hero position -- the hand-off beat.
+  tl.set(['#c23-0','#c23-1','#c23-2'], { opacity:1, y:0, scale:1 }, 0);
+  tl.to(['#c23-0','#c23-1'], { opacity:0.30, duration:0.50 }, @w(11));
+  tl.to('#c23-2', { scale:1.14, duration:0.45, ease:'power2.out' }, @w(11));
+  tl.to('#c23-2', { opacity:0, scale:1.6, duration:0.45, ease:'power2.in' }, @w(11)+0.55);
   tl.fromTo('#el-n', { opacity:0, scale:0.7, transformOrigin:'0% 50%' },
-                     { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, 0.30);
-  tl.to('#el-n', { opacity:0.25, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, 3.60);
-  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 3.80);
-  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, 6.00);
+                     { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, @w(11)+0.55);
+  tl.to('#carry-row', { opacity:0, duration:0.01 }, @w(11)+1.05);
+  tl.to('#el-n', { opacity:0.25, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, @w(11)+2.85);
+  // "That eleven is the two of them added together" -- the split reveals on "added".
+  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, @w(added));
+  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, @w(added)+2.20);
+  // "panthenol is second" / "Ectoin is eleventh" -- each highlight lands on its own word.
   tl.fromTo('#in-p', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 7.60);
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, @w(second));
   tl.fromTo('#in-e', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 9.00);
-  tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, 10.40);
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, @w(eleventh));
+  tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, @w(big)-0.20);
   // The two halves of the 11% resolve at panel scale in the back half.
-  // The proportion bar draws across the full column in the back half, where the
-  // scene previously held for 7.25s on two small chip highlights.
-  tl.to('#el-prop', { opacity:1, duration:0.30 }, 9.40);
-  tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, 9.50);
-  tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, 10.60);
-  tl.to('#el-inci', { opacity:0.40, duration:1.10 }, 11.60);
+  tl.to('#el-prop', { opacity:1, duration:0.30 }, @w(big)+0.80);
+  tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, @w(big)+0.90);
+  tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, @w(big)+2.00);
+  tl.to('#el-inci', { opacity:0.40, duration:1.10 }, @w(big)+3.00);
 """)
 
 # ---------------------------------------------------------------- 25 formula (UNSOURCED)
@@ -892,7 +1043,8 @@ S26 = dict(css="""
            padding:var(--s-7); overflow:hidden; }
     .pos { position:relative; background:var(--ink); color:var(--paper);
            border-radius:var(--r-3); padding:var(--s-7); overflow:hidden; }
-""", body="""    <div class="stage">
+""" + CHBAND_CSS, body=chband_body("26-kbeauty") + """
+    <div class="stage">
       <div class="g26">
         <div class="neg" id="kb-neg">
           <div class="void" id="kb-void"></div>
@@ -909,12 +1061,13 @@ S26 = dict(css="""
       </div>
     </div>""", tl="""
   // Half-frame panel voided, half-frame panel washed. Two ~22% area beats.
-  tl.fromTo('#kb-neg', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 0.15);
-  tl.fromTo('#kb-void', { opacity:0 }, { opacity:0.85, duration:0.45 }, 2.30);
-  tl.fromTo('#kb-pos', { opacity:0, x:90 }, { opacity:1, x:0, duration:0.55 }, 3.60);
-  tl.fromTo('#kb-wash', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 4.40);
-  tl.to('#kb-neg', { opacity:0.35, duration:0.70 }, 4.40);
-""")
+  // Chapter opener: first spoken beat bound to @first.
+  tl.fromTo('#kb-neg', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, @first);
+  tl.fromTo('#kb-void', { opacity:0 }, { opacity:0.85, duration:0.45 }, @first+2.15);
+  tl.fromTo('#kb-pos', { opacity:0, x:90 }, { opacity:1, x:0, duration:0.55 }, @first+3.45);
+  tl.fromTo('#kb-wash', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, @first+4.25);
+  tl.to('#kb-neg', { opacity:0.35, duration:0.70 }, @first+4.25);
+""" + CHBAND_TL)
 
 # ---------------------------------------------------------------- 27 resilience
 S27 = dict(css="""
@@ -951,11 +1104,14 @@ S27 = dict(css="""
   tl.fromTo('#sh-a', { opacity:0, x:-70 }, { opacity:1, x:0, duration:0.50 }, 0.20);
   tl.fromTo('#sh-ar', { opacity:0 }, { opacity:1, duration:0.35 }, 1.10);
   tl.fromTo('#sh-b', { opacity:0, x:70 }, { opacity:1, x:0, duration:0.50 }, 1.45);
-  tl.fromTo('#sh-w', { scaleX:0 }, { scaleX:1, duration:0.80, ease:'power2.inOut' }, 2.90);
-  tl.to('#sh-a', { opacity:0.40, duration:0.60 }, 2.90);
-  tl.fromTo('#wh-h', { opacity:0 }, { opacity:1, duration:0.45 }, 6.60);
-  for (var i = 0; i < 3; i++)
-    tl.fromTo('#wh-' + i, { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, 7.20 + i*0.75);
+  // The wash lands on the word that names the destination state.
+  tl.fromTo('#sh-w', { scaleX:0 }, { scaleX:1, duration:0.80, ease:'power2.inOut' }, @w(comfortable));
+  tl.to('#sh-a', { opacity:0.40, duration:0.60 }, @w(comfortable));
+  tl.fromTo('#wh-h', { opacity:0 }, { opacity:1, duration:0.45 }, @w(comfortable)+2.60);
+  // Each "where you'll find it" card lands on its own named product category.
+  tl.fromTo('#wh-0', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, @w(serums));
+  tl.fromTo('#wh-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, @w(toners));
+  tl.fromTo('#wh-2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, @w(sun));
 """)
 
 # ---------------------------------------------------------------- 28 remember (callback)
@@ -987,12 +1143,17 @@ S28 = dict(css="""
   // structure, same aqua accent. The two negations are VOIDED at panel scale
   // (scene 01 used 5px bars, which measured as no beat at all); the third is
   // affirmed with a wash instead.
-  tl.fromTo('#rm-h', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 0.20);
+  tl.fromTo('#rm-h', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, @w(survival));
+  // The three cards enter DIM on "remember" -- not yet resolved -- each then
+  // lights fully to opacity 1 exactly when its own void/wash beat lands.
   for (var i = 0; i < 3; i++)
-    tl.fromTo('#nt-' + i, { opacity:0, x:70 }, { opacity:1, x:0, duration:0.45 }, 1.30 + i*0.45);
-  tl.fromTo('#nx-0', { opacity:0 }, { opacity:0.85, duration:0.38 }, 5.20);
-  tl.fromTo('#nx-1', { opacity:0 }, { opacity:0.85, duration:0.38 }, 6.30);
-  tl.fromTo('#nx-2', { scaleX:0 }, { scaleX:1, duration:0.75, ease:'power2.inOut' }, 7.60);
+    tl.fromTo('#nt-' + i, { opacity:0, x:70 }, { opacity:0.55, x:0, duration:0.45 }, @w(remember)+i*0.45);
+  tl.fromTo('#nx-0', { opacity:0 }, { opacity:0.85, duration:0.38 }, @w(Not,1));
+  tl.to('#nt-0', { opacity:1, duration:0.30 }, "<");
+  tl.fromTo('#nx-1', { opacity:0 }, { opacity:0.85, duration:0.38 }, @w(Not,2));
+  tl.to('#nt-1', { opacity:1, duration:0.30 }, "<");
+  tl.fromTo('#nx-2', { scaleX:0 }, { scaleX:1, duration:0.75, ease:'power2.inOut' }, @w(genuinely));
+  tl.to('#nt-2', { opacity:1, duration:0.30 }, "<");
 """)
 
 # ---------------------------------------------------------------- 29 CTA / end screen
@@ -1022,20 +1183,23 @@ S29 = dict(css="""
     </div>""", tl="""
   // Calm motion by design: YouTube draws its end-screen elements over this scene,
   // and competing movement under them reads as clutter. Three beats, no more.
-  tl.fromTo('#c-k', { opacity:0 }, { opacity:1, duration:0.45 }, 0.20);
-  tl.fromTo('#c-act', { opacity:0, y:54 }, { opacity:1, y:0, duration:0.65 }, 0.70);
-  tl.fromTo('#c-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, 2.30);
-  tl.fromTo('#c-q', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.60 }, 5.20);
+  tl.fromTo('#c-k', { opacity:0 }, { opacity:1, duration:0.45 }, @first);
+  tl.fromTo('#c-act', { opacity:0, y:54 }, { opacity:1, y:0, duration:0.65 }, @first+0.50);
+  tl.fromTo('#c-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, @w(percentage));
+  tl.fromTo('#c-q', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.60 }, @w(would)-0.10);
 """)
 
-# scene id -> (module-level spec, VO take number)
+# scene id -> module-level spec. Scene NUMBERING and duration are no longer
+# carried here at all -- both come from scripts/timing.py's walk(), which
+# derives them from the cut, measured voiceover (assets/voice/NN.wav +
+# NN.words.json). 09-exclusion absorbs what used to be scenes 09 AND 10 (see
+# S09 above); there is no separate 10-messier entry any more.
 SCENES_A27 = [
-    ("08-humectant", S08, 8),  ("09-exclusion", S09, 9),  ("10-messier", S10, 10),
-    ("11-analogy",   S11, 11), ("12-load",      S12, 12), ("13-keratin", S13, 13),
-    ("14-notforce",  S14, 14), ("15-framing",   S15, 15), ("16-trial104", S16, 16),
-    ("17-preference",S17, 17), ("18-eczema",    S18, 18), ("19-limits",  S19, 19),
-    ("20-twelve",    S20, 20), ("21-verdict",   S21, 21), ("22-whofor",  S22, 22),
-    ("23-numbers",   S23, 23), ("24-eleven",    S24, 24), ("25-formula", S25, 25),
-    ("26-kbeauty",   S26, 26), ("27-resilience",S27, 27), ("28-remember",S28, 28),
-    ("29-cta",       S29, 29),
+    ("08-humectant", S08),  ("09-exclusion", S09),  ("11-analogy",    S11),
+    ("12-load",      S12),  ("13-keratin",   S13),  ("14-notforce",   S14),
+    ("15-framing",   S15),  ("16-trial104",  S16),  ("17-preference", S17),
+    ("18-eczema",    S18),  ("19-limits",    S19),  ("20-twelve",     S20),
+    ("21-verdict",   S21),  ("22-whofor",    S22),  ("23-numbers",    S23),
+    ("24-eleven",    S24),  ("25-formula",   S25),  ("26-kbeauty",    S26),
+    ("27-resilience",S27),  ("28-remember",  S28),  ("29-cta",        S29),
 ]

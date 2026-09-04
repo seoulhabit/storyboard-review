@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="27-resilience"
-       data-width="1920" data-height="1080" data-duration="13.150">
+       data-width="1920" data-height="1080" data-duration="16.149">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -184,13 +190,16 @@
   tl.fromTo('#sh-a', { opacity:0, x:-70 }, { opacity:1, x:0, duration:0.50 }, 0.20);
   tl.fromTo('#sh-ar', { opacity:0 }, { opacity:1, duration:0.35 }, 1.10);
   tl.fromTo('#sh-b', { opacity:0, x:70 }, { opacity:1, x:0, duration:0.50 }, 1.45);
-  tl.fromTo('#sh-w', { scaleX:0 }, { scaleX:1, duration:0.80, ease:'power2.inOut' }, 2.90);
-  tl.to('#sh-a', { opacity:0.40, duration:0.60 }, 2.90);
-  tl.fromTo('#wh-h', { opacity:0 }, { opacity:1, duration:0.45 }, 6.60);
-  for (var i = 0; i < 3; i++)
-    tl.fromTo('#wh-' + i, { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, 7.20 + i*0.75);
+  // The wash lands on the word that names the destination state.
+  tl.fromTo('#sh-w', { scaleX:0 }, { scaleX:1, duration:0.80, ease:'power2.inOut' }, 6.772);
+  tl.to('#sh-a', { opacity:0.40, duration:0.60 }, 6.772);
+  tl.fromTo('#wh-h', { opacity:0 }, { opacity:1, duration:0.45 }, 6.772+2.60);
+  // Each "where you'll find it" card lands on its own named product category.
+  tl.fromTo('#wh-0', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, 10.077);
+  tl.fromTo('#wh-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, 10.747);
+  tl.fromTo('#wh-2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.45 }, 11.506);
 
-    tl.to({}, { duration: 13.150 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 16.149 }, 0);   // full-span anchor -- always last
     window.__timelines["27-resilience"] = tl;
   </script>
 </template>

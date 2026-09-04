@@ -1,185 +1,180 @@
 {
   "scene": "12-load",
-  "block": "12-load",
+  "block": "single:12-load",
   "cut": {
-    "start": 0.099,
-    "end": 16.898
+    "start": 0.15,
+    "end": 13.44
   },
-  "gain_db": 3.0,
-  "lufs": -20.0,
-  "wpm": 125.2,
+  "gain_db": 6.3,
+  "lufs": -20.1,
+  "wpm": 146.2,
   "words": [
     {
       "text": "Your",
       "start": 0.1,
-      "end": 0.219
+      "end": 0.15
     },
     {
       "text": "outer",
-      "start": 0.418,
-      "end": 0.567
+      "start": 0.15,
+      "end": 0.53
     },
     {
       "text": "skin",
-      "start": 0.676,
-      "end": 0.945
+      "start": 0.53,
+      "end": 0.83
     },
     {
       "text": "barrier",
-      "start": 0.945,
-      "end": 1.511
+      "start": 0.83,
+      "end": 1.35
     },
     {
       "text": "is",
-      "start": 1.511,
-      "end": 1.67
+      "start": 1.35,
+      "end": 1.46
     },
     {
       "text": "under",
-      "start": 1.67,
-      "end": 2.078
+      "start": 1.52,
+      "end": 1.89
     },
     {
       "text": "constant",
-      "start": 2.078,
-      "end": 2.724
+      "start": 1.89,
+      "end": 2.5
     },
     {
-      "text": "load.",
-      "start": 2.724,
-      "end": 3.181
+      "text": "load,",
+      "start": 2.5,
+      "end": 3.01
     },
     {
-      "text": "Dry",
-      "start": 3.42,
-      "end": 3.432
+      "text": "dry",
+      "start": 3.04,
+      "end": 3.25
     },
     {
       "text": "air,",
-      "start": 3.661,
-      "end": 3.81
+      "start": 3.25,
+      "end": 3.59
     },
     {
       "text": "cleansing,",
-      "start": 3.929,
-      "end": 4.894
+      "start": 3.68,
+      "end": 4.09
     },
     {
       "text": "pollution,",
-      "start": 4.894,
-      "end": 5.848
+      "start": 4.09,
+      "end": 4.73
     },
     {
       "text": "sun,",
-      "start": 5.967,
-      "end": 6.424
+      "start": 4.73,
+      "end": 5.12
     },
     {
       "text": "strong",
-      "start": 6.988,
-      "end": 7.097
+      "start": 5.36,
+      "end": 5.45
     },
     {
       "text": "actives.",
-      "start": 7.097,
-      "end": 7.986
+      "start": 5.45,
+      "end": 6.339
     },
     {
       "text": "When",
-      "start": 7.986,
-      "end": 7.986
+      "start": 6.352,
+      "end": 6.392
     },
     {
       "text": "it",
-      "start": 7.986,
-      "end": 8.119
+      "start": 6.392,
+      "end": 6.522
     },
     {
       "text": "struggles,",
-      "start": 8.119,
-      "end": 8.994
+      "start": 6.532,
+      "end": 7.332
     },
     {
       "text": "water",
-      "start": 8.994,
-      "end": 9.461
+      "start": 7.332,
+      "end": 7.692
     },
     {
       "text": "escapes",
-      "start": 9.461,
-      "end": 10.038
+      "start": 7.692,
+      "end": 8.162
     },
     {
       "text": "more",
-      "start": 10.147,
-      "end": 10.485
+      "start": 8.202,
+      "end": 8.492
     },
     {
-      "text": "easily",
-      "start": 10.495,
-      "end": 11.01
+      "text": "easily,",
+      "start": 8.492,
+      "end": 8.948
     },
     {
       "text": "and",
-      "start": 11.01,
-      "end": 11.228
+      "start": 9.021,
+      "end": 9.031
     },
     {
       "text": "skin",
-      "start": 11.228,
-      "end": 11.506
+      "start": 9.031,
+      "end": 9.271
     },
     {
       "text": "can",
-      "start": 11.536,
-      "end": 11.665
+      "start": 9.291,
+      "end": 9.481
     },
     {
       "text": "feel",
-      "start": 11.665,
-      "end": 11.854
+      "start": 9.481,
+      "end": 9.761
     },
     {
       "text": "tight,",
-      "start": 11.854,
-      "end": 12.661
+      "start": 9.761,
+      "end": 10.321
     },
     {
-      "text": "rough",
-      "start": 12.661,
-      "end": 12.661
+      "text": "rough,",
+      "start": 10.321,
+      "end": 10.891
     },
     {
       "text": "or",
-      "start": 12.767,
-      "end": 12.936
+      "start": 10.891,
+      "end": 11.051
     },
     {
       "text": "unusually",
-      "start": 12.936,
-      "end": 13.751
+      "start": 11.051,
+      "end": 11.711
     },
     {
       "text": "reactive.",
-      "start": 13.751,
-      "end": 14.854
+      "start": 11.791,
+      "end": 12.721
     }
   ],
   "sentences": [
     {
       "start": 0.1,
-      "end": 3.181,
-      "text": "Your outer skin barrier is under constant load."
+      "end": 6.339,
+      "text": "Your outer skin barrier is under constant load, dry air, cleansing, pollution, sun, strong actives."
     },
     {
-      "start": 3.42,
-      "end": 7.986,
-      "text": "Dry air, cleansing, pollution, sun, strong actives."
-    },
-    {
-      "start": 7.986,
-      "end": 14.854,
-      "text": "When it struggles, water escapes more easily and skin can feel tight, rough or unusually reactive."
+      "start": 6.352,
+      "end": 12.721,
+      "text": "When it struggles, water escapes more easily, and skin can feel tight, rough, or unusually reactive."
     }
   ]
 }

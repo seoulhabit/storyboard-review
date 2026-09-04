@@ -1,125 +1,125 @@
 {
   "scene": "20-twelve",
-  "block": "20-twelve",
+  "block": "act4",
   "cut": {
-    "start": 0.11,
-    "end": 7.903
+    "start": 51.49,
+    "end": 61.71
   },
-  "gain_db": 5.0,
-  "lufs": -21.2,
-  "wpm": 150.4,
+  "gain_db": 8.8,
+  "lufs": -20.1,
+  "wpm": 143.1,
   "words": [
     {
-      "text": "and",
-      "start": 0.1,
-      "end": 0.14
+      "text": "And",
+      "start": 0.0,
+      "end": 0.18
     },
     {
       "text": "the",
-      "start": 0.14,
-      "end": 0.29
+      "start": 0.18,
+      "end": 0.41
     },
     {
       "text": "evidence",
-      "start": 0.36,
-      "end": 0.86
+      "start": 0.41,
+      "end": 1.04
     },
     {
       "text": "base",
-      "start": 0.86,
-      "end": 0.99
+      "start": 1.04,
+      "end": 1.35
     },
     {
       "text": "is",
-      "start": 1.14,
-      "end": 1.25
+      "start": 1.35,
+      "end": 1.67
     },
     {
       "text": "genuinely",
-      "start": 1.37,
-      "end": 2.18
+      "start": 1.67,
+      "end": 2.422
     },
     {
       "text": "small.",
-      "start": 2.18,
-      "end": 2.777
+      "start": 2.422,
+      "end": 2.422
     },
     {
       "text": "Search",
-      "start": 2.777,
-      "end": 3.177
+      "start": 2.423,
+      "end": 3.053
     },
     {
       "text": "PubMed",
-      "start": 3.177,
-      "end": 3.577
+      "start": 3.053,
+      "end": 3.683
     },
     {
       "text": "today",
-      "start": 3.577,
-      "end": 3.827
+      "start": 4.143,
+      "end": 4.213
     },
     {
       "text": "and",
-      "start": 3.827,
-      "end": 4.147
+      "start": 4.213,
+      "end": 4.443
     },
     {
       "text": "you",
-      "start": 4.147,
-      "end": 4.257
+      "start": 4.583,
+      "end": 4.853
     },
     {
       "text": "will",
-      "start": 4.257,
-      "end": 4.497
+      "start": 4.853,
+      "end": 5.253
     },
     {
       "text": "find",
-      "start": 4.497,
-      "end": 4.887
+      "start": 5.303,
+      "end": 5.633
     },
     {
       "text": "12",
-      "start": 5.077,
-      "end": 5.287
+      "start": 5.683,
+      "end": 6.313
     },
     {
       "text": "ectoin",
-      "start": 5.547,
-      "end": 5.807
+      "start": 6.543,
+      "end": 7.152
     },
     {
       "text": "clinical",
-      "start": 5.807,
-      "end": 6.397
+      "start": 7.152,
+      "end": 7.152
     },
     {
       "text": "trials.",
-      "start": 6.557,
-      "end": 7.196
+      "start": 7.152,
+      "end": 7.443
     },
     {
-      "text": "12",
-      "start": 7.295,
-      "end": 7.435
+      "text": "12.",
+      "start": 7.927,
+      "end": 8.416
     }
   ],
   "sentences": [
     {
-      "start": 0.1,
-      "end": 2.777,
-      "text": "and the evidence base is genuinely small."
+      "start": 0.0,
+      "end": 2.422,
+      "text": "And the evidence base is genuinely small."
     },
     {
-      "start": 2.777,
-      "end": 7.196,
+      "start": 2.423,
+      "end": 7.443,
       "text": "Search PubMed today and you will find 12 ectoin clinical trials."
     },
     {
-      "start": 7.295,
-      "end": 7.435,
-      "text": "12"
+      "start": 7.927,
+      "end": 8.416,
+      "text": "12."
     }
   ]
 }

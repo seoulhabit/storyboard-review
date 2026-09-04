@@ -1,205 +1,205 @@
 {
   "scene": "18-eczema",
-  "block": "18-eczema",
+  "block": "act4+retime(0.8635)",
   "cut": {
-    "start": 0.0,
-    "end": 13.691
+    "start": 29.47,
+    "end": 42.67
   },
-  "gain_db": 5.0,
-  "lufs": -20.6,
-  "wpm": 172.3,
+  "gain_db": 7.3,
+  "lufs": -20.0,
+  "wpm": 149.9,
   "words": [
     {
       "text": "A",
       "start": 0.0,
-      "end": 0.07
+      "end": 0.023
     },
     {
       "text": "second",
-      "start": 0.25,
-      "end": 0.53
+      "start": 0.023,
+      "end": 0.533
     },
     {
       "text": "randomized",
-      "start": 0.58,
-      "end": 1.31
+      "start": 0.533,
+      "end": 1.378
     },
     {
       "text": "study",
-      "start": 1.31,
-      "end": 1.7
+      "start": 1.378,
+      "end": 1.934
     },
     {
       "text": "followed",
-      "start": 1.7,
-      "end": 2.14
+      "start": 1.934,
+      "end": 2.478
     },
     {
       "text": "65",
-      "start": 2.32,
-      "end": 2.78
+      "start": 2.478,
+      "end": 2.988
     },
     {
       "text": "people",
-      "start": 2.78,
-      "end": 3.28
+      "start": 2.988,
+      "end": 3.463
     },
     {
       "text": "with",
-      "start": 3.28,
-      "end": 3.6
+      "start": 3.509,
+      "end": 3.833
     },
     {
       "text": "mild",
-      "start": 3.6,
-      "end": 3.88
+      "start": 3.833,
+      "end": 3.856
     },
     {
       "text": "to",
-      "start": 4.0,
-      "end": 4.01
+      "start": 3.856,
+      "end": 4.713
     },
     {
       "text": "moderate",
-      "start": 4.01,
-      "end": 4.38
+      "start": 4.713,
+      "end": 5.014
     },
     {
       "text": "atopic",
-      "start": 4.46,
-      "end": 4.81
+      "start": 5.014,
+      "end": 5.512
     },
     {
-      "text": "dermatitis,",
-      "start": 4.92,
-      "end": 5.71
+      "text": "dermatitis",
+      "start": 5.512,
+      "end": 6.558
     },
     {
       "text": "eczema.",
-      "start": 5.71,
-      "end": 6.08
+      "start": 6.558,
+      "end": 6.558
     },
     {
       "text": "Over",
-      "start": 6.08,
-      "end": 6.323
+      "start": 6.558,
+      "end": 6.771
     },
     {
-      "text": "four",
-      "start": 6.323,
-      "end": 6.323
+      "text": "4",
+      "start": 6.771,
+      "end": 6.98
     },
     {
       "text": "weeks,",
-      "start": 6.392,
-      "end": 6.842
+      "start": 6.98,
+      "end": 7.466
     },
     {
       "text": "an",
-      "start": 6.992,
-      "end": 7.032
+      "start": 7.466,
+      "end": 7.605
     },
     {
-      "text": "ectoene",
-      "start": 7.032,
-      "end": 7.492
+      "text": "ectoin",
+      "start": 7.605,
+      "end": 8.022
     },
     {
       "text": "cream",
-      "start": 7.672,
-      "end": 7.902
+      "start": 8.022,
+      "end": 8.485
     },
     {
       "text": "performed",
-      "start": 8.052,
-      "end": 8.862
+      "start": 8.485,
+      "end": 8.856
     },
     {
       "text": "about",
-      "start": 8.862,
-      "end": 9.182
-    },
-    {
-      "text": "as",
-      "start": 9.182,
+      "start": 8.995,
       "end": 9.342
     },
     {
-      "text": "well",
+      "text": "as",
       "start": 9.342,
-      "end": 9.572
+      "end": 9.481
+    },
+    {
+      "text": "well",
+      "start": 9.481,
+      "end": 9.759
     },
     {
       "text": "as",
-      "start": 9.572,
-      "end": 9.672
+      "start": 9.759,
+      "end": 9.84
     },
     {
       "text": "the",
-      "start": 9.672,
-      "end": 9.822
+      "start": 9.887,
+      "end": 10.095
     },
     {
       "text": "barrier",
-      "start": 9.822,
-      "end": 10.222
+      "start": 10.107,
+      "end": 10.408
     },
     {
       "text": "cream",
-      "start": 10.222,
-      "end": 10.622
+      "start": 10.917,
+      "end": 10.94
     },
     {
       "text": "it",
-      "start": 10.622,
-      "end": 10.742
+      "start": 10.94,
+      "end": 11.079
     },
     {
       "text": "was",
-      "start": 10.742,
-      "end": 10.942
+      "start": 11.265,
+      "end": 11.288
     },
     {
       "text": "tested",
-      "start": 11.192,
-      "end": 11.292
+      "start": 11.288,
+      "end": 11.797
     },
     {
       "text": "against",
-      "start": 11.362,
-      "end": 11.636
+      "start": 11.797,
+      "end": 12.527
     },
     {
       "text": "and",
-      "start": 11.856,
-      "end": 11.856
+      "start": 12.527,
+      "end": 12.84
     },
     {
       "text": "was",
-      "start": 11.856,
-      "end": 11.856
+      "start": 12.84,
+      "end": 13.152
     },
     {
       "text": "well",
-      "start": 11.856,
-      "end": 11.987
+      "start": 13.523,
+      "end": 13.546
     },
     {
       "text": "tolerated.",
-      "start": 12.167,
-      "end": 12.717
+      "start": 13.789,
+      "end": 15.052
     }
   ],
   "sentences": [
     {
       "start": 0.0,
-      "end": 6.08,
-      "text": "A second randomized study followed 65 people with mild to moderate atopic dermatitis, eczema."
+      "end": 6.558,
+      "text": "A second randomized study followed 65 people with mild to moderate atopic dermatitis eczema."
     },
     {
-      "start": 6.08,
-      "end": 12.717,
-      "text": "Over four weeks, an ectoene cream performed about as well as the barrier cream it was tested against and was well tolerated."
+      "start": 6.558,
+      "end": 15.052,
+      "text": "Over 4 weeks, an ectoin cream performed about as well as the barrier cream it was tested against and was well tolerated."
     }
   ]
 }

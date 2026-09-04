@@ -1,160 +1,165 @@
 {
   "scene": "01-hook",
-  "block": "01-hook",
+  "block": "act1",
   "cut": {
-    "start": 0.11,
-    "end": 10.076
+    "start": 0.18,
+    "end": 12.87
   },
-  "gain_db": 4.4,
+  "gain_db": 2.4,
   "lufs": -20.0,
-  "wpm": 173.1,
+  "wpm": 152.8,
   "words": [
     {
       "text": "Your",
       "start": 0.1,
-      "end": 0.14
+      "end": 0.18
     },
     {
       "text": "next",
-      "start": 0.14,
-      "end": 0.31
+      "start": 0.18,
+      "end": 0.38
     },
     {
       "text": "favorite",
-      "start": 0.31,
-      "end": 0.73
+      "start": 0.38,
+      "end": 0.93
     },
     {
       "text": "skincare",
-      "start": 0.73,
-      "end": 1.16
+      "start": 0.93,
+      "end": 1.47
     },
     {
       "text": "ingredient",
-      "start": 1.16,
-      "end": 1.73
+      "start": 1.47,
+      "end": 2.01
     },
     {
       "text": "may",
-      "start": 1.73,
-      "end": 1.79
+      "start": 2.2,
+      "end": 2.36
     },
     {
       "text": "have",
-      "start": 1.89,
-      "end": 2.08
+      "start": 2.56,
+      "end": 2.57
     },
     {
       "text": "been",
-      "start": 2.08,
-      "end": 2.28
+      "start": 2.57,
+      "end": 2.78
     },
     {
       "text": "invented",
-      "start": 2.28,
-      "end": 2.69
+      "start": 2.78,
+      "end": 3.22
     },
     {
       "text": "by",
-      "start": 2.69,
-      "end": 2.89
+      "start": 3.23,
+      "end": 3.33
     },
     {
       "text": "bacteria",
-      "start": 2.89,
-      "end": 3.61
+      "start": 3.52,
+      "end": 4.06
     },
     {
       "text": "trying",
-      "start": 3.9,
-      "end": 4.21
+      "start": 4.06,
+      "end": 4.73
     },
     {
       "text": "not",
-      "start": 4.21,
-      "end": 4.45
+      "start": 4.73,
+      "end": 5.06
     },
     {
       "text": "to",
-      "start": 4.45,
-      "end": 4.48
+      "start": 5.06,
+      "end": 5.371
     },
     {
-      "text": "die,",
-      "start": 4.62,
-      "end": 5.216
+      "text": "die.",
+      "start": 5.371,
+      "end": 5.371
     },
     {
-      "text": "not",
-      "start": 5.216,
-      "end": 5.237
+      "text": "Not",
+      "start": 5.753,
+      "end": 5.793
     },
     {
       "text": "snail",
-      "start": 5.237,
-      "end": 5.527
+      "start": 5.793,
+      "end": 6.413
     },
     {
       "text": "mucin,",
-      "start": 5.687,
-      "end": 5.957
+      "start": 6.453,
+      "end": 6.804
     },
     {
       "text": "not",
-      "start": 6.147,
-      "end": 6.287
+      "start": 6.804,
+      "end": 7.214
     },
     {
       "text": "salmon",
-      "start": 6.287,
-      "end": 6.717
+      "start": 7.214,
+      "end": 8.222
     },
     {
       "text": "DNA,",
-      "start": 6.717,
-      "end": 7.087
+      "start": 8.222,
+      "end": 8.242
     },
     {
       "text": "and",
-      "start": 7.087,
-      "end": 7.307
+      "start": 8.242,
+      "end": 8.472
     },
     {
       "text": "not",
-      "start": 7.307,
-      "end": 7.507
+      "start": 8.602,
+      "end": 8.702
     },
     {
       "text": "another",
-      "start": 7.537,
-      "end": 8.037
+      "start": 8.702,
+      "end": 9.242
     },
     {
       "text": "form",
-      "start": 8.037,
-      "end": 8.197
+      "start": 9.242,
+      "end": 9.372
     },
     {
       "text": "of",
-      "start": 8.377,
-      "end": 8.467
+      "start": 9.562,
+      "end": 9.702
     },
     {
       "text": "hyaluronic",
-      "start": 8.467,
-      "end": 9.177
+      "start": 9.702,
+      "end": 10.432
     },
     {
       "text": "acid.",
-      "start": 9.177,
-      "end": 9.547
+      "start": 10.612,
+      "end": 11.212
     }
   ],
   "sentences": [
     {
       "start": 0.1,
-      "end": 9.547,
-      "text": "Your next favorite skincare ingredient may have been invented by bacteria trying not to die, not snail mucin, not salmon DNA, and not another form of hyaluronic acid."
+      "end": 5.371,
+      "text": "Your next favorite skincare ingredient may have been invented by bacteria trying not to die."
+    },
+    {
+      "start": 5.753,
+      "end": 11.212,
+      "text": "Not snail mucin, not salmon DNA, and not another form of hyaluronic acid."
     }
   ]
 }

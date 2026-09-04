@@ -1,220 +1,205 @@
 {
   "scene": "08-humectant",
-  "block": "08-humectant",
+  "block": "single:08-humectant",
   "cut": {
-    "start": 0.0,
-    "end": 16.382
+    "start": 0.17,
+    "end": 15
   },
-  "gain_db": 5.0,
-  "lufs": -20.9,
-  "wpm": 139.1,
+  "gain_db": 5.9,
+  "lufs": -20.1,
+  "wpm": 152.5,
   "words": [
     {
       "text": "Here",
-      "start": 0.09,
-      "end": 0.35
+      "start": 0.1,
+      "end": 0.13
     },
     {
       "text": "is",
-      "start": 0.35,
-      "end": 0.44
+      "start": 0.13,
+      "end": 0.28
     },
     {
       "text": "where",
-      "start": 0.76,
-      "end": 0.95
+      "start": 0.28,
+      "end": 0.65
     },
     {
-      "text": "ectoene",
-      "start": 0.95,
-      "end": 1.55
+      "text": "ectoin",
+      "start": 0.65,
+      "end": 1.1
     },
     {
       "text": "stops",
-      "start": 1.55,
-      "end": 1.74
+      "start": 1.1,
+      "end": 1.47
     },
     {
       "text": "behaving",
-      "start": 2.0,
-      "end": 2.72
+      "start": 1.67,
+      "end": 2.11
     },
     {
       "text": "like",
-      "start": 2.72,
-      "end": 3.0
+      "start": 2.11,
+      "end": 2.42
     },
     {
       "text": "a",
-      "start": 3.0,
-      "end": 3.07
+      "start": 2.42,
+      "end": 2.49
     },
     {
       "text": "normal",
-      "start": 3.07,
-      "end": 3.49
+      "start": 2.49,
+      "end": 2.93
     },
     {
       "text": "moisturizer.",
-      "start": 3.49,
-      "end": 4.277
+      "start": 2.94,
+      "end": 3.743
     },
     {
       "text": "A",
-      "start": 4.277,
-      "end": 4.62
+      "start": 3.743,
+      "end": 3.743
     },
     {
       "text": "familiar",
-      "start": 4.62,
-      "end": 5.0
+      "start": 3.743,
+      "end": 4.139
     },
     {
-      "text": "humectant",
-      "start": 5.0,
-      "end": 5.61
+      "text": "humectant,",
+      "start": 4.139,
+      "end": 4.969
     },
     {
-      "text": "like",
-      "start": 5.61,
-      "end": 5.91
-    },
-    {
-      "text": "glycerin",
-      "start": 5.91,
-      "end": 6.37
-    },
-    {
-      "text": "or",
-      "start": 6.56,
-      "end": 6.65
+      "text": "glycerin,",
+      "start": 5.159,
+      "end": 6.029
     },
     {
       "text": "hyaluronic",
-      "start": 6.71,
-      "end": 7.42
+      "start": 6.029,
+      "end": 6.929
     },
     {
-      "text": "acid",
-      "start": 7.42,
-      "end": 7.74
+      "text": "acid,",
+      "start": 6.929,
+      "end": 7.459
     },
     {
       "text": "attracts",
-      "start": 7.74,
-      "end": 8.27
+      "start": 7.749,
+      "end": 7.989
     },
     {
       "text": "water",
-      "start": 8.27,
-      "end": 8.66
+      "start": 7.989,
+      "end": 8.289
     },
     {
       "text": "and",
-      "start": 8.66,
-      "end": 8.88
+      "start": 8.439,
+      "end": 8.539
     },
     {
       "text": "holds",
-      "start": 9.07,
-      "end": 9.4
+      "start": 8.539,
+      "end": 8.839
     },
     {
-      "text": "on",
-      "start": 9.4,
-      "end": 9.6
-    },
-    {
-      "text": "to",
-      "start": 9.6,
-      "end": 9.834
+      "text": "onto",
+      "start": 8.839,
+      "end": 9.222
     },
     {
       "text": "it.",
-      "start": 9.834,
-      "end": 9.834
+      "start": 9.222,
+      "end": 9.222
     },
     {
-      "text": "Ectoene",
-      "start": 9.834,
-      "end": 10.051
+      "text": "Ectoin",
+      "start": 9.222,
+      "end": 9.222
     },
     {
       "text": "seems",
-      "start": 10.371,
-      "end": 10.571
+      "start": 9.222,
+      "end": 9.556
     },
     {
       "text": "to",
-      "start": 10.571,
-      "end": 10.731
+      "start": 9.556,
+      "end": 9.696
     },
     {
       "text": "work",
-      "start": 10.731,
-      "end": 11.001
+      "start": 9.696,
+      "end": 9.986
     },
     {
       "text": "on",
-      "start": 11.121,
-      "end": 11.211
+      "start": 9.986,
+      "end": 10.096
     },
     {
       "text": "how",
-      "start": 11.211,
-      "end": 11.361
+      "start": 10.256,
+      "end": 10.346
     },
     {
       "text": "water",
-      "start": 11.611,
-      "end": 11.761
+      "start": 10.346,
+      "end": 10.696
     },
     {
       "text": "arranges",
-      "start": 11.931,
-      "end": 12.481
+      "start": 10.746,
+      "end": 11.306
     },
     {
       "text": "itself",
-      "start": 12.501,
-      "end": 12.961
+      "start": 11.306,
+      "end": 11.746
     },
     {
       "text": "around",
-      "start": 12.961,
-      "end": 13.451
+      "start": 11.746,
+      "end": 12.186
     },
     {
       "text": "proteins",
-      "start": 13.451,
-      "end": 13.661
+      "start": 12.186,
+      "end": 12.456
     },
     {
       "text": "and",
-      "start": 13.661,
-      "end": 14.451
+      "start": 12.836,
+      "end": 12.996
     },
     {
       "text": "membranes.",
-      "start": 14.451,
-      "end": 15.313
+      "start": 13.186,
+      "end": 13.766
     }
   ],
   "sentences": [
     {
-      "start": 0.09,
-      "end": 4.277,
-      "text": "Here is where ectoene stops behaving like a normal moisturizer."
+      "start": 0.1,
+      "end": 3.743,
+      "text": "Here is where ectoin stops behaving like a normal moisturizer."
     },
     {
-      "start": 4.277,
-      "end": 9.834,
-      "text": "A familiar humectant like glycerin or hyaluronic acid attracts water and holds on to it."
+      "start": 3.743,
+      "end": 9.222,
+      "text": "A familiar humectant, glycerin, hyaluronic acid, attracts water and holds onto it."
     },
     {
-      "start": 9.834,
-      "end": 15.313,
-      "text": "Ectoene seems to work on how water arranges itself around proteins and membranes."
+      "start": 9.222,
+      "end": 13.766,
+      "text": "Ectoin seems to work on how water arranges itself around proteins and membranes."
     }
   ]
 }

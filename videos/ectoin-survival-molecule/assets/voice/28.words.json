@@ -1,200 +1,210 @@
 {
   "scene": "28-remember",
-  "block": "28-remember",
+  "block": "act7",
   "cut": {
-    "start": 0.02,
-    "end": 13.808
+    "start": 0.0,
+    "end": 15.729
   },
-  "gain_db": 5.0,
-  "lufs": -21.7,
-  "wpm": 165.3,
+  "gain_db": 6.0,
+  "lufs": -20.3,
+  "wpm": 152.4,
   "words": [
     {
-      "text": "So",
-      "start": 0.1,
-      "end": 0.12
+      "text": "So,",
+      "start": 0.0,
+      "end": 0.285
     },
     {
       "text": "next",
-      "start": 0.27,
-      "end": 0.44
+      "start": 0.304,
+      "end": 0.57
     },
     {
       "text": "time",
-      "start": 0.44,
-      "end": 0.75
+      "start": 0.722,
+      "end": 0.875
     },
     {
       "text": "you",
-      "start": 0.75,
-      "end": 0.91
+      "start": 0.875,
+      "end": 1.093
     },
     {
       "text": "see",
-      "start": 1.02,
-      "end": 1.21
+      "start": 1.093,
+      "end": 1.312
     },
     {
-      "text": "ectoane",
-      "start": 1.21,
-      "end": 1.71
+      "text": "Ectoin",
+      "start": 1.312,
+      "end": 1.74
     },
     {
       "text": "on",
-      "start": 1.77,
-      "end": 1.89
+      "start": 1.74,
+      "end": 1.882
     },
     {
       "text": "an",
-      "start": 1.89,
-      "end": 2.04
+      "start": 1.882,
+      "end": 2.025
     },
     {
       "text": "ingredient",
-      "start": 2.04,
-      "end": 2.72
+      "start": 2.025,
+      "end": 2.757
     },
     {
       "text": "list,",
-      "start": 2.72,
-      "end": 3.103
+      "start": 2.757,
+      "end": 3.153
     },
     {
       "text": "remember",
-      "start": 3.103,
-      "end": 3.338
+      "start": 3.373,
+      "end": 3.504
     },
     {
       "text": "what",
-      "start": 3.338,
-      "end": 3.518
+      "start": 3.523,
+      "end": 3.722
     },
     {
       "text": "you",
-      "start": 3.548,
-      "end": 3.638
+      "start": 3.722,
+      "end": 3.884
     },
     {
       "text": "are",
-      "start": 3.718,
-      "end": 3.828
+      "start": 3.884,
+      "end": 4.065
     },
     {
       "text": "looking",
-      "start": 3.828,
-      "end": 4.308
+      "start": 4.065,
+      "end": 4.492
     },
     {
       "text": "at.",
-      "start": 4.562,
-      "end": 4.562
+      "start": 4.625,
+      "end": 5.02
     },
     {
       "text": "A",
-      "start": 4.562,
-      "end": 4.647
+      "start": 5.02,
+      "end": 5.02
     },
     {
       "text": "survival",
-      "start": 4.647,
-      "end": 4.887
+      "start": 5.032,
+      "end": 5.508
     },
     {
       "text": "strategy,",
-      "start": 5.057,
-      "end": 5.747
+      "start": 5.508,
+      "end": 6.23
     },
     {
       "text": "borrowed",
-      "start": 5.747,
-      "end": 6.337
+      "start": 6.363,
+      "end": 7.028
     },
     {
       "text": "from",
-      "start": 6.337,
-      "end": 6.617
+      "start": 7.105,
+      "end": 7.409
     },
     {
       "text": "bacteria,",
-      "start": 6.617,
-      "end": 7.277
+      "start": 7.409,
+      "end": 8.182
     },
     {
       "text": "not",
-      "start": 7.277,
-      "end": 7.787
+      "start": 8.182,
+      "end": 8.182
     },
     {
       "text": "the",
-      "start": 7.787,
-      "end": 7.797
+      "start": 8.182,
+      "end": 8.342
     },
     {
       "text": "new",
-      "start": 7.797,
-      "end": 7.997
+      "start": 8.409,
+      "end": 8.666
     },
     {
       "text": "hyaluronic",
-      "start": 7.997,
-      "end": 8.677
+      "start": 8.666,
+      "end": 9.188
     },
     {
-      "text": "acid,",
-      "start": 8.677,
-      "end": 9.237
+      "text": "acid.",
+      "start": 9.664,
+      "end": 10.076
     },
     {
-      "text": "not",
-      "start": 9.237,
-      "end": 9.382
-    },
-    {
-      "text": "a",
-      "start": 9.382,
-      "end": 9.527
-    },
-    {
-      "text": "miracle,",
-      "start": 9.527,
-      "end": 10.359
+      "text": "Not",
+      "start": 10.076,
+      "end": 10.076
     },
     {
       "text": "a",
-      "start": 10.359,
-      "end": 10.359
+      "start": 10.076,
+      "end": 10.076
+    },
+    {
+      "text": "miracle.",
+      "start": 10.076,
+      "end": 10.635
+    },
+    {
+      "text": "A",
+      "start": 10.635,
+      "end": 10.721
     },
     {
       "text": "genuinely",
-      "start": 10.359,
-      "end": 10.454
+      "start": 11.116,
+      "end": 11.116
     },
     {
       "text": "interesting",
-      "start": 10.454,
-      "end": 11.244
+      "start": 11.116,
+      "end": 11.963
     },
     {
       "text": "supporting",
-      "start": 11.244,
-      "end": 11.584
+      "start": 11.963,
+      "end": 12.809
     },
     {
       "text": "molecule.",
-      "start": 12.244,
-      "end": 12.574
+      "start": 12.866,
+      "end": 13.996
     }
   ],
   "sentences": [
     {
-      "start": 0.1,
-      "end": 4.562,
-      "text": "So next time you see ectoane on an ingredient list, remember what you are looking at."
+      "start": 0.0,
+      "end": 5.02,
+      "text": "So, next time you see Ectoin on an ingredient list, remember what you are looking at."
     },
     {
-      "start": 4.562,
-      "end": 12.574,
-      "text": "A survival strategy, borrowed from bacteria, not the new hyaluronic acid, not a miracle, a genuinely interesting supporting molecule."
+      "start": 5.02,
+      "end": 10.076,
+      "text": "A survival strategy, borrowed from bacteria, not the new hyaluronic acid."
+    },
+    {
+      "start": 10.076,
+      "end": 10.635,
+      "text": "Not a miracle."
+    },
+    {
+      "start": 10.635,
+      "end": 13.996,
+      "text": "A genuinely interesting supporting molecule."
     }
   ]
 }

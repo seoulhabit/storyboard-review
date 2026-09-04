@@ -1,130 +1,130 @@
 {
   "scene": "26-kbeauty",
-  "block": "26-kbeauty",
+  "block": "act6",
   "cut": {
     "start": 0.0,
-    "end": 8.565
+    "end": 9.91
   },
-  "gain_db": 5.0,
-  "lufs": -22.2,
-  "wpm": 160.9,
+  "gain_db": 7.9,
+  "lufs": -20.0,
+  "wpm": 147.9,
   "words": [
     {
       "text": "K-beauty",
-      "start": 0.05,
-      "end": 0.74
+      "start": 0.0,
+      "end": 0.77
     },
     {
       "text": "did",
-      "start": 0.74,
-      "end": 1.02
+      "start": 0.77,
+      "end": 1.06
     },
     {
       "text": "not",
-      "start": 1.02,
-      "end": 1.3
+      "start": 1.06,
+      "end": 1.35
     },
     {
       "text": "invent",
-      "start": 1.3,
-      "end": 1.75
+      "start": 1.35,
+      "end": 1.94
     },
     {
-      "text": "Ectoin.",
-      "start": 1.87,
-      "end": 2.438
+      "text": "ectoin.",
+      "start": 1.94,
+      "end": 3.056
     },
     {
       "text": "What",
-      "start": 2.688,
-      "end": 2.708
+      "start": 3.056,
+      "end": 3.376
     },
     {
       "text": "Korean",
-      "start": 2.738,
-      "end": 3.158
+      "start": 3.376,
+      "end": 3.666
     },
     {
       "text": "formulators",
-      "start": 3.158,
-      "end": 3.948
+      "start": 3.666,
+      "end": 4.336
     },
     {
       "text": "are",
-      "start": 3.948,
-      "end": 4.158
+      "start": 4.336,
+      "end": 4.516
     },
     {
       "text": "doing",
-      "start": 4.158,
-      "end": 4.518
+      "start": 4.516,
+      "end": 4.816
     },
     {
       "text": "well",
-      "start": 4.518,
-      "end": 4.618
+      "start": 4.816,
+      "end": 5.016
     },
     {
       "text": "is",
-      "start": 4.728,
-      "end": 4.918
+      "start": 5.146,
+      "end": 5.216
     },
     {
       "text": "pairing",
-      "start": 5.188,
-      "end": 5.238
+      "start": 5.216,
+      "end": 5.646
     },
     {
       "text": "it",
-      "start": 5.238,
-      "end": 5.388
+      "start": 5.646,
+      "end": 5.736
     },
     {
       "text": "with",
-      "start": 5.448,
-      "end": 5.598
+      "start": 5.736,
+      "end": 5.896
     },
     {
       "text": "barrier",
-      "start": 5.598,
-      "end": 6.018
+      "start": 5.896,
+      "end": 6.356
     },
     {
       "text": "ingredients",
-      "start": 6.018,
-      "end": 6.678
+      "start": 6.936,
+      "end": 7.096
     },
     {
       "text": "in",
-      "start": 6.678,
-      "end": 6.918
+      "start": 7.136,
+      "end": 7.256
     },
     {
-      "text": "light,",
-      "start": 6.918,
-      "end": 7.478
+      "text": "light",
+      "start": 7.256,
+      "end": 7.616
     },
     {
       "text": "wearable",
-      "start": 7.728,
-      "end": 7.838
+      "start": 7.936,
+      "end": 8.186
     },
     {
       "text": "textures.",
-      "start": 7.838,
-      "end": 8.198
+      "start": 8.186,
+      "end": 9.146
     }
   ],
   "sentences": [
     {
-      "start": 0.05,
-      "end": 2.438,
-      "text": "K-beauty did not invent Ectoin."
+      "start": 0.0,
+      "end": 3.056,
+      "text": "K-beauty did not invent ectoin."
     },
     {
-      "start": 2.688,
-      "end": 8.198,
-      "text": "What Korean formulators are doing well is pairing it with barrier ingredients in light, wearable textures."
+      "start": 3.056,
+      "end": 9.146,
+      "text": "What Korean formulators are doing well is pairing it with barrier ingredients in light wearable textures."
     }
   ]
 }

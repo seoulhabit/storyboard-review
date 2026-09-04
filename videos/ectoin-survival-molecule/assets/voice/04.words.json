@@ -1,149 +1,149 @@
 {
   "scene": "04-extremolyte",
-  "block": "04-extremolyte",
+  "block": "act1",
   "cut": {
-    "start": 0.0,
-    "end": 11.294
+    "start": 32.09,
+    "end": 41.99
   },
-  "gain_db": 5.0,
-  "lufs": -21.9,
-  "wpm": 135.5,
+  "gain_db": 8.1,
+  "lufs": -20.0,
+  "wpm": 158.0,
   "words": [
     {
       "text": "Ectoin",
-      "start": 0.08,
-      "end": 0.69
+      "start": 0.0,
+      "end": 0.39
     },
     {
       "text": "is",
-      "start": 0.69,
-      "end": 1.32
+      "start": 0.39,
+      "end": 0.54
     },
     {
       "text": "what",
-      "start": 1.32,
-      "end": 1.42
+      "start": 0.54,
+      "end": 0.84
     },
     {
       "text": "researchers",
-      "start": 1.42,
-      "end": 2.73
+      "start": 0.84,
+      "end": 1.66
     },
     {
       "text": "call",
-      "start": 2.73,
-      "end": 3.21
+      "start": 1.66,
+      "end": 1.96
     },
     {
       "text": "an",
-      "start": 3.21,
-      "end": 3.45
+      "start": 1.96,
+      "end": 2.11
     },
     {
-      "text": "extremalite.",
-      "start": 3.45,
-      "end": 4.652
+      "text": "extremolite.",
+      "start": 2.11,
+      "end": 2.804
     },
     {
       "text": "That",
-      "start": 4.732,
-      "end": 4.932
+      "start": 2.804,
+      "end": 3.17
     },
     {
       "text": "sounds",
-      "start": 4.932,
-      "end": 5.002
+      "start": 3.17,
+      "end": 3.43
     },
     {
       "text": "like",
-      "start": 5.612,
-      "end": 5.632
+      "start": 3.68,
+      "end": 3.76
     },
     {
       "text": "a",
-      "start": 5.632,
-      "end": 5.692
+      "start": 3.76,
+      "end": 3.83
     },
     {
       "text": "superhero.",
-      "start": 5.969,
-      "end": 6.189
+      "start": 3.83,
+      "end": 4.282
     },
     {
       "text": "It",
-      "start": 6.293,
-      "end": 6.323
+      "start": 4.282,
+      "end": 4.402
     },
     {
       "text": "just",
-      "start": 6.323,
-      "end": 6.513
+      "start": 4.632,
+      "end": 4.642
     },
     {
       "text": "means",
-      "start": 6.513,
-      "end": 6.573
+      "start": 4.642,
+      "end": 4.902
     },
     {
       "text": "a",
-      "start": 6.573,
-      "end": 6.893
+      "start": 4.902,
+      "end": 5.152
     },
     {
       "text": "protective",
-      "start": 6.893,
-      "end": 7.533
+      "start": 5.152,
+      "end": 5.612
     },
     {
       "text": "molecule",
-      "start": 7.533,
-      "end": 7.973
+      "start": 5.612,
+      "end": 6.082
     },
     {
       "text": "made",
-      "start": 7.973,
-      "end": 8.343
+      "start": 6.082,
+      "end": 6.482
     },
     {
       "text": "by",
-      "start": 8.343,
-      "end": 8.523
+      "start": 6.482,
+      "end": 6.582
     },
     {
       "text": "microbes",
-      "start": 8.523,
-      "end": 9.293
+      "start": 6.582,
+      "end": 7.202
     },
     {
       "text": "living",
-      "start": 9.293,
-      "end": 9.653
+      "start": 7.202,
+      "end": 7.602
     },
     {
       "text": "somewhere",
-      "start": 9.653,
-      "end": 10.183
+      "start": 7.672,
+      "end": 8.312
     },
     {
       "text": "extreme.",
-      "start": 10.183,
-      "end": 10.613
+      "start": 8.492,
+      "end": 9.332
     }
   ],
   "sentences": [
     {
-      "start": 0.08,
-      "end": 4.652,
-      "text": "Ectoin is what researchers call an extremalite."
+      "start": 0.0,
+      "end": 2.804,
+      "text": "Ectoin is what researchers call an extremolite."
     },
     {
-      "start": 4.732,
-      "end": 6.189,
+      "start": 2.804,
+      "end": 4.282,
       "text": "That sounds like a superhero."
     },
     {
-      "start": 6.293,
-      "end": 10.613,
+      "start": 4.282,
+      "end": 9.332,
       "text": "It just means a protective molecule made by microbes living somewhere extreme."
     }
   ]

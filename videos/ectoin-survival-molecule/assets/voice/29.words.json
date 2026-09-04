@@ -1,180 +1,195 @@
 {
   "scene": "29-cta",
-  "block": "29-cta",
+  "block": "act7",
   "cut": {
-    "start": 0.0,
-    "end": 10.52
+    "start": 15.829,
+    "end": 29.03
   },
-  "gain_db": 5.0,
-  "lufs": -21.3,
-  "wpm": 208.3,
+  "gain_db": 7.5,
+  "lufs": -20.1,
+  "wpm": 166.7,
   "words": [
     {
       "text": "Here",
       "start": 0.0,
-      "end": 0.26
+      "end": 0.254
     },
     {
       "text": "is",
-      "start": 0.26,
-      "end": 0.44
+      "start": 0.254,
+      "end": 0.388
     },
     {
       "text": "the",
-      "start": 0.44,
-      "end": 0.63
+      "start": 0.388,
+      "end": 0.464
     },
     {
       "text": "one",
-      "start": 0.72,
-      "end": 0.87
+      "start": 0.673,
+      "end": 0.825
     },
     {
       "text": "thing",
-      "start": 0.87,
-      "end": 1.24
+      "start": 0.825,
+      "end": 1.062
     },
     {
       "text": "worth",
-      "start": 1.24,
-      "end": 1.61
+      "start": 1.186,
+      "end": 1.462
     },
     {
-      "text": "doing",
-      "start": 1.61,
-      "end": 1.828
+      "text": "doing.",
+      "start": 1.595,
+      "end": 2.175
     },
     {
-      "text": "turn",
-      "start": 2.048,
-      "end": 2.048
+      "text": "Turn",
+      "start": 2.175,
+      "end": 2.465
     },
     {
       "text": "the",
-      "start": 2.048,
-      "end": 2.1
+      "start": 2.465,
+      "end": 2.465
     },
     {
       "text": "bottle",
-      "start": 2.1,
-      "end": 2.3
+      "start": 2.465,
+      "end": 2.722
     },
     {
       "text": "around",
-      "start": 2.35,
-      "end": 2.63
+      "start": 2.722,
+      "end": 3.178
     },
     {
       "text": "and",
-      "start": 2.63,
-      "end": 2.86
+      "start": 3.178,
+      "end": 3.407
     },
     {
       "text": "find",
-      "start": 2.86,
-      "end": 2.96
+      "start": 3.407,
+      "end": 3.711
     },
     {
       "text": "the",
-      "start": 3.17,
-      "end": 3.4
+      "start": 3.711,
+      "end": 3.939
     },
     {
       "text": "actual",
-      "start": 3.4,
-      "end": 3.87
+      "start": 3.939,
+      "end": 4.395
     },
     {
       "text": "percentage",
-      "start": 3.87,
-      "end": 4.62
+      "start": 4.395,
+      "end": 4.69
     },
     {
       "text": "before",
-      "start": 4.78,
-      "end": 5.07
+      "start": 5.165,
+      "end": 5.612
     },
     {
       "text": "you",
-      "start": 5.07,
-      "end": 5.28
+      "start": 5.612,
+      "end": 5.84
     },
     {
-      "text": "buy",
-      "start": 5.28,
-      "end": 5.39
+      "text": "buy.",
+      "start": 5.84,
+      "end": 6.325
     },
     {
-      "text": "and",
-      "start": 5.39,
-      "end": 5.639
+      "text": "And",
+      "start": 6.325,
+      "end": 6.806
     },
     {
       "text": "tell",
-      "start": 5.639,
-      "end": 5.969
+      "start": 6.806,
+      "end": 6.806
     },
     {
-      "text": "me",
-      "start": 5.969,
-      "end": 6.079
+      "text": "me,",
+      "start": 6.806,
+      "end": 6.831
     },
     {
-      "text": "Would",
-      "start": 6.42,
-      "end": 6.42
+      "text": "would",
+      "start": 6.831,
+      "end": 7.24
     },
     {
       "text": "you",
-      "start": 6.42,
-      "end": 6.427
+      "start": 7.383,
+      "end": 7.693
     },
     {
       "text": "put",
-      "start": 6.427,
-      "end": 6.607
+      "start": 7.693,
+      "end": 7.693
     },
     {
       "text": "a",
-      "start": 6.607,
-      "end": 6.617
+      "start": 7.693,
+      "end": 7.74
     },
     {
-      "text": "bacteria-made",
-      "start": 6.707,
-      "end": 7.557
+      "text": "bacteria",
+      "start": 7.74,
+      "end": 8.406
+    },
+    {
+      "text": "made",
+      "start": 8.89,
+      "end": 8.938
     },
     {
       "text": "survival",
-      "start": 7.557,
-      "end": 7.817
+      "start": 8.938,
+      "end": 9.736
     },
     {
       "text": "molecule",
-      "start": 8.457,
-      "end": 8.657
+      "start": 9.736,
+      "end": 10.193
     },
     {
       "text": "on",
-      "start": 8.707,
-      "end": 8.797
+      "start": 10.193,
+      "end": 10.791
     },
     {
       "text": "your",
-      "start": 8.797,
-      "end": 9.067
+      "start": 10.791,
+      "end": 11.134
     },
     {
       "text": "face?",
-      "start": 9.067,
-      "end": 9.427
+      "start": 11.134,
+      "end": 11.875
     }
   ],
   "sentences": [
     {
       "start": 0.0,
-      "end": 9.427,
-      "text": "Here is the one thing worth doing turn the bottle around and find the actual percentage before you buy and tell me Would you put a bacteria-made survival molecule on your face?"
+      "end": 2.175,
+      "text": "Here is the one thing worth doing."
+    },
+    {
+      "start": 2.175,
+      "end": 6.325,
+      "text": "Turn the bottle around and find the actual percentage before you buy."
+    },
+    {
+      "start": 6.325,
+      "end": 11.875,
+      "text": "And tell me, would you put a bacteria made survival molecule on your face?"
     }
   ]
 }

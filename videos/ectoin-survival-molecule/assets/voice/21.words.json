@@ -1,140 +1,145 @@
 {
   "scene": "21-verdict",
-  "block": "21-verdict",
+  "block": "act4",
   "cut": {
-    "start": 0.0,
-    "end": 11.5
+    "start": 61.81,
+    "end": 71.28
   },
-  "gain_db": 4.8,
-  "lufs": -20.0,
-  "wpm": 130.3,
+  "gain_db": 8.1,
+  "lufs": -20.1,
+  "wpm": 156.8,
   "words": [
     {
       "text": "Some",
-      "start": 0.08,
-      "end": 0.4
+      "start": 0.0,
+      "end": 0.21
     },
     {
       "text": "of",
-      "start": 0.43,
-      "end": 0.6
+      "start": 0.21,
+      "end": 0.34
     },
     {
       "text": "that",
-      "start": 0.96,
-      "end": 1.0
+      "start": 0.34,
+      "end": 0.6
     },
     {
       "text": "research",
-      "start": 1.05,
-      "end": 1.68
+      "start": 0.6,
+      "end": 1.12
     },
     {
       "text": "also",
-      "start": 1.8,
-      "end": 2.19
+      "start": 1.12,
+      "end": 1.38
     },
     {
       "text": "comes",
-      "start": 2.19,
-      "end": 2.67
+      "start": 1.67,
+      "end": 1.7
     },
     {
       "text": "from",
-      "start": 2.77,
-      "end": 2.82
+      "start": 1.7,
+      "end": 1.96
     },
     {
       "text": "people",
-      "start": 2.82,
-      "end": 3.15
+      "start": 1.96,
+      "end": 2.35
     },
     {
       "text": "who",
-      "start": 3.2,
-      "end": 3.3
+      "start": 2.35,
+      "end": 2.54
     },
     {
       "text": "sell",
-      "start": 3.3,
-      "end": 3.59
+      "start": 2.54,
+      "end": 2.78
     },
     {
       "text": "the",
-      "start": 3.62,
-      "end": 3.74
-    },
-    {
-      "text": "ingredient",
-      "start": 3.74,
-      "end": 4.14
-    },
-    {
-      "text": "Btop,",
-      "start": 4.32,
-      "end": 4.68
-    },
-    {
-      "text": "Merck,",
-      "start": 4.81,
-      "end": 4.98
-    },
-    {
-      "text": "Cow.",
-      "start": 5.17,
-      "end": 6.055
-    },
-    {
-      "text": "So",
-      "start": 6.125,
-      "end": 6.235
-    },
-    {
-      "text": "promising",
-      "start": 6.68,
-      "end": 6.68
-    },
-    {
-      "text": "supporting",
-      "start": 6.68,
-      "end": 7.221
+      "start": 2.83,
+      "end": 2.99
     },
     {
       "text": "ingredient,",
-      "start": 7.221,
-      "end": 8.291
+      "start": 2.99,
+      "end": 3.77
     },
     {
-      "text": "yes,",
-      "start": 8.351,
-      "end": 8.771
+      "text": "BTOP",
+      "start": 3.77,
+      "end": 4.03
     },
     {
-      "text": "miracle",
-      "start": 8.771,
-      "end": 9.361
+      "text": "Merk",
+      "start": 4.07,
+      "end": 4.28
+    },
+    {
+      "text": "Cow.",
+      "start": 4.28,
+      "end": 4.71
+    },
+    {
+      "text": "So,",
+      "start": 4.71,
+      "end": 5.115
+    },
+    {
+      "text": "promising",
+      "start": 5.115,
+      "end": 5.115
+    },
+    {
+      "text": "supporting",
+      "start": 5.763,
+      "end": 5.783
+    },
+    {
+      "text": "ingredient,",
+      "start": 5.783,
+      "end": 6.673
+    },
+    {
+      "text": "yes.",
+      "start": 6.693,
+      "end": 7.153
+    },
+    {
+      "text": "Miracle",
+      "start": 7.163,
+      "end": 7.683
     },
     {
       "text": "molecule,",
-      "start": 9.421,
-      "end": 10.281
+      "start": 7.683,
+      "end": 8.413
     },
     {
       "text": "no.",
-      "start": 10.541,
-      "end": 10.991
+      "start": 8.413,
+      "end": 8.803
     }
   ],
   "sentences": [
     {
-      "start": 0.08,
-      "end": 6.055,
-      "text": "Some of that research also comes from people who sell the ingredient Btop, Merck, Cow."
+      "start": 0.0,
+      "end": 4.71,
+      "text": "Some of that research also comes from people who sell the ingredient, BTOP Merk Cow."
     },
     {
-      "start": 6.125,
-      "end": 10.991,
-      "text": "So promising supporting ingredient, yes, miracle molecule, no."
+      "start": 4.71,
+      "end": 7.153,
+      "text": "So, promising supporting ingredient, yes."
+    },
+    {
+      "start": 7.163,
+      "end": 8.803,
+      "text": "Miracle molecule, no."
     }
   ]
 }

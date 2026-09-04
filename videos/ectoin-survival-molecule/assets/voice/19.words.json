@@ -1,95 +1,95 @@
 {
   "scene": "19-limits",
-  "block": "19-limits",
+  "block": "act4+retime(1.2264)",
   "cut": {
-    "start": 0.15,
-    "end": 7.216
+    "start": 42.76,
+    "end": 51.39
   },
-  "gain_db": 5.0,
-  "lufs": -21.1,
-  "wpm": 132.0,
+  "gain_db": 7.6,
+  "lufs": -20.0,
+  "wpm": 131.2,
   "words": [
     {
-      "text": "Encouraging.",
-      "start": 0.1,
-      "end": 1.06
+      "text": "Encouraging,",
+      "start": 0.0,
+      "end": 0.806
     },
     {
-      "text": "Not",
-      "start": 1.1,
-      "end": 1.26
+      "text": "not",
+      "start": 0.806,
+      "end": 1.018
     },
     {
       "text": "proof",
-      "start": 1.27,
-      "end": 1.53
+      "start": 1.255,
+      "end": 1.369
     },
     {
       "text": "that",
-      "start": 1.67,
-      "end": 1.89
+      "start": 1.369,
+      "end": 1.654
     },
     {
-      "text": "ectoincures",
-      "start": 2.01,
-      "end": 2.63
+      "text": "ectoin",
+      "start": 1.654,
+      "end": 2.062
+    },
+    {
+      "text": "cures",
+      "start": 2.07,
+      "end": 2.421
     },
     {
       "text": "eczema,",
-      "start": 2.7,
-      "end": 3.29
+      "start": 2.421,
+      "end": 2.975
     },
     {
       "text": "reverses",
-      "start": 3.29,
-      "end": 3.93
+      "start": 3.212,
+      "end": 3.538
     },
     {
       "text": "aging,",
-      "start": 3.93,
-      "end": 4.45
+      "start": 3.538,
+      "end": 3.954
     },
     {
       "text": "or",
-      "start": 4.45,
-      "end": 4.64
+      "start": 3.954,
+      "end": 4.247
     },
     {
       "text": "replaces",
-      "start": 4.64,
-      "end": 5.23
+      "start": 4.247,
+      "end": 4.671
     },
     {
       "text": "anything",
-      "start": 5.3,
-      "end": 5.48
+      "start": 4.81,
+      "end": 5.397
     },
     {
       "text": "a",
-      "start": 5.48,
-      "end": 5.56
+      "start": 5.397,
+      "end": 5.438
     },
     {
       "text": "dermatologist",
-      "start": 5.56,
-      "end": 6.49
+      "start": 5.438,
+      "end": 5.984
     },
     {
       "text": "prescribes.",
-      "start": 6.64,
-      "end": 7.04
+      "start": 5.984,
+      "end": 7.207
     }
   ],
   "sentences": [
     {
-      "start": 0.1,
-      "end": 1.06,
-      "text": "Encouraging."
-    },
-    {
-      "start": 1.1,
-      "end": 7.04,
-      "text": "Not proof that ectoincures eczema, reverses aging, or replaces anything a dermatologist prescribes."
+      "start": 0.0,
+      "end": 7.207,
+      "text": "Encouraging, not proof that ectoin cures eczema, reverses aging, or replaces anything a dermatologist prescribes."
     }
   ]
 }

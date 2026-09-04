@@ -72,6 +72,20 @@
   Neither was merged. `docs/wo/BRANCH-REGISTER.md` Cluster 4 needs updating
   to reflect this — not done automatically here, flagged for the user.
 
+## Merge — `claude/kbeauty-ingredient-video-675976` (resolves the blocked item above)
+
+- **Result:** `d54e3f5`. User confirmed: keep both sides' spend.jsonl entries,
+  ordered logically (chronologically by timestamp) rather than left in
+  arbitrary merge order. `policy-change-proposals.md` auto-merged cleanly, no
+  conflict. Resolved `spend.jsonl` manually: all 5 entries kept, re-sorted by
+  `ts` (kbeauty's entry landed in the middle chronologically, not at the end),
+  new entry's JSON spacing normalized to match the file's existing compact
+  style. Validated: all 5 lines parse as valid JSON.
+- **Checks:** ruff/mypy/pytest pass. `hyperframes check videos/kbeauty-label-trap/05-composition`
+  → **Check passed** (0 errors; 14 pre-existing WCAG AA contrast warnings on
+  scene 1's ribbon elements, not introduced by this merge — the tool
+  distinguishes these from blocking errors).
+
 ## Merge 2 — `wip/storyboard-6a-2026-09-04`
 
 - **Result:** `b1753ed`, clean merge, no conflicts (confirmed clean ancestry

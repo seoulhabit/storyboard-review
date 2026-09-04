@@ -196,6 +196,9 @@
     .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
     .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
                      background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -220,11 +223,12 @@
 
     </style>
     <div class="plate" id="pl-a"><img id="pi-a" src="assets/plates/C-flatlay.jpg" alt=""></div>
+    <div class="scrim full" style="opacity:.35"></div>
     <div class="scrim b"></div>
     <div class="stage"></div>
     <div class="g25">
       <p class="uns" id="f-uns">Judgement &middot; no source record</p>
-      <p class="f-h" id="f-h">The rest is judgement, not evidence.</p>
+      <p class="f-h hd" id="f-h">The rest is judgement, not evidence.</p>
       <div class="qs">
         <div class="q" id="q-0" style="opacity:0"><span>Fragrance-free, if fragrance bothers you?</span></div>
         <div class="q" id="q-1" style="opacity:0"><span>Does the formula carry other useful moisturisers?</span></div>

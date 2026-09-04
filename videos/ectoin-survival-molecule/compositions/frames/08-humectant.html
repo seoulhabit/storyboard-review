@@ -196,6 +196,9 @@
     .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
     .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
                      background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -242,7 +245,7 @@
         <p class="kicker" id="ch-title">Why it is not just another hyaluronic acid</p>
       </div>    <div class="plate" id="pl-a"><img id="pi-a" src="assets/plates/I12-hydration.jpg" alt="" style="filter:blur(3px) brightness(.55)"></div>
     <div class="stage"></div>
-    <p class="s8-h" id="s8-h">Here is where ectoin stops behaving like a
+    <p class="s8-h hd" id="s8-h">Here is where ectoin stops behaving like a
       <em>normal moisturiser.</em></p>
     <div class="g2">
       <div class="card" id="c-hum" style="opacity:0">

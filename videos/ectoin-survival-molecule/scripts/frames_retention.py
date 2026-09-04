@@ -70,6 +70,9 @@ PLATE_CSS = """
     .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
     .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
                      background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -335,7 +338,7 @@ S06 = dict(css=PLATE_CSS + """
     + scrim("b")
     + scrim("t")
     + """    <div class="stage"></div>
-    <p class="s6-h" id="s6-h">Salt pulls water out of cells.</p>
+    <p class="s6-h hd" id="s6-h">Salt pulls water out of cells.</p>
     <div class="s6-row">
       <div class="s6-step" id="s6-s1"><div class="fill" id="s6-f1"></div>
         <span class="s6-num">01</span><p class="s6-lab">Water leaves</p></div>
@@ -425,7 +428,7 @@ S08 = dict(css=PLATE_CSS + CHBAND_CSS + """
     chband_body("08-humectant")
     + pi("a", "I12-hydration.jpg", style="filter:blur(3px) brightness(.55)")
     + """    <div class="stage"></div>
-    <p class="s8-h" id="s8-h">Here is where ectoin stops behaving like a
+    <p class="s8-h hd" id="s8-h">Here is where ectoin stops behaving like a
       <em>normal moisturiser.</em></p>
     <div class="g2">
       <div class="card" id="c-hum" style="opacity:0">
@@ -569,7 +572,7 @@ S12 = dict(css=PLATE_CSS + CHBAND_CSS + """
     + pv("b", "V10-escape.mp4", 6.1, 7.5)
     + scrim("b")
     + """    <div class="stage"></div>
-    <p class="l-h" id="l-h">Your outer barrier is under constant load.</p>
+    <p class="l-h hd" id="l-h">Your outer barrier is under constant load.</p>
     <div class="stressors" id="l-st">
       <div class="st" id="st-0">Dry air</div>
       <div class="st" id="st-1">Cleansing</div>
@@ -766,7 +769,7 @@ S27 = dict(css=PLATE_CSS + """
       <div class="arrow" id="sh-ar">&rarr;</div>
       <div class="sh to" id="sh-b"><div class="wash moss" id="sh-w"></div><span>Skin that simply stays comfortable</span></div>
     </div>
-    <p class="wh-h" id="wh-h" style="opacity:0">You will already find it in&hellip;</p>
+    <p class="wh-h hd" id="wh-h" style="opacity:0">You will already find it in&hellip;</p>
     <div class="where" id="where">
       <div class="wh" id="wh-0" style="opacity:0"><img id="wi-0" src="assets/plates/C-serum.jpg" alt=""><div class="cap">Barrier serums</div></div>
       <div class="wh" id="wh-1" style="opacity:0"><img id="wi-1" src="assets/plates/C-tonerpad.jpg" alt=""><div class="cap">Toners</div></div>
@@ -824,7 +827,7 @@ S28 = dict(css=PLATE_CSS + """
     + scrim("b", sid="sc-b")
     + '    <div class="scrim ink" id="sc-ink" style="opacity:0"></div>\n'
     + """    <div class="stage"></div>
-    <p class="kicker on-ink rm-k" id="rm-k">What you are actually looking at</p>
+    <p class="kicker on-ink rm-k hd" id="rm-k">What you are actually looking at</p>
     <p class="rm-h" id="rm-h" style="opacity:0">A survival strategy,<br>borrowed from
       <em>bacteria.</em></p>
     <div class="nots">
@@ -876,19 +879,20 @@ S22 = dict(css=PLATE_CSS + CHBAND_CSS + """
           font-family:var(--font-mono); font-size:var(--t-label); }
 """, body=(
     chband_body("22-whofor")
-    + pi("a", "C-baseskin.jpg")
+    + pi("a", "C-flaking.jpg")
     + pi("b", "C-layering.jpg", wrap_style="opacity:0")
+    + scrim("full", style="opacity:.45")
     + scrim("b")
     + """    <div class="stage"></div>
     <div class="g22">
-      <p class="wf-h" id="wf-h">Most interesting if your skin runs&hellip;</p>
+      <p class="wf-h hd" id="wf-h">Most interesting if your skin runs&hellip;</p>
       <div class="states">
         <div class="stt" id="ss-0" style="opacity:0"><div class="wash aqua" id="sw-0"></div><span>Dry</span></div>
         <div class="stt" id="ss-1" style="opacity:0"><div class="wash aqua" id="sw-1"></div><span>Sensitive</span></div>
         <div class="stt" id="ss-2" style="opacity:0"><div class="wash aqua" id="sw-2"></div><span>Over-cleansed</span></div>
         <div class="stt" id="ss-3" style="opacity:0"><div class="wash aqua" id="sw-3"></div><span>Irritated</span></div>
       </div>
-      <p class="wf-h" id="wf-s" style="opacity:0;font-size:var(--t-body)">It sits comfortably alongside&hellip;</p>
+      <p class="wf-h hd" id="wf-s" style="opacity:0;font-size:var(--t-body)">It sits comfortably alongside&hellip;</p>
       <div class="friends">
         <div class="fr" id="fr-0" style="opacity:0">Panthenol</div><div class="fr" id="fr-1" style="opacity:0">Glycerin</div>
         <div class="fr" id="fr-2" style="opacity:0">Squalane</div><div class="fr" id="fr-3" style="opacity:0">Ceramides</div>
@@ -935,11 +939,12 @@ S25 = dict(css=PLATE_CSS + """
     .q.last { font-family:var(--font-body); font-weight:800; }
 """, body=(
     pi("a", "C-flatlay.jpg")
+    + scrim("full", style="opacity:.35")
     + scrim("b")
     + """    <div class="stage"></div>
     <div class="g25">
       <p class="uns" id="f-uns">Judgement &middot; no source record</p>
-      <p class="f-h" id="f-h">The rest is judgement, not evidence.</p>
+      <p class="f-h hd" id="f-h">The rest is judgement, not evidence.</p>
       <div class="qs">
         <div class="q" id="q-0" style="opacity:0"><span>Fragrance-free, if fragrance bothers you?</span></div>
         <div class="q" id="q-1" style="opacity:0"><span>Does the formula carry other useful moisturisers?</span></div>

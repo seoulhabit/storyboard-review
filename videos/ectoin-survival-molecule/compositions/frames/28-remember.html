@@ -196,6 +196,9 @@
     .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
     .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
                      background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -232,7 +235,7 @@
     <div class="scrim b" id="sc-b"></div>
     <div class="scrim ink" id="sc-ink" style="opacity:0"></div>
     <div class="stage"></div>
-    <p class="kicker on-ink rm-k" id="rm-k">What you are actually looking at</p>
+    <p class="kicker on-ink rm-k hd" id="rm-k">What you are actually looking at</p>
     <p class="rm-h" id="rm-h" style="opacity:0">A survival strategy,<br>borrowed from
       <em>bacteria.</em></p>
     <div class="nots">

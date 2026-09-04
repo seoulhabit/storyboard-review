@@ -196,6 +196,9 @@
     .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
     .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
                      background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -236,19 +239,20 @@
       <div class="chband" id="ch-band">
         <div class="wash moss" id="ch-wash"></div>
         <p class="kicker" id="ch-title">How to read an ectoin label</p>
-      </div>    <div class="plate" id="pl-a"><img id="pi-a" src="assets/plates/C-baseskin.jpg" alt=""></div>
+      </div>    <div class="plate" id="pl-a"><img id="pi-a" src="assets/plates/C-flaking.jpg" alt=""></div>
     <div class="plate" id="pl-b" style="opacity:0"><img id="pi-b" src="assets/plates/C-layering.jpg" alt=""></div>
+    <div class="scrim full" style="opacity:.45"></div>
     <div class="scrim b"></div>
     <div class="stage"></div>
     <div class="g22">
-      <p class="wf-h" id="wf-h">Most interesting if your skin runs&hellip;</p>
+      <p class="wf-h hd" id="wf-h">Most interesting if your skin runs&hellip;</p>
       <div class="states">
         <div class="stt" id="ss-0" style="opacity:0"><div class="wash aqua" id="sw-0"></div><span>Dry</span></div>
         <div class="stt" id="ss-1" style="opacity:0"><div class="wash aqua" id="sw-1"></div><span>Sensitive</span></div>
         <div class="stt" id="ss-2" style="opacity:0"><div class="wash aqua" id="sw-2"></div><span>Over-cleansed</span></div>
         <div class="stt" id="ss-3" style="opacity:0"><div class="wash aqua" id="sw-3"></div><span>Irritated</span></div>
       </div>
-      <p class="wf-h" id="wf-s" style="opacity:0;font-size:var(--t-body)">It sits comfortably alongside&hellip;</p>
+      <p class="wf-h hd" id="wf-s" style="opacity:0;font-size:var(--t-body)">It sits comfortably alongside&hellip;</p>
       <div class="friends">
         <div class="fr" id="fr-0" style="opacity:0">Panthenol</div><div class="fr" id="fr-1" style="opacity:0">Glycerin</div>
         <div class="fr" id="fr-2" style="opacity:0">Squalane</div><div class="fr" id="fr-3" style="opacity:0">Ceramides</div>

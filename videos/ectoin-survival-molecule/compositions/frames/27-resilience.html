@@ -196,6 +196,9 @@
     .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
     .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
                      background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -239,7 +242,7 @@
       <div class="arrow" id="sh-ar">&rarr;</div>
       <div class="sh to" id="sh-b"><div class="wash moss" id="sh-w"></div><span>Skin that simply stays comfortable</span></div>
     </div>
-    <p class="wh-h" id="wh-h" style="opacity:0">You will already find it in&hellip;</p>
+    <p class="wh-h hd" id="wh-h" style="opacity:0">You will already find it in&hellip;</p>
     <div class="where" id="where">
       <div class="wh" id="wh-0" style="opacity:0"><img id="wi-0" src="assets/plates/C-serum.jpg" alt=""><div class="cap">Barrier serums</div></div>
       <div class="wh" id="wh-1" style="opacity:0"><img id="wi-1" src="assets/plates/C-tonerpad.jpg" alt=""><div class="cap">Toners</div></div>

@@ -11,12 +11,26 @@ not inferred.
 
 | Branch | Last commit | Behind/Ahead | Merged? | Files | Open PR | Artefacts | Disposition |
 |---|---|---|---|---|---|---|---|
-| `claude/laughing-goldberg-1a051f` | 2026-08-31, sumit | 99 / 1 | No | 1 (SKILL.md) | **#1 (open)** | none new | **MERGE** — confirmed the fullest version (see below) |
-| `rescue/34cf30b` | (local only — origin deleted during Gate 0, see GATE0 report §5) | 119 / 1 | No | 1 (SKILL.md) | none | none new | **DROP** — superseded |
-| `rescue/f3f95d3` | 2026-08-31, sumit | 105 / 2 | No | 1 (SKILL.md) | none | none new | **DROP** — superseded |
-| `claude/eager-cori-d241cf` | 2026-08-31, sumit (4 days stale) | 105 / 1 | No | 1 (SKILL.md) | none | none new | **DROP** — superseded |
+| `claude/laughing-goldberg-1a051f` | 2026-08-31, sumit | 99 / 1 | No | 1 (SKILL.md) | **#1 (open)** | none new | **DROP** — moot (see correction below) |
+| `rescue/34cf30b` | (local only — origin deleted during Gate 0, see GATE0 report §5) | 119 / 1 | No | 1 (SKILL.md) | none | none new | **DROP** — moot |
+| `rescue/f3f95d3` | 2026-08-31, sumit | 105 / 2 | No | 1 (SKILL.md) | none | none new | **DROP** — moot |
+| `claude/eager-cori-d241cf` | 2026-08-31, sumit (4 days stale) | 105 / 1 | No | 1 (SKILL.md) | none | none new | **DROP** — moot |
 
-**Verified, not assumed:** diffed all three non-PR branches against PR #1's content for this exact file. PR #1's version is a strict superset — it contains two additional edits (a documentation paragraph, and a 72-line section removal) that none of the other three have. All three are earlier snapshots of the same underlying edit, most likely artefacts of the `reset --hard` incident CLAUDE.md documents (two are literally named `rescue/*`). **Disposition rationale: merge PR #1 alone; the other three add nothing PR #1 doesn't already have, and merging them too would just replay an incomplete version over the complete one.** `rescue/34cf30b`'s origin copy was already deleted mid-Gate-0 (unconfirmed whether intentional — see open question in GATE0 report); the other two DROPs are proposed, not deleted (Rule 2 — Kim's call).
+**Correction (found during T5, see `docs/wo/RECONCILE-LOG.md`):** original analysis
+here proposed MERGE for PR #1 as "the fullest version" of these four. Attempting
+the actual merge surfaced a modify/delete conflict: master deleted the entire
+`.claude/skills/` directory in `519285e` ("remove shadowing skill copies;
+canonical is claude-skills") *after* all four of these branches forked. PR #1's
+fix targets a file that no longer belongs in this repo at all — merging it
+would resurrect a deliberately-removed duplicate. All four branches in this
+cluster are moot, including PR #1 itself. PR #1 should likely be closed on
+GitHub with this explanation, not merged (closing it wasn't done here, only
+proposed). The other three DROPs are unaffected by this correction — they were
+already proposed as superseded-by-PR#1, and remain superseded (now by nothing
+worth merging, but still contributing no unique value). `rescue/34cf30b`'s
+origin copy was already deleted mid-Gate-0 (unconfirmed whether intentional —
+see open question in GATE0 report); all DROPs here are proposed, not deleted
+(Rule 2 — Kim's call).
 
 ## Cluster 2 — `hyaluronic-acid-vs-filler` (triple, heavily overlapping, no two are ancestors of each other)
 
@@ -49,14 +63,31 @@ None of these three can be merged blindly — a git merge would produce extensiv
 | Branch | Last commit | Behind/Ahead | Merged? | Files | Open PR | Artefacts | Disposition |
 |---|---|---|---|---|---|---|---|
 | `claude/snail-mucin-bottle-animation-1d3308` | 2026-09-04 07:08, sumit | 1 / 3 | No | 81 | **#14 (open)** | none new | **MERGE** |
-| `session/ectoin-normal-person` | 2026-09-03 16:22, sumit | 32 / 10 | No | 233 | none | none new | **MERGE first** (see below) |
-| `claude/faceless-video-feedback-6c6c24` | 2026-09-03 19:38, sumit | 16 / 12 | No | 245 | none | none new | **MERGE after** `session/ectoin-normal-person` |
+| `session/ectoin-normal-person` | 2026-09-03 16:22, sumit | 32 / 10 | No | 233 | none | none new | **DROP** — superseded (see correction below) |
+| `claude/faceless-video-feedback-6c6c24` | 2026-09-03 19:38, sumit | 16 / 12 | No | 245 | none | none new | **DROP** — superseded (see correction below) |
 | `claude/kbeauty-ingredient-video-675976` | 2026-09-03 15:42, sumit | 16 / 12 | No | 84 | none | none new | **MERGE**, expect a small conflict (see below) |
 | `wip/storyboard-6a-2026-09-04` | 2026-09-04 (T1, this session) | 14 / 1 | No (tip was already on master before T1's WIP commit) | 1 | none | none new | **MERGE** — trivial, one raw render file, no overlap |
 | `session/story-board-6a` | 2026-09-04 05:57, sumit | 14 / 0 | **Yes** | — | (was PR #13, merged) | none new | **DROP** — nothing left to merge |
 | `session/story-board-a1` | 2026-09-03 09:16, sumit | 29 / 0 | **Yes** | — | (was PR #11, merged) | none new | **DROP** — nothing left to merge |
 
-**Ordering note, verified not assumed:** `git merge-base --is-ancestor origin/session/ectoin-normal-person origin/claude/faceless-video-feedback-6c6c24` → true. `faceless-video-feedback-6c6c24` already contains every commit from `session/ectoin-normal-person` — it's a linear descendant, not a competing line. Merging `session/ectoin-normal-person` first and `faceless-video-feedback-6c6c24` second should be conflict-free (the second branch already carries everything the first contributes).
+**Ordering note, verified not assumed:** `git merge-base --is-ancestor origin/session/ectoin-normal-person origin/claude/faceless-video-feedback-6c6c24` → true. `faceless-video-feedback-6c6c24` already contains every commit from `session/ectoin-normal-person` — it's a linear descendant, not a competing line. This part of the original analysis held up.
+
+**Correction (found during T5, see `docs/wo/RECONCILE-LOG.md`):** the ordering
+above was correct but the MERGE proposal wasn't — attempting to merge
+`session/ectoin-normal-person` produced ~40 add/add conflicts across nearly
+every file in `videos/ectoin-normal-person/`, because master's copy of this
+project was never merged from either branch. It was hand-imported from
+`claude/faceless-video-feedback-6c6c24`'s exact tip (commit `72ab419`, via
+`git checkout <sha> -- <paths>`, documented in the project's own
+`00-decision-ledger.md` as a deliberate CLAUDE.md-compliant way to avoid ref
+surgery on a branch not checked out in that worktree), then master continued
+three commits further (VO generation, a claim-correction pass, script
+compression, a final render/gate). Master's version is strictly more advanced
+than both branches now. Merging either would revert real, already-accepted
+work. A two-dot `diff --name-only origin/master...branch` — what the original
+analysis relied on — cannot detect this: it shows what a branch changed since
+its fork point, not whether master independently changed the same paths since
+then. Only attempting the real merge surfaced it.
 
 **Expected conflict, verified not assumed:** `kbeauty-ingredient-video-675976` and `faceless-video-feedback-6c6c24` both modify two shared channel-level files — `videos/_channel/policy-change-proposals.md` and `videos/_channel/spend.jsonl`. Both look like append-style logs; a real but likely mechanical conflict (concatenate rather than pick-a-side), not a design disagreement.
 
@@ -64,12 +95,19 @@ None of these three can be merged blindly — a git merge would produce extensiv
 
 - `session/wo-sbr-001-gate0` — this WO's own working branch (Gate 0 report, branch register, open-items register, this file). Not part of the video/content reconciliation; folds into the `integrate/2026-09-04` branch at T5 per the work order's own design, or can be merged directly to master earlier as pure documentation — Kim's call, lower stakes either way.
 
-## Summary
+## Summary (revised after T5 — see `docs/wo/RECONCILE-LOG.md` for what changed and why)
 
 | Disposition | Branches |
 |---|---|
-| **MERGE** | `claude/laughing-goldberg-1a051f` (#1), `claude/snail-mucin-bottle-animation-1d3308` (#14), `session/ectoin-normal-person` → `claude/faceless-video-feedback-6c6c24` (in that order), `claude/kbeauty-ingredient-video-675976`, `wip/storyboard-6a-2026-09-04` |
-| **DROP** (proposed, not executed — Rule 2) | `rescue/34cf30b`, `rescue/f3f95d3`, `claude/eager-cori-d241cf`, `session/story-board-6a`, `session/story-board-a1` |
+| **MERGED** (T5, done) | `claude/snail-mucin-bottle-animation-1d3308` (#14) → `b3cbede`, `wip/storyboard-6a-2026-09-04` → `b1753ed` |
+| **BLOCKED** (Rule 4 — JSON-data conflict, needs a yes) | `claude/kbeauty-ingredient-video-675976` |
+| **DROP** (proposed, not executed — Rule 2) | `claude/laughing-goldberg-1a051f` (#1, now moot, not just superseded), `rescue/34cf30b`, `rescue/f3f95d3`, `claude/eager-cori-d241cf`, `session/story-board-6a`, `session/story-board-a1`, `session/ectoin-normal-person` (superseded, corrected from MERGE), `claude/faceless-video-feedback-6c6c24` (superseded, corrected from MERGE) |
 | **ASK** (Kim's creative/product call, not a git decision) | `claude/hyaluronic-acid-video-rerender-8abe8c` (#12) + its WIP companion, `wip/hyaluronic-acid-video-rewrite-1ab509-2026-09-04`, `wip/main-tree-2026-09-04`, `claude/ectoin-voice-timing-revision-825e2c`, `claude/voice-animation-sync-409a0a` |
 
-7 of 18 branches are ready to merge with a clear, verified rationale. 5 are safe, verified-redundant drops. **6 branches, across two video projects, need Kim's judgment before any merge** — these are not git conflicts to resolve mechanically, they're genuinely competing creative directions on the same content.
+Of the original 7 "clean" candidates, only 2 actually were: real merge attempts
+(not just diffing) caught that PR #1's cluster is entirely moot and that
+`session/ectoin-normal-person`/`claude/faceless-video-feedback-6c6c24` are
+superseded, not mergeable — neither was visible from `diff --name-only`
+analysis alone. **6 branches across two video projects still need Kim's
+creative judgment** before any merge — not git conflicts, competing creative
+directions on the same content.

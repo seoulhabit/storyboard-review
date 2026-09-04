@@ -192,6 +192,7 @@
     .stops-t { font-family:var(--font-body); font-weight:800; font-size:132px;
                line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                margin:0; color:var(--ink); }
+    .late { opacity:0; }   /* revealed by reveal() as its wash begins */
     .wash.sun { background:var(--highlighter); }
     .wash.sun ~ * { color:var(--ink) !important; }                 /* 8.3:1 */
     .wash.celadon { background:var(--celadon); }
@@ -210,14 +211,34 @@
     }
 
 
+    .mol-body { fill:none; stroke:var(--coral); stroke-linecap:round; }
+
+    .abs { position:absolute; }
+    #stageB { position:absolute; left:0; top:0; }
+    #promise-q { position:absolute; left:0; top:60px; width:1000px; }
+    .qmark { font-family:var(--font-display); font-size:200px; line-height:1; fill:var(--ink-3); }
+    #twist { padding:var(--s-3) var(--s-5); display:flex; align-items:center; }
+    #twist .kicker { margin:0; }
+    #minitiles { background:var(--mist); padding:var(--s-4); }
+    .mini-grid { display:grid; grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(3, 1fr);
+                 gap:10px; height:210px; }
+    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459; }
+    .mini-cap { position:absolute; left:20px; bottom:14px; }
+    #protect { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
+
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
-          <div class="phase" id="ph-02-promise"><div class="panel" id="p-02-promise" style="height:200px;"><div class="wash aqua" id="w-02-promise"></div><p class="p-title">Where does it actually go?</p></div></div>
-        </div>
+        <p class="kt serif" id="promise-q"><span class="kt-word">Where</span> <span class="kt-word">does</span> <span class="kt-word">it</span> <span class="kt-word">actually</span> <span class="kt-word">go?</span></p>
+        <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
+          <text class="qmark" x="1000" y="640">?</text>
+        </svg>
+        <div class="panel late" id="twist" style="position:absolute;left:1100px;top:60px;width:628px;height:100px;"><div class="wash coral" id="twist-wash"></div><p class="kicker">stay for the twist</p></div>
+        <div class="panel late" id="minitiles" style="position:absolute;left:1100px;top:190px;width:628px;height:330px;"><div class="wash ink" id="minitiles-wash"></div><div class="mini-grid" id="mini-grid"></div><p class="chip on-ink mini-cap" id="mini-cap" style="">23 trials</p></div>
+        <div class="panel late" id="protect" style="position:absolute;left:0px;top:720px;width:1000px;height:140px;"><div class="wash aqua" id="protect-wash"></div><p class="p-title">&hellip;and what protects it?</p></div>
        </div>
       </div>
       </div>
@@ -228,15 +249,138 @@
     window.__timelines = window.__timelines || {};
     // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo("#w-02-promise", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.000);
-    tl.to("#w-02-promise", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 0.300);
-    tl.to("#w-02-promise", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 2.330);
-    tl.to("#w-02-promise", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 4.462);
-    tl.to("#w-02-promise", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 6.306);
-    tl.to("#w-02-promise", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 8.643);
-    tl.to("#w-02-promise", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 10.809);
-    tl.to("#w-02-promise", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 12.995);
-    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    var EASE = {"arrive": "power2.out", "slam": "back.out(1.7)", "wipe": "power4.inOut", "count": "none", "swap": "expo.inOut", "exit": "power2.in", "hold": "sine.inOut", "camera": "power2.inOut"};
+
+    var NS = "http://www.w3.org/2000/svg";
+    function el(t, a, parent) { var n = document.createElementNS(NS, t);
+      for (var k in a) n.setAttribute(k, a[k]); if (parent) parent.appendChild(n); return n; }
+    function txt(parent, x, y, s, cls, anchor) {
+      var t = el("text", { x:x, y:y, "class":cls || "", "text-anchor":anchor || "start" }, parent);
+      t.textContent = s; return t; }
+
+    // pathFollow: move `node` along `pathEl` between progress `from` and `to`
+    // WITHOUT MotionPathPlugin and WITHOUT onUpdate. The path is SAMPLED at
+    // build time into a chain of short linear x/y (and rotation) tweens, so the
+    // pose at any timeline time is a plain property tween -- a pure function of
+    // time under any seek. (An onUpdate proxy was tried first: the runtime seeks
+    // with callbacks suppressed, and frame zero rendered the molecule at the END
+    // of its run.) Convention: the node is DRAWN at the path's start point, so
+    // the translation is (q - p0). Returns the end pose for the caller's next
+    // fromTo. Easing is applied to the sampled progress, so the motion keeps its
+    // curve while every sub-tween stays linear.
+    function pathFollow(tl, node, pathEl, at, dur, ease, o) {
+      o = o || {}; var from = o.from == null ? 0 : o.from, to = o.to == null ? 1 : o.to;
+      var L = pathEl.getTotalLength(), p0 = pathEl.getPointAtLength(0);
+      var ox = o.ox == null ? p0.x : o.ox, oy = o.oy == null ? p0.y : o.oy;
+      var N = o.samples || Math.max(12, Math.round(dur * 30)), ef = gsap.parseEase(ease || "none");
+      function pose(p) {
+        var q = pathEl.getPointAtLength(p * L), r = { x:q.x - ox, y:q.y - oy };
+        if (o.rotate) { var a = pathEl.getPointAtLength(Math.min(L, p * L + 4)),
+                            b = pathEl.getPointAtLength(Math.max(0, p * L - 4));
+                        r.rotation = Math.atan2(a.y - b.y, a.x - b.x) * 57.2958; }
+        return r;
+      }
+      var start = pose(from);
+      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      var prev = start;
+      for (var i = 1; i <= N; i++) {
+        var p = from + (to - from) * ef(i / N), nxt = pose(p);
+        var t0 = at + dur * (i - 1) / N;
+        tl.fromTo(node, prev, Object.assign({ duration: dur / N, ease: "none" }, nxt), t0);
+        prev = nxt;
+      }
+      return prev;
+    }
+    // stroke draw-in; dasharray set from the measured length
+    function drawIn(tl, sel, at, dur, stagger, ease) {
+      gsap.utils.toArray(sel).forEach(function (p, i) {
+        var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+        tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: dur,
+                  ease: ease || "power4.inOut" }, at + i * (stagger || 0));
+      });
+    }
+    // numeral count -- ease none, or it lies. A PROPERTY tween on innerText
+    // with a modifier (no onUpdate), so any seek renders the right numeral.
+    function count(tl, id, from, to, at, dur, fmt) {
+      var node = document.getElementById(id);
+      var f = fmt || function (n) { return n.toLocaleString("en-GB"); };
+      node.textContent = f(from);
+      tl.fromTo(node, { innerText: from }, { innerText: to, duration: dur, ease: "none",
+                modifiers: { innerText: function (v) { return f(Math.round(parseFloat(v))); } } }, at);
+    }
+    // a panel that must not leak its copy before its wash: CSS .late holds it at
+    // opacity 0; reveal() switches it on right as the wash begins
+    function reveal(tl, sel, at) { tl.to(sel, { opacity:1, duration:0.1 }, at); }
+    // kinetic words: "rise" (a claim settling) or "slam" (a payoff landing)
+    function kineticWords(tl, sel, at, step, mode) {
+      var w = gsap.utils.toArray(sel + " .kt-word");
+      if (mode === "slam") tl.fromTo(w, { opacity:0, scale:1.6 }, { opacity:1, scale:1,
+            duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
+      else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
+            stagger:step, ease:"power2.out" }, at);
+    }
+
+    // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
+    // groups (#id-seg-i) so digestion can tween segments apart without a
+    // second drawing. o = { id, x, y, w, h, turns, strokeW, segs, cls }
+    function drawHelix(svg, o) {
+      var STEP = 8, N = Math.round(o.w / STEP), segs = o.segs || 1, turns = o.turns || 1.5;
+      var g = el("g", { id:o.id, "class":"mol" }, svg);
+      for (var s = 0; s < segs; s++) {
+        var sg = el("g", { id:o.id + "-seg-" + s }, g);
+        var i0 = Math.floor(N * s / segs), i1 = Math.min(N, Math.floor(N * (s + 1) / segs) + 1);
+        for (var k = 0; k < 3; k++) {
+          var d = "", ph = k * 2.0944;
+          for (var i = i0; i <= i1; i++) {
+            var x = i * STEP;
+            d += (i === i0 ? "M" : "L") + (o.x + x).toFixed(1) + " " +
+                 (o.y + Math.sin(x / o.w * turns * 6.2832 + ph) * o.h / 2).toFixed(2) + " ";
+          }
+          var p = el("path", { d:d, "class":o.cls || "mol-body", opacity:(0.45 + k * 0.27).toFixed(2) }, sg);
+          p.style.strokeWidth = (o.strokeW || 14) + "px";
+        }
+      }
+      return g;
+    }
+
+    // 23 trial tiles. FIXED index sets, so the industry-tagged tiles that dim
+    // in the promise are the ones that fall out in the payoff. No survivor
+    // count is ever displayed -- the source gives none.
+    var TAGS = { industry:[0,2,3,5,8,9,11,13,14,16,19,21],
+                 lowq:    [1,2,4,5,7,9,10,12,15,16,18,20,22],
+                 small:   [1,4,7,10,12,15,18,20,22],
+                 short:   [3,5,9,13,14,16] };
+    function drawTiles(container, n, o) {
+      for (var i = 0; i < n; i++) {
+        var d = document.createElement("div"); d.className = "tr " + ((o && o.size) || "full"); d.id = "tr-" + i;
+        d.style.opacity = "1";
+        var t = document.createElement("span"); t.className = "tr-tag"; t.id = "tag-" + i;
+        d.appendChild(t); container.appendChild(d);
+      }
+    }
+    function tiles(ids) { return ids.map(function (i) { return "#tr-" + i; }); }
+
+    var svg = document.getElementById("stageB");
+    // the molecule is parked at the frame centre -- exactly where the iris opened
+    drawHelix(svg, { id:"mol", x:654, y:506, w:420, h:110, strokeW:14 });
+    drawTiles(document.getElementById("mini-grid"), 23, { size:"mini" });
+    tl.set(".tr.mini", { scaleY:0.6, opacity:0 }, 0);
+    kineticWords(tl, "#promise-q", 0.539 - 0.1, 0.09, "rise");
+    reveal(tl, "#twist", 3.183 - 0.2);
+    tl.fromTo("#twist-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 3.183 - 0.2);
+    // the FORESHADOW: 23 mini tiles, about half of them flagged
+    reveal(tl, "#minitiles", 4.462 - 0.4);
+    tl.fromTo("#minitiles-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 4.462 - 0.4);
+    tl.to(".tr.mini", { scaleY:1, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, 4.462 - 0.1);
+    tl.fromTo("#mini-cap", { opacity:0 }, { opacity:1, duration:0.3, ease:EASE.arrive }, 4.462 + 0.3);
+    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", duration:0.25, yoyo:true, repeat:5, stagger:0.01, ease:EASE.swap }, 6.867);
+    tl.to(tiles(TAGS.industry), { opacity:0.12, duration:0.5, stagger:0.01, ease:EASE.exit }, 7.516 + 0.4);
+    tl.to("#minitiles-wash", { backgroundColor:"#9C978D", duration:0.5, ease:EASE.swap }, 7.516 + 0.4);
+    tl.to("#mini-cap", { color:"#131516", backgroundColor:"#F0EBE1", duration:0.4 }, 7.516 + 0.4);
+    reveal(tl, "#protect", 10.468 - 0.1);
+    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 10.468 - 0.1);
+    tl.to("#mol", { y:-24, duration:0.6, yoyo:true, repeat:1, ease:EASE.hold }, 11.561);
+
     // departure: push under the iris wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 13.762);
 

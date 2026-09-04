@@ -192,6 +192,7 @@
     .stops-t { font-family:var(--font-body); font-weight:800; font-size:132px;
                line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                margin:0; color:var(--ink); }
+    .late { opacity:0; }   /* revealed by reveal() as its wash begins */
     .wash.sun { background:var(--highlighter); }
     .wash.sun ~ * { color:var(--ink) !important; }                 /* 8.3:1 */
     .wash.celadon { background:var(--celadon); }
@@ -210,14 +211,51 @@
     }
 
 
+    .mol-body { fill:none; stroke:var(--coral); stroke-linecap:round; }
+
+    .bar-band { fill:var(--mist); }
+    .bar-brick { fill:var(--paper); stroke:var(--ink); stroke-width:3; }
+    .bar-jamb { stroke:var(--ink); stroke-width:4; }
+    .bar-doorgap { fill:var(--paper); }
+    .bar-surface { fill:none; stroke:var(--ink); stroke-width:4; opacity:.7; }
+    .bar-boundary { stroke:var(--ink); stroke-width:4; stroke-dasharray:14 10; opacity:.55; }
+    .bar-h { stroke:var(--aqua); stroke-width:7; stroke-linecap:round; opacity:.55; }
+    .bar-label { font-family:var(--font-mono); font-size:32px; letter-spacing:.1em;
+                 fill:var(--ink-2); opacity:.7; }
+
+    .abs { position:absolute; left:0; top:0; }
+    #hook-slam { position:absolute; left:120px; top:120px; width:820px; }
+    #hook-slam .kt-word.em { color:var(--coral); }
+    .lab { opacity:0; }
+    #powder { position:absolute; left:60px; top:560px; width:820px; height:320px;
+              background:var(--mist); padding:var(--s-4) var(--s-5); }
+    #powder .chip { position:relative; }
+    .glass { fill:none; stroke:var(--ink); stroke-width:5; }
+    .glass-fill { fill:var(--aqua); opacity:.35; }
+    .arrow { fill:none; stroke:var(--ink); stroke-width:5; stroke-dasharray:18 14; opacity:.8; }
+    .strike { fill:var(--coral); opacity:0; }
+    .hidden-path { fill:none; stroke:none; }
+    #epi-wash { position:absolute; left:1067px; top:0; width:177px; height:918px; background:var(--coral);
+                transform:scaleX(0); transform-origin:0% 50%; }
+
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
-          <div class="phase" id="ph-01-hook"><div class="panel" id="p-01-hook" style="height:200px;"><div class="wash aqua" id="w-01-hook"></div><p class="p-title">does NOT replace</p></div></div>
-        </div>
+        <div class="panel " id="powder" style="position:absolute;left:60px;top:560px;width:820px;height:320px;"><div class="wash aqua" id="powder-wash"></div><p class="chip lab" id="lab-powder" style="position:absolute;left:32px;top:24px;">POWDER</p></div>
+        <svg id="stageA" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
+          <path id="run" class="hidden-path" d="M 320 470 L 790 470"/>
+          <path id="drop" class="hidden-path" d="M 470 230 C 470 400 470 520 470 690"/>
+          <path class="glass" d="M 400 640 L 540 640 L 522 830 L 418 830 Z"/>
+          <rect class="glass-fill" x="412" y="760" width="116" height="66"/>
+          <path id="arrow-face" class="arrow" d="M 570 735 L 1000 735"/>
+          <rect id="arrow-x" class="strike" x="560" y="722" width="450" height="26" rx="6"/>
+        </svg>
+        <div id="epi-wash"></div>
+        <p class="kt " id="hook-slam"><span class="kt-word">does</span> <span class="kt-word em">NOT</span> <span class="kt-word">replace</span></p>
+        <p class="chip lab" id="lab-cream" style="position:absolute;left:120px;top:330px;">CREAM</p>
        </div>
       </div>
       </div>
@@ -228,11 +266,211 @@
     window.__timelines = window.__timelines || {};
     // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo("#w-01-hook", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.000);
-    tl.to("#w-01-hook", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 0.100);
-    tl.to("#w-01-hook", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 2.119);
-    tl.to("#w-01-hook", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 4.490);
-    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    var EASE = {"arrive": "power2.out", "slam": "back.out(1.7)", "wipe": "power4.inOut", "count": "none", "swap": "expo.inOut", "exit": "power2.in", "hold": "sine.inOut", "camera": "power2.inOut"};
+
+    var NS = "http://www.w3.org/2000/svg";
+    function el(t, a, parent) { var n = document.createElementNS(NS, t);
+      for (var k in a) n.setAttribute(k, a[k]); if (parent) parent.appendChild(n); return n; }
+    function txt(parent, x, y, s, cls, anchor) {
+      var t = el("text", { x:x, y:y, "class":cls || "", "text-anchor":anchor || "start" }, parent);
+      t.textContent = s; return t; }
+
+    // pathFollow: move `node` along `pathEl` between progress `from` and `to`
+    // WITHOUT MotionPathPlugin and WITHOUT onUpdate. The path is SAMPLED at
+    // build time into a chain of short linear x/y (and rotation) tweens, so the
+    // pose at any timeline time is a plain property tween -- a pure function of
+    // time under any seek. (An onUpdate proxy was tried first: the runtime seeks
+    // with callbacks suppressed, and frame zero rendered the molecule at the END
+    // of its run.) Convention: the node is DRAWN at the path's start point, so
+    // the translation is (q - p0). Returns the end pose for the caller's next
+    // fromTo. Easing is applied to the sampled progress, so the motion keeps its
+    // curve while every sub-tween stays linear.
+    function pathFollow(tl, node, pathEl, at, dur, ease, o) {
+      o = o || {}; var from = o.from == null ? 0 : o.from, to = o.to == null ? 1 : o.to;
+      var L = pathEl.getTotalLength(), p0 = pathEl.getPointAtLength(0);
+      var ox = o.ox == null ? p0.x : o.ox, oy = o.oy == null ? p0.y : o.oy;
+      var N = o.samples || Math.max(12, Math.round(dur * 30)), ef = gsap.parseEase(ease || "none");
+      function pose(p) {
+        var q = pathEl.getPointAtLength(p * L), r = { x:q.x - ox, y:q.y - oy };
+        if (o.rotate) { var a = pathEl.getPointAtLength(Math.min(L, p * L + 4)),
+                            b = pathEl.getPointAtLength(Math.max(0, p * L - 4));
+                        r.rotation = Math.atan2(a.y - b.y, a.x - b.x) * 57.2958; }
+        return r;
+      }
+      var start = pose(from);
+      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      var prev = start;
+      for (var i = 1; i <= N; i++) {
+        var p = from + (to - from) * ef(i / N), nxt = pose(p);
+        var t0 = at + dur * (i - 1) / N;
+        tl.fromTo(node, prev, Object.assign({ duration: dur / N, ease: "none" }, nxt), t0);
+        prev = nxt;
+      }
+      return prev;
+    }
+    // stroke draw-in; dasharray set from the measured length
+    function drawIn(tl, sel, at, dur, stagger, ease) {
+      gsap.utils.toArray(sel).forEach(function (p, i) {
+        var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+        tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: dur,
+                  ease: ease || "power4.inOut" }, at + i * (stagger || 0));
+      });
+    }
+    // numeral count -- ease none, or it lies. A PROPERTY tween on innerText
+    // with a modifier (no onUpdate), so any seek renders the right numeral.
+    function count(tl, id, from, to, at, dur, fmt) {
+      var node = document.getElementById(id);
+      var f = fmt || function (n) { return n.toLocaleString("en-GB"); };
+      node.textContent = f(from);
+      tl.fromTo(node, { innerText: from }, { innerText: to, duration: dur, ease: "none",
+                modifiers: { innerText: function (v) { return f(Math.round(parseFloat(v))); } } }, at);
+    }
+    // a panel that must not leak its copy before its wash: CSS .late holds it at
+    // opacity 0; reveal() switches it on right as the wash begins
+    function reveal(tl, sel, at) { tl.to(sel, { opacity:1, duration:0.1 }, at); }
+    // kinetic words: "rise" (a claim settling) or "slam" (a payoff landing)
+    function kineticWords(tl, sel, at, step, mode) {
+      var w = gsap.utils.toArray(sel + " .kt-word");
+      if (mode === "slam") tl.fromTo(w, { opacity:0, scale:1.6 }, { opacity:1, scale:1,
+            duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
+      else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
+            stagger:step, ease:"power2.out" }, at);
+    }
+
+    // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
+    // groups (#id-seg-i) so digestion can tween segments apart without a
+    // second drawing. o = { id, x, y, w, h, turns, strokeW, segs, cls }
+    function drawHelix(svg, o) {
+      var STEP = 8, N = Math.round(o.w / STEP), segs = o.segs || 1, turns = o.turns || 1.5;
+      var g = el("g", { id:o.id, "class":"mol" }, svg);
+      for (var s = 0; s < segs; s++) {
+        var sg = el("g", { id:o.id + "-seg-" + s }, g);
+        var i0 = Math.floor(N * s / segs), i1 = Math.min(N, Math.floor(N * (s + 1) / segs) + 1);
+        for (var k = 0; k < 3; k++) {
+          var d = "", ph = k * 2.0944;
+          for (var i = i0; i <= i1; i++) {
+            var x = i * STEP;
+            d += (i === i0 ? "M" : "L") + (o.x + x).toFixed(1) + " " +
+                 (o.y + Math.sin(x / o.w * turns * 6.2832 + ph) * o.h / 2).toFixed(2) + " ";
+          }
+          var p = el("path", { d:d, "class":o.cls || "mol-body", opacity:(0.45 + k * 0.27).toFixed(2) }, sg);
+          p.style.strokeWidth = (o.strokeW || 14) + "px";
+        }
+      }
+      return g;
+    }
+
+    // Skin cross-section: wavy surface, a brick-course stratum corneum, a
+    // dashed epidermis/dermis boundary, an optional dermis hatch (aqua braces
+    // = the collagen under the surface) and 32px labels. Geometry is a pure
+    // function of o.w / o.h -- no PRNG. Adapted from catalog skin-band +
+    // barrier-wall.
+    //   o = { id, w, h, surf, boundary, brickRows, door:{col}, hatch:{n, cut:[i]},
+    //         orient:"top"|"left", x, y, labels:true }
+    // "left": drawn horizontally then rotated so the SURFACE faces left and the
+    // band stands vertically at o.x with width o.h and height o.w.
+    function drawBarrier(svg, o) {
+      var g = el("g", { id:o.id, "class":"barrier" }, svg);
+      var inner = g;
+      if (o.orient === "left") {
+        inner = el("g", { transform:"translate(" + o.x + " 0) rotate(-90) translate(-" + o.w + " 0)" }, g);
+      } else if (o.x || o.y) {
+        inner = el("g", { transform:"translate(" + (o.x||0) + " " + (o.y||0) + ")" }, g);
+      }
+      var w = o.w, h = o.h, surf = o.surf, bnd = o.boundary;
+      // washes FIRST so everything paints above them
+      el("rect", { x:0, y:surf, width:w, height:bnd - surf, "class":"bar-band", id:o.id + "-epi" }, inner);
+      el("rect", { x:0, y:bnd, width:w, height:h - bnd, "class":"bar-band", id:o.id + "-derm" }, inner);
+      // NO wash rects here: transform-scaling an SVG rect inside a translated group
+      // rendered around the SVG origin, not the rect's edge. Washes are HTML divs
+      // laid over the band by the file that owns it (see frames_c.py).
+      // dermis hatch
+      if (o.hatch) {
+        var n = o.hatch.n || Math.max(2, Math.round(w / 150)), hx = w / n;
+        for (var i = 0; i < n; i++) {
+          var x0 = i * hx + 14, x1 = (i + 1) * hx - 14;
+          var a = el("line", { x1:x0, y1:h - 14, x2:x1, y2:bnd + 14, "class":"bar-h", id:o.id + "-h-" + i }, inner);
+          var b = el("line", { x1:x1, y1:h - 14, x2:x0, y2:bnd + 14, "class":"bar-h", id:o.id + "-hb-" + i }, inner);
+          [a, b].forEach(function (L) { var len = Math.hypot(x1 - x0, h - bnd - 28);
+            L.style.strokeDasharray = len; L.style.strokeDashoffset = 0; L.setAttribute("data-len", len); });
+        }
+        (o.hatch.cut || []).forEach(function (i) {
+          ["-h-", "-hb-"].forEach(function (s) {
+            var L = document.getElementById(o.id + s + i);
+            L.style.strokeDashoffset = L.getAttribute("data-len"); L.style.opacity = "0.25"; });
+        });
+      }
+      // brick courses (running bond)
+      var BW = 130, BH = 58, J = 16, rows = o.brickRows == null ? 2 : o.brickRows;
+      for (var r = 0; r < rows; r++) {
+        var yb = surf + 10 + r * (BH + J), off = (r % 2) ? -73 : 0, c = 0;
+        for (var xb = off; xb < w; xb += BW + J, c++) {
+          if (o.door && r === 0 && c === o.door.col) {
+            el("line", { x1:xb + 20, y1:yb, x2:xb + 20, y2:yb + BH, "class":"bar-jamb" }, inner);
+            el("line", { x1:xb + BW - 20, y1:yb, x2:xb + BW - 20, y2:yb + BH, "class":"bar-jamb" }, inner);
+            el("rect", { x:xb + 20, y:yb, width:BW - 40, height:BH, "class":"bar-doorgap", id:o.id + "-door" }, inner);
+            continue;
+          }
+          el("rect", { x:Math.max(0, xb), y:yb, width:Math.min(w, xb + BW) - Math.max(0, xb), height:BH, rx:9,
+                       "class":"bar-brick", id:o.id + "-b-" + r + "-" + c }, inner);
+        }
+      }
+      // surface wave and boundary
+      var d = "";
+      for (var k = 0; k <= 24; k++) {
+        var x = w * k / 24, y = surf + 7 * Math.sin(2.2 * 6.2832 * x / w) + 3 * Math.sin(5.1 * 6.2832 * x / w);
+        d += (k ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+      }
+      el("path", { d:d, "class":"bar-surface", id:o.id + "-surface" }, inner);
+      el("line", { x1:0, y1:bnd, x2:w, y2:bnd, "class":"bar-boundary", id:o.id + "-boundary" }, inner);
+      if (o.labels !== false) {
+        if (o.orient === "left") {
+          txt(g, o.x + surf + 22, 52, "EPIDERMIS", "bar-label");
+          txt(g, o.x + h - 22, 52, "DERMIS", "bar-label", "end");
+        } else {
+          txt(inner, 22, surf - 16, "EPIDERMIS", "bar-label");
+          txt(inner, 22, h - 18, "DERMIS", "bar-label");
+        }
+      }
+      return g;
+    }
+
+    var svg = document.getElementById("stageA");
+    // the barrier stands on the right, surface facing the molecule
+    drawBarrier(svg, { id:"bar", w:918, h:691, surf:30, boundary:207, brickRows:2,
+                       orient:"left", x:1037, hatch:{ n:6 } });
+    var mol = drawHelix(svg, { id:"mol", x:40, y:470, w:560, h:140, strokeW:16 });
+    var molb = drawHelix(svg, { id:"mol-b", x:330, y:230, w:280, h:70, strokeW:11 });
+    molb.style.opacity = "0";
+    var run = document.getElementById("run"), drop = document.getElementById("drop");
+
+    // THE RACE: frame zero already has the molecule moving; it reaches the
+    // surface exactly as "replace" is spoken.
+    var tR = 1.424;
+    var end = pathFollow(tl, mol, run, 0.12, Math.max(0.6, tR - 0.30 - 0.12), "power2.in");
+    // IMPACT: the epidermis flashes coral, the wall flexes, the molecule recoils
+    tl.fromTo("#epi-wash", { scaleX:0 }, { scaleX:1, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, tR - 0.05);
+    tl.fromTo("#bar", { scaleX:1, transformOrigin:"100% 50%" },
+              { scaleX:0.97, duration:0.16, yoyo:true, repeat:1, ease:EASE.slam }, tR - 0.05);
+    tl.fromTo(mol, { x:end.x, y:end.y }, { x:end.x - 70, duration:0.45, ease:EASE.slam }, tR);
+    kineticWords(tl, "#hook-slam", 1.159 - 0.05, 0.08, "slam");
+    tl.fromTo("#lab-cream", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 0.530);
+
+    // THE SPLIT: the powder route opens below
+    tl.fromTo("#powder-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 3.199 - 0.10);
+    tl.fromTo("#lab-powder", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 3.199);
+    tl.to(molb, { opacity:1, duration:0.2, ease:EASE.arrive }, 3.199);
+    pathFollow(tl, molb, drop, 4.126, 0.7, "power2.in");
+    drawIn(tl, "#arrow-face", 4.126 + 0.25, 0.5, 0, EASE.wipe);
+    // "...to your face": the route is struck out, the panel retracts
+    tl.fromTo("#arrow-x", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
+              { scaleX:1, duration:0.25, ease:EASE.wipe }, 5.449);
+    tl.to("#powder-wash", { scaleX:0, duration:0.4, ease:EASE.exit }, 5.449 + 0.30);
+    tl.to(["#arrow-face", "#arrow-x", molb, "#lab-powder"], { opacity:0, duration:0.3, ease:EASE.exit }, 5.449 + 0.30);
+    // converge: the molecule parks at the frame centre, where the iris opens
+    tl.fromTo(mol, { x:end.x - 70, y:end.y }, { x:864 - 320, y:506 - 470, duration:0.55, ease:EASE.camera }, 5.747 - 0.20);
+    tl.to("#hook-slam", { opacity:0, duration:0.3, ease:EASE.exit }, 5.747 - 0.20);
+
     // departure: push under the iris wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 5.797);
 

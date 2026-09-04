@@ -192,6 +192,7 @@
     .stops-t { font-family:var(--font-body); font-weight:800; font-size:132px;
                line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                margin:0; color:var(--ink); }
+    .late { opacity:0; }   /* revealed by reveal() as its wash begins */
     .wash.sun { background:var(--highlighter); }
     .wash.sun ~ * { color:var(--ink) !important; }                 /* 8.3:1 */
     .wash.celadon { background:var(--celadon); }
@@ -210,16 +211,50 @@
     }
 
 
+    .b-slab  { fill:var(--ink); }
+    .b-shell { fill:none; stroke:var(--ink); stroke-width:5; }
+    .b-floor { stroke:var(--ink); stroke-width:2.5; opacity:.55; }
+    .b-win   { fill:var(--mist); stroke:var(--ink); stroke-width:2; }
+    .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
+    .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
+               stroke-dasharray:640; stroke-dashoffset:0; }
+
+    .abs { position:absolute; }
+    #stageC { position:absolute; left:0; top:0; }
+    .ray { stroke:var(--highlighter); stroke-width:7; stroke-linecap:round; opacity:.9; }
+    .sun { fill:var(--coral); stroke:var(--paper); stroke-width:5; }
+    #rays { opacity:0; }
+    .shield-line { fill:none; stroke:var(--aqua); stroke-width:7; }
+    .shield-fill { fill:var(--aqua); opacity:0; }
+    #sky { background:transparent; }
+    #uv { background:var(--mist); padding:var(--s-4) var(--s-5); display:flex; flex-direction:column;
+          justify-content:center; gap:8px; }
+    #uv .kt { font-size:var(--t-frame); }
+    #chip-beams, #preserve { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
+    .cite { position:absolute; opacity:0; }
+
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
-          <div class="phase" id="ph-03-building"><div class="panel" id="p-03-building" style="height:200px;"><div class="wash aqua" id="w-03-building"></div><p class="p-title">collagen = the beams</p></div></div>
-          <div class="phase" id="ph-04-demolition"><div class="panel" id="p-04-demolition" style="height:200px;"><div class="wash aqua" id="w-04-demolition"></div><p class="p-title">UV cuts collagen</p></div></div>
-          <div class="phase" id="ph-05-boundary"><div class="panel" id="p-05-boundary" style="height:200px;"><div class="wash aqua" id="w-05-boundary"></div><p class="p-title">preserve > replace</p></div></div>
-        </div>
+        <div class="panel " id="sky" style="position:absolute;left:700px;top:0px;width:1028px;height:240px;"><div class="wash sun" id="sky-wash"></div><span></span></div>
+        <svg id="stageC" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
+          <g id="bwrap" transform="translate(94 -56)"></g>
+          <circle class="sun" id="sun" cx="1520" cy="130" r="72"/>
+          <g id="rays">
+            <line class="ray" x1="1455" y1="165" x2="640" y2="250"/>
+            <line class="ray" x1="1470" y1="185" x2="640" y2="400"/>
+            <line class="ray" x1="1485" y1="200" x2="650" y2="530"/>
+          </g>
+          <rect class="shield-fill" id="shield-fill" x="150" y="30" width="510" height="630" rx="30"/>
+          <rect class="shield-line" id="shield" x="150" y="30" width="510" height="630" rx="30"/>
+        </svg>
+        <div class="panel late" id="chip-beams" style="position:absolute;left:760px;top:660px;width:760px;height:130px;"><div class="wash aqua" id="chip-beams-wash"></div><p class="p-title">collagen = the beams</p></div>
+        <div class="panel late" id="uv" style="position:absolute;left:760px;top:300px;width:760px;height:240px;"><div class="wash ink" id="uv-wash"></div><p class="kt " id="uv-1"><span class="kt-word">UV</span> <span class="kt-word">cuts</span> <span class="kt-word">collagen</span></p><p class="kt " id="uv-2"><span class="kt-word">works</span> <span class="kt-word">weekends</span></p></div>
+        <div class="panel late" id="preserve" style="position:absolute;left:760px;top:790px;width:900px;height:110px;"><div class="wash aqua" id="preserve-wash"></div><p class="p-title">preserve &gt; replace</p></div>
+        <div class="cite" id="cite-uv" style="position:absolute;left:94px;top:700px;">J Invest Dermatol &middot; 1998</div>
        </div>
       </div>
       </div>
@@ -230,23 +265,156 @@
     window.__timelines = window.__timelines || {};
     // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo("#w-03-building", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.000);
-    tl.to("#w-03-building", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 0.300);
-    tl.to("#w-03-building", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 1.952);
-    tl.to("#w-03-building", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 4.445);
-    tl.to("#w-03-building", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 6.593);
-    tl.fromTo("#w-04-demolition", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 7.306);
-    tl.to("#w-04-demolition", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 7.306);
-    tl.to("#w-04-demolition", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 9.477);
-    tl.to("#w-04-demolition", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 11.624);
-    tl.to("#w-04-demolition", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 13.665);
-    tl.to("#w-04-demolition", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 15.706);
-    tl.fromTo("#w-05-boundary", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 16.429);
-    tl.to("#w-05-boundary", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 16.429);
-    tl.to("#w-05-boundary", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 18.611);
-    tl.to("#w-05-boundary", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 20.410);
-    tl.to("#w-05-boundary", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 22.853);
-    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    var EASE = {"arrive": "power2.out", "slam": "back.out(1.7)", "wipe": "power4.inOut", "count": "none", "swap": "expo.inOut", "exit": "power2.in", "hold": "sine.inOut", "camera": "power2.inOut"};
+
+    var NS = "http://www.w3.org/2000/svg";
+    function el(t, a, parent) { var n = document.createElementNS(NS, t);
+      for (var k in a) n.setAttribute(k, a[k]); if (parent) parent.appendChild(n); return n; }
+    function txt(parent, x, y, s, cls, anchor) {
+      var t = el("text", { x:x, y:y, "class":cls || "", "text-anchor":anchor || "start" }, parent);
+      t.textContent = s; return t; }
+
+    // pathFollow: move `node` along `pathEl` between progress `from` and `to`
+    // WITHOUT MotionPathPlugin and WITHOUT onUpdate. The path is SAMPLED at
+    // build time into a chain of short linear x/y (and rotation) tweens, so the
+    // pose at any timeline time is a plain property tween -- a pure function of
+    // time under any seek. (An onUpdate proxy was tried first: the runtime seeks
+    // with callbacks suppressed, and frame zero rendered the molecule at the END
+    // of its run.) Convention: the node is DRAWN at the path's start point, so
+    // the translation is (q - p0). Returns the end pose for the caller's next
+    // fromTo. Easing is applied to the sampled progress, so the motion keeps its
+    // curve while every sub-tween stays linear.
+    function pathFollow(tl, node, pathEl, at, dur, ease, o) {
+      o = o || {}; var from = o.from == null ? 0 : o.from, to = o.to == null ? 1 : o.to;
+      var L = pathEl.getTotalLength(), p0 = pathEl.getPointAtLength(0);
+      var ox = o.ox == null ? p0.x : o.ox, oy = o.oy == null ? p0.y : o.oy;
+      var N = o.samples || Math.max(12, Math.round(dur * 30)), ef = gsap.parseEase(ease || "none");
+      function pose(p) {
+        var q = pathEl.getPointAtLength(p * L), r = { x:q.x - ox, y:q.y - oy };
+        if (o.rotate) { var a = pathEl.getPointAtLength(Math.min(L, p * L + 4)),
+                            b = pathEl.getPointAtLength(Math.max(0, p * L - 4));
+                        r.rotation = Math.atan2(a.y - b.y, a.x - b.x) * 57.2958; }
+        return r;
+      }
+      var start = pose(from);
+      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      var prev = start;
+      for (var i = 1; i <= N; i++) {
+        var p = from + (to - from) * ef(i / N), nxt = pose(p);
+        var t0 = at + dur * (i - 1) / N;
+        tl.fromTo(node, prev, Object.assign({ duration: dur / N, ease: "none" }, nxt), t0);
+        prev = nxt;
+      }
+      return prev;
+    }
+    // stroke draw-in; dasharray set from the measured length
+    function drawIn(tl, sel, at, dur, stagger, ease) {
+      gsap.utils.toArray(sel).forEach(function (p, i) {
+        var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+        tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: dur,
+                  ease: ease || "power4.inOut" }, at + i * (stagger || 0));
+      });
+    }
+    // numeral count -- ease none, or it lies. A PROPERTY tween on innerText
+    // with a modifier (no onUpdate), so any seek renders the right numeral.
+    function count(tl, id, from, to, at, dur, fmt) {
+      var node = document.getElementById(id);
+      var f = fmt || function (n) { return n.toLocaleString("en-GB"); };
+      node.textContent = f(from);
+      tl.fromTo(node, { innerText: from }, { innerText: to, duration: dur, ease: "none",
+                modifiers: { innerText: function (v) { return f(Math.round(parseFloat(v))); } } }, at);
+    }
+    // a panel that must not leak its copy before its wash: CSS .late holds it at
+    // opacity 0; reveal() switches it on right as the wash begins
+    function reveal(tl, sel, at) { tl.to(sel, { opacity:1, duration:0.1 }, at); }
+    // kinetic words: "rise" (a claim settling) or "slam" (a payoff landing)
+    function kineticWords(tl, sel, at, step, mode) {
+      var w = gsap.utils.toArray(sel + " .kt-word");
+      if (mode === "slam") tl.fromTo(w, { opacity:0, scale:1.6 }, { opacity:1, scale:1,
+            duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
+      else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
+            stagger:step, ease:"power2.out" }, at);
+    }
+
+    // The building: 5 storeys, an X-brace pair per storey (the collagen),
+    // stable ids so a later phase MOVES a beam instead of redrawing it.
+    // o.door adds the ground-floor door; o.into = parent group.
+    function drawBuilding(svg, o) {
+      o = o || {}; var P = o.into || svg;
+      var STOREYS = 5, X0 = 90, X1 = 530, TOP = 150, H = 108;
+      el("rect", { x:60, y:TOP+STOREYS*H+8, width:500, height:26, rx:4, "class":"b-slab", id:"b-slab" }, P);
+      el("rect", { x:X0, y:TOP, width:X1-X0, height:STOREYS*H, rx:6, "class":"b-shell", id:"b-shell" }, P);
+      for (var s = 0; s < STOREYS; s++) {
+        var y = TOP + s*H, yb = y + H;
+        el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
+        el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
+        el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
+        for (var w = 0; w < 3; w++)
+          el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
+      }
+      if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+    }
+    // the same six beams the demolition cuts, in the order it cuts them
+    var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
+    function setBeamsCut(tl, ids, offset) {
+      ids.forEach(function (k) {
+        var e = document.getElementById("beam-" + k);
+        e.style.strokeDashoffset = "640"; e.style.opacity = "0.25";
+        tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
+      });
+    }
+
+    var svg = document.getElementById("stageC"), bwrap = document.getElementById("bwrap");
+    drawBuilding(svg, { door:true, into:bwrap });
+    // ---- unit 3: the building assembles from the slab up ----------------------
+    tl.fromTo("#world", { scale:1.04 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
+    tl.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 }, 0);
+    tl.set(".beam", { strokeDashoffset:640 }, 0);
+    // frame zero already shows the slab and the shell: the iris opens on a site, not a void
+    tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, 1.952 - 0.2);
+    tl.to(".b-floor", { opacity:0.55, duration:0.3, stagger:0.06, ease:EASE.arrive }, 1.952 + 0.3);
+    tl.fromTo(".b-win", { opacity:0, scale:0.6 }, { opacity:1, scale:1, duration:0.3, stagger:0.03, ease:EASE.arrive }, 1.952 + 0.5);
+    tl.to("#b-door", { opacity:1, duration:0.3, ease:EASE.arrive }, 1.952 + 0.9);
+    // the collagen: beams DRAW in with the word
+    tl.to(".beam", { strokeDashoffset:0, duration:0.55, stagger:0.10, ease:EASE.wipe }, 3.584 - 0.1);
+    reveal(tl, "#chip-beams", 3.584 + 0.2);
+    tl.fromTo("#chip-beams-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 3.584 + 0.2);
+    tl.fromTo("#world", { scale:1.05 }, { scale:1, duration:0.45, ease:EASE.camera }, 6.007);
+
+    // ---- unit 4: the demolition crew --------------------------------------------
+    tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, 7.761);
+    tl.fromTo("#sun", { scale:0.5, opacity:0, transformOrigin:"50% 50%" }, { scale:1, opacity:1, duration:0.5, ease:EASE.slam }, 9.737 - 0.1);
+    tl.fromTo("#sky-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 9.737 - 0.1);
+    tl.to("#rays", { opacity:1, duration:0.1 }, 11.233);
+    drawIn(tl, ".ray", 11.233, 0.5, 0.10, EASE.wipe);
+    // camera pushes INTO the storeys being cut, then comes home on "sunscreen"
+    tl.to("#world", { scale:1.18, x:83, y:23, duration:1.1, ease:EASE.camera }, 11.916 - 0.2);
+    CUT_ORDER.forEach(function (k, i) {
+      tl.to("#beam-" + k, { strokeDashoffset:640, opacity:0.25, duration:0.42, ease:EASE.wipe }, 11.916 + i * 0.34);
+    });
+    tl.to("#bwrap", { skewX:-1.4, y:9, duration:0.6, ease:EASE.swap }, 12.599 + 0.3);
+    reveal(tl, "#uv", 14.153 - 0.1);
+    tl.fromTo("#uv-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 14.153 - 0.1);
+    kineticWords(tl, "#uv-1", 14.153, 0.08, "slam");
+    kineticWords(tl, "#uv-2", 15.706, 0.08, "slam");
+    tl.to("#sun", { scale:1.12, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 15.706);
+    tl.to("#cite-uv", { opacity:1, duration:0.3, ease:EASE.arrive }, 11.233 + 0.3);
+
+    // ---- unit 5: the boundary ----------------------------------------------------
+    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 16.429 - 0.1);
+    drawIn(tl, "#shield", 18.840 - 0.1, 0.9, 0, EASE.wipe);
+    tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, 19.363);
+    // the rays STOP at the boundary; the sun band cools
+    gsap.utils.toArray(".ray").forEach(function (r) {
+      var L = r.getTotalLength();
+      tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, 19.363 + 0.1);
+    });
+    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.exit }, 19.363 + 0.1);
+    tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, 19.363 + 0.1);
+    reveal(tl, "#preserve", 21.055);
+    tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 21.055);
+    tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 21.055);
+
     // departure: push under the iris wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 24.244);
 

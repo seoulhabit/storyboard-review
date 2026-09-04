@@ -44,7 +44,7 @@ MOTION = {
     "05-boundary": {
         "treatments": ["camera pull-back", "shield draw", "preserve wash", "molecule handoff"],
         "text": ["preserve > replace"],
-        "iris_at": (500, 619),
+        "iris_at": (500, 653),
     },
     "06-door": {
         "treatments": ["scale cards + count-ups", "door nudges", "rejected stamp"],
@@ -54,7 +54,7 @@ MOTION = {
     "07-film": {
         "treatments": ["film morph", "surface smooth", "dermis dim", "verdict wash"],
         "text": ["surface smoothing ≠ structural replacement"],
-        "iris_at": (500, 555),
+        "iris_at": (500, 584),
     },
     "08-digestion": {
         "treatments": ["scoop match cut", "tract path-follow", "fragmentation", "no-delivery void"],
@@ -86,8 +86,8 @@ MOTION = {
     },
     "14-hierarchy": {
         "treatments": ["building return", "rank sort", "foundation lock", "beam repair"],
-        "text": ["1 sunscreen", "2 no smoking", "3 protein + vitamin C",
-                 "4 retinoids · suitable users"],
+        "text": ["1 daily sunscreen", "2 not smoking", "3 protein + vitamin C",
+                 "4 retinoids, if suitable"],
         "copy": {"#rank-1": ("we", "sunscreen", 1, 0.60)},
     },
     "15-verdict": {

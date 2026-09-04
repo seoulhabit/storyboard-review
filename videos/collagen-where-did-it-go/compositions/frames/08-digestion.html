@@ -192,6 +192,7 @@
     .stops-t { font-family:var(--font-body); font-weight:800; font-size:132px;
                line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                margin:0; color:var(--ink); }
+    .late { opacity:0; }   /* revealed by reveal() as its wash begins */
     .wash.sun { background:var(--highlighter); }
     .wash.sun ~ * { color:var(--ink) !important; }                 /* 8.3:1 */
     .wash.celadon { background:var(--celadon); }
@@ -210,15 +211,49 @@
     }
 
 
+    .mol-body { fill:none; stroke:var(--coral); stroke-linecap:round; }
+
+    .tract { fill:none; stroke:var(--ink); stroke-width:6; stroke-linecap:round; opacity:.8; }
+    .branch { fill:none; stroke:var(--ink-3); stroke-width:5; stroke-linecap:round; }
+
+    .b-slab  { fill:var(--ink); }
+    .b-shell { fill:none; stroke:var(--ink); stroke-width:5; }
+    .b-floor { stroke:var(--ink); stroke-width:2.5; opacity:.55; }
+    .b-win   { fill:var(--mist); stroke:var(--ink); stroke-width:2; }
+    .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
+    .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
+               stroke-dasharray:640; stroke-dashoffset:0; }
+
+    .abs { position:absolute; }
+    #stageE { position:absolute; left:0; top:0; }
+    .scoop { fill:var(--mist); stroke:var(--ink); stroke-width:5; }
+    .fr { fill:var(--coral); opacity:0; }
+    .card { padding:var(--s-4); display:flex; align-items:center; gap:var(--s-4); }
+    .card .chip { position:relative; }
+    .face { fill:none; stroke:var(--ink); stroke-width:5; }
+    .void { z-index:2; }
+    .dest { padding:var(--s-3) var(--s-4); display:flex; align-items:center; }
+    .dest .p-title { margin:0; font-size:var(--t-body); }
+    #decides { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
+    #stomach-p { background:transparent; }
+    .slat { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
+    #bmini .beam { stroke-width:12; }
+
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
-          <div class="phase" id="ph-08-digestion"><div class="panel" id="p-08-digestion" style="height:200px;"><div class="wash aqua" id="w-08-digestion"></div><p class="p-title">peptides + amino acids</p></div></div>
-          <div class="phase" id="ph-09-dispatch"><div class="panel" id="p-09-dispatch" style="height:200px;"><div class="wash aqua" id="w-09-dispatch"></div><p class="p-title">your body decides</p></div></div>
-        </div>
+        <div class="panel " id="stomach-p" style="position:absolute;left:640px;top:560px;width:520px;height:280px;"><div class="wash aqua" id="stomach-p-wash"></div><span></span></div>
+        <svg id="stageE" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
+          <g id="scoop"><path class="scoop" d="M 250 535 Q 250 640 404 640 Q 558 640 558 535 Z"/><path class="scoop" d="M 250 540 L 130 500" fill="none"/></g>
+        </svg>
+        <div class="panel card" id="face" style="position:absolute;left:60px;top:60px;width:520px;height:240px;"><div class="wash dim" id="face-wash"></div><svg viewBox="0 0 200 200" width="180" height="180" aria-hidden="true"><path class="face" d="M 60 30 C 130 20 160 70 150 120 C 145 150 120 160 118 180 M 150 120 L 168 128 L 152 140"/><circle class="face" cx="110" cy="70" r="6"/></svg><p class="chip " id="face-chip" style="">no facial delivery</p><div class="void" id="face-void"></div></div>
+        <div class="panel late" id="decides" style="position:absolute;left:640px;top:40px;width:700px;height:130px;"><div class="wash dim" id="decides-wash"></div><p class="p-title">your body decides</p></div>
+        <div class="panel dest" id="d-skin" style="position:absolute;left:1340px;top:120px;width:380px;height:150px;"><div class="wash aqua" id="d-skin-wash"></div><p class="p-title">skin</p></div><div class="panel dest" id="d-joints" style="position:absolute;left:1340px;top:300px;width:380px;height:150px;"><div class="wash aqua" id="d-joints-wash"></div><p class="p-title">joints</p></div><div class="panel dest" id="d-tendons" style="position:absolute;left:1340px;top:480px;width:380px;height:150px;"><div class="wash aqua" id="d-tendons-wash"></div><p class="p-title">tendons</p></div><div class="panel dest" id="d-other" style="position:absolute;left:1340px;top:660px;width:380px;height:150px;"><div class="wash aqua" id="d-other-wash"></div><p class="p-title">other tissue</p></div>
+        <div class="panel card late" id="scaff" style="position:absolute;left:60px;top:380px;width:520px;height:220px;"><div class="wash aqua" id="scaff-wash"></div><svg id="bmini" viewBox="0 0 620 720" width="150" height="174" aria-hidden="true"></svg><p class="chip " id="scaff-chip" style="">scaffolding</p></div>
+        <div class="panel card late" id="crate" style="position:absolute;left:60px;top:640px;width:520px;height:240px;"><div class="wash coral" id="crate-wash"></div><svg viewBox="0 0 200 160" width="180" height="144" aria-hidden="true"><rect class="slat" x="10" y="40" width="180" height="110" rx="6"/><rect class="slat" id="slat-1" x="10" y="40" width="180" height="26"/><rect class="slat" id="slat-2" x="10" y="82" width="180" height="26"/><rect class="slat" id="slat-3" x="10" y="124" width="180" height="26"/></svg><p class="chip " id="crate-chip" style="">spare parts</p></div>
        </div>
       </div>
       </div>
@@ -229,20 +264,201 @@
     window.__timelines = window.__timelines || {};
     // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo("#w-08-digestion", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.000);
-    tl.to("#w-08-digestion", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 0.300);
-    tl.to("#w-08-digestion", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 2.475);
-    tl.to("#w-08-digestion", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 4.494);
-    tl.to("#w-08-digestion", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 6.604);
-    tl.fromTo("#w-09-dispatch", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 8.012);
-    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 8.012);
-    tl.to("#w-09-dispatch", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 10.239);
-    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 12.366);
-    tl.to("#w-09-dispatch", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 14.273);
-    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 16.634);
-    tl.to("#w-09-dispatch", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 18.795);
-    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 20.754);
-    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    var EASE = {"arrive": "power2.out", "slam": "back.out(1.7)", "wipe": "power4.inOut", "count": "none", "swap": "expo.inOut", "exit": "power2.in", "hold": "sine.inOut", "camera": "power2.inOut"};
+
+    var NS = "http://www.w3.org/2000/svg";
+    function el(t, a, parent) { var n = document.createElementNS(NS, t);
+      for (var k in a) n.setAttribute(k, a[k]); if (parent) parent.appendChild(n); return n; }
+    function txt(parent, x, y, s, cls, anchor) {
+      var t = el("text", { x:x, y:y, "class":cls || "", "text-anchor":anchor || "start" }, parent);
+      t.textContent = s; return t; }
+
+    // pathFollow: move `node` along `pathEl` between progress `from` and `to`
+    // WITHOUT MotionPathPlugin and WITHOUT onUpdate. The path is SAMPLED at
+    // build time into a chain of short linear x/y (and rotation) tweens, so the
+    // pose at any timeline time is a plain property tween -- a pure function of
+    // time under any seek. (An onUpdate proxy was tried first: the runtime seeks
+    // with callbacks suppressed, and frame zero rendered the molecule at the END
+    // of its run.) Convention: the node is DRAWN at the path's start point, so
+    // the translation is (q - p0). Returns the end pose for the caller's next
+    // fromTo. Easing is applied to the sampled progress, so the motion keeps its
+    // curve while every sub-tween stays linear.
+    function pathFollow(tl, node, pathEl, at, dur, ease, o) {
+      o = o || {}; var from = o.from == null ? 0 : o.from, to = o.to == null ? 1 : o.to;
+      var L = pathEl.getTotalLength(), p0 = pathEl.getPointAtLength(0);
+      var ox = o.ox == null ? p0.x : o.ox, oy = o.oy == null ? p0.y : o.oy;
+      var N = o.samples || Math.max(12, Math.round(dur * 30)), ef = gsap.parseEase(ease || "none");
+      function pose(p) {
+        var q = pathEl.getPointAtLength(p * L), r = { x:q.x - ox, y:q.y - oy };
+        if (o.rotate) { var a = pathEl.getPointAtLength(Math.min(L, p * L + 4)),
+                            b = pathEl.getPointAtLength(Math.max(0, p * L - 4));
+                        r.rotation = Math.atan2(a.y - b.y, a.x - b.x) * 57.2958; }
+        return r;
+      }
+      var start = pose(from);
+      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      var prev = start;
+      for (var i = 1; i <= N; i++) {
+        var p = from + (to - from) * ef(i / N), nxt = pose(p);
+        var t0 = at + dur * (i - 1) / N;
+        tl.fromTo(node, prev, Object.assign({ duration: dur / N, ease: "none" }, nxt), t0);
+        prev = nxt;
+      }
+      return prev;
+    }
+    // stroke draw-in; dasharray set from the measured length
+    function drawIn(tl, sel, at, dur, stagger, ease) {
+      gsap.utils.toArray(sel).forEach(function (p, i) {
+        var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+        tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: dur,
+                  ease: ease || "power4.inOut" }, at + i * (stagger || 0));
+      });
+    }
+    // numeral count -- ease none, or it lies. A PROPERTY tween on innerText
+    // with a modifier (no onUpdate), so any seek renders the right numeral.
+    function count(tl, id, from, to, at, dur, fmt) {
+      var node = document.getElementById(id);
+      var f = fmt || function (n) { return n.toLocaleString("en-GB"); };
+      node.textContent = f(from);
+      tl.fromTo(node, { innerText: from }, { innerText: to, duration: dur, ease: "none",
+                modifiers: { innerText: function (v) { return f(Math.round(parseFloat(v))); } } }, at);
+    }
+    // a panel that must not leak its copy before its wash: CSS .late holds it at
+    // opacity 0; reveal() switches it on right as the wash begins
+    function reveal(tl, sel, at) { tl.to(sel, { opacity:1, duration:0.1 }, at); }
+    // kinetic words: "rise" (a claim settling) or "slam" (a payoff landing)
+    function kineticWords(tl, sel, at, step, mode) {
+      var w = gsap.utils.toArray(sel + " .kt-word");
+      if (mode === "slam") tl.fromTo(w, { opacity:0, scale:1.6 }, { opacity:1, scale:1,
+            duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
+      else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
+            stagger:step, ease:"power2.out" }, at);
+    }
+
+    // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
+    // groups (#id-seg-i) so digestion can tween segments apart without a
+    // second drawing. o = { id, x, y, w, h, turns, strokeW, segs, cls }
+    function drawHelix(svg, o) {
+      var STEP = 8, N = Math.round(o.w / STEP), segs = o.segs || 1, turns = o.turns || 1.5;
+      var g = el("g", { id:o.id, "class":"mol" }, svg);
+      for (var s = 0; s < segs; s++) {
+        var sg = el("g", { id:o.id + "-seg-" + s }, g);
+        var i0 = Math.floor(N * s / segs), i1 = Math.min(N, Math.floor(N * (s + 1) / segs) + 1);
+        for (var k = 0; k < 3; k++) {
+          var d = "", ph = k * 2.0944;
+          for (var i = i0; i <= i1; i++) {
+            var x = i * STEP;
+            d += (i === i0 ? "M" : "L") + (o.x + x).toFixed(1) + " " +
+                 (o.y + Math.sin(x / o.w * turns * 6.2832 + ph) * o.h / 2).toFixed(2) + " ";
+          }
+          var p = el("path", { d:d, "class":o.cls || "mol-body", opacity:(0.45 + k * 0.27).toFixed(2) }, sg);
+          p.style.strokeWidth = (o.strokeW || 14) + "px";
+        }
+      }
+      return g;
+    }
+
+    // The building: 5 storeys, an X-brace pair per storey (the collagen),
+    // stable ids so a later phase MOVES a beam instead of redrawing it.
+    // o.door adds the ground-floor door; o.into = parent group.
+    function drawBuilding(svg, o) {
+      o = o || {}; var P = o.into || svg;
+      var STOREYS = 5, X0 = 90, X1 = 530, TOP = 150, H = 108;
+      el("rect", { x:60, y:TOP+STOREYS*H+8, width:500, height:26, rx:4, "class":"b-slab", id:"b-slab" }, P);
+      el("rect", { x:X0, y:TOP, width:X1-X0, height:STOREYS*H, rx:6, "class":"b-shell", id:"b-shell" }, P);
+      for (var s = 0; s < STOREYS; s++) {
+        var y = TOP + s*H, yb = y + H;
+        el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
+        el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
+        el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
+        for (var w = 0; w < 3; w++)
+          el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
+      }
+      if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+    }
+    // the same six beams the demolition cuts, in the order it cuts them
+    var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
+    function setBeamsCut(tl, ids, offset) {
+      ids.forEach(function (k) {
+        var e = document.getElementById("beam-" + k);
+        e.style.strokeDashoffset = "640"; e.style.opacity = "0.25";
+        tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
+      });
+    }
+
+    // The powder route: one path from the scoop tip through the mouth, down
+    // the oesophagus, round the stomach and along the intestine to ORIGIN,
+    // plus four branch paths from ORIGIN to the destination panels.
+    var TRACT_D = "M 404 530 C 470 510 560 500 600 545 C 640 595 700 625 700 685 " +
+                  "C 700 785 780 825 880 815 C 980 805 1000 725 950 685 " +
+                  "C 900 645 860 725 900 765 C 960 815 1060 805 1120 745 C 1180 685 1200 620 1250 560";
+    var ORIGIN = { x:1250, y:560 };
+    var BRANCHES = {
+      skin:    "M 1250 560 C 1330 560 1380 300 1520 300",
+      joints:  "M 1250 560 C 1340 560 1380 460 1520 460",
+      tendons: "M 1250 560 C 1340 560 1380 620 1520 620",
+      other:   "M 1250 560 C 1330 560 1380 780 1520 780"
+    };
+    function drawTract(svg) {
+      el("path", { d:TRACT_D, "class":"tract", id:"tract" }, svg);
+      for (var k in BRANCHES) el("path", { d:BRANCHES[k], "class":"branch", id:"br-" + k }, svg);
+    }
+
+    var svg = document.getElementById("stageE");
+    drawTract(svg);
+    var tract = document.getElementById("tract"), L = tract.getTotalLength();
+    // the tract and branches are hidden until drawn
+    ["#tract", "#br-skin", "#br-joints", "#br-tendons", "#br-other"].forEach(function (id) {
+      var p = document.querySelector(id); var len = p.getTotalLength();
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+    });
+    var mol = drawHelix(svg, { id:"mol", x:254, y:530, w:300, h:84, strokeW:12, segs:6 });
+    var q62 = tract.getPointAtLength(0.62 * L);
+    var OFF = [[-46,-30],[-20,-38],[10,-32],[34,-16],[-8,-6],[20,8]];
+    var dots = OFF.map(function (o, i) { return el("circle", { cx:q62.x + o[0], cy:q62.y + o[1], r:10, "class":"fr", id:"fr-" + i }, svg); });
+    drawBuilding(svg, { into:document.getElementById("bmini") });
+    CUT_ORDER.forEach(function (k) { var e = document.getElementById("beam-" + k); e.style.strokeDashoffset = "640"; e.style.opacity = "0.25"; });
+
+    // ---- unit 8: swallow, fragment, no facial delivery ---------------------------
+    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:0.9, ease:EASE.camera }, 0);
+    tl.to("#scoop", { rotation:-22, svgOrigin:"250 540", duration:0.5, ease:EASE.swap }, 0.821);
+    drawIn(tl, "#tract", 1.399 - 0.2, 1.6, 0, EASE.wipe);
+    pathFollow(tl, mol, tract, 1.399, 2.2, "power1.inOut", { to:0.62, rotate:true });
+    // the stomach: the molecule breaks into six segments, which become dots
+    tl.fromTo("#stomach-p-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 2.931 - 0.1);
+    for (var s = 0; s < 6; s++) {
+      tl.fromTo("#mol-seg-" + s, { x:0, y:0, rotation:0 }, { x:(s % 2 ? 1 : -1) * (20 + 8 * s), y:-40 + 14 * s,
+                rotation:(s % 2 ? 35 : -35), duration:0.45, ease:EASE.slam }, 2.931 + s * 0.05);
+      tl.to("#mol-seg-" + s, { scale:0.25, opacity:0, duration:0.3, ease:EASE.swap }, 3.810 + s * 0.06);
+      tl.to("#fr-" + s, { opacity:1, duration:0.3, ease:EASE.arrive }, 3.810 + s * 0.06 + 0.1);
+    }
+    tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 5.659 - 0.3);
+    tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.659 - 0.2);
+    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 6.930);
+
+    // ---- unit 9: the body decides where the pieces go -----------------------------
+    dots.forEach(function (d, i) {
+      pathFollow(tl, d, tract, 9.183 + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
+    });
+    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 9.183 + 0.3);
+    tl.to("#world", { scale:1.05, x:-40, duration:0.8, ease:EASE.camera }, 11.744);
+    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 11.744 + 0.2, 0.7, 0.12, EASE.wipe);
+    reveal(tl, "#decides", 13.236);
+    tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 13.236);
+    // dispatch: fixed assignment -- skin gets ONE dot, joints two, tendons two, other one
+    var GO = [["skin", [0], 14.727], ["joints", [1, 2], 15.028], ["tendons", [3, 4], 15.396], ["other", [5], 15.798]];
+    GO.forEach(function (g) {
+      var br = document.getElementById("br-" + g[0]);
+      g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.7, "power1.inOut", { ox:q62.x, oy:q62.y }); });
+      tl.fromTo("#d-" + g[0] + "-wash", { scaleX:0 }, { scaleX:1, duration:0.25, ease:EASE.wipe }, g[2] + 0.55);
+    });
+    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 18.795 - 0.3);
+    reveal(tl, "#scaff", 18.795);
+    tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 18.795);
+    reveal(tl, "#crate", 20.252);
+    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 20.252);
+    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 20.252 + 0.1);
+
     // departure: push under the invert wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 21.523);
 

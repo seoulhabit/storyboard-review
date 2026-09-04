@@ -161,7 +161,10 @@ def _cadence_ok(fspan, fctx, reveals_before):
             if per_step >= REGISTER:
                 at = b["at"]
                 if isinstance(at, str):
-                    at = float(bind(at, fctx, []))
+                    expr = bind(at, fctx, [])
+                    if not re.fullmatch(r"[\d.\s()+\-*/]+", expr):
+                        raise SystemExit(f"{u.cid}: beat time is not arithmetic: {expr!r}")
+                    at = float(eval(expr, {"__builtins__": {}}, {}))
                 times.append(at)
     times.append(fspan.own)
     times.sort()
@@ -228,6 +231,11 @@ def _stub(fspan, fctx):
 
 
 FILE_FNS = {}   # file cid -> fn(fspan, fctx) -> (body, css, tl); missing -> stub
+for _mod in ("frames_a", "frames_b", "frames_c", "frames_d", "frames_e", "frames_f", "frames_g"):
+    try:
+        FILE_FNS.update(__import__(_mod).FILES)
+    except ImportError:
+        pass
 
 
 def emit(fspan, fctx, reveals, fake):

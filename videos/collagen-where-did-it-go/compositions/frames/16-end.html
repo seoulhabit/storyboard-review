@@ -192,6 +192,7 @@
     .stops-t { font-family:var(--font-body); font-weight:800; font-size:132px;
                line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                margin:0; color:var(--ink); }
+    .late { opacity:0; }   /* revealed by reveal() as its wash begins */
     .wash.sun { background:var(--highlighter); }
     .wash.sun ~ * { color:var(--ink) !important; }                 /* 8.3:1 */
     .wash.celadon { background:var(--celadon); }
@@ -210,13 +211,30 @@
     }
 
 
+    .endcard { position:absolute; inset:0; display:flex; flex-direction:column;
+               justify-content:center; gap:var(--s-4);
+               padding-right:calc(var(--endscreen-right) - var(--s-6));
+               padding-bottom:calc(var(--endscreen-bottom) - var(--s-6)); }
+    .ec-kicker { font-family:var(--font-mono); font-size:var(--t-label);
+                 letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+                 color:var(--ink-2); margin:0; }
+    .ec-do { font-family:var(--font-display); font-size:var(--t-hero); line-height:var(--lh-tight);
+             letter-spacing:var(--tr-display); color:var(--ink); margin:0; }
+    .ec-sub { font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+              color:var(--ink-2); margin:0; }
+    .ec-rule { height:6px; width:520px; background:var(--coral); }
+
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
-          <div class="phase" id="ph-16-end"><div class="panel" id="p-16-end" style="height:200px;"><div class="wash aqua" id="w-16-end"></div><p class="p-title">SeoulHabit · Evidence, not hype.</p></div></div>
+        <div class="endcard" id="endcard">
+          <p class="ec-kicker">SeoulHabit</p>
+          <p class="ec-do" id="end-line">Evidence, not hype.</p>
+          <div class="ec-rule"></div>
+          <p class="ec-sub">Sources in the description.</p>
         </div>
        </div>
       </div>
@@ -228,8 +246,12 @@
     window.__timelines = window.__timelines || {};
     // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo("#w-16-end", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.10);
-    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    var EASE = {"arrive": "power2.out", "slam": "back.out(1.7)", "wipe": "power4.inOut", "count": "none", "swap": "expo.inOut", "exit": "power2.in", "hold": "sine.inOut", "camera": "power2.inOut"};
+
+    // motion calmed: one slow drift across the whole hold, large enough that
+    // the 2fps static gate still sees a change, small enough to read as calm
+    tl.fromTo("#endcard", { y:36 }, { y:0, duration:5.500, ease:"power1.out" }, 0);
+
     tl.to({}, { duration: 5.500 }, 0);   // full-span anchor -- always last
     window.__timelines["16-end"] = tl;
   </script>

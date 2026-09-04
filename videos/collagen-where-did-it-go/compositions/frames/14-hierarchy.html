@@ -192,6 +192,7 @@
     .stops-t { font-family:var(--font-body); font-weight:800; font-size:132px;
                line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                margin:0; color:var(--ink); }
+    .late { opacity:0; }   /* revealed by reveal() as its wash begins */
     .wash.sun { background:var(--highlighter); }
     .wash.sun ~ * { color:var(--ink) !important; }                 /* 8.3:1 */
     .wash.celadon { background:var(--celadon); }
@@ -210,15 +211,53 @@
     }
 
 
+    .b-slab  { fill:var(--ink); }
+    .b-shell { fill:none; stroke:var(--ink); stroke-width:5; }
+    .b-floor { stroke:var(--ink); stroke-width:2.5; opacity:.55; }
+    .b-win   { fill:var(--mist); stroke:var(--ink); stroke-width:2; }
+    .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
+    .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
+               stroke-dasharray:640; stroke-dashoffset:0; }
+
+    .abs { position:absolute; }
+    #bldg { position:absolute; left:0; top:0; }
+    .shield { fill:var(--aqua); opacity:.12; }
+    .slab-lock { fill:var(--aqua); opacity:0; }
+    .rank-row { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
+    .rank-row .p-title { margin:0; }
+    #opt { background:var(--mist); padding:var(--s-4); display:flex; flex-direction:column; gap:12px; }
+    .w-card { border-radius:var(--r-3); background:var(--paper); border:3px solid var(--rule-strong);
+              padding:10px 14px; display:flex; align-items:center; gap:14px; position:relative; }
+    .w-card svg { width:70px; height:70px; flex:0 0 auto; }
+    .pk-body { fill:var(--paper); stroke:var(--ink); stroke-width:5; }
+    .pk-cap  { fill:var(--ink); }
+    .w-t { font-family:var(--font-body); font-weight:800; font-size:var(--t-chip); color:var(--ink); margin:0; }
+    .brick { fill:var(--coral); stroke:var(--paper); stroke-width:3; }
+    #final { padding:var(--s-4) var(--s-5); display:flex; align-items:center; opacity:0; }
+    .cite { opacity:0; position:absolute; }
+
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
-          <div class="phase" id="ph-14-hierarchy"><div class="panel" id="p-14-hierarchy" style="height:200px;"><div class="wash aqua" id="w-14-hierarchy"></div><p class="p-title">1 sunscreen</p></div></div>
-          <div class="phase" id="ph-15-verdict"><div class="panel" id="p-15-verdict" style="height:200px;"><div class="wash aqua" id="w-15-verdict"></div><p class="p-title">optional</p></div></div>
-        </div>
+        <svg id="bldg" viewBox="0 0 700 918" width="700" height="918" aria-hidden="true">
+          <g id="bwrap" transform="translate(40 40) scale(0.9)"></g>
+          <rect class="shield" id="shield" x="90" y="150" width="520" height="560" rx="18"/>
+          <rect class="slab-lock" id="slab-lock" x="80" y="686" width="490" height="34" rx="6"/>
+        </svg>
+        <div class="panel rank-row" id="rank-1" style="position:absolute;left:740px;top:120px;width:700px;height:130px;"><div class="wash aqua" id="rank-1-wash"></div><p class="p-title">1 · daily sunscreen</p></div><div class="panel rank-row" id="rank-2" style="position:absolute;left:740px;top:280px;width:700px;height:130px;"><div class="wash aqua" id="rank-2-wash"></div><p class="p-title">2 · not smoking</p></div><div class="panel rank-row" id="rank-3" style="position:absolute;left:740px;top:440px;width:700px;height:130px;"><div class="wash aqua" id="rank-3-wash"></div><p class="p-title">3 · protein + vitamin C</p></div><div class="panel rank-row" id="rank-4" style="position:absolute;left:740px;top:600px;width:700px;height:130px;"><div class="wash aqua" id="rank-4-wash"></div><p class="p-title">4 · retinoids, if suitable</p></div>
+        <div class="panel " id="opt" style="position:absolute;left:1460px;top:120px;width:268px;height:330px;"><div class="wash dim" id="opt-wash"></div><p class="chip " id="opt-chip" style="opacity:0;">optional</p><div class="w-card" id="w1"><svg viewBox="0 0 200 200"><rect class="pk-body" x="46" y="74" width="108" height="96" rx="8"/><rect class="pk-cap" x="60" y="46" width="80" height="30" rx="5"/></svg><p class="w-t">collagen cream</p></div>
+               <div class="w-card" id="w2"><svg viewBox="0 0 200 200"><path class="pk-body" d="M58 46 L142 46 L152 172 L48 172 Z"/><rect class="pk-cap" x="58" y="36" width="84" height="16" rx="4"/></svg><p class="w-t">collagen powder</p></div></div>
+        <svg id="bricks" class="abs" viewBox="0 0 300 220" width="300" height="220" style="position:absolute;left:1440px;top:560px;" aria-hidden="true">
+          <rect class="brick" x="0" y="150" width="140" height="60" rx="6"/><rect class="brick" x="150" y="150" width="140" height="60" rx="6"/>
+          <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
+          <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
+        </svg>
+        <div class="cite" id="cite-smoke" style="position:absolute;left:740px;top:800px;">J Dermatol Sci &middot; 2007</div>
+        <div class="cite" id="cite-ret" style="position:absolute;left:1200px;top:800px;">Arch Dermatol &middot; 2007</div>
+        <div class="panel " id="final" style="position:absolute;left:0px;top:760px;width:700px;height:130px;"><div class="wash moss" id="final-wash"></div><p class="p-title">Protect the building first.</p></div>
        </div>
       </div>
       </div>
@@ -229,19 +268,142 @@
     window.__timelines = window.__timelines || {};
     // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
     var tl = gsap.timeline({ paused: true });
-    tl.fromTo("#w-14-hierarchy", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.000);
-    tl.to("#w-14-hierarchy", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 0.450);
-    tl.to("#w-14-hierarchy", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 2.686);
-    tl.to("#w-14-hierarchy", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 5.111);
-    tl.to("#w-14-hierarchy", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 7.072);
-    tl.to("#w-14-hierarchy", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 9.088);
-    tl.to("#w-14-hierarchy", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 11.042);
-    tl.fromTo("#w-15-verdict", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 12.045);
-    tl.to("#w-15-verdict", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 12.045);
-    tl.to("#w-15-verdict", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 14.232);
-    tl.to("#w-15-verdict", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 16.389);
-    tl.to("#w-15-verdict", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 18.417);
-    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    var EASE = {"arrive": "power2.out", "slam": "back.out(1.7)", "wipe": "power4.inOut", "count": "none", "swap": "expo.inOut", "exit": "power2.in", "hold": "sine.inOut", "camera": "power2.inOut"};
+
+    var NS = "http://www.w3.org/2000/svg";
+    function el(t, a, parent) { var n = document.createElementNS(NS, t);
+      for (var k in a) n.setAttribute(k, a[k]); if (parent) parent.appendChild(n); return n; }
+    function txt(parent, x, y, s, cls, anchor) {
+      var t = el("text", { x:x, y:y, "class":cls || "", "text-anchor":anchor || "start" }, parent);
+      t.textContent = s; return t; }
+
+    // pathFollow: move `node` along `pathEl` between progress `from` and `to`
+    // WITHOUT MotionPathPlugin and WITHOUT onUpdate. The path is SAMPLED at
+    // build time into a chain of short linear x/y (and rotation) tweens, so the
+    // pose at any timeline time is a plain property tween -- a pure function of
+    // time under any seek. (An onUpdate proxy was tried first: the runtime seeks
+    // with callbacks suppressed, and frame zero rendered the molecule at the END
+    // of its run.) Convention: the node is DRAWN at the path's start point, so
+    // the translation is (q - p0). Returns the end pose for the caller's next
+    // fromTo. Easing is applied to the sampled progress, so the motion keeps its
+    // curve while every sub-tween stays linear.
+    function pathFollow(tl, node, pathEl, at, dur, ease, o) {
+      o = o || {}; var from = o.from == null ? 0 : o.from, to = o.to == null ? 1 : o.to;
+      var L = pathEl.getTotalLength(), p0 = pathEl.getPointAtLength(0);
+      var ox = o.ox == null ? p0.x : o.ox, oy = o.oy == null ? p0.y : o.oy;
+      var N = o.samples || Math.max(12, Math.round(dur * 30)), ef = gsap.parseEase(ease || "none");
+      function pose(p) {
+        var q = pathEl.getPointAtLength(p * L), r = { x:q.x - ox, y:q.y - oy };
+        if (o.rotate) { var a = pathEl.getPointAtLength(Math.min(L, p * L + 4)),
+                            b = pathEl.getPointAtLength(Math.max(0, p * L - 4));
+                        r.rotation = Math.atan2(a.y - b.y, a.x - b.x) * 57.2958; }
+        return r;
+      }
+      var start = pose(from);
+      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      var prev = start;
+      for (var i = 1; i <= N; i++) {
+        var p = from + (to - from) * ef(i / N), nxt = pose(p);
+        var t0 = at + dur * (i - 1) / N;
+        tl.fromTo(node, prev, Object.assign({ duration: dur / N, ease: "none" }, nxt), t0);
+        prev = nxt;
+      }
+      return prev;
+    }
+    // stroke draw-in; dasharray set from the measured length
+    function drawIn(tl, sel, at, dur, stagger, ease) {
+      gsap.utils.toArray(sel).forEach(function (p, i) {
+        var L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+        tl.fromTo(p, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: dur,
+                  ease: ease || "power4.inOut" }, at + i * (stagger || 0));
+      });
+    }
+    // numeral count -- ease none, or it lies. A PROPERTY tween on innerText
+    // with a modifier (no onUpdate), so any seek renders the right numeral.
+    function count(tl, id, from, to, at, dur, fmt) {
+      var node = document.getElementById(id);
+      var f = fmt || function (n) { return n.toLocaleString("en-GB"); };
+      node.textContent = f(from);
+      tl.fromTo(node, { innerText: from }, { innerText: to, duration: dur, ease: "none",
+                modifiers: { innerText: function (v) { return f(Math.round(parseFloat(v))); } } }, at);
+    }
+    // a panel that must not leak its copy before its wash: CSS .late holds it at
+    // opacity 0; reveal() switches it on right as the wash begins
+    function reveal(tl, sel, at) { tl.to(sel, { opacity:1, duration:0.1 }, at); }
+    // kinetic words: "rise" (a claim settling) or "slam" (a payoff landing)
+    function kineticWords(tl, sel, at, step, mode) {
+      var w = gsap.utils.toArray(sel + " .kt-word");
+      if (mode === "slam") tl.fromTo(w, { opacity:0, scale:1.6 }, { opacity:1, scale:1,
+            duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
+      else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
+            stagger:step, ease:"power2.out" }, at);
+    }
+
+    // The building: 5 storeys, an X-brace pair per storey (the collagen),
+    // stable ids so a later phase MOVES a beam instead of redrawing it.
+    // o.door adds the ground-floor door; o.into = parent group.
+    function drawBuilding(svg, o) {
+      o = o || {}; var P = o.into || svg;
+      var STOREYS = 5, X0 = 90, X1 = 530, TOP = 150, H = 108;
+      el("rect", { x:60, y:TOP+STOREYS*H+8, width:500, height:26, rx:4, "class":"b-slab", id:"b-slab" }, P);
+      el("rect", { x:X0, y:TOP, width:X1-X0, height:STOREYS*H, rx:6, "class":"b-shell", id:"b-shell" }, P);
+      for (var s = 0; s < STOREYS; s++) {
+        var y = TOP + s*H, yb = y + H;
+        el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
+        el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
+        el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
+        for (var w = 0; w < 3; w++)
+          el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
+      }
+      if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+    }
+    // the same six beams the demolition cuts, in the order it cuts them
+    var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
+    function setBeamsCut(tl, ids, offset) {
+      ids.forEach(function (k) {
+        var e = document.getElementById("beam-" + k);
+        e.style.strokeDashoffset = "640"; e.style.opacity = "0.25";
+        tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
+      });
+    }
+
+    var svg = document.getElementById("bldg");
+    drawBuilding(svg, { door:true, into:document.getElementById("bwrap") });
+    // the building comes back DAMAGED: same beams 04 cut, restated at 0 for cold seeks
+    setBeamsCut(tl, CUT_ORDER);
+    document.getElementById("bwrap").setAttribute("transform", "translate(40 40) scale(0.9) skewX(-1.4)");
+    tl.set("#bwrap", { skewX:-1.4, y:9 }, 0);
+    // camera settles in from the invert
+    tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
+    // rows are authored in their final slots; frame zero shows them UNSORTED
+    ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
+      tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, 1.764 - 0.2 + i * 0.08);
+    });
+    // each action locks in as it is named; sunscreen locks into the FOUNDATION
+    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 3.083);
+    tl.to("#slab-lock", { opacity:1, duration:0.3, ease:EASE.slam }, 3.083 + 0.10);
+    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 3.083 + 0.10);
+    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.525);
+    tl.to("#cite-smoke", { opacity:1, duration:0.3, ease:EASE.arrive }, 4.525 + 0.3);
+    // the repair: SOME beams come back and the building straightens -- protecting
+    // beats replacing; the damage is not undone
+    ["4a", "3a", "1a"].forEach(function (k, i) {
+      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 4.525 + 0.4 + i * 0.3);
+    });
+    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 4.525 + 0.6);
+    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.447);
+    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.385);
+    tl.to("#cite-ret", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.385 + 0.4);
+
+    // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
+    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 12.438 - 0.2);
+    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 12.438);
+    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.626);
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 15.170);
+    tl.to("#final", { opacity:1, duration:0.1 }, 15.784 - 0.1);
+    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 15.784 - 0.1);
+    tl.to("#bricks", { x:420, duration:0.6, ease:EASE.exit }, 18.417);
+
     // departure: push under the curtain wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 18.950);
 

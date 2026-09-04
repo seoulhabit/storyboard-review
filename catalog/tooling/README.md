@@ -650,4 +650,53 @@ Fixtures are `drawbox` only: this repo's ffmpeg is built without libfreetype, so
 `drawtext` is unavailable. A run of glyph-sized boxes is what the gate sees in a
 line of text anyway — many partially-masked rows.
 
-All four control scripts in this directory pass as of 2026-09-02.
+All four control scripts in this directory passed as of 2026-09-02; see the
+five-script line at the end of this file for the current count.
+
+## check-dead-sets.py — added 2026-09-03
+
+```bash
+python3 catalog/tooling/check-dead-sets.py            # all frames in cwd
+python3 catalog/tooling/check-dead-sets.py a.html b.html
+```
+
+A **source** gate, not a pixel gate: it reads `compositions/frames/*.html` and
+needs no render. It reports any `tl.set()` of `textContent` / `className` /
+`innerHTML` whose value is in force at **no** moment the element is revealed —
+authored, and never on screen.
+
+This exists because HyperFrames renders by **seeking a paused timeline**, so
+every `tl.set()` at or before `t` replays in declaration order on the way there.
+A `set` at time 0 is therefore not "the initial value" — it is a value any later
+`set` on the same element silently overwrites, including for a cue that has not
+fired yet.
+
+`videos/ectoin-normal-person` shipped that defect. `03-cell` carries two
+lower-third bands; each stamped its own text, one at `t=0` and one at `t=16.95`.
+The band at **39.7s** displayed the 16.95s band's line, so one caption played
+twice and the other — *"ECTOIN IS THE ANSWER IT EVOLVED"* — never appeared in
+the video at all. Nothing else caught it: `check` passed, the motion sidecar
+passed, and the cadence gate scored the band as a beat because the slab moves
+whatever text it carries.
+
+**The obvious implementation is the wrong one.** Looking for sets declared out
+of time order runs against the real defect and prints a clean zero — those two
+sets are in ascending order. What matters is the gap between a `set` and its
+use, not the order of the sets. Resolve which `set` is in force at each reveal
+and flag the ones that are in force at none.
+
+## Controls — `test-dead-sets-controls.py`
+
+```bash
+python3 catalog/tooling/test-dead-sets-controls.py
+```
+
+Four fixtures, all plain strings — no render, no ffmpeg, no project assets.
+`positive` is the real 03-cell shape and must report exactly 1, naming the `t=0`
+set rather than merely counting one. `ordering` is the fixture that separates
+the working check from the broken one: two sets in descending declaration order
+that are each genuinely on screen, which the order-comparison version flags and
+the correct version passes. `adjacent` and `sparse` guard the other direction,
+so a check tuned until nothing can satisfy it fails here first.
+
+All five control scripts in this directory pass as of 2026-09-03.

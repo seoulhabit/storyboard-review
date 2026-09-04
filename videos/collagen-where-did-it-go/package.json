@@ -1,0 +1,13 @@
+{
+  "name": "collagen-where-did-it-go",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 scripts/build_index.py",
+    "dev": "npx --yes hyperframes@0.8.22 preview",
+    "check": "npx --yes hyperframes@0.8.22 check --samples 48",
+    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o renders/raw.mp4",
+    "master": "python3 scripts/master-audio.py . renders/raw.mp4 renders/collagen-where-did-it-go_final.mp4",
+    "gates": "python3 scripts/check-safe-area.py . renders/collagen-where-did-it-go_final.mp4 --landscape && python3 scripts/check-static-hold.py . renders/collagen-where-did-it-go_final.mp4 --landscape && python3 scripts/check-cadence.py . renders/collagen-where-did-it-go_final.mp4 --longform && python3 scripts/continuity-audit.py ."
+  }
+}

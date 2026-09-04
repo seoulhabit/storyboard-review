@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="landscape">
+<head>
+  <meta charset="UTF-8">
+  <title>Ectoin, explained twice</title>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="241.262"
+       data-width="1920" data-height="1080" data-fps="30">
+
+    <!-- 17 scenes, flat root->frame (one level -- double nesting is
+         confirmed to break inner layout silently). -->
+    <div id="scene-01-bottle" class="scene clip" data-composition-id="01-bottle"
+         data-composition-src="compositions/frames/01-bottle.html"
+         data-start="0.000" data-duration="19.202" data-track-index="0"></div>
+    <div id="scene-02-origin" class="scene clip" data-composition-id="02-origin"
+         data-composition-src="compositions/frames/02-origin.html"
+         data-start="18.752" data-duration="26.251" data-track-index="0"></div>
+    <div id="scene-04-protein" class="scene clip" data-composition-id="04-protein"
+         data-composition-src="compositions/frames/04-protein.html"
+         data-start="44.403" data-duration="36.127" data-track-index="0"></div>
+    <div id="scene-05-skin" class="scene clip" data-composition-id="05-skin"
+         data-composition-src="compositions/frames/05-skin.html"
+         data-start="79.930" data-duration="31.493" data-track-index="0"></div>
+    <div id="scene-06-trial104" class="scene clip" data-composition-id="06-trial104"
+         data-composition-src="compositions/frames/06-trial104.html"
+         data-start="110.823" data-duration="10.645" data-track-index="0"></div>
+    <div id="scene-07-preference" class="scene clip" data-composition-id="07-preference"
+         data-composition-src="compositions/frames/07-preference.html"
+         data-start="121.018" data-duration="9.388" data-track-index="0"></div>
+    <div id="scene-08-eczema" class="scene clip" data-composition-id="08-eczema"
+         data-composition-src="compositions/frames/08-eczema.html"
+         data-start="129.956" data-duration="9.901" data-track-index="0"></div>
+    <div id="scene-09-miracle" class="scene clip" data-composition-id="09-miracle"
+         data-composition-src="compositions/frames/09-miracle.html"
+         data-start="139.407" data-duration="6.147" data-track-index="0"></div>
+    <div id="scene-10-notprove" class="scene clip" data-composition-id="10-notprove"
+         data-composition-src="compositions/frames/10-notprove.html"
+         data-start="145.104" data-duration="8.677" data-track-index="0"></div>
+    <div id="scene-11-twelve" class="scene clip" data-composition-id="11-twelve"
+         data-composition-src="compositions/frames/11-twelve.html"
+         data-start="153.331" data-duration="10.498" data-track-index="0"></div>
+    <div id="scene-12-bottle" class="scene clip" data-composition-id="12-bottle"
+         data-composition-src="compositions/frames/12-bottle.html"
+         data-start="163.229" data-duration="24.390" data-track-index="0"></div>
+    <div id="scene-13-kbeauty" class="scene clip" data-composition-id="13-kbeauty"
+         data-composition-src="compositions/frames/13-kbeauty.html"
+         data-start="187.169" data-duration="16.175" data-track-index="0"></div>
+    <div id="scene-14-notnew" class="scene clip" data-composition-id="14-notnew"
+         data-composition-src="compositions/frames/14-notnew.html"
+         data-start="202.744" data-duration="7.368" data-track-index="0"></div>
+    <div id="scene-15-whatitis" class="scene clip" data-composition-id="15-whatitis"
+         data-composition-src="compositions/frames/15-whatitis.html"
+         data-start="209.662" data-duration="12.114" data-track-index="0"></div>
+    <div id="scene-16-action" class="scene clip" data-composition-id="16-action"
+         data-composition-src="compositions/frames/16-action.html"
+         data-start="221.326" data-duration="5.257" data-track-index="0"></div>
+    <div id="scene-17-dignity" class="scene clip" data-composition-id="17-dignity"
+         data-composition-src="compositions/frames/17-dignity.html"
+         data-start="226.133" data-duration="11.274" data-track-index="0"></div>
+    <div id="scene-18-endscreen" class="scene clip" data-composition-id="18-endscreen"
+         data-composition-src="compositions/frames/18-endscreen.html"
+         data-start="236.957" data-duration="4.305" data-track-index="0"></div>
+
+    <!-- Audio. Two speaker buses. Per-TURN clips, not per-scene: this is a
+         dialogue, so a scene carries 2-5 takes from alternating voices. -->
+    <hf-audio-group id="vo-soulhabit" data-label="SOULHABIT" data-volume="1"
+                    data-fx-chain='{"version":1,"nodes":[{"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},{"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.8,"q":1.2}},{"type":"compressor","id":"n3","label":"Even Out Loudness","params":{"threshold":-24,"ratio":4,"attack":5,"release":140,"knee":2,"makeup":3,"mix":1}},{"type":"peaking","id":"n4","label":"Add Clarity","params":{"frequency":3000,"gain":2.5,"q":1}},{"type":"peaking","id":"n5","label":"De-ess (fallback)","params":{"frequency":6500,"gain":-4,"q":3.5}},{"type":"limiter","id":"n6","label":"Peak Ceiling","params":{"limit":-9,"attack":0.05,"release":40,"level_out":0}}]}'>
+    </hf-audio-group>
+    <hf-audio-group id="vo-jay" data-label="JAY" data-volume="1"
+                    data-fx-chain='{"version":1,"nodes":[{"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},{"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.3,"q":1.2}},{"type":"compressor","id":"n3","label":"Even Out Loudness","params":{"threshold":-24,"ratio":4,"attack":5,"release":140,"knee":2,"makeup":3,"mix":1}},{"type":"peaking","id":"n4","label":"Add Clarity","params":{"frequency":3000,"gain":2.5,"q":1}},{"type":"peaking","id":"n5","label":"De-ess (fallback)","params":{"frequency":6500,"gain":-6,"q":3.5}},{"type":"limiter","id":"n6","label":"Peak Ceiling","params":{"limit":-9,"attack":0.05,"release":40,"level_out":0}}]}'>
+    </hf-audio-group>
+    <audio id="a-t071" src="assets/voice/t071.wav"
+           data-start="0.100" data-duration="3.511"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":3.431,"v":1.0},{"t":3.511,"v":0.0}]}]}'></audio>
+    <audio id="a-t072" src="assets/voice/t072.wav"
+           data-start="3.951" data-duration="2.332"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":2.252,"v":1.0},{"t":2.332,"v":0.0}]}]}'></audio>
+    <audio id="a-t076" src="assets/voice/t076.wav"
+           data-start="6.623" data-duration="6.691"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":6.611,"v":1.0},{"t":6.691,"v":0.0}]}]}'></audio>
+    <audio id="a-t077" src="assets/voice/t077.wav"
+           data-start="13.594" data-duration="4.958"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":4.878,"v":1.0},{"t":4.958,"v":0.0}]}]}'></audio>
+    <audio id="a-t073" src="assets/voice/t073.wav"
+           data-start="18.852" data-duration="6.764"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":6.684,"v":1.0},{"t":6.764,"v":0.0}]}]}'></audio>
+    <audio id="a-t002" src="assets/voice/t002.wav"
+           data-start="25.896" data-duration="2.998"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":2.918,"v":1.0},{"t":2.998,"v":0.0}]}]}'></audio>
+    <audio id="a-t003" src="assets/voice/t003.wav"
+           data-start="29.174" data-duration="2.215"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":2.135,"v":1.0},{"t":2.215,"v":0.0}]}]}'></audio>
+    <audio id="a-t074" src="assets/voice/t074.wav"
+           data-start="31.729" data-duration="7.735"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":7.655,"v":1.0},{"t":7.735,"v":0.0}]}]}'></audio>
+    <audio id="a-t075" src="assets/voice/t075.wav"
+           data-start="39.804" data-duration="4.399"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":4.319,"v":1.0},{"t":4.399,"v":0.0}]}]}'></audio>
+    <audio id="a-t016" src="assets/voice/t016.wav"
+           data-start="44.503" data-duration="6.016"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":5.936,"v":1.0},{"t":6.016,"v":0.0}]}]}'></audio>
+    <audio id="a-t017" src="assets/voice/t017.wav"
+           data-start="50.859" data-duration="10.146"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":10.066,"v":1.0},{"t":10.146,"v":0.0}]}]}'></audio>
+    <audio id="a-t018" src="assets/voice/t018.wav"
+           data-start="61.285" data-duration="4.205"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":4.125,"v":1.0},{"t":4.205,"v":0.0}]}]}'></audio>
+    <audio id="a-t078" src="assets/voice/t078.wav"
+           data-start="65.830" data-duration="8.376"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":8.296,"v":1.0},{"t":8.376,"v":0.0}]}]}'></audio>
+    <audio id="a-t021" src="assets/voice/t021.wav"
+           data-start="74.546" data-duration="5.184"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":5.104,"v":1.0},{"t":5.184,"v":0.0}]}]}'></audio>
+    <audio id="a-t025" src="assets/voice/t025.wav"
+           data-start="80.030" data-duration="7.478"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":7.398,"v":1.0},{"t":7.478,"v":0.0}]}]}'></audio>
+    <audio id="a-t026" src="assets/voice/t026.wav"
+           data-start="87.848" data-duration="3.261"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":3.181,"v":1.0},{"t":3.261,"v":0.0}]}]}'></audio>
+    <audio id="a-t029" src="assets/voice/t029.wav"
+           data-start="91.449" data-duration="6.688"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":6.608,"v":1.0},{"t":6.688,"v":0.0}]}]}'></audio>
+    <audio id="a-t030" src="assets/voice/t030.wav"
+           data-start="98.417" data-duration="2.038"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":1.958,"v":1.0},{"t":2.038,"v":0.0}]}]}'></audio>
+    <audio id="a-t031" src="assets/voice/t031.wav"
+           data-start="100.735" data-duration="5.571"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":5.491,"v":1.0},{"t":5.571,"v":0.0}]}]}'></audio>
+    <audio id="a-t032" src="assets/voice/t032.wav"
+           data-start="106.646" data-duration="3.977"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":3.897,"v":1.0},{"t":3.977,"v":0.0}]}]}'></audio>
+    <audio id="a-t033" src="assets/voice/t033.wav"
+           data-start="110.923" data-duration="7.227"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":7.147,"v":1.0},{"t":7.227,"v":0.0}]}]}'></audio>
+    <audio id="a-t034" src="assets/voice/t034.wav"
+           data-start="118.430" data-duration="2.388"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":2.308,"v":1.0},{"t":2.388,"v":0.0}]}]}'></audio>
+    <audio id="a-t035" src="assets/voice/t035.wav"
+           data-start="121.118" data-duration="2.594"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":2.514,"v":1.0},{"t":2.594,"v":0.0}]}]}'></audio>
+    <audio id="a-t036" src="assets/voice/t036.wav"
+           data-start="123.992" data-duration="5.763"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":5.683,"v":1.0},{"t":5.763,"v":0.0}]}]}'></audio>
+    <audio id="a-t038" src="assets/voice/t038.wav"
+           data-start="130.056" data-duration="9.151"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":9.071,"v":1.0},{"t":9.151,"v":0.0}]}]}'></audio>
+    <audio id="a-t039" src="assets/voice/t039.wav"
+           data-start="139.507" data-duration="1.723"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":1.643,"v":1.0},{"t":1.723,"v":0.0}]}]}'></audio>
+    <audio id="a-t040" src="assets/voice/t040.wav"
+           data-start="141.510" data-duration="0.592"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":0.512,"v":1.0},{"t":0.592,"v":0.0}]}]}'></audio>
+    <audio id="a-t041" src="assets/voice/t041.wav"
+           data-start="142.382" data-duration="1.717"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":1.637,"v":1.0},{"t":1.717,"v":0.0}]}]}'></audio>
+    <audio id="a-t042" src="assets/voice/t042.wav"
+           data-start="144.379" data-duration="0.525"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":0.445,"v":1.0},{"t":0.525,"v":0.0}]}]}'></audio>
+    <audio id="a-t079" src="assets/voice/t079.wav"
+           data-start="145.204" data-duration="7.927"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":7.847,"v":1.0},{"t":7.927,"v":0.0}]}]}'></audio>
+    <audio id="a-t046" src="assets/voice/t046.wav"
+           data-start="153.431" data-duration="3.153"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":3.073,"v":1.0},{"t":3.153,"v":0.0}]}]}'></audio>
+    <audio id="a-t047" src="assets/voice/t047.wav"
+           data-start="156.864" data-duration="6.165"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":6.085,"v":1.0},{"t":6.165,"v":0.0}]}]}'></audio>
+    <audio id="a-t080" src="assets/voice/t080.wav"
+           data-start="163.329" data-duration="8.045"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":7.965,"v":1.0},{"t":8.045,"v":0.0}]}]}'></audio>
+    <audio id="a-t055" src="assets/voice/t055.wav"
+           data-start="171.714" data-duration="6.169"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":6.089,"v":1.0},{"t":6.169,"v":0.0}]}]}'></audio>
+    <audio id="a-t056" src="assets/voice/t056.wav"
+           data-start="178.163" data-duration="5.906"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":5.826,"v":1.0},{"t":5.906,"v":0.0}]}]}'></audio>
+    <audio id="a-t057" src="assets/voice/t057.wav"
+           data-start="184.349" data-duration="2.620"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":2.54,"v":1.0},{"t":2.62,"v":0.0}]}]}'></audio>
+    <audio id="a-t082" src="assets/voice/t082.wav"
+           data-start="187.269" data-duration="9.065"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":8.985,"v":1.0},{"t":9.065,"v":0.0}]}]}'></audio>
+    <audio id="a-t060" src="assets/voice/t060.wav"
+           data-start="196.614" data-duration="5.930"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":5.85,"v":1.0},{"t":5.93,"v":0.0}]}]}'></audio>
+    <audio id="a-t062" src="assets/voice/t062.wav"
+           data-start="202.844" data-duration="6.618"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":6.538,"v":1.0},{"t":6.618,"v":0.0}]}]}'></audio>
+    <audio id="a-t063" src="assets/voice/t063.wav"
+           data-start="209.762" data-duration="7.629"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":7.549,"v":1.0},{"t":7.629,"v":0.0}]}]}'></audio>
+    <audio id="a-t064" src="assets/voice/t064.wav"
+           data-start="217.671" data-duration="3.455"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":3.375,"v":1.0},{"t":3.455,"v":0.0}]}]}'></audio>
+    <audio id="a-t065" src="assets/voice/t065.wav"
+           data-start="221.426" data-duration="4.507"
+           data-track-index="10" data-volume="1.0" data-audio-group="vo-soulhabit"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":4.427,"v":1.0},{"t":4.507,"v":0.0}]}]}'></audio>
+    <audio id="a-t081" src="assets/voice/t081.wav"
+           data-start="226.233" data-duration="10.524"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":10.444,"v":1.0},{"t":10.524,"v":0.0}]}]}'></audio>
+    <audio id="a-t070" src="assets/voice/t070.wav"
+           data-start="237.057" data-duration="4.005"
+           data-track-index="11" data-volume="1.0" data-audio-group="vo-jay"
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":3.925,"v":1.0},{"t":4.005,"v":0.0}]}]}'></audio>
+
+    <!-- Music bed, carved against BOTH voice groups (hyperframes-audio:
+         "sources" is a list, summed onto the bed's own clock -- one analysis
+         covers a two-speaker dialogue). strength 0.25 is the documented
+         default: audible room for the voice without reading as a hole. -->
+    <audio id="bed-music" src="assets/music/bed.mp3"
+           data-start="0.000" data-duration="241.262"
+           data-track-index="20" data-volume="0.3"
+           data-fx-carve='{"enabled":true,"sources":["vo-soulhabit","vo-jay"],"strength":0.25,"dynamic":true}'></audio>
+
+    <!-- Local one-shot SFX. Own track, no carve of their own -- each is a
+         short transient at a transition or reveal beat, not a bed. -->
+    <audio id="sfx-0" src="assets/sfx/cream-swoosh-short.mp3"
+           data-start="4.250" data-duration="0.350"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- t072: the bottle turns -->
+    <audio id="sfx-1" src="assets/sfx/chime-trimmed.mp3"
+           data-start="6.620" data-duration="1.100"
+           data-track-index="21" data-volume="0.38"></audio>  <!-- t076: the verdict lands -->
+    <audio id="sfx-2" src="assets/sfx/whoosh-soft-split-reveal.mp3"
+           data-start="44.400" data-duration="1.056"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- CH1->CH2 chapter wipe -->
+    <audio id="sfx-3" src="assets/sfx/ui-toggle-trimmed.mp3"
+           data-start="55.860" data-duration="0.350"
+           data-track-index="21" data-volume="0.42"></audio>  <!-- 04-protein: Jargon Alarm fires -->
+    <audio id="sfx-4" src="assets/sfx/whoosh-soft-split-reveal.mp3"
+           data-start="79.930" data-duration="1.056"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- CH2->CH3 chapter wipe -->
+    <audio id="sfx-5" src="assets/sfx/whoosh-soft-split-reveal.mp3"
+           data-start="110.820" data-duration="1.056"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- CH3->CH4 chapter wipe -->
+    <audio id="sfx-6" src="assets/sfx/glass-clink.mp3"
+           data-start="141.510" data-duration="0.312"
+           data-track-index="21" data-volume="0.38"></audio>  <!-- 09-miracle: Yes -->
+    <audio id="sfx-7" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="144.380" data-duration="1.100"
+           data-track-index="21" data-volume="0.42"></audio>  <!-- 09-miracle: No -->
+    <audio id="sfx-8" src="assets/sfx/sharp-text-stamp-impact-hit.trimmed.mp3"
+           data-start="146.700" data-duration="1.100"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- 10-notprove: the claims struck -->
+    <audio id="sfx-9" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="154.130" data-duration="0.500"
+           data-track-index="21" data-volume="0.36"></audio>  <!-- 11-twelve: the count lands -->
+    <audio id="sfx-10" src="assets/sfx/whoosh-soft-split-reveal.mp3"
+           data-start="163.230" data-duration="1.056"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- CH4->CH5 chapter wipe -->
+    <audio id="sfx-11" src="assets/sfx/click-soft-chip-pair-lands.mp3"
+           data-start="185.050" data-duration="0.264"
+           data-track-index="21" data-volume="0.36"></audio>  <!-- 12-bottle: Jargon Alarm retires -->
+    <audio id="sfx-12" src="assets/sfx/whoosh-soft-split-reveal.mp3"
+           data-start="202.740" data-duration="1.056"
+           data-track-index="21" data-volume="0.4"></audio>  <!-- CH5->CH6 chapter wipe -->
+    <audio id="sfx-13" src="assets/sfx/chime.mp3"
+           data-start="237.060" data-duration="2.500"
+           data-track-index="21" data-volume="0.34"></audio>  <!-- 18-endscreen: the close -->
+  </div>
+
+  <style>
+    *,*::before,*::after { box-sizing:border-box; }
+    html,body { margin:0; padding:0; background:#F7F5F0; }
+    .scene.clip { position:absolute; inset:0; }
+  </style>
+
+  <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+  <script>
+    // The root timeline's only job is scene handoff. A plain crossfade stays
+    // banned -- grounds alternate ink/paper and blending two gives a muddy
+    // near-blank midpoint -- but a clip-path wipe reveals the incoming scene at
+    // its own resting position without translating anything and without
+    // touching opacity, so no frame composites two grounds AND no content is
+    // dragged through a reserved safe-area zone.
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+    // scene boundary: 01-bottle -> 02-origin, wipe LEFT 0.45s
+    tl.fromTo("#scene-02-origin", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 18.752);
+    // chapter boundary: 02-origin -> 04-protein, wipe UP 0.60s
+    tl.fromTo("#scene-04-protein", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.60, ease: "power3.inOut" }, 44.403);
+    // chapter boundary: 04-protein -> 05-skin, wipe UP 0.60s
+    tl.fromTo("#scene-05-skin", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.60, ease: "power3.inOut" }, 79.930);
+    // chapter boundary: 05-skin -> 06-trial104, wipe UP 0.60s
+    tl.fromTo("#scene-06-trial104", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.60, ease: "power3.inOut" }, 110.823);
+    // scene boundary: 06-trial104 -> 07-preference, wipe LEFT 0.45s
+    tl.fromTo("#scene-07-preference", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 121.018);
+    // scene boundary: 07-preference -> 08-eczema, wipe LEFT 0.45s
+    tl.fromTo("#scene-08-eczema", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 129.956);
+    // scene boundary: 08-eczema -> 09-miracle, wipe LEFT 0.45s
+    tl.fromTo("#scene-09-miracle", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 139.407);
+    // scene boundary: 09-miracle -> 10-notprove, wipe LEFT 0.45s
+    tl.fromTo("#scene-10-notprove", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 145.104);
+    // scene boundary: 10-notprove -> 11-twelve, wipe LEFT 0.45s
+    tl.fromTo("#scene-11-twelve", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 153.331);
+    // chapter boundary: 11-twelve -> 12-bottle, wipe UP 0.60s
+    tl.fromTo("#scene-12-bottle", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.60, ease: "power3.inOut" }, 163.229);
+    // scene boundary: 12-bottle -> 13-kbeauty, wipe LEFT 0.45s
+    tl.fromTo("#scene-13-kbeauty", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 187.169);
+    // chapter boundary: 13-kbeauty -> 14-notnew, wipe UP 0.60s
+    tl.fromTo("#scene-14-notnew", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.60, ease: "power3.inOut" }, 202.744);
+    // scene boundary: 14-notnew -> 15-whatitis, wipe LEFT 0.45s
+    tl.fromTo("#scene-15-whatitis", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 209.662);
+    // scene boundary: 15-whatitis -> 16-action, wipe LEFT 0.45s
+    tl.fromTo("#scene-16-action", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 221.326);
+    // scene boundary: 16-action -> 17-dignity, wipe LEFT 0.45s
+    tl.fromTo("#scene-17-dignity", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 226.133);
+    // scene boundary: 17-dignity -> 18-endscreen, wipe LEFT 0.45s
+    tl.fromTo("#scene-18-endscreen", { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.45, ease: "power3.inOut" }, 236.957);
+    tl.to({}, { duration: 241.262 }, 0);   // anchor: tl.duration() === root
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>

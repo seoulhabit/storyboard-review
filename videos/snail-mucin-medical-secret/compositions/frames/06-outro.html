@@ -1,5 +1,6 @@
 <template>
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
   @font-face {
     font-family: "Bricolage Grotesque";
     font-style: normal;
@@ -90,7 +91,7 @@
   .outro-subscribe-pos {
     position: absolute;
     left: 50%;
-    top: 1214px;
+    top: 1100px;
     transform: translateX(-50%);
   }
   .outro-subscribe {
@@ -98,7 +99,7 @@
     opacity: 0;
     transform-origin: 50% 50%;
     will-change: transform, opacity;
-    max-width: 940px;
+    max-width: 750px;
     padding: 42px 68px;
     background: #8a5a37;
     border-radius: 8px;
@@ -119,7 +120,7 @@
 <div id="root" data-composition-id="06-outro" data-width="1080" data-height="1920">
   <div class="clip outro-photo-clip" data-start="0" data-duration="15.2" data-track-index="0">
     <div class="outro-photo-wrap" id="outro-photo-wrap">
-      <img src="public/06-cheekbone-glow.png" alt="" />
+      <img src="public/06-cheekbone-glow.png" alt=""  loading="eager" decoding="sync" width="1152" height="2048">
     </div>
   </div>
 
@@ -134,7 +135,7 @@
   <div class="clip outro-subscribe-clip" data-start="0" data-duration="15.2" data-track-index="2">
     <div class="outro-subscribe-pos">
       <div class="outro-subscribe" id="outro-subscribe">
-        <span>Subscribe!</span>
+        <span id="outro-subscribe-text">Subscribe!</span>
       </div>
     </div>
   </div>

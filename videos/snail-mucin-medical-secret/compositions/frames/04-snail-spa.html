@@ -2,6 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
 <style data-brand-tokens>
+  *, *::before, *::after { box-sizing: border-box; }
   @font-face {
     font-family: "Bricolage Grotesque";
     src: url("assets/fonts/bricolage-grotesque-500.woff2") format("woff2");
@@ -50,9 +51,9 @@
   }
   .topbar-row {
     position: absolute;
-    top: 4.4cqh;
+    top: 11cqh;
     left: 5cqw;
-    right: 5cqw;
+    right: 15cqw;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -65,7 +66,7 @@
     border-radius: 6px;
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 2.04cqw;
+    font-size: 2.7cqw;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--cream);
@@ -73,7 +74,7 @@
   .topbar-counter {
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 1.9cqw;
+    font-size: 2.5cqw;
     letter-spacing: 0.14em;
     color: color-mix(in srgb, var(--cream) 55%, transparent);
   }
@@ -171,7 +172,7 @@
     position: absolute;
     top: 15.6cqh;
     left: 5cqw;
-    right: 5cqw;
+    right: 15cqw;
     clip-path: inset(0 100% 0 0);
   }
   .headline-text {
@@ -181,6 +182,9 @@
     line-height: 0.98;
     letter-spacing: -0.01em;
     color: var(--cream);
+    background: color-mix(in srgb, var(--green-deep) 88%, transparent);
+    padding: 0.3em 0.42em;
+    border-radius: 8px;
     text-align: left;
   }
   .headline-text .accent {
@@ -195,8 +199,8 @@
   .cap-slot {
     position: absolute;
     left: 5cqw;
-    right: 5cqw;
-    bottom: 25.5cqh;
+    right: 15cqw;
+    bottom: 33cqh;
     height: 6.5cqh;
   }
   .cap-line {
@@ -232,7 +236,7 @@
     justify-content: center;
   }
   .closing-card {
-    max-width: 88cqw;
+    max-width: 68cqw;
     padding: 1.1em 1.3em;
     background: color-mix(in srgb, var(--green-deep) 82%, transparent);
     border: 2px solid var(--pink);
@@ -263,7 +267,7 @@
   }
   .cruelty-chip {
     position: absolute;
-    top: 64cqh;
+    top: 57cqh;
     display: inline-flex;
     align-items: center;
     padding: 0.5em 0.9em;
@@ -277,7 +281,7 @@
   .cruelty-chip-text {
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 1.9cqw;
+    font-size: 2.5cqw;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--cream);
@@ -311,7 +315,7 @@
   >
     <div class="photo-mask">
       <div id="spa-kb">
-        <img src="public/04-snail-mesh.png" alt="" />
+        <img src="public/04-snail-mesh.png" alt=""  loading="eager" decoding="sync" width="1152" height="2048">
       </div>
     </div>
     <div class="photo-scrim-top"></div>
@@ -322,7 +326,7 @@
   <!-- Scene 2: headline wipe-reveal, upper third -->
   <div id="spa-headline" class="clip" data-start="3.74" data-duration="17.8" data-track-index="1">
     <div class="headline-mask" id="headline-mask">
-      <div class="headline-text">LUXURY <span class="accent">SPA</span> FOR MOLLUSKS</div>
+      <div class="headline-text" id="spa-headline-text">LUXURY <span class="accent">SPA</span> FOR MOLLUSKS</div>
     </div>
   </div>
 

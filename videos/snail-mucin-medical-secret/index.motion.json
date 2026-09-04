@@ -1,0 +1,111 @@
+{
+  "duration": 113.84,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#s1-label-text",
+      "bySec": 0.9
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#payoff",
+      "bySec": 13.4
+    },
+    {
+      "kind": "before",
+      "a": "#s1-label-text",
+      "b": "#payoff"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sm2LabelText",
+      "bySec": 20.3
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sm2TagText",
+      "bySec": 25.8
+    },
+    {
+      "kind": "before",
+      "a": "#sm2LabelText",
+      "b": "#sm2TagText"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sm3Ticker",
+      "bySec": 48.2
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#sm3Payoff",
+      "bySec": 52.1
+    },
+    {
+      "kind": "before",
+      "a": "#sm3Ticker",
+      "b": "#sm3Payoff"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#scrim-w1",
+      "bySec": 55.1
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#spa-headline-text",
+      "bySec": 58.2
+    },
+    {
+      "kind": "before",
+      "a": "#scrim-w1",
+      "b": "#spa-headline-text"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#f05sr-mistake",
+      "bySec": 74.8
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#f05sr-caption-left-word1",
+      "bySec": 84.7
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#f05sr-step-1",
+      "bySec": 93.3
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#f05sr-step-3",
+      "bySec": 97.5
+    },
+    {
+      "kind": "before",
+      "a": "#f05sr-step-1",
+      "b": "#f05sr-step-3"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#outro-question",
+      "bySec": 105.3
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#outro-subscribe-text",
+      "bySec": 111.6
+    },
+    {
+      "kind": "before",
+      "a": "#outro-question",
+      "b": "#outro-subscribe-text"
+    },
+    {
+      "kind": "keepsMoving",
+      "withinSelector": "#root",
+      "maxStaticSec": 1.5,
+      "_note": "root-scoped, never per-scene (a per-scene withinSelector reports a clip's own off-screen span as frozen). 1.5s = the Short cadence cap from [S5/C-2], replacing the engine's 2s default."
+    }
+  ]
+}

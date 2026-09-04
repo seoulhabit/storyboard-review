@@ -6,7 +6,7 @@ Skill version 2.1.0. Written last.
 
 - Mode: `render`
 - Result: `complete`
-- Artifacts: `7` written under OUT (2 modified compositions sets + 5 new files; 10 source files edited)
+- Artifacts: `8` new files written under OUT, plus `10` source files edited
 - Spend: `$0 of $0` (0 % — no paid provider call and 0 vidIQ credits in render mode)
 - Needs Kim: `the publish click` — and a decision on the two judgement calls in *Left for you* below.
 

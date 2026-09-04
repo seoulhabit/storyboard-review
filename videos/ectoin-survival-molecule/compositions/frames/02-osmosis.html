@@ -149,87 +149,89 @@
     }
 
 
-    #root { background:var(--paper); color:var(--ink); }
-    .s2 { display:grid; grid-template-columns:52fr 48fr; gap:var(--s-8);
-          align-items:center; height:100%; }
-    .s2-fig { position:relative; width:100%; aspect-ratio:1/1; max-height:100%;
-              justify-self:center; }
-    .s2-copy { display:flex; flex-direction:column; gap:var(--s-5); min-height:0; }
-    .s2-kicker { font-family:var(--font-mono); font-size:var(--t-label);
-                 letter-spacing:var(--tr-mono-wide); color:var(--ink-2);
-                 text-transform:uppercase; margin:0; }
-    .s2-line { font-family:var(--font-display); font-size:var(--t-figure);
-               line-height:var(--lh-snug); margin:0; }
-    .s2-line b { font-weight:400; color:var(--coral); }
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
 
     </style>
-    <div class="stage">
-      <div class="s2">
-        <div class="s2-fig">
-          <svg viewBox="0 0 600 600" width="100%" height="100%" aria-hidden="true">
-            <g id="s2-salt"></g>
-            <circle id="s2-cell" cx="300" cy="300" r="150" fill="#F0EBE1"
-                    stroke="#131516" stroke-width="4"/>
-            <g id="s2-drops" fill="#59B8AE"></g>
-          </svg>
-        </div>
-        <div class="s2-copy flexmin">
-          <p class="s2-kicker" id="s2-k">The problem it solves</p>
-          <p class="s2-line" id="s2-l1">Some places are so salty and so dry
-            that an ordinary cell <b>loses its water</b></p>
-          <p class="s2-line" id="s2-l2">&mdash; and stops working.</p>
-        </div>
-      </div>
+    <div class="plate" id="pl-a"><video class="clip" id="pv-a" src="assets/plates/V02-dive.mp4" data-start="0.000" data-duration="3.600" muted playsinline></video></div>
+    <div class="plate" id="pl-b"><video class="clip" id="pv-b" src="assets/plates/V03-orbit.mp4" data-start="3.300" data-duration="6.000" muted playsinline></video></div>
+    <div class="scrim b"></div>
+    <div class="flash" id="flash"></div>
+    <div class="stage"></div>
+    <div class="lt" id="lt">
+      <p class="kicker" id="s2-k">The problem it solves</p>
+      <p class="line" id="s2-l1">Some places are so salty and so dry
+        that an ordinary cell <b>loses its water</b></p>
+      <p class="line" id="s2-l2">&mdash; and stops working.</p>
     </div>
+    <p class="cv" id="cv">Conceptual visualization</p>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
-  // Salt field and escaping water are BUILT here, not authored by hand: a
-  // deterministic lattice, so the same seek always paints the same frame.
-  // No Math.random anywhere -- it is banned and would break re-seek determinism.
-  var salt = document.getElementById('s2-salt');
-  var saltMade = [];   // only ids actually created -- see the animate loop below
-  for (var i = 0; i < 44; i++) {
-    var a = (i * 137.508) * Math.PI / 180, rr = 205 + (i % 7) * 26;
-    var x = 300 + Math.cos(a) * rr, y = 300 + Math.sin(a) * rr;
-    if (x < 12 || x > 588 || y < 12 || y > 588) continue;
-    var s = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    s.setAttribute('x', x.toFixed(1)); s.setAttribute('y', y.toFixed(1));
-    s.setAttribute('width', 9); s.setAttribute('height', 9);
-    s.setAttribute('fill', '#9C978D'); s.setAttribute('opacity', 0);
-    s.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-    s.id = 'salt-' + i; salt.appendChild(s); saltMade.push(i);
-  }
-  var drops = document.getElementById('s2-drops');
-  for (var j = 0; j < 10; j++) {
-    var da = (j * 36) * Math.PI / 180;
-    var d = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    d.setAttribute('cx', (300 + Math.cos(da) * 110).toFixed(1));
-    d.setAttribute('cy', (300 + Math.sin(da) * 110).toFixed(1));
-    d.setAttribute('r', 8); d.setAttribute('opacity', 0);
-    d.id = 'drop-' + j; drops.appendChild(d);
-    // Baseline registered as a REAL timeline tween at 0, not a bare gsap.set():
-    // the engine seeks to arbitrary times without passing through 0 first.
-    tl.set('#drop-' + j, { opacity: 0, x: 0, y: 0 }, 0);
-    tl.to('#drop-' + j, { opacity: 0.9, duration: 0.25 }, 3.30 + j * 0.06);
-    tl.to('#drop-' + j, { x: Math.cos(da) * 150, y: Math.sin(da) * 150,
-                          opacity: 0, duration: 1.5, ease: 'power1.in' }, 3.70 + j * 0.06);
-  }
-  // Iterate saltMade, NOT 0..43: the loop above skips out-of-bounds positions, and
-  // animating an id that was never created logs "GSAP target not found" per miss.
-  saltMade.forEach(function (k, n) {
-    tl.set('#salt-' + k, { opacity: 0 }, 0);
-    tl.to('#salt-' + k, { opacity: 0.85, duration: 0.4 }, 1.20 + (n % 11) * 0.11);
-  });
-  tl.fromTo('#s2-k',  { opacity:0, y:34 }, { opacity:1, y:0, duration:0.40 }, 0.20);
-  tl.fromTo('#s2-l1', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.50 }, 0.60);
-  tl.fromTo('#s2-l2', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.50 }, 7.690-0.35);
-  tl.set('#s2-cell', { attr:{ r:150 } }, 0);
-  tl.to('#s2-cell', { attr:{ r:112 }, duration:2.6, ease:'power2.inOut' }, 4.20);
-  tl.to('#s2-cell', { attr:{ stroke:'#C97A5C' }, duration:0.9 }, 8.760-0.2);
+  // Race into the droplet (V02, sped up), flash, and we are inside the brine
+  // with the bacterium (V03) -- its membrane puckers as salt pulls water out.
+  tl.fromTo('#flash', { opacity:0 }, { opacity:0.9, duration:0.12, ease:'power2.in' }, 3.22);
+  tl.to('#flash', { opacity:0, duration:0.40, ease:'power2.out' }, 3.34);
+  tl.fromTo('#pv-b', { scale:1.04, x:0, y:0 }, { scale:1.12, x:0, y:0, duration:5.900, ease:'none' }, 3.3);
+  tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 3.6);
+
+  tl.fromTo('#lt', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.45 }, 0.25);
+  tl.set(['#s2-l1','#s2-l2'], { opacity:0 }, 0);
+  tl.fromTo('#s2-l1', { opacity:0, y:24 }, { opacity:1, y:0, duration:0.50 }, 3.980-0.35);
+  tl.fromTo('#s2-l2', { opacity:0, y:24 }, { opacity:1, y:0, duration:0.50 }, 7.690-0.35);
 
     tl.to({}, { duration: 9.210 }, 0);   // full-span anchor -- always last
     window.__timelines["02-osmosis"] = tl;

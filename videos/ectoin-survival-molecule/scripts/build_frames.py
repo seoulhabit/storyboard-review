@@ -556,6 +556,11 @@ FRAME_DEFS = {
 }
 FRAME_DEFS.update({cid: spec for cid, spec in SCENES_A27})
 
+# Retention master (session/ectoin-retention, 2026-09-04): photoreal plates
+# under the authored copy. Same ids, same walk() timing, same transitions.
+from frames_retention import apply as _apply_retention
+FRAME_DEFS = _apply_retention(FRAME_DEFS)
+
 assert set(FRAME_DEFS) == set(ORDER), (
     f"FRAME_DEFS/vo_lines.LINES mismatch: "
     f"missing frames {set(ORDER) - set(FRAME_DEFS)}, "

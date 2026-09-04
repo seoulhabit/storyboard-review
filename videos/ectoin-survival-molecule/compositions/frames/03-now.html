@@ -149,92 +149,124 @@
     }
 
 
-    #root { background:var(--paper); color:var(--ink); }
-    .s3 { display:flex; flex-direction:column; justify-content:center;
-          gap:var(--s-7); height:100%; }
-    .s3-row { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-7); }
-    .s3-card { display:flex; flex-direction:column; align-items:center;
-               gap:var(--s-4); min-height:0; }
-    .s3-vessel { width:150px; height:230px; border:4px solid var(--ink);
-                 border-radius:var(--r-3); position:relative; background:var(--mist); }
-    .s3-vessel::before { content:""; position:absolute; left:50%; top:-30px;
-                         transform:translateX(-50%); width:56px; height:30px;
-                         border:4px solid var(--ink); border-bottom:none;
-                         border-radius:var(--r-2) var(--r-2) 0 0; background:var(--mist); }
-    .s3-fill { position:absolute; left:0; right:0; bottom:0; height:100%;
-               transform:scaleY(0); transform-origin:50% 100%;
-               background:var(--aqua); border-radius:0 0 5px 5px; }
-    .s3-cap { font-family:var(--font-mono); font-size:var(--t-label);
-              letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
-              color:var(--ink-2); }
-    .s3-lockup { position:relative; background:var(--ink); border-radius:var(--r-3);
-                 padding:var(--s-6) var(--s-7); overflow:hidden; }
-    .s3-lockup .wash { position:absolute; inset:0; background:var(--aqua);
-                       transform:scaleX(0); transform-origin:0% 50%; }
-    .s3-lockup > *:not(.wash) { position:relative; z-index:1; }
-    .s3-mark { text-align:center; font-family:var(--font-display);
-               font-size:var(--t-hero); letter-spacing:0.06em; margin:0;
-               color:var(--paper); }
-    .s3-rule { height:4px; width:520px; margin:var(--s-4) auto; background:var(--coral);
-               transform:scaleX(0); transform-origin:50% 50%; }
-    .s3-sub { text-align:center; font-family:var(--font-body); font-weight:800;
-              font-size:var(--t-body); color:var(--ink-2-dark); margin:0; }
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
+
+    .s3-row { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 6px);
+              z-index:4; display:flex; gap:var(--s-4); }
+    .s3-lock { position:absolute; left:var(--safe-left); right:var(--safe-right);
+               bottom:var(--safe-bottom); z-index:4; overflow:hidden;
+               background:rgba(19,21,22,.84); border-radius:var(--r-3);
+               padding:var(--s-6) var(--s-7); display:grid;
+               grid-template-columns:auto 1fr; gap:var(--s-7); align-items:center; }
+    .s3-lock .wash { position:absolute; inset:0; background:var(--aqua);
+                     transform:scaleX(0); transform-origin:0% 50%; }
+    .s3-lock > *:not(.wash) { position:relative; z-index:1; }
+    .s3-mark { font-family:var(--font-display); font-size:140px; line-height:1;
+               letter-spacing:0.06em; margin:0; color:var(--paper); }
+    .s3-sub { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame);
+              line-height:var(--lh-snug); color:rgba(247,245,240,.82); margin:0; }
+    .s3-sub .rule { display:block; height:4px; width:260px; background:var(--coral);
+                    margin-bottom:var(--s-4); transform:scaleX(0); transform-origin:0% 50%; }
 
     </style>
-    <div class="stage">
-      <div class="s3">
-        <div class="s3-row">
-          <div class="s3-card" id="s3-c1">
-            <div class="s3-vessel"><div class="s3-fill" id="s3-f1"></div></div>
-            <div class="s3-cap">Serums</div></div>
-          <div class="s3-card" id="s3-c2">
-            <div class="s3-vessel"><div class="s3-fill" id="s3-f2"></div></div>
-            <div class="s3-cap">Creams</div></div>
-          <div class="s3-card" id="s3-c3">
-            <div class="s3-vessel"><div class="s3-fill" id="s3-f3"></div></div>
-            <div class="s3-cap">Sunscreens</div></div>
-        </div>
-        <div class="s3-lockup" id="s3-lockup">
-          <div class="wash" id="s3-wash"></div>
-          <p class="s3-mark" id="s3-mark">ECTOIN</p>
-          <div class="s3-rule" id="s3-rule"></div>
-          <p class="s3-sub" id="s3-sub">the science is stranger than the marketing</p>
-        </div>
-      </div>
+    <div class="plate" id="pl-a"><video class="clip" id="pv-a" src="assets/plates/V08-hydration.mp4" data-start="0.000" data-duration="3.800" muted playsinline></video></div>
+    <div class="plate" id="pl-b"><video class="clip" id="pv-b" src="assets/plates/V05-bottle.mp4" data-start="3.500" data-duration="7.500" muted playsinline></video></div>
+    <div class="scrim b" id="sc-b" style="opacity:0"></div>
+    <div class="stage"></div>
+    <div class="lt" id="lt" style="max-width:760px">
+      <p class="kicker">Inside the cell</p>
+      <p class="line">Ectoin, <i>hanging back</i> from the protein</p>
     </div>
+    <div class="s3-row">
+      <span class="pill" id="s3-p1" style="opacity:0">Serums</span>
+      <span class="pill" id="s3-p2" style="opacity:0">Creams</span>
+      <span class="pill" id="s3-p3" style="opacity:0">Sunscreens</span>
+    </div>
+    <div class="s3-lock" id="s3-lock" style="opacity:0">
+      <div class="wash" id="s3-wash"></div>
+      <p class="s3-mark" id="s3-mark">ECTOIN</p>
+      <p class="s3-sub" id="s3-sub"><span class="rule" id="s3-rule"></span>the science is
+        stranger than the marketing</p>
+    </div>
+    <p class="cv" id="cv">Conceptual visualization</p>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
-  // A genuine three-across row -- the shape a wide frame affords and a tall one
-  // can only fake by stacking. Cards settle at frame zero (no entrance), so the
-  // scene opens composed; the FILL is the beat that carries the line.
-  tl.set(['#s3-c1','#s3-c2','#s3-c3'], { opacity:1, y:0 }, 0);
-  tl.fromTo('#s3-f1', { scaleY:0 }, { scaleY:0.62, duration:0.85, ease:'power2.out' }, 1.30);
-  tl.fromTo('#s3-f2', { scaleY:0 }, { scaleY:0.74, duration:0.85, ease:'power2.out' }, 1.75);
-  tl.fromTo('#s3-f3', { scaleY:0 }, { scaleY:0.55, duration:0.85, ease:'power2.out' }, 2.20);
-  // scaleX, not letterSpacing: layout/text-reflow properties snap to integer
-  // device pixels during layout, so the ease-out tail stutters under seek-by-frame
-  // capture (`check`: gsap_non_transform_motion). A transform gives the same
-  // settling-in read and interpolates smoothly.
-  tl.fromTo('#s3-mark', { opacity:0, scaleX:1.16 },
-                        { opacity:1, scaleX:1, duration:0.90, ease:'power3.out',
-                          transformOrigin:'50% 50%' }, 6.812-0.35);
-  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, 8.612-0.30);
-  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, 9.572-0.40);
-  // Vessels drain back slightly on the closing beat -- a real state change tied to
-  // the line ("stranger than the marketing"), across the otherwise-dead tail.
-  tl.to(['#s3-f1','#s3-f2','#s3-f3'], { scaleY:0.30, duration:1.70,
-                                         ease:'power1.inOut', stagger:0.10 }, 10.462-0.6);
-  // The lockup arrives as a full-width dark band, then floods aqua -- two
-  // large-area beats replacing a wordmark fade that measured as nothing.
-  tl.fromTo('#s3-lockup', { opacity:0, scaleY:0.4, transformOrigin:'50% 50%' },
-                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, 6.812-0.60);
-  tl.fromTo('#s3-wash', { scaleX:0 }, { scaleX:1, duration:0.90,
-                                        ease:'power2.inOut' }, 8.612-0.20);
-  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, 8.612);
+  // 0-3.5s: the payoff of the microbe story (ectoin hovering off the protein,
+  // water ordered) -- then a match cut, droplet to droplet, into unbranded
+  // packaging on "Korean". The ECTOIN lockup lands on its own word.
+  tl.fromTo('#pv-a', { scale:1.0, x:0, y:0 }, { scale:1.05, x:0, y:0, duration:3.800, ease:'none' }, 0);
+  tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 0.3);
+
+  tl.fromTo('#lt', { opacity:0, y:24 }, { opacity:1, y:0, duration:0.4 }, 0.5);
+  tl.to('#lt', { opacity:0, duration:0.25 }, 3.670-0.30);
+  tl.to('#cv', { opacity:0, duration:0.25 }, 3.670-0.30);
+  tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.22 }, 3.670-0.22);
+  tl.fromTo('#pv-b', { scale:1.0, x:0, y:0 }, { scale:1.07, x:0, y:0, duration:7.600, ease:'none' }, 3.670-0.22);
+
+  tl.fromTo('#s3-p1', { opacity:0, y:-16 }, { opacity:1, y:0, duration:0.35 }, 3.910-0.10);
+  tl.fromTo('#s3-p2', { opacity:0, y:-16 }, { opacity:1, y:0, duration:0.35 }, 4.610-0.10);
+  tl.fromTo('#s3-p3', { opacity:0, y:-16 }, { opacity:1, y:0, duration:0.35 }, 5.290-0.10);
+  tl.to('#sc-b', { opacity:1, duration:0.5 }, 6.812-0.8);
+  tl.fromTo('#s3-lock', { opacity:0, y:60 }, { opacity:1, y:0, duration:0.55, ease:'power3.out' }, 6.812-0.45);
+  tl.fromTo('#s3-mark', { scaleX:1.16, transformOrigin:'0% 50%' }, { scaleX:1, duration:0.9, ease:'power3.out' }, 6.812-0.35);
+  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.6, ease:'power2.inOut' }, 8.612-0.30);
+  tl.fromTo('#s3-wash', { scaleX:0 }, { scaleX:1, duration:0.9, ease:'power2.inOut' }, 8.612-0.20);
+  tl.to(['#s3-mark','#s3-sub'], { color:'#131516', duration:0.5 }, 8.612);
 
     tl.to({}, { duration: 10.912 }, 0);   // full-span anchor -- always last
     window.__timelines["03-now"] = tl;

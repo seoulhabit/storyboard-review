@@ -1,0 +1,243 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--ink); color:var(--paper); }
+
+  .bench { position:relative; height:100%; width:100%;
+    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%); }
+  .bench-surface { position:absolute; left:0; right:0; bottom:0; height:38%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+    border-top:1px solid rgba(255,255,255,0.06); }
+  .bottle-pair { position:absolute; left:50%; top:36%; transform:translate(-50%,-50%);
+    display:flex; gap:220px; }
+  .bottle-label { text-align:center; margin-top:18px; }
+  .verdict-row { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 60px);
+    display:flex; justify-content:center; gap:340px; }
+  .verdict { text-align:center; opacity:0; }
+  .verdict .illus-tag { color:var(--ink-3); }
+  .verdict .label { font-size:30px; margin-top:8px; }
+  .verdict.a .label { color:var(--ink-3); }
+  .verdict.b .label { color:var(--celadon); }
+  .seal-row { position:absolute; left:50%; top:14%; transform:translate(-50%,0); display:flex; gap:24px; }
+  .card-focus { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 60px);
+    text-align:center; opacity:0; }
+  .card-focus .head { font-size:60px; color:var(--paper); }
+
+</style>
+
+<div id="root" data-composition-id="s12-reveal" data-width="1920" data-height="1080" data-duration="25.875">
+  <div class="clip stage" id="s12-reveal-stage" data-start="0" data-duration="25.875">
+
+    <div class="bench">
+      <div class="bench-surface"></div>
+      <div class="seal-row" id="s12-seals"><svg class="stamp" id="s12-sealf-0" viewBox="0 0 80 80" width="80" height="80"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 40.0 40.0)">
+    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">1</text>
+  </g>
+</svg><svg class="stamp" id="s12-sealf-1" viewBox="0 0 80 80" width="80" height="80"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 40.0 40.0)">
+    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">2</text>
+  </g>
+</svg><svg class="stamp" id="s12-sealf-2" viewBox="0 0 80 80" width="80" height="80"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 40.0 40.0)">
+    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">3</text>
+  </g>
+</svg><svg class="stamp" id="s12-sealf-3" viewBox="0 0 80 80" width="80" height="80"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 40.0 40.0)">
+    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">4</text>
+  </g>
+</svg><svg class="stamp" id="s12-sealf-4" viewBox="0 0 80 80" width="80" height="80"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 40.0 40.0)">
+    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">5</text>
+  </g>
+</svg></div>
+      <div class="bottle-pair" id="s12-bottles">
+        <div class="bottle-label">
+          <svg class="bottle" id="s12-bottle-a" viewBox="0 0 190 320" width="190" height="320"
+     style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s12-bottle-a-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="s12-bottle-a-liquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+  <rect x="-75.0" y="66.0" width="150" height="234.0" rx="21.000000000000004"
+        fill="url(#s12-bottle-a-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
+  <clipPath id="s12-bottle-a-clip"><rect x="-69.0" y="72.0" width="138" height="222.0" rx="18.0"/></clipPath>
+        <g clip-path="url(#s12-bottle-a-clip)">
+          <rect x="-75.0" y="66.0" width="150" height="234.0" fill="url(#s12-bottle-a-liquid)"/>
+          <g stroke="var(--celadon)" stroke-width="3" fill="none" opacity="0.85">
+            <path d="M -45.0 264.9 L -15.0 194.70000000000002 L 22.5 229.79999999999998 L 7.5 136.2 L 45.0 112.80000000000001"/>
+            <path d="M -15.0 194.70000000000002 L -37.5 124.5"/>
+            <path d="M 22.5 229.79999999999998 L 45.0 183.0"/>
+          </g>
+          <g fill="var(--celadon)" opacity="0.9">
+            <circle cx="-45.0" cy="264.9" r="5"/>
+            <circle cx="-15.0" cy="194.70000000000002" r="6"/>
+            <circle cx="22.5" cy="229.79999999999998" r="5"/>
+            <circle cx="7.5" cy="136.2" r="6"/>
+            <circle cx="45.0" cy="112.80000000000001" r="5"/>
+            <circle cx="-37.5" cy="124.5" r="4"/>
+            <circle cx="45.0" cy="183.0" r="4"/>
+          </g>
+        </g>
+  <rect x="-24.0" y="0" width="48.0" height="66.0" rx="6"
+        fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
+  <rect x="-7.5" y="94.08" width="21.000000000000004" height="128.70000000000002" rx="9.0"
+        fill="#FFFFFF" opacity="0.18"/>
+</svg>
+        </div>
+        <div class="bottle-label">
+          <svg class="bottle" id="s12-bottle-b" viewBox="0 0 190 320" width="190" height="320"
+     style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s12-bottle-b-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="s12-bottle-b-liquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+  <rect x="-75.0" y="66.0" width="150" height="234.0" rx="21.000000000000004"
+        fill="url(#s12-bottle-b-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
+  <clipPath id="s12-bottle-b-clip"><rect x="-69.0" y="72.0" width="138" height="222.0" rx="18.0"/></clipPath>
+        <g clip-path="url(#s12-bottle-b-clip)">
+          <rect x="-75.0" y="108.12" width="150" height="191.88" fill="url(#s12-bottle-b-liquid)"/>
+          <line x1="-75.0" y1="108.12" x2="75.0" y2="108.12" stroke="var(--celadon)" stroke-width="2" opacity="0.5"/>
+        </g>
+  <rect x="-24.0" y="0" width="48.0" height="66.0" rx="6"
+        fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
+  <rect x="-7.5" y="94.08" width="21.000000000000004" height="128.70000000000002" rx="9.0"
+        fill="#FFFFFF" opacity="0.18"/>
+</svg>
+        </div>
+      </div>
+      <div class="verdict-row" id="s12-verdicts">
+        <div class="verdict a"><div class="illus-tag">[Authored, illustrative — not a claim]</div><div class="label">MORE UNCERTAINTY</div></div>
+        <div class="verdict b"><div class="illus-tag">[Authored, illustrative — not a claim]</div><div class="label">MORE DECISION-USEFUL INFORMATION</div></div>
+      </div>
+      <div class="card-focus" id="s12-card"><div class="head">FIVE QUESTIONS. ONE VERDICT.</div></div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('#s12-bottles', { opacity: 1 });
+  gsap.set('.verdict', { opacity: 0, y: 16 });
+  gsap.set('#s12-card', { opacity: 0, y: 16 });
+  gsap.set('#s12-seals', { opacity: 0.9 });
+  gsap.set(['#s12-sealf-0', '#s12-sealf-1', '#s12-sealf-2', '#s12-sealf-3', '#s12-sealf-4'], { scale: 1, transformOrigin: '50% 50%' });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s12-bottles', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0.0);
+  tl.to('.verdict.a', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 7.0);
+  tl.to('.verdict.b', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 7.6);
+  tl.to('#s12-sealf-0', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 1.00);
+  tl.to('#s12-sealf-0', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 1.92);
+  tl.to('#s12-sealf-1', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 1.60);
+  tl.to('#s12-sealf-1', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 2.52);
+  tl.to('#s12-sealf-2', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 2.20);
+  tl.to('#s12-sealf-2', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 3.12);
+  tl.to('#s12-sealf-3', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 2.80);
+  tl.to('#s12-sealf-3', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 3.72);
+  tl.to('#s12-sealf-4', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 3.40);
+  tl.to('#s12-sealf-4', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 4.32);
+  tl.to('#s12-sealf-0', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 9.00);
+  tl.to('#s12-sealf-0', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 9.92);
+  tl.to('#s12-sealf-1', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 9.60);
+  tl.to('#s12-sealf-1', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 10.52);
+  tl.to('#s12-sealf-2', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 10.20);
+  tl.to('#s12-sealf-2', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 11.12);
+  tl.to('#s12-sealf-3', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s12-sealf-3', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 11.72);
+  tl.to('#s12-sealf-4', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 11.40);
+  tl.to('#s12-sealf-4', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 12.32);
+  tl.to('#s12-sealf-0', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 13.60);
+  tl.to('#s12-sealf-0', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 14.52);
+  tl.to('#s12-sealf-1', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 14.20);
+  tl.to('#s12-sealf-1', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 15.12);
+  tl.to('#s12-sealf-2', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 14.80);
+  tl.to('#s12-sealf-2', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 15.72);
+  tl.to('#s12-sealf-3', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 15.40);
+  tl.to('#s12-sealf-3', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 16.32);
+  tl.to('#s12-sealf-4', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 16.00);
+  tl.to('#s12-sealf-4', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 16.92);
+  tl.to('#s12-bottles', { opacity: 0.25, duration: 1.0, ease: 'power2.inOut' }, 17.0);
+  tl.to('.verdict', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 17.0);
+  tl.to('#s12-card', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 18.2);
+  tl.to({}, { duration: 25.425, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s12-reveal'] = tl;
+
+
+  tl.to({}, { duration: 25.875, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
+})();
+</script>
+</template>

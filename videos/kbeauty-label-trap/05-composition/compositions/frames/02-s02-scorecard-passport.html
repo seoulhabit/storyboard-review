@@ -1,0 +1,112 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--ink); color:var(--paper); }
+
+  .pass-stage { position:relative; height:100%; width:100%;
+    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%);
+    display:flex; align-items:center; justify-content:center; }
+  .leaderboard { position:absolute; left:50%; top:26%; transform:translate(-50%,-50%);
+    display:flex; gap:90px; opacity:0; }
+  .lb-col { width:280px; font-family:var(--font-mono); font-size:26px; color:rgba(247,245,240,0.55); }
+  .lb-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+  .passport { position:relative; width:640px; height:420px; border-radius:14px;
+    background: linear-gradient(160deg, #F7F5F0, #E9E4D8); opacity:0; transform:scale(0.85);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5); padding:44px; }
+  .passport-title { font-family:var(--font-mono); font-size:24px; letter-spacing:.18em; color:var(--ink-2); }
+  .passport-name { font-family:var(--font-display); font-size:52px; color:var(--ink); margin-top:14px; }
+  .passport-sub { font-family:var(--font-body); font-size:28px; color:var(--ink-2); margin-top:22px; line-height:1.4; }
+  .passport-stamp-wrap { position:absolute; right:36px; bottom:36px; opacity:0; transform:scale(0.5); }
+  .thesis { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 50px); text-align:center; opacity:0; }
+
+</style>
+
+<div id="root" data-composition-id="s02-scorecard-passport" data-width="1920" data-height="1080" data-duration="13.307">
+  <div class="clip stage" id="s02-scorecard-passport-stage" data-start="0" data-duration="13.307">
+
+    <div class="pass-stage">
+      <div class="leaderboard" id="s02-leaderboard">
+        <div class="lb-col"><div class="lb-row"><span>1</span><span>CENTELLA EXTRACT</span></div><div class="lb-row"><span>2</span><span>NIACINAMIDE</span></div><div class="lb-row"><span>3</span><span>PANTHENOL</span></div></div>
+        <div class="lb-col"><div class="lb-row"><span>1</span><span>CENTELLA EXTRACT</span></div><div class="lb-row"><span>2</span><span>MADECASSOSIDE</span></div><div class="lb-row"><span>3</span><span>NIACINAMIDE</span></div></div>
+      </div>
+      <div class="passport" id="s02-passport">
+        <div class="passport-title">INGREDIENT PASSPORT</div>
+        <div class="passport-name">Centella Asiatica Extract</div>
+        <div class="passport-sub">This document certifies identity only.<br>It does not certify performance.</div>
+        <div class="passport-stamp-wrap" id="s02-stamp-wrap">
+          <svg class="stamp" id="s02-stamp" viewBox="0 0 170 170" width="170" height="170"
+     style="overflow:visible" aria-hidden="true">
+  <g transform="rotate(-6 85.0 85.0)">
+    <circle cx="85.0" cy="85.0" r="79.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
+    <circle cx="85.0" cy="85.0" r="63.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
+    <text x="85.0" y="94.0" text-anchor="middle" font-family="var(--font-mono)"
+          font-weight="700" font-size="27" fill="var(--vermilion)" letter-spacing="1">ID ONLY</text>
+  </g>
+</svg>
+        </div>
+      </div>
+      <div class="thesis" id="s02-thesis">
+        <div class="head" style="color:var(--paper); font-size:76px;">A LIST IS A PASSPORT — NOT A SCORECARD</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('#s02-leaderboard', { opacity: 0 });
+  gsap.set('#s02-passport', { opacity: 0, scale: 0.85 });
+  gsap.set('#s02-stamp-wrap', { opacity: 0, scale: 0.5, rotation: -18 });
+  gsap.set('#s02-thesis', { opacity: 0, y: 16 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s02-leaderboard', { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.0);
+  tl.to('#s02-leaderboard', { opacity: 0, y: -20, duration: 0.6, ease: 'power2.in' }, 1.9);
+  tl.to('#s02-passport', { opacity: 1, scale: 1, duration: 1.0, ease: 'back.out(1.4)' }, 2.4);
+  tl.to('#s02-stamp-wrap', { opacity: 1, scale: 1, rotation: -6, duration: 0.6, ease: 'back.out(2.2)' }, 4.6);
+  tl.to('#s02-thesis', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 6.6);
+  tl.to({}, { duration: 12.257, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s02-scorecard-passport'] = tl;
+
+
+  tl.to({}, { duration: 13.307, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
+})();
+</script>
+</template>

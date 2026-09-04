@@ -1,0 +1,223 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--ink); color:var(--paper); }
+
+  .bench { position:relative; height:100%; width:100%;
+    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%); }
+  .bench-surface { position:absolute; left:0; right:0; bottom:0; height:38%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+    border-top:1px solid rgba(255,255,255,0.06); }
+  .droplet { position:absolute; left:50%; top:8%; width:14px; height:14px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #EAF2F0, var(--celadon) 70%); opacity:0; }
+  .ripple { position:absolute; left:50%; top:52%; width:60px; height:16px; border-radius:50%;
+    transform:translate(-50%,-50%); border:2px solid var(--celadon); opacity:0; }
+  .bottle-pair { position:absolute; left:50%; top:46%; transform:translate(-50%,-40%);
+    display:flex; gap:220px; opacity:0; }
+  .bottle-label { text-align:center; margin-top:18px; }
+  .emboss { font-family:var(--font-mono); font-size:26px; letter-spacing:.22em; color:var(--ink-3); }
+  .ribbon { position:absolute; top:14%; width:220px; font-family:var(--font-mono); font-size:19px;
+    line-height:1.35; letter-spacing:.02em; color:rgba(247,245,240,0.35); opacity:0; text-align:left; }
+  .ribbon .item { margin-bottom:10px; color:rgba(247,245,240,0.35); }
+  .ribbon .item:last-child { margin-bottom:0; }
+  .ribbon.left { left:calc(50% - 400px); }
+  .ribbon.right { left:calc(50% + 180px); }
+  .thesis-row { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 70px);
+    text-align:center; opacity:0; }
+  .thesis-row .head { font-size:88px; color:var(--paper); }
+
+</style>
+
+<div id="root" data-composition-id="s01-bench-hook" data-width="1920" data-height="1080" data-duration="16.377">
+  <div class="clip stage" id="s01-bench-hook-stage" data-start="0" data-duration="16.377">
+
+    <div class="bench">
+      <div class="bench-surface"></div>
+      <div class="droplet" id="s01-droplet"></div>
+      <div class="ripple" id="s01-ripple"></div>
+      <div class="ribbon left" id="s01-ribbon-l">
+        <div class="item" id="s01-ribbon-l-0">CENTELLA ASIATICA EXTRACT</div>
+        <div class="item" id="s01-ribbon-l-1">WATER</div>
+        <div class="item" id="s01-ribbon-l-2">GLYCERIN</div>
+        <div class="item" id="s01-ribbon-l-3">NIACINAMIDE</div>
+        <div class="item" id="s01-ribbon-l-4">PANTHENOL</div>
+        <div class="item" id="s01-ribbon-l-5">SODIUM HYALURONATE</div>
+        <div class="item" id="s01-ribbon-l-6">ALLANTOIN</div>
+        <div class="item" id="s01-ribbon-l-7">FRAGRANCE</div>
+      </div>
+      <div class="ribbon right" id="s01-ribbon-r">
+        <div class="item" id="s01-ribbon-r-0">CENTELLA ASIATICA EXTRACT</div>
+        <div class="item" id="s01-ribbon-r-1">WATER</div>
+        <div class="item" id="s01-ribbon-r-2">BUTYLENE GLYCOL</div>
+        <div class="item" id="s01-ribbon-r-3">NIACINAMIDE</div>
+        <div class="item" id="s01-ribbon-r-4">MADECASSOSIDE</div>
+        <div class="item" id="s01-ribbon-r-5">PANTHENOL</div>
+        <div class="item" id="s01-ribbon-r-6">ALLANTOIN</div>
+        <div class="item" id="s01-ribbon-r-7">FRAGRANCE</div>
+      </div>
+      <div class="bottle-pair" id="s01-bottles">
+        <div class="bottle-label">
+          <svg class="bottle" id="s01-bottle-a" viewBox="0 0 230 400" width="230" height="400"
+     style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s01-bottle-a-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="s01-bottle-a-liquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+  <rect x="-95.0" y="83.6" width="190" height="296.4" rx="26.6"
+        fill="url(#s01-bottle-a-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
+  <clipPath id="s01-bottle-a-clip"><rect x="-89.0" y="89.6" width="178" height="284.4" rx="22.8"/></clipPath>
+        <g clip-path="url(#s01-bottle-a-clip)">
+          <rect x="-95.0" y="83.6" width="190" height="296.4" fill="url(#s01-bottle-a-liquid)" opacity="0.55"/>
+        </g>
+  <rect x="-30.400000000000002" y="0" width="60.800000000000004" height="83.6" rx="6"
+        fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
+  <rect x="-9.5" y="119.16799999999999" width="26.6" height="163.02" rx="11.4"
+        fill="#FFFFFF" opacity="0.18"/>
+</svg>
+          <div class="emboss">CICA</div>
+        </div>
+        <div class="bottle-label">
+          <svg class="bottle" id="s01-bottle-b" viewBox="0 0 230 400" width="230" height="400"
+     style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s01-bottle-b-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+    </linearGradient>
+    <linearGradient id="s01-bottle-b-liquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    </linearGradient>
+  </defs>
+  <rect x="-95.0" y="83.6" width="190" height="296.4" rx="26.6"
+        fill="url(#s01-bottle-b-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
+  <clipPath id="s01-bottle-b-clip"><rect x="-89.0" y="89.6" width="178" height="284.4" rx="22.8"/></clipPath>
+        <g clip-path="url(#s01-bottle-b-clip)">
+          <rect x="-95.0" y="83.6" width="190" height="296.4" fill="url(#s01-bottle-b-liquid)" opacity="0.55"/>
+        </g>
+  <rect x="-30.400000000000002" y="0" width="60.800000000000004" height="83.6" rx="6"
+        fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
+  <rect x="-9.5" y="119.16799999999999" width="26.6" height="163.02" rx="11.4"
+        fill="#FFFFFF" opacity="0.18"/>
+</svg>
+          <div class="emboss">CICA</div>
+        </div>
+      </div>
+      <div class="thesis-row" id="s01-thesis">
+        <div class="head">SAME HERO. DIFFERENT FORMULA.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  // [R-1] frame 0 must never be blank: the droplet starts already visible
+  // (this IS the hook), not faded in from opacity 0.
+  gsap.set('#s01-droplet', { opacity: 1, y: -20 });
+  gsap.set('#s01-ripple', { opacity: 0, scale: 0.3 });
+  gsap.set('#s01-bottles', { opacity: 0, y: 30, scale: 1 });
+  gsap.set('#s01-ribbon-l', { opacity: 0, x: -20 });
+  gsap.set('#s01-ribbon-r', { opacity: 0, x: 20 });
+  gsap.set('#s01-thesis', { opacity: 0, y: 16 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s01-droplet', { opacity: 1, y: 240, duration: 1.6, ease: 'power1.in' }, 0.0);
+  tl.to('#s01-droplet', { opacity: 0, duration: 0.15 }, 1.6);
+  tl.fromTo('#s01-ripple', { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 8, duration: 1.1, ease: 'power2.out' }, 1.6);
+  tl.to('#s01-bottles', { opacity: 1, y: 0, duration: 1.1, ease: 'power2.out' }, 2.1);
+  tl.to('#s01-ribbon-l', { opacity: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 3.4);
+  tl.to('#s01-ribbon-r', { opacity: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 3.7);
+  tl.to('#s01-thesis', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 6.0);
+  tl.to('#s01-thesis', { opacity: 1, duration: 1.0 }, 9.0);
+  tl.to('#s01-ribbon-l-0', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 6.60);
+  tl.to('#s01-ribbon-l-0', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 6.97);
+  tl.to('#s01-ribbon-r-0', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 7.10);
+  tl.to('#s01-ribbon-r-0', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 7.47);
+  tl.to('#s01-ribbon-l-1', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 7.60);
+  tl.to('#s01-ribbon-l-1', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 7.97);
+  tl.to('#s01-ribbon-r-1', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 8.10);
+  tl.to('#s01-ribbon-r-1', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 8.47);
+  tl.to('#s01-ribbon-l-2', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 8.60);
+  tl.to('#s01-ribbon-l-2', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 8.97);
+  tl.to('#s01-ribbon-r-2', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 9.10);
+  tl.to('#s01-ribbon-r-2', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 9.47);
+  tl.to('#s01-ribbon-l-3', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 9.60);
+  tl.to('#s01-ribbon-l-3', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 9.97);
+  tl.to('#s01-ribbon-r-3', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 10.10);
+  tl.to('#s01-ribbon-r-3', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 10.47);
+  tl.to('#s01-ribbon-l-4', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 10.60);
+  tl.to('#s01-ribbon-l-4', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 10.97);
+  tl.to('#s01-ribbon-r-4', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 11.10);
+  tl.to('#s01-ribbon-r-4', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 11.47);
+  tl.to('#s01-ribbon-l-5', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 11.60);
+  tl.to('#s01-ribbon-l-5', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 11.97);
+  tl.to('#s01-ribbon-r-5', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 12.10);
+  tl.to('#s01-ribbon-r-5', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 12.47);
+  tl.to('#s01-ribbon-l-6', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 12.60);
+  tl.to('#s01-ribbon-l-6', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 12.97);
+  tl.to('#s01-ribbon-r-6', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 13.10);
+  tl.to('#s01-ribbon-r-6', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 13.47);
+  tl.to('#s01-ribbon-l-7', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 13.60);
+  tl.to('#s01-ribbon-l-7', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 13.97);
+  tl.to('#s01-ribbon-r-7', { color: 'rgba(247,245,240,0.78)', duration: 0.35, ease: 'sine.out' }, 14.10);
+  tl.to('#s01-ribbon-r-7', { color: 'rgba(247,245,240,0.35)', duration: 0.45, ease: 'sine.in' }, 14.47);
+  tl.to('#s01-bottles', { scale: 1.018, duration: 4.18, ease: 'sine.inOut' }, 6.6);
+  tl.to('#s01-bottles', { scale: 0.99, duration: 4.18, ease: 'sine.inOut' }, 10.82);
+  tl.to('#s01-bottles', { scale: 1.0, duration: 1.28, ease: 'sine.inOut' }, 15.02);
+
+  tl.to({}, { duration: 15.777, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s01-bench-hook'] = tl;
+
+
+  tl.to({}, { duration: 16.377, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
+})();
+</script>
+</template>

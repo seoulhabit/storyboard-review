@@ -1,0 +1,151 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--paper); color:var(--ink); }
+
+  .dose-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; }
+  .axis-region { position:relative; width:1100px; margin-top:20px; }
+  .axis-cap { text-align:center; color:var(--ink-2); }
+  .axis-cap-top { margin-bottom:24px; }
+  .axis-cap-bottom { margin-top:24px; }
+  .axis-track { position:relative; height:460px; }
+  .axis-ghost { position:absolute; inset:0; display:flex; flex-direction:column;
+    justify-content:space-between; opacity:0.07; pointer-events:none; }
+  .ghost-row { height:2px; background:var(--ink-3); margin:0 auto; }
+  .axis-line { position:absolute; left:50%; margin-left:-2px; top:0; bottom:0; width:4px;
+    transform-origin:top center;
+    background:linear-gradient(to bottom, var(--rule-strong), var(--celadon)); }
+  .axis-node { position:absolute; left:50%; transform:translate(-75px,-50%);
+    display:flex; align-items:center; gap:34px; }
+  .node-dot-slot { width:150px; flex-shrink:0; display:flex; justify-content:center; }
+  .dose-dot { width:34px; height:34px; border-radius:50%; }
+  .dose-dot.small { background: var(--celadon); box-shadow: 0 0 0 0 var(--celadon); }
+  .dose-dot.big { width:150px; height:150px; background: var(--ink-3); opacity:0.35; }
+  .node-copy { text-align:left; max-width:460px; }
+  .dose-label { font-family:var(--font-mono); font-size:30px; color:var(--ink-2); }
+  .msg { text-align:center; margin-top:40px; opacity:0; }
+  .msg .body { font-size:48px; max-width:1200px; margin:0 auto; }
+  .tag2 { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 40px); text-align:center; opacity:0; }
+  .tag2 .sub { font-size:56px; color:var(--vermilion); }
+
+</style>
+
+<div id="root" data-composition-id="s05-q1-dose" data-width="1920" data-height="1080" data-duration="19.212">
+  <div class="clip stage" id="s05-q1-dose-stage" data-start="0" data-duration="19.212">
+
+    <div class="dose-stage">
+      <div class="axis-region">
+        <div class="axis-cap axis-cap-top kicker">TOP OF LIST</div>
+        <div class="axis-track">
+          <div class="axis-ghost" id="s05-ghost">
+            <div class="ghost-row" style="width:82%"></div>
+            <div class="ghost-row" style="width:68%"></div>
+            <div class="ghost-row" style="width:74%"></div>
+            <div class="ghost-row" style="width:58%"></div>
+            <div class="ghost-row" style="width:64%"></div>
+            <div class="ghost-row" style="width:48%"></div>
+          </div>
+          <div class="axis-line" id="s05-axis-line"></div>
+          <div class="axis-node" id="s05-bignode" style="top:22%;">
+            <div class="node-dot-slot"><div class="dose-dot big" id="s05-bigdot"></div></div>
+            <div class="node-copy"><div class="dose-label">near the top — not automatically effective</div></div>
+          </div>
+          <div class="axis-node" id="s05-smallnode" style="top:70%;">
+            <div class="node-dot-slot"><div class="dose-dot small" id="s05-smalldot"></div></div>
+            <div class="node-copy">
+              <div class="dose-label">may be active at low levels</div>
+              <div class="uf-badge" id="s05-flag" style="margin-top:14px;">○ UNSOURCED — no record in this system</div>
+            </div>
+          </div>
+        </div>
+        <div class="axis-cap axis-cap-bottom kicker">BOTTOM OF LIST</div>
+      </div>
+      <div class="msg" id="s05-msg"><div class="body">Unless a brand publishes the percentage — don't invent a number.</div></div>
+      <div class="tag2" id="s05-tag2"><div class="sub">RANK, NOT QUANTITY</div></div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('#s05-bigdot', { opacity: 0.35, scale: 1 });
+  gsap.set('#s05-smalldot', { opacity: 0.5, scale: 1 });
+  gsap.set('#s05-msg', { opacity: 0, y: 14 });
+  gsap.set('#s05-tag2', { opacity: 0, y: 16 });
+  gsap.set('#s05-flag', { opacity: 0 });
+  gsap.set('#s05-axis-line', { scaleY: 0 });
+
+  var tl = gsap.timeline({ paused: true });
+  // Axis draws in first -- establishes top-of-list/bottom-of-list before
+  // either dot claims a position on it.
+  tl.to('#s05-axis-line', { scaleY: 1, duration: 1.0, ease: 'power2.out' }, 0.0);
+  tl.to('#s05-smalldot', { opacity: 1, scale: 1.3, duration: 0.5, ease: 'power2.out' }, 0.4);
+  // [K-2] flag fires CONCURRENTLY with the claim it discloses, per C6 in
+  // 01-story-brief.md -- not before, not after.
+  tl.to('#s05-flag', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.6);
+  tl.to('#s05-flag', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 10.5);
+  tl.to('#s05-smalldot', { boxShadow: '0 0 0 24px rgba(147,184,150,0)', duration: 1.1, ease: 'power2.out' }, 0.4);
+  tl.to('#s05-smalldot', { scale: 1, duration: 0.4, ease: 'power2.inOut' }, 0.9);
+  tl.to('#s05-bigdot', { opacity: 0.2, duration: 0.8, ease: 'power2.out' }, 1.2);
+  // Idle ambient: the active molecule keeps pulsing low through the long
+  // quiet stretch before the closing message -- also reads as "still
+  // active" rather than merely inert-and-forgotten.
+  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 1.7);
+  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 1.7);
+  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 4.2);
+  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 4.2);
+  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 6.7);
+  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 6.7);
+  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 9.0);
+  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 9.0);
+  tl.to('#s05-msg', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 11.0);
+  // The taller diagram pushes this message lower than the old compact
+  // layout did -- clear it before the closing tag lands at the same fixed
+  // bottom position, same fix s04 uses for its own tag/content collision.
+  tl.to('#s05-msg', { opacity: 0, duration: 0.5, ease: 'power2.in' }, 15.0);
+  tl.to('#s05-tag2', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 15.5);
+  tl.to({}, { duration: 18.762, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s05-q1-dose'] = tl;
+
+
+  tl.to({}, { duration: 19.212, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
+})();
+</script>
+</template>

@@ -1,0 +1,175 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
+    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
+    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body);
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
+                    calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
+           height:100%; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
+           line-height:1.06; letter-spacing:-.016em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
+           line-height:1.02; letter-spacing:-.018em; margin:0; }
+  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:52px; line-height:1.28; }
+  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
+  .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
+           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           width:max-content; display:inline-block; }
+  .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
+           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
+           background:rgba(19,21,22,0.05); width:max-content; }
+  .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
+           color:var(--ink-3); font-style:italic; }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  #root { background:var(--paper); color:var(--ink); }
+
+  .transit { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .transit-row { display:flex; justify-content:center; gap:70px; }
+  .transit-col { width:520px; height:420px; border-radius:20px; border:2px solid var(--rule-strong);
+    padding:26px; position:relative; overflow:hidden; opacity:0; }
+  .transit-col.b { border-color: var(--celadon); }
+  .transit-label { font-family:var(--font-mono); font-size:26px; letter-spacing:.08em; color:var(--ink-2); }
+  .map-line { position:absolute; stroke-width:2.5; fill:none; }
+  .tag4 { text-align:center; margin-top:44px; opacity:0; }
+  .tag4 .sub { font-size:56px; color:var(--vermilion); }
+
+</style>
+
+<div id="root" data-composition-id="s09-q3-transit" data-width="1920" data-height="1080" data-duration="15.498">
+  <div class="clip stage" id="s09-q3-transit-stage" data-start="0" data-duration="15.498">
+
+    <div class="transit">
+      <div class="transit-row">
+        <div class="transit-col a" id="s09-colA">
+          <div class="transit-label">BOTTLE A — TRANSPORT MAP</div>
+          <svg viewBox="0 0 480 380" width="440" height="330"><path class="map-line" id="s09-chaotic-0" stroke="var(--ink-3)" d="M 20 30 L 200 60 L 380 30"/>
+<path class="map-line" id="s09-chaotic-1" stroke="var(--ink-3)" d="M 35 77 L 261 143 L 409 127"/>
+<path class="map-line" id="s09-chaotic-2" stroke="var(--ink-3)" d="M 50 124 L 322 226 L 438 224"/>
+<path class="map-line" id="s09-chaotic-3" stroke="var(--ink-3)" d="M 65 171 L 383 309 L 467 321"/>
+<path class="map-line" id="s09-chaotic-4" stroke="var(--ink-3)" d="M 80 218 L 444 92 L 396 58"/>
+<path class="map-line" id="s09-chaotic-5" stroke="var(--ink-3)" d="M 95 265 L 245 175 L 425 155"/>
+<path class="map-line" id="s09-chaotic-6" stroke="var(--ink-3)" d="M 110 312 L 306 258 L 454 252"/>
+<path class="map-line" id="s09-chaotic-7" stroke="var(--ink-3)" d="M 125 39 L 367 341 L 383 349"/>
+<path class="map-line" id="s09-chaotic-8" stroke="var(--ink-3)" d="M 140 86 L 428 124 L 412 86"/></svg>
+        </div>
+        <div class="transit-col b" id="s09-colB">
+          <div class="transit-label">BOTTLE B — TRANSIT SYSTEM</div>
+          <svg viewBox="0 0 480 380" width="440" height="330"><path class="map-line" id="s09-orderly-0" stroke="var(--celadon)" d="M 20 60 L 460 60"/>
+<path class="map-line" id="s09-orderly-1" stroke="var(--celadon)" d="M 20 130 L 460 130"/>
+<path class="map-line" id="s09-orderly-2" stroke="var(--celadon)" d="M 20 200 L 460 200"/>
+<path class="map-line" id="s09-orderly-3" stroke="var(--celadon)" d="M 20 270 L 460 270"/>
+<path class="map-line" id="s09-orderly-4" stroke="var(--celadon)" d="M 20 340 L 460 340"/></svg>
+        </div>
+      </div>
+      <div class="tag4" id="s09-tag">
+        <div class="sub">THE VEHICLE MATTERS.</div>
+        <div class="cite" id="s09-cite" style="margin:16px auto 0;">Int J Cosmet Sci · 2009</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+(function () {
+
+  gsap.set('.transit-col', { opacity: 0, y: 24 });
+  gsap.set('#s09-tag', { opacity: 0, y: 16 });
+  gsap.set('#s09-cite', { opacity: 0 });
+
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s09-colA', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
+  tl.to('#s09-colB', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.7);
+  tl.to('#s09-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 6.0);
+  tl.to('#s09-cite', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 7.2);
+  tl.to('#s09-chaotic-0', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-0', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-0', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-0', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-0', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-0', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-0', { opacity: 0.55, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-1', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-1', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-1', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-1', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-1', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-1', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-1', { opacity: 1.0, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-2', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-2', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-2', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-2', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-2', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-2', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-2', { opacity: 0.55, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-3', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-3', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-3', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-3', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-3', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-3', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-3', { opacity: 1.0, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-4', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-4', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-4', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-4', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-4', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-4', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-4', { opacity: 0.55, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-5', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-5', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-5', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-5', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-5', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-5', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-5', { opacity: 1.0, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-6', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-6', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-6', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-6', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-6', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-6', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-6', { opacity: 0.55, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-7', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-7', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-7', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-7', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-7', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-7', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-7', { opacity: 1.0, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-chaotic-8', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 1.70);
+  tl.to('#s09-chaotic-8', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 3.52);
+  tl.to('#s09-chaotic-8', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 5.34);
+  tl.to('#s09-chaotic-8', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 7.16);
+  tl.to('#s09-chaotic-8', { opacity: 0.55, duration: 1.80, ease: 'sine.inOut' }, 8.98);
+  tl.to('#s09-chaotic-8', { opacity: 1.0, duration: 1.80, ease: 'sine.inOut' }, 10.80);
+  tl.to('#s09-chaotic-8', { opacity: 0.55, duration: 1.38, ease: 'sine.inOut' }, 12.62);
+  tl.to('#s09-orderly-0, #s09-orderly-1, #s09-orderly-2, #s09-orderly-3, #s09-orderly-4', { opacity: 1.0, duration: 2.60, ease: 'sine.inOut' }, 2.00);
+  tl.to('#s09-orderly-0, #s09-orderly-1, #s09-orderly-2, #s09-orderly-3, #s09-orderly-4', { opacity: 0.8, duration: 2.60, ease: 'sine.inOut' }, 4.62);
+  tl.to('#s09-orderly-0, #s09-orderly-1, #s09-orderly-2, #s09-orderly-3, #s09-orderly-4', { opacity: 1.0, duration: 2.60, ease: 'sine.inOut' }, 7.24);
+  tl.to('#s09-orderly-0, #s09-orderly-1, #s09-orderly-2, #s09-orderly-3, #s09-orderly-4', { opacity: 0.8, duration: 2.60, ease: 'sine.inOut' }, 9.86);
+  tl.to('#s09-orderly-0, #s09-orderly-1, #s09-orderly-2, #s09-orderly-3, #s09-orderly-4', { opacity: 1.0, duration: 2.02, ease: 'sine.inOut' }, 12.48);
+  tl.to({}, { duration: 15.048, ease: 'none' }, 0);
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s09-q3-transit'] = tl;
+
+
+  tl.to({}, { duration: 15.498, ease: 'none' }, 0); // [R-1 fix] force full transition-padded lifetime, see build_composition.extended_duration
+})();
+</script>
+</template>

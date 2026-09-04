@@ -23,9 +23,17 @@ passes it, so a lint-clean project can still fail to render.
 AND: a volume lane REPLACES data-volume, it does not scale it. So each plateau
 below is written as the clip's REAL intended level, never a normalised 1.0.
 
-Music bed and SFX cues are wired by a later pass once `total` is final (see
-the plan's "Order of work" step 4) -- this generator emits the VO-only root
-so the timing/transition mechanism can be validated on its own first.
+Music bed + local SFX (plan step 3/"Music bed and cues"). The bed is ONE
+frozen, finite file (assets/music/bed.mp3, built once via `ffmpeg
+-stream_loop` from the sibling's loop-prepared source and committed, never a
+runtime loop) carved against the single VO group ("voiceover") this project
+uses -- no `dynamic` key (see this project's CLAUDE.md: data-fx-carve names
+the GROUP, and that key does not belong here). Every SFX cue is a short local
+one-shot pulled from an existing kit (catalog convention: reuse before
+generating), never carved. Timestamps below are read off index.seams.json /
+timing.walk() (chapter seams, the 27->28 arrive completion, the 28->29
+settle completion, and scene 20's second spoken "12" -- Whisper transcribes
+the digit, not the word "twelve"), not estimated.
 """
 import json
 import sys
@@ -35,6 +43,30 @@ ROOT = Path(__file__).resolve().parent.parent
 SLUG = "ectoin-survival-molecule"
 FADE = 0.08         # 80ms edge fade on every clip -- avoids a click at the cut
 VO_LEVEL = 1.0       # VO is the reference level; plateau IS this, not a scaled 1.0
+
+# Bed measures -14.3 LUFS (verified: scripts/gen bed build, ffmpeg ebur128).
+# In-engine VO reads ~-17 LUFS after the standing fx chain's makeup gain
+# below. 18-24dB under VO is the target depth -> 0.08 is the middle of that
+# band as a starting data-volume; adjust 0.06-0.10 from the measured render
+# per the plan (`check-seams.py --render`'s bed-depth check, once wired).
+BED = ("assets/music/bed.mp3", 338.145, 0.08)
+
+# (at_seconds, file, duration, volume, note). Duration/volume verified by
+# ffprobe against the actual files in assets/sfx/, not guessed.
+SFX_CUES = [
+    (69.755,  "chime-trimmed.mp3",         1.100, 0.30, "07->08 chapter seam"),
+    (121.710, "chime-trimmed.mp3",         1.100, 0.30, "11->12 chapter seam"),
+    (169.871, "chime-trimmed.mp3",         1.100, 0.30, "15->16 chapter seam"),
+    (224.202, "citation-tick-trimmed.mp3", 0.500, 0.36, "20-twelve: second spoken \"12\""),
+    (233.894, "chime-trimmed.mp3",         1.100, 0.30, "21->22 chapter seam"),
+    (285.029, "chime-trimmed.mp3",         1.100, 0.30, "25->26 chapter seam"),
+    # impact-bass-2.mp3's own peak sits ~0.403s into the file (measured via
+    # astats per-frame peak scan), so the cue starts that far BEFORE the
+    # 27->28 arrive completion (seam 309.924 + d 0.70 = 310.624) to land the
+    # actual thump on the beat, not the file's silent lead-in.
+    (310.221, "impact-bass-2.mp3",         2.592, 0.34, "27->28 arrive completion (peak-aligned)"),
+    (325.170, "chime.mp3",                 2.500, 0.28, "28->29 settle completion"),
+]
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from timing import walk
@@ -104,6 +136,14 @@ def main():
         {"type": "limiter",    "id": "n6", "label": "Peak Ceiling",      "params": {"limit": -9, "attack": 0.05, "release": 40, "level_out": 0}},
     ]}, separators=(",", ":"))
 
+    bed_src, bed_dur, bed_vol = BED
+    sfx_divs = [
+        f'    <audio id="sfx-{i}" src="assets/sfx/{fname}"\n'
+        f'           data-start="{at:.3f}" data-duration="{dur:.3f}"\n'
+        f'           data-track-index="21" data-volume="{vol}"></audio>  <!-- {note} -->'
+        for i, (at, fname, dur, vol, note) in enumerate(SFX_CUES)
+    ]
+
     html = f'''<!DOCTYPE html>
 <html lang="en" data-resolution="landscape">
 <head>
@@ -122,6 +162,18 @@ def main():
                     data-fx-chain='{fx}'>
     </hf-audio-group>
 {chr(10).join(audio_divs)}
+
+    <!-- Music bed, carved against the single voiceover group (hyperframes-audio:
+         "sources" is a list of group/audio ids, summed onto the bed's own clock).
+         No `dynamic` key -- see this project's CLAUDE.md. -->
+    <audio id="bed-music" src="{bed_src}"
+           data-start="0.000" data-duration="{bed_dur:.3f}"
+           data-track-index="20" data-volume="{bed_vol}"
+           data-fx-carve='{{"enabled":true,"sources":["voiceover"],"strength":0.25}}'></audio>
+
+    <!-- Local one-shot SFX. Own track, no carve of their own -- each is a
+         short transient at a transition or reveal beat, not a bed. -->
+{chr(10).join(sfx_divs)}
   </div>
 
   <style>

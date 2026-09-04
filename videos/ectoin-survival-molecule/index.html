@@ -210,6 +210,41 @@
            data-start="324.770" data-duration="12.125"
            data-track-index="11" data-volume="1.0" data-audio-group="voiceover"
            data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0.0,"v":0.0},{"t":0.08,"v":1.0},{"t":12.045,"v":1.0},{"t":12.125,"v":0.0}]}]}'></audio>
+
+    <!-- Music bed, carved against the single voiceover group (hyperframes-audio:
+         "sources" is a list of group/audio ids, summed onto the bed's own clock).
+         No `dynamic` key -- see this project's CLAUDE.md. -->
+    <audio id="bed-music" src="assets/music/bed.mp3"
+           data-start="0.000" data-duration="338.145"
+           data-track-index="20" data-volume="0.08"
+           data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.25}'></audio>
+
+    <!-- Local one-shot SFX. Own track, no carve of their own -- each is a
+         short transient at a transition or reveal beat, not a bed. -->
+    <audio id="sfx-0" src="assets/sfx/chime-trimmed.mp3"
+           data-start="69.755" data-duration="1.100"
+           data-track-index="21" data-volume="0.3"></audio>  <!-- 07->08 chapter seam -->
+    <audio id="sfx-1" src="assets/sfx/chime-trimmed.mp3"
+           data-start="121.710" data-duration="1.100"
+           data-track-index="21" data-volume="0.3"></audio>  <!-- 11->12 chapter seam -->
+    <audio id="sfx-2" src="assets/sfx/chime-trimmed.mp3"
+           data-start="169.871" data-duration="1.100"
+           data-track-index="21" data-volume="0.3"></audio>  <!-- 15->16 chapter seam -->
+    <audio id="sfx-3" src="assets/sfx/citation-tick-trimmed.mp3"
+           data-start="224.202" data-duration="0.500"
+           data-track-index="21" data-volume="0.36"></audio>  <!-- 20-twelve: second spoken "12" -->
+    <audio id="sfx-4" src="assets/sfx/chime-trimmed.mp3"
+           data-start="233.894" data-duration="1.100"
+           data-track-index="21" data-volume="0.3"></audio>  <!-- 21->22 chapter seam -->
+    <audio id="sfx-5" src="assets/sfx/chime-trimmed.mp3"
+           data-start="285.029" data-duration="1.100"
+           data-track-index="21" data-volume="0.3"></audio>  <!-- 25->26 chapter seam -->
+    <audio id="sfx-6" src="assets/sfx/impact-bass-2.mp3"
+           data-start="310.221" data-duration="2.592"
+           data-track-index="21" data-volume="0.34"></audio>  <!-- 27->28 arrive completion (peak-aligned) -->
+    <audio id="sfx-7" src="assets/sfx/chime.mp3"
+           data-start="325.170" data-duration="2.500"
+           data-track-index="21" data-volume="0.28"></audio>  <!-- 28->29 settle completion -->
   </div>
 
   <style>

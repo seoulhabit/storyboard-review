@@ -1,173 +1,160 @@
-"""The dialogue line table. THIS IS THE ONLY TEXT SENT TO TTS.
+#!/usr/bin/env python3
+"""The narration script. THIS IS THE ONLY TEXT SENT TO TTS.
 
-One .wav per line, not per scene: the scenes alternate between two speakers, so
-a per-scene take is impossible. 41 lines -> assets/voice/NN-<who>.wav.
+One narrator, one master take. The two-voice dialogue (SoulHabit + Jay, 41
+lines) that this project shipped with on 2026-09-03 was replaced on
+2026-09-04 by a single-narrator rewrite; the reasons and the retention
+diagnosis are in DELIVERY.md's changelog. Every downstream file -- the frame
+generator, the root composition, captions, SCRIPT.md, STORYBOARD.md, the
+motion sidecar -- derives from this table plus the measured word manifest
+(assets/voice/master.words.json, written by scripts/gen_vo.py).
 
-TTS-safe copy rules, carried from videos/ectoin-survival-molecule/scripts/
-vo_lines.py: no em-dashes and no colons (both read as long pauses or get
-verbalised). Where the spoken form must differ from the ON-SCREEN form, the
-spoken form is respelled HERE and the on-screen text is left alone -- fixing a
-mispronunciation by editing the visible copy is the wrong half of the fix.
+TTS-safe copy rules (carried from videos/ectoin-survival-molecule): no
+em-dashes and no colons (both read as long pauses or get verbalised); numbers
+are SPELLED OUT here and rendered numeric on screen by the frame generator.
+Fixing a mispronunciation by editing the visible copy is the wrong half of
+that fix -- the spoken form is respelled HERE and the on-screen form is left
+alone.
 
-  scene   which composition file the line lands in
-  who     "soul" (SoulHabit, voice A) or "jay" (Jay, voice B)
-  gap_after  seconds of silence after this line before the next one starts.
-             Dialogue needs real turn-taking; a flat gap reads as a list being
-             read out. Comic beats before a Jay punchline get more.
+  cid     the beat UNIT (16 units, 15 spoken). Several units share one
+          composition file -- see actors.FILES -- but every unit is its own
+          timing span and its own row in STORYBOARD.md.
+  text    the exact sentence(s) spoken for that unit. A sentence ends in
+          . ? or ! and nothing else; gen_vo.py and timing.py rely on that.
 """
 
-# (scene, who, text, gap_after)
-LINES = [
-    # --- 01-building : S1, the collagen building ---------------------------
-    ("01", "soul", "Collagen is one of the main structural proteins keeping your skin firm and supported.", 0.35),
-    ("01", "jay",  "So collagen is the scaffolding holding up my face?", 0.30),
-    ("01", "soul", "Basically.", 0.45),
-    ("01", "jay",  "That explains why gravity keeps sending me renovation notices.", 0.60),
-    # --- 01-building : S2, the demolition crew -----------------------------
-    ("01", "soul", "As we age, collagen production slows. Ultraviolet exposure also activates enzymes that break existing collagen down.", 0.35),
-    ("01", "jay",  "The sun has a demolition company?", 0.25),
-    ("01", "soul", "And it works weekends.", 0.55),
-    ("01", "jay",  "So sunscreen isn't only preventing sunburn. It is protecting the building?", 0.30),
-    ("01", "soul", "Exactly. Preserving collagen is usually easier than trying to replace it later.", 0.50),
+# Kimberly is the channel's standing narrator (videos/_channel/baseline.yaml,
+# policies [S1/S-3] one presenter, [S1/S-4] never rotate). Higgsfield seed_audio,
+# voice_type "element" (a workspace reference element), never a preset.
+NARRATOR = ("element", "674b71b8-1d2e-4087-8567-d1f53c0b9f3c")   # Kimberly
 
-    # --- 02-door : S3, the collagen cream problem --------------------------
-    ("02", "soul", "Now imagine applying a cream containing intact collagen.", 0.40),
-    ("02", "soul", "Collagen is an extremely large molecule. It generally cannot travel through the skin barrier and reach the deeper dermis where your natural collagen lives.", 0.45),
-    ("02", "jay",  "Delivery rejected. Package too large.", 0.55),
-    ("02", "soul", "Topical collagen may still form a moisturizing film that makes the surface feel smoother.", 0.35),
-    ("02", "jay",  "So it can polish the building's windows.", 0.30),
-    ("02", "soul", "Yes.", 0.40),
-    ("02", "jay",  "But it cannot walk downstairs and replace the support beams.", 0.55),
-
-    # --- 03-digestion : S4, what happens when you drink it -----------------
-    ("03", "soul", "When you consume collagen, digestion breaks it into smaller peptides and amino acids.", 0.35),
-    ("03", "jay",  "Wait. The collagen does not travel directly from my smoothie to my forehead?", 0.30),
-    ("03", "soul", "No. Your stomach does not offer facial delivery.", 0.50),
-    ("03", "jay",  "So my face ordered scaffolding, and my digestive system delivered a box of spare parts.", 0.55),
-    ("03", "soul", "Some of those parts may be absorbed and used by the body. Certain peptides may also act as biological signals. But the body decides where those resources go.", 0.40),
-    ("03", "jay",  "Skin, joints, tendons, or wherever management thinks the repairs are most urgent.", 0.60),
-
-    # --- 04-evidence : S5, the evidence plot twist -------------------------
-    ("04", "soul", "Several clinical trials have reported modest improvements in hydration, elasticity or wrinkles after taking hydrolyzed collagen.", 0.40),
-    ("04", "soul", "However, many trials were small, short and funded by collagen manufacturers.", 0.45),
-    # "2025" and "23" are spelled out so TTS does not read them as digits.
-    ("04", "soul", "A twenty twenty five analysis examined twenty three randomized trials. When researchers focused on higher quality and non industry funded studies, the benefits were no longer statistically significant.", 0.55),
-    ("04", "jay",  "So collagen supplements definitely work?", 0.30),
-    ("04", "soul", "We cannot say that.", 0.35),
-    ("04", "jay",  "They definitely don't work?", 0.30),
-    ("04", "soul", "We cannot confidently say that either.", 0.45),
-    ("04", "jay",  "Science has entered its favourite relationship status. It's complicated.", 0.60),
-
-    # --- 05-verdict : S6, what actually protects collagen ------------------
-    ("05", "soul", "The strongest strategy is protecting and supporting the collagen your skin already produces.", 0.35),
-    ("05", "soul", "Use broad spectrum sunscreen consistently. Avoid smoking. Eat adequate protein and get enough vitamin C.", 0.45),
-    ("05", "soul", "For suitable users, topical retinoids have considerably stronger evidence for encouraging collagen production than collagen cream.", 0.45),
-    ("05", "jay",  "So the ingredient with collagen written on the largest bottle may not be doing the most for collagen?", 0.35),
-    ("05", "soul", "Welcome to skincare marketing.", 0.60),
-    # --- 05-verdict : S7, the SoulHabit verdict ----------------------------
-    ("05", "soul", "Collagen cream can be a pleasant moisturizer, but it does not simply replace lost dermal collagen.", 0.40),
-    ("05", "soul", "Collagen supplements are optional. Early results are interesting, but the independent evidence remains uncertain.", 0.40),
-    ("05", "soul", "Sunscreen, good nutrition and proven actives should come first.", 0.45),
-    ("05", "jay",  "Protect the building before buying expensive powdered bricks.", 0.35),
-    ("05", "soul", "That is surprisingly accurate.", 0.55),
-    ("05", "jay",  "My smoothie has been demoted from contractor to intern.", 0.30),
+SCENES = [
+    ("01-hook",
+     "Collagen cream does not replace your collagen. "
+     "Collagen powder does not travel straight to your face."),
+    ("02-promise",
+     "So where does it actually go? Stay for the twist. "
+     "Twenty three trials seem to say the powder works. "
+     "Remove the industry funded ones, and watch what happens. "
+     "But first, what actually protects the collagen you already have?"),
+    ("03-building",
+     "Think of your skin as a building. Collagen is the structure inside it. "
+     "It keeps everything firm and upright."),
+    ("04-demolition",
+     "As we age, collagen production slows. "
+     "And ultraviolet light switches on enzymes that cut collagen apart. "
+     "The sun runs a demolition crew. It works weekends."),
+    ("05-boundary",
+     "Sunscreen is not just about sunburn. It draws a boundary around the building. "
+     "Preserving collagen is usually far easier than replacing it."),
+    ("06-door",
+     "Now, the cream. To pass through skin, a molecule generally needs to be "
+     "under about five hundred daltons. Collagen is around three hundred thousand. "
+     "It is not getting through that door."),
+    ("07-film",
+     "It may still form a moisturising film on the surface. Skin feels smoother. "
+     "But polishing the windows is not replacing the beams."),
+    ("08-digestion",
+     "Now, the powder. Swallow collagen, and digestion breaks it into peptides "
+     "and amino acids. Your stomach does not offer facial delivery."),
+    ("09-dispatch",
+     "Some pieces may be absorbed. Certain peptides may even act as signals. "
+     "But your body decides where they go. "
+     "Skin, joints, tendons, wherever repairs are most urgent. "
+     "Your face ordered scaffolding. It got a box of spare parts."),
+    ("10-trials",
+     "Does the powder work? Trials do report modest improvements in hydration, "
+     "elasticity, or wrinkles."),
+    ("11-caveat",
+     "But many were small, short, and industry funded."),
+    ("12-filter",
+     "In twenty twenty five, researchers pooled twenty three randomised trials. "
+     "All together, a benefit. "
+     "Keep only the studies without industry funding, and it is no longer "
+     "statistically significant. "
+     "Keep only the higher quality studies. Same result. "
+     "The effect stops showing up."),
+    ("13-uncertain",
+     "Do supplements definitely work? We cannot say that. Definitely fail? "
+     "We cannot confidently say that either. The independent evidence is uncertain."),
+    ("14-hierarchy",
+     "What the evidence actually supports. Broad spectrum sunscreen, every day. "
+     "Not smoking. Enough protein and vitamin C. "
+     "And for suitable users, topical retinoids have far stronger evidence "
+     "for collagen than collagen cream."),
+    ("15-verdict",
+     "Collagen cream is a pleasant moisturiser. Collagen powder is optional. "
+     "Protect the building before you buy expensive powdered bricks."),
 ]
 
-# Voice assignment. SoulHabit keeps the channel's standing voice for continuity;
-# Jay is a deliberate second voice -- recorded as a voice-continuity break in
-# BRIEF.md, the way videos/ceramides-skin-barrier/BRIEF.md documented the last one.
-VOICES = {
-    # SoulHabit keeps the channel's standing voice. Measured 184.1 wpm.
-    "soul": ("element", "674b71b8-1d2e-4087-8567-d1f53c0b9f3c"),  # Kimberly
-    # Jay is a DELIBERATE second voice -- the channel has never run two
-    # concurrently. Chosen over Emmett on two measurements: 163.4 wpm vs 150.3
-    # (a comic foil wants the snappier read), and a clearly opposite spectral
-    # tilt to Kimberly (low-band RMS -26.3 dB vs her -34.9), so the two are
-    # separable by ear without any on-screen label doing the work.
-    "jay":  ("preset", "b847bc29-f184-583a-8ad9-d1f1e16d1a60"),   # Dylan
+TEXT = dict(SCENES)
+WORDLESS = {"16-end"}
+ORDER = [cid for cid, _ in SCENES] + ["16-end"]
+
+# TTS blocks. The user's confirmed choice (2026-09-04) is ONE master take;
+# gen_vo.py concatenates however many blocks exist into assets/voice/master.wav
+# so nothing downstream knows or cares. Switch to BLOCKS_TWO only if the
+# service rejects the full prompt or `gen_vo.py verify` fails on the master
+# (round 2 of the channel's two-round cap, [S4/V-2]).
+BLOCKS_ONE = [("master", ORDER[0:15])]
+BLOCKS_TWO = [("A", ORDER[0:9]), ("B", ORDER[9:15])]
+BLOCKS = BLOCKS_ONE
+SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
+
+# Description chapters (no engine primitive; re-derived from real data-start
+# values by build_storyboard.py, which parses index.html).
+CHAPTERS = [
+    ("01-hook",      "Where does it actually go?"),
+    ("03-building",  "Your skin is a building"),
+    ("06-door",      "Why the cream can't get in"),
+    ("08-digestion", "Your stomach doesn't do facial delivery"),
+    ("10-trials",    "The evidence plot twist"),
+    ("14-hierarchy", "What actually protects it"),
+]
+
+# On-screen citation chips: `Journal · Year` ONLY. PMIDs/DOIs live in BRIEF.md's
+# claim table and the description, never in a frame. Keyed by the unit whose
+# claim the chip supports; the frame generator places each at its claim's word.
+CITES = {
+    "04-demolition": ["J Invest Dermatol · 1998"],
+    "06-door":       ["Exp Dermatol · 2000"],
+    "10-trials":     ["Nutrients · 2023"],
+    "12-filter":     ["Am J Med · 2025"],
+    "14-hierarchy":  ["J Dermatol Sci · 2007", "Arch Dermatol · 2007"],
 }
 
-SCENES = ["00", "01", "02", "03", "04", "05"]
-
-
-def by_scene():
-    """Lines grouped by the composition file they land in, in order."""
-    out = {s: [] for s in SCENES}
-    for i, (sc, who, text, gap) in enumerate(LINES, start=1):
-        out[sc].append({"idx": i, "who": who, "text": text, "gap": gap,
-                        "disp": DISPLAY[i],
-                        "wav": f"assets/voice/{i:02d}-{who}.wav"})
-    return out
-
-
-
-# --- on-screen copy --------------------------------------------------------
-# The lane card is NOT a transcript. It carries the load-bearing clause of the
-# spoken line, condensed, with <em> on the one word the beat turns on. The full
-# sentence is spoken by the VO and written to the .srt; putting all 30 words in
-# a 40px card makes an unreadable frame and wastes the beat.
-#
-# Where a number is spelled out above for TTS ("twenty three"), the on-screen
-# form stays numeric ("23"). Fixing a mispronunciation by editing the visible
-# copy is the wrong half of that fix.
-DISPLAY = {
-    1:  "Collagen is a <em>structural protein</em>. It keeps skin firm.",
-    2:  "So it's the <em>scaffolding</em> holding up my face?",
-    3:  "Basically.",
-    4:  "That explains the <em>renovation notices</em> from gravity.",
-    5:  "Production slows with age. <em>UV light</em> switches on enzymes that cut collagen apart.",
-    6:  "The sun has a <em>demolition company</em>?",
-    7:  "And it works weekends.",
-    8:  "So sunscreen isn't just about burning. It's <em>protecting the building</em>?",
-    9:  "Yes. Keeping collagen is <em>easier than replacing it</em>.",
-    10: "Now put <em>whole collagen</em> in a cream.",
-    11: "Far too <em>large a molecule</em> to cross the barrier and reach the deep layer.",
-    12: "Delivery rejected. <em>Package too large.</em>",
-    13: "It can still sit on top as a <em>moisturising film</em>. Skin feels smoother.",
-    14: "So it polishes the <em>windows</em>.",
-    15: "Yes.",
-    16: "But it can't go downstairs and <em>replace the beams</em>.",
-    17: "Digestion breaks collagen into <em>peptides and amino acids</em>.",
-    18: "It doesn't go straight from smoothie to <em>forehead</em>?",
-    19: "No. Your stomach doesn't do <em>facial delivery</em>.",
-    20: "My face ordered scaffolding. My gut sent a <em>box of spare parts</em>.",
-    21: "Some gets absorbed and reused. But <em>your body picks where it goes</em>.",
-    22: "Skin, joints, tendons — <em>wherever repairs are most urgent</em>.",
-    23: "Trials do report <em>modest gains</em> in hydration, elasticity and wrinkles.",
-    24: "But many were <em>small, short, and paid for by collagen makers</em>.",
-    25: "A 2025 review of <em>23 trials</em>. Keep only the independent, higher-quality ones and <em>the effect disappears</em>.",
-    26: "So supplements <em>definitely work</em>?",
-    27: "We can't say that.",
-    28: "They <em>definitely don't</em>?",
-    29: "We can't confidently say that either.",
-    30: "Science has entered its favourite status: <em>it's complicated</em>.",
-    31: "The strongest move is <em>protecting what you already make</em>.",
-    32: "Broad-spectrum sunscreen, daily. <em>Don't smoke.</em> Enough protein and vitamin C.",
-    33: "For suitable users, <em>topical retinoids</em> have much stronger evidence for collagen than collagen cream.",
-    34: "So the bottle with <em>COLLAGEN</em> in the biggest letters isn't doing the most for it?",
-    35: "Welcome to skincare marketing.",
-    36: "Collagen cream is a fine moisturiser. It <em>doesn't replace</em> deep-layer collagen.",
-    37: "Supplements are optional. Interesting early results, <em>uncertain independent evidence</em>.",
-    38: "<em>Sunscreen, nutrition and proven actives</em> come first.",
-    39: "Protect the building before buying <em>expensive powdered bricks</em>.",
-    40: "That is surprisingly accurate.",
-    41: "My smoothie has been demoted from contractor to <em>intern</em>.",
+# Claim ids from BRIEF.md's table -> the unit that carries them. C10 (protein and
+# vitamin C) is UNSOURCED editorial advice and carries no chip, by decision.
+CLAIMS = {
+    "03-building":  ["C1"],
+    "04-demolition": ["C2"],
+    "06-door":      ["C3"],
+    "07-film":      ["C4"],
+    "08-digestion": ["C5"],
+    "09-dispatch":  ["C5"],
+    "10-trials":    ["C6"],
+    "11-caveat":    ["C7"],
+    "12-filter":    ["C7"],
+    "13-uncertain": ["C7"],
+    "14-hierarchy": ["C8", "C9", "C10"],
 }
 
-assert set(DISPLAY) == set(range(1, len(LINES) + 1)), (
-    f"DISPLAY must cover every line exactly: "
-    f"missing {set(range(1, len(LINES)+1)) - set(DISPLAY)}, "
-    f"extra {set(DISPLAY) - set(range(1, len(LINES)+1))}")
+
+def prompt(block):
+    """The exact TTS input for one block: its units' text joined by single
+    spaces, no newlines (a newline reads as a paragraph pause on some engines)."""
+    cids = dict(BLOCKS)[block]
+    return " ".join(TEXT[c] for c in cids)
+
 
 if __name__ == "__main__":
-    g = by_scene()
-    tot_w = 0
-    for s in SCENES:
-        w = sum(len(l["text"].split()) for l in g[s])
-        gaps = sum(l["gap"] for l in g[s])
-        tot_w += w
-        print(f"  {s}: {len(g[s]):2d} lines, {w:3d} words, {gaps:5.2f}s of gaps"
-              f"  -> ~{w/150*60 + gaps:5.1f}s")
-    print(f"  TOTAL {len(LINES)} lines, {tot_w} words,"
-          f" ~{tot_w/150*60 + sum(l[3] for l in LINES):.1f}s + 5.0s cold open"
-          f" = ~{tot_w/150*60 + sum(l[3] for l in LINES) + 5:.1f}s")
+    tot = 0
+    for cid, text in SCENES:
+        n = len(text.split())
+        tot += n
+        print(f"  {cid:14s} {n:3d} words  {len(text):4d} chars")
+    print(f"  TOTAL {tot} words  ~{tot / 170 * 60:.0f}s of speech at 170 wpm")
+    for block, cids in BLOCKS:
+        p = prompt(block)
+        print(f"\n  block {block}: {len(cids)} units, {len(p.split())} words, {len(p)} chars")
+        print("  " + p)

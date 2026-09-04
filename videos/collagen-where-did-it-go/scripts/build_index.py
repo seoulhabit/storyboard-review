@@ -1,64 +1,42 @@
 #!/usr/bin/env python3
-"""Emit index.html. GENERATED -- edit THIS file, never the output.
+"""Emit index.html -- the root composition. GENERATED; edit THIS file.
 
-Owns three things and nothing else:
-  1. the scene divs, with the transition overlap folded into data-duration
-  2. the root transition tweens (clip-path wipes on the scene WRAPPERS)
-  3. the audio block: the voiceover group, 41 VO clips, and the BGM bed
+Owns exactly three things: one scene clip per composition FILE, the root
+transition tweens between them, and the audio block. Everything inside a
+file belongs to build_frames.py.
 
-Everything inside a scene belongs to build_frames.py.
+Timing comes from timing.walk() (measured words), transitions from
+transitions.py, iris centres from motion.MOTION, SFX cues from sfx.py.
 
-TRANSITIONS. Clip-path wipes, nothing translates, opacity never touched. A
-translating push was built on the ectoin project and REJECTED: it failed the
-hard safe-area gate on 99 frames because a push drags real text through the
-reserved zones on its way in and out, while a wipe only reveals content already
-at its resting position. Both render fine and both pass `check`; only the gate
-on a real render tells them apart.
+AUDIO -- three tracks:
+  10  ONE narration clip: assets/voice/master.wav at data-start 0, inside the
+      single <hf-audio-group id="voiceover"> carrying the channel's canonical
+      6-node voice chain (md5 555e4fb8cd83882d982816763cf3a12d, byte-identical
+      across seven projects now).
+  20  the music bed, carved against the voiceover GROUP (data-fx-carve).
+  21  one-shot SFX, own track, never carved.
 
-  chapter opener   wipe UP    inset(100% 0 0 0) -> inset(0)   0.60s
-  within chapter   wipe LEFT  inset(0 0 0 100%) -> inset(0)   0.45s
-  one HARD CUT     03 -> 04, deliberate: leaving the body for the abstract
-                   evidence space is a register change that earns a cut.
-
-The outgoing clip's data-duration is extended by the overlap so it is still on
-screen to be wiped away from; an ended clip holds its final frame. Scene
-data-start values are NOT shifted -- the overlap IS the transition window.
-
-Expect `check` to report content_overlap / text_occluded at each wipe. That is a
-known false positive: the layout pass tests bounding boxes and does not model
-clip-path, so a clipped incoming wrapper still presents a full-canvas opaque
-box. Its SEVERITY moves with --samples, not with the composition. Confirm on an
-extracted frame; do not restructure to satisfy it.
+data-automation: the VERSIONED lane form. A volume lane REPLACES data-volume
+on this engine (confirmed on 0.8.22 by reading its bundled cli.js; re-verified
+on 0.8.27 -- see DELIVERY.md), so every plateau below is the clip's REAL level.
 """
-import json, subprocess
+import json
+import sys
 from pathlib import Path
-from build_frames import scene_timing
-from vo_lines import by_scene
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from timing import walk, master_len, FADE_IN, FADE_OUT
+from transitions import plan
+from motion import MOTION
+from sfx import cues as sfx_cues
+
 FPS = 30
-
-# scene id -> (source file, transition INTO this scene)
-#   "up"   chapter opener    "left"  within chapter    None  hard cut / first
-SCENES = [
-    ("00-cold-open", None),
-    # within chapter 1: the cold open and the building are the same chapter, so
-    # this boundary gets the within-chapter LEFT wipe, not the chapter accent.
-    ("01-building",  "left"),
-    ("02-door",      "up"),
-    ("03-digestion", "up"),
-    ("04-evidence",  None),   # deliberate hard cut -- see module docstring
-    ("05-verdict",   "up"),
-]
-WIPE = {"up": (0.60, "inset(100% 0% 0% 0%)"), "left": (0.45, "inset(0% 0% 0% 100%)")}
-
-VO_LEAD, FADE, VO_LEVEL = 0.10, 0.08, 1.0
+VO_LEVEL = 1.0
 BGM_LEVEL = 0.12          # the house value: 8 of this channel's projects use it
 BGM_FILE = "assets/bgm/bed.mp3"
+SAFE_CENTRE = (960.0, 513.0)   # centre of the safe box: the outgoing push pivots here
 
-# The channel's canonical voice chain, byte-identical across six projects
-# (md5 555e4fb8cd83882d982816763cf3a12d). Reused verbatim on purpose -- it is
-# what makes the narration sound like the same show. Both speakers share it.
 FX_CHAIN = {"version": 1, "nodes": [
  {"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},
  {"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.8,"q":1.2}},
@@ -72,84 +50,60 @@ def j(o):
     return json.dumps(o, separators=(",", ":"))
 
 
-def automation(dur, level):
-    """A volume lane REPLACES data-volume on this engine -- it does not scale it.
-
-    Confirmed by reading hyperframes@0.8.22's own bundled cli.js: any clip
-    carrying data-automation is filtered out of the data-volume path entirely.
-    So the plateau must be the clip's REAL intended level. Writing a normalised
-    1.0 plateau over a data-volume="0.12" bed is silent and renders it ~18dB
-    hot -- no lint error, no render warning, nothing.
-    """
-    if dur <= 2 * FADE:
-        return j({"version": 1, "lanes": [{"target": "volume", "points": [
-            {"t": 0.0, "v": 0.0}, {"t": round(dur / 2, 3), "v": level},
-            {"t": round(dur, 3), "v": 0.0}]}]})
-    return j({"version": 1, "lanes": [{"target": "volume", "points": [
-        {"t": 0.0, "v": 0.0}, {"t": FADE, "v": level},
-        {"t": round(dur - FADE, 3), "v": level}, {"t": round(dur, 3), "v": 0.0}]}]})
+def lane(points):
+    return j({"version": 1, "lanes": [{"target": "volume",
+              "points": [{"t": round(t, 3), "v": v} for t, v in points]}]})
 
 
 def build():
-    t = scene_timing()
-    grouped = by_scene()
-
-    # scene starts, then the overlap folded into each OUTGOING duration
-    starts, acc = {}, 0.0
-    for cid, _ in SCENES:
-        starts[cid] = round(acc, 3)
-        acc += t[cid.split("-")[0]]["dur"]
-    total = round(acc, 3)
-
-    holds = {cid: 0.0 for cid, _ in SCENES}
-    for i, (cid, tr) in enumerate(SCENES):
-        if tr and i:
-            holds[SCENES[i - 1][0]] = WIPE[tr][0]
-
-    divs, tweens = [], []
-    for cid, tr in SCENES:
-        k = cid.split("-")[0]
-        dur = round(t[k]["dur"] + holds[cid], 3)
+    units, files, total, manifest = walk()
+    fake = manifest.get("source") == "fake"
+    divs, tweens, seams = [], [], []
+    for i, f in enumerate(files):
         divs.append(
-            f'    <div id="scene-{cid}" class="scene clip" data-composition-id="{cid}"\n'
-            f'         data-composition-src="compositions/frames/{cid}.html"\n'
-            f'         data-start="{starts[cid]:.3f}" data-duration="{dur:.3f}"\n'
+            f'    <div id="scene-{f.cid}" class="scene clip" data-composition-id="{f.cid}"\n'
+            f'         data-composition-src="compositions/frames/{f.cid}.html"\n'
+            f'         data-start="{f.start:.3f}" data-duration="{f.dur:.3f}"\n'
             f'         data-track-index="0"></div>')
-        if tr:
-            d, frm = WIPE[tr]
-            tweens.append(
-                f'    tl.fromTo("#scene-{cid}", {{ clipPath:"{frm}" }},\n'
-                f'      {{ clipPath:"inset(0% 0% 0% 0%)", duration:{d:.2f}, '
-                f'ease:"power3.inOut" }}, {starts[cid]:.3f});')
-        else:
-            tweens.append(f'    // {cid}: hard cut, deliberate.')
+        if i == 0:
+            continue
+        prev = files[i - 1]
+        iris_at = None
+        if f.kind_in == "iris":
+            p = MOTION[prev.units[-1].cid].get("iris_at")
+            assert p, f"{prev.cid}: closes with an iris but its last unit declares no iris_at"
+            # the outgoing file pushes to 1.06 under the wipe; at the midpoint (~1.03)
+            # the actor has drifted from p to c + (p - c) * 1.03
+            cx, cy = SAFE_CENTRE
+            iris_at = (cx + (p[0] - cx) * 1.03, cy + (p[1] - cy) * 1.03)
+        kind, d, sa, jj, gap, hidden, shown, ease = plan(f.units[0].cid, iris_at)
+        tweens.append(f'    tl.fromTo("#scene-{f.cid}", {{ clipPath:"{hidden}" }},\n'
+                      f'      {{ clipPath:"{shown}", duration:{d:.2f}, ease:"{ease}" }}, '
+                      f'{f.start:.3f});   // {kind}: {prev.cid} -> {f.cid}')
+        seams.append({"from": prev.cid, "into": f.cid, "kind": kind, "seam": f.start,
+                      "d": d, "gap": gap, "iris_at": iris_at,
+                      "first_word": f.units[0].first_word_abs})
 
-    # ---- audio -----------------------------------------------------------
-    clips = []
-    for cid, _ in SCENES:
-        k = cid.split("-")[0]
-        for ln, tim in zip(grouped[k], t[k]["lines"]):
-            at = round(starts[cid] + tim["start"] - VO_LEAD, 3)
-            d = tim["dur"]
-            clips.append(
-                f'      <audio id="vo-{ln["idx"]:02d}" src="{ln["wav"]}"\n'
-                f'             data-start="{at:.3f}" data-duration="{d:.3f}"\n'
-                f'             data-track-index="10" data-volume="{VO_LEVEL}"\n'
-                f'             data-audio-group="voiceover"\n'
-                f"             data-automation='{automation(d, VO_LEVEL)}'></audio>")
+    L = master_len()
+    vo = (f'      <audio id="vo-master" src="assets/voice/master.wav"\n'
+          f'             data-start="0.000" data-duration="{L:.3f}"\n'
+          f'             data-track-index="10" data-volume="{VO_LEVEL}"\n'
+          f'             data-audio-group="voiceover"\n'
+          f"             data-automation='{lane([(0, 0), (FADE_IN, VO_LEVEL), (L - FADE_OUT, VO_LEVEL), (L, 0)])}'></audio>")
 
     bgm = ""
     if (ROOT / BGM_FILE).exists():
-        bgm = (
-            f'    <audio id="bgm" src="{BGM_FILE}" data-start="0"\n'
-            f'           data-duration="{total:.3f}" data-track-index="1"\n'
-            f'           data-volume="{BGM_LEVEL}"\n'
-            f'           data-fx-carve=\'{j({"sources":["voiceover"],"strength":0.25})}\'\n'
-            f"           data-automation='{automation(total, BGM_LEVEL)}'></audio>")
-    else:
-        bgm = ("    <!-- No BGM bed present. Drop a file at assets/bgm/bed.mp3 and\n"
-               "         re-run `npm run build` to wire it with the house 0.12 level\n"
-               "         and a 0.25 voiceover carve. -->")
+        bgm = (f'    <!-- Music bed, carved against the voiceover GROUP. -->\n'
+               f'    <audio id="bgm" src="{BGM_FILE}" data-start="0" data-duration="{total:.3f}"\n'
+               f'           data-track-index="20" data-volume="{BGM_LEVEL}"\n'
+               f"           data-automation='{lane([(0, 0), (0.25, BGM_LEVEL), (total - 1.5, BGM_LEVEL), (total, 0)])}'\n"
+               f"           data-fx-carve='{j({'sources': ['voiceover'], 'strength': 0.25})}'></audio>")
+
+    sfx = []
+    for k, (at, fname, dur, vol, note) in enumerate(sfx_cues(units)):
+        sfx.append(f'    <audio id="sfx-{k}" src="assets/sfx/{fname}" data-start="{at:.3f}" '
+                   f'data-duration="{dur:.3f}" data-track-index="21" data-volume="{vol}"></audio>'
+                   f'  <!-- {note} -->')
 
     html = f"""<!DOCTYPE html>
 <html lang="en" data-resolution="landscape">
@@ -160,10 +114,10 @@ def build():
 <body>
   <!-- ==================================================================
        GENERATED BY scripts/build_index.py -- DO NOT EDIT THIS FILE.
-       Any change here is discarded by the next `npm run build`.
-       Scene content lives in scripts/build_frames.py; the dialogue and
-       its timing live in scripts/vo_lines.py.
+       Timing: timing.walk() over assets/voice/master.words.json.
+       Transitions: scripts/transitions.py. Audio: one narrator clip.
        ================================================================== -->
+  {"<!-- VO MANIFEST: FAKE -- synthetic timing, silent master. NOT FOR DELIVERY. -->" if fake else ""}
   <div id="root" data-composition-id="main" data-start="0"
        data-duration="{total:.3f}" data-width="1920" data-height="1080"
        data-fps="{FPS}">
@@ -172,10 +126,13 @@ def build():
 
     <hf-audio-group id="voiceover" data-label="Voiceover" data-volume="1"
                     data-fx-chain='{j(FX_CHAIN)}'>
-{chr(10).join(clips)}
+{vo}
     </hf-audio-group>
 
 {bgm}
+
+    <!-- one-shot SFX, own track, no carve -->
+{chr(10).join(sfx)}
   </div>
 
   <style>
@@ -187,7 +144,7 @@ def build():
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {{}};
-    // No `defaults` on the root either. The root's only job is scene handoff.
+    // No `defaults` on the root. Its only job is file handoff.
     var tl = gsap.timeline({{ paused: true }});
 {chr(10).join(tweens)}
     tl.to({{}}, {{ duration: {total:.3f} }}, 0);   // anchor
@@ -197,19 +154,18 @@ def build():
 </html>
 """
     (ROOT / "index.html").write_text(html)
-    return starts, t, total
+    (ROOT / "index.seams.json").write_text(json.dumps(seams, indent=1) + "\n")
+    return files, total, len(sfx), fake
 
 
 def main():
-    starts, t, total = build()
-    print("index.html  (GENERATED -- edit build_index.py)")
-    for cid, tr in SCENES:
-        k = cid.split("-")[0]
-        print(f"  {starts[cid]:8.3f}  {cid:14s} {t[k]['dur']:7.3f}s  "
-              f"{'<- ' + tr + ' wipe' if tr else '<- hard cut'}")
-    m, s = divmod(total, 60)
-    print(f"  total {total:.3f}s  ({int(m)}:{s:05.2f})")
+    files, total, nsfx, fake = build()
+    print(f"index.html: {len(files)} file clips, {len(files) - 1} transitions, 1 VO clip, "
+          f"{nsfx} SFX cues, total {total:.3f}s{'  [VO MANIFEST: FAKE]' if fake else ''}")
+    for f in files:
+        print(f"  {f.cid:14s} start={f.start:8.3f} dur={f.dur:7.3f} in={f.kind_in or '-'}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

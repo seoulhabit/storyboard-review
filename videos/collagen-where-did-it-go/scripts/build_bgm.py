@@ -19,12 +19,15 @@ video ends and hands a replay a dead beat. Either way the fix is the same: use
 only the LIVE BODY, loop it to this edit's real length, and author our own short
 declick fades at both ends.
 
-Run AFTER the final build, so LENGTH comes from the real root duration.
+LENGTH comes from timing.walk() -- the same walk build_index.py writes into
+the root's data-duration -- so this can run in any order relative to it.
 """
 import re, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from timing import walk
 SRC = ROOT.parent / "centella-barrier-recut-15s" / "assets" / "bgm" / "track-soft.mp3"
 OUT = ROOT / "assets" / "bgm" / "bed.mp3"
 
@@ -42,11 +45,7 @@ DECLICK = 0.25                     # our own edge fades
 
 
 def root_duration():
-    m = re.search(r'id="root"[^>]*data-duration="([\d.]+)"',
-                  (ROOT / "index.html").read_text())
-    if not m:
-        sys.exit("index.html has no root data-duration -- run build_index.py first")
-    return float(m.group(1))
+    return walk()[2]
 
 
 def rms(path, start, dur):

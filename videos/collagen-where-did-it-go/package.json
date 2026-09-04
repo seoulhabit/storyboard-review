@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 scripts/build_index.py",
-    "dev": "npx --yes hyperframes@0.8.22 preview",
-    "check": "npx --yes hyperframes@0.8.22 check --samples 48",
-    "render": "npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o renders/raw.mp4",
+    "vo": "python3 scripts/gen_vo.py transcribe && python3 scripts/gen_vo.py verify && python3 scripts/gen_vo.py cut && python3 scripts/check-vo.py",
+    "build": "python3 scripts/build_frames.py && python3 scripts/build_bgm.py && python3 scripts/build_index.py && python3 scripts/build_motion.py && python3 scripts/build_captions.py && python3 scripts/build_script_md.py && python3 scripts/build_storyboard.py",
+    "build:fake": "python3 scripts/gen_vo.py fake && npm run build",
+    "dev": "hyperframes preview",
+    "check": "hyperframes check --samples 60",
+    "render": "hyperframes render --quality high --workers 1 -o renders/raw.mp4",
     "master": "python3 scripts/master-audio.py . renders/raw.mp4 renders/collagen-where-did-it-go_final.mp4",
-    "gates": "python3 scripts/check-safe-area.py . renders/collagen-where-did-it-go_final.mp4 --landscape && python3 scripts/check-static-hold.py . renders/collagen-where-did-it-go_final.mp4 --landscape && python3 scripts/check-cadence.py . renders/collagen-where-did-it-go_final.mp4 --longform && python3 scripts/continuity-audit.py ."
+    "gates": "python3 scripts/check-safe-area.py . renders/collagen-where-did-it-go_final.mp4 --landscape && python3 scripts/check-static-hold.py . renders/collagen-where-did-it-go_final.mp4 --landscape --ceiling 2.0 && python3 scripts/check-cadence.py . renders/collagen-where-did-it-go_final.mp4 --longform --ceiling 4.0 --exempt-last && python3 scripts/continuity-audit.py . && python3 scripts/check-blank-frames.py . && python3 scripts/check-sfx-durations.py . && python3 scripts/check-seams.py . --render renders/collagen-where-did-it-go_final.mp4 && python3 scripts/check-final.py . renders/collagen-where-did-it-go_final.mp4"
   }
 }

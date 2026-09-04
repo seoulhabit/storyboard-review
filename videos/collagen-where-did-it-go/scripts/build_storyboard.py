@@ -1,29 +1,26 @@
 #!/usr/bin/env python3
-"""Emit STORYBOARD.md by PARSING the generated index.html. Never hand-edited.
+"""Emit STORYBOARD.md by PARSING the generated index.html (file clips) and
+cross-checking it against timing.walk() (units). Never hand-edited.
 
-Deriving it from the real file rather than from the scene table is the point: a
-storyboard that restates the spec cannot tell you the spec drifted. Chapters are
-computed from real data-start values, which is also the only way the pasteable
-chapter block stays true after a re-time -- nothing in the render pipeline will
-ever tell you they moved.
+Deriving the file table from the real index.html rather than from the walk is
+the point: a storyboard that restates the spec cannot tell you the spec
+drifted. The unit rows, word anchors and motion treatments come from the walk
+and scripts/motion.py, which is what the frame generator itself consumed.
+
+Parsing rule: match the tag, then pull each attribute out INDEPENDENTLY. The
+HyperFrames preview server rewrites composition files in place, injecting
+`data-hf-id` as the FIRST attribute, so any regex keyed on attribute order
+silently stops matching (see the repo CLAUDE.md).
 """
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-
-# scene id -> chapter title, as a PAYOFF, not a section label. A chapter may open
-# inside a merged file (01-building carries two), because chapters are YouTube
-# description timestamps with no engine primitive behind them.
-CHAPTERS = [
-    ("00-cold-open", 0.0,  "Your face is a building"),
-    ("01-building",  None, None),                      # continues chapter 1
-    ("01-building",  "S2", "The sun runs a demolition crew"),
-    ("02-door",      0.0,  "Why collagen cream can't get in"),
-    ("03-digestion", 0.0,  "Your stomach doesn't do facial delivery"),
-    ("04-evidence",  0.0,  "The evidence plot twist"),
-    ("05-verdict",   0.0,  "What actually protects it"),
-]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from timing import walk
+from motion import MOTION
+from vo_lines import CHAPTERS, CITES
 
 
 def mmss(t):
@@ -33,12 +30,6 @@ def mmss(t):
 
 def parse():
     html = (ROOT / "index.html").read_text()
-    # Match the ROOT tag without assuming attribute ORDER. The HyperFrames
-    # preview server rewrites this file in place, injecting `data-hf-id` as the
-    # FIRST attribute -- so `<div id="root"` stopped matching and this parser
-    # crashed on a file that was perfectly valid. Same lesson as the scene regex
-    # below, applied one level up: parse the tag, then pull each attribute out
-    # independently.
     m = re.search(r'<div\b[^>]*\bid="root"[^>]*>', html)
     if not m:
         raise SystemExit("index.html has no #root div -- run build_index.py first")
@@ -46,77 +37,84 @@ def parse():
     meta = {k: re.search(rf'data-{k}="([^"]+)"', root).group(1)
             for k in ("duration", "width", "height", "fps")}
     scenes = []
-    # Parse the tag, then pull each attribute out INDEPENDENTLY. Assuming an
-    # authored attribute ORDER is how a scene-parsing regex silently returns
-    # zero scenes and degrades a per-scene check into a whole-render one.
     for tag in re.findall(r'<div[^>]*class="[^"]*\bscene\b[^"]*"[^>]*>', html, re.S):
         g = lambda a: (re.search(rf'{a}="([^"]+)"', tag) or [None, None])[1]
-        scenes.append({"cid": g("data-composition-id"),
-                       "start": float(g("data-start")),
+        scenes.append({"cid": g("data-composition-id"), "start": float(g("data-start")),
                        "dur": float(g("data-duration"))})
-    return meta, scenes
+    return meta, scenes, html
 
 
 def beats(cid):
-    """Authored beat count. An AUTHORING AID ONLY -- an authored tween is not a
-    rendered pixel change, and this number has been wrong in both directions
-    before. check-cadence.py on the real render is what answers cadence."""
+    """Authored tween count -- an AUTHORING AID ONLY. check-cadence.py on the
+    real render is what answers cadence."""
     f = ROOT / "compositions" / "frames" / f"{cid}.html"
-    if not f.exists():
-        return 0
-    # paren-balanced would be better; this is deliberately labelled an estimate
-    return len(re.findall(r'\btl\.(?:to|fromTo|from|set)\s*\(', f.read_text()))
+    return len(re.findall(r'\btl\.(?:to|fromTo|from|set)\s*\(', f.read_text())) if f.exists() else 0
 
 
 def main():
-    meta, scenes = parse()
-    total = float(meta["duration"])
+    meta, scenes, html = parse()
+    units, files, total, manifest = walk()
+    fake = manifest.get("source") == "fake"
     by_cid = {s["cid"]: s for s in scenes}
+    for f in files:
+        s = by_cid.get(f.cid)
+        if not s or abs(s["start"] - f.start) > 0.002 or abs(s["dur"] - f.dur) > 0.002:
+            raise SystemExit(f"index.html and timing.walk() disagree on {f.cid}: "
+                             f"{s} vs start={f.start} dur={f.dur} -- rebuild index.html")
     m, s = divmod(total, 60)
-
     out = ["# STORYBOARD — You Bought Collagen. Where Did It Actually Go?", "",
-           "> GENERATED by `scripts/build_storyboard.py`, which parses the real",
-           "> `index.html`. Do not hand-edit: a drifted storyboard stops being a",
-           "> spec the moment one real timing changes.", "",
-           f"**Canvas** {meta['width']}×{meta['height']} landscape · "
-           f"**fps** {meta['fps']} · **duration** {int(m)}:{s:05.2f} ({total:.3f}s) · "
-           f"**scenes** {len(scenes)}", "", "## Chapters", "",
-           "Paste-ready. Re-derived from real `data-start` values on every build.",
-           "", "```"]
-
-    ch = []
-    for cid, mark, title in CHAPTERS:
-        if title is None:
-            continue
-        if mark == "S2":
-            # chapter 2 opens inside the merged 01-building, on its S2 phase
-            from build_frames import scene_timing
-            t = scene_timing()["01"]["lines"][4]["start"]
-            ch.append((by_cid[cid]["start"] + t, title))
-        else:
-            ch.append((by_cid[cid]["start"], title))
+           "> GENERATED by `scripts/build_storyboard.py` (parses `index.html`, cross-checks",
+           "> `timing.walk()`, reads `scripts/motion.py`). Do not hand-edit.", ""]
+    if fake:
+        out += ["> **VO MANIFEST: FAKE** — synthetic 170 wpm timing; not for delivery.", ""]
+    out += [f"**Canvas** {meta['width']}×{meta['height']} landscape · **fps** {meta['fps']} · "
+            f"**duration** {int(m)}:{s:05.2f} ({total:.3f}s) · **files** {len(files)} · "
+            f"**units** {len(units)} · **narrator** one (Kimberly) · "
+            f"**first word** {units[0].first_word_abs:.2f}s", "",
+            "## Chapters", "", "Paste-ready. Re-derived from the walk on every build.", "", "```"]
+    ustart = {u.cid: u.start for u in units}
+    ch = [(ustart[cid], title) for cid, title in CHAPTERS]
     for t, title in ch:
         out.append(f"{mmss(t)} {title}")
     out += ["```", ""]
+    short = [(mmss(a), t) for (a, t), (b, _) in zip(ch, ch[1:] + [(total, "")]) if b - a < 10]
+    out.append(f"*{len(ch)} chapters, first at 0:00, {'all ≥10s' if not short else 'SHORT: ' + str(short)}.*")
 
-    short = [(mmss(a), t) for (a, t), (b, _) in zip(ch, ch[1:] + [(total, "")])
-             if b - a < 10]
-    out.append(f"*{len(ch)} chapters, first at 0:00, "
-               f"{'all ≥10s' if not short else 'SHORT: ' + str(short)}.*")
-    out += ["", "## Scenes", "",
-            "| # | scene | start | dur | beats | beats/s |",
-            "|---|---|---:|---:|---:|---:|"]
+    out += ["", "## Transition grammar", "",
+            "| into file | kind | seam | wipe |", "|---|---|---:|---:|"]
+    kinds = {}
+    for f in files:
+        k = f.kind_in or "start"
+        kinds[k] = kinds.get(k, 0) + 1
+        out.append(f"| `{f.cid}` | {k} | {f.start:.3f} | "
+                   f"{'—' if not f.kind_in else f'{f.units[0].start - 0:.0f}'} |")
+    out[-len(files):] = [row.rsplit("|", 2)[0] + f"| {f.kind_in or '—'} |"
+                         for row, f in zip(out[-len(files):], files)]
+    out += ["", " · ".join(f"**{k}** ×{n}" for k, n in kinds.items()), ""]
+
+    out += ["## Files (composition clips, from index.html)", "",
+            "| # | file | start | dur | units | tweens |", "|---|---|---:|---:|---|---:|"]
     tb = 0
-    for i, s_ in enumerate(scenes, 1):
-        b = beats(s_["cid"]); tb += b
-        out.append(f"| {i} | `{s_['cid']}` | {s_['start']:.3f} | {s_['dur']:.3f} "
-                   f"| {b} | {b / s_['dur']:.2f} |")
-    out += ["", f"**{tb} authored beats, {tb / total:.2f}/s.** Authoring aid only "
-            "— an authored tween is not a rendered pixel change. "
-            "`check-cadence.py --longform` on the real render is what answers cadence.", ""]
+    for i, f in enumerate(files, 1):
+        b = beats(f.cid); tb += b
+        out.append(f"| {i} | `{f.cid}` | {f.start:.3f} | {f.dur:.3f} | "
+                   f"{', '.join(u.cid for u in f.units)} | {b} |")
+    out += ["", "## Beat units", "",
+            "| # | unit | file | start | own | first word | words | on screen | motion | cite |",
+            "|---|---|---|---:|---:|---:|---:|---|---|---|"]
+    for u in units:
+        mo = MOTION[u.cid]
+        fw = f"{u.first_word_abs:.2f}" if u.first_word_abs is not None else "—"
+        out.append(f"| {u.i + 1} | `{u.cid}` | `{u.file}` | {u.start:.3f} | {u.own:.3f} | {fw} | "
+                   f"{len(u.words)} | {' · '.join(mo['text'])} | {', '.join(mo['treatments'])} | "
+                   f"{' / '.join(CITES.get(u.cid, [])) or '—'} |")
+    out += ["", f"**{tb} authored tweens across {len(files)} files.** Authoring aid only — "
+            "an authored tween is not a rendered pixel change; `check-cadence.py --longform "
+            "--ceiling 4.0` on the real render answers cadence.", ""]
     (ROOT / "STORYBOARD.md").write_text("\n".join(out) + "\n")
-    print(f"STORYBOARD.md  {len(scenes)} scenes, {len(ch)} chapters, {tb} beats")
+    print(f"STORYBOARD.md  {len(files)} files, {len(units)} units, {len(ch)} chapters, {tb} tweens")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

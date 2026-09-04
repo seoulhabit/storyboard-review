@@ -1,50 +1,12 @@
-"""Shared CSS/HTML preamble for every scene file in this project.
-
-Adapted from videos/ectoin-survival-molecule/scripts/_preamble.py, which is the
-only other landscape project in this repo. Three deliberate divergences, each
-recorded because each one is a correction to something that project shipped:
-
-1. NO timeline-level `defaults: {ease}`. Ectoin declared `power3.out` on all 29
-   of its scene timelines; 128 of 196 real tweens inherited it (65%) while a
-   grep for an explicit `ease:` found only 8. The continuity audit reads that as
-   one house template, and an external review read the render the same way.
-   Here every tween names its own ease, drawn from the six-idiom vocabulary in
-   EASE below.
-2. A kinetic-type vocabulary (.kt / .kt-word / .kt-strike) and a mono .chip,
-   because this piece carries curated text beats (<= 10 words each, asserted by
-   build_frames.py) instead of a transcript. The two-lane dialogue system the
-   first cut shipped with was removed on 2026-09-04 with the second voice; its
-   harvest lives on in catalog/visual-components/dialogue-lanes/.
-3. NO burned-in caption band and no --cap-band-* tokens: the on-screen language
-   is the curated beat text, and captions ship as a sidecar (build_captions.py).
-   check-static-hold.py's CAPTION_BAND_EXCLUDE must stay False here.
-
-Tokens are INLINED, not linked. A <link rel="stylesheet"> to the shared
-assets/tokens/tokens.css is confirmed not to resolve custom properties through
-this render pipeline (measured empty on a compiled render), so the values are
-copied with that file as the single source of truth. Grep for a distinguishing
-value (e.g. --safe-bottom: 108px) to check a scene is in sync with it.
-"""
-
-GSAP = '<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>'
-
-# Paths are ROOT-RELATIVE: sub-compositions are served with the PROJECT ROOT as
-# their base URL, not compositions/. A "../../assets/..." path traverses above
-# the root and `check` flags invalid_parent_traversal_in_asset_path.
-FONTS = """
-    @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2");
-                 font-weight:400; font-display:block; }
-    @font-face { font-family:"Inter"; src:url("assets/fonts/inter-800.woff2") format("woff2");
-                 font-weight:800; font-display:block; }
-    @font-face { font-family:"JetBrains Mono"; src:url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
-                 font-weight:500; font-display:block; }
-"""
-
-# --- tokens, inlined from assets/tokens/tokens.css -------------------------
-# Type scale is UNCHANGED from the Shorts projects: 1080x1920 and 1920x1080
-# share a 1080px short edge and type size is a fraction of the short edge, so
-# the scale transfers one-for-one. Layout gets a landscape variant; type does not.
-TOKENS = """
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>08-digestion</title></head>
+<body>
+<template>
+  <div id="root" data-composition-id="08-digestion"
+       data-width="1920" data-height="1080" data-duration="22.123">
+    <style>
+      #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
@@ -85,12 +47,16 @@ TOKENS = """
        player that surfaces it.
        Consequence for QC: check-static-hold.py's CAPTION_BAND_EXCLUDE must be
        False here, and it asserts that against index.html at runtime. */
-"""
+}
 
-# `box-sizing` first rule in EVERY composition -- a project missing it passes
-# `check` completely clean and still lays a stage out taller than declared.
-# `min-height:0` on flex children with an explicit small basis, for the same reason.
-BASE = """
+    @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2");
+                 font-weight:400; font-display:block; }
+    @font-face { font-family:"Inter"; src:url("assets/fonts/inter-800.woff2") format("woff2");
+                 font-weight:800; font-display:block; }
+    @font-face { font-family:"JetBrains Mono"; src:url("assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+                 font-weight:500; font-display:block; }
+
+
     *,*::before,*::after { box-sizing:border-box; }
     html,body { margin:0; padding:0; width:1920px; height:1080px; overflow:hidden; }
     #root { position:absolute; inset:0; overflow:hidden; background:var(--paper); }
@@ -242,72 +208,47 @@ BASE = """
         linear-gradient(to right,  rgba(255,0,168,.22) var(--safe-left), transparent var(--safe-left)),
         linear-gradient(to left,   rgba(255,0,168,.22) var(--safe-right), transparent var(--safe-right));
     }
-"""
-
-# --- entrance idiom vocabulary ---------------------------------------------
-# Six idioms, six DIFFERENT eases. This replaces a single timeline-level
-# `defaults: {ease}` on purpose: the point of the vocabulary is that the
-# continuity audit's "top effective ease" share stays low, which is the number
-# that exposes a house template. Pick from what the beat is DOING, not from
-# which one is nearest.
-EASE = {
-    "arrive": "power2.out",        # a claim or an actor settling in
-    "slam":   "back.out(1.7)",     # a physical impact or a payoff landing
-    "wipe":   "power4.inOut",      # something being stripped away / revealed
-    "count":  "none",              # a numeral counting -- linear, or it lies
-    "swap":   "expo.inOut",        # one state correcting into another
-    "exit":   "power2.in",         # something leaving for good (not stepping back)
-    "hold":   "sine.inOut",        # a deliberate, slow drift
-    "camera": "power2.inOut",      # a camera leg
-}
 
 
-def scene(cid, duration, body, css, timeline):
-    """Emit one sub-composition file.
-
-    THE <template> IS THE TRANSPORT CONTAINER, and this is the detail that bites:
-    the runtime fetches the file, parses it, and clones ONLY the template's
-    CONTENTS into the host slot. Everything outside it -- the whole <head>
-    included -- is DISCARDED.
-
-    So the <style>, the root div, the GSAP tag AND the timeline script must all
-    live INSIDE the template. Putting the scripts after </template> (the natural
-    place, and what a standalone HTML file wants) means they are thrown away: the
-    scene then renders at its static CSS state with no timeline at all. Measured
-    on ectoin before the fix -- t=0.0s and t=8.5s of scene 01 came out
-    PIXEL-IDENTICAL, and the render logged `sub_timeline_readiness_timeout`.
-
-    There is also no importNode/appendChild bootstrap: the runtime does the
-    cloning. Adding one is what makes the file look right when opened standalone
-    and wrong when rendered.
-
-    NOTE the timeline is created with NO `defaults`. See the module docstring.
-    """
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="UTF-8"><title>{cid}</title></head>
-<body>
-<template>
-  <div id="root" data-composition-id="{cid}"
-       data-width="1920" data-height="1080" data-duration="{duration:.3f}">
-    <style>
-      #root {{{TOKENS}}}
-{FONTS}
-{BASE}
-{css}
     </style>
-{body}
+      <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
+      <div class="stage">
+       <div class="worldclip">
+       <div class="world" id="world">
+        <div class="col" style="gap:var(--s-4);height:100%;justify-content:center;">
+          <div class="phase" id="ph-08-digestion"><div class="panel" id="p-08-digestion" style="height:200px;"><div class="wash aqua" id="w-08-digestion"></div><p class="p-title">peptides + amino acids</p></div></div>
+          <div class="phase" id="ph-09-dispatch"><div class="panel" id="p-09-dispatch" style="height:200px;"><div class="wash aqua" id="w-09-dispatch"></div><p class="p-title">your body decides</p></div></div>
+        </div>
+       </div>
+      </div>
+      </div>
+
   </div>
-  {GSAP}
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
-    window.__timelines = window.__timelines || {{}};
-    // No `defaults: {{ease}}` -- every tween names its own. See _preamble.py.
-    var tl = gsap.timeline({{ paused: true }});
-{timeline}
-    tl.to({{}}, {{ duration: {duration:.3f} }}, 0);   // full-span anchor -- always last
-    window.__timelines["{cid}"] = tl;
+    window.__timelines = window.__timelines || {};
+    // No `defaults: {ease}` -- every tween names its own. See _preamble.py.
+    var tl = gsap.timeline({ paused: true });
+    tl.fromTo("#w-08-digestion", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 0.000);
+    tl.to("#w-08-digestion", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 0.300);
+    tl.to("#w-08-digestion", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 2.475);
+    tl.to("#w-08-digestion", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 4.494);
+    tl.to("#w-08-digestion", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 6.604);
+    tl.fromTo("#w-09-dispatch", { scaleX:0 }, { scaleX:1, duration:0.5, ease:"power4.inOut" }, 8.012);
+    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 8.012);
+    tl.to("#w-09-dispatch", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 10.239);
+    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 12.366);
+    tl.to("#w-09-dispatch", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 14.273);
+    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 16.634);
+    tl.to("#w-09-dispatch", { scaleX:0.4, duration:0.4, ease:"expo.inOut" }, 18.795);
+    tl.to("#w-09-dispatch", { scaleX:1.0, duration:0.4, ease:"expo.inOut" }, 20.754);
+    tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:1.0, ease:"power2.inOut" }, 0);
+    // departure: push under the invert wipe into the next file
+    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 21.523);
+
+    tl.to({}, { duration: 22.123 }, 0);   // full-span anchor -- always last
+    window.__timelines["08-digestion"] = tl;
   </script>
 </template>
 </body>
 </html>
-"""

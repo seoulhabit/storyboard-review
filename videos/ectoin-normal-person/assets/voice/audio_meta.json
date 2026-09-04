@@ -1,0 +1,30 @@
+{
+  "project": "ectoin-normal-person",
+  "two_voice": true,
+  "speakers": {
+    "S": {
+      "role": "SOULHABIT",
+      "tts_provider": "higgsfield",
+      "tool": "generate_audio",
+      "model": "seed_audio",
+      "voice_name": "Kimberly",
+      "voice_id": "674b71b8-1d2e-4087-8567-d1f53c0b9f3c",
+      "voice_type": "element",
+      "bus": "vo-soulhabit",
+      "note": "The standing series voice, used on 10 prior projects. Chain verbatim."
+    },
+    "J": {
+      "role": "JAY",
+      "tts_provider": "higgsfield",
+      "tool": "generate_audio",
+      "model": "seed_audio",
+      "voice_name": "Juno",
+      "voice_id": "a3ce02fe-4d3e-55bc-b4d4-a4801b9acdb4",
+      "voice_type": "preset",
+      "bus": "vo-jay",
+      "note": "New. Selected from a 4-candidate audition on t047, the hardest comic beat. Measured 168 wpm on that line against Kaia 148 / Evie 161 / Emmett 132; chosen for pace contrast against SOULHABIT. Chain deviates in exactly two params (weight 0.8->0.3, de-ess -4->-6) because a brighter voice muddies at 150Hz and sibilates harder."
+    }
+  },
+  "audition": "assets/voice/_audition/",
+  "bgm": { "enabled": true, "carve_against": ["vo-soulhabit", "vo-jay"] }
+}

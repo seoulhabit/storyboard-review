@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:"EB Garamond";src:url("../fonts/eb-garamond-400.woff2") format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"Inter";src:url("../fonts/inter-800.woff2") format("woff2");font-weight:800;font-display:block}
+@font-face{font-family:"JetBrains Mono";src:url("../fonts/jetbrains-mono-500.woff2") format("woff2");font-weight:500;font-display:block}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;width:1280px;height:720px;overflow:hidden}
+/* Cold-open revision (2026-09-03). Authored, not extracted, same as before --
+   the render's own frame zero (the bottle close-up) reads fine at full size
+   but a straight extraction wastes the crop that actually gets browsed at
+   120x67. Recomposed around the NEW hook: the "11% isn't 11% ectoin" reveal,
+   not the retired "invented by bacteria" line this file used to carry. */
+.t{position:relative;width:1280px;height:720px;background:#131516;overflow:hidden}
+.in{position:absolute;inset:0;padding:64px 72px;display:grid;
+    grid-template-columns:58fr 42fr;align-items:center;gap:40px}
+.col{display:flex;flex-direction:column;gap:22px;min-width:0}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:26px;letter-spacing:.14em;
+         text-transform:uppercase;color:#59B8AE;margin:0}
+h1{font-family:"EB Garamond",Georgia,serif;font-size:96px;line-height:1.0;
+   letter-spacing:-.016em;color:#F7F5F0;margin:0;max-width:11ch}
+.chip{font-family:"JetBrains Mono",monospace;font-size:23px;letter-spacing:.05em;
+      color:#131516;background:#E0A32B;border-radius:999px;padding:11px 22px;
+      width:fit-content}
+.bwrap{position:relative;display:flex;align-items:center;justify-content:center;
+       height:100%}
+.bottle{position:relative;width:280px;height:480px;border-radius:40px 40px 16px 16px;
+        background:#F7F5F0;border:3px solid #D9D3C6;display:flex;
+        flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.pc{font-family:"EB Garamond",Georgia,serif;font-size:108px;line-height:1;
+    margin:0;color:#131516}
+.nm2{font-family:"JetBrains Mono",monospace;font-size:20px;letter-spacing:.08em;
+     color:#5A5650}
+.illus{font-family:"JetBrains Mono",monospace;font-size:16px;letter-spacing:.08em;
+       text-transform:uppercase;color:#5A5650;opacity:.7}
+</style></head><body>
+<div class="t">
+<div class="in">
+  <div class="col">
+    <p class="eyebrow">Ectoin, honestly</p>
+    <h1>Does 11%<br>mean 11%<br><em>ectoin</em>?</h1>
+    <span class="chip">TURN IT AROUND</span>
+  </div>
+  <div class="bwrap"><div class="bottle">
+    <p class="pc">11%</p>
+    <span class="nm2">COMPLEX</span>
+    <span class="illus">Illustrative label</span>
+  </div></div>
+</div></div>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>RunningGagBadge</title>
+<style>
+/* Tokens copied verbatim from the source composition (see README). Not linked:
+   every catalog spike here is a standalone single-file document with its own
+   :root, and that convention held rather than introducing the first cross-file
+   dependency. */
+:root{
+  --paper:#F7F5F0; --ink:#131516; --ink-2:#6B6B6B; --mist:#F0EBE1;
+  --highlighter:#E0A32B; --rule:#E3E3E3; --aqua:#59B8AE;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+  --font-body:Inter,system-ui,-apple-system,sans-serif;
+  --t-chip:32px; --tr-mono-wide:.1em; --s-6:60px; --r-pill:999px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#8d8d88}
+#root{position:relative;width:1920px;height:1080px;background:var(--paper);
+      overflow:hidden;transform-origin:0 0}
+.diagram{position:absolute;left:0;top:0;width:46%;height:100%;
+         display:flex;align-items:center;justify-content:center}
+.diagram i{display:block;width:340px;height:340px;border-radius:50%;
+           background:var(--aqua);opacity:.30}
+.copy{position:absolute;right:0;top:0;width:54%;height:100%;padding:var(--s-6);
+      display:flex;align-items:center}
+.copy p{font-family:var(--font-body);font-weight:800;font-size:56px;
+        line-height:1.2;color:var(--ink);margin:0}
+
+/* The badge. Pinned to the corner OPPOSITE the copy -- see README. */
+.alarm{position:absolute;top:var(--s-6);left:var(--s-6);z-index:4;
+       display:flex;align-items:center;gap:12px;padding:14px 28px;
+       border-radius:var(--r-pill);background:var(--highlighter);
+       opacity:0;transform:scale(.82);transform-origin:0% 0%}
+.alarm b{font-family:var(--font-mono);font-weight:500;font-size:var(--t-chip);
+         letter-spacing:var(--tr-mono-wide);text-transform:uppercase;
+         color:var(--ink);white-space:nowrap}
+.alarm i{width:18px;height:18px;border-radius:50%;background:var(--ink);display:block}
+
+#scrub{position:fixed;left:0;right:0;bottom:0;display:none;gap:12px;
+       align-items:center;padding:10px 16px;background:#111;color:#eee;
+       font:12px var(--font-mono);z-index:99}
+#scrub input{flex:1}
+</style></head>
+<body>
+<div id="root">
+  <div class="diagram"><i></i></div>
+  <div class="copy"><p id="line">The badge lives in the corner opposite this column.</p></div>
+  <div class="alarm" id="alarm"><i></i><b id="lbl">JARGON ALARM</b></div>
+</div>
+
+<div id="scrub"><span id="tv">0.00s</span>
+  <input id="rng" type="range" min="0" max="4" step="0.01" value="0">
+  <span>fire · fire · reach · retire</span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+var DATA = { label: "JARGON ALARM", at: [1.0, 2.0], reachAt: 2.7, retireAt: 3.3 };
+var TOTAL = 4.0;
+document.getElementById('lbl').textContent = DATA.label;
+
+var tl = gsap.timeline({ paused: true });
+
+// FIRE -- hard scale-in, then a BOUNDED pulse. repeat is a real count, never
+// -1: an infinite repeat is wall-clock behaviour and will not seek.
+DATA.at.forEach(function (t) {
+  tl.fromTo('#alarm', { opacity: 0, scale: .82 },
+            { opacity: 1, scale: 1, duration: .20, ease: 'back.out(3)' }, t);
+  tl.to('#alarm', { scale: 1.07, duration: .16, yoyo: true, repeat: 3,
+                    ease: 'power1.inOut' }, t + .22);
+  tl.to('#alarm', { opacity: 0, duration: .24, ease: 'power2.in' }, t + .70);
+});
+
+// REACH -- drifts in and retreats WITHOUT firing. The near-miss.
+tl.fromTo('#alarm', { opacity: 0, scale: .82, x: -40 },
+          { opacity: .75, scale: .94, x: 0, duration: .30, ease: 'power2.out' },
+          DATA.reachAt);
+tl.to('#alarm', { opacity: 0, x: -40, duration: .34, ease: 'power2.in' },
+      DATA.reachAt + .45);
+
+// RETIRE -- a TWEENED colour, not a class toggle. Seek does not fire
+// callbacks, so a callback-set class leaves the element in whatever state the
+// last executed callback happened to set. See README.
+tl.fromTo('#alarm', { opacity: 0, scale: .9 },
+          { opacity: 1, scale: 1, duration: .24, ease: 'back.out(2)' },
+          DATA.retireAt);
+tl.to('#alarm',   { backgroundColor: '#E3E3E3', opacity: .4, scale: .92,
+                    duration: .50, ease: 'power2.inOut' }, DATA.retireAt + .30);
+tl.to('#alarm b', { color: '#6B6B6B', duration: .50, ease: 'power2.inOut' },
+      DATA.retireAt + .30);
+tl.to('#alarm i', { scale: .5, opacity: .4, duration: .40, ease: 'power2.in' },
+      DATA.retireAt + .30);
+
+tl.to({}, { duration: TOTAL }, 0);   // full-span anchor -- always last
+
+function renderFrame(t) { tl.seek(t); }
+window.renderFrame = renderFrame;
+window.__timelines = window.__timelines || {};
+window.__timelines['running-gag-badge'] = tl;
+
+// Fit the 1920x1080 stage to the viewport, and the debug scrubber.
+function fit() {
+  var r = document.getElementById('root');
+  r.style.transform = 'scale(' + Math.min(innerWidth / 1920, innerHeight / 1080) + ')';
+}
+addEventListener('resize', fit); fit();
+if (/[?&]debug=1\b/.test(location.search)) {
+  var s = document.getElementById('scrub'); s.style.display = 'flex';
+  var rng = document.getElementById('rng'), tv = document.getElementById('tv');
+  rng.addEventListener('input', function () {
+    renderFrame(+rng.value);
+    tv.textContent = (+rng.value).toFixed(2) + 's';
+  });
+}
+renderFrame(0);
+</script>
+</body></html>

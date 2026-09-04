@@ -1,0 +1,220 @@
+{
+  "scene": "24-eleven",
+  "block": "24-eleven",
+  "cut": {
+    "start": 0.0,
+    "end": 13.215
+  },
+  "gain_db": 5.0,
+  "lufs": -20.6,
+  "wpm": 187.7,
+  "words": [
+    {
+      "text": "And",
+      "start": 0.09,
+      "end": 0.3
+    },
+    {
+      "text": "Abebe's",
+      "start": 0.58,
+      "end": 0.98
+    },
+    {
+      "text": "Ectoin",
+      "start": 0.98,
+      "end": 1.56
+    },
+    {
+      "text": "Panthenol",
+      "start": 1.56,
+      "end": 2.44
+    },
+    {
+      "text": "11%?",
+      "start": 2.44,
+      "end": 3.268
+    },
+    {
+      "text": "That",
+      "start": 3.268,
+      "end": 3.298
+    },
+    {
+      "text": "11",
+      "start": 3.298,
+      "end": 3.618
+    },
+    {
+      "text": "is",
+      "start": 3.678,
+      "end": 3.758
+    },
+    {
+      "text": "the",
+      "start": 3.758,
+      "end": 3.928
+    },
+    {
+      "text": "two",
+      "start": 3.928,
+      "end": 4.098
+    },
+    {
+      "text": "of",
+      "start": 4.098,
+      "end": 4.218
+    },
+    {
+      "text": "them",
+      "start": 4.218,
+      "end": 4.498
+    },
+    {
+      "text": "added",
+      "start": 4.498,
+      "end": 4.778
+    },
+    {
+      "text": "together.",
+      "start": 4.888,
+      "end": 5.238
+    },
+    {
+      "text": "On",
+      "start": 5.467,
+      "end": 5.467
+    },
+    {
+      "text": "the",
+      "start": 5.467,
+      "end": 5.508
+    },
+    {
+      "text": "ingredient",
+      "start": 5.748,
+      "end": 6.208
+    },
+    {
+      "text": "list,",
+      "start": 6.208,
+      "end": 6.538
+    },
+    {
+      "text": "Panthenol",
+      "start": 6.678,
+      "end": 7.258
+    },
+    {
+      "text": "is",
+      "start": 7.258,
+      "end": 7.398
+    },
+    {
+      "text": "second.",
+      "start": 7.398,
+      "end": 7.941
+    },
+    {
+      "text": "Ectoin",
+      "start": 7.941,
+      "end": 7.989
+    },
+    {
+      "text": "is",
+      "start": 7.989,
+      "end": 8.429
+    },
+    {
+      "text": "eleventh.",
+      "start": 8.429,
+      "end": 9.123
+    },
+    {
+      "text": "The",
+      "start": 9.123,
+      "end": 9.123
+    },
+    {
+      "text": "big",
+      "start": 9.123,
+      "end": 9.174
+    },
+    {
+      "text": "number",
+      "start": 9.404,
+      "end": 9.544
+    },
+    {
+      "text": "on",
+      "start": 9.544,
+      "end": 9.584
+    },
+    {
+      "text": "the",
+      "start": 9.664,
+      "end": 9.844
+    },
+    {
+      "text": "front",
+      "start": 9.844,
+      "end": 10.154
+    },
+    {
+      "text": "is",
+      "start": 10.154,
+      "end": 10.194
+    },
+    {
+      "text": "not",
+      "start": 10.334,
+      "end": 10.454
+    },
+    {
+      "text": "always",
+      "start": 10.454,
+      "end": 10.794
+    },
+    {
+      "text": "the",
+      "start": 10.854,
+      "end": 11.004
+    },
+    {
+      "text": "Ectoin",
+      "start": 11.004,
+      "end": 11.344
+    },
+    {
+      "text": "number.",
+      "start": 11.354,
+      "end": 11.814
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.09,
+      "end": 3.268,
+      "text": "And Abebe's Ectoin Panthenol 11%?"
+    },
+    {
+      "start": 3.268,
+      "end": 5.238,
+      "text": "That 11 is the two of them added together."
+    },
+    {
+      "start": 5.467,
+      "end": 7.941,
+      "text": "On the ingredient list, Panthenol is second."
+    },
+    {
+      "start": 7.941,
+      "end": 9.123,
+      "text": "Ectoin is eleventh."
+    },
+    {
+      "start": 9.123,
+      "end": 11.814,
+      "text": "The big number on the front is not always the Ectoin number."
+    }
+  ]
+}

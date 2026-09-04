@@ -1,0 +1,125 @@
+{
+  "scene": "20-twelve",
+  "block": "20-twelve",
+  "cut": {
+    "start": 0.11,
+    "end": 7.903
+  },
+  "gain_db": 5.0,
+  "lufs": -21.2,
+  "wpm": 150.4,
+  "words": [
+    {
+      "text": "and",
+      "start": 0.1,
+      "end": 0.14
+    },
+    {
+      "text": "the",
+      "start": 0.14,
+      "end": 0.29
+    },
+    {
+      "text": "evidence",
+      "start": 0.36,
+      "end": 0.86
+    },
+    {
+      "text": "base",
+      "start": 0.86,
+      "end": 0.99
+    },
+    {
+      "text": "is",
+      "start": 1.14,
+      "end": 1.25
+    },
+    {
+      "text": "genuinely",
+      "start": 1.37,
+      "end": 2.18
+    },
+    {
+      "text": "small.",
+      "start": 2.18,
+      "end": 2.777
+    },
+    {
+      "text": "Search",
+      "start": 2.777,
+      "end": 3.177
+    },
+    {
+      "text": "PubMed",
+      "start": 3.177,
+      "end": 3.577
+    },
+    {
+      "text": "today",
+      "start": 3.577,
+      "end": 3.827
+    },
+    {
+      "text": "and",
+      "start": 3.827,
+      "end": 4.147
+    },
+    {
+      "text": "you",
+      "start": 4.147,
+      "end": 4.257
+    },
+    {
+      "text": "will",
+      "start": 4.257,
+      "end": 4.497
+    },
+    {
+      "text": "find",
+      "start": 4.497,
+      "end": 4.887
+    },
+    {
+      "text": "12",
+      "start": 5.077,
+      "end": 5.287
+    },
+    {
+      "text": "ectoin",
+      "start": 5.547,
+      "end": 5.807
+    },
+    {
+      "text": "clinical",
+      "start": 5.807,
+      "end": 6.397
+    },
+    {
+      "text": "trials.",
+      "start": 6.557,
+      "end": 7.196
+    },
+    {
+      "text": "12",
+      "start": 7.295,
+      "end": 7.435
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 2.777,
+      "text": "and the evidence base is genuinely small."
+    },
+    {
+      "start": 2.777,
+      "end": 7.196,
+      "text": "Search PubMed today and you will find 12 ectoin clinical trials."
+    },
+    {
+      "start": 7.295,
+      "end": 7.435,
+      "text": "12"
+    }
+  ]
+}

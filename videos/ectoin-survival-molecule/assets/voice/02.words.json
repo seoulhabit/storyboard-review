@@ -1,0 +1,135 @@
+{
+  "scene": "02-osmosis",
+  "block": "02-osmosis",
+  "cut": {
+    "start": 0.15,
+    "end": 9.248
+  },
+  "gain_db": 5.0,
+  "lufs": -21.6,
+  "wpm": 156.0,
+  "words": [
+    {
+      "text": "This",
+      "start": 0.1,
+      "end": 0.15
+    },
+    {
+      "text": "tiny",
+      "start": 0.15,
+      "end": 0.45
+    },
+    {
+      "text": "molecule",
+      "start": 0.45,
+      "end": 1.05
+    },
+    {
+      "text": "helps",
+      "start": 1.05,
+      "end": 1.41
+    },
+    {
+      "text": "microorganisms",
+      "start": 1.58,
+      "end": 2.44
+    },
+    {
+      "text": "survive",
+      "start": 2.57,
+      "end": 2.94
+    },
+    {
+      "text": "places",
+      "start": 3.09,
+      "end": 3.46
+    },
+    {
+      "text": "so",
+      "start": 3.78,
+      "end": 3.86
+    },
+    {
+      "text": "salty",
+      "start": 3.86,
+      "end": 4.47
+    },
+    {
+      "text": "and",
+      "start": 4.49,
+      "end": 4.87
+    },
+    {
+      "text": "so",
+      "start": 4.87,
+      "end": 5.13
+    },
+    {
+      "text": "dry",
+      "start": 5.13,
+      "end": 5.34
+    },
+    {
+      "text": "that",
+      "start": 5.34,
+      "end": 5.78
+    },
+    {
+      "text": "an",
+      "start": 5.78,
+      "end": 5.91
+    },
+    {
+      "text": "ordinary",
+      "start": 6.07,
+      "end": 6.42
+    },
+    {
+      "text": "cell",
+      "start": 6.42,
+      "end": 6.57
+    },
+    {
+      "text": "would",
+      "start": 6.68,
+      "end": 6.88
+    },
+    {
+      "text": "lose",
+      "start": 6.99,
+      "end": 7.09
+    },
+    {
+      "text": "its",
+      "start": 7.26,
+      "end": 7.43
+    },
+    {
+      "text": "water",
+      "start": 7.43,
+      "end": 7.75
+    },
+    {
+      "text": "and",
+      "start": 7.75,
+      "end": 7.93
+    },
+    {
+      "text": "stop",
+      "start": 7.93,
+      "end": 8.13
+    },
+    {
+      "text": "functioning.",
+      "start": 8.25,
+      "end": 8.97
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 8.97,
+      "text": "This tiny molecule helps microorganisms survive places so salty and so dry that an ordinary cell would lose its water and stop functioning."
+    }
+  ]
+}

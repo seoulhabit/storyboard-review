@@ -1,0 +1,324 @@
+[
+  {
+    "scene": "01-hook",
+    "kind": "w",
+    "word": "Not",
+    "occurrence": 2,
+    "seconds": 5.216
+  },
+  {
+    "scene": "01-hook",
+    "kind": "w",
+    "word": "Not",
+    "occurrence": 3,
+    "seconds": 6.147
+  },
+  {
+    "scene": "01-hook",
+    "kind": "w",
+    "word": "Not",
+    "occurrence": 4,
+    "seconds": 7.307
+  },
+  {
+    "scene": "01-hook",
+    "kind": "we",
+    "word": "mucin",
+    "occurrence": 1,
+    "seconds": 5.957
+  },
+  {
+    "scene": "01-hook",
+    "kind": "we",
+    "word": "mucin",
+    "occurrence": 1,
+    "seconds": 5.957
+  },
+  {
+    "scene": "01-hook",
+    "kind": "we",
+    "word": "DNA",
+    "occurrence": 1,
+    "seconds": 7.087
+  },
+  {
+    "scene": "01-hook",
+    "kind": "we",
+    "word": "DNA",
+    "occurrence": 1,
+    "seconds": 7.087
+  },
+  {
+    "scene": "01-hook",
+    "kind": "we",
+    "word": "acid",
+    "occurrence": 1,
+    "seconds": 9.547
+  },
+  {
+    "scene": "01-hook",
+    "kind": "we",
+    "word": "acid",
+    "occurrence": 1,
+    "seconds": 9.547
+  },
+  {
+    "scene": "02-osmosis",
+    "kind": "w",
+    "word": "stop",
+    "occurrence": 1,
+    "seconds": 8.03
+  },
+  {
+    "scene": "03-now",
+    "kind": "w",
+    "word": "ectoin",
+    "occurrence": 1,
+    "seconds": 6.55
+  },
+  {
+    "scene": "03-now",
+    "kind": "w",
+    "word": "stranger",
+    "occurrence": 1,
+    "seconds": 7.918
+  },
+  {
+    "scene": "03-now",
+    "kind": "w",
+    "word": "market",
+    "occurrence": 1,
+    "seconds": 8.868
+  },
+  {
+    "scene": "03-now",
+    "kind": "w",
+    "word": "ectoin",
+    "occurrence": 1,
+    "seconds": 6.55
+  },
+  {
+    "scene": "03-now",
+    "kind": "w",
+    "word": "stranger",
+    "occurrence": 1,
+    "seconds": 7.918
+  },
+  {
+    "scene": "03-now",
+    "kind": "w",
+    "word": "stranger",
+    "occurrence": 1,
+    "seconds": 7.918
+  },
+  {
+    "scene": "04-extremolyte",
+    "kind": "w",
+    "word": "superhero",
+    "occurrence": 1,
+    "seconds": 6.069
+  },
+  {
+    "scene": "04-extremolyte",
+    "kind": "we",
+    "word": "superhero",
+    "occurrence": 1,
+    "seconds": 6.289
+  },
+  {
+    "scene": "04-extremolyte",
+    "kind": "we",
+    "word": "superhero",
+    "occurrence": 1,
+    "seconds": 6.289
+  },
+  {
+    "scene": "04-extremolyte",
+    "kind": "w",
+    "word": "protective",
+    "occurrence": 1,
+    "seconds": 6.993
+  },
+  {
+    "scene": "04-extremolyte",
+    "kind": "w",
+    "word": "protective",
+    "occurrence": 1,
+    "seconds": 6.993
+  },
+  {
+    "scene": "04-extremolyte",
+    "kind": "w",
+    "word": "extreme",
+    "occurrence": 1,
+    "seconds": 10.283
+  },
+  {
+    "scene": "05-halomonas",
+    "kind": "w",
+    "word": "Lives",
+    "occurrence": 1,
+    "seconds": 4.741
+  },
+  {
+    "scene": "05-halomonas",
+    "kind": "w",
+    "word": "floods",
+    "occurrence": 1,
+    "seconds": 7.872
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "Lose",
+    "occurrence": 1,
+    "seconds": 3.208
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "membranes",
+    "occurrence": 1,
+    "seconds": 5.532
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "unstable",
+    "occurrence": 1,
+    "seconds": 6.356
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "Lose",
+    "occurrence": 1,
+    "seconds": 3.208
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "Lose",
+    "occurrence": 1,
+    "seconds": 3.208
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "stops",
+    "occurrence": 1,
+    "seconds": 7.642
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "Lose",
+    "occurrence": 1,
+    "seconds": 3.208
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "Lose",
+    "occurrence": 1,
+    "seconds": 3.208
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "stops",
+    "occurrence": 1,
+    "seconds": 7.642
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "stops",
+    "occurrence": 1,
+    "seconds": 7.642
+  },
+  {
+    "scene": "06-mechanism",
+    "kind": "w",
+    "word": "stops",
+    "occurrence": 1,
+    "seconds": 7.642
+  },
+  {
+    "scene": "07-question",
+    "kind": "w",
+    "word": "Could",
+    "occurrence": 1,
+    "seconds": 6.356
+  },
+  {
+    "scene": "07-question",
+    "kind": "w",
+    "word": "Could",
+    "occurrence": 1,
+    "seconds": 6.356
+  },
+  {
+    "scene": "07-question",
+    "kind": "w",
+    "word": "stressed",
+    "occurrence": 1,
+    "seconds": 7.658
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "version",
+    "occurrence": 1,
+    "seconds": 3.402
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "honest",
+    "occurrence": 1,
+    "seconds": 9.754
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "simulations",
+    "occurrence": 1,
+    "seconds": 11.566
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "simulations",
+    "occurrence": 1,
+    "seconds": 11.566
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "attraction",
+    "occurrence": 1,
+    "seconds": 13.154
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "attraction",
+    "occurrence": 1,
+    "seconds": 13.154
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "depends",
+    "occurrence": 1,
+    "seconds": 16.156
+  },
+  {
+    "scene": "09-exclusion",
+    "kind": "w",
+    "word": "arranged",
+    "occurrence": 1,
+    "seconds": 20.938
+  }
+]

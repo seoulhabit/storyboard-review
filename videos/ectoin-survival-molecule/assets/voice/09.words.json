@@ -1,0 +1,325 @@
+{
+  "scene": "09-exclusion",
+  "block": "09-exclusion",
+  "cut": {
+    "start": 0.246,
+    "end": 23.871
+  },
+  "gain_db": 5.0,
+  "lufs": -21.3,
+  "wpm": 163.6,
+  "words": [
+    {
+      "text": "Scientists",
+      "start": 0.1,
+      "end": 0.398
+    },
+    {
+      "text": "call",
+      "start": 0.567,
+      "end": 0.716
+    },
+    {
+      "text": "the",
+      "start": 0.716,
+      "end": 0.921
+    },
+    {
+      "text": "idea",
+      "start": 0.921,
+      "end": 1.211
+    },
+    {
+      "text": "preferential",
+      "start": 1.211,
+      "end": 2.107
+    },
+    {
+      "text": "exclusion,",
+      "start": 2.154,
+      "end": 3.179
+    },
+    {
+      "text": "the",
+      "start": 3.179,
+      "end": 3.179
+    },
+    {
+      "text": "tidy",
+      "start": 3.179,
+      "end": 3.302
+    },
+    {
+      "text": "version.",
+      "start": 3.302,
+      "end": 3.731
+    },
+    {
+      "text": "Ectoin",
+      "start": 3.862,
+      "end": 4.261
+    },
+    {
+      "text": "protects",
+      "start": 4.261,
+      "end": 4.342
+    },
+    {
+      "text": "proteins",
+      "start": 4.389,
+      "end": 4.781
+    },
+    {
+      "text": "by",
+      "start": 4.856,
+      "end": 4.978
+    },
+    {
+      "text": "staying",
+      "start": 4.978,
+      "end": 5.379
+    },
+    {
+      "text": "off",
+      "start": 5.463,
+      "end": 5.575
+    },
+    {
+      "text": "their",
+      "start": 5.575,
+      "end": 5.855
+    },
+    {
+      "text": "surface",
+      "start": 5.874,
+      "end": 6.332
+    },
+    {
+      "text": "which",
+      "start": 6.332,
+      "end": 6.518
+    },
+    {
+      "text": "helps",
+      "start": 6.659,
+      "end": 6.967
+    },
+    {
+      "text": "the",
+      "start": 6.967,
+      "end": 7.079
+    },
+    {
+      "text": "water",
+      "start": 7.079,
+      "end": 7.648
+    },
+    {
+      "text": "around",
+      "start": 7.648,
+      "end": 7.733
+    },
+    {
+      "text": "them",
+      "start": 7.733,
+      "end": 7.938
+    },
+    {
+      "text": "stay",
+      "start": 8.115,
+      "end": 8.293
+    },
+    {
+      "text": "organized.",
+      "start": 8.293,
+      "end": 9.161
+    },
+    {
+      "text": "The",
+      "start": 9.236,
+      "end": 9.654
+    },
+    {
+      "text": "honest",
+      "start": 9.654,
+      "end": 9.654
+    },
+    {
+      "text": "version",
+      "start": 9.654,
+      "end": 9.654
+    },
+    {
+      "text": "is",
+      "start": 9.654,
+      "end": 9.972
+    },
+    {
+      "text": "messier.",
+      "start": 10.149,
+      "end": 10.728
+    },
+    {
+      "text": "In",
+      "start": 10.728,
+      "end": 10.878
+    },
+    {
+      "text": "the",
+      "start": 10.878,
+      "end": 10.971
+    },
+    {
+      "text": "simulations",
+      "start": 11.466,
+      "end": 11.7
+    },
+    {
+      "text": "Ectoin",
+      "start": 11.7,
+      "end": 12.101
+    },
+    {
+      "text": "also",
+      "start": 12.101,
+      "end": 12.335
+    },
+    {
+      "text": "showed",
+      "start": 12.512,
+      "end": 12.783
+    },
+    {
+      "text": "some",
+      "start": 12.783,
+      "end": 13.054
+    },
+    {
+      "text": "attraction",
+      "start": 13.054,
+      "end": 13.745
+    },
+    {
+      "text": "to",
+      "start": 13.745,
+      "end": 13.848
+    },
+    {
+      "text": "that",
+      "start": 13.894,
+      "end": 14.128
+    },
+    {
+      "text": "surface",
+      "start": 14.165,
+      "end": 14.632
+    },
+    {
+      "text": "and",
+      "start": 14.632,
+      "end": 14.725
+    },
+    {
+      "text": "how",
+      "start": 15.015,
+      "end": 15.024
+    },
+    {
+      "text": "far",
+      "start": 15.024,
+      "end": 15.248
+    },
+    {
+      "text": "it",
+      "start": 15.248,
+      "end": 15.379
+    },
+    {
+      "text": "stays",
+      "start": 15.51,
+      "end": 15.762
+    },
+    {
+      "text": "back",
+      "start": 15.762,
+      "end": 15.762
+    },
+    {
+      "text": "depends",
+      "start": 16.056,
+      "end": 16.355
+    },
+    {
+      "text": "on",
+      "start": 16.523,
+      "end": 16.598
+    },
+    {
+      "text": "how",
+      "start": 16.598,
+      "end": 16.887
+    },
+    {
+      "text": "tightly",
+      "start": 16.887,
+      "end": 17.56
+    },
+    {
+      "text": "the",
+      "start": 17.644,
+      "end": 17.859
+    },
+    {
+      "text": "protein's",
+      "start": 17.859,
+      "end": 18.699
+    },
+    {
+      "text": "own",
+      "start": 18.699,
+      "end": 19.512
+    },
+    {
+      "text": "water",
+      "start": 19.512,
+      "end": 19.54
+    },
+    {
+      "text": "is",
+      "start": 19.54,
+      "end": 19.736
+    },
+    {
+      "text": "already",
+      "start": 19.736,
+      "end": 20.287
+    },
+    {
+      "text": "arranged.",
+      "start": 20.838,
+      "end": 21.277
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 3.731,
+      "text": "Scientists call the idea preferential exclusion, the tidy version."
+    },
+    {
+      "start": 3.862,
+      "end": 9.161,
+      "text": "Ectoin protects proteins by staying off their surface which helps the water around them stay organized."
+    },
+    {
+      "start": 9.236,
+      "end": 10.728,
+      "text": "The honest version is messier."
+    },
+    {
+      "start": 10.728,
+      "end": 21.277,
+      "text": "In the simulations Ectoin also showed some attraction to that surface and how far it stays back depends on how tightly the protein's own water is already arranged."
+    }
+  ]
+}

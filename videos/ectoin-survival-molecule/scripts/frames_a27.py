@@ -86,13 +86,22 @@ S08 = dict(css="""
   tl.to('#p-hum', { opacity:0.18, duration:1.20 }, 14.30);
 """)
 
-# ---------------------------------------------------------------- 09 exclusion
+# ------------------------------------------------------- 09-exclusion (merged)
+# Scenes 09 and 10 merged into one continuous scene/diagram (external review,
+# approved cut): the tidy version and the honest correction now share a single
+# annular diagram at identical geometry, and the correction arrives as a
+# GROUND INVERSION -- a clip-path sweep of the ink layer over the paper one --
+# rather than a hard scene cut. Word-bound to the real cut voiceover
+# (assets/voice/09.words.json); tokens confirmed against
+# `python3 scripts/timing.py --words 09-exclusion` before writing.
 S09 = dict(css="""
     #root { background:var(--paper); color:var(--ink); }
+    .world.ink { background:var(--ink); color:var(--paper); clip-path:inset(0% 0% 0% 100%); }
     .g9 { display:grid; grid-template-columns:44fr 56fr; gap:var(--s-8);
           align-items:center; height:100%; }
-""", body="""    <div class="stage">
-      <div class="g9">
+    .g9 .stage { padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+""", body="""    <div class="world" id="w-paper">
+      <div class="stage"><div class="g9">
         <div class="col">
           <p class="kicker">The mechanism</p>
           <p class="hero" id="e-term">Preferential<br>exclusion</p>
@@ -107,10 +116,26 @@ S09 = dict(css="""
                 font-family="Inter, sans-serif" font-weight="800" font-size="34"
                 opacity="0">PROTEIN</text>
         </svg>
-      </div>
+      </div></div>
+    </div>
+    <div class="world ink" id="w-ink">
+      <div class="stage"><div class="g9">
+        <div class="col">
+          <p class="kicker on-ink">The mechanism</p>
+          <p class="hero" id="m-h">The honest version<br>is <em style="font-style:normal;color:var(--coral)">messier.</em></p>
+          <p class="p-body on-ink" id="m-note" style="margin-top:20px">In the simulations,
+            ectoin also showed some attraction to that surface. And how far it stays back
+            depends on how tightly the protein&rsquo;s own water is already arranged.</p>
+        </div>
+        <svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true">
+          <circle cx="310" cy="310" r="190" fill="none" stroke="#59B8AE"
+                  stroke-width="46" opacity="0.30"/>
+          <circle cx="310" cy="310" r="112" fill="#F7F5F0"/>
+          <g id="m-ring"></g>
+        </svg>
+      </div></div>
     </div>""", tl="""
-  // The diagram assembles in three LARGE annular layers -- each one is a big
-  // area change, which is the beat. Text rides along; it is not the beat.
+  // ---- w-paper: the tidy version. Same three-layer diagram build as before. ----
   tl.fromTo('#e-term', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
   tl.fromTo('#e-prot', { attr:{ r:0 } }, { attr:{ r:112 }, duration:0.75,
                                            ease:'back.out(1.4)' }, 1.30);
@@ -128,88 +153,53 @@ S09 = dict(css="""
     d.setAttribute('fill', '#C97A5C'); d.setAttribute('opacity', 0);
     d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
     d.id = 'x-' + i; ring.appendChild(d);
-    tl.to('#x-' + i, { opacity:1, duration:0.35 }, 6.00 + i*0.055);
+    tl.to('#x-' + i, { opacity:1, duration:0.35 }, 4.20 + i*0.05);
   }
-  tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, 8.20);
-  // The hydration shell thickens and saturates -- a large annulus, not 18 dots.
+  tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, @w(version)-0.30);
   tl.to('#e-shell', { attr:{ 'stroke-width':78 }, opacity:0.55, duration:1.40,
-                      ease:'power2.inOut' }, 6.10);
-  tl.to('#e-shell', { attr:{ r:214 }, duration:1.60, ease:'power2.inOut' }, 8.60);
-""")
+                      ease:'power2.inOut' }, 5.20);
 
-# ---------------------------------------------------------------- 10 messier
-S10 = dict(css="""
-    #root { background:var(--ink); color:var(--paper); }
-    .g10 { display:grid; grid-template-columns:52fr 48fr; gap:var(--s-8);
-           align-items:center; height:100%; }
-    .swap { position:relative; }
-    .swap .old { position:absolute; inset:0; }
-    /* A full-width PAPER band on the ink ground: a 225-luma step over ~17% of the
-       frame. The ring of 18 small squares it replaces measured as no beat. */
-    .m-band { background:var(--paper); border-radius:var(--r-3);
-              padding:var(--s-5) var(--s-6); margin-top:var(--s-5);
-              transform:scaleY(0); transform-origin:50% 0%; }
-""", body="""    <div class="stage">
-      <div class="g10">
-        <div class="col">
-          <p class="kicker on-ink">Correction</p>
-          <div class="swap" style="min-height:300px">
-            <div class="old" id="m-old"><p class="hero" style="color:var(--ink-2-dark)">The tidy version.</p></div>
-            <div id="m-new" style="opacity:0"><p class="hero">The honest one<br>is <em style="font-style:normal;color:var(--coral)">messier.</em></p></div>
-          </div>
-          <div class="m-band" id="m-band">
-            <p class="p-body" id="m-note" style="color:var(--ink)">In the simulations ectoin
-              also showed some attraction to that surface.</p>
-          </div>
-        </div>
-        <svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true">
-          <circle cx="310" cy="310" r="190" fill="none" stroke="#59B8AE"
-                  stroke-width="46" opacity="0.22"/>
-          <circle cx="310" cy="310" r="112" fill="#F7F5F0"/>
-          <g id="m-ring"></g>
-        </svg>
-      </div>
-    </div>""", tl="""
-  // Ground is INK -- the whole-frame inversion from scene 09 is itself the
-  // largest beat in the piece so far, and it lands on "the honest version".
-  tl.to('#m-old', { opacity:0, y:-30, duration:0.50 }, 2.30);
-  tl.fromTo('#m-new', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.60 }, 2.55);
-  var ring = document.getElementById('m-ring');
-  for (var i = 0; i < 18; i++) {
-    var a = i * 20 * Math.PI/180;
-    var x = 310 + Math.cos(a)*268, y = 310 + Math.sin(a)*268;
-    var d = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    d.setAttribute('x', x-13); d.setAttribute('y', y-13);
-    d.setAttribute('width', 26); d.setAttribute('height', 26);
-    d.setAttribute('fill', '#C97A5C');
-    d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-    d.id = 'y-' + i; ring.appendChild(d);
-    // A THIRD of them break ranks and move to the protein surface -- the actual
-    // finding, drawn. Not decoration: this is what the correction says.
-    if (i % 3 === 0) {
-      tl.to('#y-' + i, { x:-Math.cos(a)*140, y:-Math.sin(a)*140, fill:'#E0A32B',
-                         duration:1.5, ease:'power2.inOut' }, 4.60 + (i/3)*0.12);
+  // ---- ground inversion on "the honest version" -- the scene's single largest
+  // beat: a full-frame clip-path sweep, paired with a small child travel on
+  // the ring (pairs a clipPath-only tween with real motion, per this
+  // project's keepsMoving rule) and the headline settling in from y:24. ----
+  var inv = @w(honest)-0.45;
+  tl.fromTo('#w-ink', { clipPath:'inset(0% 0% 0% 100%)' },
+                      { clipPath:'inset(0% 0% 0% 0%)', duration:0.60,
+                        ease:'power3.inOut' }, inv);
+  tl.fromTo('#m-ring', { rotation:0, transformOrigin:'310px 310px' },
+                       { rotation:6, transformOrigin:'310px 310px', duration:1.40,
+                         ease:'power2.out' }, inv);
+  tl.fromTo('#m-h', { y:24, opacity:0.4 }, { y:0, opacity:1, duration:0.60,
+                                             ease:'power2.out' }, inv);
+
+  // ---- w-ink: the honest correction, on the SAME diagram geometry. ----
+  // Ring rebuild timed to @w(simulations) -- that is the word that names
+  // the evidence backing the correction, not the ground-flip itself.
+  var sim = @w(simulations);
+  var mring = document.getElementById('m-ring');
+  for (var j = 0; j < 18; j++) {
+    var aj = j * 20 * Math.PI/180;
+    var xj = 310 + Math.cos(aj)*268, yj = 310 + Math.sin(aj)*268;
+    var e = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    e.setAttribute('x', xj-13); e.setAttribute('y', yj-13);
+    e.setAttribute('width', 26); e.setAttribute('height', 26);
+    e.setAttribute('fill', '#C97A5C'); e.setAttribute('opacity', 0);
+    e.setAttribute('transform', 'rotate(45 ' + xj.toFixed(1) + ' ' + yj.toFixed(1) + ')');
+    e.id = 'y-' + j; mring.appendChild(e);
+    tl.to('#y-' + j, { opacity:1, duration:0.30 }, sim + j*0.03);
+    // a third break ranks toward the protein surface -- @w(attraction), the
+    // actual finding named in the VO, drawn as real motion, not decoration.
+    if (j % 3 === 0) {
+      tl.to('#y-' + j, { x:-Math.cos(aj)*140, y:-Math.sin(aj)*140, fill:'#E0A32B',
+                         duration:1.4, ease:'power2.inOut' }, @w(attraction)-0.8);
     }
   }
-  tl.fromTo('#m-band', { scaleY:0 }, { scaleY:1, duration:0.60,
-                                       ease:'power3.out' }, 5.20);
-  // The protein's own shell destabilises -- a full-annulus change in the back half.
-  tl.to('#m-ring', { rotation:9, transformOrigin:'310px 310px', duration:3.20,
-                     ease:'power1.inOut' }, 7.40);
-  // The band recedes and the correction takes the frame -- a second large beat
-  // in the back half rather than a 1.04 text scale.
-  // RECOLOUR the band, do not scale it. Two earlier versions of this beat were
-  // both wrong: retracting to zero left the lower-left sixth at 0.00% ink for
-  // 2.5s (a real region void), and retracting to a residual strip squashed the
-  // band's own text to 16% height -- illegible, and visibly worse than the void
-  // it fixed. A paper->moss recolour is a 140-luma step over ~17% of the frame
-  // (per-step ~4.2, comfortably over the floor), keeps the region occupied, and
-  // does not deform any type.
-  tl.to('#m-band', { backgroundColor:'#4F6B52', duration:0.70,
-                     ease:'power2.inOut' }, 10.20);
-  tl.to('#m-note', { color:'#F7F5F0', duration:0.70 }, 10.20);
-  tl.to('#m-new', { scale:1.10, transformOrigin:'0% 50%', duration:1.30,
-                    ease:'power3.out' }, 10.60);
+  // "depends on how tightly ... already arranged" -- the shell itself
+  // destabilises, a full-annulus rotation timed to the closing clause.
+  tl.to('#m-ring', { rotation:14, transformOrigin:'310px 310px', duration:2.60,
+                     ease:'power1.inOut' }, @w(depends));
+  tl.to('#m-note', { opacity:0.75, duration:0.60 }, @w(arranged));
 """)
 
 # ---------------------------------------------------------------- 11 analogy
@@ -1028,14 +1018,17 @@ S29 = dict(css="""
   tl.fromTo('#c-q', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.60 }, 5.20);
 """)
 
-# scene id -> (module-level spec, VO take number)
+# scene id -> module-level spec. Scene NUMBERING and duration are no longer
+# carried here at all -- both come from scripts/timing.py's walk(), which
+# derives them from the cut, measured voiceover (assets/voice/NN.wav +
+# NN.words.json). 09-exclusion absorbs what used to be scenes 09 AND 10 (see
+# S09 above); there is no separate 10-messier entry any more.
 SCENES_A27 = [
-    ("08-humectant", S08, 8),  ("09-exclusion", S09, 9),  ("10-messier", S10, 10),
-    ("11-analogy",   S11, 11), ("12-load",      S12, 12), ("13-keratin", S13, 13),
-    ("14-notforce",  S14, 14), ("15-framing",   S15, 15), ("16-trial104", S16, 16),
-    ("17-preference",S17, 17), ("18-eczema",    S18, 18), ("19-limits",  S19, 19),
-    ("20-twelve",    S20, 20), ("21-verdict",   S21, 21), ("22-whofor",  S22, 22),
-    ("23-numbers",   S23, 23), ("24-eleven",    S24, 24), ("25-formula", S25, 25),
-    ("26-kbeauty",   S26, 26), ("27-resilience",S27, 27), ("28-remember",S28, 28),
-    ("29-cta",       S29, 29),
+    ("08-humectant", S08),  ("09-exclusion", S09),  ("11-analogy",    S11),
+    ("12-load",      S12),  ("13-keratin",   S13),  ("14-notforce",   S14),
+    ("15-framing",   S15),  ("16-trial104",  S16),  ("17-preference", S17),
+    ("18-eczema",    S18),  ("19-limits",    S19),  ("20-twelve",     S20),
+    ("21-verdict",   S21),  ("22-whofor",    S22),  ("23-numbers",    S23),
+    ("24-eleven",    S24),  ("25-formula",   S25),  ("26-kbeauty",    S26),
+    ("27-resilience",S27),  ("28-remember",  S28),  ("29-cta",        S29),
 ]

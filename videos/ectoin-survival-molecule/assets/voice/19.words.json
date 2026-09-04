@@ -1,0 +1,95 @@
+{
+  "scene": "19-limits",
+  "block": "19-limits",
+  "cut": {
+    "start": 0.15,
+    "end": 7.216
+  },
+  "gain_db": 5.0,
+  "lufs": -21.1,
+  "wpm": 132.0,
+  "words": [
+    {
+      "text": "Encouraging.",
+      "start": 0.1,
+      "end": 1.06
+    },
+    {
+      "text": "Not",
+      "start": 1.1,
+      "end": 1.26
+    },
+    {
+      "text": "proof",
+      "start": 1.27,
+      "end": 1.53
+    },
+    {
+      "text": "that",
+      "start": 1.67,
+      "end": 1.89
+    },
+    {
+      "text": "ectoincures",
+      "start": 2.01,
+      "end": 2.63
+    },
+    {
+      "text": "eczema,",
+      "start": 2.7,
+      "end": 3.29
+    },
+    {
+      "text": "reverses",
+      "start": 3.29,
+      "end": 3.93
+    },
+    {
+      "text": "aging,",
+      "start": 3.93,
+      "end": 4.45
+    },
+    {
+      "text": "or",
+      "start": 4.45,
+      "end": 4.64
+    },
+    {
+      "text": "replaces",
+      "start": 4.64,
+      "end": 5.23
+    },
+    {
+      "text": "anything",
+      "start": 5.3,
+      "end": 5.48
+    },
+    {
+      "text": "a",
+      "start": 5.48,
+      "end": 5.56
+    },
+    {
+      "text": "dermatologist",
+      "start": 5.56,
+      "end": 6.49
+    },
+    {
+      "text": "prescribes.",
+      "start": 6.64,
+      "end": 7.04
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 1.06,
+      "text": "Encouraging."
+    },
+    {
+      "start": 1.1,
+      "end": 7.04,
+      "text": "Not proof that ectoincures eczema, reverses aging, or replaces anything a dermatologist prescribes."
+    }
+  ]
+}

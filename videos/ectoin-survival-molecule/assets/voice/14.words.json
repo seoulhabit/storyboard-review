@@ -1,0 +1,140 @@
+{
+  "scene": "14-notforce",
+  "block": "14-notforce",
+  "cut": {
+    "start": 0.14,
+    "end": 9.08
+  },
+  "gain_db": 5.0,
+  "lufs": -21.3,
+  "wpm": 166.4,
+  "words": [
+    {
+      "text": "Though",
+      "start": 0.1,
+      "end": 0.3
+    },
+    {
+      "text": "in",
+      "start": 0.42,
+      "end": 0.46
+    },
+    {
+      "text": "that",
+      "start": 0.46,
+      "end": 0.76
+    },
+    {
+      "text": "same",
+      "start": 0.76,
+      "end": 1.06
+    },
+    {
+      "text": "study,",
+      "start": 1.06,
+      "end": 1.54
+    },
+    {
+      "text": "in",
+      "start": 1.66,
+      "end": 1.75
+    },
+    {
+      "text": "punishing",
+      "start": 1.75,
+      "end": 2.43
+    },
+    {
+      "text": "dryness,",
+      "start": 2.43,
+      "end": 3.18
+    },
+    {
+      "text": "below",
+      "start": 3.24,
+      "end": 3.67
+    },
+    {
+      "text": "5%",
+      "start": 3.67,
+      "end": 4.05
+    },
+    {
+      "text": "humidity,",
+      "start": 4.05,
+      "end": 4.98
+    },
+    {
+      "text": "one",
+      "start": 5.07,
+      "end": 5.16
+    },
+    {
+      "text": "stress",
+      "start": 5.16,
+      "end": 5.53
+    },
+    {
+      "text": "measure",
+      "start": 5.63,
+      "end": 5.95
+    },
+    {
+      "text": "actually",
+      "start": 6.12,
+      "end": 6.42
+    },
+    {
+      "text": "got",
+      "start": 6.66,
+      "end": 6.72
+    },
+    {
+      "text": "worse.",
+      "start": 6.98,
+      "end": 7.253
+    },
+    {
+      "text": "It",
+      "start": 7.253,
+      "end": 7.493
+    },
+    {
+      "text": "is",
+      "start": 7.493,
+      "end": 7.553
+    },
+    {
+      "text": "not",
+      "start": 7.553,
+      "end": 7.813
+    },
+    {
+      "text": "a",
+      "start": 7.813,
+      "end": 7.853
+    },
+    {
+      "text": "force",
+      "start": 7.853,
+      "end": 8.193
+    },
+    {
+      "text": "field.",
+      "start": 8.343,
+      "end": 8.653
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 7.253,
+      "text": "Though in that same study, in punishing dryness, below 5% humidity, one stress measure actually got worse."
+    },
+    {
+      "start": 7.253,
+      "end": 8.653,
+      "text": "It is not a force field."
+    }
+  ]
+}

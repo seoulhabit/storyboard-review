@@ -1,0 +1,160 @@
+{
+  "scene": "06-mechanism",
+  "block": "06-mechanism",
+  "cut": {
+    "start": 0.187,
+    "end": 9.807
+  },
+  "gain_db": 5.0,
+  "lufs": -21.8,
+  "wpm": 174.9,
+  "words": [
+    {
+      "text": "Why?",
+      "start": 0.1,
+      "end": 0.396
+    },
+    {
+      "text": "Because",
+      "start": 0.709,
+      "end": 1.015
+    },
+    {
+      "text": "salt",
+      "start": 1.015,
+      "end": 1.089
+    },
+    {
+      "text": "pulls",
+      "start": 1.45,
+      "end": 1.7
+    },
+    {
+      "text": "water",
+      "start": 1.7,
+      "end": 2.042
+    },
+    {
+      "text": "out",
+      "start": 2.042,
+      "end": 2.172
+    },
+    {
+      "text": "of",
+      "start": 2.347,
+      "end": 2.384
+    },
+    {
+      "text": "cells.",
+      "start": 2.384,
+      "end": 3.108
+    },
+    {
+      "text": "Lose",
+      "start": 3.108,
+      "end": 3.108
+    },
+    {
+      "text": "enough",
+      "start": 3.108,
+      "end": 3.147
+    },
+    {
+      "text": "water",
+      "start": 3.147,
+      "end": 3.184
+    },
+    {
+      "text": "and",
+      "start": 3.184,
+      "end": 3.684
+    },
+    {
+      "text": "proteins",
+      "start": 3.684,
+      "end": 4.054
+    },
+    {
+      "text": "start",
+      "start": 4.054,
+      "end": 4.155
+    },
+    {
+      "text": "to",
+      "start": 4.155,
+      "end": 4.516
+    },
+    {
+      "text": "lose",
+      "start": 4.516,
+      "end": 4.553
+    },
+    {
+      "text": "their",
+      "start": 4.553,
+      "end": 4.794
+    },
+    {
+      "text": "shape,",
+      "start": 4.794,
+      "end": 5.145
+    },
+    {
+      "text": "membranes",
+      "start": 5.432,
+      "end": 5.719
+    },
+    {
+      "text": "get",
+      "start": 5.719,
+      "end": 5.765
+    },
+    {
+      "text": "unstable,",
+      "start": 6.256,
+      "end": 6.644
+    },
+    {
+      "text": "and",
+      "start": 6.644,
+      "end": 6.727
+    },
+    {
+      "text": "the",
+      "start": 7.088,
+      "end": 7.181
+    },
+    {
+      "text": "cell",
+      "start": 7.181,
+      "end": 7.542
+    },
+    {
+      "text": "stops",
+      "start": 7.542,
+      "end": 7.995
+    },
+    {
+      "text": "working.",
+      "start": 7.995,
+      "end": 8.92
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 0.396,
+      "text": "Why?"
+    },
+    {
+      "start": 0.709,
+      "end": 3.108,
+      "text": "Because salt pulls water out of cells."
+    },
+    {
+      "start": 3.108,
+      "end": 8.92,
+      "text": "Lose enough water and proteins start to lose their shape, membranes get unstable, and the cell stops working."
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "scene": "07-question",
+  "block": "07-question",
+  "cut": {
+    "start": 0.0,
+    "end": 10.008
+  },
+  "gain_db": 5.0,
+  "lufs": -23.1,
+  "wpm": 176.2,
+  "words": [
+    {
+      "text": "keeps",
+      "start": 0.02,
+      "end": 0.44
+    },
+    {
+      "text": "the",
+      "start": 0.44,
+      "end": 0.68
+    },
+    {
+      "text": "space",
+      "start": 0.73,
+      "end": 1.14
+    },
+    {
+      "text": "around",
+      "start": 1.14,
+      "end": 1.41
+    },
+    {
+      "text": "those",
+      "start": 1.7,
+      "end": 1.8
+    },
+    {
+      "text": "fragile",
+      "start": 1.8,
+      "end": 2.31
+    },
+    {
+      "text": "structures",
+      "start": 2.34,
+      "end": 2.53
+    },
+    {
+      "text": "survivable.",
+      "start": 2.68,
+      "end": 3.636
+    },
+    {
+      "text": "Which",
+      "start": 3.636,
+      "end": 3.636
+    },
+    {
+      "text": "led",
+      "start": 3.636,
+      "end": 3.686
+    },
+    {
+      "text": "skincare",
+      "start": 3.836,
+      "end": 4.406
+    },
+    {
+      "text": "researchers",
+      "start": 4.406,
+      "end": 5.066
+    },
+    {
+      "text": "to",
+      "start": 5.236,
+      "end": 5.336
+    },
+    {
+      "text": "an",
+      "start": 5.336,
+      "end": 5.386
+    },
+    {
+      "text": "obvious",
+      "start": 5.466,
+      "end": 5.756
+    },
+    {
+      "text": "question.",
+      "start": 5.916,
+      "end": 6.236
+    },
+    {
+      "text": "Could",
+      "start": 6.256,
+      "end": 6.542
+    },
+    {
+      "text": "it",
+      "start": 6.542,
+      "end": 6.542
+    },
+    {
+      "text": "do",
+      "start": 6.542,
+      "end": 6.542
+    },
+    {
+      "text": "the",
+      "start": 6.578,
+      "end": 6.758
+    },
+    {
+      "text": "same",
+      "start": 6.758,
+      "end": 7.058
+    },
+    {
+      "text": "for",
+      "start": 7.058,
+      "end": 7.258
+    },
+    {
+      "text": "stressed",
+      "start": 7.558,
+      "end": 7.898
+    },
+    {
+      "text": "human",
+      "start": 7.898,
+      "end": 8.148
+    },
+    {
+      "text": "skin?",
+      "start": 8.308,
+      "end": 8.848
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.02,
+      "end": 3.636,
+      "text": "keeps the space around those fragile structures survivable."
+    },
+    {
+      "start": 3.636,
+      "end": 6.236,
+      "text": "Which led skincare researchers to an obvious question."
+    },
+    {
+      "start": 6.256,
+      "end": 8.848,
+      "text": "Could it do the same for stressed human skin?"
+    }
+  ]
+}

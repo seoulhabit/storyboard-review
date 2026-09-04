@@ -132,18 +132,25 @@ Applied to `SCRIPT.md`; each changes VO **and** on-screen copy.
    used the clinical term first and the plain word only later, which inverts the
    plain-language rule.
 
-## Chapters (long-form; re-derive from real `data-start` before publish)
+## Chapters (long-form; **generated** — `scripts/build_storyboard.py`'s
+`CHAPTERS` dict is the source of truth, mirrored into `STORYBOARD.md` and the
+in-scene chapter band; re-derive rather than hand-edit if a re-render moves
+these)
 
-| # | Payoff title | Est. start |
+**7 real chapters** (this table previously listed 8 — a stale artifact of an
+earlier cut; `CHAPTERS` in `scripts/build_storyboard.py` has always defined
+7, one per act, and the v2 rebuild's word-synced `walk()` timing is what
+finally makes "re-derive from real `data-start`" accurate below):
+
+| # | Payoff title | Start (v2, measured) |
 |---|---|---|
 | 1 | A molecule invented by bacteria trying not to die | 0:00 |
-| 2 | What an "extremolyte" actually is | 0:25 |
-| 3 | Why it is not just another hyaluronic acid | 1:05 |
-| 4 | What it might do for your skin | 1:55 |
-| 5 | What the human evidence actually says | 2:40 |
-| 6 | How to read an ectoin label | 3:35 |
-| 7 | Why K-beauty picked it up | 4:20 |
-| 8 | The verdict | 4:45 |
+| 2 | Why it is not just another hyaluronic acid | 1:09 |
+| 3 | What it might actually do for skin | 2:01 |
+| 4 | What the human evidence really says | 2:49 |
+| 5 | How to read an ectoin label | 3:53 |
+| 6 | Why K-beauty picked it up | 4:44 |
+| 7 | The verdict | 5:09 |
 
 ## Packaging (measured, vidIQ 2026-09-02)
 

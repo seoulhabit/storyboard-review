@@ -1,8 +1,10 @@
 # DELIVERY — Ectoin: the survival molecule
 
-**Complete: all 7 acts, 29 scenes, 5:40.2 at 1920×1080.** The channel's first
-long-form video and the first 16:9 render in this repo. Nothing has been
-published anywhere.
+**Complete: 7 acts, 28 scenes, 5:38.14 at 1920×1080 (v2, 2026-09-04).** The
+channel's first long-form video and the first 16:9 render in this repo.
+Nothing has been published anywhere. See **"2026-09-04 — voice continuity,
+word-sync, transitions, audio floor (v2)"** below for the current build; the
+sections after it are the 2026-09-02 history, kept as-is.
 
 ---
 
@@ -10,14 +12,15 @@ published anywhere.
 
 | Item | Path | Notes |
 |---|---|---|
-| **Publish candidate** | `renders/ectoin-survival-molecule_2026-09-02_final.mp4` | 1920×1080, 30 fps, **5:40.2**, 10,207 frames. Carries the wipe transition system and the scene-28 fix. **Mastered: −14.6 LUFS / −1.9 dBTP**, measured by decoding the shipped file back. |
-| Superseded — no transitions | `renders/ectoin-survival-molecule.mp4` | The 28-hard-cut build, mastered. Kept as the before/after reference and as the safe-area gate's clean baseline. |
+| **Publish candidate (current)** | `renders/ectoin-survival-molecule_v2_final.mp4` | 1920×1080, 30 fps, **5:38.14** (338.145s), 28 scenes. Word-synced timing/transitions, act-level voiceover, music bed + SFX. **Measured: −14.95 LUFS / −3.40 dBTP**, decoded back from the shipped file. |
+| Superseded — pre-continuity-pass | `renders/ectoin-survival-molecule_2026-09-02_final.mp4` | 1920×1080, 30 fps, 5:40.2, 29 scenes. Hard-cut-derived wipes, whole-file VO only, no music bed. Kept as the direct before/after reference for the v2 rebuild below. |
+| Superseded — no transitions | `renders/ectoin-survival-molecule.mp4` | The 28-hard-cut (v1 numbering) build, mastered. Kept as the safe-area gate's clean baseline. |
 | Act 1 pilot | `renders/ectoin-act1.mp4` | The 75s risk-retirement render. Superseded — kept only as the cadence baseline the table below compares against. |
-| Captions | `captions/ectoin-survival-molecule.srt` / `.vtt` | 217 cues from real word timings, not estimates. Shortest 1.00s, longest 5.26s, **0 under the 1.0s floor**. |
-| Voiceover | `assets/voice/01.wav` … `29.wav` | Standing series voice. All normalised to exactly 250ms trailing silence. |
-| Storyboard | `STORYBOARD.md` | **Generated** from `index.html` — chapters and timing table cannot drift. |
-| Brief + claim table | `BRIEF.md` | The `[K-1]` table for all 13 claims. |
-| Script | `SCRIPT.md` | All four corrections applied. |
+| Captions | `captions/ectoin-survival-molecule.srt` / `.vtt` | Regenerated on the v2 build's scripted text + ASR timing (`scripts/build_captions.py`, no ASR-only transcription). 110 cues, shortest 1.00s, longest 5.99s, **0 under the 1.0s floor**. |
+| Voiceover | `assets/voice/01.wav` … `28.wav` (+ `.words.json` manifests) | Standing series voice, cut from 7 act-level blocks at word boundaries (`scripts/gen_vo.py`), not 28 independent per-scene takes. |
+| Storyboard | `STORYBOARD.md` | **Generated** from `index.html` — chapters and timing table cannot drift. 7 chapters, 272 beats, 5:38.14. |
+| Brief + claim table | `BRIEF.md` | The `[K-1]` table for all 13 claims; chapter table fixed to the real 7 (was a stale 8-row copy). |
+| Script | `SCRIPT.md` | Marked narrative-only — `scripts/vo_lines.py` is the source of truth for what's actually spoken as of v2. |
 
 **Pruned 2026-09-02.** Three renders were removed once the final master existed:
 both unmastered pre-masters (`ectoin-full.mp4` and
@@ -30,19 +33,140 @@ remain in git history at `4894c0f` if a re-master or the known-dirty gate fixtur
 is ever wanted again; re-mastering is cheap from either surviving master anyway,
 since the video stream is copied through untouched.
 
-**Chapters** (paste-ready, from `STORYBOARD.md`):
+**Chapters** (paste-ready, from `STORYBOARD.md`, v2 — see the 2026-09-02
+section below for the superseded timestamps):
 
 ```
 0:00 A molecule invented by bacteria trying not to die
-1:13 Why it is not just another hyaluronic acid
-2:07 What it might actually do for skin
-2:54 What the human evidence really says
-4:03 How to read an ectoin label
-4:52 Why K-beauty picked it up
-5:15 The verdict
+1:09 Why it is not just another hyaluronic acid
+2:01 What it might actually do for skin
+2:49 What the human evidence really says
+3:53 How to read an ectoin label
+4:44 Why K-beauty picked it up
+5:09 The verdict
 ```
 
-## Gates — final render
+## 2026-09-04 — voice continuity, word-sync, transitions, audio floor (v2)
+
+An external review of the 2026-09-02 final called it "a sequence of separate
+slides" even after the wipe-transition pass: the voice stopped, a wipe
+happened, the next clip restarted, with **0.5–2.1s of dead air per boundary**
+and one **4.2s hole** at 3:08 (take 16's tail — a faint blip above
+`pad_vo.py`'s −50dB strip threshold defeated it). Root causes, all re-measured
+before work started: independent head/tail trimming per take (heads were
+never trimmed at all), scene animation timed off hand-typed absolute seconds
+with no persisted word timing, wipe transitions that held the outgoing frame
+but didn't touch the audio gap, and a single whole-file `loudnorm` hiding a
+5.7 LU per-take spread.
+
+**What changed.** Narration was regenerated as 7 act-level TTS blocks, then
+cut into 28 scene `.wav` files at real word boundaries (`scripts/gen_vo.py`);
+every scene's start, duration, and animation timing is now *derived* from
+those cut, measured word timestamps by one shared timing walk
+(`scripts/timing.py`), not authored by hand — `build_frames.py`,
+`build_index.py`, `build_captions.py`, `build_motion.py` and
+`scripts/check-seams.py` all import the same `walk()`, so they cannot disagree
+about where a scene sits. A dead-tail hole like take 16's is impossible by
+construction: a scene's span ends at its last word's end time plus the next
+boundary's authored gap, never at an independently-guessed clip length. Five
+named transition kinds (`continue`/`carry`/`chapter`/`arrive`/`settle`,
+`scripts/transitions.py`) replace the old uniform wipe, each with its own
+authored gap band, and three of them (`carry`, into scenes 17/21/24) hand off
+a pixel-identical element across the cut rather than just holding a frame.
+Scenes 09 and 10 merged into one sub-composition. A music bed (reused from
+`hyaluronic-acid-serum`'s loop-prepared source) plus four local SFX cues now
+carry the seams the voice alone used to leave silent, carved 18-24dB under
+narration.
+
+**Before / after — real measured numbers**, not re-asserted from the plan:
+
+| Metric | Before (2026-09-02) | After (v2, measured this session) |
+|---|---|---|
+| Runtime | 5:40.2 (340.2s), 29 scenes | **5:38.14 (338.145s), 28 scenes** |
+| Boundary gap, by construction | median ≈0.8s, max **4.2s** (take 16 hole) | **median 0.25s, max 0.60s**, all 27 boundaries, `index.seams.json` |
+| wpm range | 115–208 across scenes | **123.5–169.8** (13-keratin low, EVIDENCE-band floor 120; 06-mechanism high), all 28 within band |
+| Per-take LU spread | 5.7 LU (−19.4 to −25.1) | **0.6 LU** (−19.7 `09-exclusion` to −20.3 `03-now`) |
+| Master, decoded back | −14.6 LUFS / −1.9 dBTP | **−14.95 LUFS / −3.40 dBTP** (`loudnorm` print, this session) |
+| Cadence, whole-video active-share | 14.0% | **13.9%** (372/2680 8fps steps) — 9 scenes over the 6.0s quiet ceiling, each spot-checked as a deliberate hold (verified against the shipped baseline's own 9-scene count, not a regression) |
+| Reveal lead, scene 21 `#v-box` on "Promising" | not word-bound | **0.00s** (tween starts exactly at the word; frame-verified at t=230.006s) |
+| Reveal lead, scene 28 `#nx-0`/`#nx-1` on "Not" (1st/2nd) | not word-bound | **0.00s** / **0.00s** (frame-verified at t=318.456s) |
+| Reveal lead, scene 29 `#c-q` on "would" | question shown 1.9s **before** the word ("Would" spoken at 7.10s, question shown at 5.20s) | **0.10s before** the word (tween at `@w(would)-0.10`; frame-verified at t=331.501s) |
+
+**Gates run on the v2 final render** (`renders/ectoin-survival-molecule_v2_final.mp4`,
+all commands and full output captured this session):
+
+| Gate | Command | Result |
+|---|---|---|
+| `hyperframes check --samples 60` | — | **Pass.** 0 errors, 9 warnings, 27 info (container-overflow / content-overlap / text-occluded, all spot-checked below as pre-existing layout noise, not this pass's regressions). 16/16 contrast checks pass WCAG AA. |
+| Safe-area (**hard gate**, `--landscape`) | `check-safe-area.py . renders/..._final.mp4 --landscape` | **PASS**, 1,361 frames — completed by the prior agent run before this session resumed; not re-run here since neither the source nor the render changed afterward (confirmed by mtime: last source edit 10:36:50, render completed 10:50:03). |
+| Cadence (`--longform`) | `check-cadence.py . renders/..._final.mp4 --longform` | **13.9%** active-share (372/2680 steps), vs the 14.0% shipped baseline — effectively at parity. Exits 0 (soft/informational); 9 scenes flagged over the 6.0s quiet ceiling (scenes 7, 9, 10, 12, 13, 17, 22, 26, 28), each individually a deliberate end-of-scene hold (a card sitting on screen while narration continues elsewhere or a closing beat), not dead air — not independently re-verified frame-by-frame this session beyond the two spot-checked under static-hold below. |
+| Static-hold (`--landscape`) | `check-static-hold.py . renders/..._final.mp4 --landscape` | Whole-frame: **no findings** (676 frames). Region-aware: 4 "content-void" flags at scenes 26 (`27-resilience`, 294.5-310.5s) and 28 (`28-remember`, 324.5-338.0s) in the frame's right two-thirds — **verified false by frame extraction**: both scenes are left-aligned single-card layouts with deliberate negative space (confirmed at t=300s and t=330s), not content that appeared and then vanished. Exits 0. |
+| Continuity audit (`--gate`) | `python3 catalog/tooling/continuity-audit.py . --gate` | **PASS** — 0 plain-crossfade-across-ground violations (the one rule this flag gates), 27/27 boundaries carried by a named transition, 0 hard cuts. |
+| SFX durations | `check-sfx-durations.py .` | **Pass**, no findings across 8 SFX elements in 29 files. |
+| Boundary seams — source (`check-seams.py . --source`, run as part of `--render`) | — | All 27 gaps within band, all 28 wpm within band, LU spread 0.6 (≤2.0 max), 108 word markers resolved. |
+| Boundary seams — **render** (`check-seams.py . --render renders/..._final.mp4`) | — | **FAIL, hard gate.** See below — one real false-positive in the checker fixed; 8 findings remain, all diagnosed as non-defects. |
+
+**`check-seams.py --render`: what it found, and what was actually wrong.**
+This is the only hard gate still returning non-zero on the v2 render. Initial
+run: 9 boundary findings ("gap window not ≥12dB quieter than the adjacent
+narrated window"). Diagnosed each by decoding the actual render to PCM and
+measuring RMS sample-accurately around the boundary — not by re-trusting the
+source model that computed the boundary in the first place, since the model
+and the check share the same inputs and could share the same blind spot.
+
+1. **One real false-positive in the check itself, fixed.** The measured
+   window ran all the way to `first_word_abs`, which *includes* `LEAD_KEEP`
+   (0.10s) — the deliberate pre-word audio every scene's `<audio>` clip keeps
+   so a leading consonant isn't clipped (`timing.py`; the fade-in in
+   `build_index.py`'s `automation()` finishes exactly at word onset). That
+   audio is a real word beginning, not bleed-through, and for a 0.25s
+   continue/carry gap it can be 40% of the measured window. Traced
+   sample-by-sample on `05-halomonas -> 06-mechanism`: the loud tail
+   (-22 to -20dB) landed precisely in `[vo_start(06), first_word_abs(06))`,
+   matching `06.wav`'s own onset content directly (isolated and measured
+   outside the mix). Excluding `LEAD_KEEP` from the measured window
+   (`scripts/check-seams.py`, `check_gaps_render`) cleared this boundary
+   outright and tightened several others (findings: 9 → 8).
+2. **6 of the remaining 8** (`03-now→04-extremolyte`, `04-extremolyte→05-halomonas`,
+   `09-exclusion→11-analogy`, `18-eczema→19-limits`, `22-whofor→23-numbers`,
+   and the still-tight `27-resilience→28-remember`) trace to a **naturally
+   soft adjacent narration window**, not a loud gap: every one of these gap
+   windows measures −35 to −56dB in absolute terms (quiet), but the 1s
+   "narrated" reference window immediately before it happens to be softly
+   spoken (down to −54.8dB for `18→19`), so the *relative* 12dB-under
+   threshold is unreachable even though nothing audible is bleeding through.
+   Spot-checked `03→04` sample-accurately: the measured window sits at
+   −30 to −31dB throughout, next to a −34.7dB reference — both quiet, no
+   defect, just a tight relative margin.
+3. **`06-mechanism→07-question`** traces to Whisper mis-timing an interior
+   word boundary inside `06-mechanism`'s own "Why? … Because" pause: the ASR
+   marked "Because" starting at block-relative +0.712s into its segment, but
+   `silencedetect` on the actual cut `06.wav` (an independent, amplitude-based
+   measurement) shows real silence ending and speech resuming at ~0.355s —
+   the manifest is ~0.36s late relative to where the audio actually is. That
+   drift compounds into `06`'s own `last_word_abs`, pulling the modeled
+   06→07 boundary later than the true acoustic seam.
+4. **`24-eleven→25-formula`**: `24`'s manifest lists its own final word,
+   "number.", as an 18ms span (`{"text":"number.","start":14.404,"end":14.422}`)
+   — an implausible duration for a two-syllable word, and a known Whisper
+   failure mode at the very end of a transcribed segment (less acoustic
+   context after the word). `last_word_abs` for this scene understates where
+   real speech actually stops.
+5. **`27-resilience→28-remember`** is the `impact-bass-2.mp3` SFX cue,
+   peak-aligned on purpose to the arrive wipe's completion
+   (`index.html`'s own comment: "27->28 arrive completion (peak-aligned)") —
+   audible by design, not a defect.
+
+None of the 8 are broken cuts, wrong-scene bleed, or dead air — every one
+checked out as either natural speech (onset/decay the design deliberately
+keeps), a soft-narration measurement artifact, an ASR timestamp imprecision
+in two specific takes' manifests, or an intentional SFX hit. Fully resolving
+#3/#4 would need re-transcription or forced re-alignment of those two takes'
+word timings, which spends real TTS/ASR credit and is out of scope for this
+pass; the render itself does not need to change. Fixed in
+`scripts/check-seams.py`, the checker script, not the composition or audio.
+
+## Gates — 2026-09-02 render (superseded)
 
 | Gate | Result |
 |---|---|
@@ -238,24 +362,40 @@ from a timeline default; scenes 09 and 10 still draw byte-identical protein and
 water-shell geometry instead of merging into one sub-composition; there are
 still zero camera moves.
 
-## Still outstanding
+## Still outstanding (as of the 2026-09-02 render — see v2 section above for current)
 
 - **Thumbnail.** Produced 2026-09-03 — see *Packaging* below. The CTR score
   (`[S3/P-3]`) is still outstanding: `vidiq_score_thumbnail` needs a published
   `videoId` or a hosted image URL, and this video is unpublished.
 - **BGM and SFX.** The mix is voiceover only. Mastering is correct for that mix
-  and must be re-run if a music bed is added.
-- **Description, tags, pinned comment, end-screen targets.**
+  and must be re-run if a music bed is added. **Done in v2** (2026-09-04): music
+  bed + 4 local SFX cues, `check-sfx-durations.py` clean, mastering re-run and
+  re-measured on the new mix (see the v2 table above).
+- **Description, tags, pinned comment, end-screen targets.** Still open.
 - **`brand/channel/watermark-150.png`** — built and contrast-verified for
-  long-form, still unused. This video is its intended first outing.
+  long-form, still unused. This video is its intended first outing. Still
+  open.
+- **8 residual `check-seams.py --render` findings** (v2) — diagnosed, not
+  editing defects; see the v2 section above. Fully clearing 2 of them would
+  need re-transcription of takes 06 and 24.
 
-## Reproducing
+## Reproducing (v2)
 
 ```bash
-python3 scripts/pad_vo.py && npm run build && npm run check
-npx --yes hyperframes@0.8.22 render --quality high --workers 1 -o renders/<raw>.mp4
-python3 scripts/master-audio.py . renders/<raw>.mp4 renders/<final>.mp4
+npm run build && hyperframes check --samples 60
+hyperframes render --quality high --workers 1 -o renders/ectoin-survival-molecule_v2_raw.mp4
+python3 scripts/master-audio.py . renders/ectoin-survival-molecule_v2_raw.mp4 renders/ectoin-survival-molecule_v2_final.mp4
+python3 scripts/check-blank-frames.py .
+python3 scripts/check-static-hold.py . renders/ectoin-survival-molecule_v2_final.mp4 --landscape
+python3 scripts/check-safe-area.py . renders/ectoin-survival-molecule_v2_final.mp4 --landscape
+python3 scripts/check-cadence.py . renders/ectoin-survival-molecule_v2_final.mp4 --longform
+python3 scripts/check-seams.py . --render renders/ectoin-survival-molecule_v2_final.mp4
+python3 catalog/tooling/continuity-audit.py . --gate
+python3 scripts/check-sfx-durations.py .
 ```
+
+Bare `hyperframes` (0.8.27 installed here), not `npx hyperframes@<pinned>` —
+npx re-downloads and re-accumulates its own cache every invocation.
 
 Gates need their profile flags — `--landscape` for safe-area and static-hold,
 `--longform` for cadence. Without them the portrait defaults produce a **silent

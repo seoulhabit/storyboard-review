@@ -201,7 +201,7 @@ S02 = dict(css=PLATE_CSS, body=(
   // Race into the droplet (V02, sped up), flash, and we are inside the brine
   // with the bacterium (V03) -- its membrane puckers as salt pulls water out.
   tl.fromTo('#flash', { opacity:0 }, { opacity:0.9, duration:0.12, ease:'power2.in' }, 3.22);
-  tl.to('#flash', { opacity:0, duration:0.40, ease:'power2.out' }, 3.34);
+  tl.to('#flash', { opacity:0, duration:0.40, ease:'power2.out' }, 3.36);
 """ + kb('#pv-b', 3.3, 5.9, 1.04, 1.12) + cv_in(3.6) + """
   tl.fromTo('#lt', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.45 }, 0.25);
   tl.set(['#s2-l1','#s2-l2'], { opacity:0 }, 0);

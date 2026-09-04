@@ -1,0 +1,162 @@
+<template data-composition-id="05-use" data-duration="12.16">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper: #fbfaf4;
+    --ink: #0f2016;
+    --green: #2c4a34;
+    --green-deep: #0f2016;
+    --pink: #b9835a;
+    --muted: #6f7d72;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: var(--font-display);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  #u5-directions {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 700px;
+    opacity: 0;
+  }
+  .u5-directions-text {
+    font-weight: 500;
+    font-size: 84px;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  /* ---------- split-compare stage: photo on left, desaturated same photo on right ---------- */
+  #u5-split-stage {
+    position: absolute;
+    left: 72px; right: 162px; top: 220px; height: 900px;
+    opacity: 0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  #u5-photo-left, #u5-photo-right {
+    position: absolute; top: 0; bottom: 0; width: 50%;
+    overflow: hidden;
+  }
+  #u5-photo-left { left: 0; }
+  #u5-photo-right { right: 0; filter: grayscale(1) brightness(0.85); }
+  #u5-photo-left img, #u5-photo-right img {
+    position: absolute; top: 0; left: 0;
+    width: 200%; height: 100%; object-fit: cover;
+  }
+  #u5-photo-right img { left: -100%; }
+  #u5-divider {
+    position: absolute; top: 0; left: 50%; width: 4px; height: 0;
+    background: var(--pink);
+    transform: translateX(-50%);
+  }
+  #u5-flood {
+    position: absolute; top: 0; left: 0; bottom: 0; width: 50%;
+    background: var(--pink);
+    mix-blend-mode: multiply;
+    opacity: 0;
+  }
+
+  .u5-split-label {
+    position: absolute; bottom: 24px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--ink) 78%, transparent);
+    color: var(--paper);
+    opacity: 0;
+  }
+  #u5-label-left { left: 20px; }
+  #u5-label-right { right: 20px; }
+
+  #u5-flag {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 1160px;
+    opacity: 0;
+  }
+  .u5-flag-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px; border-radius: 999px;
+    border: 2px solid var(--muted);
+  }
+  .u5-flag-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
+
+<div id="root" data-composition-id="05-use" data-width="1080" data-height="1920" data-duration="12.16">
+
+  <div id="u5-directions">
+    <div class="u5-directions-text">Follow the<br>Product's Own<br>Directions</div>
+  </div>
+
+  <div id="u5-split-stage" class="clip" data-start="0" data-duration="12.16">
+    <div id="u5-photo-left"><img src="public/06-application-cheek.png" alt="" loading="eager" decoding="sync" width="1536" height="2752"></div>
+    <div id="u5-photo-right"><img src="public/06-application-cheek.png" alt="" loading="eager" decoding="sync" width="1536" height="2752"></div>
+    <div id="u5-flood"></div>
+    <div id="u5-divider"></div>
+    <span class="u5-split-label" id="u5-label-left">Preference</span>
+    <span class="u5-split-label" id="u5-label-right">Not A Law</span>
+  </div>
+
+  <div id="u5-flag">
+    <span class="u5-flag-pill"><span class="u5-flag-text">No study confirms this</span></span>
+  </div>
+</div>
+
+<script>
+  (function () {
+    gsap.set("#u5-directions", { opacity: 0, y: 20 });
+    gsap.set("#u5-split-stage", { opacity: 0 });
+    gsap.set("#u5-divider", { height: "0%" });
+    gsap.set(["#u5-label-left", "#u5-label-right"], { opacity: 0, y: 10 });
+    gsap.set("#u5-flood", { opacity: 0 });
+    gsap.set("#u5-flag", { opacity: 0 });
+
+    var tl = gsap.timeline({ paused: true });
+    window.__timelines = window.__timelines || {};
+    window.__timelines["05-use"] = tl;
+
+    // 0.00-2.00: hard cut in (owned by index.html). Directions card, mask-reveal-up
+    tl.fromTo("#u5-directions", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.10);
+
+    // 2.00-4.00: in-scene hard cut to photoreal application
+    tl.set("#u5-directions", { opacity: 0 }, 2.00);
+    tl.fromTo("#u5-split-stage", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.00);
+    tl.fromTo("#u5-photo-left img", { scale: 1.06 }, { scale: 1.0, duration: 2.0, ease: "sine.out" }, 2.00);
+
+    // 4.00-7.00: split-compare divider draws down centre; labels fade independently
+    tl.fromTo("#u5-divider", { height: "0%" }, { height: "100%", duration: 0.6, ease: "power2.inOut" }, 4.00);
+    tl.fromTo("#u5-label-left", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 4.70);
+    tl.fromTo("#u5-label-right", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 5.20);
+
+    // 7.00-10.00: flood — one accent, multiply, on the interrogated (left) field only
+    tl.fromTo("#u5-flood", { opacity: 0 }, { opacity: 0.38, duration: 0.6, ease: "power2.out" }, 7.10);
+
+    // 10.00-12.16: flood withdraws; unsourced-flag pill lands beside the corrected field
+    tl.to("#u5-flood", { opacity: 0, duration: 0.5, ease: "power2.in" }, 10.10);
+    tl.fromTo("#u5-flag", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 10.20);
+
+    tl.to({}, { duration: 12.16 }, 0);
+  })();
+</script>
+</template>

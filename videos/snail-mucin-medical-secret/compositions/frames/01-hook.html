@@ -2,6 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
 <style data-brand-tokens="">
+  *, *::before, *::after { box-sizing: border-box; }
   @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
   @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
   :root {
@@ -114,7 +115,7 @@
   .hk01-sp-badge {
     position: absolute;
     left: 80px;
-    top: 116px;
+    top: 208px;
     padding: 12px 24px;
     background: rgba(15, 32, 22, 0.4);
     border: 2px solid var(--pink);
@@ -135,7 +136,7 @@
   .phrase-lower {
     position: absolute;
     left: 80px;
-    right: 80px;
+    right: 162px;
     top: 1120px;
   }
 
@@ -145,8 +146,8 @@
 
   .phrase-upper {
     position: absolute;
-    left: 72px;
-    right: 72px;
+    left: 162px;
+    right: 162px;
     top: 300px;
     text-align: center;
   }
@@ -213,7 +214,7 @@
   <div data-hf-id="hf-tbql" class="clip" data-start="0" data-duration="4.4" data-track-index="0">
     <div data-hf-id="hf-v49x" class="cut-wrap" id="scene1-cut">
       <div data-hf-id="hf-hcrz" class="kb-wrap" id="scene1-kb">
-        <img data-hf-id="hf-igp8" class="bg-img archival" src="public/01a-archival-lab.png" alt="">
+        <img data-hf-id="hf-igp8" class="bg-img archival" src="public/01a-archival-lab.png" alt="" loading="eager" decoding="sync" width="1152" height="2048">
         <div data-hf-id="hf-k01a" class="grain-overlay"></div>
       </div>
       <!-- snap-punch layer: same photo, pre-framed tighter/shifted (baked static
@@ -221,11 +222,11 @@
            snap-cut via opacity+filter only -- kb's own scale/x/y stay solely
            owned by its continuous Ken Burns tween, so nothing fights it. -->
       <div class="kb-wrap" id="scene1-punch" style="opacity: 0;">
-        <img class="bg-img archival" src="public/01a-archival-lab.png" alt="" />
+        <img class="bg-img archival" src="public/01a-archival-lab.png" alt=""  loading="eager" decoding="sync" width="1152" height="2048">
         <div class="grain-overlay"></div>
       </div>
       <div data-hf-id="hf-wr30" class="scrim-dim-35"></div>
-      <div data-hf-id="hf-4rub" class="hk01-sp-badge" id="s1-label"><span data-hf-id="hf-qaq5" class="hk01-sp-label">1960s · Spain</span></div>
+      <div data-hf-id="hf-4rub" class="hk01-sp-badge" id="s1-label"><span data-hf-id="hf-qaq5" class="hk01-sp-label" id="s1-label-text">1960s · Spain</span></div>
       <div data-hf-id="hf-8ohz" class="phrase-lower">
         <div data-hf-id="hf-mahm" class="phrase-line" id="s1-phrase"></div>
       </div>
@@ -236,7 +237,7 @@
   <div data-hf-id="hf-08hr" class="clip" data-start="4.4" data-duration="9.12" data-track-index="0">
     <div data-hf-id="hf-70tv" class="cut-wrap" id="scene234-cut">
       <div data-hf-id="hf-wia5" class="kb-wrap" id="scene234-kb">
-        <img data-hf-id="hf-ujyv" class="bg-img macro" src="public/01b-macro-slime-spatula.png" alt="">
+        <img data-hf-id="hf-ujyv" class="bg-img macro" src="public/01b-macro-slime-spatula.png" alt="" loading="eager" decoding="sync" width="1152" height="2048">
       </div>
       <div data-hf-id="hf-jik3" class="scrim-top-fade"></div>
 

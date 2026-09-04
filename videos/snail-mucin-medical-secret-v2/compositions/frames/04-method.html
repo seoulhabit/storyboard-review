@@ -1,0 +1,188 @@
+<template data-composition-id="04-method" data-duration="12.40">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper: #fbfaf4;
+    --ink: #0f2016;
+    --green: #2c4a34;
+    --green-deep: #0f2016;
+    --pink: #b9835a;
+    --muted: #cddfb9;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    background: var(--green-deep);
+    font-family: var(--font-display);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  /* ---------- photoreal plate, cut-wrap > punch-wrap nesting ---------- */
+  #m4-cut-wrap { z-index: 1; overflow: hidden; }
+  #m4-punch-wrap { position: absolute; inset: -8%; will-change: transform; transform-origin: 55% 45%; }
+  #m4-punch-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .m4-scrim {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 40%, transparent 40%, rgba(15,32,22,.55) 100%);
+  }
+
+  #m4-chip-wrap {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 220px;
+    opacity: 0;
+  }
+  .m4-chip {
+    display: inline-block;
+    padding: 16px 28px;
+    background: color-mix(in srgb, var(--green-deep) 88%, transparent);
+    border: 2px solid var(--pink);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fbfaf4;
+  }
+
+  /* ---------- reframed tile row (method comparison) ---------- */
+  #m4-tile-row {
+    position: absolute;
+    left: 72px; right: 162px; top: 780px;
+    display: flex;
+    gap: 20px;
+    height: 300px;
+    z-index: 5;
+  }
+  #m4-plate-tile {
+    flex: 1 1 0;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    opacity: 0;
+  }
+  #m4-plate-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .m4-method-tile {
+    flex: 1 1 0;
+    background: var(--green);
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+    opacity: 0;
+  }
+  .m4-method-tile-text {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fbfaf4;
+  }
+
+  #m4-cruelty-free {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 1110px;
+    opacity: 0;
+  }
+  .m4-cf-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  #m4-unsourced-flag {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 1170px;
+    opacity: 0;
+  }
+  .m4-flag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 2px solid var(--muted);
+    background: transparent;
+  }
+  .m4-flag-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+</style>
+
+<div id="root" data-composition-id="04-method" data-width="1080" data-height="1920" data-duration="12.40">
+
+  <div id="m4-cut-wrap" class="clip" data-start="0" data-duration="12.40">
+    <div id="m4-punch-wrap">
+      <img src="public/04-snail-mesh.png" alt="" loading="eager" decoding="sync" width="1152" height="2048">
+    </div>
+    <div class="m4-scrim"></div>
+  </div>
+
+  <div id="m4-chip-wrap">
+    <span class="m4-chip">Methods Vary</span>
+  </div>
+
+  <div id="m4-tile-row">
+    <div id="m4-plate-tile"><img src="public/04-snail-mesh.png" alt="" loading="eager" decoding="sync" width="1152" height="2048"></div>
+    <div class="m4-method-tile" id="m4-tile-hand"><span class="m4-method-tile-text">By Hand</span></div>
+    <div class="m4-method-tile" id="m4-tile-acid"><span class="m4-method-tile-text">Acid Spray</span></div>
+  </div>
+
+  <div id="m4-cruelty-free">
+    <span class="m4-cf-text">"Cruelty-Free"</span>
+  </div>
+  <div id="m4-unsourced-flag">
+    <span class="m4-flag-pill"><span class="m4-flag-text">Company claim — not independently verified</span></span>
+  </div>
+</div>
+
+<script>
+  (function () {
+    gsap.set("#m4-punch-wrap", { scale: 1 });
+    gsap.set("#m4-chip-wrap", { opacity: 0, scale: 0.9 });
+    gsap.set(["#m4-plate-tile", "#m4-tile-hand", "#m4-tile-acid"], { opacity: 0, y: 16 });
+    gsap.set("#m4-cruelty-free", { opacity: 0 });
+    gsap.set("#m4-unsourced-flag", { opacity: 0 });
+
+    var tl = gsap.timeline({ paused: true });
+    window.__timelines = window.__timelines || {};
+    window.__timelines["04-method"] = tl;
+
+    // 0.00-2.00: hard cut in (owned by index.html); camera punch + tilt, multi-phase-camera
+    tl.to("#m4-punch-wrap", { scale: 1.12, rotate: 1.6, duration: 2.5, ease: "sine.out" }, 0);
+
+    // 2.00-4.00: mono chip "METHODS VARY" over the plate
+    tl.fromTo("#m4-chip-wrap", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, 2.10);
+
+    // 4.00-6.50: camera reset, plate reframes to a third-width tile; two method tiles slide in
+    tl.to("#m4-punch-wrap", { scale: 1.05, rotate: 0, duration: 1.0, ease: "power2.inOut" }, 4.00);
+    tl.fromTo("#m4-plate-tile", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.10);
+    tl.fromTo("#m4-tile-hand", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 4.70);
+    tl.fromTo("#m4-tile-acid", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 5.20);
+
+    // 6.50-9.00: "CRUELTY-FREE" label — muted ink, same treatment as the flag that corrects it
+    tl.fromTo("#m4-cruelty-free", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 6.60);
+
+    // 9.00-12.40: unsourced-flag pill, concurrent with the label it corrects
+    tl.fromTo("#m4-unsourced-flag", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 9.10);
+    // bounded hold-drift on the tile row so nothing freezes through the flag's hold
+    tl.to("#m4-tile-row", { y: -6, duration: 3.0, ease: "sine.inOut" }, 9.20);
+
+    tl.to({}, { duration: 12.40 }, 0);
+  })();
+</script>
+</template>

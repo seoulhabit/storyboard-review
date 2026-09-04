@@ -332,8 +332,8 @@
             // The assembled wall fills the mount with intent: ~76cqh of
             // vertical budget split across rows (gap approximated at 3cqh).
             // Label-only grids take shorter rows so cards stay proportioned.
-            var stageW = isList ? 64 : 88;
-            var rowCap = isList ? 15 : hasBodies ? 38 : 30;
+            var stageW = isList ? 84 : 88;
+            var rowCap = isList ? 34 : hasBodies ? 38 : 30;
             var rowH = Math.max(6, Math.min(rowCap, (76 - 3 * (rows - 1)) / rows));
             root.style.setProperty("--gca-stage-w", stageW + "cqw");
             root.style.setProperty("--gca-row-h", rowH.toFixed(3) + "cqh");
@@ -360,14 +360,14 @@
             }, 0);
             var cellW = stageW / columns;
             var textW = isList ? cellW * 0.62 : cellW * 0.78;
-            var labelCqw = Math.min(2.6, textW / (maxChars * 0.75));
+            var labelCqw = Math.min(6.0, textW / (maxChars * 0.75));
             var labelCqh = rowH * (isList ? 0.23 : 0.09);
             root.style.setProperty(
               "--gca-font",
               "min(" + labelCqw.toFixed(3) + "cqw, " + labelCqh.toFixed(3) + "cqh)",
             );
             if (maxBody > 0) {
-              var bodyCqw = Math.min(2.2, textW / (maxBody * 0.56));
+              var bodyCqw = Math.min(5.0, textW / (maxBody * 0.56));
               var bodyCqh = rowH * (isList ? 0.19 : 0.095);
               root.style.setProperty(
                 "--gca-body-font",

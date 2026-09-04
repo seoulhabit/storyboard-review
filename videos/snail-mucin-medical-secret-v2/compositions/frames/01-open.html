@@ -1,0 +1,137 @@
+<template data-composition-id="01-open" data-duration="7.12">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --green-deep: #0f2016;
+    --pink: #b9835a;
+    --cream: #fbfaf4;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    background: var(--green-deep);
+    font-family: var(--font-display);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  /* ---------- cut-wrap > punch-wrap > kb-wrap nesting (v1 pattern): type
+     siblings stay OFF the scaled/zoomed wrapper, so a punch-in never eats
+     into the safe-area budget of any overlaid copy. ---------- */
+  #o1-cut-wrap { z-index: 1; overflow: hidden; }
+  #o1-punch-wrap { position: absolute; inset: -6%; will-change: transform; }
+  #o1-kb-wrap { position: absolute; inset: 0; }
+  #o1-kb-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: grayscale(1) contrast(1.22) brightness(0.92);
+  }
+  #o1-macro-wrap { position: absolute; inset: -6%; will-change: transform; opacity: 0; }
+  #o1-macro-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .o1-scrim {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(180deg, rgba(15,32,22,.55) 0%, rgba(15,32,22,.15) 38%, rgba(15,32,22,.68) 100%);
+    pointer-events: none;
+  }
+
+  /* ---------- Hero clause: frame 0 already carries the claim ---------- */
+  #o1-hero {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 420px;
+  }
+  .o1-hero-line {
+    font-weight: 500;
+    font-size: 128px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    text-transform: uppercase;
+  }
+  .o1-hero-line .accent { color: var(--pink); }
+
+  /* ---------- Mono chip, spring-pop ---------- */
+  #o1-chip-wrap {
+    position: absolute; z-index: 10;
+    left: 72px; right: 162px; top: 900px;
+    opacity: 0;
+    transform-origin: 0% 50%;
+  }
+  .o1-chip {
+    display: inline-block;
+    padding: 16px 28px;
+    background: color-mix(in srgb, var(--green-deep) 88%, transparent);
+    border: 2px solid var(--pink);
+    border-radius: 8px;
+  }
+  .o1-chip-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.08em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+</style>
+
+<div id="root" data-composition-id="01-open" data-width="1080" data-height="1920" data-duration="7.12">
+
+  <div id="o1-cut-wrap" class="clip" data-start="0" data-duration="7.12">
+    <div id="o1-punch-wrap">
+      <div id="o1-kb-wrap">
+        <img src="public/01a-archival-lab.png" alt="" loading="eager" decoding="sync" width="1152" height="2048">
+      </div>
+    </div>
+    <div id="o1-macro-wrap">
+      <img src="public/01b-macro-slime-spatula.png" alt="" loading="eager" decoding="sync" width="1152" height="2048">
+    </div>
+    <div class="o1-scrim"></div>
+  </div>
+
+  <div id="o1-hero">
+    <div class="o1-hero-line" id="hero-l1">A <span class="accent">1999</span></div>
+    <div class="o1-hero-line" id="hero-l2">STUDY</div>
+  </div>
+
+  <div id="o1-chip-wrap">
+    <span class="o1-chip"><span class="o1-chip-text" id="chip-text">TikTok skipped the study part</span></span>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var SPRING_FROM_SCALE = 0.9, SPRING_OVERSHOOT = 1.7;
+
+    gsap.set(["#hero-l1", "#hero-l2"], { opacity: 0, y: 24 });
+    gsap.set("#o1-macro-wrap", { opacity: 0, scale: 1.04 });
+    gsap.set("#o1-punch-wrap", { scale: 1 });
+    gsap.set("#o1-chip-wrap", { opacity: 0, scale: SPRING_FROM_SCALE });
+
+    var tl = gsap.timeline({ paused: true });
+    window.__timelines = window.__timelines || {};
+    window.__timelines["01-open"] = tl;
+
+    // 0.0-1.6s: hero clause slams in over the archival plate (kinetic-beat-slam)
+    tl.fromTo("#hero-l1", { opacity: 0, y: 24, scale: 1.14 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power4.out" }, 0.10);
+    tl.fromTo("#hero-l2", { opacity: 0, y: 24, scale: 1.14 }, { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: "power4.out" }, 0.28);
+    // continuous drift on the archival plate through the slam
+    tl.to("#o1-punch-wrap", { scale: 1.05, duration: 1.6, ease: "sine.inOut" }, 0);
+
+    // 1.6s: in-scene HARD CUT (opacity swap at zero duration, not a crossfade) to the macro plate
+    tl.set(["#hero-l1", "#hero-l2"], { opacity: 0 }, 1.60);
+    tl.set("#o1-kb-wrap", { opacity: 0 }, 1.60);
+    tl.set("#o1-macro-wrap", { opacity: 1 }, 1.60);
+    // punch continues on the new plate for the rest of the scene
+    tl.fromTo("#o1-macro-wrap", { scale: 1.04 }, { scale: 1.11, duration: 5.52, ease: "sine.inOut" }, 1.60);
+
+    // 2.80-7.12s: mono chip spring-pop (overshoot spend 1 of 2)
+    tl.fromTo("#o1-chip-wrap", { scale: SPRING_FROM_SCALE }, { scale: 1, duration: 0.5, ease: "back.out(" + SPRING_OVERSHOOT + ")" }, 2.80);
+    tl.fromTo("#o1-chip-wrap", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.80);
+
+    tl.to({}, { duration: 7.12 }, 0);
+  })();
+</script>
+</template>

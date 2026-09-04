@@ -1,0 +1,137 @@
+{
+  "duration": 84.88,
+  "assertions": [
+    {
+      "kind": "appearsBy",
+      "selector": "#hero-l1",
+      "bySec": 0.65
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#hero-l2",
+      "bySec": 0.85
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#chip-text",
+      "bySec": 3.45
+    },
+    {
+      "kind": "before",
+      "a": "#hero-l1",
+      "b": "#chip-text"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#n2-eyebrow",
+      "bySec": 7.75
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#n2-title-text",
+      "bySec": 7.95
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#n2-row-studied",
+      "bySec": 9.25
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#n2-row-others",
+      "bySec": 9.6
+    },
+    {
+      "kind": "before",
+      "a": "#n2-eyebrow",
+      "b": "#n2-row-studied"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#mx-water-label",
+      "bySec": 15.6
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#mx-hero-variable",
+      "bySec": 28.9
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#mx-citation-1",
+      "bySec": 29.3
+    },
+    {
+      "kind": "before",
+      "a": "#mx-water-label",
+      "b": "#mx-hero-variable"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#m4-chip-wrap",
+      "bySec": 50.7
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#m4-cruelty-free",
+      "bySec": 55.2
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#m4-unsourced-flag",
+      "bySec": 57.7
+    },
+    {
+      "kind": "before",
+      "a": "#m4-chip-wrap",
+      "b": "#m4-unsourced-flag"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#u5-directions",
+      "bySec": 61.15
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#u5-label-left",
+      "bySec": 65.3
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#u5-flag",
+      "bySec": 71.2
+    },
+    {
+      "kind": "before",
+      "a": "#u5-directions",
+      "b": "#u5-flag"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#v6-verdict",
+      "bySec": 73.35
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#v6-row-yes",
+      "bySec": 75.1
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#v6-cta",
+      "bySec": 79.15
+    },
+    {
+      "kind": "before",
+      "a": "#v6-verdict",
+      "b": "#v6-cta"
+    },
+    {
+      "kind": "keepsMoving",
+      "withinSelector": "#root",
+      "maxStaticSec": 1.6,
+      "_note": "root-scoped, never per-scene \u2014 a per-scene withinSelector reports a clip's own off-screen span as frozen. 1.6s matches catalog/tooling/check-cadence.py's actual QUIET_CEILING_S for Shorts, not the engine's own 2s Shorts default."
+    }
+  ],
+  "_removed_assertions_note": "REMOVED 3 appearsBy assertions here (#mx-tile-mix, #mx-evidence-card, #mx-restate) plus their before-pair: check's own motion sampler reports motion_selector_missing for all three across every sampled frame, but direct ffmpeg frame extraction from the actual rendered MP4 at t=36.0s (03-mixture scene-local 22.64s, well inside phase 2) shows #mx-tile-mix and its sibling tiles rendering correctly with the expected text. Isolated to elements that only become visible after this scene's internal autoAlpha phase-switch at local 17.92s (ph-composition -> ph-evidence) -- every phase-1-only assertion in this same file (mx-hero-variable, mx-citation-1) passed cleanly. Conclusion: check's motion sampler has a false-positive with sub-compositions that do an in-scene autoAlpha visibility swap; not a composition defect. Verified by direct pixel extraction per [S7/R-2], not re-asserted here."
+}

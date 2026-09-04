@@ -2,6 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
   @font-face {
     font-family: "Bricolage Grotesque";
     font-style: normal;
@@ -60,9 +61,9 @@
   /* ---------- topbar ---------- */
   .f05sr-topbar {
     position: absolute;
-    top: 64px;
+    top: 208px;
     left: 80px;
-    right: 80px;
+    right: 162px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -143,7 +144,7 @@
   /* Scenes 3-5 — split sponge test (cards mounted via split-tilt-cards; captions stay host-owned) */
   .f05sr-split-perspective {
     position: absolute;
-    top: 520px;
+    top: 390px;
     left: 0;
     right: 0;
     height: 900px;
@@ -169,7 +170,7 @@
     left: 54px;
   }
   .f05sr-caption-right {
-    right: 54px;
+    right: 162px;
     opacity: 0;
   }
   .f05sr-caption-swap {
@@ -189,7 +190,7 @@
     position: absolute;
     top: 680px;
     left: 54px;
-    right: 54px;
+    right: 162px;
     display: flex;
     flex-direction: column;
     gap: 56px;
@@ -259,7 +260,7 @@
         data-duration="9.09"
         data-track-index="3"
         data-variable-values='{"label_a":"Dry Sponge","label_b":"Misted Sponge","badge_a":"","badge_b":"","accent":"green","exit":"none"}'
-        style="position:absolute; top:0; left:54px; right:54px; height:740px; --bg:#0f2016; --surface:#2c4a34; --border:#8a5a37; --fg:#fbfaf4; --muted:#cddfb9; --brand:#b9835a; --stc-accent:#b9835a; --font-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; --font-display:'Bricolage Grotesque', Georgia, serif;"
+        style="position:absolute; top:0; left:162px; right:162px; height:740px; --bg:#0f2016; --surface:#2c4a34; --border:#8a5a37; --fg:#fbfaf4; --muted:#cddfb9; --brand:#b9835a; --stc-accent:#b9835a; --font-mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; --font-display:'Bricolage Grotesque', Georgia, serif;"
       ></div>
 
       <div class="f05sr-caption f05sr-caption-left" id="f05sr-caption-left">
@@ -338,6 +339,14 @@
     tl.fromTo("#f05sr-topbar-label", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.05);
     tl.fromTo(".f05sr-dot", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power3.out", stagger: 0.05 }, 0.2);
 
+    // [S6/A-10] `hold`: two bounded camera drifts on the stage. Measured on the
+    // 2026-08-29 render and again on the first v2.1 render: the imagery (captions
+    // excluded) was byte-identical for 3.5s at 74.5-78.0s abs and 2.5s at 80.0-82.5s,
+    // against a 2.5s Shorts ceiling / 1.5s still-window cap [S5/C-2]. Drifting the
+    // stage keeps the hold alive without stamping a breathing loop on the text card.
+    tl.to(".f05sr-stage", { y: -14, duration: 3.40, ease: "sine.inOut" }, 0.60);
+    tl.to(".f05sr-stage", { y: 0,   duration: 2.90, ease: "sine.inOut" }, 5.95);
+
     // ================= Scene 1 (0.0-4.64s) — "THE MISTAKE" — Kimberly retime =================
     tl.fromTo("#f05sr-scrim", { opacity: 0 }, { opacity: 0.35, duration: 0.4, ease: "power1.out" }, 0.0);
     tl.fromTo("#f05sr-mistake", { y: 20 }, { y: 0, duration: 0.45, ease: "power3.out" }, 0.05);
@@ -408,6 +417,9 @@
     tl.to("#f05sr-dot-3", { backgroundColor: SHELL, duration: 0.25, ease: "power2.out" }, 22.62);
 
     // settled collective breath — bounded, single cycle, low amplitude
+    // [S6/A-10] `hold`: bounded drift keeping the 20.4-22.6s step hold alive.
+    // Caught by [S7/R-1b] keepsMoving as motion_frozen 94.42-95.95s abs.
+    tl.to("#f05sr-steps", { y: -10, duration: 2.2, ease: "sine.inOut" }, 20.35);
     tl.to("#f05sr-steps", { y: -3, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 1 }, 23.1);
 
     window.__timelines = window.__timelines || {};

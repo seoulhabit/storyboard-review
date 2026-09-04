@@ -1,5 +1,6 @@
 <template>
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
   #root {
     position: relative;
     width: 1080px;
@@ -110,19 +111,23 @@
 
   /* ── label callout: "SNAIL SECRETION FILTRATE" — lower-third ingredient-label beat ── */
   .sm2-label-zone {
-    top: 1160px;
+    top: 1030px;
     left: 90px;
-    right: 90px;
+    right: 162px;
     bottom: auto;
     height: auto;
   }
   .sm2-label-eyebrow {
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 24px;
+    font-size: 28px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--shell);
+    color: var(--pearl);
+    display: inline-block;
+    background: var(--ink-moss);
+    padding: 9px 16px;
+    border-radius: 6px;
     margin-bottom: 14px;
     opacity: 0;
     will-change: opacity, transform;
@@ -149,9 +154,9 @@
 
   /* ── "COMING UP: THE MISTAKE" mono tag, beneath the label ── */
   .sm2-tag-zone {
-    top: 1380px;
+    top: 1200px;
     left: 90px;
-    right: 90px;
+    right: 162px;
     height: 90px;
     display: flex;
     align-items: center;
@@ -182,7 +187,7 @@
   <!-- Track 0: full-bleed real photo w/ Ken Burns drift, spans the whole frame -->
   <div class="clip sm2-photo-layer" data-start="0" data-duration="14.82" data-track-index="0">
     <div class="sm2-photo-wrap" id="sm2PhotoWrap">
-      <img class="sm2-photo" src="public/02-routine-montage.png" alt="" />
+      <img class="sm2-photo" src="public/02-routine-montage.png" alt=""  loading="eager" decoding="sync" width="1152" height="2048">
     </div>
   </div>
 
@@ -207,14 +212,14 @@
   <div class="clip sm2-label-zone" data-start="5.73" data-duration="9.09" data-track-index="6">
     <div class="sm2-label-eyebrow" id="sm2LabelEyebrow">As Listed On The Bottle</div>
     <div class="sm2-label-box" id="sm2LabelBox">
-      <span class="sm2-label-text">Snail Secretion Filtrate</span>
+      <span class="sm2-label-text" id="sm2LabelText">Snail Secretion Filtrate</span>
     </div>
   </div>
 
   <!-- Track 7 (Scene 4, 11.29s-end): "COMING UP: THE MISTAKE" mono tag -->
   <div class="clip sm2-tag-zone" data-start="11.29" data-duration="3.53" data-track-index="7">
     <div class="f02i-sp-badge" id="sm2Tag">
-      <span class="f02i-sp-label">Coming Up: The Mistake</span>
+      <span class="f02i-sp-label" id="sm2TagText">Coming Up: The Mistake</span>
     </div>
   </div>
 

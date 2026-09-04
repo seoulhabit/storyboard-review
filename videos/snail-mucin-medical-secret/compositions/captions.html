@@ -3,6 +3,7 @@
 
 
 <style data-brand-tokens>
+  *, *::before, *::after { box-sizing: border-box; }
       @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: block; }
       @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage-grotesque-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: block; }
       :root {
@@ -20,8 +21,8 @@
       --cap-accent-2: #8a5a37;
       --font-display: "Bricolage Grotesque", system-ui, serif;
       --font-body: "Bricolage Grotesque", system-ui, sans-serif;
-      --cap-band-top: 1600px;
-      --cap-band-height: 320px;
+      --cap-band-top: 1300px;
+      --cap-band-height: 220px;
       }
     </style>
 
@@ -62,7 +63,7 @@
   /* THE oat-cream card — single 2px green hairline border (the system's only
      separator), 6px card radius, NO shadow (flat, paper-based) */
   .caption-pill {
-    max-width: 78%;
+    max-width: 68%;
     padding: 20px 44px 24px;
     background: var(--cap-canvas, #efe7d4);
     border: 2px solid var(--cap-accent, #d27e96);

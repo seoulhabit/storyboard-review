@@ -1,0 +1,77 @@
+[
+  {
+    "text": "One",
+    "start": 0.05,
+    "end": 0.19
+  },
+  {
+    "text": "specific",
+    "start": 0.19,
+    "end": 0.71
+  },
+  {
+    "text": "extract",
+    "start": 0.71,
+    "end": 1.17
+  },
+  {
+    "text": "has",
+    "start": 1.17,
+    "end": 1.24
+  },
+  {
+    "text": "been",
+    "start": 1.41,
+    "end": 1.62
+  },
+  {
+    "text": "studied",
+    "start": 1.62,
+    "end": 2.12
+  },
+  {
+    "text": "in",
+    "start": 2.12,
+    "end": 2.23
+  },
+  {
+    "text": "small",
+    "start": 2.36,
+    "end": 2.58
+  },
+  {
+    "text": "clinical",
+    "start": 2.7,
+    "end": 3.38
+  },
+  {
+    "text": "trials.",
+    "start": 3.38,
+    "end": 4.16
+  },
+  {
+    "text": "Most",
+    "start": 4.2,
+    "end": 4.39
+  },
+  {
+    "text": "snail",
+    "start": 4.45,
+    "end": 4.75
+  },
+  {
+    "text": "mucin",
+    "start": 4.75,
+    "end": 5.07
+  },
+  {
+    "text": "products",
+    "start": 5.07,
+    "end": 5.59
+  },
+  {
+    "text": "haven't.",
+    "start": 5.59,
+    "end": 6.16
+  }
+]

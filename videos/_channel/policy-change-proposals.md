@@ -87,3 +87,61 @@ and `youtube-delivery.md` sets long-form cadence at 8-12s.
 **Proposed:** name one long-form number and use it in all three places. This run
 used 6.0, matching `check-cadence.py --longform`, and left the post-render pixel
 gate strict.
+
+---
+
+## From `snail-mucin-medical-secret` v2.1 retrofit (2026-09-03, render mode)
+
+### P6 — `[S6/A-8]` states the target state but not the retiming procedure
+Converting a crossfade boundary to a cut is not just deleting the tween: the
+clip windows overlap by the transition duration, so the scenes must also be made
+**contiguous**, and the safe pre-check is each scene's **last GSAP cue against
+its shortened window**. Neither is written down. On this run the five boundaries
+needed `data-duration` retimed (14.02→13.52 etc., each landing on its own VO
+length) and every scene's last cue verified first.
+**Proposed:** add both as a sub-clause of A-8.
+
+### P7 — `[S7/R-2]` assumes there is room to move content out of the reserved zones
+"Fix the scene(s) named above" understates the work when the reserved zone is
+already occupied by design. Here the caption band could not slide up until
+**six** lower-third elements across five scenes were shifted first — a coupled
+relayout, not a per-scene fix.
+**Proposed:** name the coupling, and say that the caption band's position is a
+project-wide constraint the scenes must be laid out around, not an overlay.
+
+### P8 — `[S6/A-6]` does not say which box component type resolves against
+A `cqw`/`cqh` font size inside a registry component resolves against its
+**mount**, not the canvas. `grid-card-assemble` in a 756×750 mount resolved to
+16.5px/19.5px and `split-tilt-cards` in a 756×740 mount to 15.9px/16.6px, while
+every scene file passed the same audit cleanly. Worse, this run's own safe-area
+narrowing (900→756px) pushed those component sizes **further under** the floor —
+a rule fix that silently regressed another rule.
+**Proposed:** A-6 must require resolving component type per mount, and flag that
+changing a mount's width is a type-floor change.
+
+### P9 — a component may overwrite the custom properties it documents as inputs
+`grid-card-assemble` computes `--gca-font` / `--gca-body-font` at runtime and
+`setProperty`s them onto its own `#root`, so a host-level override in the mount's
+inline style does nothing. The first fix attempt here looked correct in source,
+passed `check`, and changed nothing on screen; it was caught only on the extracted
+frame, on the second pass.
+**Proposed:** a line in A-6 or `hyperframes-engine.md` — a component-level style
+override is verified on pixels, never assumed from source.
+
+### P10 — `hyperframes snapshot` does not apply a mount's `data-variable-values`
+`snapshot --at` rendered `grid-card-assemble` with its **default** items and
+layout rather than the mount's, so it cannot stand in for a render when verifying
+anything variable-driven. It is still useful for static layout and contrast.
+**Proposed:** note the limitation wherever the runbook suggests a cheap
+verification path. Observed on 0.8.17, not root-caused.
+
+### P11 — a copied QC script's caption-band constant is load-bearing and ships wrong
+`catalog/tooling/check-static-hold.py` ships `CAPTION_BAND_EXCLUDE = False` with
+the comment *"this project has NO burned-in captions"* — inherited from a
+different project. This project does have them, and with the band included the
+constantly-changing karaoke captions keep the whole-frame diff alive and **mask a
+frozen hero region**. Re-deriving it (band 1300–1520) is what surfaced two of the
+three static holds. The script's own docstring already warns about this class of
+bug; the shipped default still contradicts it.
+**Proposed:** make the band a CLI argument with no default, so it cannot be
+inherited silently.

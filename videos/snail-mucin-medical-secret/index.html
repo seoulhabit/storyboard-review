@@ -34,19 +34,19 @@
   </head>
   <body>
     <div data-hf-id="hf-luy9" id="root" data-composition-id="main" data-start="0" data-duration="113.84" data-width="1080" data-height="1920">
-      <div data-hf-id="hf-xxiz" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0" data-duration="14.02" data-track-index="0"></div>
+      <div data-hf-id="hf-xxiz" id="el-01-hook" class="scene" data-composition-id="01-hook" data-composition-src="compositions/frames/01-hook.html" data-start="0" data-duration="13.52" data-track-index="0"></div>
       <audio data-hf-id="hf-49do" id="el-01-hook-voice" src="assets/voice/01.wav" data-start="0" data-duration="13.52" data-track-index="10" data-volume="1"></audio>
 
-      <div data-hf-id="hf-5qrh" id="el-02-intro" class="scene" data-composition-id="02-intro" data-composition-src="compositions/frames/02-intro.html" data-start="13.52" data-duration="14.82" data-track-index="1"></div>
+      <div data-hf-id="hf-5qrh" id="el-02-intro" class="scene" data-composition-id="02-intro" data-composition-src="compositions/frames/02-intro.html" data-start="13.52" data-duration="14.32" data-track-index="1"></div>
       <audio data-hf-id="hf-1l3z" id="el-02-intro-voice" src="assets/voice/02.wav" data-start="13.52" data-duration="14.32" data-track-index="10" data-volume="1"></audio>
 
-      <div data-hf-id="hf-i2kz" id="el-03-chemistry" class="scene" data-composition-id="03-chemistry" data-composition-src="compositions/frames/03-chemistry.html" data-start="27.84" data-duration="25.62" data-track-index="0"></div>
+      <div data-hf-id="hf-i2kz" id="el-03-chemistry" class="scene" data-composition-id="03-chemistry" data-composition-src="compositions/frames/03-chemistry.html" data-start="27.84" data-duration="25.12" data-track-index="0"></div>
       <audio data-hf-id="hf-bx9z" id="el-03-chemistry-voice" src="assets/voice/03.wav" data-start="27.84" data-duration="25.12" data-track-index="10" data-volume="1"></audio>
 
-      <div data-hf-id="hf-upg3" id="el-04-snail-spa" class="scene" data-composition-id="04-snail-spa" data-composition-src="compositions/frames/04-snail-spa.html" data-start="52.96" data-duration="21.54" data-track-index="1"></div>
+      <div data-hf-id="hf-upg3" id="el-04-snail-spa" class="scene" data-composition-id="04-snail-spa" data-composition-src="compositions/frames/04-snail-spa.html" data-start="52.96" data-duration="21.04" data-track-index="1"></div>
       <audio data-hf-id="hf-4sqp" id="el-04-snail-spa-voice" src="assets/voice/04.wav" data-start="52.96" data-duration="21.04" data-track-index="10" data-volume="1"></audio>
 
-      <div data-hf-id="hf-h509" id="el-05-sponge-rule" class="scene" data-composition-id="05-sponge-rule" data-composition-src="compositions/frames/05-sponge-rule.html" data-start="74" data-duration="25.14" data-track-index="0"></div>
+      <div data-hf-id="hf-h509" id="el-05-sponge-rule" class="scene" data-composition-id="05-sponge-rule" data-composition-src="compositions/frames/05-sponge-rule.html" data-start="74" data-duration="24.64" data-track-index="0"></div>
       <audio data-hf-id="hf-6af8" id="el-05-sponge-rule-voice" src="assets/voice/05.wav" data-start="74" data-duration="24.64" data-track-index="10" data-volume="1"></audio>
 
       <div data-hf-id="hf-rl9b" id="el-06-outro" class="scene" data-composition-id="06-outro" data-composition-src="compositions/frames/06-outro.html" data-start="98.64" data-duration="15.2" data-track-index="1"></div>
@@ -103,17 +103,13 @@
       window.__timelines = window.__timelines || {};
       window.__timelines["main"] = gsap.timeline({ paused: true });
       // ── frame transitions (retimed for the Kimberly voice, 2026-08-29) ──
+      // ── A-8 (Short): every scene boundary is a hard CUT. No opacity crossfade
+      //    (both grounds composite at ~50% at the midpoint) and no push-slide
+      //    (it translates whole scenes through the reserved safe-area zones —
+      //    measured as the worst right-zone intrusion of the 2026-08-29 render,
+      //    t=74.00s). Scene visibility is keyed off data-start/data-duration,
+      //    which are now contiguous, so the cut needs no tween at all.
       (function () { var tl = window.__timelines["main"];
-        tl.to("#el-01-hook", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 13.52);
-        tl.fromTo("#el-02-intro", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 13.52);
-        tl.to("#el-02-intro", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 27.84);
-        tl.fromTo("#el-03-chemistry", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 27.84);
-        tl.to("#el-03-chemistry", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 52.96);
-        tl.fromTo("#el-04-snail-spa", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 52.96);
-        tl.to("#el-04-snail-spa", { y: -1920, duration: 0.5, ease: "power3.inOut" }, 74);
-        tl.fromTo("#el-05-sponge-rule", { y: 1920, opacity: 1 }, { y: 0, duration: 0.5, ease: "power3.inOut" }, 74);
-        tl.to("#el-05-sponge-rule", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 98.64);
-        tl.fromTo("#el-06-outro", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 98.64);
         tl.to({}, { duration: 113.84 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
       })();
     </script>

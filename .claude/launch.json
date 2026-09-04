@@ -19,6 +19,13 @@
       "runtimeArgs": ["--yes", "hyperframes@0.8.22", "preview", "--port", "5599"],
       "cwd": "videos/exosome-label-decode",
       "port": 5599
+    },
+    {
+      "name": "ectoin-normal-person",
+      "runtimeExecutable": "hyperframes",
+      "runtimeArgs": ["preview", "--port", "5677"],
+      "cwd": "videos/ectoin-normal-person",
+      "port": 5677
     }
   ]
 }

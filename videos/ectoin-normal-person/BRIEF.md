@@ -1,9 +1,56 @@
 # BRIEF — Ectoin: Explained by SoulHabit, and Then by a Normal Person
 
 **Slug** `ectoin-normal-person` · **Format** 1920×1080 long-form ·
-**Engine** `hyperframes@0.8.22` · **Authoring skill** faceless-video-craft
+**Engine** `hyperframes@0.8.27` (re-pinned from 0.8.22 this revision —
+"already up to date" per `hyperframes upgrade`) · **Authoring skill**
+faceless-video-craft
 
-## Cold-open revision (2026-09-03)
+## Verdict-compression revision (2026-09-03, second revision)
+
+Operator brief: rebuild as a scientifically responsible explainer, preserving
+the dialogue, dry humour, Jargon Alarm, and "supporting actor, not superhero"
+close. Four content requirements: a claim ledger (**`CLAIMS.md`, new this
+revision — read it, not this file's now-superseded §Claim table below**),
+removal of the knowingly-false `t048` ("None of it passed peer review" — see
+§Known-bad line, now resolved), a viewer-facing verdict inside the first 20
+seconds, and compression to 35–45 turns / roughly 430–500 words, mechanism
+and bottle sections first. Full account: `SCRIPT.md` §Changes,
+`scripts/vo_lines.py`'s module docstring, `00-decision-ledger.md`.
+
+**Result: 58 turns/595 words/4:57.02 → 44 turns/489 words/4:01.26**, measured
+(not estimated) via `scripts/timing.py` on the real generated takes. The
+brief's own two length constraints (35–45 turns, ~430–500 words) and its
+runtime constraint (~3:00–3:30) are arithmetically incompatible once checked
+against this project's measured cost model (`speech ≈ 1.45s/turn +
+0.329s/word` — see the ledger). Put to the operator: **word count wins**;
+the runtime overshoot (4:01 vs ~3:30) is a logged, deliberate consequence,
+not a miss.
+
+**The verdict lands inside the first 20 seconds, measured, not estimated.**
+Two new turns (`t076`, `t077`) after the "it's a blend" reveal; `t077`
+completes speaking at **t=18.552s** (`scripts/timing.py`, real audio).
+Confirmed on extracted pixels — `snapshots/verify-open/frame-04-at-18.55s.png`
+shows "LIMITED EVIDENCE. NOT A MIRACLE. NOT A REPLACEMENT FOR TREATMENT."
+rendering exactly as scripted at that timestamp.
+
+Render-hardening also addressed this revision, none of it content-related:
+GSAP vendored locally (`assets/vendor/`, no more CDN dependency in every
+scene file and in `index.html`'s own separate hardcoded tag); every DOM id
+now prefixed with its composition id, applied centrally in
+`_preamble.scene()`; three redundant CSS transform initializers removed
+where GSAP already declared its own `fromTo()` start state; a music bed
+(`assets/music/bed.mp3`, carved against both voice groups) and 14 local SFX
+cues added, sourced from this channel's own existing kits, not freshly
+generated. Full account in `00-decision-ledger.md`.
+
+Mode: `full (revision)` — S0.0/S0 ran fresh (re-pinned CLI, catalog search);
+S1 (claims) ran fresh against live PubMed data; S2 (script) compressed;
+S3 (VO) regenerated 16 of 44 turns; S4/S5 (storyboard/composition) rebuilt
+to match; S6 (validation) ran to a clean `hyperframes check` (`ok: true`,
+0 errors) plus pixel verification; S7 (preview) opened, **awaiting operator
+approval before any render** — S8/S9 out of scope for this request.
+
+## Cold-open revision (2026-09-03, first revision — history, partly superseded)
 
 Operator feedback rewrote the opening: the "11% bottle → it's a blend → turn
 the bottle around" payoff now opens the video at frame 0; the bacteria-origin
@@ -93,7 +140,7 @@ same split the token set already uses for `--ink-2` / `--ink-2-dark`, for the
 same reason. The speaker *mark* is decorative and never carries legibility, so
 a wrong-ground colour can never become a readability bug.
 
-## Structure — 17 units, 28 phases, 58 turns
+## Structure — 17 units, 44 turns (was 58 — see §Verdict-compression revision above)
 
 **Cold-open revision (2026-09-03):** was 18/31/70. `01-hook`, `02-industry`,
 `03-cell` retired (12 turns); two new merged units `01-bottle`/`02-origin`
@@ -148,7 +195,16 @@ push failed the predecessor's hard safe-area gate on **99 frames**, because
 sliding a full-canvas scene drags its content through the reserved zones. A
 wipe moves nothing.
 
-## Claim table
+## Claim table — SUPERSEDED this revision, see `CLAIMS.md`
+
+**This table is history.** `CLAIMS.md` (new this revision) is the canonical
+claim ledger the brief requires — every claim re-verified live against
+PubMed on 2026-09-03, not carried forward from here. Two real corrections
+surfaced there that this table does not reflect: Bow 2021's dry-condition
+finding (C4) does surface in PubMed, contrary to what this table's own prior
+revision believed; and C6/C8's industry connection is **two** companies
+(bitop AG **and** Kao Corporation), not one-plus-unnamed. Kept below for
+provenance only — do not cite from this table.
 
 Every on-screen citation is `Journal · Year`. **No PMID, no internal id, ever
 renders** — those live here and in the description.
@@ -171,20 +227,22 @@ renders** — those live here and in the description.
 Re-run before publish if that date has drifted; the pill carries the year for
 exactly this reason.
 
-## Known-bad line, shipped by operator decision
+## Known-bad line — REMOVED this revision (was: shipped by operator decision)
 
 `t048` — **"None of it passed peer review."**
 
-This is **false**. All twelve trials in C7 are peer-reviewed articles in indexed
-journals; that is what PubMed indexes. It also contradicts C5 and C6, which the
-video cites approvingly about 30 seconds earlier.
+This was **false**. All twelve trials in C7/CLAIMS.md-C7 are peer-reviewed
+articles in indexed journals; that is what PubMed indexes. It also
+contradicted C5/C6, which the video cites approvingly about 30 seconds
+earlier.
 
-It was raised, and the operator elected to keep it. Exposure is limited as far
-as craft allows:
-
-- **VO only.** No on-screen text, no headline, no citation pill, no reinforcement.
-- Not used as a section button or a chapter title.
-- Recorded here and in `DELIVERY.md` so it is not mistaken for a sourced claim.
+The prior revision's operator elected to keep it, VO-only, exposure limited
+as far as craft allows. **This revision's brief reverses that decision**
+(non-negotiable #3: do not knowingly preserve a false line for humour or
+operator preference). Cut outright from `scripts/vo_lines.py`'s `TURNS` and
+from unit `11-twelve`; its take (`t048.wav`) is orphaned, not deleted,
+consistent with how retired ids are already handled elsewhere in
+`_takes.json`. See `CLAIMS.md` §Removed for the full account.
 
 ## Other script changes
 

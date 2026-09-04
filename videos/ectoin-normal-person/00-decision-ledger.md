@@ -196,3 +196,67 @@ S5 (composition markup: vendor GSAP, prefix DOM ids, strip CSS transform
 initialisers on properties GSAP owns, music bed + SFX) and S6/S7
 (validation, preview, render) are separate, subsequent stages — not yet
 run as of this ledger entry.
+
+### [S5] composition markup, [S6] validation — completed
+
+**S5.** `frames_spec.py` rewritten for every unit whose turn/phase structure
+changed (01-bottle, 04-protein, 05-skin, 07-preference, 10-notprove,
+12-bottle, 13-kbeauty, 17-dignity — see the S2 script-compression commit for
+the full per-unit account). Render-hardening, verified against actual GSAP
+call sites before touching anything, not assumed:
+- GSAP 3.14.2 vendored locally (`assets/vendor/`) — was a CDN `<script>` tag
+  in every scene file AND a separately hardcoded one in `build_index.py`.
+- Every DOM id prefixed with its composition id, applied centrally in
+  `_preamble.scene()` via a new `_prefix_ids()` pass — discovers every
+  `id="X"` already assembled (including what `build_frames.py` itself
+  appends), rewrites the HTML attribute, `'#X'`/`"#X"` selectors, and
+  `getElementById()` calls. Two dynamic-selector idioms needed a second
+  pass after the first version shipped 156 spurious runtime warnings:
+  bare id strings in `forEach` array literals concatenated with `'#'`, and
+  loop-generated id STEMS (`'#ob-in-' + i`) shared by a family of real,
+  statically-declared ids. `02-origin`'s fully-dynamic crystal-field ids
+  (never a static `id="X"`) needed a hand fix using the unit's own `c.cid`.
+- 3 genuinely redundant CSS transform initializers removed (`.wash`,
+  `.band-f`, `.alarm`) where GSAP's own `fromTo()` already declares the
+  same start state — verified each call site first; left `.plate-fill` and
+  `.bar .f` alone, since those use bare `.to()` with CSS as their sole
+  initial-state source, not a duplicate of one GSAP owns.
+- Music bed + 14 local SFX cues added (`00-decision-ledger.md`'s own commit
+  message has the full cue table); carved against both voice groups at the
+  hyperframes-audio skill's documented default (strength 0.25, dynamic).
+
+**S6.** `check-tokens.py`, `contrast.py`, `check-dead-sets.py` all clean.
+`hyperframes check --samples 60 --json --snapshots`: **ok: true**, 0 errors
+across lint/runtime/layout/motion/contrast, after fixing 3 real bugs found
+by the check itself (a Python-style `#` comment left inside a JS timeline
+string from an earlier edit; the two dynamic-selector id-prefixing gaps
+above; a `content_overlap` layout error in 10-notprove's funding-disclosure
+card caused by 5 sibling inline elements each carrying `position:relative`
+wrapping to 2 lines — restructured to one wrapping element with the `<b>`
+tags nested rather than sibling). `continuity-audit.py --gate`: pass —
+16/16 boundaries transitioned, 0 hard cuts, top entrance signature 16.7%,
+0 timelines with `defaults:{ease}`, 5 merged scenes, 11 camera moves.
+
+**Verified by pixels** (this project's own R-2 rule), not by manifest:
+midpoint snapshot captured for all 17 sub-compositions
+(`snapshots/midpoints-verdict-revision/`) plus frame 0 and the full verdict
+window (`snapshots/verify-open/`). Confirms: frame 0 composed, not blank;
+the verdict text renders exactly as scripted at the measured 18.55s mark;
+10-notprove shows exactly 2 claim cards; 17-dignity shows the merged
+two-line JAY turn with no stray S interjection; every scene's on-screen
+copy matches `SCRIPT.md` turn for turn. Phone-scale legibility (25%
+downscale of three text-dense frames) confirmed readable, matching the
+design system's own stated type-floor guarantee.
+
+**Studio preview** opened (`hyperframes preview`, port 5677) and confirmed
+functional: timeline populated with all 17 scenes, live scrubbing/playback
+verified (paused at 00:07, matches the pixel-verified verdict window),
+Studio's own lint panel flags 4 findings — all four are
+`assets/thumbnail/cand-a.html`, a standalone Playwright-capture thumbnail
+source file that is never part of the render timeline (no
+`data-composition-id`, never referenced by `index.html`), pre-existing and
+unchanged by this revision. The authoritative gate is `hyperframes check`
+on the actual composition, which is 0 errors.
+
+**S7 — STOPPING HERE per non-negotiable #14.** No render has been run.
+Awaiting explicit operator approval before `hyperframes render`.

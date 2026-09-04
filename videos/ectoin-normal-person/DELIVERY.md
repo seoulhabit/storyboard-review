@@ -1,9 +1,17 @@
 # DELIVERY — Ectoin: Explained by SoulHabit, and Then by a Normal Person
 
-**Slug** `ectoin-normal-person` · **Branch** `claude/faceless-video-feedback-6c6c24`
+**STALE — describes the cold-open revision's render (4:57.02), which this
+project has since moved past.** The current revision (verdict-compression,
+44 turns/489 words, measured 4:01.26, not yet rendered) has its own record
+in `00-decision-ledger.md` and `09-run-report.md` — read those for current
+status. This file is kept as-is below for the prior render's own history;
+it will be superseded by a fresh `DELIVERY.md` once the current revision is
+approved and rendered.
+
+**Slug** `ectoin-normal-person` · **Branch** `claude/ectoin-explainer-rebuild-ad081f`
 **Format** 1920×1080, 30fps, **4:57.02** (cold-open revision; was 5:59.01) · **Engine** `hyperframes@0.8.22`
 
-## Status — COMPLETE (cold-open revision, 2026-09-03)
+## Status — COMPLETE (cold-open revision, 2026-09-03) — SUPERSEDED, see note above
 
 | Deliverable | State |
 |---|---|

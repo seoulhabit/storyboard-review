@@ -37,12 +37,22 @@ The nested form parses as JSON and is rejected at check time with
 that same file is 2, confirming the Shorts-scale default this overrides.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from timing import walk
+
+
+def _prefixed(cid, selector):
+    """Rewrite a selector's leading #id to match _preamble._prefix_ids'
+    output (c<cid>-<id>) -- the same central id-prefixing pass every scene
+    file's own markup goes through. Only the id token is touched; a
+    compound selector's tag/class tail ('#term p', '#k-a .say') is left
+    alone, since only the id half was ever renamed."""
+    return re.sub(r"^#([A-Za-z0-9_-]+)", rf"#c{cid}-\1", selector)
 
 # (unit, phase, copy selector, human note). Selectors point at the <p>/<span>
 # carrying the words, never at the card around them.
@@ -82,7 +92,7 @@ def main():
         # Generous: the copy must be up by the END of its own phase. This
         # asserts the beat HAPPENED, not that it hit a particular frame.
         asserts.append({
-            "kind": "appearsBy", "selector": sel,
+            "kind": "appearsBy", "selector": _prefixed(cid, sel),
             "bySec": round(st + ps + pl, 2),
             "note": f"{cid}/{phase}: {note}",
         })
@@ -90,11 +100,15 @@ def main():
     # Reveal order across the evidence chapter: the study must be on screen
     # before its qualification, or the correction reads as a new claim.
     asserts.append({
-        "kind": "before", "a": "#cl-t", "b": "#cl-s",
+        "kind": "before",
+        "a": _prefixed("07-preference", "#cl-t"),
+        "b": _prefixed("07-preference", "#cl-s"),
         "note": "07-preference: the claim lands before it is qualified",
     })
     asserts.append({
-        "kind": "before", "a": "#num", "b": "#n65",
+        "kind": "before",
+        "a": _prefixed("06-trial104", "#num"),
+        "b": _prefixed("08-eczema", "#n65"),
         "note": "the 104 study precedes the 65 study",
     })
 

@@ -283,7 +283,7 @@
     tl.fromTo('#c11-twelve-tk2', { opacity: 0 }, { opacity: 1, duration: 0.24, ease: 'none' },
               0.300);
     for (var i = 0; i < 12; i++) {
-      tl.fromTo('#tl-' + i, { opacity: 0, scale: 0.86 },
+      tl.fromTo('#c11-twelve-tl-' + i, { opacity: 0, scale: 0.86 },
                 { opacity: 1, scale: 1, duration: 0.26, ease: 'back.out(2)' },
                 0.350 + i * 0.055);
     }
@@ -291,7 +291,7 @@
     // and it is a real measurement, not a rhetorical flourish: four of the
     // twelve study the eyes, nose, throat and lungs.
     for (var j = 8; j < 12; j++) {
-      tl.fromTo('#tw-' + j, { scaleX: 0 },
+      tl.fromTo('#c11-twelve-tw-' + j, { scaleX: 0 },
                 { scaleX: 1, duration: 0.34, ease: 'expo.out' },
                 4.333 + (j - 8) * 0.13);
     }

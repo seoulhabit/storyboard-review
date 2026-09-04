@@ -269,7 +269,7 @@
               font-size:var(--t-chip); letter-spacing:var(--tr-mono); }
     
     </style>
-<div class="ground" style="background:var(--paper)"><div class="stage"><div class="clipbox"><div class="world" id="c10-notprove-world"><div class="drift" id="c10-notprove-drift"><div class="nwrap"><p class="kicker" id="c10-notprove-nk">IT DOES NOT PROVE</p><div class="claims"><div class="cx" id="c10-notprove-x1"><div class="void" id="c10-notprove-xv1"></div><span>CURES<br>ECZEMA</span></div><div class="cx" id="c10-notprove-x3"><div class="void" id="c10-notprove-xv3"></div><span>REPLACES<br>TREATMENT</span></div></div><div class="fund" id="c10-notprove-fu"><div class="wash dim" id="c10-notprove-fw"></div><span id="c10-notprove-fu-a">The evidence is limited, and some of it comes from </span><b>bitop AG</b><span> and </span><b>Kao Corporation</b><span> &mdash; companies that sell the ingredient.</span></div></div><div class="band" id="c10-notprove-band"><div class="band-f" id="c10-notprove-band-f"></div><span class="band-t" id="c10-notprove-band-t"></span></div></div></div></div></div></div>
+<div class="ground" style="background:var(--paper)"><div class="stage"><div class="clipbox"><div class="world" id="c10-notprove-world"><div class="drift" id="c10-notprove-drift"><div class="nwrap"><p class="kicker" id="c10-notprove-nk">IT DOES NOT PROVE</p><div class="claims"><div class="cx" id="c10-notprove-x1"><div class="void" id="c10-notprove-xv1"></div><span>CURES<br>ECZEMA</span></div><div class="cx" id="c10-notprove-x3"><div class="void" id="c10-notprove-xv3"></div><span>REPLACES<br>TREATMENT</span></div></div><div class="fund" id="c10-notprove-fu"><div class="wash dim" id="c10-notprove-fw"></div><span id="c10-notprove-fu-a">The evidence is limited, and some of it comes from <b>bitop AG</b> and <b>Kao Corporation</b> &mdash; companies that sell the ingredient.</span></div></div><div class="band" id="c10-notprove-band"><div class="band-f" id="c10-notprove-band-f"></div><span class="band-t" id="c10-notprove-band-t"></span></div></div></div></div></div></div>
   </div>
   <script src="assets/vendor/gsap-3.14.2.min.js"></script>
   <script>
@@ -278,12 +278,12 @@
 
     // COMPOSED AT t=0 -- same reason as 13-kbeauty. data-start IS the seam.
     tl.set('#c10-notprove-nk', { opacity: 1 }, 0);
-    ['x1','x3'].forEach(function (id) {
+    ['c10-notprove-x1','c10-notprove-x3'].forEach(function (id) {
       tl.set('#' + id, { opacity: 1, y: 0 }, 0);
     });
     // Struck in sequence, each a full card. power3.in makes the strike land
     // rather than drift -- a strike that eases out reads as an appearance.
-    ['xv1','xv3'].forEach(function (id, i) {
+    ['c10-notprove-xv1','c10-notprove-xv3'].forEach(function (id, i) {
       tl.to('#' + id, { opacity: 0.90, duration: 0.20, ease: 'power3.in' },
             1.500 + i * 0.26);
     });

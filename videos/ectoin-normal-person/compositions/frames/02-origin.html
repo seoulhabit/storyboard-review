@@ -286,7 +286,7 @@
         s.setAttribute('width', 14); s.setAttribute('height', 14);
         s.setAttribute('fill', '#59B8AE'); s.setAttribute('opacity', '0');
         s.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-        s.id = 'sx-' + i; g.appendChild(s);
+        s.id = 'c02-origin-sx-' + i; g.appendChild(s);
       }
       var w2 = document.getElementById('c02-origin-water2');
       for (var q = 0; q < 16; q++) {
@@ -314,7 +314,7 @@
     // a hard back.out(2) settle. This is the beat: 40 marks across ~30% of
     // the plate, not a word fading.
     for (var i = 0; i < 40; i++) {
-      tl.fromTo('#sx-' + i, { opacity: 0, scale: 0.3 },
+      tl.fromTo('#c02-origin-sx-' + i, { opacity: 0, scale: 0.3 },
                 { opacity: 0.55, scale: 1, duration: 0.30, ease: 'back.out(2)',
                    transformOrigin: 'center' },
                 0.200 + i * 0.028);

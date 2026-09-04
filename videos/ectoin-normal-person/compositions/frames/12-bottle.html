@@ -318,14 +318,14 @@
     // First clause ("dry, sensitive or irritated skin") -- three states, not
     // four: the merged line drops "over-cleansed" for length, so the visual
     // now matches exactly what is said, not a fourth unstated state.
-    ['st1','st2','st3'].forEach(function (id, i) {
+    ['c12-bottle-st1','c12-bottle-st2','c12-bottle-st3'].forEach(function (id, i) {
       tl.fromTo('#' + id, { opacity: 0, y: 26 },
                 { opacity: 1, y: 0, duration: 0.34, ease: 'back.out(1.6)' },
                 0.500 + i * 0.85);
     });
     // Second clause ("pairs with panthenol, glycerin, squalane and
     // ceramides") -- the pairings, timed to the back half of the same turn.
-    ['pr1','pr2','pr3','pr4'].forEach(function (id, i) {
+    ['c12-bottle-pr1','c12-bottle-pr2','c12-bottle-pr3','c12-bottle-pr4'].forEach(function (id, i) {
       tl.fromTo('#' + id, { opacity: 0, scale: 0.8 },
                 { opacity: 1, scale: 1, duration: 0.30, ease: 'back.out(2.2)' },
                 3.700 + i * 0.75);
@@ -359,7 +359,7 @@
     // world scales and translates; the list itself does not move, which is
     // what makes this read as looking closer rather than as a layout change.
     for (var i = 0; i < 12; i++) {
-      tl.fromTo('#in-' + i, { opacity: 0, x: 18 },
+      tl.fromTo('#c12-bottle-in-' + i, { opacity: 0, x: 18 },
                 { opacity: 1, x: 0, duration: 0.22, ease: 'power1.out' },
                 8.485 + i * 0.05);
     }

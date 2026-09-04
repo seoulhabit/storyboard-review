@@ -506,7 +506,7 @@ def _(c):
         s.setAttribute('width', 14); s.setAttribute('height', 14);
         s.setAttribute('fill', '#59B8AE'); s.setAttribute('opacity', '0');
         s.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-        s.id = 'sx-' + i; g.appendChild(s);
+        s.id = 'c{c.cid}-sx-' + i; g.appendChild(s);
       }}
       var w2 = document.getElementById('water2');
       for (var q = 0; q < 16; q++) {{
@@ -534,7 +534,7 @@ def _(c):
     // a hard back.out(2) settle. This is the beat: 40 marks across ~30% of
     // the plate, not a word fading.
     for (var i = 0; i < 40; i++) {{
-      tl.fromTo('#sx-' + i, {{ opacity: 0, scale: 0.3 }},
+      tl.fromTo('#c{c.cid}-sx-' + i, {{ opacity: 0, scale: 0.3 }},
                 {{ opacity: 0.55, scale: 1, duration: 0.30, ease: 'back.out(2)',
                    transformOrigin: 'center' }},
                 {a + 0.10:.3f} + i * 0.028);
@@ -889,9 +889,9 @@ def _(c):
           stagger: 0.035, ease: 'sine.inOut' }}, {t['t025'] + 3.4:.3f});
     tl.to('#water circle', {{ attr: {{ r: 14 }}, duration: 1.10, stagger: 0.03,
           ease: 'back.out(1.8)' }}, {t['t025'] + 5.2:.3f});
-    # t026 -- the plain-language line, alone this revision (t027/t028's
-    # self-translation exchange is cut). The field settles to a calmer state
-    # in one combined beat instead of three spread across a now-gone exchange.
+    // t026 -- the plain-language line, alone this revision (t027/t028's
+    // self-translation exchange is cut). The field settles to a calmer state
+    // in one combined beat instead of three spread across a now-gone exchange.
     tl.to('#strands path', {{ attr: {{ 'stroke-width': 7, stroke: '#4F6B52' }},
           duration: 1.00, stagger: 0.03, ease: 'power2.inOut' }}, {t['t026'] + 0.3:.3f});
     tl.to('#water circle', {{ attr: {{ r: 11 }}, opacity: 0.9, duration: 0.90,
@@ -1193,9 +1193,9 @@ def _(c):
         '<div class="cx" id="x3"><div class="void" id="xv3"></div><span>REPLACES<br>TREATMENT</span></div>'
         '</div>'
         '<div class="fund" id="fu"><div class="wash dim" id="fw"></div>'
-        '<span id="fu-a">The evidence is limited, and some of it comes from </span>'
-        '<b>bitop AG</b><span> and </span><b>Kao Corporation</b>'
-        '<span> &mdash; companies that sell the ingredient.</span>'
+        '<span id="fu-a">The evidence is limited, and some of it comes from '
+        '<b>bitop AG</b> and <b>Kao Corporation</b>'
+        ' &mdash; companies that sell the ingredient.</span>'
         '</div></div>')
     tl = f"""
     // COMPOSED AT t=0 -- same reason as 13-kbeauty. data-start IS the seam.

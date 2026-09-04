@@ -4,134 +4,134 @@
   "assertions": [
     {
       "kind": "appearsBy",
-      "selector": "#ob-pc",
+      "selector": "#c01-bottle-ob-pc",
       "bySec": 3.61,
       "note": "01-bottle/a: eleven percent, extreme close-up, composed at t=0"
     },
     {
       "kind": "appearsBy",
-      "selector": "#ob-inci",
+      "selector": "#c01-bottle-ob-inci",
       "bySec": 6.28,
       "note": "01-bottle/b: it's a blend -- the INCI list reveal"
     },
     {
       "kind": "appearsBy",
-      "selector": "#ob-vd-t",
+      "selector": "#c01-bottle-ob-vd-t",
       "bySec": 18.55,
       "note": "01-bottle/c: THE VERDICT -- must appear inside the first 20s"
     },
     {
       "kind": "appearsBy",
-      "selector": "#nm",
+      "selector": "#c02-origin-nm",
       "bySec": 31.39,
       "note": "02-origin/a: Halomonas elongata, extremely salty water"
     },
     {
       "kind": "appearsBy",
-      "selector": "#raisin",
+      "selector": "#c02-origin-raisin",
       "bySec": 39.46,
       "note": "02-origin/b: the raisin"
     },
     {
       "kind": "appearsBy",
-      "selector": "#sw2-b",
+      "selector": "#c02-origin-sw2-b",
       "bySec": 44.2,
       "note": "02-origin/c: marketing borrowed the drama"
     },
     {
       "kind": "appearsBy",
-      "selector": "#term p",
+      "selector": "#c04-protein-term p",
       "bySec": 50.52,
       "note": "04-protein/a: the extremolyte gloss"
     },
     {
       "kind": "appearsBy",
-      "selector": "#sw-b",
+      "selector": "#c04-protein-sw-b",
       "bySec": 79.73,
       "note": "04-protein/d: GIVE THE PROTEIN SPACE"
     },
     {
       "kind": "appearsBy",
-      "selector": "#k-a .say",
+      "selector": "#c05-skin-k-a .say",
       "bySec": 87.51,
       "note": "05-skin/a: keratin and water"
     },
     {
       "kind": "appearsBy",
-      "selector": "#vd span",
+      "selector": "#c05-skin-vd span",
       "bySec": 110.62,
       "note": "05-skin/d: support, not armour"
     },
     {
       "kind": "appearsBy",
-      "selector": "#num",
+      "selector": "#c06-trial104-num",
       "bySec": 120.82,
       "note": "06-trial104/a: the 104 count-up"
     },
     {
       "kind": "appearsBy",
-      "selector": "#cl-t",
+      "selector": "#c07-preference-cl-t",
       "bySec": 129.76,
       "note": "07-preference/a: THEY LIKED IT BETTER"
     },
     {
       "kind": "appearsBy",
-      "selector": "#n65",
+      "selector": "#c08-eczema-n65",
       "bySec": 139.21,
       "note": "08-eczema/a: the 65 count-up"
     },
     {
       "kind": "appearsBy",
-      "selector": "#fu-a",
+      "selector": "#c10-notprove-fu-a",
       "bySec": 153.13,
       "note": "10-notprove/a: the funding disclosure"
     },
     {
       "kind": "appearsBy",
-      "selector": "#n12",
+      "selector": "#c11-twelve-n12",
       "bySec": 163.03,
       "note": "11-twelve/a: the twelve count-up"
     },
     {
       "kind": "appearsBy",
-      "selector": "#in-10",
+      "selector": "#c12-bottle-in-10",
       "bySec": 186.97,
       "note": "12-bottle/d: ectoin's real INCI position"
     },
     {
       "kind": "appearsBy",
-      "selector": "#sl span",
+      "selector": "#c14-notnew-sl span",
       "bySec": 209.46,
       "note": "14-notnew/a: not the new hyaluronic acid"
     },
     {
       "kind": "appearsBy",
-      "selector": "#pay span",
+      "selector": "#c15-whatitis-pay span",
       "bySec": 221.13,
       "note": "15-whatitis/a: the payoff line -- WRAPPED, never a bare text node"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s1 span",
+      "selector": "#c16-action-s1 span",
       "bySec": 225.93,
       "note": "16-action/a: the closing action, step 1"
     },
     {
       "kind": "appearsBy",
-      "selector": "#e1 .say",
+      "selector": "#c18-endscreen-e1 .say",
       "bySec": 241.06,
       "note": "18-endscreen/a: the end-screen question"
     },
     {
       "kind": "before",
-      "a": "#cl-t",
-      "b": "#cl-s",
+      "a": "#c07-preference-cl-t",
+      "b": "#c07-preference-cl-s",
       "note": "07-preference: the claim lands before it is qualified"
     },
     {
       "kind": "before",
-      "a": "#num",
-      "b": "#n65",
+      "a": "#c06-trial104-num",
+      "b": "#c08-eczema-n65",
       "note": "the 104 study precedes the 65 study"
     },
     {

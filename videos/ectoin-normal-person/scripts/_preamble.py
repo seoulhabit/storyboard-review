@@ -260,9 +260,40 @@ def _prefix_ids(cid, body, css, timeline):
     path' compound selectors targeting the STATIC parent id, which IS
     covered -- so there is no collision risk left uncovered, only ids that
     were never collision-prone to begin with.
+
+    IS covered, and had to be added after the first version of this function
+    shipped 156 "GSAP target not found" runtime warnings across the piece --
+    two distinct dynamic-selector idioms, neither a static id="X" match:
+
+      1. `['x1','x3'].forEach(function (id) { tl.to('#' + id, ...) })` --
+         a bare id string sitting in an array literal, concatenated with
+         '#' at call time. Matched positionally: 'X' immediately after '['
+         or ',' and immediately before ',' or ']', so an unrelated string
+         that happens to equal a short id name elsewhere in the same
+         unit's JS (plain text content, a CSS value) is not touched.
+      2. `'#ob-in-' + i` -- a STEM shared by a whole family of real,
+         statically-declared ids (ob-in-0 .. ob-in-11, each a real
+         id="ob-in-N" in the markup), concatenated with a loop counter.
+         The stem itself is never a complete id, so the exact-match id
+         regex above cannot see it; every id ending in digits contributes
+         its non-digit prefix as a stem, and every '#stem' string (as a
+         complete quoted literal, not a substring) gets prefixed too.
     """
     combined = body + css + timeline
     ids = sorted(set(re.findall(r'id="([^"]+)"', combined)) - {"root"})
+
+    # A second dynamic-selector idiom, distinct from the array-literal one
+    # above: a static list of ids (like the INCI list's ob-in-0..ob-in-11,
+    # each a real id="..." in the markup) selected in a loop by
+    # concatenating a STEM string with a counter -- '#ob-in-' + i, not a
+    # bare array. The stem itself is never a complete id, so the exact-
+    # match #{old} regex above cannot see it. Derive every stem as the
+    # non-digit prefix of any id ending in digits, longest first so a
+    # shorter stem (e.g. a hypothetical "tl-" vs "tl-0") never shadows a
+    # more specific one.
+    stems = sorted({re.match(r"^(.*?)(\d+)$", i).group(1)
+                     for i in ids if re.match(r"^.*\d+$", i)},
+                    key=len, reverse=True)
 
     def sub(part):
         for old in ids:
@@ -271,6 +302,13 @@ def _prefix_ids(cid, body, css, timeline):
             part = re.sub(rf'#{re.escape(old)}(?![A-Za-z0-9_-])', f'#{new}', part)
             part = part.replace(f"getElementById('{old}')", f"getElementById('{new}')")
             part = part.replace(f'getElementById("{old}")', f'getElementById("{new}")')
+            part = re.sub(rf"(?<=[\[,])(\s*)'{re.escape(old)}'(\s*)(?=[,\]])",
+                           rf"\1'{new}'\2", part)
+            part = re.sub(rf'(?<=[\[,])(\s*)"{re.escape(old)}"(\s*)(?=[,\]])',
+                           rf'\1"{new}"\2', part)
+        for stem in stems:
+            part = part.replace(f"'#{stem}'", f"'#c{cid}-{stem}'")
+            part = part.replace(f'"#{stem}"', f'"#c{cid}-{stem}"')
         return part
 
     return sub(body), sub(css), sub(timeline)

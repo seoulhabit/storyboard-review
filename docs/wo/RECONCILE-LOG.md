@@ -86,6 +86,50 @@
   scene 1's ribbon elements, not introduced by this merge — the tool
   distinguishes these from blocking errors).
 
+## Merge — `hyaluronic-acid-vs-filler` cluster: took `wip/hyaluronic-acid-video-rewrite-1ab509-2026-09-04`
+
+- **Result:** `9042e49`, clean merge, no conflicts (the branch's parent commit
+  was already on master, so this cleanly applied as a proper fast-forward-ish
+  merge rather than an independent-add situation).
+- **Decision:** user chose "take the latest edits" for this three-way
+  overlap (PR #12, this branch, and the shared tree's own WIP), explicitly
+  accepting that being wrong here is low-cost — a lot of this was spike work.
+  Verified "latest" wasn't just a timestamp before merging: filesystem mtimes
+  on the actual composition files showed this branch was edited last
+  (07:52 vs the shared tree's 06:45 vs PR #12's 05:59 commit), and it carries
+  the only rigorous self-documentation of the three (`BEFORE-AFTER-REPORT.md`
+  — measured 120.359s runtime landing in the requested band, disclosed and
+  verified transition-timing limitations, retention-metric comparisons
+  against v1/v2).
+- **Not merged (superseded by this choice):** `claude/hyaluronic-acid-video-rerender-8abe8c`
+  (PR #12) and its WIP companion, `wip/main-tree-2026-09-04`. Neither was
+  deleted — both remain as branches, recoverable if this call turns out
+  wrong.
+- **Checks:** ruff/mypy/pytest pass. `hyperframes check videos/hyaluronic-acid-vs-filler/05-composition`
+  → Check passed (5 info-level layout-overflow advisories, 9/9 contrast
+  checks pass WCAG AA).
+
+## Merge — `ectoin-survival-molecule` cluster: took `claude/voice-animation-sync-409a0a`
+
+- **Result:** `526b55a`, clean merge, no conflicts.
+- **Decision:** same "take the latest edits" call. Verified before merging:
+  both branches have complete final renders (not just one of them) —
+  `voice-animation-sync-409a0a` adds `ectoin-survival-molecule_v2_final.mp4`
+  and `_v2_raw.mp4` in an earlier commit, then its actual final commit
+  (12:07:44, later than `ectoin-voice-timing-revision-825e2c`'s 09:24:45) is
+  a real accuracy fix on top: correcting a stale chapter table (was showing
+  8 rows, `build_storyboard.py`'s `CHAPTERS` dict has always defined 7) and
+  clarifying that `vo_lines.py`, not `SCRIPT.md`, is the source of truth for
+  what's actually spoken.
+- **Not merged (superseded by this choice):** `claude/ectoin-voice-timing-revision-825e2c`.
+  Not deleted — remains as a branch.
+- **Checks:** ruff/mypy/pytest pass. `hyperframes check videos/ectoin-survival-molecule`
+  → Check passed (1 pre-existing contrast warning at t=319s on `#nt-0`, 2
+  lint warnings — a large single-file composition advisory and one overlapping-tween
+  advisory on scene 6 — 3 info-level content-overlap advisories on scene "keratin"
+  kicker text; none block the check, none introduced by this merge specifically
+  vs. what the source branch already had).
+
 ## Merge 2 — `wip/storyboard-6a-2026-09-04`
 
 - **Result:** `b1753ed`, clean merge, no conflicts (confirmed clean ancestry

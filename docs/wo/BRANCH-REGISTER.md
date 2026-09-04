@@ -34,6 +34,13 @@ see open question in GATE0 report); all DROPs here are proposed, not deleted
 
 ## Cluster 2 — `hyaluronic-acid-vs-filler` (triple, heavily overlapping, no two are ancestors of each other)
 
+**Resolved in T5:** user chose "take the latest edits" (confirmed OK to be
+wrong, much of this was spike work). `wip/hyaluronic-acid-video-rewrite-1ab509-2026-09-04`
+merged (`9042e49`, verified genuinely latest-edited by mtime, not just
+guessed); PR #12 and `wip/main-tree-2026-09-04` proposed DROP as superseded.
+Full reasoning in `docs/wo/RECONCILE-LOG.md`. Original analysis below is
+preserved for context.
+
 | Branch | Last commit | Behind/Ahead | Merged? | Files | Open PR | Artefacts | Disposition |
 |---|---|---|---|---|---|---|---|
 | `claude/hyaluronic-acid-video-rerender-8abe8c` | 2026-09-04 05:59, sumit | 16 / 1 | No | 103 | **#12 (open)** "v3: conversational rewrite, human subject, 17-scene restructure" | none new | **ASK** |
@@ -50,6 +57,12 @@ see open question in GATE0 report); all DROPs here are proposed, not deleted
 None of these three can be merged blindly — a git merge would produce extensive conflicts on the exact same files, and even a clean auto-merge would silently interleave three different creative directions into one file. **This needs Kim's explicit call on which version (or which parts of which) ships**, not a git operation. Proposed as `ASK` for all three, not `MERGE`/`DROP`/`CARRY`.
 
 ## Cluster 3 — `ectoin-survival-molecule` (two independent, diverged, full rebuilds)
+
+**Resolved in T5:** same "take the latest edits" call. `claude/voice-animation-sync-409a0a`
+merged (`526b55a`, verified: has its own complete render, and its later
+final commit fixes a real stale chapter-count bug, not just a later
+timestamp); `claude/ectoin-voice-timing-revision-825e2c` proposed DROP as
+superseded. Full reasoning in `docs/wo/RECONCILE-LOG.md`.
 
 | Branch | Last commit | Behind/Ahead | Merged? | Files | Open PR | Artefacts | Disposition |
 |---|---|---|---|---|---|---|---|
@@ -95,19 +108,26 @@ then. Only attempting the real merge surfaced it.
 
 - `session/wo-sbr-001-gate0` — this WO's own working branch (Gate 0 report, branch register, open-items register, this file). Not part of the video/content reconciliation; folds into the `integrate/2026-09-04` branch at T5 per the work order's own design, or can be merged directly to master earlier as pure documentation — Kim's call, lower stakes either way.
 
-## Summary (revised after T5 — see `docs/wo/RECONCILE-LOG.md` for what changed and why)
+## Summary (final, after T5 — see `docs/wo/RECONCILE-LOG.md` for what changed and why)
 
 | Disposition | Branches |
 |---|---|
-| **MERGED** (T5, done) | `claude/snail-mucin-bottle-animation-1d3308` (#14) → `b3cbede`, `wip/storyboard-6a-2026-09-04` → `b1753ed` |
-| **BLOCKED** (Rule 4 — JSON-data conflict, needs a yes) | `claude/kbeauty-ingredient-video-675976` |
-| **DROP** (proposed, not executed — Rule 2) | `claude/laughing-goldberg-1a051f` (#1, now moot, not just superseded), `rescue/34cf30b`, `rescue/f3f95d3`, `claude/eager-cori-d241cf`, `session/story-board-6a`, `session/story-board-a1`, `session/ectoin-normal-person` (superseded, corrected from MERGE), `claude/faceless-video-feedback-6c6c24` (superseded, corrected from MERGE) |
-| **ASK** (Kim's creative/product call, not a git decision) | `claude/hyaluronic-acid-video-rerender-8abe8c` (#12) + its WIP companion, `wip/hyaluronic-acid-video-rewrite-1ab509-2026-09-04`, `wip/main-tree-2026-09-04`, `claude/ectoin-voice-timing-revision-825e2c`, `claude/voice-animation-sync-409a0a` |
+| **MERGED** (T5, done, on `integrate/2026-09-04`) | `claude/snail-mucin-bottle-animation-1d3308` (#14) → `b3cbede` · `wip/storyboard-6a-2026-09-04` → `b1753ed` · `claude/kbeauty-ingredient-video-675976` → `d54e3f5` (one JSON-data conflict resolved: both sides' log entries kept, reordered chronologically) · `wip/hyaluronic-acid-video-rewrite-1ab509-2026-09-04` → `9042e49` · `claude/voice-animation-sync-409a0a` → `526b55a` |
+| **DROP** (proposed, not executed — Rule 2) | `claude/laughing-goldberg-1a051f` (#1, moot), `rescue/34cf30b`, `rescue/f3f95d3`, `claude/eager-cori-d241cf`, `session/story-board-6a`, `session/story-board-a1`, `session/ectoin-normal-person` (superseded), `claude/faceless-video-feedback-6c6c24` (superseded), `claude/hyaluronic-acid-video-rerender-8abe8c` (#12, superseded by the rewrite branch above) + its WIP companion, `wip/main-tree-2026-09-04` (superseded), `claude/ectoin-voice-timing-revision-825e2c` (superseded by voice-animation-sync-409a0a above) |
 
-Of the original 7 "clean" candidates, only 2 actually were: real merge attempts
-(not just diffing) caught that PR #1's cluster is entirely moot and that
-`session/ectoin-normal-person`/`claude/faceless-video-feedback-6c6c24` are
-superseded, not mergeable — neither was visible from `diff --name-only`
-analysis alone. **6 branches across two video projects still need Kim's
-creative judgment** before any merge — not git conflicts, competing creative
-directions on the same content.
+**The two remaining creative-content decisions were resolved on explicit
+instruction ("take the latest edits," confirmed acceptable to get wrong,
+much of the competing work being spike/exploratory)** rather than left as
+ASK. Both choices were verified against real evidence, not just a
+timestamp, before merging — see `docs/wo/RECONCILE-LOG.md`'s entries for
+exactly what was checked. Nothing not-taken was deleted; every superseded
+branch remains recoverable.
+
+Of the original 7 "clean" candidates from the first pass, only 2 actually
+were — real merge attempts (not just diffing) caught that PR #1's cluster was
+entirely moot and that `session/ectoin-normal-person`/`claude/faceless-video-feedback-6c6c24`
+were superseded, neither visible from `diff --name-only` analysis alone.
+**11 of 18 branches are now merged or superseded-and-proposed-for-drop; 7 are
+DROP candidates** (5 originally verified-redundant, plus the two just-resolved
+clusters' losing sides). Nothing has touched master — all of this lives on
+`integrate/2026-09-04`, pushed, pending Gate 2.

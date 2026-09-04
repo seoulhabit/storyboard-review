@@ -68,7 +68,13 @@ TURNS = [
     ("t025", S, "Laboratory research suggests ectoin may help stabilise structures and change how keratin in the outer skin layer interacts with water."),
     ("t026", S, "It may help dry or stressed skin cope more comfortably."),
     ("t029", J, "Does ectoin create an invisible protective force field around my face?"),
-    ("t030", S, "No."),
+    # t030's TTS prompt is padded to "No. Not at all." -- the prior revision's
+    # own DELIVERY.md documents the bare "No." take as PURE SILENCE (this
+    # engine has no room to decay into a bare monosyllable) and names this
+    # exact fix as an accepted option. SCREEN still reads plain "No." (see
+    # SCRIPT.md) -- VO and SCREEN are allowed to diverge by this project's
+    # own stated rule, and this is exactly the case that rule exists for.
+    ("t030", S, "No. Not at all."),
     ("t031", J, "Finally, a skincare ingredient with realistic boundaries."),
     ("t032", S, "Think of ectoin as support for the skin barrier, not body armour."),
     # ---- CH4: does it work on people ----------------------------------------

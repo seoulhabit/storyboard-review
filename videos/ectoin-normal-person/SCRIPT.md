@@ -154,8 +154,11 @@ length in the skin section per the brief's compression order.
 ### S14 · no force field
 - t029 **J** VO: Does ectoin create an invisible protective force field around my face?
   SCREEN: `FORCE FIELD?`
-- t030 **S** VO: No.
-  SCREEN: `FORCE FIELD?` → struck through
+- t030 **S** VO: No. Not at all.
+  SCREEN: `FORCE FIELD?` → struck through — **VO padded, SCREEN stays plain
+  "No."** The prior revision's `DELIVERY.md` documents the bare "No." take as
+  pure silence (this engine needs more than one syllable to decay into) and
+  names this exact fix as an accepted option.
 - t031 **J** VO: Finally, a skincare ingredient with realistic boundaries.
 
 ### S15 · support, not armour

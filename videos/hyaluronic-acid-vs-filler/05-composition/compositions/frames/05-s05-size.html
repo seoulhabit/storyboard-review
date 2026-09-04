@@ -1,0 +1,113 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#F7F5F0; color:#131516;
+  }
+  .clip { position:absolute; inset:0; }
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:#4B9B93; }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+            align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel .actor { color:var(--ink); }
+
+</style>
+
+<div id="root" data-composition-id="s05-size" data-width="1920" data-height="1080"
+     data-duration="11.785">
+  <div class="clip stage" id="s05-size-stage" data-start="0" data-duration="11.785">
+    <div class="split2">
+      <div class="col" id="s05-size-col">
+        <div class="head beat is-entering" id="s05-size-b0">In a serum, size decides almost everything</div>
+        <div class="body beat is-entering" id="s05-size-b2">Large chains mostly stay near the surface</div>
+        <div class="body beat is-entering" id="s05-size-b3">Smaller ones may travel farther into the upper layers</div>
+        <div class="cite beat is-entering" id="s05-size-b5">Skin Res Technol · 2015</div>
+      </div>
+      <div class="panel" id="s05-size-panel">
+        <svg class="actor" viewBox="0 0 480 560" width="480" height="560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <g class="big" id="s05-size-biggrp">
+      <path id="s05-size-big0" d="M 201.3 188.2 C 228.2 188.2 241.6 152.8 268.5 152.8 C 295.4 152.8 308.8 207.8 335.7 207.8 C 362.6 207.8 376.0 169.8 402.9 169.8" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      <path id="s05-size-big1" d="M 123.9 71.0 C 150.8 71.0 164.2 55.0 191.1 55.0 C 218.0 55.0 231.4 96.6 258.3 96.6 C 285.2 96.6 298.6 66.0 325.5 66.0" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      <path id="s05-size-big2" d="M 24.9 74.8 C 51.7 74.8 65.2 48.9 92.1 48.9 C 118.9 48.9 132.4 96.3 159.3 96.3 C 186.1 96.3 199.6 65.4 226.5 65.4" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
+      </g>
+      <line class="skin" x1="0" y1="257.6" x2="480" y2="257.6" stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>
+      <g class="small" id="s05-size-smallgrp">
+      <path id="s05-size-small0" d="M 142.1 312.6 C 151.3 312.6 155.9 309.5 165.1 309.5 C 174.3 309.5 178.9 314.7 188.1 314.7 C 197.3 314.7 201.9 306.8 211.1 306.8 C 220.3 306.8 224.9 320.0 234.1 320.0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small1" d="M 143.3 465.6 C 152.5 465.6 157.1 465.6 166.3 465.6 C 175.5 465.6 180.1 470.9 189.3 470.9 C 198.5 470.9 203.1 460.6 212.3 460.6 C 221.5 460.6 226.1 469.3 235.3 469.3" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small2" d="M 181.2 458.0 C 190.4 458.0 195.0 455.3 204.2 455.3 C 213.4 455.3 218.0 461.5 227.2 461.5 C 236.4 461.5 241.0 450.2 250.2 450.2 C 259.4 450.2 264.0 460.7 273.2 460.7" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small3" d="M 130.0 476.7 C 139.2 476.7 143.8 474.5 153.0 474.5 C 162.2 474.5 166.8 479.1 176.0 479.1 C 185.2 479.1 189.8 470.9 199.0 470.9 C 208.2 470.9 212.8 483.3 222.0 483.3" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small4" d="M 214.8 478.8 C 224.0 478.8 228.6 477.5 237.8 477.5 C 247.0 477.5 251.6 481.6 260.8 481.6 C 270.0 481.6 274.6 474.0 283.8 474.0 C 293.0 474.0 297.6 488.2 306.8 488.2" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small5" d="M 206.7 352.0 C 215.9 352.0 220.5 355.7 229.7 355.7 C 238.9 355.7 243.5 359.8 252.7 359.8 C 261.9 359.8 266.5 353.0 275.7 353.0 C 284.9 353.0 289.5 359.0 298.7 359.0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small6" d="M 205.5 502.6 C 214.7 502.6 219.3 503.8 228.5 503.8 C 237.7 503.8 242.3 502.5 251.5 502.5 C 260.7 502.5 265.3 501.0 274.5 501.0 C 283.7 501.0 288.3 504.5 297.5 504.5" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small7" d="M 161.5 305.2 C 170.7 305.2 175.3 302.7 184.5 302.7 C 193.7 302.7 198.3 309.5 207.5 309.5 C 216.7 309.5 221.3 300.6 230.5 300.6 C 239.7 300.6 244.3 312.2 253.5 312.2" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      <path id="s05-size-small8" d="M 203.1 519.3 C 212.3 519.3 216.9 514.6 226.1 514.6 C 235.3 514.6 239.9 524.1 249.1 524.1 C 258.3 524.1 262.9 511.9 272.1 511.9 C 281.3 511.9 285.9 521.0 295.1 521.0" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+      </g>
+    </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s05-size-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s05-size-biggrp', { y: -34 });
+  gsap.set('#s05-size-smallgrp', { y: -8, opacity: 0.55 });
+  gsap.set('#s05-size-b0', { opacity: 0, y: 30 });
+  gsap.set('#s05-size-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s05-size-b3', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s05-size-b5', { opacity: 0, y: 30 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s05-size-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
+  tl.to('#s05-size-biggrp', { y: 0, duration: 2.000, ease: 'power2.out' }, 3.160);
+  tl.to('#s05-size-smallgrp', { y: 46, opacity: 1, duration: 1.900, ease: 'power1.inOut' }, 6.545);
+  tl.to('#s05-size-b0', { opacity: 1, y: 0, duration: 1.400, ease: 'power3.out' }, 0.000);
+  tl.to('#s05-size-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.160);
+  tl.to('#s05-size-b3', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 6.545);
+  tl.to('#s05-size-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 10.157);
+  tl.to('#s05-size-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
+  tl.to('#s05-size-panel', { x: -9, y: 6, scale: 1.005, duration: 0.112, ease: 'sine.inOut' }, 10.045);
+  tl.to({}, { duration: 11.785, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s05-size'] = tl;
+})();
+</script>
+</template>

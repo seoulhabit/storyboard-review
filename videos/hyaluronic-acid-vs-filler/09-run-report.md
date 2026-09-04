@@ -1,4 +1,63 @@
-# Run report — hyaluronic-acid-vs-filler (v2 revision)
+# Run report — hyaluronic-acid-vs-filler (v3 retention rewrite)
+
+## v3 Summary — 2026-09-04
+
+- Mode: `full` (revision) — retention rewrite on top of the v2 baseline
+  (commit `dd34015`). New script, new VO, new beat sheet, composition
+  regenerated from scratch, not hand-edited.
+- Result: **draft complete, stopped for approval before the publish-ready
+  render** — per the brief, `06-render/final.mp4` (v2, 160.000s) was not
+  touched; the proof copy is `06-render/proof/draft.mp4`.
+- Spend: VO 21.5 Higgsfield credits (~$0.43), preflighted with `get_cost:true`
+  before the first spend — see `cost-log.jsonl`.
+- Full before/after numbers, per-scene durations, and the one disclosed
+  limitation: **`BEFORE-AFTER-REPORT.md`** (project root). Full mechanical
+  account of every change: `00-decision-ledger.md` §"re-run — v3 revision".
+
+**Headline**: 309 words (target 300–330), **120.359s measured** (target
+120–135s, VO-driven — the build script no longer stretches to a fixed
+number), 12 Kimberly-only stems (down from v2's 13), 14 scenes (max
+13.767s, down from v2's 22.281s). Central answer measured at **5.411s**,
+all three identities at **10.095s** — both now independently-recorded facts
+(the hook was split into two stems specifically so these two brief
+requirements would be directly measurable, not estimated).
+
+**Composition**: v2's 27 container-drift tweens across 0 mechanism-level
+tweens (confirmed by grep before writing any new code) are replaced with
+real per-element motion — chain groups crossing a boundary, water dots
+binding and later detaching, lattice nodes popping in staggered. `check
+--json --samples 40`: **ok: true, 0 errors** (lint/runtime/layout/motion/
+contrast). `hyperframes keyframes --json`: 127 visual-change events, largest
+gap 3.50s anywhere / 3.27s in the first 30s. Rendered-pixel
+`check-cadence.py --longform`: **PASS**, no scene exceeds the 6.0s ceiling,
+19.1% whole-video active share. `check-safe-area.py --landscape`: **0
+findings across 481 sampled frames**. `continuity-audit.py --gate`: pass (no
+plain crossfade across a ground change); its 3 flagged "rebuilt-actor pairs"
+are documented deliberate same-seed actor reuse across adjacent scenes
+(s01↔s02, s05↔s06, s07↔s08), verified on extracted frames, not redraws.
+
+**Audio**: two-pass loudnorm (voice bus: highpass 85Hz, compressor
+-26dB/4:1/makeup +11dB, limiter 0.60 linear with auto-level disabled; music
+at 0.22; `amix normalize=0`), landing at **-14.8 LUFS integrated / -1.6 dBTP**
+on the decoded, shipped file — both inside spec (\|I+14\|≤1.0, TP<-1.0). Took
+several iterations: a low-bitrate default AAC encode was introducing enough
+intersample overshoot to read as clipping (measured up to -0.0 dBFS) before
+pinning an explicit 192kbps AAC bitrate stabilized it.
+
+**Studio preview**: watched end-to-end at 8 checkpoints after stopping the
+preview server and regenerating clean (it injects `data-hf-id` into every
+tag while running, per this repo's CLAUDE.md — confirmed present after
+stopping, confirmed absent after a clean `rm -rf` + regenerate).
+
+**Disclosed limitation**: `check-static-hold.py` found 9 brief (~1-1.25s)
+near-empty windows at same-ground scene-transition boundaries, confirmed
+real (not a false positive) on extracted frames — see BEFORE-AFTER-REPORT.md.
+Does not fail the pixel-cadence gate; flagged as a rough edge for a possible
+follow-up pass, not fixed in this round given the scope already covered.
+
+---
+
+# Run report — hyaluronic-acid-vs-filler (v2 revision, superseded above)
 
 ## Summary
 

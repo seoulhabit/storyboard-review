@@ -1,426 +1,346 @@
 {
-  "duration": 160.0,
+  "duration": 120.359,
   "assertions": [
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b0",
-      "bySec": 1.65
+      "selector": "#s01-thesis-b0",
+      "bySec": 1.35
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b1",
-      "bySec": 2.631
+      "selector": "#s01-thesis-b1",
+      "bySec": 3.544
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-thesis-b2",
+      "bySec": 5.308
     },
     {
       "kind": "before",
-      "a": "#s01-lineup-b0",
-      "b": "#s01-lineup-b1"
+      "a": "#s01-thesis-b0",
+      "b": "#s01-thesis-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b2",
-      "bySec": 5.416
+      "selector": "#s02-identities-b0",
+      "bySec": 7.361
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s02-identities-b1",
+      "bySec": 8.784
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s02-identities-b2",
+      "bySec": 10.206
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-not-filler-b0",
+      "bySec": 12.745
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-not-filler-b2",
+      "bySec": 15.635
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-not-filler-b3",
+      "bySec": 18.901
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s03-not-filler-b4",
+      "bySec": 20.83
     },
     {
       "kind": "before",
-      "a": "#s01-lineup-b1",
-      "b": "#s01-lineup-b2"
+      "a": "#s03-not-filler-b0",
+      "b": "#s03-not-filler-b4"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b3",
-      "bySec": 8.039
+      "selector": "#s04-split-b0",
+      "bySec": 23.551
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b4",
-      "bySec": 10.662
+      "selector": "#s04-split-b2",
+      "bySec": 27.486
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b6",
-      "bySec": 13.675
+      "selector": "#s04-split-b3",
+      "bySec": 30.422
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s05-size-b0",
+      "bySec": 32.945
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s05-size-b2",
+      "bySec": 36.305
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s05-size-b3",
+      "bySec": 39.69
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s05-size-b5",
+      "bySec": 42.702
     },
     {
       "kind": "before",
-      "a": "#s01-lineup-b2",
-      "b": "#s01-lineup-b6"
+      "a": "#s05-size-b0",
+      "b": "#s05-size-b5"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s02-not-filler-b0",
-      "bySec": 16.284
+      "selector": "#s06-plumping-b0",
+      "bySec": 44.63
     },
     {
       "kind": "appearsBy",
-      "selector": "#s02-not-filler-b2",
-      "bySec": 18.389
+      "selector": "#s06-plumping-b2",
+      "bySec": 47.981
     },
     {
       "kind": "appearsBy",
-      "selector": "#s02-not-filler-b3",
-      "bySec": 20.727
+      "selector": "#s06-plumping-b3",
+      "bySec": 51.013
     },
     {
       "kind": "before",
-      "a": "#s02-not-filler-b0",
-      "b": "#s02-not-filler-b3"
+      "a": "#s06-plumping-b0",
+      "b": "#s06-plumping-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s03-origin-b0",
-      "bySec": 23.482
+      "selector": "#s07-binds-b0",
+      "bySec": 52.857
     },
     {
       "kind": "appearsBy",
-      "selector": "#s03-origin-b1",
-      "bySec": 25.338
+      "selector": "#s07-binds-b2",
+      "bySec": 55.768
     },
     {
       "kind": "appearsBy",
-      "selector": "#s03-origin-b2",
-      "bySec": 27.572
+      "selector": "#s07-binds-b3",
+      "bySec": 57.741
     },
     {
       "kind": "before",
-      "a": "#s03-origin-b0",
-      "b": "#s03-origin-b2"
+      "a": "#s07-binds-b0",
+      "b": "#s07-binds-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b0",
-      "bySec": 30.363
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s04-body-b2",
-      "bySec": 33.272
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s04-body-b3",
-      "bySec": 34.812
+      "selector": "#s07-binds-b4",
+      "bySec": 60.082
     },
     {
       "kind": "before",
-      "a": "#s04-body-b0",
-      "b": "#s04-body-b3"
+      "a": "#s07-binds-b3",
+      "b": "#s07-binds-b4"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b4",
-      "bySec": 36.763
+      "selector": "#s08-seals-b0",
+      "bySec": 62.206
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b5",
-      "bySec": 38.302
+      "selector": "#s08-seals-b1",
+      "bySec": 65.016
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s08-seals-b2",
+      "bySec": 66.808
     },
     {
       "kind": "before",
-      "a": "#s04-body-b3",
-      "b": "#s04-body-b5"
+      "a": "#s08-seals-b0",
+      "b": "#s08-seals-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b0",
-      "bySec": 40.676
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s05-compare-b2",
-      "bySec": 43.726
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s05-compare-b4",
-      "bySec": 47.801
+      "selector": "#s08-seals-b3",
+      "bySec": 67.903
     },
     {
       "kind": "before",
-      "a": "#s05-compare-b0",
-      "b": "#s05-compare-b4"
+      "a": "#s08-seals-b2",
+      "b": "#s08-seals-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b5",
-      "bySec": 49.926
+      "selector": "#s09-crosslink-b0",
+      "bySec": 69.303
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b6",
-      "bySec": 52.653
+      "selector": "#s09-crosslink-b2",
+      "bySec": 72.026
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s09-crosslink-b3",
+      "bySec": 74.478
     },
     {
       "kind": "before",
-      "a": "#s05-compare-b4",
-      "b": "#s05-compare-b6"
+      "a": "#s09-crosslink-b0",
+      "b": "#s09-crosslink-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b0",
-      "bySec": 55.765
+      "selector": "#s09-crosslink-b4",
+      "bySec": 76.193
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b1",
-      "bySec": 56.686
+      "selector": "#s10-origin-b0",
+      "bySec": 79.694
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s10-origin-b1",
+      "bySec": 81.541
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s10-origin-b2",
+      "bySec": 83.288
     },
     {
       "kind": "before",
-      "a": "#s06-serum-size-b0",
-      "b": "#s06-serum-size-b1"
+      "a": "#s10-origin-b0",
+      "b": "#s10-origin-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b2",
-      "bySec": 59.419
+      "selector": "#s11-warning-b0",
+      "bySec": 85.586
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b4",
-      "bySec": 63.399
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s06-serum-size-b5",
-      "bySec": 65.927
+      "selector": "#s11-warning-b2",
+      "bySec": 87.442
     },
     {
       "kind": "before",
-      "a": "#s06-serum-size-b1",
-      "b": "#s06-serum-size-b5"
+      "a": "#s11-warning-b0",
+      "b": "#s11-warning-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b6",
-      "bySec": 67.833
+      "selector": "#s11-warning-b3",
+      "bySec": 88.716
     },
     {
       "kind": "before",
-      "a": "#s06-serum-size-b5",
-      "b": "#s06-serum-size-b6"
+      "a": "#s11-warning-b2",
+      "b": "#s11-warning-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s07-plumping-b0",
-      "bySec": 69.586
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s07-plumping-b2",
-      "bySec": 72.615
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s07-plumping-b4",
-      "bySec": 76.376
+      "selector": "#s11-warning-b4",
+      "bySec": 90.084
     },
     {
       "kind": "before",
-      "a": "#s07-plumping-b0",
-      "b": "#s07-plumping-b4"
+      "a": "#s11-warning-b3",
+      "b": "#s11-warning-b4"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s07-plumping-b5",
-      "bySec": 79.205
+      "selector": "#s12-risks-b0",
+      "bySec": 92.159
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s12-risks-b2",
+      "bySec": 95.263
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s12-risks-b3",
+      "bySec": 98.748
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s12-risks-b4",
+      "bySec": 101.553
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s13-badges-b0",
+      "bySec": 104.776
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s13-badges-b2",
+      "bySec": 107.96
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s13-badges-b4",
+      "bySec": 111.629
     },
     {
       "kind": "before",
-      "a": "#s07-plumping-b4",
-      "b": "#s07-plumping-b5"
+      "a": "#s13-badges-b0",
+      "b": "#s13-badges-b4"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b0",
-      "bySec": 82.658
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s08-binds-water-b1",
-      "bySec": 85.897
+      "selector": "#s13-badges-b5",
+      "bySec": 114.199
     },
     {
       "kind": "before",
-      "a": "#s08-binds-water-b0",
-      "b": "#s08-binds-water-b1"
+      "a": "#s13-badges-b4",
+      "b": "#s13-badges-b5"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b2",
-      "bySec": 88.436
+      "selector": "#s13-badges-b6",
+      "bySec": 116.134
     },
     {
       "kind": "before",
-      "a": "#s08-binds-water-b1",
-      "b": "#s08-binds-water-b2"
+      "a": "#s13-badges-b5",
+      "b": "#s13-badges-b6"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b3",
-      "bySec": 91.171
+      "selector": "#s14-endcard-b0",
+      "bySec": 117.626
     },
     {
       "kind": "appearsBy",
-      "selector": "#s09-lifeguard-b0",
-      "bySec": 95.003
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s09-lifeguard-b3",
-      "bySec": 101.948
+      "selector": "#s14-endcard-b1",
+      "bySec": 120.296
     },
     {
       "kind": "before",
-      "a": "#s09-lifeguard-b0",
-      "b": "#s09-lifeguard-b3"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s10-crosslink-b0",
-      "bySec": 107.693
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s10-crosslink-b2",
-      "bySec": 110.406
-    },
-    {
-      "kind": "before",
-      "a": "#s10-crosslink-b0",
-      "b": "#s10-crosslink-b2"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s10-crosslink-b3",
-      "bySec": 112.018
-    },
-    {
-      "kind": "before",
-      "a": "#s10-crosslink-b2",
-      "b": "#s10-crosslink-b3"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s10-crosslink-b4",
-      "bySec": 113.866
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b0",
-      "bySec": 116.463
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b2",
-      "bySec": 120.796
-    },
-    {
-      "kind": "before",
-      "a": "#s11-do-not-inject-b0",
-      "b": "#s11-do-not-inject-b2"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b3",
-      "bySec": 122.209
-    },
-    {
-      "kind": "before",
-      "a": "#s11-do-not-inject-b2",
-      "b": "#s11-do-not-inject-b3"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b4",
-      "bySec": 124.627
-    },
-    {
-      "kind": "before",
-      "a": "#s11-do-not-inject-b3",
-      "b": "#s11-do-not-inject-b4"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b5",
-      "bySec": 126.839
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b7",
-      "bySec": 130.366
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b9",
-      "bySec": 133.894
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b0",
-      "bySec": 137.544
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b2",
-      "bySec": 140.42
-    },
-    {
-      "kind": "before",
-      "a": "#s12-badges-b0",
-      "b": "#s12-badges-b2"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b3",
-      "bySec": 143.008
-    },
-    {
-      "kind": "before",
-      "a": "#s12-badges-b2",
-      "b": "#s12-badges-b3"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b4",
-      "bySec": 146.372
-    },
-    {
-      "kind": "before",
-      "a": "#s12-badges-b3",
-      "b": "#s12-badges-b4"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b5",
-      "bySec": 148.629
-    },
-    {
-      "kind": "before",
-      "a": "#s12-badges-b4",
-      "b": "#s12-badges-b5"
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s13-endcard-b0",
-      "bySec": 152.339
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s13-endcard-b1",
-      "bySec": 154.579
-    },
-    {
-      "kind": "before",
-      "a": "#s13-endcard-b0",
-      "b": "#s13-endcard-b1"
+      "a": "#s14-endcard-b0",
+      "b": "#s14-endcard-b1"
     },
     {
       "kind": "keepsMoving",
       "withinSelector": "#root",
-      "maxStaticSec": 6.0,
-      "_note": "re-pointed from the engine's 2s Shorts default per [S7/R-1b]; long-form ceiling from check-cadence.py --longform"
+      "maxStaticSec": 3.0,
+      "_note": "re-pointed from the engine's 2s Shorts default; kept close to the piece's own measured ~2.4s beat cadence rather than loosened to the long-form ceiling, since drift is no longer the primary motion source"
     }
   ]
 }

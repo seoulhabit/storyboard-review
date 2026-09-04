@@ -1,0 +1,145 @@
+<template data-composition-id="02-name" data-duration="6.24">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper: #fbfaf4;
+    --ink: #0f2016;
+    --green: #2c4a34;
+    --pink: #b9835a;
+    --muted: #6f7d72;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: var(--font-display);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  #n2-title {
+    position: absolute; z-index: 5;
+    left: 72px; right: 162px; top: 220px;
+  }
+  .n2-eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    opacity: 0;
+  }
+  .n2-title-text {
+    font-weight: 500;
+    font-size: 100px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-transform: uppercase;
+    opacity: 0;
+  }
+
+  #n2-split {
+    position: absolute; z-index: 5;
+    left: 72px; right: 162px; top: 720px; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .n2-row { flex: 0 0 auto; opacity: 0; }
+  .n2-row-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 24px 32px;
+    border-radius: 8px;
+    border: 2px solid var(--muted);
+    color: var(--ink);
+  }
+  #n2-row-studied .n2-row-label {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--paper);
+  }
+  #n2-row-others .n2-row-label {
+    background: transparent;
+    color: var(--muted);
+  }
+  .n2-chips {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .n2-chip {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.04em;
+    padding: 10px 18px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    color: var(--ink);
+    border-left: 3px solid var(--pink);
+  }
+</style>
+
+<div id="root" data-composition-id="02-name" data-width="1080" data-height="1920" data-duration="6.24">
+
+  <div id="n2-title">
+    <div class="n2-eyebrow" id="n2-eyebrow">As Listed On The Bottle</div>
+    <div class="n2-title-text" id="n2-title-text">Snail<br>Secretion<br>Filtrate</div>
+  </div>
+
+  <div id="n2-split" class="clip" data-start="0" data-duration="6.24">
+    <div class="n2-row" id="n2-row-studied">
+      <span class="n2-row-label">One Studied Extract</span>
+      <div class="n2-chips">
+        <span class="n2-chip">J Drugs Dermatol · 2013</span>
+        <span class="n2-chip">J Clin Aesthet Dermatol · 2020</span>
+      </div>
+    </div>
+    <div class="n2-row" id="n2-row-others">
+      <span class="n2-row-label">Most Others — Untested</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    gsap.set(["#n2-eyebrow", "#n2-title-text"], { opacity: 0, y: 16 });
+    gsap.set(["#n2-row-studied", "#n2-row-others"], { opacity: 0, y: 20 });
+    gsap.set(".n2-chip", { opacity: 0 });
+
+    var tl = gsap.timeline({ paused: true });
+    window.__timelines = window.__timelines || {};
+    window.__timelines["02-name"] = tl;
+
+    // hard cut in (opacity 1 at t=0, no crossfade at the boundary — index.html owns the cut)
+    // 0.0-1.48s: INCI name mask-reveal-up
+    tl.fromTo("#n2-eyebrow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.05);
+    tl.fromTo("#n2-title-text", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.15);
+
+    // 1.48-3.48s: two outlines slide in (waterfall)
+    tl.fromTo("#n2-row-studied", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 1.50);
+    tl.fromTo("#n2-row-others", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 1.85);
+
+    // 3.48-6.24s: left fills solid with chips (stat-bars-and-fills), right stays outline
+    tl.fromTo(".n2-chip", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.12, ease: "power2.out" }, 3.60);
+
+    // [S6/A-10] `hold`: bounded drift on the title block. Measured: chips finish at ~4.02s,
+    // scene runs to 6.24s — a 2.2s dead window, over the 1.6s cadence ceiling.
+    tl.to("#n2-title", { y: -6, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, 4.10);
+
+    tl.to({}, { duration: 6.24 }, 0);
+  })();
+</script>
+</template>

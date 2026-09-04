@@ -1,0 +1,151 @@
+<template data-composition-id="06-verdict" data-duration="12.40">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper: #fbfaf4;
+    --ink: #0f2016;
+    --green: #2c4a34;
+    --green-deep: #0f2016;
+    --pink: #b9835a;
+    --muted: #6f7d72;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: var(--font-display);
+  }
+  .clip { position: absolute; inset: 0; }
+
+  #v6-verdict {
+    position: absolute; z-index: 5;
+    left: 72px; right: 162px; top: 220px;
+    opacity: 0;
+  }
+  .v6-verdict-text {
+    font-weight: 500;
+    font-size: 118px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  #v6-rows {
+    position: absolute; z-index: 5;
+    left: 72px; right: 162px; top: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .v6-row { display: flex; align-items: center; gap: 16px; opacity: 0; }
+  .v6-row-mark { width: 34px; height: 34px; border-radius: 999px; flex: 0 0 auto; }
+  .v6-row-mark.is-yes { background: var(--green); }
+  .v6-row-mark.is-no { background: transparent; border: 3px solid var(--muted); }
+  .v6-row-text {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    color: var(--ink);
+  }
+
+  /* ---------- actor-continuity callback: ch1's macro plate, opposite framing ---------- */
+  #v6-callback-wrap {
+    position: absolute; z-index: 3;
+    left: 72px; right: 162px; top: 840px; height: 260px;
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0;
+  }
+  #v6-callback-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    object-position: 50% 65%;
+  }
+  .v6-callback-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,32,22,0) 40%, rgba(15,32,22,.55) 100%);
+  }
+
+  #v6-cta {
+    position: absolute; z-index: 5;
+    left: 72px; right: 162px; top: 1120px;
+    opacity: 0;
+    transform-origin: 0% 50%;
+  }
+  .v6-cta-line {
+    font-weight: 500;
+    font-size: 50px;
+    line-height: 1.06;
+    color: var(--ink);
+  }
+  .v6-cta-sub {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pink);
+  }
+</style>
+
+<div id="root" data-composition-id="06-verdict" data-width="1080" data-height="1920" data-duration="12.40">
+
+  <div id="v6-verdict">
+    <div class="v6-verdict-text">Interesting.<br>Not Magic.</div>
+  </div>
+
+  <div id="v6-rows">
+    <div class="v6-row" id="v6-row-yes"><div class="v6-row-mark is-yes"></div><span class="v6-row-text">Real evidence — one specific extract</span></div>
+    <div class="v6-row" id="v6-row-no"><div class="v6-row-mark is-no"></div><span class="v6-row-text">Not medicine, not proof for every product</span></div>
+  </div>
+
+  <div id="v6-callback-wrap">
+    <img src="public/01b-macro-slime-spatula.png" alt="" loading="eager" decoding="sync" width="1152" height="2048">
+    <div class="v6-callback-scrim"></div>
+  </div>
+
+  <div id="v6-cta">
+    <div class="v6-cta-line">Would you try an<br>animal-derived ingredient?</div>
+    <div class="v6-cta-sub">Say so below</div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    gsap.set("#v6-verdict", { opacity: 0, y: 24 });
+    gsap.set(["#v6-row-yes", "#v6-row-no"], { opacity: 0, x: -16 });
+    gsap.set("#v6-callback-wrap", { opacity: 0 });
+    gsap.set("#v6-callback-wrap img", { scale: 1.0 });
+    gsap.set("#v6-cta", { opacity: 0, scale: 0.92 });
+
+    var tl = gsap.timeline({ paused: true });
+    window.__timelines = window.__timelines || {};
+    window.__timelines["06-verdict"] = tl;
+
+    // 0.00-2.00: hard cut in (owned by index.html). Verdict lockup, stagger-from-center
+    tl.fromTo("#v6-verdict", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.10);
+
+    // 2.00-4.00: two rows, line-by-line-slide
+    tl.fromTo("#v6-row-yes", { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }, 2.10);
+    tl.fromTo("#v6-row-no", { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }, 2.55);
+
+    // 4.00-6.00: ch1's macro plate returns at the OPPOSITE framing — wide, object-position
+    // shifted, where ch1 held a tight punch-in. Actor-continuity payoff, not a repeat.
+    tl.fromTo("#v6-callback-wrap", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 4.05);
+    tl.fromTo("#v6-callback-wrap img", { scale: 1.12 }, { scale: 1.0, duration: 1.8, ease: "sine.out" }, 4.05);
+
+    // 6.00-12.40: CTA lands (spring-pop, overshoot spend 2 of 2), quiet before the end
+    tl.fromTo("#v6-cta", { scale: 0.92 }, { scale: 1, duration: 0.5, ease: "back.out(1.7)" }, 6.10);
+    tl.fromTo("#v6-cta", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 6.10);
+    // bounded hold-drift on the callback plate so the closing hold stays alive
+    tl.to("#v6-callback-wrap img", { scale: 1.05, duration: 5.0, ease: "sine.inOut" }, 6.80);
+
+    tl.to({}, { duration: 12.40 }, 0);
+  })();
+</script>
+</template>

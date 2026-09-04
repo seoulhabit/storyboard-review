@@ -1,0 +1,77 @@
+[
+  {
+    "text": "A",
+    "start": 0.07,
+    "end": 0.1
+  },
+  {
+    "text": "1999",
+    "start": 0.1,
+    "end": 0.98
+  },
+  {
+    "text": "study",
+    "start": 0.98,
+    "end": 1.36
+  },
+  {
+    "text": "on",
+    "start": 1.36,
+    "end": 1.51
+  },
+  {
+    "text": "radiation-damaged",
+    "start": 1.51,
+    "end": 2.7
+  },
+  {
+    "text": "skin",
+    "start": 2.78,
+    "end": 3.12
+  },
+  {
+    "text": "sparked",
+    "start": 3.12,
+    "end": 3.45
+  },
+  {
+    "text": "today's",
+    "start": 3.58,
+    "end": 3.84
+  },
+  {
+    "text": "skincare",
+    "start": 3.95,
+    "end": 4.78
+  },
+  {
+    "text": "craze.",
+    "start": 4.78,
+    "end": 5.4
+  },
+  {
+    "text": "TikTok",
+    "start": 5.5,
+    "end": 5.74
+  },
+  {
+    "text": "skipped",
+    "start": 5.87,
+    "end": 6.21
+  },
+  {
+    "text": "the",
+    "start": 6.22,
+    "end": 6.41
+  },
+  {
+    "text": "study",
+    "start": 6.41,
+    "end": 6.73
+  },
+  {
+    "text": "part.",
+    "start": 6.73,
+    "end": 7
+  }
+]

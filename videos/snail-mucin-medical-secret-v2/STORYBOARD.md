@@ -55,16 +55,33 @@ Citation chips: `J Drugs Dermatol · 2013`, `J Clin Aesthet Dermatol · 2020` (C
 
 VO: "Snail secretion is over 97 percent water. The rest — proteins, glycolic acid, allantoin — varies by product. A 2024 lab comparison found the exact mix changes with how it's collected. Same species. Different product, every time."
 
+Every beat is cut to the **measured word clock** in `assets/voice/03.transcript.json`, not to
+round numbers — the graphic and its word resolve together instead of the graphic chasing the VO.
+
 | t (abs) | Development | Type |
 |---|---|---|
-| 13.36–15.6 | Column vessel draws in (SVG path draw), fills to a water line at 97% | drawn |
-| 15.6–18.0 | 100-tick pictogram lights in reading order (StatReveal mechanism) — no chart grammar, no axes | drawn |
-| 18.0–21.0 | Remainder detaches, expands into named fraction rows: proteins / glycolic acid / allantoin (nominal, no effect claimed) | drawn |
-| 21.0–24.5 | Sample 2: same total, rows re-deal to different heights, **lateral** jitter only (never vertical — vertical was the confirmed `content_overlap` failure in the catalog's own record) | drawn |
-| 24.5–28.0 | Sample 3 re-deals again; a min–max variance envelope draws across all rows | drawn |
-| 28.0–31.28 | "VARIABLE" lands at hero scale; rows keep a micro-drift inside the envelope (this is also the `keepsMoving` floor for this window) | drawn |
+| 13.46–14.56 | Kicker "COMPOSITION" sets the frame; the empty 100% measure draws left→right | drawn |
+| 14.66–16.36 | On "97%" (15.30) the numeral lands at 260px beside a mono "WATER"; the green fill then sweeps the measure under it. This lockup is the scene's dominant read | drawn |
+| 16.46–17.21 | On "The rest," (16.88) the remaining **3% arrives as the one contrasting bronze segment** on that same measure, and a bronze thread runs tag → segment → the list below | drawn |
+| 17.48–19.81 | The remainder opens into its three named parts, one per spoken name: proteins (17.55), glycolic acid (18.27), allantoin (19.38). Each row settles 14px, no overshoot | drawn |
+| 20.46–21.21 | "varies by product." — same three names, different amounts. **Only the measure fills move**; rows never travel, so nothing can collide | drawn |
+| 21.96–24.02 | "A 2024 lab comparison found" — the observed range appears behind each fill, and the `Sci Rep · 2024` chip lands **on its own claim** rather than trailing the scene | drawn |
+| 24.96–28.31 | "the exact mix changes with how it's collected" — two further draws inside that range, then the range itself opens wider | drawn |
+| 28.46–31.28 | "VARIABLE" lands at hero scale beside the citation; the fills settle to a final spread | drawn |
 
 Citation chip: `Sci Rep · 2024` (C4, C6).
+
+**Why this is not the v1 column vessel.** The original built this phase around a 300×640 vessel that
+filled to a water line, with the three ingredient rows sliding **laterally** underneath it. Measured
+on extracted frames, that arrangement had three defects: "97% WATER" was a 30px label inside a pale
+box rather than the dominant read; the rows crossed the vessel outline and, by 29.5s, drifted past
+the x=72 content edge; and the lateral re-deal read as cartoonish rather than editorial. The
+replacement states the whole as one measure, gives the 3% its own contrasting segment on that
+measure, and carries variance in bar **length inside a fixed track** — which cannot collide with
+anything by construction. A 260px numeral's ink box is 1.2em (312px) tall and overhangs its 0.82
+line box by ~49px top and bottom, so the numeral and its label are placed side by side; a stacked
+lockup at this size cannot clear both the kicker and the measure inside the y 192–1280 content box,
+which `hyperframes check` reported as a real `content_overlap`, not a transient one.
 
 ### Phase `#ph-evidence` (ch4) · 31.28–47.92s (16.64s) · verb: **compare**
 

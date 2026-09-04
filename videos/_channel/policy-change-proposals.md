@@ -87,3 +87,94 @@ and `youtube-delivery.md` sets long-form cadence at 8-12s.
 **Proposed:** name one long-form number and use it in all three places. This run
 used 6.0, matching `check-cadence.py --longform`, and left the post-render pixel
 gate strict.
+
+## Filed 2026-09-04, hyaluronic-acid-vs-filler v3 revision
+
+### P6 — a hand-authored scene must independently replicate the generator's own wrapper-padding math, and nothing says so
+`beats_to_composition.py`'s `render_scene()` extends a GENERATED scene's root
+wrapper by `d_in + d_out` (its incoming + outgoing transition overlap) and
+shifts every beat offset by `+d_in`, so the sub-composition's own internal
+timeline lines up with the padded wrapper window. This is documented for
+generated scenes. **Nothing documents that a hand-authored scene needs the
+identical treatment**, and the engine's own runtime keys a sub-composition's
+visibility off its OWN declared duration, not the wrapper's. Confirmed on a
+real render: 15 of 15 hand-authored scenes in this project shipped a hard,
+silent BLANK FRAME for their own trailing `d_in+d_out` seconds (0.35-1.10s
+each) — `hyperframes check`'s layout pass reported 0 errors throughout,
+because it has no notion of "does this sub-composition go invisible before
+its wrapper's window closes." Confirmed via both the actual rendered MP4
+and `hyperframes snapshot` on the live composition (ruling out a
+render-capture artifact) — a real timeline defect, not a capture quirk.
+
+**Proposed:** either (a) `beats_to_composition.py` computes and writes each
+hand-authored scene's own `d_in`/`d_out` into the beat sheet itself (a
+`_transition_geometry` block, machine-derivable, so a hand-authored builder
+can read it rather than re-deriving `resolve_transitions()`'s logic), or (b)
+this reference file states explicitly, next to the existing `d_in`/`d_out`
+documentation: "a hand-authored scene must apply this same padding+shift
+itself, or its own tail goes blank for `d_in+d_out` seconds — confirmed on
+a real render, not a theoretical risk." This run's fix (in
+`videos/hyaluronic-acid-vs-filler/build_actors.py`): compute `D_IN`/`D_OUT`
+once per scene from the beat sheet's own declared `transition` field, pad
+every declared duration, and shift every `tl.to`/`tl.fromTo` position via one
+regex pass over the already-built tween strings (never `gsap.set`, which is
+immediate and outside the timeline) — centralized in `scene_shell()` rather
+than threaded through every builder.
+
+### P7 — `hyperframes snapshot` does not correctly composite the outgoing scene during an active transition
+Extracting a frame at a timestamp inside a live cross-scene transition
+window via `hyperframes snapshot` returned a fully blank frame; extracting
+the SAME timestamp from the actual rendered MP4 showed the correct,
+expected mid-wipe composite (both scenes' content visible, split cleanly
+along the reveal boundary). Cost real time this run chasing what looked
+like a second composition bug before the render itself proved it wasn't one.
+**Proposed:** state this limitation directly wherever `snapshot` is
+recommended for verification — a transition-midpoint frame must be pulled
+from the rendered file, never from `snapshot`, when the two disagree.
+
+### P8 — `check-safe-area.py` cannot evaluate a full-bleed photographic plate
+Its ground-detection method clusters the outer-border-ring luma and flags
+anything elsewhere in a reserved zone that doesn't match — correct for a
+flat diagram background, meaningless for a full-bleed photo, where every
+pixel is legitimate image content with no single "ground" to cluster
+against. Confirmed by reading the tool's own detection code, then by direct
+pixel inspection of every frame it flagged on a real project's four photo
+plates (261 flagged frames, 0 of which showed any actual text/graphic
+encroachment — all photo surface). This is the same class of failure the
+tool's own docstring already documents once (portrait-canvas-on-landscape):
+a gate is only evidence if it was built to evaluate the thing it's looking at.
+**Proposed:** `check-safe-area.py` gains either a `--allow-photo-bleed` flag
+or an automatic exemption for any scene whose beat-sheet entry carries a
+`plate` field, since that field already signals "this scene is a full-bleed
+photographic background by design."
+
+### P9 — VO assembly must never scale gaps to hit a preset runtime
+Found on THIS project's OWN prior revision: `build_vo.py` computed
+`scale = (TARGET - speech) / sum(weights)` and stretched every inter-stem
+silence by one factor to land the total on a preset number to the
+millisecond. The skill's own master-clock rule says the voiceover's
+MEASURED duration governs everything downstream — a gap-scaler quietly
+inverts that for the silence, even when the speech itself is untouched.
+**Proposed:** state explicitly in the VO-assembly reference that gaps are
+fixed, chosen-for-feel real-second values, never solved for a target; a
+target band is advisory-only, printed as a tolerance check, and an
+out-of-band result is fixed by editing the SCRIPT (cut or add a stem), never
+by adjusting gap math.
+
+### P10 — the runbook mux recipe is missing `-movflags +faststart`
+Confirmed absent from this project's own two prior shipped deliverables
+(`moov` after `mdat` in both) via direct atom-offset inspection.
+**Proposed:** add it to the canonical mux command in the runbook.
+
+### P11 — a voice-bus chain should be the DEFAULT for a TTS source, not a discovered fix
+This project's raw VO has now measured a ~25-26 dB loudness/peak crest
+factor on two separate revisions with two different scripts (-24.3 LUFS /
++0.05 dBFS, then -25.9 LUFS / -0.0 dBFS) — the plain `amix`+`loudnorm`
+runbook recipe under-shoots target loudness by several LU on a source shaped
+like this, confirmed both times. A voice-bus chain (highpass ~85Hz →
+compressor ~-26dB 4:1 makeup ~11 → limiter ~0.60) before the mix fixes it
+both times.
+**Proposed:** promote the voice-bus chain into the default mux recipe for
+any TTS-sourced voiceover, rather than leaving it to be independently
+rediscovered per project. Measure the raw VO's LUFS/peak before mixing;
+if the crest factor exceeds roughly 15dB, the voice bus is not optional.

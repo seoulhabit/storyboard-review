@@ -1,0 +1,104 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#131516; color:#F7F5F0;
+  }
+  .clip { position:absolute; inset:0; }
+  /* DRIFT BUDGET, not decoration: a transform on a padded box moves the padded
+     edge outward, so the pad must absorb (max scale - 1)/2 * canvas + max
+     translate. 1.03 scale = 28.8px/side horizontally, 16.2px vertically. */
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:#4B9B93; }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
+     those live in the brief's claim table and the video description. */
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .plate-wrap { position:absolute; inset:0; overflow:hidden; background:var(--ink-soft); }
+  .plate-wrap img { width:100%; height:100%; object-fit:cover;
+                    object-position:var(--plate-focus, 50% 38%);
+                    display:block; transform-origin:50% 50%; will-change:transform; }
+  .scrim { position:absolute; inset:0; pointer-events:none;
+           background:linear-gradient(180deg,
+             rgba(19,21,22,0.30) 0%,  rgba(19,21,22,0.05) 24%,
+             rgba(19,21,22,0.08) 50%, rgba(19,21,22,0.70) 80%,
+             rgba(19,21,22,0.92) 100%); }
+  .stage { flex-direction:column; justify-content:flex-end; }
+  .plate-copy { display:flex; flex-direction:column; gap:20px; max-width:1200px;
+                position:relative; z-index:1; }
+  .plate-copy .head { font-size:88px; color:#F7F5F0; }
+  .plate-copy .kicker { color:#8FD6CC; }
+  .plate-copy .sub { color:#F7F5F0; font-size:44px; letter-spacing:0.06em; }
+
+  /* Flip the TOKEN, not just #root's colour: .actor strokes and
+     .badge borders read var(--ink) and would stay dark-on-dark. */
+  #root { --ink: #F7F5F0; --ink-2: #878B8C; }
+  .cite { color:var(--ink-2-dark); border-color:var(--rule-dark); background:var(--ink-soft); }
+  .kicker { color:var(--aqua); }
+
+</style>
+
+<div id="root" data-composition-id="s04-not-filler-plate" data-width="1920" data-height="1080"
+     data-duration="3.624">
+  <div class="clip plate-wrap" id="s04-not-filler-plate-plate" data-layout-allow-overflow
+       data-start="0" data-duration="3.624">
+    <img id="s04-not-filler-plate-img" src="assets/images/subject-02-not-filler.png" alt="Close-up of a woman's hands holding a dropper of serum near her cheek"
+         width="1920" height="1080" loading="eager" decoding="sync">
+  </div>
+  <div class="clip scrim" id="s04-not-filler-plate-scrim" data-start="0" data-duration="3.624"></div>
+  <div class="clip stage" id="s04-not-filler-plate-stage" data-start="0" data-duration="3.624">
+    <div class="plate-copy">
+        <div class="head beat" id="s04-not-filler-plate-b0">A serum is not filler in a bottle.</div>
+
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s04-not-filler-plate-img', { x: -14, y: 0, scale: 1.06 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.fromTo('#s04-not-filler-plate-img', { x: -14, y: 0, scale: 1.06 }, { x: 0, y: 0, scale: 1.0, duration: 3.124, ease: 'none', immediateRender: true }, 0.500);
+  tl.to('#s04-not-filler-plate-stage', { x: 6, y: 0, scale: 1.005, duration: 0.774, ease: 'sine.inOut' }, 2.400);
+  tl.to({}, { duration: 3.624, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s04-not-filler-plate'] = tl;
+})();
+</script>
+</template>

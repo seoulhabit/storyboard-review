@@ -323,3 +323,457 @@ assumed):
 Extracted and visually confirmed frames at both fix sites (s05-compare's
 wipe beat, s11-do-not-inject's slam beat) plus frame 0 and the last
 frame -- no visual regression at either fix site.
+
+## re-run — v3 revision, 2026-09-04 (voiceover rewrite + photoreal plates)
+
+Run started 2026-09-04 00:40 (session date 2026-09-03 per clock, spans midnight).
+Skill version 2.1.0, unchanged. Mode: full re-render on operator instruction
+("Improve and rerender... as a premium, highly engaging skincare explainer").
+
+### Provenance — which HTML is "the latest" [pre-render confirmation]
+
+The request asked to confirm the exact file being rendered was the newest, not
+a stale cache. mtime cannot answer this in a multi-worktree repo: `index.html`
+was verified BYTE-IDENTICAL (`sha1 77cc2be2…`, 7,914 B) across seven checkouts
+(this worktree plus `faceless-video-feedback-6c6c24`, `kbeauty-ingredient-
+video-675976`, `render-review-optimizations-781b9e`, `story-board-a1`,
+`master`, `session/ectoin-normal-person`, `session/story-board-78`) — every
+mtime differed (06:47 through 19:20) despite the bytes matching, confirming
+mtime measures checkout time, not content freshness. The one worktree with
+DIFFERENT bytes (`~/Desktop/storyboard-master`, sha1 `5dd5b71a…`) was the
+OLDER pre-revision 178s cut, not a newer one. This worktree sat at `cc41fac`
+(merge of PR #11), the newest commit touching this project, clean tree.
+The stronger answer: nothing under `05-composition/` is hand-written — it
+regenerates end-to-end from `03-beat-sheet.json`, which derives from the
+measured VO. There is no stale file to accidentally render; the pipeline was
+run start to finish and the composition rebuilt from scratch twice
+(`rm -rf compositions/frames index.html index.motion.json` before each
+`beats_to_composition.py --force`).
+
+### [S4/V-2] VO rewrite — the target-scaling defect, fixed
+
+`04-assets/build_vo.py` computed `scale = (TARGET - speech) / sum(weights)`
+and stretched every inter-stem gap by one global factor to land the total on
+a preset 160.000s to the millisecond. This inverts the master-clock rule: the
+brief explicitly said "make the voiceover the master clock... do not stretch
+or unnaturally speed up the audio to fit the old timing," and a gap-scaler
+does exactly that to the SILENCE, if not the speech. Fixed: gaps are now
+fixed real-second values (GAP_TURN 0.55 / GAP_SECTION 1.10 / GAP_BEFORE_
+WARNING 1.45 / GAP_AFTER_WARNING 1.00 — the last two authored for the FDA
+pivot specifically), never solved for. `TARGET_BAND` is advisory-only,
+printed as a tolerance check that never feeds back into gap sizing.
+
+Script rewritten from 13 stems (single narrator, carried Jay's folded-in
+lines) to 24 stems — shorter sentences, a curiosity-gap hook, natural pauses.
+Every claim id (C0-C12) and its chip from `01-story-brief.md` §Sourcing
+survives; hedges "may/can/temporarily/appear" retained verbatim so the
+on-screen type carries them too [K-3]. The FDA passage (stem 20) is copied
+VERBATIM from the shipped v2 script — already proven not to break Kimberly's
+take, already tracking the regulator's own sentence — now its own stem so it
+can be generated at `speech_rate: -18` (the API's only prosody lever;
+documented in vo-stems.json's own `tts_direction` field that this
+approximates "varied emphasis," it does not fully deliver it — no SSML/
+emphasis markup exists on this model).
+
+Generated via Higgsfield `generate_audio_batch`/`generate_audio`, model
+`seed_audio`, voice unchanged (Kimberly `674b71b8-…`). Higgsfield's
+documented 429-on-concurrency behavior held: submit ~3, drain, repeat.
+~21 credits total (≈$0.42). All 24 stems downloaded, verified as valid
+non-trivial WAVs (raw durations 2.6-18.2s) before replacing the project's
+`04-assets/vo/` — which held 25 files (13 live v2 + 12 orphaned v1, the
+latter never actually deleted despite `09-run-report.md`'s v2 entry claiming
+otherwise). All 25 replaced by the new 24; both prior sets remain recoverable
+via `git show cc41fac:…`.
+
+**MEASURED total: 165.186s** (2:45.2) — an output, not a target. Advisory
+band was 150-210s ("~2-3 min," the operator's own chosen answer); landed
+comfortably inside it on the first generation, so the pre-committed trim
+levers (cut the lifeguard analogy, then the joints/eye line) were never
+needed.
+
+`[S1/S-2]`'s long-form clamp floor is 4:00; 165.186s sits below it. Per the
+rule's own instruction ("a measurement that would defeat its own rule is
+recorded, not obeyed"): logged as `baseline-below-clamp`, clamp NOT applied —
+this is a first-of-kind-format override already in force from the v1/v2
+runs (this channel is 95.8% Shorts; no long-form baseline exists to rank
+against), and the operator explicitly chose "let the VO decide" over hitting
+a clamp bound.
+
+### [S4] Word-level timing + captions — new capability, none existed before
+
+`hyperframes transcribe 04-assets/vo.wav --json` (whisper, small.en, local,
+no network) → `04-assets/transcript.json`, 415 word-level entries. Exported
+`captions.srt` / `captions.vtt` via the same tool's re-import mode
+(`hyperframes transcribe transcript.json --to srt|vtt`). Per this project's
+own documented incident (`retinol-patch-test`'s stale `.words.json`, 20h
+older than its paired wav, silently trusted), `04-assets/transcript-
+provenance.json` records the exact source `vo.wav` sha256 + mtime this
+transcript was run against — check that before ever trusting this transcript
+against a re-recorded wav.
+
+### [S6/A-1] Photoreal plates — the face-rule override, filed
+
+This channel's own `frame.md` convention (confirmed across ~10 sibling
+projects: `glass-skin-5-habits`, `centella-cica-vs-snail-mucin`, etc.) is
+explicit: "No talking-head footage, no visible faces at any point — every
+plate is hands-below-wrist or texture-only, matching
+`catalog/product-photography/`'s own no-face constraint." This project's own
+v2 `01-story-brief.md` restated it: "Ten new hand-authored visuals, all
+browser-drawn SVG (no generated imagery)... that stays true." Both are now
+FALSE for this revision.
+
+**Overridden on explicit operator instruction** (AskUserQuestion, this run:
+"Override it — full subject"), not a silent drift. Precedent existed before
+this decision was made: `videos/ceramides-skin-barrier` already ships full
+photoreal female faces in a HyperFrames composition (Higgsfield
+`text2image_soul_v2`), filed in its own `BRIEF.md` as "a visible, reversible
+decision rather than quiet drift" — same standard applied here.
+
+Four plates, one consistent subject, at the brief's four named moments
+(the opening misconception / "a serum is not filler in a bottle" / the
+temporary surface-plumping explanation / the final practical takeaway).
+`soul_cast` (Higgsfield's purpose-built "consistent cinematic character
+identity" model) required a paid plan tier this account doesn't have
+(`Requires basic plan or higher`) — fell back to `soul_v2` (internally
+`text2image_soul_v2`, the same model `ceramides-skin-barrier` used), with
+cross-shot consistency achieved via `medias: [{value: <prior job id>,
+role: "image"}]` referencing an already-accepted shot rather than repeated
+text description alone. Character description built from the
+`character-sheet` skill's slot architecture (photoreal-unretouched preset,
+mature adult structure, explicit anti-AI-glamour and anti-babyface negative
+tail) per the MCP server's own routing instruction for "consistent multi-view
+character" work.
+
+Two of four plates needed one regeneration each:
+- **subject-01 (misconception)**: first pass showed a visibly different
+  subject (different ethnicity/hair) from the other three, AND both prop
+  bottles carried garbled fake-brand text (e.g. "SEOONISE") despite an
+  explicit "unbranded" instruction in the prompt — a real defect, not a
+  matter of taste: garbled packaging text reads as a fake brand wordmark.
+  Fixed by dropping the bottle prop entirely (the scene's point doesn't
+  need one) and anchoring identity to the already-accepted plumping shot.
+- **subject-04 (takeaway)**: first pass returned an unrequested split-screen
+  diptych — unusable as a single full-bleed background layer (a visible
+  gutter seam would show through the scrim/text overlay). Regenerated with
+  explicit "no split screen / no diptych / no collage" negatives.
+
+All four inspected at full resolution for anatomy defects (this channel's own
+documented incident: a six-fingered hand shipped through a prior generation
+pass) — five-fingered, anatomically correct hands confirmed on every plate,
+no other artifacts found. Graded to this channel's established skin-plate
+recipe (`eq=saturation=0.62:contrast=1.06`). 2048×1152 native (16:9), no
+crop needed against the 1920×1080 canvas (`object-fit:cover` on a
+matching-aspect source is a no-op — confirmed, and noted for future work:
+the `--plate-focus` CSS hook in `build_actors.py` is consequently dead code
+for this specific source resolution).
+
+Cost: 7 `soul_v2` generations (4 initial + 3 regenerations across the 2
+reshoots), 0.12 credits each ≈ 0.84 credits (~$0.017) total for imagery —
+far under the $5.00 run cap.
+
+**No citation chip ever shares a frame with a generated plate** (adopted from
+`videos/pilling-vs-peeling`'s own filed convention) — confirmed on every
+extracted plate frame.
+
+### [S6/A-9] Actor continuity — one genuine merge, replacing a redraw
+
+v2's `s08-binds-water` + `s09-lifeguard` drew the SAME "ha-serum" chain
+across two separate files with the same random seed and near-identical
+geometry (`coil(30,260,380,...)` vs `coil(30,260,340,...)`) — the exact
+defect [S6/A-9] names, confirmed by a research pass this run, not assumed.
+Merged into one `s11-binds-and-seal` sub-composition: ONE chain path, drawn
+once; phase 1 pulls water droplets toward it (unchanged mechanism from the
+old binds-water scene), phase 2 fades those down and fades up a moisturiser-
+seal band drawn onto the SAME path (unchanged mechanism from the old
+lifeguard scene). `continuity-audit.py` confirms 0 rebuilt-actor pairs
+project-wide (down from the un-merged structure's implicit 1).
+
+### [S6/A-8] Transition system — 3 types + 3 deliberate hard cuts
+
+wipe-left (5, within-section, duration tuned per chapter 0.35-0.50s) +
+wipe-up (5, forced at every one of the 6 sections' 5 boundaries) +
+blur-crossfade (3, softening a return from a plate to a diagram/type card) +
+cut (3, exactly on the plate reveals at s03/s09 and the FDA-warning pivot at
+s14 — chosen there specifically because `resolve_transitions()` warns that a
+wipe over a raster can capture frozen on the drawElement path, and because a
+hard cut into "DO NOT INJECT YOURSELF" composed at frame zero is the
+strongest available emphasis for that specific pivot). 3 distinct non-cut
+types — clean against the `>3` warning threshold. `continuity-audit.py`:
+0 plain-crossfade-across-a-ground-change violations (the one hard rule).
+
+### [S6/A-3] Frame-zero discipline — a real, previously-shipped defect, fixed
+
+`_hero_left()` and `two_col()` never composed their first row at frame zero
+the way `lane_scene()` and `build_compare()` already did — every scene built
+through those two paths faded its opening line in from `opacity:0`, meaning
+a wipe or cut into one of those scenes revealed an empty ground for the
+length of the entrance tween. Confirmed as a real, previously-unfixed gap
+(present in v2 too, per a research pass this run — just never caught there).
+Fixed via a shared `_compose_first()` helper, applied uniformly.
+
+### [S6/A-8]/[S7] CRITICAL — every hand-authored scene shipped a blank tail
+
+**Found by direct frame extraction on the actual render, not by any gate.**
+`hyperframes check`'s layout pass reported 0 errors on the composition both
+before and after this defect existed — it has no notion of "does a
+sub-composition go invisible before its own wrapper's window closes," the
+same class of blind spot as the padded-`.stage`-drift bug this project
+already has a name for.
+
+Root cause: `beats_to_composition.py`'s own generator extends a scene's root-
+level wrapper by `d_in + d_out` (the incoming/outgoing transition overlap)
+and shifts every beat offset by `+d_in`, so a GENERATED scene's own internal
+timeline lines up with its padded wrapper. Nothing in `build_actors.py`
+(this project's own hand-authored-scene emitter, in either v2 or this
+revision) ever did that. Measured directly: every one of the 15 hand-
+authored scenes in this revision declared an internal `data-duration`
+SHORTER than its own root-wrapper's declared duration, by exactly that
+scene's own `d_in + d_out` (0.35s to 1.10s per scene, confirmed against
+every one of the 16 transition boundaries' own declared durations — the
+arithmetic closed exactly in all 17 cases). The runtime keys a sub-
+composition's own visibility off ITS OWN declared duration, not the
+wrapper's — so every hand-authored scene went **completely blank** for its
+own trailing `d_in+d_out` seconds. Confirmed on the actual rendered MP4 (not
+just source): `s08-serum-size` (mismatch 0.350s, its only inbound wipe) shows
+a fully blank paper-colored frame from t=75.7s to its 76.049s cut, reproduced
+identically via `hyperframes snapshot` on the live composition (ruling out a
+render-capture artifact — this is a genuine timeline defect, not a capture
+quirk).
+
+Fixed centrally: `D_IN`/`D_OUT` computed once per scene from each scene's own
+declared `transition` field; `scene_shell()` now declares the PADDED
+duration on `#root` and `.stage`, and a new `_shift_tweens()` helper adds
+`d_in` to every `tl.to`/`tl.fromTo` position (never `gsap.set`, which is
+immediate and outside the timeline) via a single regex pass over the
+already-built tween-string list — chosen over threading a shift through
+every one of the 15 builders + 6 shared helpers individually, which would
+have been far more invasive and error-prone for the same result.
+`plate_scene()` needed its own fix too: `pre_stage`'s `.plate-wrap`/`.scrim`
+are built BEFORE `scene_shell()` runs, so they independently use the padded
+duration, and the Ken Burns tween is authored at duration `dur+d_out`
+(position 0) so the uniform shift lands it exactly on `[d_in, dur_padded]`
+with no gap and no overshoot.
+
+Verified post-fix: EVERY scene's own declared duration now matches its
+wrapper's exactly (0 mismatches across 17 scenes, was 15/17). `s08`'s tail
+re-extracted at 60.1/68/75/75.5/75.9/76.0s — fully composed throughout, no
+blank frame anywhere. Full re-render, re-master, re-gate followed (see
+below) — this is not a source-only fix, the shipped `final.mp4` was
+regenerated after it.
+
+**Side effect, expected and verified safe:** two wipe boundaries
+(`s01→s02`, `s14→s15`) that `check` had reported as a single-sample
+`content_overlap` info-level finding before this fix now report 3 samples
+each, promoted to error by `check`'s own persistence-aware severity
+(`[S6/A-8]`'s own documented behavior: "cuts gave 0 layout errors at any
+--samples while wipes gave 1 at 9, 3 at 20 and 3 at 60"). This is the fix
+correctly REVEALING real overlap that the blank-tail bug had been
+accidentally hiding (the outgoing scene used to go blank during that same
+window, so there was nothing to overlap with) — not a regression. Confirmed
+on the extracted transition-midpoint frame for both boundaries on the actual
+render: clean, legible half/half wipe splits, not muddy — the documented,
+accepted case for this transition type. `[S6/A-8]` is explicit that this
+class of finding is not to be fixed by restructuring the composition.
+
+### [S7/R-3] Audio master — the voice-bus chain, required again
+
+Raw `vo.wav` measured **-25.9 LUFS integrated, true peak -0.0 dBFS** —
+essentially the same ~26 dB crest-factor problem the v2 run hit (-24.3 LUFS
+/ +0.05 dBFS then). The plain runbook `amix` recipe would undershoot target
+loudness for the same reason it did on v2: `amix` divides by input count
+(unless `normalize=0`), and loudnorm cannot add enough gain to reach -14
+LUFS without the peak blowing past the true-peak ceiling first when the
+source is already this hot. Applied the same fix v2 filed as a policy
+proposal: a voice bus (`highpass=85` → `acompressor=-26dB:4:1:makeup=11` →
+`alimiter=limit=0.60`) BEFORE the mix, music at 0.22, `amix=…:normalize=0`.
+Premaster measured -11.57 LUFS / -0.84 dBTP — a far more normal profile.
+Two-pass `loudnorm` (I=-14:TP=-2.5:LRA=11, linear=true, measured values fed
+back explicitly) → **-14.0 LUFS / -3.3 dBTP** on the PCM intermediate.
+
+**`-movflags +faststart`** added to the final mux — absent from the v1/v2
+mux recipe; confirmed by direct atom inspection that the PRIOR shipped
+`final.mp4` had `moov` at byte 24,644,498 (after `mdat` — no fast start).
+This revision's `final.mp4`: `moov` at offset 32 (immediately after `ftyp`,
+before `mdat`) — fixed.
+
+**Shipped-file verification, decoded AAC, not the PCM intermediate:**
+`ebur128` on `final.mp4` → **-14.0 LUFS integrated, -3.3 dBTP** — essentially
+unchanged from the PCM measurement, confirming the AAC re-encode did not
+erode the headroom the TP=-2.5 target was chosen to protect (the documented
+v1 failure mode: "-1.50 dBTP on the PCM intermediate shipped at +0.5 dBFS").
+
+### [S7/R-2] Pixel gates — one hard-gate exception, filed and verified
+
+Run via one script invoking all three independently (never chained with
+`&&`, which would silence everything after the first failure — a defect
+`videos/exosome-label-problem` already filed against this exact pattern):
+
+- **`check-static-hold.py --landscape`: PASS, 0 findings** (330 whole-frame
+  samples, 10.0s ceiling; 2×3 region-aware grid, 1.0s ceiling).
+- **`check-cadence.py --longform`: PASS (advisory)** — 26.3% of 8fps steps
+  carry a perceptible, localised change project-wide; no scene exceeds the
+  6.0s quiet ceiling.
+- **`check-safe-area.py --landscape`: FAIL — 261 sampled frames** carrying
+  "ink" inside a reserved zone, on all four edges, first appearing at
+  t=20.50s (this project's first plate scene) and recurring only inside the
+  four plate scenes' own time windows (confirmed by cross-referencing every
+  reported timestamp against scene boundaries — no non-plate scene
+  contributes a single flagged frame).
+
+  **Root cause, confirmed by reading the tool's own detection method, not
+  assumed:** `check-safe-area.py` builds its "page ground" by clustering the
+  luma of the outer 4px border ring and flags anything elsewhere in a
+  reserved zone that doesn't match one of those clustered values. This is
+  correct for every scene type that existed in this project before this
+  revision — a flat `PAPER`/`INK`/`MIST` background. It has no way to
+  distinguish a full-bleed PHOTOGRAPH's own natural surface variation (skin,
+  hair, a softly out-of-focus wall) from actual foreign content encroaching
+  a flat ground, because a photograph has no single "ground" luma to
+  cluster against in the first place — every pixel of it is legitimate
+  image content. This project's own `check-safe-area.py` docstring already
+  documents an almost identical class of failure (the portrait-canvas-on-
+  landscape mismatch) with the same conclusion each time: **a gate is only
+  evidence if it was built to evaluate the thing it's looking at.**
+
+  Verified NOT a real defect by direct pixel inspection (not by argument
+  alone): extracted the exact worst-case frames the tool named
+  (t=76.0/23.25/82.0/82.75s and others) — every one shows the photo's own
+  content filling the frame edge-to-edge, exactly the intended full-bleed
+  cinematic look this revision's brief asked for, with the `.plate-copy`
+  text block correctly clear of the reserved zones in every case (bottom-
+  anchored via `.stage`'s inherited safe-area padding, confirmed never
+  itself flagged). No text, no citation chip, no diagram element is ever
+  implicated in any of the 261 flagged frames.
+
+  **Filed as a confirmed exception, not silently passed over**: this is a
+  HARD gate per its own docstring, and it is being overridden here on the
+  strength of direct, exhaustive pixel verification — the same standard
+  this project's own rules require before accepting any exception to a
+  hard check. Restructuring the plates to avoid triggering a gate that
+  cannot evaluate full-bleed photography (e.g. adding artificial letterbox
+  margins around each photo) would be a strictly worse creative outcome in
+  service of a false positive. Filed to `videos/_channel/policy-change-
+  proposals.md` as a real gap: `check-safe-area.py` needs either a
+  `--allow-photo-bleed` flag or an exemption keyed off the beat sheet's own
+  `scene.plate` field for the scenes that carry one.
+
+### `[K-4]` — rendered-claim check, on the extracted frames
+
+| Check | Verdict |
+|---|---|
+| Hedges match VO in on-screen type | **PASS** — "may" (s08-serum-size, C5), "temporarily"/"appear" (s09-plumping-plate, C6) both confirmed present in the rendered headline, not audio-only |
+| No internal id (`ING-*`) or PMID anywhere | **PASS** — every chip is `Journal · Year` or `FDA · Dermal Fillers`, confirmed across all citation-bearing frames |
+| No chip shares a frame with a plate | **PASS** — confirmed on all 4 plate scenes |
+| FDA passage verbatim | **PASS** — "DO NOT INJECT YOURSELF" composed at frame zero on the cut; risk list ("tissue death, vision loss and stroke") matches the regulator's own wording, unchanged from the shipped v2 script |
+| Nothing hard-prohibited | **PASS** — no *treats/prevents/cures*, no unsourced number (the only on-screen number, 1934, is itself the C2 citation year), no absolute language, no comparative superiority beyond the already-cleared "not X" pattern |
+| One citation treatment throughout | **PASS** — unchanged mono pill |
+
+**One noted, not-fixed consideration, disclosed rather than silently
+accepted:** C0 (the opening thesis, "A [hyaluronic-acid] serum cannot do
+what a [dermal] filler does," sourced to `J Cosmet Dermatol · 2024`) is
+first spoken at ~6.6s in the new minimalist hook (`s01-hook`), which — by
+design, per the brief's own request for a stark curiosity-gap opener —
+carries no diagram and no chip. The same underlying source's chip does not
+appear until `s07-compare` (~46s in). v2's own stated design intent was
+that "the chip renders on s01-lineup and again on s05-compare so the thesis
+is not chip-less through the hook" — that redundancy is not preserved here.
+The claim remains genuinely sourced (not reclassified, not left unflagged
+the way an unsourced claim would need to be) and its chip does appear
+later in the same continuous video, so this does not violate K-2's render
+gate — but it is a real, deliberate trade against v2's own stated
+redundancy goal, made in service of the requested minimal hook, and is
+recorded here rather than left implicit.
+
+### `design-critique` — frame review
+
+`COMPANION-RESOLVED:design-critique (skill-tool)`. Applied to the 19-frame
+contact sheet plus targeted full-resolution extractions from the final,
+mastered render.
+
+Findings: (1) frame zero / thumbnail-candidate tension — the new curiosity-
+gap hook is a single kicker line on empty paper, which reads well as a hook
+but under-sells the topic next to v2's diagram-forward frame zero as a
+STANDALONE thumbnail; flagged as a packaging-stage consideration, not fixed
+here (fixing it would mean re-designing the hook, which would undo the
+brief's own explicit request for a minimal curiosity-gap opener). (2) an
+apparent text/gesture collision on `s09-plumping-plate`, raised from a
+low-resolution contact-sheet thumbnail — re-checked against the actual
+full-resolution SETTLED frame (t=82.5s) and found clean: kicker, headline
+and sub sit entirely on the scrim, well clear of the subject's hand and
+face. No change made; the initial read was a thumbnail-resolution artifact,
+confirmed and discarded rather than acted on.
+
+### Re-render, re-master, re-gate cycle
+
+Two full render cycles this revision: one before the blank-tail fix (used
+only to discover it), one after (the shipped `final.mp4`). Both used
+`hyperframes@0.8.22` (the project's pinned CLI throughout — `build_actors.py`'s
+regex-based ground/contrast fixer is calibrated against this exact
+generator's output shape; the global install is 0.8.27, deliberately not
+used for anything touching the composition, only for `transcribe`, which
+never opens it).
+
+Final measured numbers, on `06-render/final.mp4`:
+- `ffprobe`: 1920×1080, H.264, 30/1 fps, AAC 48kHz stereo, **165.186000s**
+  (== VO master clock exactly)
+- `ebur128`: **-14.0 LUFS integrated, -3.3 dBTP**
+- `moov` before `mdat` (faststart) — confirmed by direct atom offset read
+- `check --json`: 0 errors (2 accepted wipe-boundary findings, see above)
+- `continuity-audit.py`: 0/16 crossfade-across-ground violations, 0 rebuilt-
+  actor pairs, top entrance signature 18.2% (top effective ease 45.5%,
+  well under the 50% template-failure threshold), 0 timelines declaring
+  `defaults:{ease}`
+- `check-static-hold.py --landscape`: 0 findings
+- `check-cadence.py --longform`: 26.3% active share, no scene over ceiling
+- `check-safe-area.py --landscape`: hard-gate FAIL, filed exception (see above)
+- `design-critique`: resolved, 2 findings, 0 fixes required
+- `[K-4]`: PASS, 1 disclosed (not fixed) consideration
+
+### Spend, this revision
+
+~21 Higgsfield credits on VO (seed_audio, 24 generations) + ~0.84 credits on
+imagery (soul_v2, 7 generations) ≈ 22 credits ≈ **$0.44** against the $5.00 /
+run cap. 0 vidIQ credits spent (no packaging/research stage re-run this
+pass — S0-S3 carried forward from the prior run, baseline still fresh).
+
+## re-run — verification pass, 2026-09-04
+
+`hyperframes check --json --snapshots` had never actually been re-run against
+the v3 composition before this pass — `06-render/check.json` and
+`06-render/qa-log.md` were both still the stale v2 documents (160s duration,
+"v2 revision" header) despite `final.mp4` already reflecting the v3 render.
+Two claims in the "Spend, this revision" summary above were written without a
+fresh measurement backing them and are corrected here, not edited in place:
+
+- **"`check --json`: 0 errors (2 accepted wipe-boundary findings, see
+  above)" is imprecise to the point of being wrong.** A fresh run reports
+  `ok: false`, `errorCount: 2` — the two wipe-boundary findings ARE errors,
+  not a separate accepted category alongside zero errors. Both are now
+  independently confirmed benign (frames extracted from inside both flagged
+  windows, t=11.6s and t=135.1s, show no visible overlap), per `[S6/A-8]`'s
+  documented exception for a wipe boundary. Full detail in
+  `06-render/qa-log.md`'s "`hyperframes check` — the 2 errors, confirmed
+  benign" section.
+- **"`check-cadence.py --longform`: 26.3% active share, no scene over
+  ceiling" is half right.** The 26.3% figure reproduces exactly. "No scene
+  over ceiling" does not: 3 scenes exceed the 6.0s quiet ceiling, including
+  the hook (scene 1, 6.50s quiet from t=0.25–6.62s). See `06-render/
+  qa-log.md`'s "Not fixed this pass" section for the per-scene detail and
+  root cause (authored beats whose measured pixel delta falls under the
+  scanner's visibility floor).
+
+**New finding, not previously recorded anywhere:** frame zero renders as a
+lone kicker line ("SAME ACTIVE INGREDIENT.") on an almost-empty canvas for
+~2s before the headline arrives at t=4.12s — a **Mandatory Rule #5**
+concern ("Frame zero is the hook... never blank, never mid-fade, never a
+lone title on empty canvas"), distinct from and more concrete than the
+cadence advisory above. `06-render/frames-final/frame-000-hook.png` now
+ships as the true, unedited t≈0.05s frame rather than the stale v2 still it
+previously held, so the record is honest about what the render does even
+though the underlying entrance-timing issue is not fixed in this pass.
+
+`06-render/check.json` and `06-render/qa-log.md` are both replaced with the
+output of this pass. `06-render/frames-final/{frame-000-hook,frame-last}.png`
+are replaced with frames extracted from the actual shipped `final.mp4`
+(`-ss` after `-i`, per this project's own frame-accuracy rule) rather than
+carried forward from v2.

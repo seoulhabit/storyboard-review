@@ -43,13 +43,7 @@
             text-transform: uppercase; color: var(--accent); }
   .stat   { font-weight: 800; font-size: 150px; line-height: 1; color: var(--accent); }
   .caption{ font-weight: 600; font-size: 44px; line-height: 1.25; color: var(--ink); }
-  /* `wipe` resting state: clipped, not transparent. Authored in CSS so a
-     cold seek to 0 paints the clip, and re-stated with gsap.set(). */
-  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
-  /* `swap`: both states share one grid cell and one transform-origin, so
-     the exchange reads as one thing changing rather than two things. */
-  .slot { display: grid; }
-  .slot > * { grid-area: 1 / 1; }
+
   /* Debug overlay lives on #root, never on <body>: a sub-composition's own
      renderable surface IS #root. Confirm it is off by looking at frame zero. */
   #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
@@ -79,15 +73,11 @@
   .kicker { color:#4B9B93; }
 </style>
 
-<div id="root" data-composition-id="s07-plumping" data-width="1920" data-height="1080"
-     data-duration="13.294">
-    <div class="clip stage" id="s07-plumping-stage" data-start="0" data-duration="13.294">
-      <div class="beat head" id="s07-plumping-b0">So why does the bottle say plumping?</div>
-      <div class="beat body is-wiping" id="s07-plumping-b2">Hydrated surface cells can temporarily make fine lines appear softer</div>
-      <div class="slot">
-        <div class="beat caption is-entering" id="s07-plumping-b4">Like watering a tired houseplant</div>
-        <div class="beat sub is-entering" id="s07-plumping-b5">Not like adding a new branch</div>
-      </div>
+<div id="root" data-composition-id="s17-endcard" data-width="1920" data-height="1080"
+     data-duration="7.408">
+    <div class="clip stage" id="s17-endcard-stage" data-start="0" data-duration="7.408">
+      <div class="beat kicker" id="s17-endcard-b0">One more thing — the cow&#x27;s eye came back.</div>
+      <div class="beat head is-entering" id="s17-endcard-b1">Serum hydrates. Filler adds volume. Same name, different jobs.</div>
     </div>
 </div>
 <script>
@@ -95,23 +85,17 @@
   // docs/gsap.md: create paused, register on window.__timelines[compositionId].
   // Supported methods are set / to / from / fromTo — nothing else is emitted.
   // Initial states first, immediate and outside the timeline.
-  gsap.set('#s07-plumping-b2', { clipPath: 'inset(0 100% 0 0)', y: 22 });
-  gsap.set('#s07-plumping-b4', { opacity: 0, y: 32 });
-  gsap.set('#s07-plumping-b5', { opacity: 0, scale: 0.6 });
+  gsap.set('#s17-endcard-b1', { opacity: 0, scale: 1.03, y: -18 });
   // NO `defaults: { ease }` on this timeline. An inherited ease is an
   // UNCOUNTED ease: it is how a video ends up with 65% of its real tweens
   // sharing one entrance signature while every explicit-ease grep says
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s07-plumping-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 2.350);
-  tl.to('#s07-plumping-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 3.279);
-  tl.to('#s07-plumping-stage', { x: -9, y: 6, scale: 1.005, duration: 0.561, ease: 'sine.inOut' }, 6.679);
-  tl.to('#s07-plumping-b4', { opacity: 1, y: 0, duration: 1.300, ease: 'power3.out' }, 7.240);
-  tl.to('#s07-plumping-b4', { scale: 0.6, opacity: 0, duration: 0.250, ease: 'power2.in' }, 10.069);
-  tl.to('#s07-plumping-b5', { opacity: 1, scale: 1, duration: 1.300, ease: 'back.out(1.6)' }, 10.189);
-  tl.to({}, { duration: 13.294, ease: 'none' }, 0);   // anchor — always last, always at 0
+  tl.to('#s17-endcard-b1', { opacity: 1, scale: 1, y: 0, duration: 1.800, ease: 'power4.out' }, 1.842);
+  tl.to('#s17-endcard-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 5.542);
+  tl.to({}, { duration: 7.408, ease: 'none' }, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {};
-  window.__timelines['s07-plumping'] = tl;
+  window.__timelines['s17-endcard'] = tl;
 })();
 </script>
 </template>

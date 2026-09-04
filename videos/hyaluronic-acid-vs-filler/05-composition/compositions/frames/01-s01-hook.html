@@ -1,0 +1,121 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#F7F5F0; color:#131516;
+  }
+  .clip { position:absolute; inset:0; }
+  /* DRIFT BUDGET, not decoration: a transform on a padded box moves the padded
+     edge outward, so the pad must absorb (max scale - 1)/2 * canvas + max
+     translate. 1.03 scale = 28.8px/side horizontally, 16.2px vertically. */
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:#4B9B93; }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
+     those live in the brief's claim table and the video description. */
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .hook-wrap { display:flex; flex-direction:column; justify-content:center; gap:26px;
+               width:100%; height:100%; position:relative; z-index:1; }
+  .hook-bg { position:absolute; inset:0; opacity:0.14; pointer-events:none; z-index:0; }
+  .hook-wrap .head { font-size:136px; }
+  .hook-wrap .sub  { font-size:52px; font-weight:600; letter-spacing:0;
+                     text-transform:none; color:var(--ink-2); }
+
+</style>
+
+<div id="root" data-composition-id="s01-hook" data-width="1920" data-height="1080"
+     data-duration="11.972">
+  <div class="clip stage" id="s01-hook-stage" data-start="0" data-duration="11.972">
+    <div class="hook-wrap">
+<svg class="hook-bg" viewBox="0 0 1920 1080" width="1920" height="1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <circle cx="736.3" cy="259.9" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="332.1" cy="970.4" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1106.5" cy="737.7" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1059.8" cy="418.9" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1395.5" cy="619.5" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1488.7" cy="708.0" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1597.9" cy="477.0" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="311.5" cy="175.8" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1379.6" cy="194.2" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1250.8" cy="665.6" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="131.9" cy="835.7" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="82.1" cy="921.6" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1601.2" cy="244.5" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1385.3" cy="781.6" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="255.0" cy="716.8" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="252.7" cy="969.8" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1315.0" cy="1039.2" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="120.6" cy="350.5" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1185.4" cy="652.5" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="362.3" cy="943.3" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1611.5" cy="333.5" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="294.3" cy="714.4" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="785.5" cy="709.9" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="947.3" cy="430.6" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="60.7" cy="160.3" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="881.8" cy="777.3" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="820.2" cy="794.2" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1034.8" cy="935.6" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="1251.6" cy="354.7" r="5" fill="currentColor" opacity="0.28"/>
+      <circle cx="281.0" cy="88.4" r="5" fill="currentColor" opacity="0.28"/>
+    </svg>
+        <div class="kicker beat" id="s01-hook-b0">Same active ingredient.</div>
+        <div class="head beat is-entering" id="s01-hook-b1">One name.</div>
+        <div class="sub beat is-entering" id="s01-hook-b2">Two completely different jobs.</div>
+        <div class="head beat is-entering" id="s01-hook-b3">A serum cannot do what a filler does.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s01-hook-b1', { opacity: 0, scale: 1.03, y: -18 });
+  gsap.set('#s01-hook-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s01-hook-b3', { opacity: 0, scale: 0.86 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s01-hook-b1', { opacity: 1, scale: 1, y: 0, duration: 1.600, ease: 'power4.out' }, 1.940);
+  tl.to('#s01-hook-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 4.121);
+  tl.to('#s01-hook-b3', { opacity: 1, scale: 1, duration: 1.900, ease: 'back.out(1.6)' }, 6.611);
+  tl.to('#s01-hook-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 10.411);
+  tl.to({}, { duration: 11.972, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s01-hook'] = tl;
+})();
+</script>
+</template>

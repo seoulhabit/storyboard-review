@@ -60,19 +60,19 @@
 
 </style>
 
-<div id="root" data-composition-id="s06-serum-size" data-width="1920" data-height="1080"
-     data-duration="14.732">
-  <div class="clip stage" id="s06-serum-size-stage" data-start="0" data-duration="14.732">
+<div id="root" data-composition-id="s08-serum-size" data-width="1920" data-height="1080"
+     data-duration="16.357">
+  <div class="clip stage" id="s08-serum-size-stage" data-start="0" data-duration="16.357">
     <div class="two">
-      <div class="col" id="s06-serum-size-col">
-        <div class="head beat is-entering" id="s06-serum-size-b0">In a serum, size decides almost everything</div>
-        <div class="kicker beat is-entering" id="s06-serum-size-b1">Simplified illustration</div>
-        <div class="body beat is-entering" id="s06-serum-size-b2">Large chains mostly stay near the surface, forming a hydrating film</div>
-        <div class="body beat is-entering" id="s06-serum-size-b4">Smaller ones may travel farther into the upper layers of skin</div>
-        <div class="cite beat is-entering" id="s06-serum-size-b5">Skin Res Technol · 2015</div>
-        <div class="sub beat is-entering" id="s06-serum-size-b6">Neither behaves like a filler</div>
+      <div class="col" id="s08-serum-size-col">
+        <div class="head beat" id="s08-serum-size-b0">Size decides almost everything.</div>
+        <div class="kicker beat is-entering" id="s08-serum-size-b1">Simplified illustration</div>
+        <div class="body beat is-entering" id="s08-serum-size-b2">Large chains stay near the surface.</div>
+        <div class="body beat is-entering" id="s08-serum-size-b4">Smaller ones may travel farther into the upper layers.</div>
+        <div class="cite beat is-entering" id="s08-serum-size-b5">Skin Res Technol · 2015</div>
+        <div class="sub beat is-entering" id="s08-serum-size-b6">Neither behaves like a filler.</div>
       </div>
-      <div class="panel on" id="s06-serum-size-panel">
+      <div class="panel on" id="s08-serum-size-panel">
         <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <g class="big">
       <path d="M 217.9 214.4 C 239.8 214.4 250.7 195.6 272.5 195.6 C 294.4 195.6 305.3 216.9 327.1 216.9 C 349.0 216.9 359.9 194.0 381.7 194.0 C 403.6 194.0 414.5 223.1 436.3 223.1" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
@@ -98,27 +98,25 @@
 </div>
 <script>
 (function () {
-  gsap.set('#s06-serum-size-panel', { opacity: 0, x: 60, scale: 0.94 });
-  gsap.set('#s06-serum-size-b0', { opacity: 0, y: 30 });
-  gsap.set('#s06-serum-size-b1', { opacity: 0, y: 30 });
-  gsap.set('#s06-serum-size-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s06-serum-size-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s06-serum-size-b5', { opacity: 0, y: 30 });
-  gsap.set('#s06-serum-size-b6', { opacity: 0, scale: 1.03, y: -18 });
+  gsap.set('#s08-serum-size-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s08-serum-size-b1', { opacity: 0, y: 30 });
+  gsap.set('#s08-serum-size-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s08-serum-size-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s08-serum-size-b5', { opacity: 0, y: 30 });
+  gsap.set('#s08-serum-size-b6', { opacity: 0, scale: 1.03, y: -18 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s06-serum-size-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
-  tl.to('#s06-serum-size-b0', { opacity: 1, y: 0, duration: 1.500, ease: 'power3.out' }, 0.711);
-  tl.to('#s06-serum-size-b1', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 2.132);
-  tl.to('#s06-serum-size-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 4.265);
-  tl.to('#s06-serum-size-panel', { x: 10, y: -7, scale: 1.018, duration: 0.480, ease: 'sine.inOut' }, 7.765);
-  tl.to('#s06-serum-size-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 8.245);
-  tl.to('#s06-serum-size-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 11.373);
-  tl.to('#s06-serum-size-b6', { opacity: 1, scale: 1, y: 0, duration: 1.200, ease: 'power4.out' }, 13.079);
-  tl.to({}, { duration: 14.732, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s08-serum-size-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.351);
+  tl.to('#s08-serum-size-b1', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 2.068);
+  tl.to('#s08-serum-size-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.786);
+  tl.to('#s08-serum-size-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 9.491);
+  tl.to('#s08-serum-size-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 12.965);
+  tl.to('#s08-serum-size-b6', { opacity: 1, scale: 1, y: 0, duration: 1.200, ease: 'power4.out' }, 14.544);
+  tl.to('#s08-serum-size-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 7.286);
+  tl.to({}, { duration: 16.357, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
-  window.__timelines['s06-serum-size'] = tl;
+  window.__timelines['s08-serum-size'] = tl;
 })();
 </script>
 </template>

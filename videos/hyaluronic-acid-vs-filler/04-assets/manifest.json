@@ -1,86 +1,116 @@
 {
   "slug": "hyaluronic-acid-vs-filler",
-  "generated": "2026-09-03",
-  "_note": "[S6/A-1] discover -> reuse -> build -> contribute. `reused` names the exact repo path a file came from; nothing here was generated that an existing asset already covered.",
+  "generated": "2026-09-04",
+  "revision": "v3",
+  "_note": "[S6/A-1] discover -> reuse -> build -> contribute. `reused` names the exact repo path a file came from. This manifest replaces the v1/v2 one, which still described a 180s two-voice, 25-stem, chip-less-plate build -- confirmed stale (checked field-by-field against this run) rather than assumed.",
   "assets": [
     {
       "file": "vo.wav",
-      "role": "voiceover",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/vo.wav",
-      "dur_s": 180.0,
-      "bytes": 17280090,
-      "source": "BUILT \u2014 25 Higgsfield seed_audio stems, silence-trimmed and placed with computed gaps",
-      "provider": "higgsfield generate_audio (providers.yaml \u00a7tts current-vo)",
+      "role": "voiceover — the master clock",
+      "bytes": 15857938,
+      "dur_s": 165.186,
+      "source": "BUILT — 24 Higgsfield seed_audio stems (single narrator), silence-trimmed, placed with FIXED real-second gaps (not scaled to a target — build_vo.py v3 fix, see 00-decision-ledger.md)",
+      "provider": "higgsfield generate_audio, model seed_audio (providers.yaml §tts current-vo)",
       "licence": "generated for this channel",
-      "voices": {
-        "SoulHabit": "Kimberly 674b71b8-1d2e-4087-8567-d1f53c0b9f3c (element)",
-        "Jay": "Grady e2a2d2e6-9ed2-59cd-82af-feaa27f8a678 (preset)"
-      },
-      "cost_credits": 25,
+      "voices": { "Narrator": "Kimberly 674b71b8-1d2e-4087-8567-d1f53c0b9f3c (element)" },
+      "cost_credits": "~21 (24 generations, per-line cost proportional to length)",
       "reused": false
     },
     {
       "file": "vo.mp3",
       "role": "voiceover (mux source)",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/vo.mp3",
-      "dur_s": 180.001,
-      "bytes": 4321773,
+      "bytes": 3965805,
+      "dur_s": 165.186,
+      "reused": false
+    },
+    {
+      "file": "transcript.json / captions.srt / captions.vtt",
+      "role": "word-level timing + caption sidecars",
+      "bytes": { "transcript.json": 27896, "captions.srt": 5304, "captions.vtt": 5069 },
+      "source": "BUILT — hyperframes transcribe (whisper, small.en), run on vo.wav after it was final",
+      "_why": "youtube-delivery.md requires .srt/.vtt shipped alongside the MP4; none existed before this revision. transcript-provenance.json records the exact source vo.wav sha256 + mtime this transcript was run against, so a future re-record can be checked for staleness rather than trusted blind (a documented failure mode on this channel: videos/retinol-patch-test once shipped a word-timing sidecar 20 hours stale against its own paired wav).",
+      "word_count": 415,
       "reused": false
     },
     {
       "file": "music.wav",
       "role": "music bed",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/music.wav",
-      "dur_s": 184.95,
-      "bytes": 17755268,
-      "source": "REUSED \u2014 videos/snail-mucin-truth/assets/bgm/track.loop.mp3, an existing channel bed, looped x3 to 185s with a 1.5s in / 2.0s out fade",
+      "bytes": 31706170,
+      "dur_s": 165.136,
+      "source": "REUSED — videos/snail-mucin-truth/assets/bgm/track.loop.mp3 (62.118s, confirmed live throughout via silencedetect — no silent region ≥1s at -40dB), looped to cover 165.186s with a 1.5s in / 2.0s out fade",
       "licence": "same as the source project (existing channel asset)",
       "cost_credits": 0,
       "reused": true,
-      "_why": "[S4/V-3] takes an already-sourced bed in the repo over generating one. Ducked to 0.25 under VO at the mux."
+      "_why": "[S4/V-3] takes an already-sourced bed in the repo over generating one. Mixed via a voice-bus chain (highpass 85Hz -> acompressor -26dB 4:1 makeup 11 -> alimiter 0.60) BEFORE the mix, at 0.22 gain — the plain runbook amix recipe measured 3 LU under target on this same project's v2 run because raw TTS was -24[.3] to -25.9 LUFS with a near-0dBFS peak; the voice bus is what makes loudnorm's job possible."
     },
     {
-      "file": "thumbnail.png",
-      "role": "thumbnail",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/thumbnail.png",
-      "bytes": 791235,
-      "source": "GENERATED \u2014 vidiq_generate_thumbnail, 1280x720",
-      "score": 77,
-      "cost_credits": 22,
+      "file": "05-composition/assets/images/subject-01-misconception.png",
+      "role": "photoreal plate — s03-misconception-plate (\"the opening misconception\")",
+      "bytes": 3194307,
+      "dims": "2048x1152",
+      "source": "GENERATED — Higgsfield soul_v2 (text2image_soul_v2), 16:9, graded eq=saturation=0.62:contrast=1.06 (this channel's established skin-plate grade)",
+      "cost_credits": 0.12,
+      "reused": false,
+      "_why": "[filed exception] this channel's own frame.md convention across ~10 other projects bans visible faces in every plate (\"hands-below-wrist or texture-only\"). Overridden here on explicit operator instruction — see 01-story-brief.md §v3 Imagery and 00-decision-ledger.md's filed record. Precedent: videos/ceramides-skin-barrier already ships full photoreal faces in a HyperFrames composition via the same provider family."
+    },
+    {
+      "file": "05-composition/assets/images/subject-02-not-filler.png",
+      "role": "photoreal plate — s04-not-filler-plate (\"a serum is not filler in a bottle\")",
+      "bytes": 3033241,
+      "dims": "2048x1152",
+      "source": "GENERATED — Higgsfield soul_v2, identity-referenced against subject-03-plumping's own generation job for cross-shot consistency (medias: role=image)",
+      "cost_credits": 0.12,
+      "reused": false,
+      "_note": "Regenerated once: the first pass showed a different-looking subject (mismatched ethnicity/hair vs the other 3 shots) and a prop bottle carrying garbled fake-brand text despite an explicit unbranded instruction. Fixed by dropping the bottle prop entirely and anchoring identity to an already-approved shot."
+    },
+    {
+      "file": "05-composition/assets/images/subject-03-plumping.png",
+      "role": "photoreal plate — s09-plumping-plate (\"the temporary surface-plumping explanation\")",
+      "bytes": 2962835,
+      "dims": "2048x1152",
+      "source": "GENERATED — Higgsfield soul_v2, first-pass accept (no defects found on inspection)",
+      "cost_credits": 0.12,
       "reused": false
+    },
+    {
+      "file": "05-composition/assets/images/subject-04-takeaway.png",
+      "role": "photoreal plate — s16-takeaway-plate (\"the final practical takeaway\")",
+      "bytes": 2902771,
+      "dims": "2048x1152",
+      "source": "GENERATED — Higgsfield soul_v2, identity-referenced against subject-03-plumping",
+      "cost_credits": 0.12,
+      "reused": false,
+      "_note": "Regenerated once: the first pass returned an unrequested split-screen diptych, unusable as a single full-bleed plate. Second pass explicitly excluded split/diptych/collage framing."
     },
     {
       "file": "tokens/tokens.css",
       "role": "design tokens",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/tokens/tokens.css",
       "bytes": 11997,
-      "source": "REUSED VERBATIM \u2014 videos/ectoin-survival-molecule/assets/tokens/tokens.css",
-      "_why": "the repo's only landscape-calibrated token set: 1920x1080 canvas, safe areas 54/108/96/96, the type scale that deliberately does NOT rescale between 9:16 and 16:9, and the measured wash/text contrast contracts.",
+      "source": "REUSED VERBATIM — videos/ectoin-survival-molecule/assets/tokens/tokens.css",
+      "_why": "the repo's only landscape-calibrated token set: 1920x1080 canvas, safe areas 54/108/96/96, the type scale that deliberately does NOT rescale between 9:16 and 16:9.",
       "cost_credits": 0,
       "reused": true
     },
     {
       "file": "fonts/*.woff2",
       "role": "self-hosted faces",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/fonts/",
-      "source": "REUSED \u2014 videos/ectoin-survival-molecule/assets/fonts/ (4 subset faces)",
-      "_note": "NotoSansKR was REMOVED from the shipped font stack: no Korean glyph appears in this video and a family without an @font-face is a hard lint error (9 of them). Faces are kept here for provenance; the render resolves EB Garamond / Inter / JetBrains Mono through the engine-supported Google Fonts path, which injects deterministic @font-face at render time.",
+      "source": "REUSED — videos/ectoin-survival-molecule/assets/fonts/ (4 subset faces)",
+      "_note": "NotoSansKR carried for provenance only, unchanged from v2 — no Korean glyph in this script.",
       "cost_credits": 0,
       "reused": true
     },
     {
       "file": "vo-stems.json / vo-timing.json",
       "role": "master clock",
-      "abs": "/Users/sumitchoudhary/Desktop/Story Board/videos/hyaluronic-acid-vs-filler/04-assets/vo-timing.json",
-      "source": "BUILT by build_vo.py",
-      "_why": "vo-timing.json IS the master clock [S4/V-2]; 03-beat-sheet.json is derived from it, never hand-typed.",
+      "source": "BUILT — vo-stems.json hand-authored (24 stems, v3 rewrite); vo-timing.json BUILT by build_vo.py",
+      "_why": "vo-timing.json IS the master clock [S4/V-2]; 03-beat-sheet.json is derived from it, never hand-typed. v3's build_vo.py no longer scales gaps to hit a preset target — the 165.186s total is the measured OUTPUT, not a number this file was built to reach.",
       "reused": false
     }
   ],
   "totals": {
-    "files": 7,
+    "files": 12,
     "reused": 3,
-    "built_or_generated": 4,
-    "credits_spent_on_assets": 47
+    "built_or_generated": 9,
+    "credits_spent_this_revision": "~21.5 (24 VO generations + 7 image generations, incl. 2 plate regenerations)"
   }
 }

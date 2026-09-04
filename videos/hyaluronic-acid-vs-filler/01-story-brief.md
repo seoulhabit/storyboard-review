@@ -227,3 +227,67 @@ Carried unchanged from the 180 s cut, plus one new v2 entry:
   deliberately not asserted.
 - C4's source is a comparative-physiology review spanning species. It is cited for
   where HA sits in the body and what it does there, which is what it establishes.
+
+## §v3 Revision — voiceover rewrite, photoreal plates, 165.186s
+
+Full detail in `00-decision-ledger.md`'s `## re-run — v3 revision` section.
+Summary of what changed from v2 and why:
+
+- **Voiceover fully rewritten**: 13 stems → 24, shorter sentences, a
+  curiosity-gap hook replacing the thesis-first open, natural fixed-second
+  pauses replacing v2's gap-scaled-to-a-target assembly. Every claim (C0-C12)
+  and every citation below survives unchanged in substance; only the
+  surrounding sentences changed. Runtime is now a **measured output**
+  (165.186s), not a number the script was built to hit.
+- **13 scenes → 17**, so a real development lands roughly every 5-8s at the
+  beat level (validated against `validate_beat_sheet.py`'s own 8.0s
+  END_SCENE_MIN_S / 10.0s CHAPTER_MIN_GAP_S floors, which forbid chopping
+  every scene to a literal 5-8s without starving a chapter or the end scene).
+- **A genuine `[S6/A-9]` actor merge** replacing two scenes that redrew the
+  same molecule chain (see ledger).
+- **A three-type transition system** (wipe-left / wipe-up / blur-crossfade)
+  plus three deliberate hard cuts, replacing two flat wipe types across
+  every boundary.
+
+### §v3 Imagery — the face-rule override
+
+**This is the one deliberate departure from every prior revision's own
+stated rule, made on explicit operator instruction, not silent drift.**
+
+v2's own text above (§v2 Revision) states: *"no generated imagery... the
+shipped cut had zero raster in-frame images; that stays true."* It is no
+longer true. This channel's `frame.md` convention, confirmed identical
+across roughly ten sibling projects, bans a visible face in any plate:
+*"No talking-head footage, no visible faces at any point — every plate is
+hands-below-wrist or texture-only."*
+
+Asked directly whether to honor that rule with a face-free treatment or
+override it for a full photorealistic subject, the operator chose to
+**override it** (`AskUserQuestion`, this run). Four photoreal plates of one
+consistent adult female subject — natural skin texture, minimal makeup, dark
+hair, neutral cream clothing, Korean-skincare-editorial register, realistic
+hands — now appear at exactly the four moments the revision brief named: the
+opening misconception, "a serum is not filler in a bottle," the temporary
+surface-plumping explanation, and the final practical takeaway. She is never
+shown self-injecting, and no shot implies a topical serum reproduces a
+filler's result — both explicit constraints from the brief, held throughout.
+
+**This is not unprecedented on the channel** — `videos/ceramides-skin-
+barrier` already ships full photoreal female faces in a HyperFrames
+composition, filed in its own `BRIEF.md` as *"a visible, reversible decision
+rather than quiet drift."* Same standard applied here: named, dated, and
+attributed to an explicit instruction rather than left for a future reader
+to wonder whether it was an oversight.
+
+**What did not change:** the underlying scientific claims, every citation
+below, the FDA warning's wording, and the rule that no citation chip ever
+shares a frame with a generated plate (adopted from `videos/pilling-vs-
+peeling`'s own filed convention, so a photo is never dressed as cited
+evidence).
+
+**Provenance and defects found in generation are logged in
+`04-assets/manifest.json`**, not repeated here — two of the four plates
+needed one regeneration each (a subject-consistency miss and garbled
+prop-bottle text on one; an unrequested split-screen framing on another),
+both caught by direct visual inspection before acceptance, not assumed clean
+from a first pass.

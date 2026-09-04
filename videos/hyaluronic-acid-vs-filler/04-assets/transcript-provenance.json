@@ -1,0 +1,8 @@
+{
+  "source_wav": "04-assets/vo.wav",
+  "source_wav_sha256": "e1c9b61e014d711cd3fea3ff0563dc3f1f211763653eadf32834807543da14b6",
+  "source_wav_mtime": 1788483528.4586818,
+  "engine": "whisper",
+  "model": "small.en",
+  "word_count": 415
+}

@@ -1,420 +1,480 @@
 {
-  "duration": 160.0,
+  "duration": 165.186,
   "assertions": [
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b0",
-      "bySec": 1.65
+      "selector": "#s01-hook-b0",
+      "bySec": 1.95
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b1",
-      "bySec": 2.631
+      "selector": "#s01-hook-b1",
+      "bySec": 3.79
     },
     {
       "kind": "before",
-      "a": "#s01-lineup-b0",
-      "b": "#s01-lineup-b1"
+      "a": "#s01-hook-b0",
+      "b": "#s01-hook-b1"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b2",
-      "bySec": 5.416
+      "selector": "#s01-hook-b2",
+      "bySec": 5.971
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-hook-b3",
+      "bySec": 8.761
     },
     {
       "kind": "before",
-      "a": "#s01-lineup-b1",
-      "b": "#s01-lineup-b2"
+      "a": "#s01-hook-b1",
+      "b": "#s01-hook-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b3",
-      "bySec": 8.039
+      "selector": "#s02-lineup-b0",
+      "bySec": 13.022
     },
     {
       "kind": "appearsBy",
-      "selector": "#s01-lineup-b4",
-      "bySec": 10.662
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s01-lineup-b6",
-      "bySec": 13.675
+      "selector": "#s02-lineup-b2",
+      "bySec": 16.092
     },
     {
       "kind": "before",
-      "a": "#s01-lineup-b2",
-      "b": "#s01-lineup-b6"
+      "a": "#s02-lineup-b0",
+      "b": "#s02-lineup-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s02-not-filler-b0",
-      "bySec": 16.284
+      "selector": "#s02-lineup-b3",
+      "bySec": 17.96
     },
     {
       "kind": "appearsBy",
-      "selector": "#s02-not-filler-b2",
-      "bySec": 18.389
+      "selector": "#s02-lineup-b4",
+      "bySec": 19.721
     },
     {
       "kind": "appearsBy",
-      "selector": "#s02-not-filler-b3",
-      "bySec": 20.727
+      "selector": "#s02-lineup-b5",
+      "bySec": 20.679
     },
     {
       "kind": "before",
-      "a": "#s02-not-filler-b0",
-      "b": "#s02-not-filler-b3"
+      "a": "#s02-lineup-b2",
+      "b": "#s02-lineup-b5"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s03-origin-b0",
-      "bySec": 23.482
+      "selector": "#s03-misconception-plate-b0",
+      "bySec": 22.279
     },
     {
       "kind": "appearsBy",
-      "selector": "#s03-origin-b1",
-      "bySec": 25.338
+      "selector": "#s03-misconception-plate-b1",
+      "bySec": 24.015
     },
     {
       "kind": "appearsBy",
-      "selector": "#s03-origin-b2",
-      "bySec": 27.572
+      "selector": "#s03-misconception-plate-b2",
+      "bySec": 25.65
     },
     {
       "kind": "before",
-      "a": "#s03-origin-b0",
-      "b": "#s03-origin-b2"
+      "a": "#s03-misconception-plate-b0",
+      "b": "#s03-misconception-plate-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b0",
-      "bySec": 30.363
+      "selector": "#s04-not-filler-plate-b0",
+      "bySec": 28.188
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b2",
-      "bySec": 33.272
+      "selector": "#s05-origin-b0",
+      "bySec": 30.162
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b3",
-      "bySec": 34.812
+      "selector": "#s05-origin-b2",
+      "bySec": 32.518
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s05-origin-b3",
+      "bySec": 35.553
     },
     {
       "kind": "before",
-      "a": "#s04-body-b0",
-      "b": "#s04-body-b3"
+      "a": "#s05-origin-b0",
+      "b": "#s05-origin-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s04-body-b4",
-      "bySec": 36.763
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s04-body-b5",
-      "bySec": 38.302
+      "selector": "#s05-origin-b4",
+      "bySec": 36.675
     },
     {
       "kind": "before",
-      "a": "#s04-body-b3",
-      "b": "#s04-body-b5"
+      "a": "#s05-origin-b3",
+      "b": "#s05-origin-b4"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b0",
-      "bySec": 40.676
+      "selector": "#s06-body-b0",
+      "bySec": 38.55
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b2",
-      "bySec": 43.726
+      "selector": "#s06-body-b1",
+      "bySec": 39.907
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b4",
-      "bySec": 47.801
+      "selector": "#s06-body-b2",
+      "bySec": 41.058
     },
     {
       "kind": "before",
-      "a": "#s05-compare-b0",
-      "b": "#s05-compare-b4"
+      "a": "#s06-body-b0",
+      "b": "#s06-body-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b5",
-      "bySec": 49.926
+      "selector": "#s06-body-b3",
+      "bySec": 42.977
     },
     {
       "kind": "appearsBy",
-      "selector": "#s05-compare-b6",
-      "bySec": 52.653
+      "selector": "#s06-body-b4",
+      "bySec": 44.942
     },
     {
       "kind": "before",
-      "a": "#s05-compare-b4",
-      "b": "#s05-compare-b6"
+      "a": "#s06-body-b2",
+      "b": "#s06-body-b4"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b0",
-      "bySec": 55.765
+      "selector": "#s07-compare-b0",
+      "bySec": 47.266
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b1",
-      "bySec": 56.686
+      "selector": "#s07-compare-b1",
+      "bySec": 48.973
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s07-compare-b2",
+      "bySec": 50.749
     },
     {
       "kind": "before",
-      "a": "#s06-serum-size-b0",
-      "b": "#s06-serum-size-b1"
+      "a": "#s07-compare-b0",
+      "b": "#s07-compare-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b2",
-      "bySec": 59.419
+      "selector": "#s07-compare-b3",
+      "bySec": 53.606
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b4",
-      "bySec": 63.399
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s06-serum-size-b5",
-      "bySec": 65.927
+      "selector": "#s07-compare-b5",
+      "bySec": 57.648
     },
     {
       "kind": "before",
-      "a": "#s06-serum-size-b1",
-      "b": "#s06-serum-size-b5"
+      "a": "#s07-compare-b2",
+      "b": "#s07-compare-b5"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s06-serum-size-b6",
-      "bySec": 67.833
+      "selector": "#s08-serum-size-b0",
+      "bySec": 61.792
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s08-serum-size-b1",
+      "bySec": 63.01
     },
     {
       "kind": "before",
-      "a": "#s06-serum-size-b5",
-      "b": "#s06-serum-size-b6"
+      "a": "#s08-serum-size-b0",
+      "b": "#s08-serum-size-b1"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s07-plumping-b0",
-      "bySec": 69.586
+      "selector": "#s08-serum-size-b2",
+      "bySec": 65.328
     },
     {
       "kind": "appearsBy",
-      "selector": "#s07-plumping-b2",
-      "bySec": 72.615
+      "selector": "#s08-serum-size-b4",
+      "bySec": 71.033
     },
     {
       "kind": "appearsBy",
-      "selector": "#s07-plumping-b4",
-      "bySec": 76.376
+      "selector": "#s08-serum-size-b5",
+      "bySec": 73.907
     },
     {
       "kind": "before",
-      "a": "#s07-plumping-b0",
-      "b": "#s07-plumping-b4"
+      "a": "#s08-serum-size-b1",
+      "b": "#s08-serum-size-b5"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s07-plumping-b5",
-      "bySec": 79.205
+      "selector": "#s08-serum-size-b6",
+      "bySec": 75.686
     },
     {
       "kind": "before",
-      "a": "#s07-plumping-b4",
-      "b": "#s07-plumping-b5"
+      "a": "#s08-serum-size-b5",
+      "b": "#s08-serum-size-b6"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b0",
-      "bySec": 82.658
+      "selector": "#s09-plumping-plate-b0",
+      "bySec": 77.899
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b1",
-      "bySec": 85.897
+      "selector": "#s09-plumping-plate-b2",
+      "bySec": 80.986
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s09-plumping-plate-b3",
+      "bySec": 83.24
     },
     {
       "kind": "before",
-      "a": "#s08-binds-water-b0",
-      "b": "#s08-binds-water-b1"
+      "a": "#s09-plumping-plate-b0",
+      "b": "#s09-plumping-plate-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b2",
-      "bySec": 88.436
+      "selector": "#s10-houseplant-b0",
+      "bySec": 85.086
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s10-houseplant-b1",
+      "bySec": 86.788
     },
     {
       "kind": "before",
-      "a": "#s08-binds-water-b1",
-      "b": "#s08-binds-water-b2"
+      "a": "#s10-houseplant-b0",
+      "b": "#s10-houseplant-b1"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s08-binds-water-b3",
-      "bySec": 91.171
+      "selector": "#s11-binds-and-seal-b0",
+      "bySec": 89.545
     },
     {
       "kind": "appearsBy",
-      "selector": "#s09-lifeguard-b0",
-      "bySec": 95.003
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s09-lifeguard-b3",
-      "bySec": 101.948
+      "selector": "#s11-binds-and-seal-b2",
+      "bySec": 92.535
     },
     {
       "kind": "before",
-      "a": "#s09-lifeguard-b0",
-      "b": "#s09-lifeguard-b3"
+      "a": "#s11-binds-and-seal-b0",
+      "b": "#s11-binds-and-seal-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s10-crosslink-b0",
-      "bySec": 107.693
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s10-crosslink-b2",
-      "bySec": 110.406
+      "selector": "#s11-binds-and-seal-b3",
+      "bySec": 94.412
     },
     {
       "kind": "before",
-      "a": "#s10-crosslink-b0",
-      "b": "#s10-crosslink-b2"
+      "a": "#s11-binds-and-seal-b2",
+      "b": "#s11-binds-and-seal-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s10-crosslink-b3",
-      "bySec": 112.018
+      "selector": "#s11-binds-and-seal-b4",
+      "bySec": 96.463
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s11-binds-and-seal-b5",
+      "bySec": 98.252
     },
     {
       "kind": "before",
-      "a": "#s10-crosslink-b2",
-      "b": "#s10-crosslink-b3"
+      "a": "#s11-binds-and-seal-b3",
+      "b": "#s11-binds-and-seal-b5"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s10-crosslink-b4",
-      "bySec": 113.866
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b0",
-      "bySec": 116.463
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b2",
-      "bySec": 120.796
+      "selector": "#s11-binds-and-seal-b6",
+      "bySec": 99.875
     },
     {
       "kind": "before",
-      "a": "#s11-do-not-inject-b0",
-      "b": "#s11-do-not-inject-b2"
+      "a": "#s11-binds-and-seal-b5",
+      "b": "#s11-binds-and-seal-b6"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b3",
-      "bySec": 122.209
+      "selector": "#s12-crosslink-b0",
+      "bySec": 102.398
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s12-crosslink-b2",
+      "bySec": 104.936
     },
     {
       "kind": "before",
-      "a": "#s11-do-not-inject-b2",
-      "b": "#s11-do-not-inject-b3"
+      "a": "#s12-crosslink-b0",
+      "b": "#s12-crosslink-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b4",
-      "bySec": 124.627
+      "selector": "#s12-crosslink-b3",
+      "bySec": 106.523
     },
     {
       "kind": "before",
-      "a": "#s11-do-not-inject-b3",
-      "b": "#s11-do-not-inject-b4"
+      "a": "#s12-crosslink-b2",
+      "b": "#s12-crosslink-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b5",
-      "bySec": 126.839
+      "selector": "#s12-crosslink-b4",
+      "bySec": 108.266
     },
     {
       "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b7",
-      "bySec": 130.366
+      "selector": "#s13-warning-question-b0",
+      "bySec": 110.858
     },
     {
       "kind": "appearsBy",
-      "selector": "#s11-do-not-inject-b9",
-      "bySec": 133.894
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b0",
-      "bySec": 137.544
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s12-badges-b2",
-      "bySec": 140.42
+      "selector": "#s13-warning-question-b2",
+      "bySec": 113.819
     },
     {
       "kind": "before",
-      "a": "#s12-badges-b0",
-      "b": "#s12-badges-b2"
+      "a": "#s13-warning-question-b0",
+      "b": "#s13-warning-question-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s12-badges-b3",
-      "bySec": 143.008
+      "selector": "#s13-warning-question-b3",
+      "bySec": 115.922
     },
     {
       "kind": "before",
-      "a": "#s12-badges-b2",
-      "b": "#s12-badges-b3"
+      "a": "#s13-warning-question-b2",
+      "b": "#s13-warning-question-b3"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s12-badges-b4",
-      "bySec": 146.372
+      "selector": "#s14-fda-warning-b0",
+      "bySec": 118.488
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s14-fda-warning-b2",
+      "bySec": 120.488
     },
     {
       "kind": "before",
-      "a": "#s12-badges-b3",
-      "b": "#s12-badges-b4"
+      "a": "#s14-fda-warning-b0",
+      "b": "#s14-fda-warning-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s12-badges-b5",
-      "bySec": 148.629
+      "selector": "#s14-fda-warning-b3",
+      "bySec": 122.755
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s14-fda-warning-b5",
+      "bySec": 128.156
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s14-fda-warning-b7",
+      "bySec": 132.223
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s15-badges-b0",
+      "bySec": 136.457
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s15-badges-b2",
+      "bySec": 139.993
     },
     {
       "kind": "before",
-      "a": "#s12-badges-b4",
-      "b": "#s12-badges-b5"
+      "a": "#s15-badges-b0",
+      "b": "#s15-badges-b2"
     },
     {
       "kind": "appearsBy",
-      "selector": "#s13-endcard-b0",
-      "bySec": 152.339
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s13-endcard-b1",
-      "bySec": 154.579
+      "selector": "#s15-badges-b4",
+      "bySec": 144.199
     },
     {
       "kind": "before",
-      "a": "#s13-endcard-b0",
-      "b": "#s13-endcard-b1"
+      "a": "#s15-badges-b2",
+      "b": "#s15-badges-b4"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s15-badges-b5",
+      "bySec": 146.456
+    },
+    {
+      "kind": "before",
+      "a": "#s15-badges-b4",
+      "b": "#s15-badges-b5"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s15-badges-b6",
+      "bySec": 148.713
+    },
+    {
+      "kind": "before",
+      "a": "#s15-badges-b5",
+      "b": "#s15-badges-b6"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s16-takeaway-plate-b0",
+      "bySec": 154.077
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s16-takeaway-plate-b2",
+      "bySec": 156.53
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s17-endcard-b0",
+      "bySec": 159.678
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s17-endcard-b1",
+      "bySec": 161.67
+    },
+    {
+      "kind": "before",
+      "a": "#s17-endcard-b0",
+      "b": "#s17-endcard-b1"
     },
     {
       "kind": "keepsMoving",

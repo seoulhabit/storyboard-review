@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
-"""Emit the five DIAGRAM scenes -- the ones carrying the morphology actor.
+"""Emit the hand-authored scenes -- the ones carrying a diagram, a photoreal
+plate, or the morphology actor.
 
-These are marked `handoff: "hand-authored"` in the beat sheet, so the skill's
-generator emits their clip, transition and motion assertions but NOT their
-markup [S6/A-9]. This writes that markup, still reading every time from
-03-beat-sheet.json: no timing is hand-typed here either.
+v3 REWRITE 2026-09-03: 15 hand-authored scenes (was 10), covering a hook type
+card, the three-lane lineup (x2, hook + recap), four photoreal plates of one
+consistent subject, five diagram scenes reused near-unchanged from v2, one
+genuine two-phase actor merge (s11-binds-and-seal, replacing two scenes that
+redrew the same chain object -- see build_binds_and_seal()), and a warning
+pair split from v2's single 21s do-not-inject scene. Still marked
+`handoff: "hand-authored"` in the beat sheet, so the skill's generator emits
+each one's clip, transition and motion assertions but NOT their markup
+[S6/A-9]. Still reads every time from 03-beat-sheet.json: no timing is
+hand-typed here either.
 
 The actor is one molecule in three physical states, and that IS the video's
 argument:
@@ -15,6 +22,14 @@ argument:
 DETERMINISM: every coordinate is computed HERE, in Python, with a fixed seed and
 baked into static SVG path data. Nothing random, timed or measured runs inside
 the composition -- the renderer seeks, it does not play.
+
+FRAME-ZERO DISCIPLINE (new in v3): every scene's first beat is authored in
+build_beats.py at offset 0, and every builder that runs through _hero_left(),
+two_col() or plate_scene() now composes that first row at frame zero instead
+of fading it in -- see _compose_first() below. v2 shipped this as a real,
+uncaught gap: a wipe or a hard cut into a scene whose first beat still had an
+entrance tween would reveal an empty ground for the tween's own duration.
+lane_scene() and build_compare() already had this fix; it is now shared.
 
 PANEL-SCALE MOTION: on a 1920-wide frame a headline sits in a grid cell, so a
 text fade moves ~0.7% of the pixels. ectoin measured 4-5.8% active steps in its
@@ -28,14 +43,83 @@ BS = json.load(open(f"{HERE}/03-beat-sheet.json"))
 OUT = f"{HERE}/05-composition/compositions/frames"
 SCENES = {s["id"]: s for s in BS["scenes"]}
 ORDER = [s["id"] for s in BS["scenes"]]
+
+# [correctness] every scene id must be a clean slug: build_actors.py names
+# files from the RAW id (f"{idx:02d}-{sid}.html"), while the skill's own
+# generator names them from a SLUGIFIED id (scene_filename() in
+# beats_to_composition.py). Today every id is already slug-clean so the two
+# never diverge, but nothing enforced that -- one capital letter or
+# underscore would split the pipeline into two silently-disagreeing file
+# namespaces. Enforced here rather than assumed.
+for _sid in ORDER:
+    assert re.fullmatch(r"[a-z0-9-]+", _sid), \
+        f"scene id {_sid!r} is not a clean slug ([a-z0-9-]+) -- it will name " \
+        f"one file for this script and a DIFFERENT file for the shared " \
+        f"generator's own slugify()"
+
+# [correctness] CRITICAL FIX, confirmed on the actual render, not just in
+# source: beats_to_composition.py's render_scene() extends a GENERATED
+# scene's own wrapper by d_in+d_out and shifts every beat offset by +d_in
+# so its internal timeline lines up with the padded root-level wrapper
+# window [S6/A-8] ("every offset inside the sub-composition shifts by
+# +d_in ... the sub-comp's own duration is dur + d_in + d_out"). Nothing
+# ever did that for a HAND-AUTHORED scene file -- confirmed by comparing
+# every wrapper's declared data-duration in index.html against each
+# sub-composition's own declared data-duration: every one of the 15
+# hand-authored scenes here mismatched by exactly its own d_in+d_out.
+# The runtime keys a sub-composition's visibility off ITS OWN declared
+# duration, not the wrapper's, so the trailing `mismatch` seconds of
+# EVERY hand-authored scene rendered as a hard, silent, fully blank
+# frame -- measured directly on the rendered MP4: s08-serum-size (whose
+# only mismatch is its own 0.350s incoming wipe) went completely blank
+# from t=75.7s to its 76.049s cut into s09, reproduced identically via
+# `hyperframes snapshot` on the live composition, ruling out a render-
+# capture artifact. `hyperframes check`'s layout pass never saw it --
+# it has no notion of "does this sub-composition go invisible before its
+# wrapper's own window closes," the same class of blind spot as the
+# padded-.stage drift bug this file already works around elsewhere.
+# Fixed once, centrally, in scene_shell() and plate_scene() below, via
+# _shift_tweens() -- not by hand-deriving a shift in all 15 builders.
+def _transition_dur(sid):
+    t = SCENES[sid].get("transition") or {"type": "cut"}
+    return 0.0 if t.get("type") == "cut" else float(t.get("duration", 0.0))
+
+D_IN, D_OUT = {}, {}
+for _i, _sid in enumerate(ORDER):
+    D_IN[_sid] = 0.0 if _i == 0 else _transition_dur(_sid)
+    D_OUT[_sid] = 0.0 if _i == len(ORDER) - 1 else _transition_dur(ORDER[_i + 1])
+
+_TWEEN_POS_RE = re.compile(r"(tl\.(?:to|fromTo)\([^;]*?,\s*)(-?\d+(?:\.\d+)?)(\);)")
+
+def _shift_tweens(tweens, shift):
+    """Shift every tl.to/tl.fromTo POSITION argument (never gsap.set, which is
+    immediate and runs outside the timeline regardless of playhead) forward
+    by `shift` seconds -- see the D_IN/D_OUT block above for why this exists.
+    The anchor tween (`tl.to({}, {duration: ...}, 0)`) is authored directly
+    by scene_shell() with the correct padded duration and is never passed
+    through this function."""
+    if shift <= 1e-9:
+        return tweens
+    out = []
+    for line in tweens:
+        m = _TWEEN_POS_RE.search(line)
+        if not m:
+            out.append(line)
+            continue
+        pos = float(m.group(2)) + shift
+        out.append(_TWEEN_POS_RE.sub(
+            lambda mm, _p=pos: f"{mm.group(1)}{_p:.3f}{mm.group(3)}", line, count=1))
+    return out
+
 IDIOM_EASE = {"arrive": "power3.out", "slam": "power4.out", "wipe": "power2.inOut",
               "count": "power2.out", "swap": "back.out(1.6)", "hold": "sine.inOut"}
 # [simplification] shared default hold-drift magnitude -- was duplicated
 # verbatim in two_col() and _hold_drift(), with nothing enforcing they stay
-# in sync. s11-do-not-inject already needed a scene-specific override
-# (S11_DRIFTS, see build_warning()) after this exact default pushed content
-# into a reserved safe-area zone; that pattern will recur, and a future
-# tune of the magnitude should only need to happen in one place.
+# in sync. s14-fda-warning already needs a scene-specific override
+# (S14_DRIFTS, see build_warning_fullbleed()) after this exact default pushed
+# content into a reserved safe-area zone in v2 (same defect, same fix,
+# carried forward under the new scene id). That pattern will recur, and a
+# future tune of the magnitude should only need to happen in one place.
 DEFAULT_DRIFTS = [(10, -7, 1.018), (-9, 6, 1.005), (7, 8, 1.014), (-6, -6, 1.010)]
 
 def esc(t):
@@ -108,16 +192,11 @@ def boundary_panel(rng, w, h):
             f'stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>\n'
             f'      <g class="small">\n      ' + "\n      ".join(small) + "\n      </g>")
 
-# ------------------------------------------------------------- v2 geometry --
-# Added for the v2 revision's ten named visuals. Same discipline as the block
-# above: deterministic, seeded, static SVG path data computed here in Python.
-
 def skin_band(w, h, boundary_frac=0.30):
     """A two-layer skin cross-section: a thin epidermis band over a deeper
     dermis, with a gently wavy surface line. Reused by every scene that needs
     an honest (labelled) skin cross-section rather than a flat backdrop."""
     by = h * boundary_frac
-    # wavy surface, low-amplitude, deterministic (no rng — it is a fixed motif)
     pts = []
     n = 10
     for i in range(n + 1):
@@ -141,8 +220,6 @@ def eye_glassware_svg():
     (outline + iris) beside a simple Erlenmeyer flask. Elegant, no gore, no
     likeness of a real person or animal in distress -- pure line art in the
     house idiom, the same restraint the channel uses everywhere else."""
-    # the eye: almond outline via two symmetric arcs, iris circle, three
-    # short lash strokes -- the "tasteful, elegant" 1930s-plate register
     eye = (
         '<g transform="translate(40,120)">'
         '<path d="M0 90 C 60 10, 220 10, 280 90 C 220 170, 60 170, 0 90 Z" '
@@ -154,8 +231,6 @@ def eye_glassware_svg():
                   for i in range(4))
         + '</g>'
     )
-    # the flask: Erlenmeyer outline, a liquid fill, and a stopper -- lab
-    # glassware, not medical equipment; nothing pierces anything.
     flask = (
         '<g transform="translate(330,60)">'
         '<path d="M60 0 L60 60 L20 220 Q20 250 60 250 L140 250 Q180 250 180 220 L140 60 L140 0" '
@@ -180,14 +255,13 @@ def clinical_vignette_svg():
     syringe lying flat (never entering skin), a small vial, a gloved hand
     resting beside the tray. No face, no needle piercing anything."""
     tray = '<rect x="20" y="180" width="480" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="5"/>'
-    # capped syringe, lying flat on the tray -- barrel + plunger + a CAPPED tip
     syringe = (
         '<g transform="translate(60,120)">'
         '<rect x="0" y="0" width="220" height="34" rx="8" fill="none" stroke="currentColor" stroke-width="5"/>'
         '<line x1="30" y1="0" x2="30" y2="34" stroke="currentColor" stroke-width="3" opacity="0.5"/>'
         '<line x1="60" y1="0" x2="60" y2="34" stroke="currentColor" stroke-width="3" opacity="0.5"/>'
         '<rect x="-46" y="8" width="46" height="18" rx="6" fill="none" stroke="currentColor" stroke-width="5"/>'
-        '<rect x="220" y="10" width="34" height="14" rx="4" fill="currentColor" opacity="0.35"/>'  # cap, sealed
+        '<rect x="220" y="10" width="34" height="14" rx="4" fill="currentColor" opacity="0.35"/>'
         '</g>'
     )
     vial = ('<g transform="translate(340,90)">'
@@ -195,8 +269,6 @@ def clinical_vignette_svg():
             '<rect x="6" y="30" width="34" height="34" fill="currentColor" opacity="0.16"/>'
             '<rect x="10" y="-10" width="26" height="12" rx="3" fill="currentColor" opacity="0.5"/>'
             '</g>')
-    # a gloved hand resting beside the tray: a simple rounded mitten shape,
-    # never touching the syringe tip -- calm, not mid-procedure.
     glove = ('<g transform="translate(420,150)">'
              '<path d="M0 60 Q-10 10 30 6 Q34 -6 46 4 Q52 -6 62 6 Q70 -4 76 8 Q92 10 86 40 '
              'Q90 70 60 76 L10 76 Q0 74 0 60 Z" fill="none" stroke="currentColor" stroke-width="5" '
@@ -293,8 +365,21 @@ BASE_CSS = """
 
 def dark(bg): return str(bg).strip().lower() in ("#131516", "#211f1b")
 
-def scene_shell(sid, css_extra, markup, sets, tweens):
+def scene_shell(sid, css_extra, markup, sets, tweens, pre_stage=""):
+    """pre_stage (new in v3): raw markup emitted as a SIBLING of .stage, inside
+    #root but before it -- for full-bleed layers like a photoreal plate that
+    must not inherit .stage's safe-area padding. "" is a no-op, so every
+    existing caller's output is byte-identical to before this parameter
+    existed (verified: re-running build_actors.py on the 7 scenes that don't
+    pass it produces the same files it always did)."""
     sc = SCENES[sid]; dur = sc["duration"]
+    # See the D_IN/D_OUT block above main content: the root-level wrapper for
+    # this scene is dur+d_in+d_out wide, and the runtime keys this sub-
+    # composition's own visibility off ITS OWN declared duration -- so it
+    # must declare the PADDED width, not the raw content width, or its last
+    # d_in+d_out seconds render as a hard blank (confirmed on-render).
+    d_in, d_out = D_IN[sid], D_OUT[sid]
+    dur_padded = round(dur + d_in + d_out, 3)
     ink = "#F7F5F0" if dark(sc["bg"]) else "#131516"
     css = (BASE_CSS % {"bg": sc["bg"], "ink": ink}) + css_extra
     if dark(sc["bg"]):
@@ -305,15 +390,21 @@ def scene_shell(sid, css_extra, markup, sets, tweens):
                 " background:var(--ink-soft); }\n  .kicker { color:var(--aqua); }\n")
     s = ["<template>", "<style>", css, "</style>", "",
          f'<div id="root" data-composition-id="{sid}" data-width="1920" data-height="1080"',
-         f'     data-duration="{dur:.3f}">',
-         f'  <div class="clip stage" id="{sid}-stage" data-start="0" data-duration="{dur:.3f}">',
+         f'     data-duration="{dur_padded:.3f}">']
+    if pre_stage:
+        s.append(pre_stage)
+    s += [f'  <div class="clip stage" id="{sid}-stage" data-start="0" data-duration="{dur_padded:.3f}">',
          markup, "  </div>", "</div>", "<script>", "(function () {"]
     for x in sets: s.append("  " + x)
     s.append("  // No timeline `defaults: { ease }` — an inherited ease is an uncounted")
     s.append("  // one, and that is how a project ships a single entrance signature.")
     s.append("  var tl = gsap.timeline({ paused: true });")
-    for x in tweens: s.append("  " + x)
-    s.append(f"  tl.to({{}}, {{ duration: {dur:.3f}, ease: 'none' }}, 0);   // anchor — last, at 0")
+    # Every content tween shifts by +d_in so it fires when the padded
+    # wrapper's OWN reveal completes, not d_in seconds before it -- see
+    # _shift_tweens()'s own docstring for the full reasoning and the
+    # confirmed-on-render defect this fixes.
+    for x in _shift_tweens(tweens, d_in): s.append("  " + x)
+    s.append(f"  tl.to({{}}, {{ duration: {dur_padded:.3f}, ease: 'none' }}, 0);   // anchor — last, at 0")
     s.append("  window.__timelines = window.__timelines || {};")
     s.append(f"  window.__timelines['{sid}'] = tl;")
     s += ["})();", "</script>", "</template>", ""]
@@ -326,10 +417,6 @@ def txt(b):
     return esc(b.get("text", b.get("intent", "")))
 
 # ---------------------------------------------------------- lineup / badges --
-# Layout is a FLEX COLUMN: title, then the three lanes, then the payoff copy.
-# The earlier version floated the copy absolutely over the lanes and produced a
-# real `content_overlap` error (#lab0 "IN YOUR BODY" under #k "Same name" at
-# 9.0s, 16 occurrences). Nothing here is absolutely positioned.
 LANE_CSS = """
   .col-wrap { display:flex; flex-direction:column; width:100%; height:100%;
               justify-content:space-between; gap:32px; }
@@ -340,13 +427,7 @@ LANE_CSS = """
           padding:0 26px; position:relative; height:100%; justify-content:center; }
   .lane + .lane::before { content:""; position:absolute; left:0; top:8%;
           bottom:8%; width:2px; background:var(--rule-strong); }
-  /* [S7/R-2] measured: 440px + the foot's 76px punchline left only ~20px
-     clearance -- check flagged content_overlap between the lane0 label and
-     the foot head at their closest approach. 380px restores real clearance. */
   .lane .actor { height:380px; width:auto; max-width:100%; flex:0 0 auto; }
-  /* Absolutely positioned so the icon adds ZERO height to the lane's flex
-     budget -- v1's proven 440px-actor layout already fills the available
-     798px column exactly; anything added in-flow overflows into .foot. */
   .lane-icon { position:absolute; top:6px; left:50%; transform:translateX(-50%);
                color:var(--kicker-color, #4B9B93); opacity:0.85; z-index:1; }
   .lane-icon svg { display:block; width:52px; height:52px; }
@@ -370,9 +451,6 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
     head_i = [i for i in idx if beats[i].get("role") == "head"]
     kick_i = [i for i in idx if beats[i].get("role") == "kicker"]
 
-    # Only a beat at offset 0 may be rendered as the composed title. A later
-    # beat painted from scene start APPEARS before every earlier beat, which is
-    # exactly the motion_out_of_order `check` caught on s13-badges-b3.
     title, titled = "", None
     if head_i and abs(beats[head_i[0]]["offset"]) < 1e-6:
         titled = head_i[0]
@@ -387,9 +465,6 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
         if badge_roles and bi is not None:
             lab = (f'<div class="badge beat is-entering" id="{sid}-b{bi}">'
                    f'{txt(beats[bi])}</div>')
-        # [visual #1] category icon above the molecule actor: a bottle, a body
-        # silhouette, a syringe -- the three CATEGORIES, composed at rest
-        # alongside the existing molecular-form diagram, not replacing it.
         icon = f'<div class="lane-icon">{icons[n]()}</div>' if icons else ""
         lanes.append(f'        <div class="lane" id="{sid}-lane{n}">\n'
                      f'          {icon}\n'
@@ -409,10 +484,6 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
               '    </div>')
 
     sets, tw = [], []
-    # Frame zero is a DESIGN OBJECT [S6/A-3] and the thumbnail candidate: ALL
-    # THREE lanes are composed at t=0, because the lineup is the hook. They rest
-    # slightly de-emphasised and each is brought forward on its own beat, so the
-    # opening frame is complete and the motion still tracks the narration.
     for n in (0, 1, 2):
         sets.append(f"gsap.set('#{sid}-lane{n}', {{ opacity: 0.42, scale: 0.965 }});")
     for i in idx:
@@ -429,10 +500,17 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
         tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {b['dur']:.3f}, "
                   f"ease: '{IDIOM_EASE[b['idiom']]}' }}, {b['offset']:.3f});")
     if titled is not None:
-        tw.insert(0, f"tl.to('#{sid}-stage', {{ scale: 1.014, y: -7, duration: 1.500, "
+        # [correctness] this used to run 0.150 -> 2.900 (push 1.500s, return
+        # 1.200s), which `check` flags on s02-lineup and s15-badges: a hold
+        # beat's own stage-drift tween can start as early as 1.900s (its
+        # start is bounded by the beat fill pass, not by this fixed window),
+        # so the two tweens fought over #stage's scale/y for up to 0.9s.
+        # Tightened to finish by 1.800s -- clear of any observed hold start
+        # in this project -- while keeping the same push-then-settle shape.
+        tw.insert(0, f"tl.to('#{sid}-stage', {{ scale: 1.014, y: -7, duration: 1.000, "
                      f"ease: 'sine.inOut' }}, 0.150);")
-        tw.insert(1, f"tl.to('#{sid}-stage', {{ scale: 1.0, y: 0, duration: 1.200, "
-                     f"ease: 'sine.inOut' }}, 1.700);")
+        tw.insert(1, f"tl.to('#{sid}-stage', {{ scale: 1.0, y: 0, duration: 0.650, "
+                     f"ease: 'sine.inOut' }}, 1.150);")
     LDRIFT = [(8, -6, 1.012), (-7, 5, 1.004), (6, 6, 1.009), (-5, -5, 1.006)]
     for n_, b in enumerate([x for x in beats if x["idiom"] == "hold"]):
         dx, dy, ds = LDRIFT[n_ % len(LDRIFT)]
@@ -441,82 +519,10 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
     return scene_shell(sid, LANE_CSS, markup, sets, tw)
 
 def build_lineup():
-    return lane_scene("s01-lineup", icons=(icon_body, icon_bottle, icon_syringe))
-def build_badges(): return lane_scene("s12-badges", badge_roles=True)
+    return lane_scene("s02-lineup", icons=(icon_body, icon_bottle, icon_syringe))
+def build_badges(): return lane_scene("s15-badges", badge_roles=True)
 
-# ------------------------------------------------- 05 / 06 / 10 : two-column --
-TWOCOL_CSS = """
-  .two { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
-         align-items:center; }
-  .col { display:flex; flex-direction:column; gap:26px; }
-  .panel { position:relative; display:flex; align-items:center; justify-content:center;
-           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
-           background:rgba(0,0,0,0.015); }
-  .panel.on { border-color:var(--aqua); }
-  .panel .actor { color:var(--ink); }
-"""
-
-def two_col(sid, kind, panel_on=False):
-    """Copy left, the morphology actor right. The panel is what MOVES."""
-    b = beats_of(sid)
-    rows = []
-    for i, bt in enumerate(b):
-        if bt["idiom"] == "hold":
-            continue
-        role = bt.get("role", "body")
-        cls = {"head": "head", "sub": "sub", "body": "body", "caption": "caption",
-               "cite": "cite", "kicker": "kicker", "stat": "stat"}.get(role, "body")
-        rows.append(f'        <div class="{cls} beat is-entering" id="{sid}-b{i}">{txt(bt)}</div>')
-    markup = ('    <div class="two">\n'
-              f'      <div class="col" id="{sid}-col">\n' + "\n".join(rows) + "\n      </div>\n"
-              f'      <div class="panel{" on" if panel_on else ""}" id="{sid}-panel">\n'
-              f'        {actor_svg(kind)}\n'
-              "      </div>\n"
-              "    </div>")
-    sets, tw, drift = [], [], 0
-    DRIFTS = DEFAULT_DRIFTS
-    sets.append(f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
-    tw.append(f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
-    for i, bt in enumerate(b):
-        if bt["idiom"] == "hold":
-            # a hold moves the PANEL, not a text line: panel-scale motion is what
-            # actually reads on a 1920-wide frame [ectoin: a text fade is ~0.7%].
-            dx, dy, ds = DRIFTS[drift % len(DRIFTS)]; drift += 1
-            tw.append(f"tl.to('#{sid}-panel', {{ x: {dx}, y: {dy}, scale: {ds}, "
-                      f"duration: {bt['dur']:.3f}, ease: 'sine.inOut' }}, {bt['offset']:.3f});")
-            continue
-        ease = IDIOM_EASE[bt["idiom"]]
-        off, d = bt["offset"], bt["dur"]
-        if bt["idiom"] == "wipe":
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ clipPath: 'inset(0 0% 0 0)', y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-        elif bt["idiom"] == "swap":
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 0.86 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-            # a swap also re-states the panel: the same actor, newly emphasised
-            tw.append(f"tl.to('#{sid}-panel', {{ scale: 1.05, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-        elif bt["idiom"] == "slam":
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, scale: 1.03, y: -18 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, scale: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-        else:
-            sets.append(f"gsap.set('#{sid}-b{i}', {{ opacity: 0, y: 30 }});")
-            tw.append(f"tl.to('#{sid}-b{i}', {{ opacity: 1, y: 0, duration: {d:.3f}, ease: '{ease}' }}, {off:.3f});")
-    return scene_shell(sid, TWOCOL_CSS, markup, sets, tw)
-
-
-# ------------------------------------------------------- v2 bespoke scenes --
-# [altitude] THREE separate safe-area violations in this section were each
-# found the same way -- render, run check-safe-area.py, notice real ink in
-# a reserved zone, hand-compute a smaller number, re-render to confirm --
-# and each fix is a one-off literal with no shared, margin-aware mechanism
-# behind it: `S11_DRIFTS` in build_warning(), the pixel budget in
-# `COMPARE_CSS` (build_compare()), and the retuned actor height in
-# `LANE_CSS` (lane_scene()). None of the three would help a FUTURE scene
-# with similarly tight margins -- that scene would rediscover the same
-# defect through the same render/check/guess/re-render cycle. Flagging the
-# pattern here, next to where a fourth instance would most likely be added,
-# rather than solving it with new infrastructure this one-shot generator
-# doesn't otherwise need.
+# --------------------------------------------------------- shared row logic --
 ROLE_CLASS_MAP = {"head":"head","sub":"sub","body":"body","caption":"caption",
                    "cite":"cite","kicker":"kicker","stat":"stat"}
 
@@ -530,9 +536,27 @@ def _rows(sid, skip_roles=()):
         out.append((i, bt, f'        <div class="{cls} beat is-entering" id="{sid}-b{i}">{txt(bt)}</div>'))
     return out
 
+def _compose_first(sid, rows):
+    """If rows[0] sits at offset 0, render it COMPOSED (no is-entering class,
+    no entrance tween) and return (composed_markup, remaining_rows) -- the
+    same treatment lane_scene() and build_compare() already gave their own
+    titled beat. Everything downstream of _hero_left()/two_col()/plate_scene()
+    gets this for free: a wipe or a hard cut into a scene never again reveals
+    an empty ground while its first beat is still fading in (a real, shipped
+    v2 defect on every _hero_left/two_col scene -- only lane_scene and
+    build_compare had already special-cased it)."""
+    if not rows or abs(rows[0][1]["offset"]) > 1e-6:
+        return "", rows
+    i, bt, markup = rows[0]
+    cls = ROLE_CLASS_MAP.get(bt.get("role", "body"), "body")
+    composed = f'        <div class="{cls} beat" id="{sid}-b{i}">{txt(bt)}</div>'
+    return composed, rows[1:]
+
 def _row_tweens(sid, rows_used):
     """Shared enter-tween pass matching two_col()'s idiom handling, reused by
-    every bespoke hero-left/split scene so beats behave identically everywhere."""
+    every bespoke hero-left/split/plate scene so beats behave identically
+    everywhere. rows_used must already have any composed (frame-zero) row
+    excluded -- see _compose_first()."""
     sets, tw = [], []
     for i, bt, _ in rows_used:
         ease = IDIOM_EASE[bt["idiom"]]; off, d = bt["offset"], bt["dur"]
@@ -555,11 +579,7 @@ def _row_tweens(sid, rows_used):
 
 def _hold_drift(sid, target_sel, drifts=None):
     """drifts=None uses the shared default magnitude. Pass a smaller custom
-    list for a scene whose content already sits close to a safe-area edge --
-    [S7/R-2] measured a scale-up drift pushing s11's bottom-row text 862px
-    into the reserved zone at t=131.75s, a violation `check`'s bounding-box
-    layout pass could not see (it flagged only a generic container_overflow
-    warning on the stage element, not real ink in a reserved zone)."""
+    list for a scene whose content already sits close to a safe-area edge."""
     sets, tw = [], []
     DRIFTS = drifts or DEFAULT_DRIFTS
     drift = 0
@@ -570,6 +590,70 @@ def _hold_drift(sid, target_sel, drifts=None):
                   f"duration: {bt['dur']:.3f}, ease: 'sine.inOut' }}, {bt['offset']:.3f});")
     return sets, tw
 
+# ------------------------------------------------------------------- hook --
+HOOK_CSS = """
+  .hook-wrap { display:flex; flex-direction:column; justify-content:center; gap:26px;
+               width:100%; height:100%; position:relative; z-index:1; }
+  .hook-bg { position:absolute; inset:0; opacity:0.14; pointer-events:none; z-index:0; }
+  .hook-wrap .head { font-size:136px; }
+  .hook-wrap .sub  { font-size:52px; font-weight:600; letter-spacing:0;
+                     text-transform:none; color:var(--ink-2); }
+"""
+def build_hook():
+    """Frame zero, the thumbnail candidate, and the curiosity-gap hook: no
+    diagram, no plate -- type as the performer, with a field of drifting
+    water-dot texture behind it (the hydration motif, established before any
+    diagram explains it) [S6/A-3]."""
+    sid = "s01-hook"
+    rng = random.Random(41)
+    bg_dots = water_dots(rng, 30, 1920, 1080, r=5)
+    bg_svg = (f'<svg class="hook-bg" viewBox="0 0 1920 1080" width="1920" height="1080" '
+              f'preserveAspectRatio="xMidYMid slice" aria-hidden="true">\n      {bg_dots}\n    </svg>')
+    rows = _rows(sid)
+    composed, tween_rows = _compose_first(sid, rows)
+    body = (composed + "\n" if composed else "") + "\n".join(r[2] for r in tween_rows)
+    markup = ('    <div class="hook-wrap">\n' + bg_svg + "\n" + body + "\n    </div>")
+    sets, tw = _row_tweens(sid, tween_rows)
+    hs, ht = _hold_drift(sid, f"#{sid}-stage"); sets += hs; tw += ht
+    return scene_shell(sid, HOOK_CSS, markup, sets, tw)
+
+# ------------------------------------------------------------- two-column --
+TWOCOL_CSS = """
+  .two { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+         align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel.on { border-color:var(--aqua); }
+  .panel .actor { color:var(--ink); }
+"""
+
+def two_col(sid, kind, panel_on=False):
+    """Copy left, the morphology actor right. The panel is what MOVES.
+
+    [simplification] v3: this used to duplicate _row_tweens()'s exact
+    idiom-handling logic inline (same four branches, same shape) rather than
+    calling it -- the two had drifted to be identical in every way that
+    mattered, so this now shares the one implementation instead of two
+    copies that could silently diverge. Also picks up _compose_first() for
+    free, which the old inline version never had."""
+    rows = _rows(sid)
+    composed, tween_rows = _compose_first(sid, rows)
+    col_body = (composed + "\n" if composed else "") + "\n".join(r[2] for r in tween_rows)
+    markup = ('    <div class="two">\n'
+              f'      <div class="col" id="{sid}-col">\n' + col_body + "\n      </div>\n"
+              f'      <div class="panel{" on" if panel_on else ""}" id="{sid}-panel">\n'
+              f'        {actor_svg(kind)}\n'
+              "      </div>\n"
+              "    </div>")
+    sets = [f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});"]
+    tw = [f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);"]
+    rs, rt = _row_tweens(sid, tween_rows); sets += rs; tw += rt
+    hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
+    return scene_shell(sid, TWOCOL_CSS, markup, sets, tw)
+
+# ------------------------------------------------------------- hero-left --
 HEROSPLIT_CSS = """
   .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
             align-items:center; }
@@ -582,11 +666,13 @@ HEROSPLIT_CSS = """
 
 def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None, css_extra=""):
     """head/sub/body/caption/cite text in a left column, one illustration
-    panel on the right. The shared shape behind s03/s04/s08/s09."""
+    panel on the right. The shared shape behind s05/s06/s11/s12/s13."""
     rows = _rows(sid)
+    composed, tween_rows = _compose_first(sid, rows)
+    col_body = (composed + "\n" if composed else "") + "\n".join(r[2] for r in tween_rows)
     markup = ('    <div class="split2">\n'
               f'      <div class="col" id="{sid}-col">\n'
-              + "\n".join(r[2] for r in rows) + "\n      </div>\n"
+              + col_body + "\n      </div>\n"
               f'      <div class="panel" id="{sid}-panel">\n'
               f'        {panel_markup}\n'
               "      </div>\n"
@@ -595,17 +681,17 @@ def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None
     tw = [f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);"]
     if panel_setup_sets: sets += panel_setup_sets
     if panel_extra_tweens: tw += panel_extra_tweens
-    rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
+    rs, rt = _row_tweens(sid, tween_rows); sets += rs; tw += rt
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
     return scene_shell(sid, HEROSPLIT_CSS + css_extra, markup, sets, tw)
 
-# ---- s03-origin: 1934, cow-eye vitreous, drawn in a tasteful 1930s idiom ---
+# ---- s05-origin: 1934, cow-eye vitreous, drawn in a tasteful 1930s idiom ---
 def build_origin():
-    return _hero_left("s03-origin", eye_glassware_svg())
+    return _hero_left("s05-origin", eye_glassware_svg())
 
-# ---- s04-body: natural HA in a skin cross-section, water molecules --------
+# ---- s06-body: natural HA in a skin cross-section, water molecules --------
 def build_body_cross():
-    sid = "s04-body"
+    sid = "s06-body"
     rng = random.Random(11)
     inner = (skin_band(480, 560, boundary_frac=0.22)
              + "\n      " + free_coils(rng, 4, 480, 560, 260, 24, sw=6)
@@ -614,13 +700,7 @@ def build_body_cross():
              f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {inner}\n    </svg>')
     return _hero_left(sid, panel, css_extra="\n  .cross { width:100%; height:100%; }\n")
 
-# ---- s05-compare: side-by-side cross-section, serum vs filler -------------
-# [S7/R-2] measured: the original budget (104px title + 340px actor + 3-line
-# 52px body) summed to ~700px of content inside a 560px lane row -- the
-# safe-area gate caught it as real ink 10427px deep in the reserved bottom
-# zone at t=51.5s. Recomputed against the ACTUAL 798px stage content height:
-# a 64px 2-line title + 260px actor + 40px (the [S6/A-6] body floor, not
-# below it) text fits with headroom per column, verified on the pixel gate.
+# ---- s07-compare: side-by-side cross-section, serum vs filler -------------
 COMPARE_CSS = """
   .cmp-wrap { display:flex; flex-direction:column; gap:20px; width:100%; height:100%; }
   .cmp-title { font-family:var(--font-display); font-weight:600; font-size:64px;
@@ -636,7 +716,7 @@ COMPARE_CSS = """
   .cmp-col .body { font-size:40px; line-height:1.18; }
 """
 def build_compare():
-    sid = "s05-compare"
+    sid = "s07-compare"
     beats = beats_of(sid)
     idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
     head_i = [i for i in idx if beats[i].get("role") == "head"]
@@ -691,53 +771,104 @@ def build_compare():
     hs, ht = _hold_drift(sid, f"#{sid}-colR" ); sets += hs; tw += ht
     return scene_shell(sid, COMPARE_CSS, markup, sets, tw)
 
-# ---- s08-binds-water: HA attracting/holding water, animated droplets ------
-def build_binds_water():
-    sid = "s08-binds-water"
+# ---- s11-binds-and-seal: TWO-PHASE actor merge [S6/A-9] --------------------
+# The old v2 cut drew this same "ha-serum" chain across TWO separate files
+# (s08-binds-water, s09-lifeguard) with the same random seed and near-
+# identical geometry -- coil(30,260,380,...) vs coil(30,260,340,...). That is
+# the exact defect [S6/A-9] names: an actor redrawn instead of rearranged.
+# Fixed here as one sub-composition: ONE chain path, drawn once. Phase 1
+# pulls water droplets toward it (unchanged from the old build_binds_water);
+# phase 2 fades those down and fades UP a moisturiser-seal band drawn onto
+# the SAME path (unchanged mechanism from the old build_lifeguard). The actor
+# is rearranged, never redrawn.
+BINDS_SEAL_CSS = """
+  /* [correctness] this scene merges two v2 scenes' worth of beats (6 text
+     rows) into one file for [S6/A-9] -- _hero_left()'s plain flex column
+     stacks all of them permanently and the sixth row ran 30-50px past the
+     canvas bottom, confirmed on an extracted frame at t=99.5s (check's
+     layout pass never caught it -- it has no notion of the canvas edge,
+     same documented gap as the padded-.stage drift class of bug). Fixed by
+     giving the TEXT column the same two-phase treatment the panel already
+     has: phase 1's four rows and phase 2's two rows occupy the SAME grid
+     cell (the `swap` idiom's own .slot pattern) and cross-fade at the
+     phase boundary, so at most 4 rows are ever laid out at once. */
+  .col-slot { display:grid; }
+  .col-slot > .col-phase { grid-area: 1/1; display:flex; flex-direction:column; gap:26px; }
+"""
+
+def build_binds_and_seal():
+    sid = "s11-binds-and-seal"
     rng = random.Random(23)
-    chain = f'<path d="{coil(30, 260, 380, 30, 50, rng)}" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>'
-    # droplets start scattered AWAY from the chain and are pulled toward it
-    # on the "It binds water" swap beat -- genuine x/y motion, not a static
-    # illustration standing in for the mechanism.
+    chain_d = coil(30, 260, 360, 26, 48, rng)
+    chain = f'<path d="{chain_d}" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>'
+
     starts = [(60,60),(380,50),(420,180),(40,420),(400,430),(220,40),(60,340),(430,300)]
     ends   = [(70,230),(150,230),(280,250),(120,300),(320,280),(200,220),(90,270),(340,240)]
-    drops = []
-    for i, (sx, sy) in enumerate(starts):
-        drops.append(water_drop(sx, sy, r=9, eid=f"{sid}-drop{i}"))
+    drops = [water_drop(sx, sy, r=9, eid=f"{sid}-drop{i}") for i, (sx, sy) in enumerate(starts)]
+
+    seal = (f'<g id="{sid}-seal" opacity="0">'
+            '<path d="M10 210 Q230 165 450 210 L450 236 Q230 200 10 236 Z" '
+            'fill="currentColor" opacity="0.14"/>'
+            '<text x="10" y="188" font-size="20" fill="currentColor" opacity="0.6" '
+            'style="font-family:var(--font-mono)">MOISTURISER — SLOWS WATER LOSS</text>'
+            '</g>')
+
     panel = (f'<svg class="actor" viewBox="0 0 460 460" width="460" height="460" '
              f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
-             f'      {chain}\n      ' + "\n      ".join(drops) + '\n    </svg>')
+             f'      {chain}\n      ' + "\n      ".join(drops) + f'\n      {seal}\n    </svg>')
 
     beats = beats_of(sid)
     idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
     swap_i = [i for i in idx if beats[i]["idiom"] == "swap"]
-    swap_off = beats[swap_i[0]]["offset"] if swap_i else 2.0
+    phase1_off = beats[swap_i[0]]["offset"] if swap_i else 2.0
+    cap_i = [i for i in idx if beats[i].get("role") == "caption"]
+    phase2_off = beats[cap_i[0]]["offset"] if cap_i else SCENES[sid]["duration"] * 0.55
 
     drop_sets, drop_tw = [], []
     for i, ((sx, sy), (ex, ey)) in enumerate(zip(starts, ends)):
         drop_sets.append(f"gsap.set('#{sid}-drop{i}', {{ opacity: 0.35 }});")
         drop_tw.append(f"tl.to('#{sid}-drop{i}', {{ x: {ex-sx}, y: {ey-sy}, opacity: 1, scale: 1.15, "
-                       f"duration: 1.400, ease: 'power2.inOut' }}, {swap_off + i*0.05:.3f});")
-    return _hero_left(sid, panel, panel_setup_sets=drop_sets, panel_extra_tweens=drop_tw)
+                       f"duration: 1.400, ease: 'power2.inOut' }}, {phase1_off + i*0.05:.3f});")
+        # Phase 2: the droplets settle back rather than vanish -- rearranged.
+        drop_tw.append(f"tl.to('#{sid}-drop{i}', {{ opacity: 0.25, scale: 0.9, "
+                       f"duration: 1.000, ease: 'power2.inOut' }}, {phase2_off:.3f});")
+    seal_sets = [f"gsap.set('#{sid}-seal', {{ opacity: 0 }});"]
+    seal_tw = [f"tl.to('#{sid}-seal', {{ opacity: 1, duration: 1.200, ease: 'power2.out' }}, {phase2_off:.3f});"]
 
-# ---- s09-lifeguard: moisturiser seal slowing water loss --------------------
-def build_lifeguard():
-    sid = "s09-lifeguard"
-    rng = random.Random(23)
-    band = skin_band(460, 420, boundary_frac=0.55)
-    chain = f'<path d="{coil(30, 260, 340, 22, 46, rng)}" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>'
-    seal = ('<path d="M20 150 Q230 110 440 150 L440 175 Q230 140 20 175 Z" '
-            'fill="currentColor" opacity="0.14"/>'
-            '<text x="20" y="130" font-size="22" fill="currentColor" opacity="0.6" '
-            'style="font-family:var(--font-mono)">MOISTURISER — SLOWS WATER LOSS</text>')
-    panel = (f'<svg class="actor" viewBox="0 0 460 420" width="460" height="420" '
-             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
-             f'      {band}\n      {chain}\n      {seal}\n    </svg>')
-    return _hero_left(sid, panel)
+    # --- the text column: two phase groups sharing one grid cell ----------
+    rows = _rows(sid)
+    composed, tween_rows = _compose_first(sid, rows)
+    phase1_rows = [r for r in tween_rows if r[1]["offset"] < phase2_off - 1e-6]
+    phase2_rows = [r for r in tween_rows if r[1]["offset"] >= phase2_off - 1e-6]
+    phase1_body = (composed + "\n" if composed else "") + "\n".join(r[2] for r in phase1_rows)
+    phase2_body = "\n".join(r[2] for r in phase2_rows)
 
-# ---- s10-crosslink: loose chains TRANSFORM into a connected grid ----------
+    markup = ('    <div class="split2">\n'
+              f'      <div class="col-slot" id="{sid}-col">\n'
+              f'        <div class="col-phase" id="{sid}-colphase1">\n{phase1_body}\n        </div>\n'
+              f'        <div class="col-phase" id="{sid}-colphase2">\n{phase2_body}\n        </div>\n'
+              '      </div>\n'
+              f'      <div class="panel" id="{sid}-panel">\n'
+              f'        {panel}\n'
+              "      </div>\n"
+              "    </div>")
+
+    sets = [f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});",
+            f"gsap.set('#{sid}-colphase2', {{ opacity: 0 }});"] + drop_sets + seal_sets
+    tw = [f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);"]
+    # Cross-fade the phase groups at the same boundary the panel itself
+    # transforms on -- text and diagram change together, one moment.
+    fade_at = max(0.0, phase2_off - 0.30)
+    tw.append(f"tl.to('#{sid}-colphase1', {{ opacity: 0, duration: 0.500, ease: 'power2.inOut' }}, {fade_at:.3f});")
+    tw.append(f"tl.to('#{sid}-colphase2', {{ opacity: 1, duration: 0.500, ease: 'power2.inOut' }}, {phase2_off:.3f});")
+    tw += drop_tw + seal_tw
+    rs, rt = _row_tweens(sid, tween_rows); sets += rs; tw += rt
+    hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
+    return scene_shell(sid, HEROSPLIT_CSS + BINDS_SEAL_CSS, markup, sets, tw)
+
+# ---- s12-crosslink: loose chains TRANSFORM into a connected grid ----------
 def build_crosslink_transform():
-    sid = "s10-crosslink"
+    sid = "s12-crosslink"
     rng = random.Random(37)
     loose = free_coils(rng, 5, 480, 560, 300, 28, sw=8)
     net = lattice(480, 560, 6, 7)
@@ -760,93 +891,205 @@ def build_crosslink_transform():
     ]
     return _hero_left(sid, panel, panel_setup_sets=xform_sets, panel_extra_tweens=xform_tw)
 
-# ---- s11-do-not-inject: clinical vignette, then the full-bleed warning ----
-WARNING_CSS = """
-  .warn-wrap { display:flex; flex-direction:column; gap:34px; width:100%; height:100%;
+# ---- s13-warning-question: the clinical vignette + the rhetorical question -
+def build_warning_question():
+    return _hero_left("s13-warning-question", clinical_vignette_svg())
+
+# ---- s14-fda-warning: full-bleed, composed at frame 0 (lands on a CUT) ----
+WARNING_FULLBLEED_CSS = """
+  .warn-wrap { display:flex; flex-direction:column; gap:30px; width:100%; height:100%;
                justify-content:center; }
-  .warn-top { display:flex; align-items:center; gap:48px; }
-  .warn-top .actor { color:var(--ink); height:220px; width:auto; opacity:0.9; }
-  .warn-head { font-family:var(--font-display); font-weight:600; font-size:132px;
+  .warn-head { font-family:var(--font-display); font-weight:600; font-size:148px;
                line-height:0.98; letter-spacing:-.01em; color:var(--coral); margin:0; }
 """
-def build_warning():
-    sid = "s11-do-not-inject"
+def build_warning_fullbleed():
+    """This scene is ENTERED BY A HARD CUT [S6/A-8] -- the ALL-CAPS headline
+    must already be on screen the instant the cut lands, or the cut reveals
+    an empty frame for the length of an entrance tween. Composed at frame 0,
+    same discipline as _compose_first(), applied by hand here because the
+    coral .warn-head treatment is bespoke to this scene, not the shared
+    ROLE_CLASS_MAP path _rows() uses."""
+    sid = "s14-fda-warning"
     beats = beats_of(sid)
     idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
     by_role = {r: [i for i in idx if beats[i].get("role") == r]
-               for r in ("caption","kicker","head","cite","body","sub")}
-
-    vign = clinical_vignette_svg()
-    cap_i = by_role["caption"][0] if by_role["caption"] else None
-    kick_i = by_role["kicker"][0] if by_role["kicker"] else None
-    top = (f'      <div class="warn-top" id="{sid}-top">\n'
-           f'        {vign}\n'
-           '        <div class="col" style="gap:18px">\n'
-           + (f'          <div class="caption beat is-entering" id="{sid}-b{cap_i}">{txt(beats[cap_i])}</div>\n' if cap_i is not None else '')
-           + (f'          <div class="kicker beat is-entering" id="{sid}-b{kick_i}">{txt(beats[kick_i])}</div>\n' if kick_i is not None else '')
-           + '        </div>\n      </div>')
-
+               for r in ("head", "cite", "body", "sub")}
     head_i = by_role["head"][0] if by_role["head"] else None
     cite_i = by_role["cite"][0] if by_role["cite"] else None
+    head_composed = head_i is not None and abs(beats[head_i]["offset"]) < 1e-6
+
+    head_md = ""
+    if head_i is not None:
+        cls = "warn-head beat" if head_composed else "warn-head beat is-entering"
+        head_md = f'      <h1 class="{cls}" id="{sid}-b{head_i}">{txt(beats[head_i])}</h1>'
+    cite_md = (f'      <div class="cite beat is-entering" id="{sid}-b{cite_i}">{txt(beats[cite_i])}</div>'
+              if cite_i is not None else "")
     body_rows = "\n".join(f'      <div class="body beat is-entering" id="{sid}-b{i}">{txt(beats[i])}</div>'
                           for i in by_role["body"])
     sub_rows = "\n".join(f'      <div class="sub beat is-entering" id="{sid}-b{i}">{txt(beats[i])}</div>'
                          for i in by_role["sub"])
-    head_md = (f'      <h1 class="warn-head beat is-entering" id="{sid}-b{head_i}">{txt(beats[head_i])}</h1>'
-              if head_i is not None else "")
-    cite_md = (f'      <div class="cite beat is-entering" id="{sid}-b{cite_i}">{txt(beats[cite_i])}</div>'
-              if cite_i is not None else "")
-
-    markup = ('    <div class="warn-wrap">\n' + top + '\n' + head_md + '\n' + cite_md
+    markup = ('    <div class="warn-wrap">\n' + head_md + '\n' + cite_md
               + '\n' + body_rows + '\n' + sub_rows + '\n    </div>')
 
-    # #top itself is static (always opacity 1) -- only the vignette
-    # illustration it wraps; the caption/kicker inside it get their own
-    # tweens below like every other beat, so each keeps its own timing.
-    rows_used = [(i, beats[i], None) for i in idx]
+    rows_used = [(i, beats[i], None) for i in idx if not (i == head_i and head_composed)]
     sets, tw = _row_tweens(sid, rows_used)
-    # s11's own content already reaches close to the bottom safe-area edge by
-    # design (the full-bleed warning look) -- cap drift well below the shared
-    # default so a hold can never push it over. No y-component at all: the
-    # measured violation was specifically a downward push into the bottom zone.
-    S11_DRIFTS = [(6, 0, 1.006), (-5, 0, 1.004), (4, 0, 1.005), (-4, 0, 1.003)]
-    hs, ht = _hold_drift(sid, f"#{sid}-stage", drifts=S11_DRIFTS); sets += hs; tw += ht
-    return scene_shell(sid, HEROSPLIT_CSS + WARNING_CSS, markup, sets, tw)
+    # s14's own content already reaches close to the bottom safe-area edge by
+    # design (the full-bleed warning look, carried over from v2's s11) -- cap
+    # drift well below the shared default so a hold can never push it over.
+    S14_DRIFTS = [(6, 0, 1.006), (-5, 0, 1.004), (4, 0, 1.005), (-4, 0, 1.003)]
+    hs, ht = _hold_drift(sid, f"#{sid}-stage", drifts=S14_DRIFTS); sets += hs; tw += ht
+    return scene_shell(sid, HEROSPLIT_CSS + WARNING_FULLBLEED_CSS, markup, sets, tw)
+
+# ---------------------------------------------------------- photoreal plate --
+PLATE_CSS = """
+  .plate-wrap { position:absolute; inset:0; overflow:hidden; background:var(--ink-soft); }
+  .plate-wrap img { width:100%; height:100%; object-fit:cover;
+                    object-position:var(--plate-focus, 50% 38%);
+                    display:block; transform-origin:50% 50%; will-change:transform; }
+  .scrim { position:absolute; inset:0; pointer-events:none;
+           background:linear-gradient(180deg,
+             rgba(19,21,22,0.30) 0%,  rgba(19,21,22,0.05) 24%,
+             rgba(19,21,22,0.08) 50%, rgba(19,21,22,0.70) 80%,
+             rgba(19,21,22,0.92) 100%); }
+  .stage { flex-direction:column; justify-content:flex-end; }
+  .plate-copy { display:flex; flex-direction:column; gap:20px; max-width:1200px;
+                position:relative; z-index:1; }
+  .plate-copy .head { font-size:88px; color:#F7F5F0; }
+  .plate-copy .kicker { color:#8FD6CC; }
+  .plate-copy .sub { color:#F7F5F0; font-size:44px; letter-spacing:0.06em; }
+"""
+# One camera leg per plate -- four DIFFERENT moves (this repo's own
+# ceramides-skin-barrier/compositions/frames/01-hook.html convention: the Ken
+# Burns rides the IMG inside a fixed crop box, never the WRAPPER -- a wrapper
+# scale maps the crop edge outward, the exact class of defect
+# check-safe-area.py caught on this project's own padded .stage before).
+# (x,y,scale) -> (x,y,scale), applied to the <img>, not the wrapper.
+PLATE_MOVES = {
+  "s03-misconception-plate": ((0, 0, 1.00), (0, -22, 1.085)),
+  "s04-not-filler-plate":    ((-14, 0, 1.06), (0, 0, 1.00)),
+  "s09-plumping-plate":      ((0, 14, 1.02), (12, -14, 1.09)),
+  "s16-takeaway-plate":      ((10, -10, 1.05), (-10, 8, 1.01)),
+}
+PLATE_DRIFTS = [(6, 0, 1.005), (-5, 0, 1.004), (4, 0, 1.005), (-4, 0, 1.003)]
+
+# Filled in after the plates are generated -- see PLATE_DIMS_NOTE at the
+# bottom of this file. Placeholder native dims match the requested 16:9
+# generation aspect; corrected to the real PNG dimensions once shipped.
+PLATE_DIMS = {
+  "s03-misconception-plate": (1920, 1080),
+  "s04-not-filler-plate":    (1920, 1080),
+  "s09-plumping-plate":      (1920, 1080),
+  "s16-takeaway-plate":      (1920, 1080),
+}
+PLATE_ALT = {
+  "s03-misconception-plate": "Woman looking at a serum bottle with a thoughtful, questioning expression",
+  "s04-not-filler-plate":    "Close-up of a woman's hands holding a dropper of serum near her cheek",
+  "s09-plumping-plate":      "Woman touching her cheek, checking her skin in soft natural light",
+  "s16-takeaway-plate":      "Woman applying serum to her face in a calm, editorial skincare moment",
+}
+
+def plate_scene(sid, src):
+    """A photoreal 16:9 plate under a text scrim -- the four moments the
+    revision brief names: the opening misconception, "a serum is not filler
+    in a bottle", the temporary surface-plumping explanation, and the final
+    practical takeaway. Ken Burns rides the <img>, never the wrapper; the
+    crop box (.plate-wrap) stays pinned to the canvas throughout."""
+    (x0, y0, s0), (x1, y1, s1) = PLATE_MOVES[sid]
+    nat_w, nat_h = PLATE_DIMS[sid]
+    dur = SCENES[sid]["duration"]
+    # pre_stage markup is built here, BEFORE scene_shell() runs, so it must
+    # independently use the PADDED duration for any full-window .clip layer
+    # (plate-wrap, scrim) -- see the D_IN/D_OUT block near the top of this
+    # file. Left at raw `dur` these two layers would go invisible during the
+    # trailing d_out seconds even after scene_shell()'s own #root/.stage fix,
+    # since a .clip's visibility is keyed off ITS OWN data-duration.
+    d_in, d_out = D_IN[sid], D_OUT[sid]
+    dur_padded = round(dur + d_in + d_out, 3)
+    rows = _rows(sid)
+    composed, tween_rows = _compose_first(sid, rows)
+    body = (composed + "\n" if composed else "") + "\n".join(r[2] for r in tween_rows)
+
+    pre_stage = (
+        f'  <div class="clip plate-wrap" id="{sid}-plate" data-layout-allow-overflow\n'
+        f'       data-start="0" data-duration="{dur_padded:.3f}">\n'
+        f'    <img id="{sid}-img" src="{esc(src)}" alt="{esc(PLATE_ALT[sid])}"\n'
+        f'         width="{nat_w}" height="{nat_h}" loading="eager" decoding="sync">\n'
+        f'  </div>\n'
+        f'  <div class="clip scrim" id="{sid}-scrim" data-start="0" data-duration="{dur_padded:.3f}"></div>')
+
+    markup = '    <div class="plate-copy">\n' + body + '\n    </div>'
+
+    # Authored at position 0 for duration (dur + d_out): scene_shell()'s
+    # uniform +d_in shift (applied to every tl.to/fromTo, this one included)
+    # moves it to start at d_in and run through dur_padded exactly -- the
+    # Ken Burns fills the padded window edge to edge with no gap, no
+    # overshoot, using the same one mechanism as every other tween here.
+    sets = [f"gsap.set('#{sid}-img', {{ x: {x0}, y: {y0}, scale: {s0} }});"]
+    tw = [f"tl.fromTo('#{sid}-img', {{ x: {x0}, y: {y0}, scale: {s0} }}, "
+          f"{{ x: {x1}, y: {y1}, scale: {s1}, duration: {(dur + d_out):.3f}, "
+          f"ease: 'none', immediateRender: true }}, 0);"]
+
+    rs, rt = _row_tweens(sid, tween_rows); sets += rs; tw += rt
+    hs, ht = _hold_drift(sid, f"#{sid}-stage", drifts=PLATE_DRIFTS); sets += hs; tw += ht
+    return scene_shell(sid, PLATE_CSS, markup, sets, tw, pre_stage=pre_stage)
+
+PLATE_SRC = {
+  "s03-misconception-plate": "assets/images/subject-01-misconception.png",
+  "s04-not-filler-plate":    "assets/images/subject-02-not-filler.png",
+  "s09-plumping-plate":      "assets/images/subject-03-plumping.png",
+  "s16-takeaway-plate":      "assets/images/subject-04-takeaway.png",
+}
 
 BUILD = {
-  "s01-lineup":       build_lineup,
-  "s12-badges":       build_badges,
-  "s03-origin":       build_origin,
-  "s04-body":         build_body_cross,
-  "s05-compare":       build_compare,
-  "s06-serum-size":   lambda: two_col("s06-serum-size", "serum", panel_on=True),
-  "s08-binds-water":  build_binds_water,
-  "s09-lifeguard":    build_lifeguard,
-  "s10-crosslink":    build_crosslink_transform,
-  "s11-do-not-inject":build_warning,
+  "s01-hook":                 build_hook,
+  "s02-lineup":                build_lineup,
+  "s03-misconception-plate":   lambda: plate_scene("s03-misconception-plate", PLATE_SRC["s03-misconception-plate"]),
+  "s04-not-filler-plate":      lambda: plate_scene("s04-not-filler-plate", PLATE_SRC["s04-not-filler-plate"]),
+  "s05-origin":                build_origin,
+  "s06-body":                  build_body_cross,
+  "s07-compare":               build_compare,
+  "s08-serum-size":            lambda: two_col("s08-serum-size", "serum", panel_on=True),
+  "s09-plumping-plate":        lambda: plate_scene("s09-plumping-plate", PLATE_SRC["s09-plumping-plate"]),
+  "s11-binds-and-seal":        build_binds_and_seal,
+  "s12-crosslink":             build_crosslink_transform,
+  "s13-warning-question":      build_warning_question,
+  "s14-fda-warning":           build_warning_fullbleed,
+  "s15-badges":                build_badges,
+  "s16-takeaway-plate":        lambda: plate_scene("s16-takeaway-plate", PLATE_SRC["s16-takeaway-plate"]),
 }
 
 def fix_generated_grounds():
-    """Mechanical [S7/R-1] fix on the GENERATED scenes.
+    """Mechanical [S7/R-1] fix on the GENERATED scenes (s10-houseplant,
+    s17-endcard in v3).
 
     The generator sets `--ink: #131516` on #root and then paints #root with the
-    scene's own `bg`. On a dark ground that is ink text on ink: `check` measured
-    1:1 on #s04-named-b0 and -b2 -- literally invisible copy, not merely
-    low-contrast. Every dark generated scene has it.
+    scene's own `bg`. On a dark ground that is ink text on ink -- literally
+    invisible copy, not merely low-contrast. Every dark generated scene has it.
 
     Also swaps the citation chip's accent on light grounds: #59B8AE on #F7F5F0
     measured 2.17:1 against a 3:1 requirement, and rgb(75,155,147) is `check`'s
     own suggestedColor in the same palette direction [S6/A-7].
     """
     fixed = 0
-    total_subs = 0
+    css_subs = 0
+    motion_subs = 0
     for i, sid in enumerate(ORDER, start=1):
         sc = SCENES[sid]
         if sc["handoff"] != "generated":
             continue
         path = f"{OUT}/{i:02d}-{sid}.html"
         html = open(path).read()
-        scene_subs = 0
+        # [correctness] idempotency guard: this fixer is NOT safe to run twice
+        # on the same file -- running it a second time (e.g. re-invoking
+        # build_actors.py without first regenerating compositions/frames/ from
+        # the beat sheet) duplicated this CSS block verbatim into both
+        # generated scenes, confirmed on this exact project. The project-wide
+        # convention is "always regenerate from scratch"; this makes it safe
+        # even when that convention slips.
+        if "[S7/R-2] a slam parked at scale 1.12" in html:
+            print(f"  {sid}: already ground/contrast-fixed (re-run without regenerating "
+                  f"compositions/frames/ first) -- skipping to avoid duplicating the CSS block")
+            continue
         pad = ("\n  /* [S7/R-2] a slam parked at scale 1.12 on a full-width block\n"
                "     grows 6% past each edge -- 370px of ink inside left<96 at\n"
                "     t=117.75s. Origin-left pins the edge; the punch goes vertical. */\n"
@@ -865,69 +1108,59 @@ def fix_generated_grounds():
                    "     generated ground measures 2.17:1 against the 3:1 floor. Same\n"
                    "     suggestedColor as the hand-authored .kicker fix. */\n"
                    "  .kicker { color:#4B9B93; }\n")
-        html, n = html.replace("</style>", css + "</style>", 1), ("</style>" in html)
-        scene_subs += int(n)
+        n_css = int("</style>" in html)
+        html = html.replace("</style>", css + "</style>", 1)
+        css_subs += n_css
 
-        # A `wipe` beat emits a clipPath-ONLY tween. clipPath changes what is
-        # painted but NOT the bounding-box geometry the motion pass samples, so
-        # a stretch of consecutive wipes reads as frozen: `check` measured 9.03s
-        # static across s12-do-not-inject, whose tail is three wipes and nothing
-        # else. Pair every reveal with a short travel on the same element -- it
-        # satisfies the gate because it is genuinely more motion, not less.
         html, n = re.subn(
             r"(gsap\.set\('#[^']+', \{ clipPath: 'inset\(0 100% 0 0\)')( \}\);)",
             r"\1, y: 22\2", html)
-        scene_subs += n
-        # slam: scale 1.12 -> 1.03 plus a vertical drop
+        motion_subs += n
         html, n = re.subn(r"(gsap\.set\('#[^']+', \{ opacity: 0, scale: )1\.12( \}\);)",
                       r"\g<1>1.03, y: -18\2", html)
-        scene_subs += n
+        motion_subs += n
         html, n = re.subn(r"(tl\.to\('#[^']+', \{ opacity: 1, scale: 1)(, duration[^}]*ease: 'power4\.out')",
                       r"\1, y: 0\2", html)
-        scene_subs += n
+        motion_subs += n
         html, n = re.subn(
             r"(tl\.to\('#[^']+', \{ clipPath: 'inset\(0 0% 0 0\)')(, duration)",
             r"\1, y: 0\2", html)
-        scene_subs += n
+        motion_subs += n
 
-        # And alternate the `hold` drift: identical targets mean every hold after
-        # the first tweens to where the element already sits -- zero movement.
         cnt = [0]
         def _drift(m):
             dx, dy, ds = DEFAULT_DRIFTS[cnt[0] % len(DEFAULT_DRIFTS)]; cnt[0] += 1
             return "%sx: %d, y: %d, scale: %s%s" % (m.group(1), dx, dy, ds, m.group(3))
         html, n = re.subn(r"(tl\.to\('#[^']+-stage', \{ )(x: -?[\d.]+, y: -?[\d.]+, scale: [\d.]+)(, duration)",
                       _drift, html)
-        scene_subs += n
+        motion_subs += n
 
         open(path, "w").write(html)
         fixed += 1
-        total_subs += scene_subs
-        if scene_subs == 0:
-            print("  WARNING: fix_generated_grounds made 0 substitutions on %s -- "
-                  "the external generator's output format may have changed "
-                  "under this fixer's regexes" % sid)
-    print("  ground/contrast fix applied to %d generated scene(s), %d substitution(s) made"
-          % (fixed, total_subs))
+        # [correctness] v2's zero-substitution guard counted the ALWAYS-
+        # succeeding CSS insert alongside the four motion regexes, so it
+        # could never actually report 0 even if every motion regex silently
+        # stopped matching. Split here: the CSS insert is asserted outright
+        # (it is not optional -- every generated scene needs its ground fix),
+        # and the motion-regex count is its own separate, honestly-zeroable
+        # number, checked against how many wipe/slam/hold beats this scene's
+        # own beat sheet actually declares.
+        assert n_css == 1, f"{sid}: ground/contrast CSS insert failed -- </style> not found"
+        idioms = [b["idiom"] for b in sc["beats"]]
+        expected_min = sum(1 for x in idioms if x in ("wipe", "slam", "hold"))
+        if expected_min > 0 and motion_subs == 0:
+            print(f"  WARNING: fix_generated_grounds made 0 MOTION substitutions on {sid} "
+                  f"but its beat sheet declares {expected_min} wipe/slam/hold beat(s) -- "
+                  f"the external generator's output format may have changed under this "
+                  f"fixer's regexes")
+    print("  ground/contrast fix applied to %d generated scene(s), %d CSS + %d motion substitution(s)"
+          % (fixed, css_subs, motion_subs))
 
 
 def fix_motion_sidecar():
     """[S7/R-1b]: set root `keepsMoving.maxStaticSec` from the FORMAT's cadence.
-
-    R-1b is explicit that the engine's 2s default "is a Shorts number" and must
-    be re-pointed per format. The generator emits 2.0, which asks a 180s
-    long-form piece for a geometric change every two seconds -- a Shorts
-    cadence. The repo's own long-form authority disagrees with 2.0 in both
-    directions: youtube-delivery.md sets long-form cadence at "every 8-12s",
-    and catalog/tooling/check-cadence.py raises QUIET_CEILING_S from 1.6 to
-    **6.0** under --longform.
-
-    So: 6.0 here, and the strict perceptibility answer still comes from
-    check-cadence.py --longform on the SHIPPED MP4 at [S7/R-2], which is the
-    rule's own stated authority ("a source-level cadence measurement is an
-    authoring-time aid, never a substitute for the post-render pixel diff").
-    Loosening the authoring proxy does not loosen the gate that actually counts.
-    """
+    6.0s for long-form (this repo's own check-cadence.py --longform ceiling),
+    not the engine's 2.0s Shorts default."""
     p = f"{HERE}/05-composition/index.motion.json"
     m = json.load(open(p))
     n = 0
@@ -942,19 +1175,45 @@ def fix_motion_sidecar():
 
 
 def main():
+    # [correctness] mirror assertion: the old code only asserted BUILD subset
+    # DIAGRAM (a BUILD entry not marked hand-authored). It never caught the
+    # OTHER direction -- a DIAGRAM id with no BUILD function, which falls
+    # through to the generator's own warning or, worse, an untouched stale
+    # file. Both directions checked now.
+    diagram_ids = {sid for sid in ORDER if SCENES[sid]["handoff"] == "hand-authored"}
+    missing_builders = diagram_ids - set(BUILD)
+    extra_builders = set(BUILD) - diagram_ids
+    assert not missing_builders, f"hand-authored in beat sheet but no BUILD function: {missing_builders}"
+    assert not extra_builders, f"BUILD function exists but not hand-authored in beat sheet: {extra_builders}"
+
     n = 0
+    written = set()
     for sid, fn in BUILD.items():
-        assert SCENES[sid]["handoff"] == "hand-authored", \
-            f"{sid} is not marked hand-authored in the beat sheet"
         idx = ORDER.index(sid) + 1
         path = f"{OUT}/{idx:02d}-{sid}.html"
         open(path, "w").write(fn())
+        written.add(os.path.basename(path))
         n += 1
-        print("  wrote %-34s  %5.1fs  %2d beats"
+        print("  wrote %-40s  %5.1fs  %2d beats"
               % (os.path.basename(path), SCENES[sid]["duration"], len(SCENES[sid]["beats"])))
-    print("%d diagram scenes emitted (morphology actor: body / serum / filler)" % n)
+    print("%d hand-authored scenes emitted" % n)
     fix_generated_grounds()
     fix_motion_sidecar()
+
+    # Stale-file guard: neither generator deletes anything from
+    # compositions/frames/. A scene id that changed between runs (as every
+    # id in this project did, going from 13 scenes to 17) leaves its old file
+    # behind, un-referenced by index.html but sitting on disk. `main()` here
+    # only WROTE the hand-authored ones above; add the two generated ones the
+    # shared generator itself wrote, then compare against everything present.
+    generated = {f"{ORDER.index(sid)+1:02d}-{sid}.html"
+                 for sid in ORDER if SCENES[sid]["handoff"] == "generated"}
+    expected = written | generated
+    present = {f for f in os.listdir(OUT) if f.endswith(".html")}
+    stale = present - expected
+    if stale:
+        print(f"  WARNING: {len(stale)} stale file(s) in {OUT}, not part of this run: "
+              f"{sorted(stale)} -- delete them (a prior run's scene ids no longer used)")
 
 if __name__ == "__main__":
     main()

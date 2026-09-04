@@ -43,7 +43,10 @@
             text-transform: uppercase; color: var(--accent); }
   .stat   { font-weight: 800; font-size: 150px; line-height: 1; color: var(--accent); }
   .caption{ font-weight: 600; font-size: 44px; line-height: 1.25; color: var(--ink); }
-
+  /* `swap`: both states share one grid cell and one transform-origin, so
+     the exchange reads as one thing changing rather than two things. */
+  .slot { display: grid; }
+  .slot > * { grid-area: 1 / 1; }
   /* Debug overlay lives on #root, never on <body>: a sub-composition's own
      renderable surface IS #root. Confirm it is off by looking at frame zero. */
   #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
@@ -73,11 +76,13 @@
   .kicker { color:#4B9B93; }
 </style>
 
-<div id="root" data-composition-id="s13-endcard" data-width="1920" data-height="1080"
-     data-duration="9.561">
-    <div class="clip stage" id="s13-endcard-stage" data-start="0" data-duration="9.561">
-      <div class="beat kicker" id="s13-endcard-b0">One more thing — it started in a cow&#x27;s eye</div>
-      <div class="beat head is-entering" id="s13-endcard-b1">Serum hydrates. Filler adds volume. Same name, different jobs.</div>
+<div id="root" data-composition-id="s10-houseplant" data-width="1920" data-height="1080"
+     data-duration="5.659">
+    <div class="clip stage" id="s10-houseplant-stage" data-start="0" data-duration="5.659">
+      <div class="slot">
+        <div class="beat head" id="s10-houseplant-b0">Like watering a tired houseplant.</div>
+        <div class="beat sub is-entering" id="s10-houseplant-b1">Not like adding a new branch.</div>
+      </div>
     </div>
 </div>
 <script>
@@ -85,18 +90,17 @@
   // docs/gsap.md: create paused, register on window.__timelines[compositionId].
   // Supported methods are set / to / from / fromTo — nothing else is emitted.
   // Initial states first, immediate and outside the timeline.
-  gsap.set('#s13-endcard-b1', { opacity: 0, scale: 1.03, y: -18 });
+  gsap.set('#s10-houseplant-b1', { opacity: 0, scale: 0.6 });
   // NO `defaults: { ease }` on this timeline. An inherited ease is an
   // UNCOUNTED ease: it is how a video ends up with 65% of its real tweens
   // sharing one entrance signature while every explicit-ease grep says
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s13-endcard-b1', { opacity: 1, scale: 1, y: 0, duration: 1.800, ease: 'power4.out' }, 2.090);
-  tl.to('#s13-endcard-stage', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 5.790);
-  tl.to('#s13-endcard-stage', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 8.590);
-  tl.to({}, { duration: 9.561, ease: 'none' }, 0);   // anchor — always last, always at 0
+  tl.to('#s10-houseplant-b0', { scale: 0.6, opacity: 0, duration: 0.250, ease: 'power2.in' }, 2.402);
+  tl.to('#s10-houseplant-b1', { opacity: 1, scale: 1, duration: 1.400, ease: 'back.out(1.6)' }, 2.522);
+  tl.to({}, { duration: 5.659, ease: 'none' }, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {};
-  window.__timelines['s13-endcard'] = tl;
+  window.__timelines['s10-houseplant'] = tl;
 })();
 </script>
 </template>

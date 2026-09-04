@@ -64,13 +64,13 @@
 
 </style>
 
-<div id="root" data-composition-id="s05-compare" data-width="1920" data-height="1080"
-     data-duration="14.378">
-  <div class="clip stage" id="s05-compare-stage" data-start="0" data-duration="14.378">
+<div id="root" data-composition-id="s07-compare" data-width="1920" data-height="1080"
+     data-duration="15.226">
+  <div class="clip stage" id="s07-compare-stage" data-start="0" data-duration="15.226">
     <div class="cmp-wrap">
-      <h1 class="cmp-title beat" id="s05-compare-b0">Here's where the two versions really split</h1>
+      <h1 class="cmp-title beat" id="s07-compare-b0">Here's where the two versions split.</h1>
       <div class="cmp-lanes">
-        <div class="cmp-col" id="s05-compare-colL">
+        <div class="cmp-col" id="s07-compare-colL">
           <div class="cmp-label">Serum — surface</div>
           <svg class="actor" viewBox="0 0 420 460" width="420" height="460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <g class="big">
@@ -91,10 +91,10 @@
       <path d="M 170.8 419.9 C 180.0 419.9 184.6 415.3 193.8 415.3 C 203.0 415.3 207.6 424.8 216.8 424.8 C 226.0 424.8 230.6 412.5 239.8 412.5 C 249.0 412.5 253.6 421.6 262.8 421.6" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
       </g>
     </svg>
-          <div class="body beat is-entering" id="s05-compare-b2">A serum's version stays mostly at the surface, supporting hydration</div>
-          <div class="cite beat is-entering" id="s05-compare-b4">Skin Res Technol · 2015</div>
+          <div class="body beat is-entering" id="s07-compare-b1">Stays at the surface, supporting hydration.</div>
+          <div class="cite beat is-entering" id="s07-compare-b2">Skin Res Technol · 2015</div>
         </div>
-        <div class="cmp-col" id="s05-compare-colR">
+        <div class="cmp-col" id="s07-compare-colR">
           <div class="cmp-label">Filler — beneath the skin</div>
           <svg class="actor" viewBox="0 0 420 460" width="420" height="460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <g transform="translate(0,120)"><g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
@@ -187,8 +187,8 @@
       <text x="16" y="76.0" font-size="22" fill="currentColor" opacity="0.55" style="font-family:var(--font-mono)">EPIDERMIS</text>
       <text x="16" y="440.0" font-size="22" fill="currentColor" opacity="0.55" style="font-family:var(--font-mono)">DERMIS</text>
     </svg>
-          <div class="body beat is-entering" id="s05-compare-b5">A filler's version is cross-linked into a gel, placed beneath the skin</div>
-          <div class="cite beat is-entering" id="s05-compare-b6">J Cosmet Dermatol · 2024</div>
+          <div class="body beat is-entering" id="s07-compare-b3">Cross-linked into a gel, placed beneath the skin.</div>
+          <div class="cite beat is-entering" id="s07-compare-b5">J Cosmet Dermatol · 2024</div>
         </div>
       </div>
     </div>
@@ -196,26 +196,26 @@
 </div>
 <script>
 (function () {
-  gsap.set('#s05-compare-colL', { opacity: 0, y: 40, scale: 0.96 });
-  gsap.set('#s05-compare-colR', { opacity: 0, y: 40, scale: 0.96 });
-  gsap.set('#s05-compare-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s05-compare-b4', { opacity: 0, y: 30 });
-  gsap.set('#s05-compare-b5', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s05-compare-b6', { opacity: 0, y: 30 });
+  gsap.set('#s07-compare-colL', { opacity: 0, y: 40, scale: 0.96 });
+  gsap.set('#s07-compare-colR', { opacity: 0, y: 40, scale: 0.96 });
+  gsap.set('#s07-compare-b1', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s07-compare-b2', { opacity: 0, y: 30 });
+  gsap.set('#s07-compare-b3', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s07-compare-b5', { opacity: 0, y: 30 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s05-compare-colL', { opacity: 1, y: 0, scale: 1, duration: 1.200, ease: 'power2.inOut' }, 0.200);
-  tl.to('#s05-compare-colR', { opacity: 1, y: 0, scale: 1, duration: 1.200, ease: 'power2.inOut' }, 0.550);
-  tl.to('#s05-compare-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 3.050);
-  tl.to('#s05-compare-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 7.625);
-  tl.to('#s05-compare-b5', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 9.150);
-  tl.to('#s05-compare-b6', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 12.477);
-  tl.to('#s05-compare-colR', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
-  tl.to('#s05-compare-colR', { x: -9, y: 6, scale: 1.005, duration: 0.900, ease: 'sine.inOut' }, 6.450);
-  tl.to({}, { duration: 14.378, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s07-compare-colL', { opacity: 1, y: 0, scale: 1, duration: 1.200, ease: 'power2.inOut' }, 0.550);
+  tl.to('#s07-compare-colR', { opacity: 1, y: 0, scale: 1, duration: 1.200, ease: 'power2.inOut' }, 0.900);
+  tl.to('#s07-compare-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 2.057);
+  tl.to('#s07-compare-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 4.333);
+  tl.to('#s07-compare-b3', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 6.590);
+  tl.to('#s07-compare-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 11.232);
+  tl.to('#s07-compare-colR', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 10.090);
+  tl.to('#s07-compare-colR', { x: -9, y: 6, scale: 1.005, duration: 0.744, ease: 'sine.inOut' }, 14.132);
+  tl.to({}, { duration: 15.226, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
-  window.__timelines['s05-compare'] = tl;
+  window.__timelines['s07-compare'] = tl;
 })();
 </script>
 </template>

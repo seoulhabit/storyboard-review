@@ -61,18 +61,18 @@
 
 </style>
 
-<div id="root" data-composition-id="s04-body" data-width="1920" data-height="1080"
-     data-duration="10.213">
-  <div class="clip stage" id="s04-body-stage" data-start="0" data-duration="10.213">
+<div id="root" data-composition-id="s06-body" data-width="1920" data-height="1080"
+     data-duration="9.566">
+  <div class="clip stage" id="s06-body-stage" data-start="0" data-duration="9.566">
     <div class="split2">
-      <div class="col" id="s04-body-col">
-        <div class="head beat is-entering" id="s04-body-b0">Your body already makes its own</div>
-        <div class="body beat is-entering" id="s04-body-b2">Most of it sits in your skin, holding water</div>
-        <div class="cite beat is-entering" id="s04-body-b3">Dermatoendocrinol · 2012</div>
-        <div class="body beat is-entering" id="s04-body-b4">It also lubricates your joints and eye</div>
-        <div class="cite beat is-entering" id="s04-body-b5">Front Vet Sci · 2019</div>
+      <div class="col" id="s06-body-col">
+        <div class="head beat" id="s06-body-b0">Your body already makes its own.</div>
+        <div class="body beat is-entering" id="s06-body-b1">Most of it sits in your skin, holding water.</div>
+        <div class="cite beat is-entering" id="s06-body-b2">Dermatoendocrinol · 2012</div>
+        <div class="body beat is-entering" id="s06-body-b3">It also lubricates your joints and your eye.</div>
+        <div class="cite beat is-entering" id="s06-body-b4">Front Vet Sci · 2019</div>
       </div>
-      <div class="panel" id="s04-body-panel">
+      <div class="panel" id="s06-body-panel">
         <svg class="actor cross" viewBox="0 0 480 560" width="480" height="560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <path d="M 0.0 26.0 L 48.0 32.3 L 96.0 33.8 L 144.0 29.4 L 192.0 22.5 L 240.0 18.2 L 288.0 19.8 L 336.0 26.1 L 384.0 32.3 L 432.0 33.8 L 480.0 29.3" fill="none" stroke="currentColor" stroke-width="4" opacity="0.7"/>
       <line class="skin" x1="0" y1="123.2" x2="480" y2="123.2" stroke="currentColor" stroke-width="4" stroke-dasharray="14 10" opacity="0.55"/>
@@ -109,25 +109,22 @@
 </div>
 <script>
 (function () {
-  gsap.set('#s04-body-panel', { opacity: 0, x: 60, scale: 0.94 });
-  gsap.set('#s04-body-b0', { opacity: 0, y: 30 });
-  gsap.set('#s04-body-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s04-body-b3', { opacity: 0, y: 30 });
-  gsap.set('#s04-body-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s04-body-b5', { opacity: 0, y: 30 });
+  gsap.set('#s06-body-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s06-body-b1', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s06-body-b2', { opacity: 0, y: 30 });
+  gsap.set('#s06-body-b3', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s06-body-b4', { opacity: 0, y: 30 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s04-body-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
-  tl.to('#s04-body-b0', { opacity: 1, y: 0, duration: 1.400, ease: 'power3.out' }, 0.000);
-  tl.to('#s04-body-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 2.909);
-  tl.to('#s04-body-b3', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 4.849);
-  tl.to('#s04-body-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 6.400);
-  tl.to('#s04-body-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 8.339);
-  tl.to('#s04-body-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
-  tl.to({}, { duration: 10.213, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s06-body-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.601);
+  tl.to('#s06-body-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 1.957);
+  tl.to('#s06-body-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 3.508);
+  tl.to('#s06-body-b3', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 5.027);
+  tl.to('#s06-body-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 7.392);
+  tl.to({}, { duration: 9.566, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
-  window.__timelines['s04-body'] = tl;
+  window.__timelines['s06-body'] = tl;
 })();
 </script>
 </template>

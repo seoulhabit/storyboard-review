@@ -1,0 +1,160 @@
+<template>
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; }
+  #root {
+    --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
+    --paper:#F7F5F0; --ink:#131516; --mist:#F0EBE1; --ink-soft:#211F1B;
+    --aqua:#59B8AE; --moss:#4F6B52; --coral:#C97A5C; --ink-2:#6B6B6B;
+    --ink-2-dark:#878B8C; --rule-strong:#D9D3C6; --rule-dark:#333333;
+    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    font-family:var(--font-body); background:#F0EBE1; color:#131516;
+  }
+  .clip { position:absolute; inset:0; }
+  /* DRIFT BUDGET, not decoration: a transform on a padded box moves the padded
+     edge outward, so the pad must absorb (max scale - 1)/2 * canvas + max
+     translate. 1.03 scale = 28.8px/side horizontally, 16.2px vertically. */
+  .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
+                   calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
+           height:100%; display:flex; }
+  .stage > * { min-width:0; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
+  .head { font-family:var(--font-display); font-weight:600; font-size:104px;
+          line-height:1.04; letter-spacing:-.018em; margin:0; }
+  .sub  { font-weight:700; font-size:46px; letter-spacing:.10em;
+          text-transform:uppercase; }
+  .body { font-weight:600; font-size:52px; line-height:1.24; }
+  .caption { font-weight:600; font-size:44px; line-height:1.26; }
+  /* [S6/A-7] --aqua on paper measures 2.17:1 against the 3:1 floor for large
+     bold text -- rgb(75,155,147) is `check`'s own suggestedColor in the same
+     palette direction. The dark-ground branch below restates full --aqua,
+     which measures well clear of the floor against --ink. */
+  .kicker { font-weight:700; font-size:34px; letter-spacing:.16em;
+            text-transform:uppercase; color:#4B9B93; }
+  .stat { font-family:var(--font-display); font-weight:600; font-size:170px; line-height:1; }
+  /* Citation chip: `Journal · Year` ONLY. Never a PMID, never an internal id --
+     those live in the brief's claim table and the video description. */
+  .cite { font-family:var(--font-mono); font-weight:500; font-size:32px;
+          letter-spacing:.04em; color:var(--ink-2); border:2px solid var(--rule-strong);
+          border-radius:999px; padding:10px 26px; width:max-content;
+          background:var(--mist); display:inline-block; }
+  .actor { color:var(--ink); display:block; }
+  .lane-label { font-weight:700; font-size:34px; letter-spacing:.14em;
+                text-transform:uppercase; color:var(--ink-2); }
+  .beat { transform-origin: left center; }
+  .beat.is-entering { opacity:0; }
+  .beat.is-wiping { clip-path: inset(0 100% 0 0); }
+  #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
+
+  .split2 { display:grid; grid-template-columns: 1fr 560px; gap:80px; width:100%;
+            align-items:center; }
+  .col { display:flex; flex-direction:column; gap:26px; }
+  .panel { position:relative; display:flex; align-items:center; justify-content:center;
+           border:2px solid var(--rule-strong); border-radius:16px; padding:18px;
+           background:rgba(0,0,0,0.015); }
+  .panel .actor { color:var(--ink); }
+
+  /* [correctness] this scene merges two v2 scenes' worth of beats (6 text
+     rows) into one file for [S6/A-9] -- _hero_left()'s plain flex column
+     stacks all of them permanently and the sixth row ran 30-50px past the
+     canvas bottom, confirmed on an extracted frame at t=99.5s (check's
+     layout pass never caught it -- it has no notion of the canvas edge,
+     same documented gap as the padded-.stage drift class of bug). Fixed by
+     giving the TEXT column the same two-phase treatment the panel already
+     has: phase 1's four rows and phase 2's two rows occupy the SAME grid
+     cell (the `swap` idiom's own .slot pattern) and cross-fade at the
+     phase boundary, so at most 4 rows are ever laid out at once. */
+  .col-slot { display:grid; }
+  .col-slot > .col-phase { grid-area: 1/1; display:flex; flex-direction:column; gap:26px; }
+
+</style>
+
+<div id="root" data-composition-id="s11-binds-and-seal" data-width="1920" data-height="1080"
+     data-duration="13.953">
+  <div class="clip stage" id="s11-binds-and-seal-stage" data-start="0" data-duration="13.953">
+    <div class="split2">
+      <div class="col-slot" id="s11-binds-and-seal-col">
+        <div class="col-phase" id="s11-binds-and-seal-colphase1">
+        <div class="head beat" id="s11-binds-and-seal-b0">Here's the part the marketing skips.</div>
+        <div class="head beat is-entering" id="s11-binds-and-seal-b2">It binds water. It does not make water.</div>
+        <div class="cite beat is-entering" id="s11-binds-and-seal-b3">ChemRxiv · 2023</div>
+        <div class="body beat is-entering" id="s11-binds-and-seal-b4">A formula still needs something to stop it leaving.</div>
+        </div>
+        <div class="col-phase" id="s11-binds-and-seal-colphase2">
+        <div class="caption beat is-entering" id="s11-binds-and-seal-b5">Skip that, and you're hiring a lifeguard for an empty pool.</div>
+        <div class="sub beat is-entering" id="s11-binds-and-seal-b6">Strange image. Correct principle.</div>
+        </div>
+      </div>
+      <div class="panel" id="s11-binds-and-seal-panel">
+        <svg class="actor" viewBox="0 0 460 460" width="460" height="460" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path d="M 30.0 267.7 C 50.6 267.7 60.9 262.4 81.4 262.4 C 102.0 262.4 112.3 278.4 132.9 278.4 C 153.4 278.4 163.7 236.2 184.3 236.2 C 204.9 236.2 215.1 282.0 235.7 282.0 C 256.3 282.0 266.6 235.2 287.1 235.2 C 307.7 235.2 318.0 285.9 338.6 285.9 C 359.1 285.9 369.4 227.3 390.0 227.3" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+      <circle id="s11-binds-and-seal-drop0" cx="60.0" cy="60.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop1" cx="380.0" cy="50.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop2" cx="420.0" cy="180.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop3" cx="40.0" cy="420.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop4" cx="400.0" cy="430.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop5" cx="220.0" cy="40.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop6" cx="60.0" cy="340.0" r="9" fill="currentColor" opacity="0.85"/>
+      <circle id="s11-binds-and-seal-drop7" cx="430.0" cy="300.0" r="9" fill="currentColor" opacity="0.85"/>
+      <g id="s11-binds-and-seal-seal" opacity="0"><path d="M10 210 Q230 165 450 210 L450 236 Q230 200 10 236 Z" fill="currentColor" opacity="0.14"/><text x="10" y="188" font-size="20" fill="currentColor" opacity="0.6" style="font-family:var(--font-mono)">MOISTURISER — SLOWS WATER LOSS</text></g>
+    </svg>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  gsap.set('#s11-binds-and-seal-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s11-binds-and-seal-colphase2', { opacity: 0 });
+  gsap.set('#s11-binds-and-seal-drop0', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop1', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop2', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop3', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop4', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop5', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop6', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-drop7', { opacity: 0.35 });
+  gsap.set('#s11-binds-and-seal-seal', { opacity: 0 });
+  gsap.set('#s11-binds-and-seal-b2', { opacity: 0, scale: 0.86 });
+  gsap.set('#s11-binds-and-seal-b3', { opacity: 0, y: 30 });
+  gsap.set('#s11-binds-and-seal-b4', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
+  gsap.set('#s11-binds-and-seal-b5', { opacity: 0, y: 30 });
+  gsap.set('#s11-binds-and-seal-b6', { opacity: 0, scale: 1.03, y: -18 });
+  // No timeline `defaults: { ease }` — an inherited ease is an uncounted
+  // one, and that is how a project ships a single entrance signature.
+  var tl = gsap.timeline({ paused: true });
+  tl.to('#s11-binds-and-seal-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.601);
+  tl.to('#s11-binds-and-seal-colphase1', { opacity: 0, duration: 0.500, ease: 'power2.inOut' }, 9.107);
+  tl.to('#s11-binds-and-seal-colphase2', { opacity: 1, duration: 0.500, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop0', { x: 10, y: 170, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.490);
+  tl.to('#s11-binds-and-seal-drop0', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop1', { x: -230, y: 180, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.540);
+  tl.to('#s11-binds-and-seal-drop1', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop2', { x: -140, y: 70, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.590);
+  tl.to('#s11-binds-and-seal-drop2', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop3', { x: 80, y: -120, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.640);
+  tl.to('#s11-binds-and-seal-drop3', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop4', { x: -80, y: -150, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.690);
+  tl.to('#s11-binds-and-seal-drop4', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop5', { x: -20, y: 180, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.740);
+  tl.to('#s11-binds-and-seal-drop5', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop6', { x: 30, y: -70, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.790);
+  tl.to('#s11-binds-and-seal-drop6', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-drop7', { x: -90, y: -60, opacity: 1, scale: 1.15, duration: 1.400, ease: 'power2.inOut' }, 3.840);
+  tl.to('#s11-binds-and-seal-drop7', { opacity: 0.25, scale: 0.9, duration: 1.000, ease: 'power2.inOut' }, 9.407);
+  tl.to('#s11-binds-and-seal-seal', { opacity: 1, duration: 1.200, ease: 'power2.out' }, 9.407);
+  tl.to('#s11-binds-and-seal-b2', { opacity: 1, scale: 1, duration: 1.600, ease: 'back.out(1.6)' }, 3.490);
+  tl.to('#s11-binds-and-seal-b3', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 5.967);
+  tl.to('#s11-binds-and-seal-b4', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 7.618);
+  tl.to('#s11-binds-and-seal-b5', { opacity: 1, y: 0, duration: 1.400, ease: 'power3.out' }, 9.407);
+  tl.to('#s11-binds-and-seal-b6', { opacity: 1, scale: 1, y: 0, duration: 1.100, ease: 'power4.out' }, 11.330);
+  tl.to('#s11-binds-and-seal-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 2.500);
+  tl.to({}, { duration: 13.953, ease: 'none' }, 0);   // anchor — last, at 0
+  window.__timelines = window.__timelines || {};
+  window.__timelines['s11-binds-and-seal'] = tl;
+})();
+</script>
+</template>

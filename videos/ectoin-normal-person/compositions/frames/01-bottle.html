@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="01-bottle"
-       data-width="1920" data-height="1080" data-duration="10.842">
+       data-width="1920" data-height="1080" data-duration="18.752">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,8 +98,13 @@
     .panel { position:relative; background:var(--mist); border-radius:var(--r-3);
              padding:var(--s-6); min-height:0; overflow:hidden; }
     .panel.on-ink { background:var(--ink-soft); }
-    /* A full-panel colour wash. scaleX from the left = a large area changing. */
-    .wash { position:absolute; inset:0; transform:scaleX(0); transform-origin:0% 50%;
+    /* A full-panel colour wash. scaleX from the left = a large area changing.
+       No CSS transform initializer here -- non-negotiable #11. Every .wash
+       reveal is driven by tl.fromTo(el, {{scaleX:0}}, {{scaleX:1,...}}), so
+       GSAP already declares its own start state; a CSS one would just be a
+       second, driftable copy of the same value. transform-origin stays --
+       GSAP's fromTo does not set it, so CSS is the only declared source. */
+    .wash { position:absolute; inset:0; transform-origin:0% 50%;
             border-radius:inherit; z-index:0; }
     /* Every following sibling of a wash sits ABOVE it. The earlier rule was
        scoped to .panel children only, so .arm/.stt/.action labels rendered
@@ -220,8 +225,13 @@
        cadence metric, not by eye: 11.3% of frame at 215 luma = 5.5/step. */
     .band { position:absolute; left:0; right:0; bottom:0; height:136px;
             border-radius:var(--r-3); overflow:hidden; opacity:0; z-index:3; }
-    .band-f { position:absolute; inset:0; background:var(--ink);
-              transform:scaleX(0); transform-origin:0% 50%; }
+    /* No CSS transform initializer -- non-negotiable #11. build_frames.py's
+       band_beat() always drives this via tl.fromTo(el, {{scaleX:0,
+       transformOrigin:...}}, {{scaleX:1,...}}), so GSAP already declares
+       its own start state (and its own transform-origin, which varies per
+       band variant -- a CSS-fixed one here would be the wrong value for
+       half the rotation anyway). */
+    .band-f { position:absolute; inset:0; background:var(--ink); }
     .band.alt .band-f { background:var(--moss); }
     /* On an ink ground the fill must go the OTHER way. ink-on-ink is a 0-luma
        step: measured, the two ink-ground bands moved their scene's quiet run
@@ -267,11 +277,16 @@
     .inci li.hit { color:var(--ink); background:var(--highlighter); }
     .talk2 { display:flex; flex-direction:column; justify-content:center;
              gap:var(--s-4); min-height:0; }
+    .verdict { position:relative; margin-top:var(--s-5); background:var(--mist);
+               border-radius:var(--r-3); padding:var(--s-5); opacity:0; }
+    .verdict span { position:relative; z-index:1; display:block;
+                    font-family:var(--font-display); font-size:34px;
+                    line-height:var(--lh-snug); }
     
     </style>
-<div class="ground" style="background:var(--paper)"><div class="stage"><div class="clipbox"><div class="world" id="world"><div class="drift" id="drift"><div class="bwrap"><div><div class="bottle" id="ob-btl"><p class="pc" id="ob-pc">11%</p><span class="nm2">COMPLEX</span><span class="illus" id="ob-illus">Illustrative label</span></div></div><div class="talk2"><div class="phase" data-phase="a"><div class="plate " id="op"><div class="plate-fill" id="op-f"></div><span class="plate-t" id="op-t"></span></div></div><div class="phase" data-phase="b"><ul class="inci" id="ob-inci"><li id="ob-in-0" class="">1. Water</li><li id="ob-in-1" class="">2. Glycerin</li><li id="ob-in-2" class="">3. Panthenol</li><li id="ob-in-3" class="">4. Butylene Glycol</li><li id="ob-in-4" class="">5. Niacinamide</li><li id="ob-in-5" class="">6. Squalane</li><li id="ob-in-6" class="">7. Dimethicone</li><li id="ob-in-7" class="">8. Ceramide NP</li><li id="ob-in-8" class="">9. Sodium Hyaluronate</li><li id="ob-in-9" class="">10. Betaine</li><li id="ob-in-10" class="hit">11. Ectoin</li><li id="ob-in-11" class="">12. Phenoxyethanol</li></ul></div></div></div><div class="band" id="band"><div class="band-f" id="band-f"></div><span class="band-t" id="band-t"></span></div></div></div></div></div></div>
+<div class="ground" style="background:var(--paper)"><div class="stage"><div class="clipbox"><div class="world" id="c01-bottle-world"><div class="drift" id="c01-bottle-drift"><div class="bwrap"><div><div class="bottle" id="c01-bottle-ob-btl"><p class="pc" id="c01-bottle-ob-pc">11%</p><span class="nm2">COMPLEX</span><span class="illus" id="c01-bottle-ob-illus">Illustrative label</span></div><div class="phase" data-phase="c"><div class="verdict" id="c01-bottle-ob-vd"><div class="wash aqua" id="c01-bottle-ob-vw"></div><span id="c01-bottle-ob-vd-t"></span></div></div></div><div class="talk2"><div class="phase" data-phase="a"><div class="plate " id="c01-bottle-op"><div class="plate-fill" id="c01-bottle-op-f"></div><span class="plate-t" id="c01-bottle-op-t"></span></div></div><div class="phase" data-phase="b"><ul class="inci" id="c01-bottle-ob-inci"><li id="c01-bottle-ob-in-0" class="">1. Water</li><li id="c01-bottle-ob-in-1" class="">2. Glycerin</li><li id="c01-bottle-ob-in-2" class="">3. Panthenol</li><li id="c01-bottle-ob-in-3" class="">4. Butylene Glycol</li><li id="c01-bottle-ob-in-4" class="">5. Niacinamide</li><li id="c01-bottle-ob-in-5" class="">6. Squalane</li><li id="c01-bottle-ob-in-6" class="">7. Dimethicone</li><li id="c01-bottle-ob-in-7" class="">8. Ceramide NP</li><li id="c01-bottle-ob-in-8" class="">9. Sodium Hyaluronate</li><li id="c01-bottle-ob-in-9" class="">10. Betaine</li><li id="c01-bottle-ob-in-10" class="hit">11. Ectoin</li><li id="c01-bottle-ob-in-11" class="">12. Phenoxyethanol</li></ul></div></div></div><div class="band" id="c01-bottle-band"><div class="band-f" id="c01-bottle-band-f"></div><span class="band-t" id="c01-bottle-band-t"></span></div></div></div></div></div></div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap-3.14.2.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true });
@@ -279,16 +294,16 @@
     // PHASE A -- "eleven percent... does that mean eleven percent ectoin?"
     // The number swells on the question; nothing else needs to move, this
     // panel IS the beat (11.3%+ of frame, mist->ink).
-    tl.set('#op-t', { textContent: 'ELEVEN PERCENT ECTOIN?' }, 0);
-    tl.to('#ob-pc', { scale: 1.22, duration: 0.85, ease: 'back.out(1.5)' },
+    tl.set('#c01-bottle-op-t', { textContent: 'ELEVEN PERCENT ECTOIN?' }, 0);
+    tl.to('#c01-bottle-ob-pc', { scale: 1.22, duration: 0.85, ease: 'back.out(1.5)' },
           0.600);
-    tl.to('#op-f', { scaleX: 1, duration: 0.55, ease: 'expo.out' },
+    tl.to('#c01-bottle-op-f', { scaleX: 1, duration: 0.55, ease: 'expo.out' },
           1.100);
-    tl.to('#op-t', { opacity: 1, duration: 0.30, ease: 'none' },
+    tl.to('#c01-bottle-op-t', { opacity: 1, duration: 0.30, ease: 'none' },
           1.400);
-    tl.to('#op-f', { scaleX: 0, transformOrigin: '100% 50%', duration: 0.45,
+    tl.to('#c01-bottle-op-f', { scaleX: 0, transformOrigin: '100% 50%', duration: 0.45,
                      ease: 'power2.in' }, 3.451);
-    tl.to('#op-t', { opacity: 0, duration: 0.25, ease: 'none' },
+    tl.to('#c01-bottle-op-t', { opacity: 0, duration: 0.25, ease: 'none' },
           3.351);
     // Collapse the whole panel, not just its fill/text -- an empty
     // min-height:150px box left sitting in the layout for the rest of the
@@ -298,20 +313,20 @@
     // pixels under the seek-by-frame capture engine (check: gsap_non_
     // transform_motion). The now-empty box is still IN the layout, just
     // invisible, which is what the void checker actually measures.
-    tl.to('#op', { opacity: 0, scaleY: 0, transformOrigin: '0% 0%',
+    tl.to('#c01-bottle-op', { opacity: 0, scaleY: 0, transformOrigin: '0% 0%',
                    duration: 0.30, ease: 'power2.in' }, 3.651);
 
     // PHASE B -- the turn. A scaleX through zero IS the turn: one object
     // rotating, not two images swapped -- the front label recedes as the
     // INCI list (the back) appears in its place.
-    tl.to('#ob-btl', { scaleX: 0, duration: 0.28, ease: 'power2.in' },
+    tl.to('#c01-bottle-ob-btl', { scaleX: 0, duration: 0.28, ease: 'power2.in' },
           4.251);
-    tl.to('#ob-btl', { scaleX: 1, duration: 0.34, ease: 'power2.out' },
+    tl.to('#c01-bottle-ob-btl', { scaleX: 1, duration: 0.34, ease: 'power2.out' },
           4.551);
     // The number recedes -- it was never the ectoin percentage.
-    tl.to('#ob-pc', { scale: 0.42, opacity: 0.45, duration: 0.60,
+    tl.to('#c01-bottle-ob-pc', { scale: 0.42, opacity: 0.45, duration: 0.60,
                       ease: 'back.inOut(1.1)' }, 4.571);
-    tl.fromTo('#ob-illus', { opacity: 0 },
+    tl.fromTo('#c01-bottle-ob-illus', { opacity: 0 },
               { opacity: 0.7, duration: 0.30, ease: 'none' },
               4.851);
     // The list -- clip-path WIPE reveal, a mechanism drawing itself, not a
@@ -322,18 +337,40 @@
                    ease: 'power1.out' },
                 4.501 + i * 0.05);
     }
-    tl.to('#world', { scale: 1.22, x: -78, y: -26, duration: 1.10,
+    tl.to('#c01-bottle-world', { scale: 1.22, x: -78, y: -26, duration: 1.10,
                       ease: 'power2.inOut' }, 5.451);
-    tl.to('#world', { scale: 1, x: 0, y: 0, duration: 0.95,
+    tl.to('#c01-bottle-world', { scale: 1, x: 0, y: 0, duration: 0.95,
                       ease: 'power2.inOut' }, 6.751);
-    tl.to('#ob-inci li:not(.hit)', { opacity: 0.28, duration: 0.60,
+    tl.to('#c01-bottle-ob-inci li:not(.hit)', { opacity: 0.28, duration: 0.60,
           stagger: 0.02, ease: 'power2.inOut' }, 7.251);
 
-    tl.fromTo('#drift', { scale: 1, y: 0 },
-              { scale: 1.018, y: -7, duration: 10.842,
+    // PHASE C -- THE VERDICT. Rides alongside the settled INCI reveal
+    // rather than replacing it -- both stay legible together. A text-swap-
+    // on-wash carries two beats within one panel, same idiom as 04-protein's
+    // sw-a/sw-b transform: the second state reads as the first one
+    // qualified, not as two unrelated cards.
+    tl.fromTo('#c01-bottle-ob-vd', { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.36, ease: 'power2.out' }, 6.623);
+    tl.fromTo('#c01-bottle-ob-vw', { scaleX: 0 },
+              { scaleX: 1, duration: 0.50, ease: 'expo.out' }, 6.823);
+    tl.set('#c01-bottle-ob-vd-t', { textContent: 'MAY HELP DRY OR STRESSED SKIN' },
+           6.623);
+    tl.to('#c01-bottle-ob-vd-t', { opacity: 1, duration: 0.30, ease: 'none' },
+          7.023);
+    // The claim TRANSFORMS into its own hedge -- not a fade to a new card.
+    tl.to('#c01-bottle-ob-vd-t', { opacity: 0, y: -12, duration: 0.24,
+                        ease: 'power2.in' }, 13.294);
+    tl.set('#c01-bottle-ob-vd-t',
+           { textContent: 'LIMITED EVIDENCE. NOT A MIRACLE. NOT A REPLACEMENT FOR TREATMENT.' },
+           13.594);
+    tl.fromTo('#c01-bottle-ob-vd-t', { opacity: 0, y: 12 },
+              { opacity: 1, y: 0, duration: 0.30, ease: 'power2.out' }, 13.594);
+
+    tl.fromTo('#c01-bottle-drift', { scale: 1, y: 0 },
+              { scale: 1.018, y: -7, duration: 18.752,
                  ease: 'sine.inOut' }, 0);
 
-    tl.to({}, { duration: 10.842 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 18.752 }, 0);   // full-span anchor -- always last
     window.__timelines["01-bottle"] = tl;
   </script>
 </template>

@@ -131,8 +131,13 @@ BASE_SPEC_CSS = """
        cadence metric, not by eye: 11.3% of frame at 215 luma = 5.5/step. */
     .band { position:absolute; left:0; right:0; bottom:0; height:136px;
             border-radius:var(--r-3); overflow:hidden; opacity:0; z-index:3; }
-    .band-f { position:absolute; inset:0; background:var(--ink);
-              transform:scaleX(0); transform-origin:0% 50%; }
+    /* No CSS transform initializer -- non-negotiable #11. build_frames.py's
+       band_beat() always drives this via tl.fromTo(el, {{scaleX:0,
+       transformOrigin:...}}, {{scaleX:1,...}}), so GSAP already declares
+       its own start state (and its own transform-origin, which varies per
+       band variant -- a CSS-fixed one here would be the wrong value for
+       half the rotation anyway). */
+    .band-f { position:absolute; inset:0; background:var(--ink); }
     .band.alt .band-f { background:var(--moss); }
     /* On an ink ground the fill must go the OTHER way. ink-on-ink is a 0-luma
        step: measured, the two ink-ground bands moved their scene's quiet run
@@ -212,10 +217,15 @@ def unit(cid):
 # used to fire first), 05-skin (reach, no fire) and 12-bottle (retire).
 
 ALARM_CSS = """
+    /* No CSS transform initializer -- non-negotiable #11. Every alarm
+       instance is driven by a fromTo() that declares its own start scale
+       (alarm_fire()'s 0.82 for the fire beats, 0.9 for 12-bottle's retire
+       beat -- CSS's single fixed 0.82 was already wrong for that one, which
+       is itself evidence this value was dead weight, not load-bearing). */
     .alarm { position:absolute; top:var(--s-6); left:var(--s-6); z-index:4;
              display:flex; align-items:center; gap:var(--s-3);
              padding:14px 28px; border-radius:var(--r-pill);
-             background:var(--highlighter); opacity:0; transform:scale(.82);
+             background:var(--highlighter); opacity:0;
              transform-origin:100% 0%; }
     .alarm b { font-family:var(--font-mono); font-weight:500;
                font-size:var(--t-chip); letter-spacing:var(--tr-mono-wide);
@@ -248,10 +258,20 @@ def alarm_fire(eid, at, n=3):
 
 @unit("01-bottle")
 def _(c):
-    """MERGED, 2 phases. ONE bottle actor: the front label at rest first,
-    then the turn IS the bottle's own scaleX-through-zero -- the same idiom
+    """MERGED, 3 phases (was 2 -- VERDICT-COMPRESSION REVISION adds phase c,
+    the verdict). ONE bottle actor: the front label at rest first, then the
+    turn IS the bottle's own scaleX-through-zero -- the same idiom
     12-bottle used to carry, lifted here because the reveal now opens the
     video instead of arriving at 3:40.
+
+    PHASE C -- the viewer-facing verdict now lands inside the first ~20s
+    (item 4 of the rebuild brief). t076/t077 render as a small panel below
+    the bottle in the LEFT column, so the INCI list's own reveal in the
+    right column is undisturbed -- the verdict rides alongside it, not over
+    it. A text-swap-on-wash (same idiom 04-protein's sw-a/sw-b transform
+    uses) carries two beats: "may help" first, then the three-part hedge.
+    Measured (scripts/timing.py, on real generated takes): t077 completes
+    speaking at t=18.552s -- inside the 20s window with 1.45s of margin.
 
     #world stays at the SAME rest scale every other unit opens on -- a
     global scale(1.28) baseline was tried for an "extreme close-up" framing
@@ -310,6 +330,11 @@ def _(c):
     .inci li.hit { color:var(--ink); background:var(--highlighter); }
     .talk2 { display:flex; flex-direction:column; justify-content:center;
              gap:var(--s-4); min-height:0; }
+    .verdict { position:relative; margin-top:var(--s-5); background:var(--mist);
+               border-radius:var(--r-3); padding:var(--s-5); opacity:0; }
+    .verdict span { position:relative; z-index:1; display:block;
+                    font-family:var(--font-display); font-size:34px;
+                    line-height:var(--lh-snug); }
     """
     INCI = ["Water", "Glycerin", "Panthenol", "Butylene Glycol", "Niacinamide",
             "Squalane", "Dimethicone", "Ceramide NP", "Sodium Hyaluronate",
@@ -322,7 +347,11 @@ def _(c):
         '<div><div class="bottle" id="ob-btl">'
         '<p class="pc" id="ob-pc">11%</p>'
         '<span class="nm2">COMPLEX</span>'
-        '<span class="illus" id="ob-illus">Illustrative label</span></div></div>'
+        '<span class="illus" id="ob-illus">Illustrative label</span></div>'
+        + phase_div("c", '<div class="verdict" id="ob-vd">'
+                    '<div class="wash aqua" id="ob-vw"></div>'
+                    '<span id="ob-vd-t"></span></div>')
+        + '</div>'
         '<div class="talk2">'
         + phase_div("a", plate("op"))
         + phase_div("b", f'<ul class="inci" id="ob-inci">{lis}</ul>')
@@ -380,6 +409,28 @@ def _(c):
                       ease: 'power2.inOut' }}, {t['t072'] + 2.8:.3f});
     tl.to('#ob-inci li:not(.hit)', {{ opacity: 0.28, duration: 0.60,
           stagger: 0.02, ease: 'power2.inOut' }}, {t['t072'] + 3.3:.3f});
+
+    // PHASE C -- THE VERDICT. Rides alongside the settled INCI reveal
+    // rather than replacing it -- both stay legible together. A text-swap-
+    // on-wash carries two beats within one panel, same idiom as 04-protein's
+    // sw-a/sw-b transform: the second state reads as the first one
+    // qualified, not as two unrelated cards.
+    tl.fromTo('#ob-vd', {{ opacity: 0, y: 20 }},
+              {{ opacity: 1, y: 0, duration: 0.36, ease: 'power2.out' }}, {t['t076']:.3f});
+    tl.fromTo('#ob-vw', {{ scaleX: 0 }},
+              {{ scaleX: 1, duration: 0.50, ease: 'expo.out' }}, {t['t076'] + 0.2:.3f});
+    tl.set('#ob-vd-t', {{ textContent: 'MAY HELP DRY OR STRESSED SKIN' }},
+           {t['t076']:.3f});
+    tl.to('#ob-vd-t', {{ opacity: 1, duration: 0.30, ease: 'none' }},
+          {t['t076'] + 0.4:.3f});
+    // The claim TRANSFORMS into its own hedge -- not a fade to a new card.
+    tl.to('#ob-vd-t', {{ opacity: 0, y: -12, duration: 0.24,
+                        ease: 'power2.in' }}, {t['t077'] - 0.3:.3f});
+    tl.set('#ob-vd-t',
+           {{ textContent: 'LIMITED EVIDENCE. NOT A MIRACLE. NOT A REPLACEMENT FOR TREATMENT.' }},
+           {t['t077']:.3f});
+    tl.fromTo('#ob-vd-t', {{ opacity: 0, y: 12 }},
+              {{ opacity: 1, y: 0, duration: 0.30, ease: 'power2.out' }}, {t['t077']:.3f});
 """
     return css, body, tl
 
@@ -579,7 +630,8 @@ def _(c):
 
 @unit("04-protein")
 def _(c):
-    """MERGED, 5 phases. ONE protein+shell+ring actor. CH2 opener.
+    """MERGED, 4 phases (was 5 -- VERDICT-COMPRESSION REVISION). ONE
+    protein+shell+ring actor. CH2 opener, compressed hardest per the brief.
 
     This unit exists because of a specific defect in the predecessor:
     09-exclusion.html and 10-messier.html carry byte-identical geometry
@@ -588,8 +640,19 @@ def _(c):
     piece read as a sequence of resembling diagrams rather than one subject.
 
     Here the ring is built ONCE and REARRANGED: it closes ranks in phase c
-    (the security detail), then holds a standoff gap in phase d (the actual
-    point -- exclusion), then relaxes in phase e. Same nodes throughout.
+    (the celebrity/security beat), then holds a standoff gap in phase d (the
+    actual point -- exclusion). Same nodes throughout.
+
+    THIS REVISION drops the old phase e (the "event coordinator" gag,
+    t023/t024 -- cut for length, no visual content survives it) and merges
+    what were t019 ("a celebrity, surrounded by security") and t020 ("ectoin
+    may help the water stay organised...") into ONE turn, t078, now carrying
+    both beats the two turns used to carry separately: the ring closing ranks
+    on the celebrity line, then the shell thickening on the explanation that
+    follows in the SAME breath. t017's hedge ("though the real picture is
+    messier") is now spoken IN phase b -- folded into t017's own text rather
+    than given its own turn (was t022) -- so phase b's own alarm-fire beat is
+    unchanged in mechanism, just longer in the line it plays under.
     """
     t = {tid: s - c.turns[0][1] + c.ps("a") for tid, s, _ in c.turns}
     css = BASE_SPEC_CSS + ALARM_CSS + """
@@ -631,8 +694,8 @@ def _(c):
         ' opacity="0">PROTEIN</text>'
         '</svg></div>'
         '<div class="talk2">'
-        # ONE protein+shell+ring above, five phases here. The ring REARRANGES
-        # between them; it is never rebuilt.
+        # ONE protein+shell+ring above, FOUR phases here (was five). The ring
+        # REARRANGES between them; it is never rebuilt.
         + phase_div("a", '<div class="term" id="term">'
                     '<div class="wash aqua" id="tw"></div>'
                     '<h4>EXTREMOLYTE</h4><em>noun</em>'
@@ -644,7 +707,6 @@ def _(c):
         + phase_div("c", say("S", "A celebrity, surrounded<br>by security.", "p-c", size="46px"))
         + phase_div("d", say("J", "So ectoin gives proteins<br>personal space.", "p-d", size="42px")
                     + cite("Phys Chem Chem Phys · 2018", "p-cite"))
-        + phase_div("e", "")
         + '</div></div>')
     tl = f"""
     (function () {{
@@ -662,22 +724,23 @@ def _(c):
       }}
     }})();
 
-    // PHASE A -- the gloss. This card is change 4 from SCRIPT.md: extremolyte
+    // PHASE A -- the gloss. This card is do-not-cut per SCRIPT.md: extremolyte
     // was the one technical term JAY never translated.
     tl.fromTo('#term', {{ opacity: 0, y: 28 }},
               {{ opacity: 1, y: 0, duration: 0.44, ease: 'power2.out' }}, {t['t016']:.3f});
 
     // CAMERA L2->L3 -- the deepest framing in the piece. Arrives on the
-    // protein just as the exclusion beat lands.
+    // protein just as the celebrity analogy lands (was: as t019 lands).
     tl.fromTo('#world', {{ scale: 1.16, x: -30 }},
               {{ scale: 1.0, x: 0, duration: 1.40, ease: 'power2.inOut' }}, 0);
     tl.to('#world', {{ scale: 1.12, x: 34, duration: 1.60,
-                      ease: 'power2.inOut' }}, {t['t019']:.3f});
+                      ease: 'power2.inOut' }}, {t['t078']:.3f});
     tl.fromTo('#tw', {{ scaleX: 0 }},
               {{ scaleX: 1, duration: 0.52, ease: 'expo.out' }}, {t['t016'] + 0.20:.3f});
 
-    // PHASE B -- the jargon lands, the alarm fires, the ring arrives.
-{alarm_fire('alarm2', t['t017'] + 4.4)}
+    // PHASE B -- the jargon lands (and its hedge, now folded into the SAME
+    // spoken line), the alarm fires, the ring arrives.
+{alarm_fire('alarm2', t['t017'] + 5.0)}
     tl.to('#term', {{ opacity: 0, y: -20, duration: 0.34, ease: 'power2.in' }},
           {t['t017'] + 0.2:.3f});
     tl.fromTo('#ring rect', {{ opacity: 0 }},
@@ -686,41 +749,35 @@ def _(c):
     tl.to('#alarm2', {{ opacity: 0, duration: 0.24, ease: 'power2.in' }},
           {t['t018'] + 0.9:.3f});
 
-    // PHASE C -- security CLOSES RANKS. The ring moves inward toward the
-    // protein: same 18 nodes, new radius. depth-scatter-assemble.
+    // PHASE C -- t078, ONE turn now carrying BOTH beats t019 and t020 used
+    // to carry separately: security CLOSES RANKS on "a celebrity, surrounded
+    // by security", then the hydration shell fills in on the explanation
+    // that follows in the same breath.
     tl.fromTo('#plab', {{ opacity: 0 }},
-              {{ opacity: 1, duration: 0.30, ease: 'none' }}, {t['t019'] + 0.3:.3f});
+              {{ opacity: 1, duration: 0.30, ease: 'none' }}, {t['t078'] + 0.3:.3f});
     tl.fromTo('#p-c', {{ opacity: 0, y: 20 }},
-              {{ opacity: 1, y: 0, duration: 0.36, ease: 'expo.out' }}, {t['t019']:.3f});
+              {{ opacity: 1, y: 0, duration: 0.36, ease: 'expo.out' }}, {t['t078']:.3f});
     tl.to('#p-c', {{ opacity: 0, y: -16, duration: 0.30, ease: 'power2.in' }},
           {t['t021'] - 0.2:.3f});
     tl.to('#ring', {{ scale: 0.72, transformOrigin: '310px 310px',
-                     duration: 0.70, ease: 'back.out(1.4)' }}, {t['t019'] + 0.7:.3f});
+                     duration: 0.70, ease: 'back.out(1.4)' }}, {t['t078'] + 0.7:.3f});
 
-    // t020 -- THE HYDRATION SHELL FILLS IN. This is the one genuine cadence
-    // outlier left in the piece: check-cadence measured 9.12s with no visible
-    // beat across 98.25-107.25s, which is t019 plus the whole of t020 -- and
-    // t020 is the six-second line that explains the actual mechanism ("water
-    // remains organised without clinging directly to the protein").
-    //
-    // Everything already in that window is word-scale and measures as nothing:
-    // the ring closing ranks is 18 squares of 26px, 0.2% of frame, 0.01/step.
-    // The shell is the only element here big enough to carry a beat, and
-    // thickening it IS the line's content rather than decoration over it.
-    //
-    // Sized with scripts/beat_budget.py before authoring, not after a render:
+    // THE HYDRATION SHELL FILLS IN, timed to the back half of t078's own
+    // sentence ("ectoin may help that water stay organised..."). Sized with
+    // scripts/beat_budget.py before authoring, not after a render:
     //   before  r190 sw46  @0.30  -> luma 218, 5.0% of frame
     //   after   r160 sw120 @0.78  -> luma 174, 11.1% of frame
     //   changed area 11.1% at mean delta ~58 over 0.65s = 1.24/step (floor 1.0)
     tl.to('#shell', {{ attr: {{ r: 160, 'stroke-width': 120 }}, opacity: 0.78,
-                      duration: 0.65, ease: 'power2.inOut' }}, {t['t020'] + 0.45:.3f});
-    // Settle back before t021's own shell beat so the two do not fight.
+                      duration: 0.65, ease: 'power2.inOut' }}, {t['t078'] + 3.3:.3f});
+    // Settle back before phase D's own shell beat so the two do not fight.
     tl.to('#shell', {{ attr: {{ r: 190, 'stroke-width': 46 }}, opacity: 0.30,
-                      duration: 0.80, ease: 'power2.inOut' }}, {t['t020'] + 3.6:.3f});
+                      duration: 0.80, ease: 'power2.inOut' }}, {t['t078'] + 6.0:.3f});
 
-    // PHASE D -- THE POINT. The ring pulls BACK to a standoff and the shell
-    // thickens into the gap: ectoin is excluded from the surface and the
-    // ordered water fills the space. Same nodes, third arrangement.
+    // PHASE D -- THE POINT (t021). The ring pulls BACK to a standoff and the
+    // shell thickens into the gap: ectoin is excluded from the surface and
+    // the ordered water fills the space. Same nodes, third arrangement.
+    // Also the unit's LAST beat this revision (phase e is gone).
     tl.to('#ring', {{ scale: 0.94, duration: 0.85, ease: 'power2.inOut' }},
           {t['t021']:.3f});
     tl.to('#shell', {{ attr: {{ 'stroke-width': 78, r: 214 }}, opacity: 0.42,
@@ -736,47 +793,7 @@ def _(c):
               {{ opacity: 1, yPercent: 0, duration: 0.30, ease: 'power3.inOut' }},
               {t['t021'] + 0.5:.3f});
     tl.fromTo('#p-cite', {{ opacity: 0 }},
-              {{ opacity: 1, duration: 0.28, ease: 'none' }}, {t['t022'] + 0.3:.3f});
-
-    // t022 -- "the actual molecular behaviour is more complicated". The tidy
-    // ring DISORDERS: a third of it breaks rank inward and recolours. This is
-    // the line's own content, and it was previously 6.7s of speech over a
-    // still frame.
-    (function () {{
-      for (var i = 0; i < 18; i++) {{
-        if (i % 3 !== 0) continue;
-        var a = i * 20 * Math.PI / 180;
-        tl.to('#r-' + i, {{ attr: {{ x: 310 + Math.cos(a) * 196 - 13,
-                                    y: 310 + Math.sin(a) * 196 - 13 }},
-                           fill: '#E0A32B', duration: 0.80,
-                           ease: 'power2.inOut' }}, {t['t022'] + 0.6:.3f} + i * 0.045);
-      }}
-    }})();
-    tl.to('#shell', {{ opacity: 0.16, duration: 0.80, ease: 'power2.inOut' }},
-          {t['t022'] + 1.2:.3f});
-    // The protein itself inverts -- 3.5% of frame at 225 luma = 1.40/step.
-    // The 18 ring squares recolouring alongside it measure 0.01 and are
-    // detail, not the beat.
-    tl.to('#prot', {{ attr: {{ fill: '#F7F5F0' }}, duration: 0.70,
-                     ease: 'power2.inOut' }}, {t['t022'] + 0.9:.3f});
-    tl.to('#plab', {{ attr: {{ fill: '#131516' }}, duration: 0.70,
-                     ease: 'power2.inOut' }}, {t['t022'] + 0.9:.3f});
-    tl.to('#prot', {{ attr: {{ fill: '#131516' }}, duration: 0.70,
-                     ease: 'power2.inOut' }}, {t['t023'] + 1.6:.3f});
-    tl.to('#plab', {{ attr: {{ fill: '#F7F5F0' }}, duration: 0.70,
-                     ease: 'power2.inOut' }}, {t['t023'] + 1.6:.3f});
-
-    // PHASE E -- t023: the whole actor recomposes on JAY's summary. A rotation
-    // of the ring plus the shell returning is a full-plate change, not a settle.
-    tl.to('#ring', {{ scale: 1.0, rotation: 14, transformOrigin: '310px 310px',
-                     duration: 1.30, ease: 'power2.inOut' }}, {t['t023']:.3f});
-    tl.to('#shell', {{ opacity: 0.30, duration: 1.0, ease: 'sine.inOut' }}, {t['t023']:.3f});
-    // t024 -- "I immediately regret simplifying this": the protein swells and
-    // the ring scatters outward. The last turn had no beat at all before.
-    tl.to('#prot', {{ attr: {{ r: 150 }}, duration: 0.70,
-                     ease: 'back.out(1.6)' }}, {t['t024'] + 0.4:.3f});
-    tl.to('#ring', {{ scale: 1.14, rotation: 0, duration: 0.90,
-                     ease: 'power2.out' }}, {t['t024'] + 0.4:.3f});
+              {{ opacity: 1, duration: 0.28, ease: 'none' }}, {t['t021'] + 0.9:.3f});
 """
     return css, body, tl
 
@@ -872,14 +889,13 @@ def _(c):
           stagger: 0.035, ease: 'sine.inOut' }}, {t['t025'] + 3.4:.3f});
     tl.to('#water circle', {{ attr: {{ r: 14 }}, duration: 1.10, stagger: 0.03,
           ease: 'back.out(1.8)' }}, {t['t025'] + 5.2:.3f});
-    // t026/t027/t028 -- the exchange where SOULHABIT self-translates. The
-    // field settles to a calmer state on the plain-language version.
-    tl.to('#strands path', {{ attr: {{ 'stroke-width': 7 }}, duration: 1.00,
-          stagger: 0.03, ease: 'power2.inOut' }}, {t['t026'] + 0.4:.3f});
+    # t026 -- the plain-language line, alone this revision (t027/t028's
+    # self-translation exchange is cut). The field settles to a calmer state
+    # in one combined beat instead of three spread across a now-gone exchange.
+    tl.to('#strands path', {{ attr: {{ 'stroke-width': 7, stroke: '#4F6B52' }},
+          duration: 1.00, stagger: 0.03, ease: 'power2.inOut' }}, {t['t026'] + 0.3:.3f});
     tl.to('#water circle', {{ attr: {{ r: 11 }}, opacity: 0.9, duration: 0.90,
-          stagger: 0.02, ease: 'power2.inOut' }}, {t['t027'] + 0.2:.3f});
-    tl.to('#strands path', {{ attr: {{ stroke: '#4F6B52' }}, duration: 0.80,
-          stagger: 0.025, ease: 'none' }}, {t['t028'] + 0.1:.3f});
+          stagger: 0.02, ease: 'power2.inOut' }}, {t['t026'] + 0.4:.3f});
     // JAY reaches for the alarm; SOULHABIT self-corrects before it fires. The
     // gag is that it ALMOST goes off -- it appears, then retreats.
     tl.fromTo('#alarm3', {{ opacity: 0, scale: 0.82, x: 40 }},
@@ -1011,8 +1027,7 @@ def _(c):
         '<span id="cl-t">THEY LIKED IT BETTER</span>'
         '<small id="cl-s">That is a real result. It is not a machine measuring '
         'a change in their skin.</small></div>'
-        + say("J", "Preference, not Cinderella.", "pr-j", size="56px")
-        + '</div>')
+        '</div>')
     tl = f"""
     tl.fromTo('#cl', {{ opacity: 0, y: 30 }},
               {{ opacity: 1, y: 0, duration: 0.40, ease: 'power2.out' }}, {t['t035']:.3f});
@@ -1025,8 +1040,6 @@ def _(c):
                      ease: 'back.inOut(1.2)' }}, {t['t036'] + 0.5:.3f});
     tl.to('#cl-s', {{ opacity: 1, duration: 0.40, ease: 'sine.out' }},
           {t['t036'] + 0.7:.3f});
-    tl.fromTo('#pr-j', {{ opacity: 0, x: -30 }},
-              {{ opacity: 1, x: 0, duration: 0.34, ease: 'circ.out' }}, {t['t037']:.3f});
 """
     return css, body, tl
 
@@ -1139,16 +1152,25 @@ def _(c):
 
 @unit("10-notprove")
 def _(c):
-    """Three claims struck at panel scale, then the funding disclosure.
+    """Two claims struck at panel scale, then the funding disclosure -- ONE
+    merged turn this revision (was t043 + t044, two turns).
 
-    bitop AG renders as PLAIN CONTENT, never as a citation pill -- it is an
-    author affiliation being reported, not a source vouching for the claim.
+    Dropped "REVERSES AGEING" as a third struck claim -- ectoin is never
+    claimed to address ageing anywhere in this script, so striking it read
+    as a straw man rather than an honest limitation. Two claims, both things
+    the script's own evidence sections (CH4) actually gestured toward.
+
+    bitop AG and Kao Corporation render as PLAIN CONTENT, never as citation
+    pills -- they are author affiliations being reported (CLAIMS.md C4, C6),
+    not sources vouching for the claim. Both companies now named, not one --
+    CLAIMS.md verification found Kao Corporation on Bow 2021 (C4) in addition
+    to bitop AG on Marini 2013 (C6), stronger than a single-company mention.
     """
     t = {tid: s - c.turns[0][1] for tid, s, _ in c.turns}
     css = BASE_SPEC_CSS + """
     .nwrap { display:grid; grid-template-rows:auto 1fr auto; height:100%;
              gap:var(--s-6); min-height:0; }
-    .claims { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-5);
+    .claims { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s-5);
               min-height:0; }
     .cx { position:relative; background:var(--mist); border-radius:var(--r-3);
           padding:var(--s-6); display:flex; align-items:center;
@@ -1168,39 +1190,29 @@ def _(c):
         '<p class="kicker" id="nk">IT DOES NOT PROVE</p>'
         '<div class="claims">'
         '<div class="cx" id="x1"><div class="void" id="xv1"></div><span>CURES<br>ECZEMA</span></div>'
-        '<div class="cx" id="x2"><div class="void" id="xv2"></div><span>REVERSES<br>AGEING</span></div>'
         '<div class="cx" id="x3"><div class="void" id="xv3"></div><span>REPLACES<br>TREATMENT</span></div>'
         '</div>'
         '<div class="fund" id="fu"><div class="wash dim" id="fw"></div>'
-        '<span id="fu-a">The evidence is limited, and some of it is authored by </span>'
-        '<b>bitop AG</b><span> &mdash; a company that sells the ingredient.</span>'
+        '<span id="fu-a">The evidence is limited, and some of it comes from </span>'
+        '<b>bitop AG</b><span> and </span><b>Kao Corporation</b>'
+        '<span> &mdash; companies that sell the ingredient.</span>'
         '</div></div>')
     tl = f"""
-    // COMPOSED AT t=0 -- same reason as 13-kbeauty. data-start IS the seam, so
-    // this scene's t=0 is the first frame of its own reveal. The kicker plus a
-    // 0.25/0.47/0.69 card stagger against a 0.45s wipe uncovered empty paper:
-    // the midpoint frame measured 1.30% ink, 0.24x the median and the second
-    // thinnest in the piece. A LEFT wipe reveals from the right, so #x3 -- the
-    // card that entered LAST -- is the one uncovered FIRST.
-    //
-    // The stagger is not missed. It was three --mist cards on --paper, a ~5
-    // luma step that carries no beat, and the scene's real beat is the STRIKE
-    // sequence below, which is untouched. Three claims standing and then struck
-    // reads better than three arriving and then struck.
+    // COMPOSED AT t=0 -- same reason as 13-kbeauty. data-start IS the seam.
     tl.set('#nk', {{ opacity: 1 }}, 0);
-    ['x1','x2','x3'].forEach(function (id) {{
+    ['x1','x3'].forEach(function (id) {{
       tl.set('#' + id, {{ opacity: 1, y: 0 }}, 0);
     }});
     // Struck in sequence, each a full card. power3.in makes the strike land
     // rather than drift -- a strike that eases out reads as an appearance.
-    ['xv1','xv2','xv3'].forEach(function (id, i) {{
+    ['xv1','xv3'].forEach(function (id, i) {{
       tl.to('#' + id, {{ opacity: 0.90, duration: 0.20, ease: 'power3.in' }},
-            {t['t043'] + 1.5:.3f} + i * 0.26);
+            {t['t079'] + 1.5:.3f} + i * 0.26);
     }});
     tl.fromTo('#fu', {{ opacity: 0, y: 24 }},
-              {{ opacity: 1, y: 0, duration: 0.36, ease: 'power2.out' }}, {t['t044']:.3f});
+              {{ opacity: 1, y: 0, duration: 0.36, ease: 'power2.out' }}, {t['t079'] + 4.6:.3f});
     tl.fromTo('#fw', {{ scaleX: 0 }},
-              {{ scaleX: 1, duration: 0.60, ease: 'expo.out' }}, {t['t044'] + 0.3:.3f});
+              {{ scaleX: 1, duration: 0.60, ease: 'expo.out' }}, {t['t079'] + 4.9:.3f});
 """
     return css, body, tl
 
@@ -1209,15 +1221,23 @@ def _(c):
 def _(c):
     """Twelve trials. The tiles are the count, and they SORT by what they study.
 
-    Verified 2026-09-02: PubMed `ectoine AND Clinical Trial[pt]` returns 12.
-    Four of the twelve are not skin studies at all (eye spray, nasal spray,
-    throat lozenges, an inhaled formulation), which is why the tiles carry a
-    subject and can separate. The number on screen is the query's count, and
-    the pill carries the year because it is a LIVE number.
+    Re-verified live 2026-09-03/04 (see CLAIMS.md C7): PubMed
+    `ectoine AND Clinical Trial[pt]` still returns 12, unchanged from the
+    2026-09-02 count. Four of the twelve are not skin studies at all (eye
+    spray, nasal spray, throat lozenges, an inhaled formulation), which is
+    why the tiles carry a subject and can separate -- also independently
+    re-verified live and confirmed exact (CLAIMS.md C12). The number on
+    screen is the query's count, and the pill carries the year because it
+    is a LIVE number.
 
-    NOTE t048 ("none of it passed peer review") is retained by operator
-    decision and is FALSE. It gets no on-screen treatment at all -- no text,
-    no pill, no card. See BRIEF.md.
+    VERDICT-COMPRESSION REVISION: t045 ("How limited?", a bridging question
+    t046 doesn't need) and t048 ("None of it passed peer review" -- FALSE,
+    contradicted C5/C6, retained by the prior revision's operator decision
+    which this brief's non-negotiable #3 reverses) are both REMOVED, not
+    just unreinforced. See CLAIMS.md §Removed and SCRIPT.md. This unit's
+    own timeline never referenced either turn id, so no code change was
+    needed here beyond this note -- it was already correctly independent
+    of both.
     """
     t = {tid: s - c.turns[0][1] for tid, s, _ in c.turns}
     css = BASE_SPEC_CSS + """
@@ -1348,8 +1368,7 @@ def _(c):
         + phase_div("a", '<div class="states">'
                     '<span class="st" id="st1">DRY</span>'
                     '<span class="st" id="st2">SENSITIVE</span>'
-                    '<span class="st" id="st3">OVER-CLEANSED</span>'
-                    '<span class="st" id="st4">IRRITATED</span></div>'
+                    '<span class="st" id="st3">IRRITATED</span></div>'
                     '<div class="pairs">'
                     '<span class="pr" id="pr1">PANTHENOL</span>'
                     '<span class="pr" id="pr2">GLYCERIN</span>'
@@ -1360,30 +1379,33 @@ def _(c):
         + '</div></div>')
     tl = f"""
     // PHASE A -- the front label already sits shrunk (#pc rest state); this
-    // bottle is the SAME one from the open, turned around. Who it's for.
+    // bottle is the SAME one from the open, turned around. Who it's for --
+    // ONE merged turn this revision (t080, was t049 + t050, two turns).
     tl.fromTo('#btl', {{ opacity: 0, y: 30 }},
-              {{ opacity: 1, y: 0, duration: 0.42, ease: 'power2.out' }}, {t['t049']:.3f});
-    // t049 -- the four states arrive across the line, not all at its start.
-    ['st1','st2','st3','st4'].forEach(function (id, i) {{
+              {{ opacity: 1, y: 0, duration: 0.42, ease: 'power2.out' }}, {t['t080']:.3f});
+    // First clause ("dry, sensitive or irritated skin") -- three states, not
+    // four: the merged line drops "over-cleansed" for length, so the visual
+    // now matches exactly what is said, not a fourth unstated state.
+    ['st1','st2','st3'].forEach(function (id, i) {{
       tl.fromTo('#' + id, {{ opacity: 0, y: 26 }},
                 {{ opacity: 1, y: 0, duration: 0.34, ease: 'back.out(1.6)' }},
-                {t['t049'] + 1.4:.3f} + i * 1.30);
+                {t['t080'] + 0.4:.3f} + i * 0.85);
     }});
-    // t050 -- the pairings.
+    // Second clause ("pairs with panthenol, glycerin, squalane and
+    // ceramides") -- the pairings, timed to the back half of the same turn.
     ['pr1','pr2','pr3','pr4'].forEach(function (id, i) {{
       tl.fromTo('#' + id, {{ opacity: 0, scale: 0.8 }},
                 {{ opacity: 1, scale: 1, duration: 0.30, ease: 'back.out(2.2)' }},
-                {t['t050'] + 0.5:.3f} + i * 1.15);
+                {t['t080'] + 3.6:.3f} + i * 0.75);
     }});
     // One panel-scale beat across phase a. The chips above are detail
-    // (0.04/step); this is the beat -- was two cycles when phase a/b ran
-    // into the turn; the second cycle ("TURN IT AROUND") retired with b/c.
-    tl.set('#bpl-t', {{ textContent: 'DRY. SENSITIVE. OVER-CLEANSED.' }}, 0);
-    tl.to('#bpl-f', {{ scaleX: 1, duration: 0.60, ease: 'expo.out' }}, {t['t049'] + 4.4:.3f});
-    tl.to('#bpl-t', {{ opacity: 1, duration: 0.30, ease: 'none' }}, {t['t049'] + 4.7:.3f});
+    // (0.04/step); this is the beat.
+    tl.set('#bpl-t', {{ textContent: 'DRY. SENSITIVE. IRRITATED.' }}, 0);
+    tl.to('#bpl-f', {{ scaleX: 1, duration: 0.60, ease: 'expo.out' }}, {t['t080'] + 1.3:.3f});
+    tl.to('#bpl-t', {{ opacity: 1, duration: 0.30, ease: 'none' }}, {t['t080'] + 1.6:.3f});
     tl.to('#bpl-f', {{ scaleX: 0, transformOrigin: '100% 50%', duration: 0.50,
-                      ease: 'power2.in' }}, {t['t050'] + 3.4:.3f});
-    tl.to('#bpl-t', {{ opacity: 0, duration: 0.25, ease: 'none' }}, {t['t050'] + 3.3:.3f});
+                      ease: 'power2.in' }}, {t['t080'] + 6.3:.3f});
+    tl.to('#bpl-t', {{ opacity: 0, duration: 0.25, ease: 'none' }}, {t['t080'] + 6.2:.3f});
     // Collapse the whole panel, not just its fill/text -- an empty
     // min-height:150px box left sitting in the layout for the rest of the
     // unit (through the entire INCI reveal) measured as a real
@@ -1392,17 +1414,14 @@ def _(c):
     // (panel_out_of_canvas #bpl at t=215.34s). Transform-only, same reason
     // as 01-bottle's #op above.
     tl.to('#bpl', {{ opacity: 0, scaleY: 0, transformOrigin: '0% 0%',
-                    duration: 0.30, ease: 'power2.in' }}, {t['t050'] + 3.6:.3f});
-    // Clear the states/pairs before phase D -- this used to happen on t051's
-    // own beat (the turn, now retired). Without it they stayed on screen
-    // through the INCI reveal and measured as real overlapping/overflowing
-    // content (check: panel_out_of_canvas on #pr2/#pr4/#bpl at t=215.34s,
-    // 16s into this unit -- long after both chip rows had appeared and
-    // never left).
-    tl.to(['#st1','#st2','#st3','#st4'], {{ opacity: 0, y: -18, duration: 0.40,
-          stagger: 0.06, ease: 'power2.in' }}, {t['t050'] + 4.6:.3f});
+                    duration: 0.30, ease: 'power2.in' }}, {t['t080'] + 6.5:.3f});
+    // Clear the states/pairs before phase D so they do not overlap the INCI
+    // reveal (check: panel_out_of_canvas, the same defect class the prior
+    // revision fixed for t051's retirement).
+    tl.to(['#st1','#st2','#st3'], {{ opacity: 0, y: -18, duration: 0.40,
+          stagger: 0.06, ease: 'power2.in' }}, {t['t080'] + 7.0:.3f});
     tl.to(['#pr1','#pr2','#pr3','#pr4'], {{ opacity: 0, y: -18, duration: 0.40,
-          stagger: 0.06, ease: 'power2.in' }}, {t['t050'] + 5.0:.3f});
+          stagger: 0.06, ease: 'power2.in' }}, {t['t080'] + 7.3:.3f});
 
     // PHASE D -- the list, then the CAMERA flies to the real position. The
     // world scales and translates; the list itself does not move, which is
@@ -1442,7 +1461,15 @@ def _(c):
 
 @unit("13-kbeauty")
 def _(c):
-    """K-beauty didn't invent it. A scale-swap: one claim corrected in place."""
+    """K-beauty didn't invent it. A scale-swap: one claim corrected in place.
+
+    VERDICT-COMPRESSION REVISION: t058 + t059 merge into ONE turn, t082
+    (was two); t061 ("Aggressively simplified, but acceptable.") is cut --
+    the joke already lands on t060, and a bare acknowledgement after it read
+    as an extra beat rather than a payoff. The final re-balance tween that
+    used to key off t061 is dropped with it, not retimed elsewhere -- t060's
+    own line + kpl panel already closes the unit.
+    """
     t = {tid: s - c.turns[0][1] for tid, s, _ in c.turns}
     css = BASE_SPEC_CSS + """
     .kcol { display:flex; flex-direction:column; justify-content:center;
@@ -1496,31 +1523,30 @@ def _(c):
     // clip on the half that is revealed last.
     tl.fromTo('#world', {{ scale: 1.14, y: -16 }},
               {{ scale: 1.0, y: 0, duration: 1.90, ease: 'power2.inOut' }}, 0);
-    tl.to('#kv1', {{ opacity: 0.88, duration: 0.22, ease: 'power3.in' }}, {t['t058'] + 1.3:.3f});
+    // ONE merged turn, t082 (was t058 + t059), carrying both beats that
+    // used to be split across two turns: the strike/wash on the claim
+    // itself, then the format chips on the clause that follows in the
+    // same breath.
+    tl.to('#kv1', {{ opacity: 0.88, duration: 0.22, ease: 'power3.in' }}, {t['t082'] + 1.0:.3f});
     tl.fromTo('#kw2', {{ scaleX: 0 }},
-              {{ scaleX: 1, duration: 0.46, ease: 'expo.out' }}, {t['t058'] + 1.5:.3f});
+              {{ scaleX: 1, duration: 0.46, ease: 'expo.out' }}, {t['t082'] + 1.2:.3f});
     // The corrected side grows as the struck side recedes -- one comparison
     // resolving, not two cards appearing.
     tl.to('#k1', {{ scale: 0.90, opacity: 0.5, duration: 0.55, ease: 'power2.inOut' }},
-          {t['t059']:.3f});
-    tl.to('#k2', {{ scale: 1.06, duration: 0.55, ease: 'power2.inOut' }}, {t['t059']:.3f});
+          {t['t082'] + 2.2:.3f});
+    tl.to('#k2', {{ scale: 1.06, duration: 0.55, ease: 'power2.inOut' }}, {t['t082'] + 2.2:.3f});
     tl.fromTo('#kb-j', {{ opacity: 0, y: 18 }},
               {{ opacity: 1, y: 0, duration: 0.32, ease: 'circ.out' }}, {t['t060']:.3f});
     tl.set('#kpl-t', {{ textContent: 'BACTERIA BUILT IT. KOREA PACKAGED IT.' }}, 0);
     tl.to('#kpl-f', {{ scaleX: 1, duration: 0.60, ease: 'expo.out' }}, {t['t060'] + 1.6:.3f});
     tl.to('#kpl-t', {{ opacity: 1, duration: 0.30, ease: 'none' }}, {t['t060'] + 1.9:.3f});
-    // t059 lists the product formats Korean formulators actually use -- three
-    // chips arriving on the clause, then the pair re-balancing on t061. Both
-    // are panel-scale and both sit in what was otherwise a 20s hold.
+    // The product formats Korean formulators actually use -- three chips
+    // arriving on the clause that closes t082 ("...in light textures").
     ['f1','f2','f3'].forEach(function (id, i) {{
       tl.fromTo('#' + id, {{ opacity: 0, y: 26 }},
                 {{ opacity: 1, y: 0, duration: 0.34, ease: 'back.out(1.6)' }},
-                {t['t059'] + 1.2:.3f} + i * 0.85);
+                {t['t082'] + 5.0:.3f} + i * 0.75);
     }});
-    tl.to('#k1', {{ opacity: 0.34, duration: 0.70, ease: 'sine.inOut' }},
-          {t['t061']:.3f});
-    tl.to('#k2', {{ scale: 1.10, duration: 0.70, ease: 'sine.inOut' }},
-          {t['t061']:.3f});
 """
     return css, body, tl
 
@@ -1632,7 +1658,16 @@ def _(c):
 
 @unit("17-dignity")
 def _(c):
-    """The button. Four turns, ink ground, calm -- the piece has landed."""
+    """The button. ONE merged JAY turn this revision (was four -- t066/t067/
+    t068/t069), ink ground, calm -- the piece has landed.
+
+    VERDICT-COMPRESSION REVISION: SOULHABIT's "Would you?" bounce-back
+    (t067) and the closing "Fair enough" (t069) are cut; the joke and its
+    rhythm survive as one continuous JAY turn (t081) instead of a four-turn
+    volley. The question and the answer still land as two visual beats --
+    staggered within the SAME audio clip, not two separate turns -- so the
+    comic timing (ask, then answer your own question) still reads.
+    """
     t = {tid: s - c.turns[0][1] for tid, s, _ in c.turns}
     css = BASE_SPEC_CSS + """
     .dcol { display:flex; flex-direction:column; justify-content:center;
@@ -1640,19 +1675,15 @@ def _(c):
     """
     body = stage(
         '<div class="dcol">'
-        + say("J", "Would I put a bacteria-made survival molecule on my face?", "d1", ink=True, size="62px")
-        + say("S", "Would you?", "d2", ink=True, size="54px")
-        + say("J", "I have already purchased snail mucus.<br>The dignity ship sailed years ago.", "d3", ink=True, size="62px")
+        + say("J", "And would I put a bacteria-made survival molecule on my face?", "d1", ink=True, size="62px")
+        + say("J", "I already bought snail mucus.<br>The dignity ship sailed years ago.", "d3", ink=True, size="62px")
         + '</div>', ground="ink")
     tl = f"""
     tl.fromTo('#d1', {{ opacity: 0, y: 22 }},
-              {{ opacity: 1, y: 0, duration: 0.38, ease: 'sine.out' }}, {t['t066']:.3f});
-    tl.fromTo('#d2', {{ opacity: 0, y: 22 }},
-              {{ opacity: 1, y: 0, duration: 0.34, ease: 'sine.out' }}, {t['t067']:.3f});
-    tl.to('#d1', {{ opacity: 0.32, duration: 0.40, ease: 'sine.inOut' }}, {t['t067']:.3f});
+              {{ opacity: 1, y: 0, duration: 0.38, ease: 'sine.out' }}, {t['t081']:.3f});
+    tl.to('#d1', {{ opacity: 0.32, duration: 0.40, ease: 'sine.inOut' }}, {t['t081'] + 4.5:.3f});
     tl.fromTo('#d3', {{ opacity: 0, y: 26 }},
-              {{ opacity: 1, y: 0, duration: 0.42, ease: 'power3.out' }}, {t['t068']:.3f});
-    tl.to('#d2', {{ opacity: 0.32, duration: 0.40, ease: 'sine.inOut' }}, {t['t068']:.3f});
+              {{ opacity: 1, y: 0, duration: 0.42, ease: 'power3.out' }}, {t['t081'] + 4.5:.3f});
 """
     return css, body, tl
 

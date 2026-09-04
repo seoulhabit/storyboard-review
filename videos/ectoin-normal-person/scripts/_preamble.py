@@ -6,8 +6,14 @@ this render pipeline (measured empty on a compiled render), so the values are
 copied with that file as the single source of truth. Grep for a distinguishing
 value (e.g. --safe-bottom: 108px) to check a scene is in sync with it.
 """
+import re
 
-GSAP = '<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>'
+# VERDICT-COMPRESSION REVISION: vendored locally, not loaded from a CDN.
+# assets/vendor/gsap-3.14.2.min.js is a one-time fetch of the exact same
+# pinned version every scene file already used, frozen the same way fonts
+# under assets/fonts/ are -- project-relative, no live network dependency at
+# render time. Path convention matches FONTS below (root-relative, no "../..").
+GSAP = '<script src="assets/vendor/gsap-3.14.2.min.js"></script>'
 
 # Fonts are self-hosted woff2 under assets/fonts/. Paths are ROOT-RELATIVE:
 # sub-compositions are served with the PROJECT ROOT as their base URL, not the
@@ -115,8 +121,13 @@ BASE = """
     .panel { position:relative; background:var(--mist); border-radius:var(--r-3);
              padding:var(--s-6); min-height:0; overflow:hidden; }
     .panel.on-ink { background:var(--ink-soft); }
-    /* A full-panel colour wash. scaleX from the left = a large area changing. */
-    .wash { position:absolute; inset:0; transform:scaleX(0); transform-origin:0% 50%;
+    /* A full-panel colour wash. scaleX from the left = a large area changing.
+       No CSS transform initializer here -- non-negotiable #11. Every .wash
+       reveal is driven by tl.fromTo(el, {{scaleX:0}}, {{scaleX:1,...}}), so
+       GSAP already declares its own start state; a CSS one would just be a
+       second, driftable copy of the same value. transform-origin stays --
+       GSAP's fromTo does not set it, so CSS is the only declared source. */
+    .wash { position:absolute; inset:0; transform-origin:0% 50%;
             border-radius:inherit; z-index:0; }
     /* Every following sibling of a wash sits ABOVE it. The earlier rule was
        scoped to .panel children only, so .arm/.stt/.action labels rendered
@@ -222,6 +233,49 @@ BASE = """
 """
 
 
+def _prefix_ids(cid, body, css, timeline):
+    """Prefix every DOM id assembled for this composition with the
+    composition id -- non-negotiable #10 of the rebuild brief.
+
+    WHY THIS EXISTS AS A CENTRAL PASS, not a per-unit convention: 01-bottle
+    already needed a hand-applied `ob-` prefix because two units render into
+    the same document at once during a wipe, and a bare `#pc` / `#in-10`
+    there collided with 12-bottle's own ids -- caught by `check` as
+    `motion_selector_ambiguous`, an ERROR, not a warning. Doing this once,
+    centrally, at emit time removes the whole class of bug instead of
+    requiring the next unit author to remember it.
+
+    Discovers every id from the STATIC `id="X"` markup already assembled
+    into body/css/timeline (by this point build_frames.py has already
+    appended its own band-beat and ambient-drift tweens, so those are
+    covered too), then rewrites every reference to each one: the HTML
+    attribute, any '#X'/"#X" selector (CSS rule or JS string, either quote
+    style), and any getElementById('X')/("X") call. #root is exempt -- the
+    render engine mounts against it by a fixed contract; it is never
+    scene-owned and must not be touched.
+
+    NOT covered: ids assigned dynamically at runtime via `el.id = 'x-' + i`
+    (the ring/strand per-node ids in 04-protein/05-skin). None of those are
+    ever selected individually by id -- only as '#ring rect' / '#strands
+    path' compound selectors targeting the STATIC parent id, which IS
+    covered -- so there is no collision risk left uncovered, only ids that
+    were never collision-prone to begin with.
+    """
+    combined = body + css + timeline
+    ids = sorted(set(re.findall(r'id="([^"]+)"', combined)) - {"root"})
+
+    def sub(part):
+        for old in ids:
+            new = f"c{cid}-{old}"
+            part = part.replace(f'id="{old}"', f'id="{new}"')
+            part = re.sub(rf'#{re.escape(old)}(?![A-Za-z0-9_-])', f'#{new}', part)
+            part = part.replace(f"getElementById('{old}')", f"getElementById('{new}')")
+            part = part.replace(f'getElementById("{old}")', f'getElementById("{new}")')
+        return part
+
+    return sub(body), sub(css), sub(timeline)
+
+
 def scene(cid, duration, body, css, timeline):
     """Emit one sub-composition file.
 
@@ -242,6 +296,7 @@ def scene(cid, duration, body, css, timeline):
     cloning. Adding one is what makes the file look right when opened standalone
     and wrong when rendered.
     """
+    body, css, timeline = _prefix_ids(cid, body, css, timeline)
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><title>{cid}</title></head>

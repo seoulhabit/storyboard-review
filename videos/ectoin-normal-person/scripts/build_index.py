@@ -157,7 +157,7 @@ def main():
     .scene.clip {{ position:absolute; inset:0; }}
   </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap-3.14.2.min.js"></script>
   <script>
     // The root timeline's only job is scene handoff. A plain crossfade stays
     // banned -- grounds alternate ink/paper and blending two gives a muddy

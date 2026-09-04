@@ -98,8 +98,13 @@
     .panel { position:relative; background:var(--mist); border-radius:var(--r-3);
              padding:var(--s-6); min-height:0; overflow:hidden; }
     .panel.on-ink { background:var(--ink-soft); }
-    /* A full-panel colour wash. scaleX from the left = a large area changing. */
-    .wash { position:absolute; inset:0; transform:scaleX(0); transform-origin:0% 50%;
+    /* A full-panel colour wash. scaleX from the left = a large area changing.
+       No CSS transform initializer here -- non-negotiable #11. Every .wash
+       reveal is driven by tl.fromTo(el, {{scaleX:0}}, {{scaleX:1,...}}), so
+       GSAP already declares its own start state; a CSS one would just be a
+       second, driftable copy of the same value. transform-origin stays --
+       GSAP's fromTo does not set it, so CSS is the only declared source. */
+    .wash { position:absolute; inset:0; transform-origin:0% 50%;
             border-radius:inherit; z-index:0; }
     /* Every following sibling of a wash sits ABOVE it. The earlier rule was
        scoped to .panel children only, so .arm/.stt/.action labels rendered
@@ -220,8 +225,13 @@
        cadence metric, not by eye: 11.3% of frame at 215 luma = 5.5/step. */
     .band { position:absolute; left:0; right:0; bottom:0; height:136px;
             border-radius:var(--r-3); overflow:hidden; opacity:0; z-index:3; }
-    .band-f { position:absolute; inset:0; background:var(--ink);
-              transform:scaleX(0); transform-origin:0% 50%; }
+    /* No CSS transform initializer -- non-negotiable #11. build_frames.py's
+       band_beat() always drives this via tl.fromTo(el, {{scaleX:0,
+       transformOrigin:...}}, {{scaleX:1,...}}), so GSAP already declares
+       its own start state (and its own transform-origin, which varies per
+       band variant -- a CSS-fixed one here would be the wrong value for
+       half the rotation anyway). */
+    .band-f { position:absolute; inset:0; background:var(--ink); }
     .band.alt .band-f { background:var(--moss); }
     /* On an ink ground the fill must go the OTHER way. ink-on-ink is a 0-luma
        step: measured, the two ink-ground bands moved their scene's quiet run
@@ -254,26 +264,26 @@
                    font-size:130px; line-height:1; color:var(--paper); }
     
     </style>
-<div class="ground" style="background:var(--ink)"><div class="stage"><div class="clipbox"><div class="world" id="world"><div class="drift" id="drift"><div class="qa"><div class="card" id="q1"><div class="wash moss" id="w1"></div><q>Promising?</q><strong>Yes.</strong></div><div class="card" id="q2"><div class="void" id="v2"></div><q>Miracle?</q><strong>No.</strong></div></div><div class="band on-ink" id="band"><div class="band-f" id="band-f"></div><span class="band-t" id="band-t"></span></div></div></div></div></div></div>
+<div class="ground" style="background:var(--ink)"><div class="stage"><div class="clipbox"><div class="world" id="c09-miracle-world"><div class="drift" id="c09-miracle-drift"><div class="qa"><div class="card" id="c09-miracle-q1"><div class="wash moss" id="c09-miracle-w1"></div><q>Promising?</q><strong>Yes.</strong></div><div class="card" id="c09-miracle-q2"><div class="void" id="c09-miracle-v2"></div><q>Miracle?</q><strong>No.</strong></div></div><div class="band on-ink" id="c09-miracle-band"><div class="band-f" id="c09-miracle-band-f"></div><span class="band-t" id="c09-miracle-band-t"></span></div></div></div></div></div></div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap-3.14.2.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true });
 
-    tl.fromTo('#q1', { opacity: 0, scale: 1.06 },
+    tl.fromTo('#c09-miracle-q1', { opacity: 0, scale: 1.06 },
               { opacity: 1, scale: 1, duration: 0.30, ease: 'power4.out' }, 0.000);
     // YES gets a moss wash -- paper on moss is 5.42:1, one of the two safe
     // pairings. Full card, so it clears the area floor.
-    tl.fromTo('#w1', { scaleX: 0 },
+    tl.fromTo('#c09-miracle-w1', { scaleX: 0 },
               { scaleX: 1, duration: 0.44, ease: 'expo.out' }, 2.003);
-    tl.fromTo('#q2', { opacity: 0, scale: 1.06 },
+    tl.fromTo('#c09-miracle-q2', { opacity: 0, scale: 1.06 },
               { opacity: 1, scale: 1, duration: 0.30, ease: 'power4.out' }, 2.875);
     // NO gets a coral void -- the strike, not a wash. Opposite treatment for
     // the opposite answer.
-    tl.to('#v2', { opacity: 0.92, duration: 0.22, ease: 'power3.in' }, 4.872);
+    tl.to('#c09-miracle-v2', { opacity: 0.92, duration: 0.22, ease: 'power3.in' }, 4.872);
 
-    tl.fromTo('#drift', { scale: 1, y: 0 },
+    tl.fromTo('#c09-miracle-drift', { scale: 1, y: 0 },
               { scale: 1.018, y: -7, duration: 5.697,
                  ease: 'sine.inOut' }, 0);
 

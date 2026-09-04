@@ -49,6 +49,7 @@ from timing import walk
 COPY = [
     ("01-bottle",    "a", "#ob-pc",        "eleven percent, extreme close-up, composed at t=0"),
     ("01-bottle",    "b", "#ob-inci",      "it's a blend -- the INCI list reveal"),
+    ("01-bottle",    "c", "#ob-vd-t",      "THE VERDICT -- must appear inside the first 20s"),
     ("02-origin",    "a", "#nm",           "Halomonas elongata, extremely salty water"),
     ("02-origin",    "b", "#raisin",       "the raisin"),
     ("02-origin",    "c", "#sw2-b",       "marketing borrowed the drama"),

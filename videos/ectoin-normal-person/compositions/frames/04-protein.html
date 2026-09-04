@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="04-protein"
-       data-width="1920" data-height="1080" data-duration="53.212">
+       data-width="1920" data-height="1080" data-duration="35.527">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,8 +98,13 @@
     .panel { position:relative; background:var(--mist); border-radius:var(--r-3);
              padding:var(--s-6); min-height:0; overflow:hidden; }
     .panel.on-ink { background:var(--ink-soft); }
-    /* A full-panel colour wash. scaleX from the left = a large area changing. */
-    .wash { position:absolute; inset:0; transform:scaleX(0); transform-origin:0% 50%;
+    /* A full-panel colour wash. scaleX from the left = a large area changing.
+       No CSS transform initializer here -- non-negotiable #11. Every .wash
+       reveal is driven by tl.fromTo(el, {{scaleX:0}}, {{scaleX:1,...}}), so
+       GSAP already declares its own start state; a CSS one would just be a
+       second, driftable copy of the same value. transform-origin stays --
+       GSAP's fromTo does not set it, so CSS is the only declared source. */
+    .wash { position:absolute; inset:0; transform-origin:0% 50%;
             border-radius:inherit; z-index:0; }
     /* Every following sibling of a wash sits ABOVE it. The earlier rule was
        scoped to .panel children only, so .arm/.stt/.action labels rendered
@@ -220,8 +225,13 @@
        cadence metric, not by eye: 11.3% of frame at 215 luma = 5.5/step. */
     .band { position:absolute; left:0; right:0; bottom:0; height:136px;
             border-radius:var(--r-3); overflow:hidden; opacity:0; z-index:3; }
-    .band-f { position:absolute; inset:0; background:var(--ink);
-              transform:scaleX(0); transform-origin:0% 50%; }
+    /* No CSS transform initializer -- non-negotiable #11. build_frames.py's
+       band_beat() always drives this via tl.fromTo(el, {{scaleX:0,
+       transformOrigin:...}}, {{scaleX:1,...}}), so GSAP already declares
+       its own start state (and its own transform-origin, which varies per
+       band variant -- a CSS-fixed one here would be the wrong value for
+       half the rotation anyway). */
+    .band-f { position:absolute; inset:0; background:var(--ink); }
     .band.alt .band-f { background:var(--moss); }
     /* On an ink ground the fill must go the OTHER way. ink-on-ink is a 0-luma
        step: measured, the two ink-ground bands moved their scene's quiet run
@@ -241,10 +251,15 @@
                font-family:var(--font-body); font-weight:800; font-size:44px;
                color:var(--paper); opacity:0; }
 
+    /* No CSS transform initializer -- non-negotiable #11. Every alarm
+       instance is driven by a fromTo() that declares its own start scale
+       (alarm_fire()'s 0.82 for the fire beats, 0.9 for 12-bottle's retire
+       beat -- CSS's single fixed 0.82 was already wrong for that one, which
+       is itself evidence this value was dead weight, not load-bearing). */
     .alarm { position:absolute; top:var(--s-6); left:var(--s-6); z-index:4;
              display:flex; align-items:center; gap:var(--s-3);
              padding:14px 28px; border-radius:var(--r-pill);
-             background:var(--highlighter); opacity:0; transform:scale(.82);
+             background:var(--highlighter); opacity:0;
              transform-origin:100% 0%; }
     .alarm b { font-family:var(--font-mono); font-weight:500;
                font-size:var(--t-chip); letter-spacing:var(--tr-mono-wide);
@@ -273,20 +288,20 @@
     .swap { position:relative; font-family:var(--font-mono);
             font-size:var(--t-label); letter-spacing:var(--tr-mono-wide);
             text-transform:uppercase; }
-    #sw-a { color:var(--ink-2); }
-    #sw-b { color:var(--ink); position:absolute; inset:0; opacity:0; }
+    #c04-protein-sw-a { color:var(--ink-2); }
+    #c04-protein-sw-b { color:var(--ink); position:absolute; inset:0; opacity:0; }
     
     </style>
-<div class="ground" style="background:var(--paper)"><div class="stage"><div class="clipbox"><div class="world" id="world"><div class="drift" id="drift"><div class="alarm" id="alarm2"><i></i><b>JARGON ALARM</b></div><div class="pwrap"><div class="pbox"><svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true"><circle id="shell" cx="310" cy="310" r="190" fill="none" stroke="#59B8AE" stroke-width="46" opacity="0.30"/><circle id="prot" cx="310" cy="310" r="112" fill="#131516"/><g id="ring"></g><text id="plab" x="310" y="322" text-anchor="middle" fill="#F7F5F0" font-family="Inter, sans-serif" font-weight="800" font-size="34" opacity="0">PROTEIN</text></svg></div><div class="talk2"><div class="phase" data-phase="a"><div class="term" id="term"><div class="wash aqua" id="tw"></div><h4>EXTREMOLYTE</h4><em>noun</em><p>A molecule that keeps a cell stable in conditions that should destroy it.</p></div></div><div class="phase" data-phase="b"><div class="swap"><span id="sw-a">PREFERENTIAL EXCLUSION</span><span id="sw-b">GIVE THE PROTEIN SPACE</span></div></div><div class="phase" data-phase="c"><div class="line" id="p-c"><i class="who who-s"></i><p class="say say-s" style="font-size:46px">A celebrity, surrounded<br>by security.</p></div></div><div class="phase" data-phase="d"><div class="line" id="p-d"><i class="who who-j"></i><p class="say say-j" style="font-size:42px">So ectoin gives proteins<br>personal space.</p></div><p class="cite" id="p-cite">Phys Chem Chem Phys · 2018</p></div><div class="phase" data-phase="e"></div></div></div><div class="band" id="band"><div class="band-f" id="band-f"></div><span class="band-t" id="band-t"></span></div></div></div></div></div></div>
+<div class="ground" style="background:var(--paper)"><div class="stage"><div class="clipbox"><div class="world" id="c04-protein-world"><div class="drift" id="c04-protein-drift"><div class="alarm" id="c04-protein-alarm2"><i></i><b>JARGON ALARM</b></div><div class="pwrap"><div class="pbox"><svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true"><circle id="c04-protein-shell" cx="310" cy="310" r="190" fill="none" stroke="#59B8AE" stroke-width="46" opacity="0.30"/><circle id="c04-protein-prot" cx="310" cy="310" r="112" fill="#131516"/><g id="c04-protein-ring"></g><text id="c04-protein-plab" x="310" y="322" text-anchor="middle" fill="#F7F5F0" font-family="Inter, sans-serif" font-weight="800" font-size="34" opacity="0">PROTEIN</text></svg></div><div class="talk2"><div class="phase" data-phase="a"><div class="term" id="c04-protein-term"><div class="wash aqua" id="c04-protein-tw"></div><h4>EXTREMOLYTE</h4><em>noun</em><p>A molecule that keeps a cell stable in conditions that should destroy it.</p></div></div><div class="phase" data-phase="b"><div class="swap"><span id="c04-protein-sw-a">PREFERENTIAL EXCLUSION</span><span id="c04-protein-sw-b">GIVE THE PROTEIN SPACE</span></div></div><div class="phase" data-phase="c"><div class="line" id="c04-protein-p-c"><i class="who who-s"></i><p class="say say-s" style="font-size:46px">A celebrity, surrounded<br>by security.</p></div></div><div class="phase" data-phase="d"><div class="line" id="c04-protein-p-d"><i class="who who-j"></i><p class="say say-j" style="font-size:42px">So ectoin gives proteins<br>personal space.</p></div><p class="cite" id="c04-protein-p-cite">Phys Chem Chem Phys · 2018</p></div></div></div><div class="band" id="c04-protein-band"><div class="band-f" id="c04-protein-band-f"></div><span class="band-t" id="c04-protein-band-t"></span></div></div></div></div></div></div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap-3.14.2.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true });
 
     (function () {
       // ONE ring, built once. Every later phase MOVES these same nodes.
-      var g = document.getElementById('ring');
+      var g = document.getElementById('c04-protein-ring');
       for (var i = 0; i < 18; i++) {
         var a = i * 20 * Math.PI / 180;
         var x = 310 + Math.cos(a) * 268, y = 310 + Math.sin(a) * 268;
@@ -299,168 +314,123 @@
       }
     })();
 
-    // PHASE A -- the gloss. This card is change 4 from SCRIPT.md: extremolyte
+    // PHASE A -- the gloss. This card is do-not-cut per SCRIPT.md: extremolyte
     // was the one technical term JAY never translated.
-    tl.fromTo('#term', { opacity: 0, y: 28 },
+    tl.fromTo('#c04-protein-term', { opacity: 0, y: 28 },
               { opacity: 1, y: 0, duration: 0.44, ease: 'power2.out' }, 0.100);
 
     // CAMERA L2->L3 -- the deepest framing in the piece. Arrives on the
-    // protein just as the exclusion beat lands.
-    tl.fromTo('#world', { scale: 1.16, x: -30 },
+    // protein just as the celebrity analogy lands (was: as t019 lands).
+    tl.fromTo('#c04-protein-world', { scale: 1.16, x: -30 },
               { scale: 1.0, x: 0, duration: 1.40, ease: 'power2.inOut' }, 0);
-    tl.to('#world', { scale: 1.12, x: 34, duration: 1.60,
-                      ease: 'power2.inOut' }, 20.060);
-    tl.fromTo('#tw', { scaleX: 0 },
+    tl.to('#c04-protein-world', { scale: 1.12, x: 34, duration: 1.60,
+                      ease: 'power2.inOut' }, 21.427);
+    tl.fromTo('#c04-protein-tw', { scaleX: 0 },
               { scaleX: 1, duration: 0.52, ease: 'expo.out' }, 0.300);
 
-    // PHASE B -- the jargon lands, the alarm fires, the ring arrives.
-    tl.fromTo('#alarm2', { opacity: 0, scale: 0.82 },
+    // PHASE B -- the jargon lands (and its hedge, now folded into the SAME
+    // spoken line), the alarm fires, the ring arrives.
+    tl.fromTo('#c04-protein-alarm2', { opacity: 0, scale: 0.82 },
               { opacity: 1, scale: 1, duration: 0.20,
-                 ease: 'back.out(3)' }, 10.856);
-    tl.to('#alarm2', { scale: 1.07, duration: 0.16, yoyo: true,
-                      repeat: 3, ease: 'power1.inOut' }, 11.076);
+                 ease: 'back.out(3)' }, 11.456);
+    tl.to('#c04-protein-alarm2', { scale: 1.07, duration: 0.16, yoyo: true,
+                      repeat: 3, ease: 'power1.inOut' }, 11.676);
 
-    tl.to('#term', { opacity: 0, y: -20, duration: 0.34, ease: 'power2.in' },
+    tl.to('#c04-protein-term', { opacity: 0, y: -20, duration: 0.34, ease: 'power2.in' },
           6.656);
-    tl.fromTo('#ring rect', { opacity: 0 },
+    tl.fromTo('#c04-protein-ring rect', { opacity: 0 },
               { opacity: 1, duration: 0.30, stagger: 0.035, ease: 'none' },
               7.056);
-    tl.to('#alarm2', { opacity: 0, duration: 0.24, ease: 'power2.in' },
-          16.415);
+    tl.to('#c04-protein-alarm2', { opacity: 0, duration: 0.24, ease: 'power2.in' },
+          17.782);
 
-    // PHASE C -- security CLOSES RANKS. The ring moves inward toward the
-    // protein: same 18 nodes, new radius. depth-scatter-assemble.
-    tl.fromTo('#plab', { opacity: 0 },
-              { opacity: 1, duration: 0.30, ease: 'none' }, 20.360);
-    tl.fromTo('#p-c', { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 0.36, ease: 'expo.out' }, 20.060);
-    tl.to('#p-c', { opacity: 0, y: -16, duration: 0.30, ease: 'power2.in' },
-          30.355);
-    tl.to('#ring', { scale: 0.72, transformOrigin: '310px 310px',
-                     duration: 0.70, ease: 'back.out(1.4)' }, 20.760);
+    // PHASE C -- t078, ONE turn now carrying BOTH beats t019 and t020 used
+    // to carry separately: security CLOSES RANKS on "a celebrity, surrounded
+    // by security", then the hydration shell fills in on the explanation
+    // that follows in the same breath.
+    tl.fromTo('#c04-protein-plab', { opacity: 0 },
+              { opacity: 1, duration: 0.30, ease: 'none' }, 21.727);
+    tl.fromTo('#c04-protein-p-c', { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.36, ease: 'expo.out' }, 21.427);
+    tl.to('#c04-protein-p-c', { opacity: 0, y: -16, duration: 0.30, ease: 'power2.in' },
+          29.943);
+    tl.to('#c04-protein-ring', { scale: 0.72, transformOrigin: '310px 310px',
+                     duration: 0.70, ease: 'back.out(1.4)' }, 22.127);
 
-    // t020 -- THE HYDRATION SHELL FILLS IN. This is the one genuine cadence
-    // outlier left in the piece: check-cadence measured 9.12s with no visible
-    // beat across 98.25-107.25s, which is t019 plus the whole of t020 -- and
-    // t020 is the six-second line that explains the actual mechanism ("water
-    // remains organised without clinging directly to the protein").
-    //
-    // Everything already in that window is word-scale and measures as nothing:
-    // the ring closing ranks is 18 squares of 26px, 0.2% of frame, 0.01/step.
-    // The shell is the only element here big enough to carry a beat, and
-    // thickening it IS the line's content rather than decoration over it.
-    //
-    // Sized with scripts/beat_budget.py before authoring, not after a render:
+    // THE HYDRATION SHELL FILLS IN, timed to the back half of t078's own
+    // sentence ("ectoin may help that water stay organised..."). Sized with
+    // scripts/beat_budget.py before authoring, not after a render:
     //   before  r190 sw46  @0.30  -> luma 218, 5.0% of frame
     //   after   r160 sw120 @0.78  -> luma 174, 11.1% of frame
     //   changed area 11.1% at mean delta ~58 over 0.65s = 1.24/step (floor 1.0)
-    tl.to('#shell', { attr: { r: 160, 'stroke-width': 120 }, opacity: 0.78,
-                      duration: 0.65, ease: 'power2.inOut' }, 24.613);
-    // Settle back before t021's own shell beat so the two do not fight.
-    tl.to('#shell', { attr: { r: 190, 'stroke-width': 46 }, opacity: 0.30,
-                      duration: 0.80, ease: 'power2.inOut' }, 27.763);
+    tl.to('#c04-protein-shell', { attr: { r: 160, 'stroke-width': 120 }, opacity: 0.78,
+                      duration: 0.65, ease: 'power2.inOut' }, 24.727);
+    // Settle back before phase D's own shell beat so the two do not fight.
+    tl.to('#c04-protein-shell', { attr: { r: 190, 'stroke-width': 46 }, opacity: 0.30,
+                      duration: 0.80, ease: 'power2.inOut' }, 27.427);
 
-    // PHASE D -- THE POINT. The ring pulls BACK to a standoff and the shell
-    // thickens into the gap: ectoin is excluded from the surface and the
-    // ordered water fills the space. Same nodes, third arrangement.
-    tl.to('#ring', { scale: 0.94, duration: 0.85, ease: 'power2.inOut' },
-          30.555);
-    tl.to('#shell', { attr: { 'stroke-width': 78, r: 214 }, opacity: 0.42,
-                      duration: 0.90, ease: 'power2.inOut' }, 30.555);
-    tl.fromTo('#p-d', { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 0.34, ease: 'expo.out' }, 30.555);
+    // PHASE D -- THE POINT (t021). The ring pulls BACK to a standoff and the
+    // shell thickens into the gap: ectoin is excluded from the surface and
+    // the ordered water fills the space. Same nodes, third arrangement.
+    // Also the unit's LAST beat this revision (phase e is gone).
+    tl.to('#c04-protein-ring', { scale: 0.94, duration: 0.85, ease: 'power2.inOut' },
+          30.143);
+    tl.to('#c04-protein-shell', { attr: { 'stroke-width': 78, r: 214 }, opacity: 0.42,
+                      duration: 0.90, ease: 'power2.inOut' }, 30.143);
+    tl.fromTo('#c04-protein-p-d', { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.34, ease: 'expo.out' }, 30.143);
     // The on-screen term TRANSFORMS rather than being replaced -- the second
     // state must read as the first one corrected, which a fade-out/fade-in of
     // two unrelated strings does not.
-    tl.to('#sw-a', { opacity: 0, yPercent: -60, duration: 0.30,
-                     ease: 'power3.inOut' }, 31.055);
-    tl.fromTo('#sw-b', { opacity: 0, yPercent: 60 },
+    tl.to('#c04-protein-sw-a', { opacity: 0, yPercent: -60, duration: 0.30,
+                     ease: 'power3.inOut' }, 30.643);
+    tl.fromTo('#c04-protein-sw-b', { opacity: 0, yPercent: 60 },
               { opacity: 1, yPercent: 0, duration: 0.30, ease: 'power3.inOut' },
-              31.055);
-    tl.fromTo('#p-cite', { opacity: 0 },
-              { opacity: 1, duration: 0.28, ease: 'none' }, 36.319);
-
-    // t022 -- "the actual molecular behaviour is more complicated". The tidy
-    // ring DISORDERS: a third of it breaks rank inward and recolours. This is
-    // the line's own content, and it was previously 6.7s of speech over a
-    // still frame.
-    (function () {
-      for (var i = 0; i < 18; i++) {
-        if (i % 3 !== 0) continue;
-        var a = i * 20 * Math.PI / 180;
-        tl.to('#r-' + i, { attr: { x: 310 + Math.cos(a) * 196 - 13,
-                                    y: 310 + Math.sin(a) * 196 - 13 },
-                           fill: '#E0A32B', duration: 0.80,
-                           ease: 'power2.inOut' }, 36.619 + i * 0.045);
-      }
-    })();
-    tl.to('#shell', { opacity: 0.16, duration: 0.80, ease: 'power2.inOut' },
-          37.219);
-    // The protein itself inverts -- 3.5% of frame at 225 luma = 1.40/step.
-    // The 18 ring squares recolouring alongside it measure 0.01 and are
-    // detail, not the beat.
-    tl.to('#prot', { attr: { fill: '#F7F5F0' }, duration: 0.70,
-                     ease: 'power2.inOut' }, 36.919);
-    tl.to('#plab', { attr: { fill: '#131516' }, duration: 0.70,
-                     ease: 'power2.inOut' }, 36.919);
-    tl.to('#prot', { attr: { fill: '#131516' }, duration: 0.70,
-                     ease: 'power2.inOut' }, 44.621);
-    tl.to('#plab', { attr: { fill: '#F7F5F0' }, duration: 0.70,
-                     ease: 'power2.inOut' }, 44.621);
-
-    // PHASE E -- t023: the whole actor recomposes on JAY's summary. A rotation
-    // of the ring plus the shell returning is a full-plate change, not a settle.
-    tl.to('#ring', { scale: 1.0, rotation: 14, transformOrigin: '310px 310px',
-                     duration: 1.30, ease: 'power2.inOut' }, 43.021);
-    tl.to('#shell', { opacity: 0.30, duration: 1.0, ease: 'sine.inOut' }, 43.021);
-    // t024 -- "I immediately regret simplifying this": the protein swells and
-    // the ring scatters outward. The last turn had no beat at all before.
-    tl.to('#prot', { attr: { r: 150 }, duration: 0.70,
-                     ease: 'back.out(1.6)' }, 49.606);
-    tl.to('#ring', { scale: 1.14, rotation: 0, duration: 0.90,
-                     ease: 'power2.out' }, 49.606);
+              30.643);
+    tl.fromTo('#c04-protein-p-cite', { opacity: 0 },
+              { opacity: 1, duration: 0.28, ease: 'none' }, 31.043);
 
     // Measured quiet window: the band carries this stretch.
-    tl.set('#band-t', { textContent: 'PREFERENTIAL EXCLUSION' }, 13.640);
-    tl.set('#band', { className: 'band' }, 13.640);
-    tl.to('#band', { opacity: 1, duration: 0.30,
+    tl.set('#c04-protein-band-t', { textContent: 'PREFERENTIAL EXCLUSION' }, 13.640);
+    tl.set('#c04-protein-band', { className: 'band' }, 13.640);
+    tl.to('#c04-protein-band', { opacity: 1, duration: 0.30,
                       ease: 'power2.out' }, 13.700);
-    tl.fromTo('#band-f', { scaleX: 0, transformOrigin: '0% 50%' },
+    tl.fromTo('#c04-protein-band-f', { scaleX: 0, transformOrigin: '0% 50%' },
               { scaleX: 1, duration: 0.62,
                  ease: 'power2.out' }, 13.700);
-    tl.to('#band-t', { opacity: 1, duration: 0.28,
+    tl.to('#c04-protein-band-t', { opacity: 1, duration: 0.28,
                        ease: 'power1.out' }, 14.050);
-    tl.to('#band-t', { opacity: 0, duration: 0.25,
+    tl.to('#c04-protein-band-t', { opacity: 0, duration: 0.25,
                        ease: 'power1.out' }, 16.000);
-    tl.to('#band-f', { scaleX: 0, transformOrigin: '100% 50%',
+    tl.to('#c04-protein-band-f', { scaleX: 0, transformOrigin: '100% 50%',
                        duration: 0.52,
                        ease: 'power2.in' }, 16.150);
-    tl.to('#band', { opacity: 0, duration: 0.25,
+    tl.to('#c04-protein-band', { opacity: 0, duration: 0.25,
                      ease: 'none' }, 16.550);
 
     // Second measured quiet window in a long unit.
-    tl.set('#band-t', { textContent: 'THE REAL BEHAVIOUR IS MESSIER' }, 37.940);
-    tl.set('#band', { className: 'band alt' }, 37.940);
-    tl.to('#band', { opacity: 1, duration: 0.34,
-                      ease: 'sine.out' }, 38.000);
-    tl.fromTo('#band-f', { scaleX: 0, transformOrigin: '0% 50%' },
-              { scaleX: 1, duration: 0.70,
-                 ease: 'circ.out' }, 38.000);
-    tl.to('#band-t', { opacity: 1, duration: 0.28,
-                       ease: 'sine.out' }, 38.350);
-    tl.to('#band-t', { opacity: 0, duration: 0.25,
-                       ease: 'sine.out' }, 40.450);
-    tl.to('#band-f', { scaleX: 0, transformOrigin: '100% 50%',
-                       duration: 0.58,
-                       ease: 'power1.in' }, 40.600);
-    tl.to('#band', { opacity: 0, duration: 0.25,
-                     ease: 'none' }, 41.000);
+    tl.set('#c04-protein-band-t', { textContent: 'THE REAL BEHAVIOUR IS MESSIER' }, 32.967);
+    tl.set('#c04-protein-band', { className: 'band alt' }, 32.967);
+    tl.to('#c04-protein-band', { opacity: 1, duration: 0.16,
+                      ease: 'expo.out' }, 33.027);
+    tl.fromTo('#c04-protein-band-f', { scaleX: 0, transformOrigin: '100% 50%' },
+              { scaleX: 1, duration: 0.40,
+                 ease: 'expo.out' }, 33.027);
+    tl.to('#c04-protein-band-t', { opacity: 1, duration: 0.28,
+                       ease: 'none' }, 33.247);
+    tl.to('#c04-protein-band-t', { opacity: 0, duration: 0.25,
+                       ease: 'none' }, 34.797);
+    tl.to('#c04-protein-band-f', { scaleX: 0, transformOrigin: '100% 50%',
+                       duration: 0.34,
+                       ease: 'power3.in' }, 34.947);
+    tl.to('#c04-protein-band', { opacity: 0, duration: 0.18,
+                     ease: 'none' }, 35.347);
 
-    tl.fromTo('#drift', { scale: 1, y: 0 },
-              { scale: 1.018, y: -7, duration: 53.212,
+    tl.fromTo('#c04-protein-drift', { scale: 1, y: 0 },
+              { scale: 1.018, y: -7, duration: 35.527,
                  ease: 'sine.inOut' }, 0);
 
-    tl.to({}, { duration: 53.212 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 35.527 }, 0);   // full-span anchor -- always last
     window.__timelines["04-protein"] = tl;
   </script>
 </template>

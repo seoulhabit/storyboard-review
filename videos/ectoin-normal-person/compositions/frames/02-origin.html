@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="02-origin"
-       data-width="1920" data-height="1080" data-duration="28.283">
+       data-width="1920" data-height="1080" data-duration="25.651">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,8 +98,13 @@
     .panel { position:relative; background:var(--mist); border-radius:var(--r-3);
              padding:var(--s-6); min-height:0; overflow:hidden; }
     .panel.on-ink { background:var(--ink-soft); }
-    /* A full-panel colour wash. scaleX from the left = a large area changing. */
-    .wash { position:absolute; inset:0; transform:scaleX(0); transform-origin:0% 50%;
+    /* A full-panel colour wash. scaleX from the left = a large area changing.
+       No CSS transform initializer here -- non-negotiable #11. Every .wash
+       reveal is driven by tl.fromTo(el, {{scaleX:0}}, {{scaleX:1,...}}), so
+       GSAP already declares its own start state; a CSS one would just be a
+       second, driftable copy of the same value. transform-origin stays --
+       GSAP's fromTo does not set it, so CSS is the only declared source. */
+    .wash { position:absolute; inset:0; transform-origin:0% 50%;
             border-radius:inherit; z-index:0; }
     /* Every following sibling of a wash sits ABOVE it. The earlier rule was
        scoped to .panel children only, so .arm/.stt/.action labels rendered
@@ -220,8 +225,13 @@
        cadence metric, not by eye: 11.3% of frame at 215 luma = 5.5/step. */
     .band { position:absolute; left:0; right:0; bottom:0; height:136px;
             border-radius:var(--r-3); overflow:hidden; opacity:0; z-index:3; }
-    .band-f { position:absolute; inset:0; background:var(--ink);
-              transform:scaleX(0); transform-origin:0% 50%; }
+    /* No CSS transform initializer -- non-negotiable #11. build_frames.py's
+       band_beat() always drives this via tl.fromTo(el, {{scaleX:0,
+       transformOrigin:...}}, {{scaleX:1,...}}), so GSAP already declares
+       its own start state (and its own transform-origin, which varies per
+       band variant -- a CSS-fixed one here would be the wrong value for
+       half the rotation anyway). */
+    .band-f { position:absolute; inset:0; background:var(--ink); }
     .band.alt .band-f { background:var(--moss); }
     /* On an ink ground the fill must go the OTHER way. ink-on-ink is a 0-luma
        step: measured, the two ink-ground bands moved their scene's quiet run
@@ -253,13 +263,13 @@
     .swap2 { position:relative; font-family:var(--font-mono);
              font-size:var(--t-label); letter-spacing:var(--tr-mono-wide);
              text-transform:uppercase; }
-    #sw2-a { color:var(--celadon); }
-    #sw2-b { color:var(--paper); position:absolute; inset:0; opacity:0; }
+    #c02-origin-sw2-a { color:var(--celadon); }
+    #c02-origin-sw2-b { color:var(--paper); position:absolute; inset:0; opacity:0; }
     
     </style>
-<div class="ground" style="background:var(--ink)"><div class="stage"><div class="clipbox"><div class="world" id="world"><div class="drift" id="drift"><div class="cellwrap"><div class="cellbox"><svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true"><g id="salt"></g><ellipse id="cell" cx="310" cy="310" rx="176" ry="176" fill="#59B8AE" opacity="0"/><ellipse id="cyto" cx="310" cy="310" rx="132" ry="132" fill="#1B1917" opacity="0"/><g id="water2"></g><text id="raisin" x="310" y="470" text-anchor="middle" fill="#C97A5C" font-family="JetBrains Mono, monospace" font-size="30" letter-spacing="3" opacity="0">RAISIN</text><g id="ect" opacity="0"></g></svg></div><div class="talk2"><div class="phase" data-phase="a"><p class="nm" id="nm">Halomonas elongata</p><div class="line" id="o-a"><i class="who who-s on-ink"></i><p class="say say-s on-ink" style="font-size:52px">Belonged to a bacterium in extremely salty water.</p></div><div class="line" id="o-j"><i class="who who-j on-ink"></i><p class="say say-j on-ink" style="font-size:46px">Bacteria invented skincare?</p></div><div class="line" id="o-s2"><i class="who who-s on-ink"></i><p class="say say-s on-ink" style="font-size:46px">Not intentionally.</p></div><p class="cite on-ink" id="o-cite1">Environ Microbiol · 2010</p></div><div class="phase" data-phase="b"><div class="line" id="o-b"><i class="who who-s on-ink"></i><p class="say say-s on-ink" style="font-size:50px">The salt pulls water out. A microscopic raisin.</p></div><p class="cite on-ink" id="o-cite2">Phys Chem Chem Phys · 2018</p></div><div class="phase" data-phase="c"><div class="swap2"><span id="sw2-a">SKINCARE BORROWED THE MOLECULE</span><span id="sw2-b">MARKETING BORROWED THE DRAMA</span></div></div></div></div><div class="band on-ink" id="band"><div class="band-f" id="band-f"></div><span class="band-t" id="band-t"></span></div></div></div></div></div></div>
+<div class="ground" style="background:var(--ink)"><div class="stage"><div class="clipbox"><div class="world" id="c02-origin-world"><div class="drift" id="c02-origin-drift"><div class="cellwrap"><div class="cellbox"><svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true"><g id="c02-origin-salt"></g><ellipse id="c02-origin-cell" cx="310" cy="310" rx="176" ry="176" fill="#59B8AE" opacity="0"/><ellipse id="c02-origin-cyto" cx="310" cy="310" rx="132" ry="132" fill="#1B1917" opacity="0"/><g id="c02-origin-water2"></g><text id="c02-origin-raisin" x="310" y="470" text-anchor="middle" fill="#C97A5C" font-family="JetBrains Mono, monospace" font-size="30" letter-spacing="3" opacity="0">RAISIN</text><g id="c02-origin-ect" opacity="0"></g></svg></div><div class="talk2"><div class="phase" data-phase="a"><p class="nm" id="c02-origin-nm">Halomonas elongata</p><div class="line" id="c02-origin-o-a"><i class="who who-s on-ink"></i><p class="say say-s on-ink" style="font-size:52px">Belonged to a bacterium in extremely salty water.</p></div><div class="line" id="c02-origin-o-j"><i class="who who-j on-ink"></i><p class="say say-j on-ink" style="font-size:46px">Bacteria invented skincare?</p></div><div class="line" id="c02-origin-o-s2"><i class="who who-s on-ink"></i><p class="say say-s on-ink" style="font-size:46px">Not intentionally.</p></div><p class="cite on-ink" id="c02-origin-o-cite1">Environ Microbiol · 2010</p></div><div class="phase" data-phase="b"><div class="line" id="c02-origin-o-b"><i class="who who-s on-ink"></i><p class="say say-s on-ink" style="font-size:50px">The salt pulls water out. A microscopic raisin.</p></div><p class="cite on-ink" id="c02-origin-o-cite2">Phys Chem Chem Phys · 2018</p></div><div class="phase" data-phase="c"><div class="swap2"><span id="c02-origin-sw2-a">SKINCARE BORROWED THE MOLECULE</span><span id="c02-origin-sw2-b">MARKETING BORROWED THE DRAMA</span></div></div></div></div><div class="band on-ink" id="c02-origin-band"><div class="band-f" id="c02-origin-band-f"></div><span class="band-t" id="c02-origin-band-t"></span></div></div></div></div></div></div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap-3.14.2.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true });
@@ -267,7 +277,7 @@
     (function () {
       // Deterministic crystal field -- golden angle, no RNG. Same group
       // persists into phase b as the antagonist closing in on the cell.
-      var g = document.getElementById('salt');
+      var g = document.getElementById('c02-origin-salt');
       for (var i = 0; i < 40; i++) {
         var a = i * 137.508 * Math.PI / 180, r = 200 + (i % 7) * 22;
         var s = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -278,7 +288,7 @@
         s.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
         s.id = 'sx-' + i; g.appendChild(s);
       }
-      var w2 = document.getElementById('water2');
+      var w2 = document.getElementById('c02-origin-water2');
       for (var q = 0; q < 16; q++) {
         var aq = q * 137.508 * Math.PI / 180, rq = 24 * Math.sqrt(q);
         var cw = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -287,7 +297,7 @@
         cw.setAttribute('r', 10); cw.setAttribute('fill', '#59B8AE');
         cw.setAttribute('opacity', '0.75'); w2.appendChild(cw);
       }
-      var e = document.getElementById('ect');
+      var e = document.getElementById('c02-origin-ect');
       for (var j = 0; j < 14; j++) {
         var b2 = j * 137.508 * Math.PI / 180, r2 = 26 * Math.sqrt(j);
         var d2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -309,97 +319,97 @@
                    transformOrigin: 'center' },
                 0.200 + i * 0.028);
     }
-    tl.fromTo('#nm', { opacity: 0, y: 18 },
+    tl.fromTo('#c02-origin-nm', { opacity: 0, y: 18 },
               { opacity: 1, y: 0, duration: 0.40, ease: 'circ.out' }, 0.100);
-    tl.fromTo('#o-a', { opacity: 0, y: 22 },
+    tl.fromTo('#c02-origin-o-a', { opacity: 0, y: 22 },
               { opacity: 1, y: 0, duration: 0.40, ease: 'circ.out' },
               0.280);
-    tl.fromTo('#o-cite1', { opacity: 0 },
+    tl.fromTo('#c02-origin-o-cite1', { opacity: 0 },
               { opacity: 1, duration: 0.30, ease: 'none' }, 1.300);
     // t002/t003 -- the two-line exchange callback, same slam idiom the
     // retired hook used for its own replies.
-    tl.fromTo('#o-j', { opacity: 0, scale: 1.10, y: 8 },
+    tl.fromTo('#c02-origin-o-j', { opacity: 0, scale: 1.10, y: 8 },
               { opacity: 1, scale: 1, y: 0, duration: 0.34,
-                 ease: 'power4.out' }, 6.909);
-    tl.fromTo('#o-s2', { opacity: 0, scale: 1.10, y: 8 },
+                 ease: 'power4.out' }, 7.144);
+    tl.fromTo('#c02-origin-o-s2', { opacity: 0, scale: 1.10, y: 8 },
               { opacity: 1, scale: 1, y: 0, duration: 0.30,
-                 ease: 'power4.out' }, 10.187);
+                 ease: 'power4.out' }, 10.422);
 
     // Handover: phase A's lines leave as B's deformation begins.
-    tl.to(['#nm', '#o-a', '#o-j', '#o-s2', '#o-cite1'],
+    tl.to(['#c02-origin-nm', '#c02-origin-o-a', '#c02-origin-o-j', '#c02-origin-o-s2', '#c02-origin-o-cite1'],
           { opacity: 0, y: -18, duration: 0.34, ease: 'power2.in' },
-          12.542);
+          12.777);
 
     // CAMERA L0->L1 -- close on the single cell as the salt arrives.
-    tl.fromTo('#world', { scale: 1, x: 0 },
+    tl.fromTo('#c02-origin-world', { scale: 1, x: 0 },
               { scale: 1.08, x: -18, duration: 2.20, ease: 'power2.inOut' },
               0.100);
 
     // PHASE B -- the cell DEFORMS. reactive-displacement: the actor reacts
     // to the salt rather than being replaced by a picture of a shrunken
     // cell. Salt closes in on the cell across the whole phase.
-    tl.fromTo('#cell', { opacity: 0 }, { opacity: 0.30, duration: 0.30,
-              ease: 'none' }, 12.742);
-    tl.fromTo('#cyto', { opacity: 0 }, { opacity: 1, duration: 0.30,
-              ease: 'none' }, 12.742);
-    tl.fromTo('#salt', { scale: 1.34, transformOrigin: '310px 310px' },
-              { scale: 1.0, duration: 11.942, ease: 'power1.inOut' },
-              12.742);
-    tl.to('#cell', { attr: { rx: 150, ry: 118 }, duration: 1.10,
-                     ease: 'power2.inOut' }, 13.242);
-    tl.to('#cyto', { attr: { rx: 104, ry: 82 }, duration: 1.10,
-                     ease: 'power2.inOut' }, 13.242);
-    tl.to('#water2 circle', { attr: { r: 0 }, duration: 0.55,
+    tl.fromTo('#c02-origin-cell', { opacity: 0 }, { opacity: 0.30, duration: 0.30,
+              ease: 'none' }, 12.977);
+    tl.fromTo('#c02-origin-cyto', { opacity: 0 }, { opacity: 1, duration: 0.30,
+              ease: 'none' }, 12.977);
+    tl.fromTo('#c02-origin-salt', { scale: 1.34, transformOrigin: '310px 310px' },
+              { scale: 1.0, duration: 9.075, ease: 'power1.inOut' },
+              12.977);
+    tl.to('#c02-origin-cell', { attr: { rx: 150, ry: 118 }, duration: 1.10,
+                     ease: 'power2.inOut' }, 13.477);
+    tl.to('#c02-origin-cyto', { attr: { rx: 104, ry: 82 }, duration: 1.10,
+                     ease: 'power2.inOut' }, 13.477);
+    tl.to('#c02-origin-water2 circle', { attr: { r: 0 }, duration: 0.55,
                               stagger: { each: 0.30, from: 'random' },
-                              ease: 'power2.in' }, 13.942);
-    tl.fromTo('#raisin', { opacity: 0, scale: 0.7 },
+                              ease: 'power2.in' }, 14.177);
+    tl.fromTo('#c02-origin-raisin', { opacity: 0, scale: 0.7 },
               { opacity: 1, scale: 1, duration: 0.38, ease: 'back.out(2.2)' },
-              15.142);
-    tl.fromTo('#o-b', { opacity: 0, x: -24 },
+              15.377);
+    tl.fromTo('#c02-origin-o-b', { opacity: 0, x: -24 },
               { opacity: 1, x: 0, duration: 0.34, ease: 'expo.out' },
-              12.742);
+              12.977);
     // Ectoin appears INSIDE the same cell and it recovers -- same nodes,
     // rearranged, so the recovery reads as the answer to the deformation.
-    tl.to('#ect', { opacity: 1, duration: 0.42, ease: 'sine.out' },
-          17.342);
-    tl.to('#cell', { attr: { rx: 176, ry: 176 }, duration: 1.25,
-                     ease: 'elastic.out(1, 0.7)' }, 17.642);
-    tl.to('#cyto', { attr: { rx: 132, ry: 132 }, duration: 1.25,
-                     ease: 'elastic.out(1, 0.7)' }, 17.642);
-    tl.to('#raisin', { opacity: 0.25, duration: 0.60, ease: 'power1.inOut' },
-          17.942);
-    tl.fromTo('#o-cite2', { opacity: 0 },
-              { opacity: 1, duration: 0.30, ease: 'none' }, 18.342);
-    tl.to('#ect circle', { attr: { r: 15 }, duration: 0.60, stagger: 0.05,
-                           ease: 'back.out(2)' }, 18.642);
+    tl.to('#c02-origin-ect', { opacity: 1, duration: 0.42, ease: 'sine.out' },
+          17.577);
+    tl.to('#c02-origin-cell', { attr: { rx: 176, ry: 176 }, duration: 1.25,
+                     ease: 'elastic.out(1, 0.7)' }, 17.877);
+    tl.to('#c02-origin-cyto', { attr: { rx: 132, ry: 132 }, duration: 1.25,
+                     ease: 'elastic.out(1, 0.7)' }, 17.877);
+    tl.to('#c02-origin-raisin', { opacity: 0.25, duration: 0.60, ease: 'power1.inOut' },
+          18.177);
+    tl.fromTo('#c02-origin-o-cite2', { opacity: 0 },
+              { opacity: 1, duration: 0.30, ease: 'none' }, 18.577);
+    tl.to('#c02-origin-ect circle', { attr: { r: 15 }, duration: 0.60, stagger: 0.05,
+                           ease: 'back.out(2)' }, 18.877);
 
-    tl.to(['#o-b', '#o-cite2'], { opacity: 0, y: -18, duration: 0.32,
-                                  ease: 'power2.in' }, 23.384);
+    tl.to(['#c02-origin-o-b', '#c02-origin-o-cite2'], { opacity: 0, y: -18, duration: 0.32,
+                                  ease: 'power2.in' }, 20.752);
 
     // CAMERA L1->L2 -- push inside for the handoff to 04-protein, which
     // continues this exact leg (04-protein opens at L2->L3, x:-30).
-    tl.to('#world', { scale: 1.16, x: -30, duration: 1.60,
-                      ease: 'power2.inOut' }, 23.684);
+    tl.to('#c02-origin-world', { scale: 1.16, x: -30, duration: 1.60,
+                      ease: 'power2.inOut' }, 21.052);
 
     // PHASE C -- the close. A myth TRANSFORMS into its correction: skincare
     // borrowed the molecule fades up, then marketing borrowed the drama
     // replaces it in place -- the swap idiom, not a fade to a new card.
-    tl.fromTo('#sw2-a', { opacity: 0, y: 20 },
+    tl.fromTo('#c02-origin-sw2-a', { opacity: 0, y: 20 },
               { opacity: 1, y: 0, duration: 0.36, ease: 'expo.out' },
-              23.684);
-    tl.to('#sw2-a', { opacity: 0, yPercent: -60, duration: 0.30,
-                      ease: 'power3.inOut' }, 26.284);
-    tl.fromTo('#sw2-b', { opacity: 0, yPercent: 60 },
+              21.052);
+    tl.to('#c02-origin-sw2-a', { opacity: 0, yPercent: -60, duration: 0.30,
+                      ease: 'power3.inOut' }, 23.652);
+    tl.fromTo('#c02-origin-sw2-b', { opacity: 0, yPercent: 60 },
               { opacity: 1, yPercent: 0, duration: 0.30, ease: 'power3.inOut' },
-              26.284);
-    tl.to('#cell', { opacity: 0.46, duration: 0.80, ease: 'sine.inOut' },
-          26.284);
+              23.652);
+    tl.to('#c02-origin-cell', { opacity: 0.46, duration: 0.80, ease: 'sine.inOut' },
+          23.652);
 
-    tl.fromTo('#drift', { scale: 1, y: 0 },
-              { scale: 1.018, y: -7, duration: 28.283,
+    tl.fromTo('#c02-origin-drift', { scale: 1, y: 0 },
+              { scale: 1.018, y: -7, duration: 25.651,
                  ease: 'sine.inOut' }, 0);
 
-    tl.to({}, { duration: 28.283 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 25.651 }, 0);   // full-span anchor -- always last
     window.__timelines["02-origin"] = tl;
   </script>
 </template>

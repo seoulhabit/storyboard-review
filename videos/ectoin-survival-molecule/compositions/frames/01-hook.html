@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="01-hook"
-       data-width="1920" data-height="1080" data-duration="10.476">
+       data-width="1920" data-height="1080" data-duration="11.662">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -151,6 +157,7 @@
                 line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                 margin:0; }
     .s1-claim em { font-style:normal; color:var(--aqua); }
+    .s1-claim span { display:inline; }
     .s1-neg { display:flex; flex-direction:column; gap:var(--s-4);
               min-height:0; height:100%; justify-content:center; }
     .s1-neg-h { flex:0 0 auto; font-family:var(--font-mono); font-size:var(--t-label);
@@ -182,8 +189,9 @@
     <div class="stage">
       <div class="s1">
         <div class="s1-claim-wrap">
-          <h1 class="s1-claim" id="s1-claim">Your next favourite skincare
-            ingredient may have been invented by <em>bacteria trying not to die.</em></h1>
+          <h1 class="s1-claim" id="s1-claim"><span id="s1-c1">Your next favourite
+            skincare ingredient</span><span id="s1-c2"> may have been invented
+            by </span><em id="s1-bacteria">bacteria trying not to die.</em></h1>
         </div>
         <div class="s1-neg flexmin">
           <p class="s1-neg-h">Not this</p>
@@ -200,24 +208,40 @@
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
-  // FRAME ZERO IS THE HOOK: the claim is already at rest at t=0, not mid-fade.
-  // Only the strike-throughs are animated, so the export's literal first frame
-  // is the composed hook and a viable thumbnail candidate.
-  tl.set('#s1-claim', { opacity: 1, y: 0 }, 0);
-  tl.fromTo('#s1-i1', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 3.10);
-  tl.fromTo('#s1-i2', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 3.45);
-  tl.fromTo('#s1-i3', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 3.80);
-  tl.fromTo('#s1-b1', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 5.05);
-  tl.to('#s1-i1', { color:'#131516', duration:0.30 }, 5.05);  // --ink on coral = 5.60:1
-  tl.fromTo('#s1-b2', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 6.45);
-  tl.to('#s1-i2', { color:'#131516', duration:0.30 }, 6.45);  // --ink on coral = 5.60:1
-  tl.fromTo('#s1-b3', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 7.95);
-  tl.to('#s1-i3', { color:'#131516', duration:0.30 }, 7.95);  // --ink on coral = 5.60:1
-  // Fills the dead 8.25-10.49 tail with the scene's actual payoff, not filler.
-  tl.fromTo('#s1-mark', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.60 }, 8.60);
-  tl.fromTo('#s1-claim', { y:0 }, { y:-14, duration:1.60, ease:'power1.inOut' }, 8.60);
+  // FRAME ZERO IS THE HOOK: chunk 1 of the claim is already at rest at t=0,
+  // not mid-fade (a separate still is the thumbnail asset, so the export's
+  // literal first frame does not have to carry that job alone). Chunks 2/3
+  // reveal on their own words -- real early motion instead of the whole
+  // claim landing as one inert block, and keeps #root moving well inside
+  // the 6.0s cadence ceiling (previously the first beat was the "Not snail"
+  // card at ~5.65s, which the newest take's timing pushed close enough to
+  // the ceiling to read as a static hold).
+  tl.set('#s1-c1', { opacity: 1, y: 0 }, 0);
+  tl.fromTo('#s1-c2', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.45 }, 2.200-0.10);
+  tl.fromTo('#s1-bacteria', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.45 }, 3.520-0.10);
+  // "not to die" is occurrence 1 of "not" -- not one of the three negated
+  // items below, which are occurrences 2/3/4 ("not snail" / "not salmon" /
+  // "and not another [hyaluronic acid]").
+  tl.fromTo('#s1-i1', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 5.753-0.10);
+  tl.fromTo('#s1-i2', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 6.804-0.10);
+  tl.fromTo('#s1-i3', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 8.602-0.10);
+  tl.fromTo('#s1-b1', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 6.804+0.10);
+  tl.to('#s1-i1', { color:'#131516', duration:0.30 }, 6.804+0.10);  // --ink on coral = 5.60:1
+  tl.fromTo('#s1-b2', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 8.242+0.10);
+  tl.to('#s1-i2', { color:'#131516', duration:0.30 }, 8.242+0.10);  // --ink on coral = 5.60:1
+  tl.fromTo('#s1-b3', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 11.212+0.10);
+  tl.to('#s1-i3', { color:'#131516', duration:0.30 }, 11.212+0.10);  // --ink on coral = 5.60:1
+  // The mark lands late enough to fill the tail rather than the hold going dead.
+  // Enters from ABOVE (y:-24 -> 0), not below: #s1-mark rests with its own
+  // bottom edge AT the safe-bottom line, so a y:+N->0 entrance would start
+  // the whole element N px LOWER than rest, transiently pushing it into the
+  // reserved bottom margin while opacity ramps up together with position --
+  // caught by the hard safe-area gate at 642px inside the zone at t=10.75s.
+  // Sliding down into place from above never crosses that line.
+  tl.fromTo('#s1-mark', { opacity:0, y:-24 }, { opacity:1, y:0, duration:0.60 }, 11.212-0.4);
+  tl.fromTo('#s1-claim', { y:0 }, { y:-14, duration:1.60, ease:'power1.inOut' }, 11.212-0.4);
 
-    tl.to({}, { duration: 10.476 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 11.662 }, 0);   // full-span anchor -- always last
     window.__timelines["01-hook"] = tl;
   </script>
 </template>

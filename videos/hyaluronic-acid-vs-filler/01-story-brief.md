@@ -227,3 +227,37 @@ Carried unchanged from the 180 s cut, plus one new v2 entry:
   deliberately not asserted.
 - C4's source is a comparative-physiology review spanning species. It is cited for
   where HA sits in the body and what it does there, which is what it establishes.
+
+## §v3 Revision — 2026-09-04, retention rewrite
+
+Operator brief: rewrite for retention on top of v2 (388w/160.0s). Front-load
+the thesis and all three identities, move the 1934 history to after the
+mechanism explanation, cut to one analogy, replace container-level drift
+with mechanism-specific motion, let the measured VO drive the timeline.
+
+**Claim table unchanged.** C1–C12 posture stays nominal 1 / sourced 10 /
+unsourced 0 / editorial 1 — no new claim, no claim dropped, no chip changed.
+`[K-2b]`'s disclosure-forward ratio limb still does not fire (Mechanism +
+Proof content is still fully sourced). The only wording changes are
+compressions of already-approved language, not new assertions:
+
+- C6 ("temporarily make fine lines appear softer") now stands alone as a
+  claim, without the houseplant analogy that used to carry it — the hedge
+  words are unchanged and still land in the on-screen type per `[K-3]`.
+- C7 ("binds water, does not manufacture it") keeps its one retained
+  analogy, reworded from the lifeguard/empty-pool framing to "a sponge, not
+  a water factory" per the operator's stated preference.
+- The recap badges ("resident" / "hydration" / "volume") are now plain
+  identity labels rather than v2's "resident / moisturiser / construction
+  project" — dropping "construction project" removes a competing analogy,
+  not a claim.
+
+**Story order changed**, not the claims within it: thesis+identities (C1) →
+misconception (editorial) → topical mechanism (C5, C6) → water mechanism
+(C7) → filler mechanism (C8, C9) → history (C2, now after the mechanism
+block instead of before it) → safety (C10, C11) → recap (C12). This is the
+retention-focused order the brief specified, applied to the same sourced
+material.
+
+Full before/after numbers: `BEFORE-AFTER-REPORT.md`. Full mechanical
+account: `00-decision-ledger.md` §"re-run — v3 revision".

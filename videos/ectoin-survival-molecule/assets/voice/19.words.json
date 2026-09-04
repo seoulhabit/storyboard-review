@@ -1,0 +1,95 @@
+{
+  "scene": "19-limits",
+  "block": "act4+retime(1.2264)",
+  "cut": {
+    "start": 42.76,
+    "end": 51.39
+  },
+  "gain_db": 7.6,
+  "lufs": -20.0,
+  "wpm": 131.2,
+  "words": [
+    {
+      "text": "Encouraging,",
+      "start": 0.0,
+      "end": 0.806
+    },
+    {
+      "text": "not",
+      "start": 0.806,
+      "end": 1.018
+    },
+    {
+      "text": "proof",
+      "start": 1.255,
+      "end": 1.369
+    },
+    {
+      "text": "that",
+      "start": 1.369,
+      "end": 1.654
+    },
+    {
+      "text": "ectoin",
+      "start": 1.654,
+      "end": 2.062
+    },
+    {
+      "text": "cures",
+      "start": 2.07,
+      "end": 2.421
+    },
+    {
+      "text": "eczema,",
+      "start": 2.421,
+      "end": 2.975
+    },
+    {
+      "text": "reverses",
+      "start": 3.212,
+      "end": 3.538
+    },
+    {
+      "text": "aging,",
+      "start": 3.538,
+      "end": 3.954
+    },
+    {
+      "text": "or",
+      "start": 3.954,
+      "end": 4.247
+    },
+    {
+      "text": "replaces",
+      "start": 4.247,
+      "end": 4.671
+    },
+    {
+      "text": "anything",
+      "start": 4.81,
+      "end": 5.397
+    },
+    {
+      "text": "a",
+      "start": 5.397,
+      "end": 5.438
+    },
+    {
+      "text": "dermatologist",
+      "start": 5.438,
+      "end": 5.984
+    },
+    {
+      "text": "prescribes.",
+      "start": 5.984,
+      "end": 7.207
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 7.207,
+      "text": "Encouraging, not proof that ectoin cures eczema, reverses aging, or replaces anything a dermatologist prescribes."
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="11-analogy"
-       data-width="1920" data-height="1080" data-duration="13.061">
+       data-width="1920" data-height="1080" data-duration="14.571">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -171,8 +177,10 @@
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
   tl.fromTo('#a-l1', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
-  tl.fromTo('#a-star', { opacity:0, scale:0.4, transformOrigin:'310px 280px' },
-                       { opacity:1, scale:1, duration:0.60, ease:'back.out(1.6)' }, 1.20);
+  // power3.out, not back.out -- a settling entrance rather than an overshoot,
+  // to read as arriving INSIDE the ring rather than bouncing into place.
+  tl.fromTo('#a-star', { opacity:0, scale:0.86, transformOrigin:'310px 280px' },
+                       { opacity:1, scale:1, duration:0.60, ease:'power3.out' }, 1.20);
   var g = document.getElementById('a-guard'), e = document.getElementById('a-ect');
   for (var i = 0; i < 12; i++) {
     var a = i * 30 * Math.PI/180;
@@ -180,7 +188,8 @@
     c.setAttribute('cx', 310 + Math.cos(a)*150); c.setAttribute('cy', 280 + Math.sin(a)*150);
     c.setAttribute('r', 30); c.setAttribute('fill', '#4F6B52'); c.setAttribute('opacity', 0);
     c.id = 'g-' + i; g.appendChild(c);
-    tl.to('#g-' + i, { opacity:1, duration:0.30 }, 2.30 + i*0.06);
+    // The guard ring lands on the word that names it.
+    tl.to('#g-' + i, { opacity:1, duration:0.30 }, 2.160 + i*0.06);
     var d = document.createElementNS('http://www.w3.org/2000/svg','rect');
     var x = 310 + Math.cos(a+0.26)*250, y = 280 + Math.sin(a+0.26)*250;
     d.setAttribute('x', x-13); d.setAttribute('y', y-13);
@@ -188,14 +197,16 @@
     d.setAttribute('fill', '#C97A5C'); d.setAttribute('opacity', 0);
     d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
     d.id = 'ee-' + i; e.appendChild(d);
-    tl.to('#ee-' + i, { opacity:1, duration:0.30 }, 5.60 + i*0.06);
+    // The ectoin squares land on "hangs" (back) -- the beat that describes them.
+    tl.to('#ee-' + i, { opacity:1, duration:0.30 }, 6.110 + i*0.06);
   }
-  tl.fromTo('#a-l2', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 7.20);
-  // the ring visibly TIGHTENS -- a large synchronised move, the scene's last beat
+  tl.fromTo('#a-l2', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 6.110+1.60);
+  // the ring visibly TIGHTENS on "hold" -- a large synchronised move, the
+  // scene's last beat, landing exactly on the word it illustrates.
   tl.to('#a-guard', { scale:0.94, transformOrigin:'310px 280px', duration:1.6,
-                      ease:'power2.inOut' }, 9.40);
+                      ease:'power2.inOut' }, 8.310);
 
-    tl.to({}, { duration: 13.061 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 14.571 }, 0);   // full-span anchor -- always last
     window.__timelines["11-analogy"] = tl;
   </script>
 </template>

@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="08-humectant"
-       data-width="1920" data-height="1080" data-duration="16.782">
+       data-width="1920" data-height="1080" data-duration="14.566">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -149,7 +155,27 @@
     .g2 .panel { display:flex; flex-direction:column; }
     .drop { position:absolute; border-radius:50%; background:var(--aqua); }
 
+    /* top/left/right are offset from #root's own edge (the chband div is a
+       sibling of .stage, not nested inside it), so the safe-area tokens are
+       spelled out explicitly here -- never 0, which would bleed the wash to
+       the true canvas edge. See the hard safe-area gate note above. */
+    /* top:calc(safe-top + 3px), not bare var(--safe-top): the hard safe-area
+       gate measured this band's own rendered edge 2px into the reserved zone
+       (rounded-corner antialiasing/H.264 edge blur softening a couple of
+       rows outward beyond the CSS-computed line) -- a small buffer absorbs
+       that without being visible. */
+    .chband { position:absolute; top:calc(var(--safe-top) + 3px); left:var(--safe-left);
+              right:var(--safe-right); height:112px;
+              display:flex; align-items:center; overflow:hidden;
+              border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }
+    .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
+                       letter-spacing:var(--tr-mono); }
+
     </style>
+      <div class="chband" id="ch-band">
+        <div class="wash moss" id="ch-wash"></div>
+        <p class="kicker" id="ch-title">Why it is not just another hyaluronic acid</p>
+      </div>
     <div class="stage">
       <div class="g2" id="g2-grid">
         <div class="panel" id="p-hum">
@@ -180,7 +206,8 @@
 
   // PANEL-SCALE: each panel is ~45% of the frame; its entrance and its colour
   // wash are the beats. The dot behaviour is the explanation on top of them.
-  tl.fromTo('#p-hum', { opacity:0, x:-120 }, { opacity:1, x:0, duration:0.65 }, 0.10);
+  // Chapter opener: first spoken beat bound to 0.450.
+  tl.fromTo('#p-hum', { opacity:0, x:-120 }, { opacity:1, x:0, duration:0.65 }, 0.450);
   tl.fromTo('#w-hum', { scaleX:0 }, { scaleX:1, duration:0.80, ease:'power2.inOut' }, 2.40);
   var hd = document.getElementById('hum-dots'), ed = document.getElementById('ect-dots');
   for (var i = 0; i < 14; i++) {
@@ -215,7 +242,11 @@
                     ease:'power2.inOut' }, 11.90);
   tl.to('#p-hum', { opacity:0.18, duration:1.20 }, 14.30);
 
-    tl.to({}, { duration: 16.782 }, 0);   // full-span anchor -- always last
+  // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
+  tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
+  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
+
+    tl.to({}, { duration: 14.566 }, 0);   // full-span anchor -- always last
     window.__timelines["08-humectant"] = tl;
   </script>
 </template>

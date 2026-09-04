@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-resolution="landscape">
+<head>
+  <meta charset="UTF-8">
+  <title>kbeauty-label-trap</title>
+  <style>
+    /* Mandatory rule: border-box reset first, every composition. */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { width: 1920px; height: 1080px; overflow: hidden; background: #131516; }
+    .scene { position: absolute; inset: 0; }
+  </style>
+</head>
+<body>
+  <!-- GENERATED from 03-beat-sheet.json by build_composition.py.
+       Do not hand-edit timing here; edit the beat sheet and re-run. -->
+  <div id="root" data-composition-id="main" data-start="0" data-duration="257.120"
+       data-width="1920" data-height="1080">
+
+    <div class="scene clip" id="scene-s01-bench-hook" data-composition-id="s01-bench-hook"
+         data-composition-src="compositions/frames/01-s01-bench-hook.html"
+         data-start="0.000" data-duration="16.377"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s02-scorecard-passport" data-composition-id="s02-scorecard-passport"
+         data-composition-src="compositions/frames/02-s02-scorecard-passport.html"
+         data-start="15.177" data-duration="13.307"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-s03-promise-seals" data-composition-id="s03-promise-seals"
+         data-composition-src="compositions/frames/03-s03-promise-seals.html"
+         data-start="27.584" data-duration="16.186"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s04-q1-canyon" data-composition-id="s04-q1-canyon"
+         data-composition-src="compositions/frames/04-s04-q1-canyon.html"
+         data-start="42.570" data-duration="21.369"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-s05-q1-dose" data-composition-id="s05-q1-dose"
+         data-composition-src="compositions/frames/05-s05-q1-dose.html"
+         data-start="63.039" data-duration="19.212"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s06-q2-leaf-chambers" data-composition-id="s06-q2-leaf-chambers"
+         data-composition-src="compositions/frames/06-s06-q2-leaf-chambers.html"
+         data-start="82.251" data-duration="21.004"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-s07-q2-travelers" data-composition-id="s07-q2-travelers"
+         data-composition-src="compositions/frames/07-s07-q2-travelers.html"
+         data-start="102.355" data-duration="8.462"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s08-q3-journey" data-composition-id="s08-q3-journey"
+         data-composition-src="compositions/frames/08-s08-q3-journey.html"
+         data-start="110.817" data-duration="19.610"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-s09-q3-transit" data-composition-id="s09-q3-transit"
+         data-composition-src="compositions/frames/09-s09-q3-transit.html"
+         data-start="129.527" data-duration="15.498"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s10-q4-tunnel" data-composition-id="s10-q4-tunnel"
+         data-composition-src="compositions/frames/10-s10-q4-tunnel.html"
+         data-start="145.025" data-duration="39.983"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-s11-q5-boundary" data-composition-id="s11-q5-boundary"
+         data-composition-src="compositions/frames/11-s11-q5-boundary.html"
+         data-start="185.008" data-duration="25.242"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s12-reveal" data-composition-id="s12-reveal"
+         data-composition-src="compositions/frames/12-s12-reveal.html"
+         data-start="210.250" data-duration="25.875"
+         data-track-index="1"></div>
+    <div class="scene clip" id="scene-s13-recap-questions" data-composition-id="s13-recap-questions"
+         data-composition-src="compositions/frames/13-s13-recap-questions.html"
+         data-start="235.225" data-duration="12.894"
+         data-track-index="0"></div>
+    <div class="scene clip" id="scene-s14-landing" data-composition-id="s14-landing"
+         data-composition-src="compositions/frames/14-s14-landing.html"
+         data-start="247.219" data-duration="9.901"
+         data-track-index="1"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    // Root timeline's only job is scene handoff; each sub-composition owns its own beats.
+    // No timeline `defaults: { ease }` anywhere [S6/A-10].
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+
+    // wipe-up 0.600s: -> s02-scorecard-passport, overlap opens at 15.177s
+    tl.fromTo('#scene-s02-scorecard-passport', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 15.177);
+    // wipe-left 0.450s: -> s03-promise-seals, overlap opens at 27.584s
+    tl.fromTo('#scene-s03-promise-seals', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 27.584);
+    // wipe-up 0.600s: -> s04-q1-canyon, overlap opens at 42.570s
+    tl.fromTo('#scene-s04-q1-canyon', { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.600, ease: "power3.inOut" }, 42.570);
+    // wipe-left 0.450s: -> s05-q1-dose, overlap opens at 63.039s
+    tl.fromTo('#scene-s05-q1-dose', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 63.039);
+    // wipe-left 0.450s: -> s07-q2-travelers, overlap opens at 102.355s
+    tl.fromTo('#scene-s07-q2-travelers', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 102.355);
+    // wipe-left 0.450s: -> s09-q3-transit, overlap opens at 129.527s
+    tl.fromTo('#scene-s09-q3-transit', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 129.527);
+    // wipe-left 0.450s: -> s13-recap-questions, overlap opens at 235.225s
+    tl.fromTo('#scene-s13-recap-questions', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 235.225);
+    // wipe-left 0.450s: -> s14-landing, overlap opens at 247.219s
+    tl.fromTo('#scene-s14-landing', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 247.219);
+    tl.to({}, { duration: 257.120, ease: 'none' }, 0);   // anchor: tl.duration() === root duration
+    window.__timelines['main'] = tl;
+  </script>
+</body>
+</html>

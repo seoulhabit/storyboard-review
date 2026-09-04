@@ -23,81 +23,208 @@
   }
   .phase { position: absolute; inset: 0; }
 
-  /* ===================== shared actor: the composition column ===================== */
-  #mx-column-wrap {
+  /* ===================== phase 1: the composition readout =====================
+     Editorial stat lockup, not a vessel. "97% WATER" is the dominant read; the 3%
+     remainder is a contrasting bronze segment on the same measure, threaded down
+     into the three named ingredients. Content box x 72-918, y 192-1280 (the caption
+     band owns y 1300-1520). Text colours are picked for WCAG AA at their own size:
+     --muted (#6f7d72) is 4.14:1 on paper, which is large-text-only, so every phase-1
+     label under 24px uses #5d6b60 (5.37:1) or #7a5232 (6.52:1) instead. */
+
+  #mx-kicker {
     position: absolute;
-    left: 72px; top: 300px;
-    width: 300px; height: 640px;
-  }
-  #mx-vessel-svg { width: 100%; height: 100%; display: block; overflow: visible; }
-  #mx-vessel-outline { fill: none; stroke: var(--ink); stroke-width: 4; stroke-dasharray: 1800; stroke-dashoffset: 1800; }
-  #mx-vessel-fill { fill: var(--hollow); opacity: 0.55; }
-  #mx-water-label {
+    left: 72px; right: 162px; top: 212px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 30px;
-    fill: var(--ink);
-  }
-
-  #mx-ticks-wrap {
-    position: absolute;
-    left: 420px; top: 480px;
-    width: 426px; height: 39px;
-  }
-  .mx-tick-div {
-    position: absolute;
-    top: 0;
-    width: 39px; height: 39px;
-    border-radius: 6px;
-    background: var(--hollow);
+    font-size: 24px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5d6b60;
     opacity: 0;
   }
-  .mx-tick-div.is-water { background: var(--muted); }
+  #mx-kicker::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 2px;
+    background: color-mix(in srgb, var(--ink) 18%, transparent);
+  }
+
+  /* ---------- the dominant read ----------
+     A 260px numeral's INK box is 1.2em tall (312px) and overhangs its 0.82 line box by
+     ~49px top and bottom, so the numeral and its label are laid out side by side and
+     placed absolutely: a stacked lockup at this size cannot clear the kicker above and
+     the measure below inside the y 192-1280 content box, which the layout gate caught
+     as a real content_overlap, not a transient one. */
+  #mx-stat-num {
+    position: absolute;
+    left: 72px; top: 320px;
+    display: block;
+    font-weight: 500;
+    font-size: 260px;
+    line-height: 0.82;
+    letter-spacing: -0.055em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  #mx-water-label {
+    position: absolute;
+    left: 640px; top: 452px;
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 54px;
+    line-height: 1;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  /* ---------- the one measure: 97 green / 3 bronze ---------- */
+  #mx-remainder-tag {
+    position: absolute;
+    right: 162px; top: 552px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #7a5232;
+    text-align: right;
+    opacity: 0;
+  }
+  #mx-bar {
+    position: absolute;
+    left: 72px; right: 162px; top: 606px;
+    height: 60px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    overflow: hidden;
+    transform-origin: left center;
+  }
+  #mx-bar-water {
+    position: absolute;
+    inset: 0;
+    width: 97%;
+    background: var(--green);
+    border-radius: 8px 0 0 8px;
+    transform-origin: left center;
+  }
+  #mx-bar-rest {
+    position: absolute;
+    top: 0; right: 0;
+    width: 3%;
+    height: 100%;
+    background: var(--pink);
+    border-radius: 0 8px 8px 0;
+    transform-origin: right center;
+  }
+  /* the bronze thread: tag -> the 3% segment -> the named rows below */
+  .mx-thread {
+    position: absolute;
+    right: 173px;
+    width: 2px;
+    background: var(--pink);
+    transform-origin: top center;
+  }
+  #mx-thread-a { top: 590px; height: 16px; }
+  #mx-thread-b { top: 666px; height: 40px; }
+
+  /* ---------- the 3% opened out, by name ---------- */
+  #mx-rows-head {
+    position: absolute;
+    left: 72px; right: 162px; top: 722px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: #5d6b60;
+  }
+  #mx-rows-head-left { opacity: 0; }
+  #mx-range-note { opacity: 0; color: #7a5232; }
 
   #mx-rows {
     position: absolute;
-    left: 72px; right: 162px; top: 800px;
+    left: 72px; right: 162px; top: 748px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
   }
-  .mx-row { display: flex; align-items: flex-end; gap: 18px; opacity: 0; }
-  .mx-row-bar {
-    height: 46px;
-    background: var(--green);
-    border-radius: 6px;
-    flex: 0 0 auto;
+  .mx-row {
+    height: 86px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 24px 0 20px;
+    border: 2px solid color-mix(in srgb, var(--green) 22%, transparent);
+    border-left: 8px solid var(--pink);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--hollow) 30%, var(--paper));
+    opacity: 0;
+  }
+  .mx-row-index {
+    width: 40px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: #7a5232;
   }
   .mx-row-label {
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 28px;
-    letter-spacing: 0.04em;
+    font-size: 30px;
+    letter-spacing: 0.03em;
     color: var(--ink);
     white-space: nowrap;
   }
-
-  #mx-variance-svg {
-    position: absolute; left: 72px; top: 800px; width: 936px; height: 220px;
-    overflow: visible; pointer-events: none;
+  .mx-row-track {
+    position: relative;
+    margin-left: auto;
+    width: 240px;
+    height: 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 9%, transparent);
+    overflow: hidden;
   }
-  #mx-envelope-path { fill: none; stroke: var(--pink); stroke-width: 3; stroke-dasharray: 900; stroke-dashoffset: 900; }
+  .mx-row-range {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: color-mix(in srgb, var(--pink) 50%, transparent);
+    border-radius: 999px;
+    transform-origin: left center;
+  }
+  .mx-row-fill {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--green);
+    border-radius: 999px;
+    transform-origin: left center;
+  }
 
   #mx-hero-variable {
     position: absolute;
-    left: 72px; right: 162px; top: 1020px;
+    left: 72px; right: 162px; top: 1072px;
     opacity: 0;
   }
   .mx-hero-text {
     font-weight: 500;
-    font-size: 140px;
+    font-size: 112px;
     line-height: 0.94;
     letter-spacing: -0.02em;
     color: var(--ink);
     text-transform: uppercase;
   }
   .mx-hero-sub {
-    margin-top: 10px;
+    margin-top: 18px;
     font-family: var(--font-mono);
     font-size: 28px;
     letter-spacing: 0.06em;
@@ -106,7 +233,7 @@
   }
 
   #mx-citation-1 {
-    position: absolute; left: 72px; top: 1210px;
+    position: absolute; right: 162px; top: 1090px;
     font-family: var(--font-mono);
     font-size: 26px;
     letter-spacing: 0.04em;
@@ -212,30 +339,45 @@
 
   <!-- ===== phase 1: composition + variance (0.00-17.92 in-scene = 13.36-31.28 abs) ===== -->
   <div class="phase" id="ph-composition">
-    <div id="mx-column-wrap">
-      <svg id="mx-vessel-svg" viewBox="0 0 300 640">
-        <rect id="mx-vessel-fill" x="10" y="626" width="280" height="0" />
-        <rect id="mx-vessel-outline" x="10" y="10" width="280" height="620" rx="18" />
-        <text id="mx-water-label" x="30" y="60">97% WATER</text>
-      </svg>
+    <div id="mx-kicker"><span>Composition</span></div>
+
+    <span id="mx-stat-num">97%</span>
+    <span id="mx-water-label">Water</span>
+
+    <div id="mx-remainder-tag">The rest &middot; 3%</div>
+    <div class="mx-thread" id="mx-thread-a"></div>
+    <div id="mx-bar">
+      <div id="mx-bar-water"></div>
+      <div id="mx-bar-rest"></div>
     </div>
-        <div id="mx-ticks-wrap"><div class="mx-tick-div is-water" id="tick-0" style="left:0px"></div><div class="mx-tick-div is-water" id="tick-1" style="left:45px"></div><div class="mx-tick-div is-water" id="tick-2" style="left:90px"></div><div class="mx-tick-div is-water" id="tick-3" style="left:135px"></div><div class="mx-tick-div is-water" id="tick-4" style="left:180px"></div><div class="mx-tick-div is-water" id="tick-5" style="left:225px"></div><div class="mx-tick-div is-water" id="tick-6" style="left:270px"></div><div class="mx-tick-div is-water" id="tick-7" style="left:315px"></div><div class="mx-tick-div is-water" id="tick-8" style="left:360px"></div><div class="mx-tick-div" id="tick-9" style="left:405px"></div></div>
+    <div class="mx-thread" id="mx-thread-b"></div>
+
+    <div id="mx-rows-head">
+      <span id="mx-rows-head-left">The rest, by name</span>
+      <span id="mx-range-note">Range across samples</span>
+    </div>
 
     <div id="mx-rows">
-      <div class="mx-row" id="mx-row-protein"><div class="mx-row-bar" style="width:220px"></div><span class="mx-row-label">Proteins</span></div>
-      <div class="mx-row" id="mx-row-glycolic"><div class="mx-row-bar" style="width:160px"></div><span class="mx-row-label">Glycolic Acid</span></div>
-      <div class="mx-row" id="mx-row-allantoin"><div class="mx-row-bar" style="width:190px"></div><span class="mx-row-label">Allantoin</span></div>
+      <div class="mx-row" id="mx-row-protein">
+        <span class="mx-row-index">01</span><span class="mx-row-label">Proteins</span>
+        <span class="mx-row-track"><span class="mx-row-range" id="mx-range-protein"></span><span class="mx-row-fill" id="mx-fill-protein"></span></span>
+      </div>
+      <div class="mx-row" id="mx-row-glycolic">
+        <span class="mx-row-index">02</span><span class="mx-row-label">Glycolic Acid</span>
+        <span class="mx-row-track"><span class="mx-row-range" id="mx-range-glycolic"></span><span class="mx-row-fill" id="mx-fill-glycolic"></span></span>
+      </div>
+      <div class="mx-row" id="mx-row-allantoin">
+        <span class="mx-row-index">03</span><span class="mx-row-label">Allantoin</span>
+        <span class="mx-row-track"><span class="mx-row-range" id="mx-range-allantoin"></span><span class="mx-row-fill" id="mx-fill-allantoin"></span></span>
+      </div>
     </div>
-    <svg id="mx-variance-svg" viewBox="0 0 936 220">
-      <path id="mx-envelope-path" d="M 20 140 Q 300 40 500 120 T 916 90" />
-    </svg>
 
     <div id="mx-hero-variable">
       <div class="mx-hero-text">Variable</div>
       <div class="mx-hero-sub">same species, different product, every time</div>
     </div>
 
-    <div id="mx-citation-1">Sci Rep · 2024</div>
+    <div id="mx-citation-1">Sci Rep &middot; 2024</div>
   </div>
 
   <!-- ===== phase 2: evidence (17.92-34.56 in-scene = 31.28-47.92 abs) ===== -->
@@ -282,21 +424,25 @@
     window.__timelines = window.__timelines || {};
     window.__timelines["03-mixture"] = tl;
 
-    // ---------- the 100-tick grid is STATIC markup (100 pre-declared divs above),
-    // never created at runtime — a build-100-divs-via-createElement version of this
-    // scene rendered as a completely blank region for its whole on-screen life despite
-    // every GSAP tween firing correctly, confirmed by frame extraction at multiple points
-    // across the animation window. Every other element in this project is static markup
-    // animated by GSAP; this is that same pattern, applied here too. ----------
-    var ticks = gsap.utils.toArray(".mx-tick-div");
+    // ---------- Every element below is STATIC markup animated by GSAP. Nothing in this
+    // scene is built with createElement: a runtime-built version of the old 100-tick grid
+    // rendered as a completely blank region for its whole on-screen life in this engine
+    // despite every tween firing correctly, confirmed by frame extraction. That pattern
+    // holds here. ----------
 
     // ---------- initial states ----------
-    gsap.set("#mx-vessel-fill", { attr: { height: 0, y: 626 } });
-    gsap.set("#mx-vessel-outline", { strokeDashoffset: 1800 });
-    gsap.set("#mx-envelope-path", { strokeDashoffset: 900 });
-    gsap.set(ticks, { opacity: 0 });
-    gsap.set([".mx-row"], { opacity: 0, x: 0 });
-    gsap.set("#mx-envelope-path", { opacity: 0 });
+    gsap.set("#mx-kicker", { opacity: 0, y: 8 });
+    gsap.set("#mx-stat-num", { opacity: 0, y: 40 });
+    gsap.set("#mx-water-label", { opacity: 0, y: 18 });
+    gsap.set("#mx-bar", { scaleX: 0 });
+    gsap.set("#mx-bar-water", { scaleX: 0 });
+    gsap.set("#mx-bar-rest", { scaleX: 0 });
+    gsap.set("#mx-remainder-tag", { opacity: 0, y: 8 });
+    gsap.set(".mx-thread", { scaleY: 0 });
+    gsap.set(["#mx-rows-head-left", "#mx-range-note"], { opacity: 0 });
+    gsap.set([".mx-row"], { opacity: 0, y: 0 });
+    gsap.set(".mx-row-fill", { scaleX: 0 });
+    gsap.set(".mx-row-range", { scaleX: 0 });
     gsap.set("#mx-hero-variable", { opacity: 0, y: 20 });
     gsap.set("#mx-citation-1", { opacity: 0 });
     gsap.set([".mx-tile", "#mx-evidence-card", "#mx-restate", "#mx-caveat-note"], { opacity: 0 });
@@ -304,53 +450,92 @@
     gsap.set("#mx-gap-placebo", { width: "0%" });
     gsap.set("#ph-evidence", { autoAlpha: 0 });
 
-    function fillVessel(pct, at, dur) {
-      var h = 616 * (pct / 100);
-      tl.to("#mx-vessel-fill", { attr: { height: h, y: 626 - h }, duration: dur, ease: "power2.out" }, at);
-    }
+    // ================= PHASE 1: composition readout =================
+    // Every beat below is locked to the MEASURED word clock in assets/voice/03.transcript.json
+    // (scene-local = absolute - 13.36). The reveal lands just ahead of its own word so the
+    // word and the graphic resolve together rather than the graphic chasing the VO.
+    //   "97%"        1.94   |  "The rest,"  3.52   |  "proteins,"  4.19
+    //   "glycolic"   4.91   |  "allantoin," 6.02   |  "varies"     7.14
+    //   "2024"       8.53   |  "exact mix" 11.68   |  "collected." 13.56
+    //   "Same species," 15.34
+    // No overshoot eases anywhere in this phase, no vertical row travel, no lateral
+    // re-deal: the old build slid whole rows sideways across the vessel, which is what
+    // read as cartoonish and what put bars over the vessel outline and past x=72.
+    // Variance is now carried by bar LENGTH inside a fixed track, which cannot collide.
 
-    // ================= PHASE 1: composition + variance =================
-    // 0.00-2.24: vessel draws in, fills to 97%
-    tl.to("#mx-vessel-outline", { strokeDashoffset: 0, duration: 1.0, ease: "power2.out" }, 0.10);
-    fillVessel(97, 0.60, 1.4);
-    tl.fromTo("#mx-water-label", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 1.60);
+    // 0.10-1.20: the frame states itself, then the measure draws.
+    tl.to("#mx-kicker", { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" }, 0.10);
+    tl.to("#mx-bar", { scaleX: 1, duration: 0.75, ease: "power2.out" }, 0.45);
 
-    // 2.24-4.64: 10-segment pictogram lights in reading order (9 "water" segments, 1
-    // remainder) — one staggered GSAP call across the whole array, not 100 individual
-    // per-id tweens. A 100-element version of this (both div- and SVG-rect-based) rendered
-    // as a fully blank region for its whole on-screen life in this engine, confirmed by
-    // frame extraction at multiple points; this 10-element version is the fix, not a
-    // workaround — precision beyond what a 10-segment pictogram can show belongs in the
-    // "97% WATER" text label, never invented into the pictogram itself.
-    // Water/non-water fill is baked into the class attribute at build time.
-    // 10 elements is the right precision for this pictogram; the "97% WATER"
-    // text label carries the actual figure.
-    for (var r = 0; r < 10; r++) {
-      tl.fromTo("#tick-" + r, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out" }, 2.24 + r * 0.24);
-    }
+    // 1.30-3.00: the dominant read lands on "97%", then the water fill sweeps under it.
+    // #mx-water-label must be up by abs 15.60 (local 2.24) per index.motion.json; it is
+    // fully in at 2.10.
+    tl.to("#mx-stat-num", { opacity: 1, y: 0, duration: 0.55, ease: "power4.out" }, 1.30);
+    tl.to("#mx-water-label", { opacity: 1, y: 0, duration: 0.30, ease: "power3.out" }, 1.80);
+    tl.to("#mx-bar-water", { scaleX: 1, duration: 1.05, ease: "power2.out" }, 1.95);
 
-    // 4.64-7.64: remainder detaches into 3 named rows (waterfall-entry)
-    tl.fromTo("#mx-row-protein", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 4.70);
-    tl.fromTo("#mx-row-glycolic", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 5.30);
-    tl.fromTo("#mx-row-allantoin", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, 5.90);
+    // 3.10-3.85: "The rest," — the 3% arrives as the one contrasting segment on the same
+    // measure, and a bronze thread runs tag -> segment -> the named rows below it.
+    tl.to("#mx-remainder-tag", { opacity: 1, y: 0, duration: 0.30, ease: "power3.out" }, 3.10);
+    tl.to("#mx-thread-a", { scaleY: 1, duration: 0.22, ease: "power2.out" }, 3.20);
+    tl.to("#mx-bar-rest", { scaleX: 1, duration: 0.26, ease: "power3.out" }, 3.34);
+    tl.to("#mx-thread-b", { scaleY: 1, duration: 0.30, ease: "power2.out" }, 3.55);
+    tl.to("#mx-rows-head-left", { opacity: 1, duration: 0.28, ease: "power2.out" }, 3.85);
 
-    // 7.64-11.14: sample 2 — lateral re-deal (never vertical, per catalog's own confirmed fix)
-    tl.to("#mx-row-protein", { x: 60, duration: 0.8, ease: "power2.inOut" }, 8.20);
-    tl.to("#mx-row-glycolic", { x: -40, duration: 0.8, ease: "power2.inOut" }, 8.40);
-    tl.to("#mx-row-allantoin", { x: 30, duration: 0.8, ease: "power2.inOut" }, 8.60);
-    tl.to(".mx-row-bar", { scaleX: 1.15, duration: 0.8, ease: "power2.inOut", stagger: 0.08 }, 8.20);
+    // 4.12-6.50: the remainder opens into its three named parts, one per spoken name.
+    // Each row settles 14px with no overshoot; its measure fills straight after.
+    tl.fromTo("#mx-row-protein", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, 4.12);
+    tl.to("#mx-fill-protein", { scaleX: 0.78, duration: 0.40, ease: "power2.out" }, 4.26);
+    tl.fromTo("#mx-row-glycolic", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, 4.84);
+    tl.to("#mx-fill-glycolic", { scaleX: 0.52, duration: 0.40, ease: "power2.out" }, 4.98);
+    tl.fromTo("#mx-row-allantoin", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, 5.95);
+    tl.to("#mx-fill-allantoin", { scaleX: 0.66, duration: 0.40, ease: "power2.out" }, 6.09);
 
-    // 11.14-14.64: sample 3 re-deals again; variance envelope draws
-    tl.to("#mx-row-protein", { x: -20, duration: 0.8, ease: "power2.inOut" }, 11.60);
-    tl.to("#mx-row-glycolic", { x: 50, duration: 0.8, ease: "power2.inOut" }, 11.80);
-    tl.to("#mx-row-allantoin", { x: -50, duration: 0.8, ease: "power2.inOut" }, 12.00);
-    tl.fromTo("#mx-envelope-path", { opacity: 0 }, { opacity: 0.6, duration: 0.3 }, 12.60);
-    tl.to("#mx-envelope-path", { strokeDashoffset: 0, duration: 1.4, ease: "power2.out" }, 12.60);
+    // 7.10: "varies by product." Same three names, different amounts. Only the fills move.
+    tl.to("#mx-fill-protein", { scaleX: 0.55, duration: 0.75, ease: "power2.inOut" }, 7.10);
+    tl.to("#mx-fill-glycolic", { scaleX: 0.74, duration: 0.75, ease: "power2.inOut" }, 7.18);
+    tl.to("#mx-fill-allantoin", { scaleX: 0.44, duration: 0.75, ease: "power2.inOut" }, 7.26);
 
-    // 14.64-17.92: "VARIABLE" hero lands; rows keep a bounded drift (keepsMoving floor for this window)
-    tl.fromTo("#mx-hero-variable", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 14.80);
-    tl.fromTo("#mx-citation-1", { opacity: 0 }, { opacity: 1, duration: 0.35 }, 15.30);
-    tl.to(".mx-row", { y: -8, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, 15.00);
+    // 8.60-10.65: "A 2024 lab comparison found" — the observed range shows up behind each
+    // fill, so the spread is stated once instead of implied by repeated motion.
+    tl.to("#mx-range-note", { opacity: 1, duration: 0.30, ease: "power2.out" }, 8.60);
+    // The Sci Rep chip lands ON its own claim ("A 2024 lab comparison", local 8.53) rather
+    // than trailing the scene. index.motion.json only requires it up by abs 29.30, so
+    // arriving at abs 22.02 satisfies that gate and states the source where it is used.
+    tl.to("#mx-citation-1", { opacity: 1, duration: 0.30, ease: "power2.out" }, 8.66);
+    tl.to("#mx-range-protein", { scaleX: 0.80, duration: 1.00, ease: "power2.out" }, 8.70);
+    tl.to("#mx-range-glycolic", { scaleX: 0.86, duration: 1.00, ease: "power2.out" }, 8.78);
+    tl.to("#mx-range-allantoin", { scaleX: 0.72, duration: 1.00, ease: "power2.out" }, 8.86);
+    tl.to("#mx-fill-protein", { scaleX: 0.80, duration: 0.75, ease: "power2.inOut" }, 9.90);
+    tl.to("#mx-fill-glycolic", { scaleX: 0.40, duration: 0.75, ease: "power2.inOut" }, 9.98);
+    tl.to("#mx-fill-allantoin", { scaleX: 0.72, duration: 0.75, ease: "power2.inOut" }, 10.06);
+
+    // 11.60-14.85: "the exact mix changes with how it's collected" — two more draws inside
+    // the same range, then the range itself opens a little wider.
+    tl.to("#mx-fill-protein", { scaleX: 0.62, duration: 0.75, ease: "power2.inOut" }, 11.60);
+    tl.to("#mx-fill-glycolic", { scaleX: 0.86, duration: 0.75, ease: "power2.inOut" }, 11.68);
+    tl.to("#mx-fill-allantoin", { scaleX: 0.50, duration: 0.75, ease: "power2.inOut" }, 11.76);
+    tl.to("#mx-fill-protein", { scaleX: 0.74, duration: 0.80, ease: "power2.inOut" }, 12.95);
+    tl.to("#mx-fill-glycolic", { scaleX: 0.58, duration: 0.80, ease: "power2.inOut" }, 13.03);
+    tl.to("#mx-fill-allantoin", { scaleX: 0.64, duration: 0.80, ease: "power2.inOut" }, 13.11);
+    tl.to("#mx-range-protein", { scaleX: 0.84, duration: 0.90, ease: "sine.inOut" }, 13.95);
+    tl.to("#mx-range-glycolic", { scaleX: 0.90, duration: 0.90, ease: "sine.inOut" }, 14.00);
+    tl.to("#mx-range-allantoin", { scaleX: 0.76, duration: 0.90, ease: "sine.inOut" }, 14.05);
+
+    // 15.10-17.90: "Same species, different product, every time." The conclusion lands.
+    // #mx-hero-variable must be up by abs 28.90 (local 15.54) per index.motion.json; it is
+    // in at 15.50. The citation chip already landed on its claim at local 8.66.
+    tl.to("#mx-hero-variable", { opacity: 1, y: 0, duration: 0.40, ease: "power3.out" }, 15.10);
+    tl.to("#mx-fill-protein", { scaleX: 0.58, duration: 0.90, ease: "sine.inOut" }, 16.20);
+    tl.to("#mx-fill-glycolic", { scaleX: 0.80, duration: 0.90, ease: "sine.inOut" }, 16.28);
+    tl.to("#mx-fill-allantoin", { scaleX: 0.46, duration: 0.90, ease: "sine.inOut" }, 16.36);
+
+    // [S6/A-10] `hold`: one continuous 3px drift under the whole phase, the same device
+    // phase 2 already uses. It exists to keep #root under the 1.6s maxStaticSec ceiling
+    // in index.motion.json across the quiet stretches between spoken beats; at 3px over
+    // ~8.7s it is well under a perceptible float.
+    tl.to("#ph-composition", { y: -3, duration: 8.60, ease: "sine.inOut" }, 0.50);
+    tl.to("#ph-composition", { y: 0, duration: 8.80, ease: "sine.inOut" }, 9.10);
 
     // ================= in-scene HARD CUT to phase 2, at 17.92 =================
     tl.set("#ph-composition", { autoAlpha: 0 }, 17.92);

@@ -1,0 +1,12 @@
+{
+  "measured_I": -23.72,
+  "measured_TP": 0.38,
+  "measured_LRA": 5.8,
+  "measured_thresh": -34.23,
+  "target_I": -14,
+  "target_TP": -2.5,
+  "target_LRA": 11,
+  "final_output_I": -16.1,
+  "final_output_TP": -1.8,
+  "note": "linear pass fell back to dynamic normalization -- the source crest factor (measured_TP - measured_I = 24.1 LU) makes a pure-linear path to -14 LUFS exceed the -2.5dBTP ceiling. Re-measured on final.mp4 itself, not the pre-mux intermediate."
+}

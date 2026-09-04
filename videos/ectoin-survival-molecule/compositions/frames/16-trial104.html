@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="16-trial104"
-       data-width="1920" data-height="1080" data-duration="17.261">
+       data-width="1920" data-height="1080" data-duration="12.658">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -98,6 +98,12 @@
     /* --rule-strong, for washing a panel that is ALREADY --mist. `.wash.mist` on
        a --mist panel is the same colour on the same colour: it renders nothing,
        and a scene relying on it as a beat holds silently. Measured on scene 08. */
+    /* Full-canvas layer, for a scene that stacks TWO complete grounds and
+       reveals one over the other (09-exclusion: paper "tidy version" under
+       an ink "honest correction", swept in by clip-path). Each .world fills
+       its own .stage internally -- this class only pins position/overflow so
+       stacking two of them under #root does not double the safe-area padding. */
+    .world { position:absolute; inset:0; overflow:hidden; }
     .wash.dim  { background:var(--ink-3); }   /* 82-luma step off --mist; a
        --rule-strong wash was only 20 luma and barely registered as a beat */
     /* WASH COLOUR IS BOUND TO TEXT COLOUR. A wash replaces what sits behind the
@@ -150,7 +156,27 @@
     .cohort i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%;
                 background:var(--ink-3); }
 
+    /* top/left/right are offset from #root's own edge (the chband div is a
+       sibling of .stage, not nested inside it), so the safe-area tokens are
+       spelled out explicitly here -- never 0, which would bleed the wash to
+       the true canvas edge. See the hard safe-area gate note above. */
+    /* top:calc(safe-top + 3px), not bare var(--safe-top): the hard safe-area
+       gate measured this band's own rendered edge 2px into the reserved zone
+       (rounded-corner antialiasing/H.264 edge blur softening a couple of
+       rows outward beyond the CSS-computed line) -- a small buffer absorbs
+       that without being visible. */
+    .chband { position:absolute; top:calc(var(--safe-top) + 3px); left:var(--safe-left);
+              right:var(--safe-right); height:112px;
+              display:flex; align-items:center; overflow:hidden;
+              border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }
+    .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
+                       letter-spacing:var(--tr-mono); }
+
     </style>
+      <div class="chband" id="ch-band">
+        <div class="wash moss" id="ch-wash"></div>
+        <p class="kicker" id="ch-title">What the human evidence really says</p>
+      </div>
     <div class="stage">
       <div class="g16">
         <div class="col">
@@ -170,32 +196,39 @@
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
 
   // 104 dots filling a 58% column is the biggest single area change in the video.
-  // The count-up rides it; the GRID is the beat.
+  // The count-up rides it; the GRID is the beat. Chapter opener: first spoken
+  // beat bound to 0.350. Count-up ENDS on the word that names the number, so
+  // the counter never finishes before or after "a hundred and four" is said.
   var grid = document.getElementById('t-grid');
   for (var i = 0; i < 104; i++) {
     var d = document.createElement('i'); d.id = 'ct-' + i; grid.appendChild(d);
     tl.set('#ct-' + i, { opacity:0, scale:0.3, transformOrigin:'50% 50%' }, 0);
-    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, 1.60 + i*0.022);
+    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, 0.350 + i*0.022);
   }
   var counter = { v:0 }, el = document.getElementById('t-n');
   tl.set('#t-n', { opacity:0 }, 0);   // restates the CSS default, never the sole source
-  tl.to('#t-n', { opacity:1, duration:0.30 }, 1.60);
-  tl.to(counter, { v:104, duration:2.30, ease:'power1.out',
-                   onUpdate:function(){ el.textContent = Math.round(counter.v); } }, 1.60);
-  tl.fromTo('#t-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 4.60);
-  // split the cohort into the two arms -- a whole-grid recolour
+  tl.to('#t-n', { opacity:1, duration:0.30 }, 0.350);
+  tl.to(counter, { v:104, duration:(7.570 - 0.350), ease:'power1.out',
+                   onUpdate:function(){ el.textContent = Math.round(counter.v); } }, 0.350);
+  tl.fromTo('#t-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 7.570+0.70);
+  // split the cohort into the two arms -- a whole-grid recolour, on the word
+  // that introduces the comparison arm ("against the same cream without it").
   for (var j = 0; j < 104; j++) {
     tl.to('#ct-' + j, { backgroundColor: (j % 2 ? '#59B8AE' : '#9C978D'),
-                        duration:0.50 }, 6.90 + (j % 13) * 0.05);
+                        duration:0.50 }, 9.920 + (j % 13) * 0.05);
   }
-  tl.fromTo('#t-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 8.40);
+  tl.fromTo('#t-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 9.920+1.50);
   // The grid physically SPLITS into its two arms -- a whole-column move, where
   // recolouring 104 small dots measured as nothing.
   tl.to('#t-grid', { scaleX:0.92, x:-26, transformOrigin:'50% 50%', duration:1.50,
-                     ease:'power2.inOut' }, 9.60);
-  tl.to('#t-grid', { scaleY:1.10, duration:1.80, ease:'power2.inOut' }, 12.60);
+                     ease:'power2.inOut' }, 9.920+2.70);
+  tl.to('#t-grid', { scaleY:1.10, duration:1.80, ease:'power2.inOut' }, 9.920+5.70);
 
-    tl.to({}, { duration: 17.261 }, 0);   // full-span anchor -- always last
+  // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
+  tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
+  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
+
+    tl.to({}, { duration: 12.658 }, 0);   // full-span anchor -- always last
     window.__timelines["16-trial104"] = tl;
   </script>
 </template>

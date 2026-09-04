@@ -1,0 +1,145 @@
+{
+  "scene": "21-verdict",
+  "block": "act4",
+  "cut": {
+    "start": 61.81,
+    "end": 71.28
+  },
+  "gain_db": 8.1,
+  "lufs": -20.1,
+  "wpm": 156.8,
+  "words": [
+    {
+      "text": "Some",
+      "start": 0.0,
+      "end": 0.21
+    },
+    {
+      "text": "of",
+      "start": 0.21,
+      "end": 0.34
+    },
+    {
+      "text": "that",
+      "start": 0.34,
+      "end": 0.6
+    },
+    {
+      "text": "research",
+      "start": 0.6,
+      "end": 1.12
+    },
+    {
+      "text": "also",
+      "start": 1.12,
+      "end": 1.38
+    },
+    {
+      "text": "comes",
+      "start": 1.67,
+      "end": 1.7
+    },
+    {
+      "text": "from",
+      "start": 1.7,
+      "end": 1.96
+    },
+    {
+      "text": "people",
+      "start": 1.96,
+      "end": 2.35
+    },
+    {
+      "text": "who",
+      "start": 2.35,
+      "end": 2.54
+    },
+    {
+      "text": "sell",
+      "start": 2.54,
+      "end": 2.78
+    },
+    {
+      "text": "the",
+      "start": 2.83,
+      "end": 2.99
+    },
+    {
+      "text": "ingredient,",
+      "start": 2.99,
+      "end": 3.77
+    },
+    {
+      "text": "BTOP",
+      "start": 3.77,
+      "end": 4.03
+    },
+    {
+      "text": "Merk",
+      "start": 4.07,
+      "end": 4.28
+    },
+    {
+      "text": "Cow.",
+      "start": 4.28,
+      "end": 4.71
+    },
+    {
+      "text": "So,",
+      "start": 4.71,
+      "end": 5.115
+    },
+    {
+      "text": "promising",
+      "start": 5.115,
+      "end": 5.115
+    },
+    {
+      "text": "supporting",
+      "start": 5.763,
+      "end": 5.783
+    },
+    {
+      "text": "ingredient,",
+      "start": 5.783,
+      "end": 6.673
+    },
+    {
+      "text": "yes.",
+      "start": 6.693,
+      "end": 7.153
+    },
+    {
+      "text": "Miracle",
+      "start": 7.163,
+      "end": 7.683
+    },
+    {
+      "text": "molecule,",
+      "start": 7.683,
+      "end": 8.413
+    },
+    {
+      "text": "no.",
+      "start": 8.413,
+      "end": 8.803
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 4.71,
+      "text": "Some of that research also comes from people who sell the ingredient, BTOP Merk Cow."
+    },
+    {
+      "start": 4.71,
+      "end": 7.153,
+      "text": "So, promising supporting ingredient, yes."
+    },
+    {
+      "start": 7.163,
+      "end": 8.803,
+      "text": "Miracle molecule, no."
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "scene": "28-remember",
+  "block": "act7",
+  "cut": {
+    "start": 0.0,
+    "end": 15.729
+  },
+  "gain_db": 6.0,
+  "lufs": -20.3,
+  "wpm": 152.4,
+  "words": [
+    {
+      "text": "So,",
+      "start": 0.0,
+      "end": 0.285
+    },
+    {
+      "text": "next",
+      "start": 0.304,
+      "end": 0.57
+    },
+    {
+      "text": "time",
+      "start": 0.722,
+      "end": 0.875
+    },
+    {
+      "text": "you",
+      "start": 0.875,
+      "end": 1.093
+    },
+    {
+      "text": "see",
+      "start": 1.093,
+      "end": 1.312
+    },
+    {
+      "text": "Ectoin",
+      "start": 1.312,
+      "end": 1.74
+    },
+    {
+      "text": "on",
+      "start": 1.74,
+      "end": 1.882
+    },
+    {
+      "text": "an",
+      "start": 1.882,
+      "end": 2.025
+    },
+    {
+      "text": "ingredient",
+      "start": 2.025,
+      "end": 2.757
+    },
+    {
+      "text": "list,",
+      "start": 2.757,
+      "end": 3.153
+    },
+    {
+      "text": "remember",
+      "start": 3.373,
+      "end": 3.504
+    },
+    {
+      "text": "what",
+      "start": 3.523,
+      "end": 3.722
+    },
+    {
+      "text": "you",
+      "start": 3.722,
+      "end": 3.884
+    },
+    {
+      "text": "are",
+      "start": 3.884,
+      "end": 4.065
+    },
+    {
+      "text": "looking",
+      "start": 4.065,
+      "end": 4.492
+    },
+    {
+      "text": "at.",
+      "start": 4.625,
+      "end": 5.02
+    },
+    {
+      "text": "A",
+      "start": 5.02,
+      "end": 5.02
+    },
+    {
+      "text": "survival",
+      "start": 5.032,
+      "end": 5.508
+    },
+    {
+      "text": "strategy,",
+      "start": 5.508,
+      "end": 6.23
+    },
+    {
+      "text": "borrowed",
+      "start": 6.363,
+      "end": 7.028
+    },
+    {
+      "text": "from",
+      "start": 7.105,
+      "end": 7.409
+    },
+    {
+      "text": "bacteria,",
+      "start": 7.409,
+      "end": 8.182
+    },
+    {
+      "text": "not",
+      "start": 8.182,
+      "end": 8.182
+    },
+    {
+      "text": "the",
+      "start": 8.182,
+      "end": 8.342
+    },
+    {
+      "text": "new",
+      "start": 8.409,
+      "end": 8.666
+    },
+    {
+      "text": "hyaluronic",
+      "start": 8.666,
+      "end": 9.188
+    },
+    {
+      "text": "acid.",
+      "start": 9.664,
+      "end": 10.076
+    },
+    {
+      "text": "Not",
+      "start": 10.076,
+      "end": 10.076
+    },
+    {
+      "text": "a",
+      "start": 10.076,
+      "end": 10.076
+    },
+    {
+      "text": "miracle.",
+      "start": 10.076,
+      "end": 10.635
+    },
+    {
+      "text": "A",
+      "start": 10.635,
+      "end": 10.721
+    },
+    {
+      "text": "genuinely",
+      "start": 11.116,
+      "end": 11.116
+    },
+    {
+      "text": "interesting",
+      "start": 11.116,
+      "end": 11.963
+    },
+    {
+      "text": "supporting",
+      "start": 11.963,
+      "end": 12.809
+    },
+    {
+      "text": "molecule.",
+      "start": 12.866,
+      "end": 13.996
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 5.02,
+      "text": "So, next time you see Ectoin on an ingredient list, remember what you are looking at."
+    },
+    {
+      "start": 5.02,
+      "end": 10.076,
+      "text": "A survival strategy, borrowed from bacteria, not the new hyaluronic acid."
+    },
+    {
+      "start": 10.076,
+      "end": 10.635,
+      "text": "Not a miracle."
+    },
+    {
+      "start": 10.635,
+      "end": 13.996,
+      "text": "A genuinely interesting supporting molecule."
+    }
+  ]
+}

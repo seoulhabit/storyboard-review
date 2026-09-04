@@ -1,0 +1,42 @@
+{
+  "slug": "kbeauty-label-trap",
+  "vo": {
+    "master": "04-assets/vo.wav",
+    "master_mp3": "04-assets/vo.mp3",
+    "timing": "04-assets/vo-timing.json",
+    "voice": {
+      "provider": "higgsfield",
+      "model": "seed_audio",
+      "voice_id": "674b71b8-1d2e-4087-8567-d1f53c0b9f3c",
+      "voice_type": "element",
+      "name": "Kimberly"
+    },
+    "stems": [
+      "04-assets/vo/s00.wav",
+      "04-assets/vo/s01.wav",
+      "04-assets/vo/s02.wav",
+      "04-assets/vo/s03.wav",
+      "04-assets/vo/s04.wav",
+      "04-assets/vo/s05.wav",
+      "04-assets/vo/s06.wav",
+      "04-assets/vo/s07.wav",
+      "04-assets/vo/s08.wav"
+    ],
+    "duration_s": 257.12
+  },
+  "music": {
+    "file": "04-assets/music.wav",
+    "source": "videos/centella-tiger-grass/assets/bgm/track-pulse.wav",
+    "note": "house pulse-percussion bed, byte-identical across centella-tiger-grass/retinal-clinical-dossier/madecassoside-clinical-cut; looped x5 + trimmed to 257.12s with 1.5s fade-in / 2.0s fade-out. Per-question acceleration and the warm reveal resolve are implemented as mix automation at S6/S7, not a new generation.",
+    "duration_s": 257.12
+  },
+  "thumbnail": "04-assets/thumbnail.png",
+  "tokens": "04-assets/tokens/tokens.css",
+  "fonts": [
+    "04-assets/fonts/inter-800.woff2",
+    "04-assets/fonts/eb-garamond-400.woff2",
+    "04-assets/fonts/jetbrains-mono-500.woff2",
+    "04-assets/fonts/NotoSansKR-500-subset.woff2"
+  ],
+  "script": "04-assets/script.md"
+}

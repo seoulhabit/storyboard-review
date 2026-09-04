@@ -1,0 +1,735 @@
+{
+  "slug": "kbeauty-label-trap",
+  "format": "long",
+  "fps": 30,
+  "canvas": {
+    "w": 1920,
+    "h": 1080
+  },
+  "vo_duration_s": 257.12,
+  "presenter": "moving-diagram",
+  "bg": "#F7F5F0",
+  "ink": "#131516",
+  "accent": "#93B896",
+  "muted": "#6B6B6B",
+  "fonts": {
+    "family": "Inter",
+    "css": "'Inter', system-ui, -apple-system, Helvetica, Arial, sans-serif",
+    "google_css2": "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@500&display=swap"
+  },
+  "safe_area": {
+    "top": 54,
+    "bottom": 108,
+    "right": 96,
+    "left": 96
+  },
+  "audio": {
+    "vo": "04-assets/vo.wav",
+    "music": "04-assets/music.wav",
+    "music_volume": 0.12
+  },
+  "sections": [
+    {
+      "name": "hook",
+      "start": 0.0,
+      "end": 15.777
+    },
+    {
+      "name": "misconception",
+      "start": 15.777,
+      "end": 43.17
+    },
+    {
+      "name": "mechanism",
+      "start": 43.17,
+      "end": 145.025
+    },
+    {
+      "name": "proof",
+      "start": 145.025,
+      "end": 185.008
+    },
+    {
+      "name": "application",
+      "start": 185.008,
+      "end": 210.25
+    },
+    {
+      "name": "recap",
+      "start": 210.25,
+      "end": 257.12
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s01-bench-hook",
+      "start": 0.0,
+      "duration": 15.777,
+      "section": "hook",
+      "layout": "full-bleed-plate",
+      "bg": "dark",
+      "transition": null,
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 1.6,
+          "idiom": "hold",
+          "role": "body",
+          "text": "droplet falls in extreme slow motion, absolute black"
+        },
+        {
+          "offset": 1.6,
+          "dur": 0.8,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "ripple strikes water-mirror, reveals bottle-pair on rain-dark lab bench"
+        },
+        {
+          "offset": 2.4,
+          "dur": 3.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "CICA embosses onto both bottles; ingredient-list ribbons unroll, nearly identical"
+        },
+        {
+          "offset": 6.0,
+          "dur": 4.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "SAME HERO. DIFFERENT FORMULA."
+        },
+        {
+          "offset": 10.0,
+          "dur": 5.777,
+          "idiom": "hold",
+          "role": "body",
+          "text": "camera holds on the two-bottle mystery, unresolved"
+        }
+      ]
+    },
+    {
+      "id": "s02-scorecard-passport",
+      "start": 15.777,
+      "duration": 12.257,
+      "section": "misconception",
+      "layout": "full-bleed-plate",
+      "bg": "dark",
+      "transition": {
+        "type": "wipe-up",
+        "dur": 0.6
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 2.5,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "ingredient-list ribbons briefly become racing leaderboards"
+        },
+        {
+          "offset": 2.5,
+          "dur": 2.0,
+          "idiom": "slam",
+          "role": "body",
+          "text": "leaderboards fracture"
+        },
+        {
+          "offset": 4.5,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "one ribbon becomes a passport; vermilion stamp lands — IDENTITY ONLY"
+        },
+        {
+          "offset": 7.5,
+          "dur": 4.757,
+          "idiom": "hold",
+          "role": "head",
+          "text": "passport thesis settles: a list is a passport, not a scorecard"
+        }
+      ]
+    },
+    {
+      "id": "s03-promise-seals",
+      "start": 28.034,
+      "duration": 15.136,
+      "section": "misconception",
+      "layout": "full-bleed-plate",
+      "bg": "dark",
+      "transition": {
+        "type": "wipe-left",
+        "dur": 0.45
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 3.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "forensic scanner passes over Bottle A and Bottle B, answer withheld"
+        },
+        {
+          "offset": 3.0,
+          "dur": 3.5,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "five circular evidence seals orbit the bottles, face-down"
+        },
+        {
+          "offset": 6.5,
+          "dur": 2.0,
+          "idiom": "count",
+          "role": "body",
+          "text": "1 2 3 4 5 flash four frames each, wording withheld"
+        },
+        {
+          "offset": 8.5,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "FIVE QUESTIONS. ONE VERDICT."
+        },
+        {
+          "offset": 11.5,
+          "dur": 3.636,
+          "idiom": "hold",
+          "role": "body",
+          "text": "half-second silence before the first seal turns"
+        }
+      ]
+    },
+    {
+      "id": "s04-q1-canyon",
+      "start": 43.17,
+      "duration": 20.319,
+      "section": "mechanism",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "wipe-up",
+        "dur": 0.6
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 4.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "enter paper canyon built from a giant ingredient label; names stand as descending blocks"
+        },
+        {
+          "offset": 4.0,
+          "dur": 4.0,
+          "idiom": "slam",
+          "role": "body",
+          "text": "glowing red 1% line marks the cutoff"
+        },
+        {
+          "offset": 8.0,
+          "dur": 4.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "blocks below the line silently reorder — shell game"
+        },
+        {
+          "offset": 12.0,
+          "dur": 4.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "ORDER ≠ EXACT DOSE"
+        },
+        {
+          "offset": 16.0,
+          "dur": 4.319,
+          "idiom": "wipe",
+          "role": "head",
+          "text": "RANK, NOT QUANTITY"
+        }
+      ]
+    },
+    {
+      "id": "s05-q1-dose",
+      "start": 63.489,
+      "duration": 18.762,
+      "section": "mechanism",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "wipe-left",
+        "dur": 0.45
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 5.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "tiny golden molecule near the bottom activates; huge decorative bottle at top stays inert"
+        },
+        {
+          "offset": 5.0,
+          "dur": 6.0,
+          "idiom": "hold",
+          "role": "body",
+          "text": "star-near-the-end / top-near-effective counter-lesson lands"
+        },
+        {
+          "offset": 11.0,
+          "dur": 6.762,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "do-not-invent-a-number closing line settles"
+        },
+        {
+          "offset": 17.762,
+          "dur": 1.0,
+          "idiom": "swap",
+          "role": "body",
+          "text": "1s snap back to the two bottles, Question 1 seal turns face-up"
+        }
+      ]
+    },
+    {
+      "id": "s06-q2-leaf-chambers",
+      "start": 82.251,
+      "duration": 20.554,
+      "section": "mechanism",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "hard-cut",
+        "dur": 0.0
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 4.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "stamped passport opens into a living, rain-wet Centella leaf at macro scale; veins glow as transport paths"
+        },
+        {
+          "offset": 4.0,
+          "dur": 6.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "leaf divides into three parallel extraction chambers — water, solvent, purified compound"
+        },
+        {
+          "offset": 10.0,
+          "dur": 6.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "each chamber produces a visibly different liquid fingerprint"
+        },
+        {
+          "offset": 16.0,
+          "dur": 4.554,
+          "idiom": "slam",
+          "role": "body",
+          "text": "all three streams collapse back into one printed name: CENTELLA ASIATICA EXTRACT"
+        }
+      ]
+    },
+    {
+      "id": "s07-q2-travelers",
+      "start": 102.805,
+      "duration": 8.012,
+      "section": "mechanism",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "wipe-left",
+        "dur": 0.45
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "three distinct microscopic silhouettes pass through one passport gate"
+        },
+        {
+          "offset": 3.0,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "ONE NAME. MANY EXTRACTS."
+        },
+        {
+          "offset": 6.0,
+          "dur": 1.012,
+          "idiom": "swap",
+          "role": "body",
+          "text": "snap, seal 2 turns face-up"
+        }
+      ]
+    },
+    {
+      "id": "s08-q3-journey",
+      "start": 110.817,
+      "duration": 19.16,
+      "section": "mechanism",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "hard-cut",
+        "dur": 0.0
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 5.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "glowing molecule travels as a passenger through the water phase"
+        },
+        {
+          "offset": 5.0,
+          "dur": 5.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "passenger enters the gel lattice environment"
+        },
+        {
+          "offset": 10.0,
+          "dur": 5.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "passenger enters the oil-in-water emulsion"
+        },
+        {
+          "offset": 15.0,
+          "dur": 4.16,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "passenger reaches the layered stratum-corneum terrain"
+        }
+      ]
+    },
+    {
+      "id": "s09-q3-transit",
+      "start": 129.977,
+      "duration": 15.048,
+      "section": "mechanism",
+      "layout": "split-compare",
+      "bg": "paper",
+      "transition": {
+        "type": "wipe-left",
+        "dur": 0.45
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 6.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "pull out — Bottle A a chaotic transport map, Bottle B an orderly transit system, illustrative only"
+        },
+        {
+          "offset": 6.0,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "THE VEHICLE MATTERS."
+        },
+        {
+          "offset": 9.0,
+          "dur": 4.048,
+          "idiom": "hold",
+          "role": "body",
+          "text": "same hero ingredient, very different behaviour, settles"
+        },
+        {
+          "offset": 13.048,
+          "dur": 2.0,
+          "idiom": "swap",
+          "role": "body",
+          "text": "snap, seal 3 turns face-up"
+        }
+      ]
+    },
+    {
+      "id": "s10-q4-tunnel",
+      "start": 145.025,
+      "duration": 39.983,
+      "section": "proof",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "hard-cut",
+        "dur": 0.0
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 8.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "evidence tunnel stage 1: petri dish, bright but far from the bottle-shaped target"
+        },
+        {
+          "offset": 8.0,
+          "dur": 8.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "stage 2: isolated ingredient"
+        },
+        {
+          "offset": 16.0,
+          "dur": 8.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "stage 3: human skin study"
+        },
+        {
+          "offset": 24.0,
+          "dur": 8.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "stage 4: finished bottle in a controlled product test"
+        },
+        {
+          "offset": 32.0,
+          "dur": 4.0,
+          "idiom": "count",
+          "role": "head",
+          "text": "TESTED WHAT? PEOPLE? HOW LONG? MEASURED?"
+        },
+        {
+          "offset": 36.0,
+          "dur": 3.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "camera pulls sideways, revealing the literal gaps between stages"
+        },
+        {
+          "offset": 39.0,
+          "dur": 0.983,
+          "idiom": "swap",
+          "role": "body",
+          "text": "snap, seal 4 turns face-up"
+        }
+      ]
+    },
+    {
+      "id": "s11-q5-boundary",
+      "start": 185.008,
+      "duration": 25.242,
+      "section": "application",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "hard-cut",
+        "dur": 0.0
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 7.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "pristine skin landscape turns dry and fissured as too many active molecules arrive at once, clinical realism only"
+        },
+        {
+          "offset": 7.0,
+          "dur": 5.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "translucent boundary line appears before the damage, becomes a calm protective ring"
+        },
+        {
+          "offset": 12.0,
+          "dur": 5.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "four restrained icons materialize inside it: patch / routine / stop / clinician"
+        },
+        {
+          "offset": 17.0,
+          "dur": 4.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "THE BOUNDARY IS THE ANSWER."
+        },
+        {
+          "offset": 21.0,
+          "dur": 3.242,
+          "idiom": "hold",
+          "role": "body",
+          "text": "music drops to near-silence on ‘not YouTube’"
+        },
+        {
+          "offset": 24.242,
+          "dur": 1.0,
+          "idiom": "swap",
+          "role": "body",
+          "text": "snap, seal 5 turns face-up"
+        }
+      ]
+    },
+    {
+      "id": "s12-reveal",
+      "start": 210.25,
+      "duration": 25.425,
+      "section": "recap",
+      "layout": "split-compare",
+      "bg": "dark",
+      "transition": {
+        "type": "hard-cut",
+        "dur": 0.0
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 1.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "return exactly to the opening bench composition — same sub-composition, not a rebuild"
+        },
+        {
+          "offset": 1.0,
+          "dur": 6.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "five seals scan Bottle A: loud claim, thin evidence behind it"
+        },
+        {
+          "offset": 7.0,
+          "dur": 6.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "five seals scan Bottle B: quieter claim, complete evidence constellation"
+        },
+        {
+          "offset": 13.0,
+          "dur": 4.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "MORE UNCERTAINTY (A) / MORE DECISION-USEFUL INFORMATION (B) — no scorecard grammar"
+        },
+        {
+          "offset": 17.0,
+          "dur": 8.425,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "camera chooses no bottle; centers on the five-question card"
+        }
+      ]
+    },
+    {
+      "id": "s13-recap-questions",
+      "start": 235.675,
+      "duration": 11.994,
+      "section": "recap",
+      "layout": "full-bleed-plate",
+      "bg": "paper",
+      "transition": {
+        "type": "wipe-left",
+        "dur": 0.45
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 6.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "five-question memory card lays out: how much / which version / what vehicle / what evidence / where the boundary is"
+        },
+        {
+          "offset": 6.0,
+          "dur": 5.994,
+          "idiom": "hold",
+          "role": "body",
+          "text": "card holds, no full-sentence captions, five terms only"
+        }
+      ]
+    },
+    {
+      "id": "s14-landing",
+      "start": 247.669,
+      "duration": 9.451,
+      "section": "recap",
+      "layout": "end-card",
+      "bg": "dark",
+      "transition": {
+        "type": "wipe-left",
+        "dur": 0.45
+      },
+      "beats": [
+        {
+          "offset": 0.0,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "body",
+          "text": "five seals lock into a single passport card"
+        },
+        {
+          "offset": 3.0,
+          "dur": 2.0,
+          "idiom": "wipe",
+          "role": "body",
+          "text": "match-cut: passport circle becomes the SeoulHabit 습 mark"
+        },
+        {
+          "offset": 5.0,
+          "dur": 3.0,
+          "idiom": "arrive",
+          "role": "head",
+          "text": "DON'T FOLLOW THE HYPE. FOLLOW THE QUESTION."
+        },
+        {
+          "offset": 8.0,
+          "dur": 1.451,
+          "idiom": "arrive",
+          "role": "sub",
+          "text": "Educational, not diagnostic. — two beats of room tone"
+        }
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "t": 0.0,
+      "title": "Two Bottles, One Question"
+    },
+    {
+      "t": 15.777,
+      "title": "The List Is a Passport, Not a Scorecard"
+    },
+    {
+      "t": 43.17,
+      "title": "Why Order Isn't Random"
+    },
+    {
+      "t": 82.251,
+      "title": "Same Name, Different Extract"
+    },
+    {
+      "t": 110.817,
+      "title": "What Carries the Ingredient In"
+    },
+    {
+      "t": 145.025,
+      "title": "How Far Is the Evidence, Really"
+    },
+    {
+      "t": 185.008,
+      "title": "Where the Claim Stops"
+    },
+    {
+      "t": 210.25,
+      "title": "Back to the Two Bottles"
+    },
+    {
+      "t": 247.669,
+      "title": "What to Actually Check"
+    }
+  ],
+  "end_scene": {
+    "start": 247.669,
+    "duration": 9.451,
+    "overlay_zones_clear": true
+  }
+}

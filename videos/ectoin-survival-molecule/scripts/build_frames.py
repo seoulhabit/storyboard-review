@@ -1,35 +1,27 @@
 #!/usr/bin/env python3
-"""Generate compositions/frames/*.html for ACT 1.
+"""Generate compositions/frames/*.html for all 28 scenes.
 
-Scene durations are read from the MEASURED voiceover takes in assets/voice/,
-never authored by hand -- the VO is the master clock. Re-run after any new take.
+Scene durations, starts and every @w()/@we()/@first/@last/@dur/@sent() marker
+are DERIVED from timing.walk(), which itself derives from the CUT, measured
+voiceover (scripts/gen_vo.py's output: assets/voice/NN.wav + NN.words.json).
+Nothing here authors a duration or an absolute second by hand any more -- see
+this project's CLAUDE.md and the plan this implements for why a hand-typed
+absolute second is exactly the defect class that put dead air at every seam.
 
-Layouts are landscape-NATIVE, not portrait layouts stretched. The 9:16 failure
-mode is a small element marooned in a tall empty column; the 16:9 failure mode is
-a full-width band of text with no depth behind it. Each scene below uses a shape a
-wide frame actually affords: two-column, three-across, or a left-to-right process.
+Layouts are landscape-NATIVE, not portrait layouts stretched -- unchanged from
+the Act 1 pilot's own framing note.
 """
-import subprocess
+import json
+import re
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from _preamble import scene
 from frames_a27 import SCENES_A27
+from timing import walk, Ctx, ORDER
 
 ROOT = Path(__file__).resolve().parent.parent
-TAIL_PAD = 0.15   # scene breath BEYOND the 250ms silent tail pad_vo.py adds to
-                  # every take (total ~0.40s after the last word, as before)
-
-
-def vo_duration(n):
-    p = ROOT / "assets" / "voice" / f"{n:02d}.wav"
-    if not p.exists():
-        return None
-    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                          "-of", "csv=p=0", str(p)], capture_output=True, text=True).stdout.strip()
-    return float(out)
-
 
 # ---------------------------------------------------------------- scene 01
 S1_CSS = """
@@ -41,6 +33,7 @@ S1_CSS = """
                 line-height:var(--lh-tight); letter-spacing:var(--tr-display);
                 margin:0; }
     .s1-claim em { font-style:normal; color:var(--aqua); }
+    .s1-claim span { display:inline; }
     .s1-neg { display:flex; flex-direction:column; gap:var(--s-4);
               min-height:0; height:100%; justify-content:center; }
     .s1-neg-h { flex:0 0 auto; font-family:var(--font-mono); font-size:var(--t-label);
@@ -71,8 +64,9 @@ S1_CSS = """
 S1_BODY = """    <div class="stage">
       <div class="s1">
         <div class="s1-claim-wrap">
-          <h1 class="s1-claim" id="s1-claim">Your next favourite skincare
-            ingredient may have been invented by <em>bacteria trying not to die.</em></h1>
+          <h1 class="s1-claim" id="s1-claim"><span id="s1-c1">Your next favourite
+            skincare ingredient</span><span id="s1-c2"> may have been invented
+            by </span><em id="s1-bacteria">bacteria trying not to die.</em></h1>
         </div>
         <div class="s1-neg flexmin">
           <p class="s1-neg-h">Not this</p>
@@ -84,22 +78,38 @@ S1_BODY = """    <div class="stage">
       <p class="s1-mark" id="s1-mark">ECTOIN</p>
     </div>"""
 S1_TL = """
-  // FRAME ZERO IS THE HOOK: the claim is already at rest at t=0, not mid-fade.
-  // Only the strike-throughs are animated, so the export's literal first frame
-  // is the composed hook and a viable thumbnail candidate.
-  tl.set('#s1-claim', { opacity: 1, y: 0 }, 0);
-  tl.fromTo('#s1-i1', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 3.10);
-  tl.fromTo('#s1-i2', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 3.45);
-  tl.fromTo('#s1-i3', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, 3.80);
-  tl.fromTo('#s1-b1', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 5.05);
-  tl.to('#s1-i1', { color:'#131516', duration:0.30 }, 5.05);  // --ink on coral = 5.60:1
-  tl.fromTo('#s1-b2', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 6.45);
-  tl.to('#s1-i2', { color:'#131516', duration:0.30 }, 6.45);  // --ink on coral = 5.60:1
-  tl.fromTo('#s1-b3', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, 7.95);
-  tl.to('#s1-i3', { color:'#131516', duration:0.30 }, 7.95);  // --ink on coral = 5.60:1
-  // Fills the dead 8.25-10.49 tail with the scene's actual payoff, not filler.
-  tl.fromTo('#s1-mark', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.60 }, 8.60);
-  tl.fromTo('#s1-claim', { y:0 }, { y:-14, duration:1.60, ease:'power1.inOut' }, 8.60);
+  // FRAME ZERO IS THE HOOK: chunk 1 of the claim is already at rest at t=0,
+  // not mid-fade (a separate still is the thumbnail asset, so the export's
+  // literal first frame does not have to carry that job alone). Chunks 2/3
+  // reveal on their own words -- real early motion instead of the whole
+  // claim landing as one inert block, and keeps #root moving well inside
+  // the 6.0s cadence ceiling (previously the first beat was the "Not snail"
+  // card at ~5.65s, which the newest take's timing pushed close enough to
+  // the ceiling to read as a static hold).
+  tl.set('#s1-c1', { opacity: 1, y: 0 }, 0);
+  tl.fromTo('#s1-c2', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.45 }, @w(may)-0.10);
+  tl.fromTo('#s1-bacteria', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.45 }, @w(bacteria)-0.10);
+  // "not to die" is occurrence 1 of "not" -- not one of the three negated
+  // items below, which are occurrences 2/3/4 ("not snail" / "not salmon" /
+  // "and not another [hyaluronic acid]").
+  tl.fromTo('#s1-i1', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, @w(Not,2)-0.10);
+  tl.fromTo('#s1-i2', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, @w(Not,3)-0.10);
+  tl.fromTo('#s1-i3', { opacity:0, x:52 }, { opacity:1, x:0, duration:0.45 }, @w(Not,4)-0.10);
+  tl.fromTo('#s1-b1', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, @we(mucin)+0.10);
+  tl.to('#s1-i1', { color:'#131516', duration:0.30 }, @we(mucin)+0.10);  // --ink on coral = 5.60:1
+  tl.fromTo('#s1-b2', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, @we(DNA)+0.10);
+  tl.to('#s1-i2', { color:'#131516', duration:0.30 }, @we(DNA)+0.10);  // --ink on coral = 5.60:1
+  tl.fromTo('#s1-b3', { scaleX:0 }, { scaleX:1, duration:0.30, ease:'power2.inOut' }, @we(acid)+0.10);
+  tl.to('#s1-i3', { color:'#131516', duration:0.30 }, @we(acid)+0.10);  // --ink on coral = 5.60:1
+  // The mark lands late enough to fill the tail rather than the hold going dead.
+  // Enters from ABOVE (y:-24 -> 0), not below: #s1-mark rests with its own
+  // bottom edge AT the safe-bottom line, so a y:+N->0 entrance would start
+  // the whole element N px LOWER than rest, transiently pushing it into the
+  // reserved bottom margin while opacity ramps up together with position --
+  // caught by the hard safe-area gate at 642px inside the zone at t=10.75s.
+  // Sliding down into place from above never crosses that line.
+  tl.fromTo('#s1-mark', { opacity:0, y:-24 }, { opacity:1, y:0, duration:0.60 }, @last-0.4);
+  tl.fromTo('#s1-claim', { y:0 }, { y:-14, duration:1.60, ease:'power1.inOut' }, @last-0.4);
 """
 
 # ---------------------------------------------------------------- scene 02
@@ -175,10 +185,10 @@ S2_TL = """
   });
   tl.fromTo('#s2-k',  { opacity:0, y:34 }, { opacity:1, y:0, duration:0.40 }, 0.20);
   tl.fromTo('#s2-l1', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.50 }, 0.60);
-  tl.fromTo('#s2-l2', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.50 }, 6.30);
+  tl.fromTo('#s2-l2', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.50 }, @w(stop)-0.35);
   tl.set('#s2-cell', { attr:{ r:150 } }, 0);
   tl.to('#s2-cell', { attr:{ r:112 }, duration:2.6, ease:'power2.inOut' }, 4.20);
-  tl.to('#s2-cell', { attr:{ stroke:'#C97A5C' }, duration:0.9 }, 6.85);  // after the radius tween ends at 6.80, not inside it
+  tl.to('#s2-cell', { attr:{ stroke:'#C97A5C' }, duration:0.9 }, @last-0.2);
 """
 
 # ---------------------------------------------------------------- scene 03
@@ -249,20 +259,20 @@ S3_TL = """
   // settling-in read and interpolates smoothly.
   tl.fromTo('#s3-mark', { opacity:0, scaleX:1.16 },
                         { opacity:1, scaleX:1, duration:0.90, ease:'power3.out',
-                          transformOrigin:'50% 50%' }, 5.40);
-  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, 6.50);
-  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, 7.20);
+                          transformOrigin:'50% 50%' }, @w(ectoin)-0.35);
+  tl.fromTo('#s3-rule', { scaleX:0 }, { scaleX:1, duration:0.70, ease:'power2.inOut' }, @w(stranger)-0.30);
+  tl.fromTo('#s3-sub',  { opacity:0, y:36 }, { opacity:1, y:0, duration:0.50 }, @w(marketing)-0.40);
   // Vessels drain back slightly on the closing beat -- a real state change tied to
   // the line ("stranger than the marketing"), across the otherwise-dead tail.
   tl.to(['#s3-f1','#s3-f2','#s3-f3'], { scaleY:0.30, duration:1.70,
-                                         ease:'power1.inOut', stagger:0.10 }, 8.20);
+                                         ease:'power1.inOut', stagger:0.10 }, @last-0.6);
   // The lockup arrives as a full-width dark band, then floods aqua -- two
   // large-area beats replacing a wordmark fade that measured as nothing.
   tl.fromTo('#s3-lockup', { opacity:0, scaleY:0.4, transformOrigin:'50% 50%' },
-                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, 5.10);
+                          { opacity:1, scaleY:1, duration:0.55, ease:'power3.out' }, @w(ectoin)-0.60);
   tl.fromTo('#s3-wash', { scaleX:0 }, { scaleX:1, duration:0.90,
-                                        ease:'power2.inOut' }, 6.90);
-  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, 7.10);
+                                        ease:'power2.inOut' }, @w(stranger)-0.20);
+  tl.to('#s3-mark', { color:'#131516', duration:0.50 }, @w(stranger));
 """
 
 # ---------------------------------------------------------------- scene 04
@@ -315,15 +325,15 @@ S4_TL = """
   // failure the static-hold check exists to catch.
   tl.fromTo('#s4-term', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.55 }, 0.15);
   tl.fromTo('#s4-pron', { opacity:0 },       { opacity:1, duration:0.45 }, 0.75);
-  tl.fromTo('#s4-sx',   { opacity:0, x:44 }, { opacity:1, x:0, duration:0.45 }, 3.90);
-  tl.fromTo('#s4-sb', { scaleX:0 }, { scaleX:1, duration:0.32, ease:'power2.inOut' }, 5.60);
-  tl.to('#s4-sx', { color:'#131516', duration:0.32 }, 5.60);  // --ink on coral = 5.60:1
-  tl.fromTo('#s4-d1', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, 6.60);
+  tl.fromTo('#s4-sx',   { opacity:0, x:44 }, { opacity:1, x:0, duration:0.45 }, @w(superhero)-0.50);
+  tl.fromTo('#s4-sb', { scaleX:0 }, { scaleX:1, duration:0.32, ease:'power2.inOut' }, @we(superhero)+0.60);
+  tl.to('#s4-sx', { color:'#131516', duration:0.32 }, @we(superhero)+0.60);  // --ink on coral = 5.60:1
+  tl.fromTo('#s4-d1', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, @w(protective)-0.30);
   // The definition panel floods on "extreme" -- a real large-area beat in the
   // back half, where the scene previously held for 6.6s on a 1.04 text scale.
-  tl.fromTo('#s4-defbox', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, 6.50);
+  tl.fromTo('#s4-defbox', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, @w(protective)-0.40);
   tl.fromTo('#s4-defwash', { scaleX:0 }, { scaleX:1, duration:0.95,
-                                           ease:'power2.inOut' }, 8.60);
+                                           ease:'power2.inOut' }, @w(extreme)-0.20);
 """
 
 # ---------------------------------------------------------------- scene 05
@@ -379,10 +389,10 @@ S5_TL = """
   }
   tl.fromTo('#s5-k',    { opacity:0, y:30 }, { opacity:1, y:0, duration:0.40 }, 0.20);
   tl.fromTo('#s5-name', { opacity:0, y:46 }, { opacity:1, y:0, duration:0.55 }, 0.55);
-  tl.fromTo('#s5-note', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, 4.60);
-  tl.fromTo('#s5-cite', { opacity:0 },       { opacity:1, duration:0.45 }, 6.20);
+  tl.fromTo('#s5-note', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, @w(Lives)-0.20);
+  tl.fromTo('#s5-cite', { opacity:0 },       { opacity:1, duration:0.45 }, @last-1.4);
   tl.to('#s5-crystals', { rotation:2.2, transformOrigin:'50% 50%',
-                          duration:5.0, ease:'none' }, 5.60);
+                          duration:5.0, ease:'none' }, @w(floods)-0.30);
 """
 
 # ---------------------------------------------------------------- scene 06
@@ -455,35 +465,35 @@ S6_TL = """
     c.id = 'w-' + i; wg.appendChild(c);
     tl.set('#w-' + i, { opacity: 1, x: 0, y: 0 }, 0);
     tl.to('#w-' + i, { x: 150, y: -22, opacity: 0, duration: 1.25,
-                       ease: 'power1.in' }, 4.30 + i * 0.11);
+                       ease: 'power1.in' }, @w(Lose)+0.30 + i * 0.11);
     // Second wave: refill, then leave again. Without it the middle column is
     // genuinely empty for the back half of the scene -- caught by the
     // region-aware content-void check, not by the whole-frame one.
-    tl.to('#w-' + i, { x: 0, y: 0, opacity: 0.55, duration: 0.01 }, 7.30 + i * 0.04);
+    tl.to('#w-' + i, { x: 0, y: 0, opacity: 0.55, duration: 0.01 }, @w(membranes)-0.20 + i * 0.04);
     tl.to('#w-' + i, { x: 150, y: -22, opacity: 0, duration: 1.30,
-                       ease: 'power1.in' }, 7.90 + i * 0.09);
+                       ease: 'power1.in' }, @w(unstable)+0.20 + i * 0.09);
   }
   // The vessel outline persists for the whole scene, so the step never goes blank.
   // Hidden state is authored in the SVG attribute, NOT tl.set(...,0): a zero-duration
   // set at position 0 does not render while the playhead sits exactly at 0, so frame 0
   // would show it un-hidden (engine lint: gsap_timeline_set_initial_hide).
-  tl.to('#s6-vessel', { opacity: 1, duration: 0.45 }, 3.70);
+  tl.to('#s6-vessel', { opacity: 1, duration: 0.45 }, @w(Lose)-0.30);
   tl.fromTo('#s6-h',  { opacity:0, y:20 }, { opacity:1, y:0, duration:0.50 }, 0.15);
   tl.fromTo('#s6-s1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 1.30);
-  tl.fromTo('#s6-s2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 3.60);
-  tl.fromTo('#s6-s3', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, 7.10);
+  tl.fromTo('#s6-s2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, @w(Lose)-0.60);
+  tl.fromTo('#s6-s3', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.50 }, @w(stops)-0.50);
   // Each card's ground fills as its step becomes active -- three ~11%-of-frame
   // beats spread across the hold, where the SVG strokes alone were invisible.
   tl.fromTo('#s6-fill1', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out' }, 2.20);
-  tl.fromTo('#s6-fill2', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out' }, 4.60);
-  tl.to('#s6-fill1', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, 4.60);
+  tl.fromTo('#s6-fill2', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out' }, @w(Lose)-0.40);
+  tl.to('#s6-fill1', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, @w(Lose)-0.40);
   tl.fromTo('#s6-fill3', { scaleY:0 }, { scaleY:1, duration:0.60, ease:'power2.out',
-                                         backgroundColor:'#C97A5C' }, 7.90);
-  tl.to('#s6-fill2', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, 7.90);
+                                         backgroundColor:'#C97A5C' }, @w(stops)-0.30);
+  tl.to('#s6-fill2', { scaleY:0.14, duration:0.60, ease:'power2.inOut' }, @w(stops)-0.30);
   // The protein visibly loses its fold -- the claim the label makes, drawn.
   tl.fromTo('#s6-p3', { attr:{ d:'M40,150 C70,60 110,60 150,105 C190,150 230,150 260,60' } },
                       { attr:{ d:'M40,150 C86,128 96,168 150,138 C206,108 214,166 260,132' },
-                        duration:1.60, ease:'power2.inOut' }, 7.70);
+                        duration:1.60, ease:'power2.inOut' }, @w(stops)-0.50);
 """
 
 # ---------------------------------------------------------------- scene 07
@@ -500,6 +510,7 @@ S7_CSS = """
     .s7-q { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .s7-q em { font-style:normal; color:var(--aqua); }
+    .s7-line-under { display:inline-block; }
 """
 S7_BODY = """    <div class="stage">
       <div class="s7">
@@ -510,55 +521,116 @@ S7_BODY = """    <div class="stage">
         </div>
         <div class="s7-l flexmin">
           <p class="s7-q" id="s7-q">So could it do the same for
-            <em>stressed human skin?</em></p>
+            <em>stressed <span class="s7-line-under" id="s7-under">human skin?</span></em></p>
         </div>
       </div>
     </div>"""
 S7_TL = """
   // Act hook: the scene ENDS on the open question the next act answers, rather
   // than summarising this one. A chapter boundary is where a viewer leaves.
+  // No more 3s scale-drift filler -- the closing beat is now the coral
+  // underline landing under "stressed human skin?" on its own word.
   tl.fromTo('#s7-k',    { opacity:0, y:30 }, { opacity:1, y:0, duration:0.40 }, 0.20);
   tl.fromTo('#s7-line', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, 0.55);
-  tl.fromTo('#s7-q',    { opacity:0, y:58 }, { opacity:1, y:0, duration:0.70 }, 4.40);
-  tl.to('#s7-line', { opacity:0.42, duration:0.80 }, 4.60);
-  tl.fromTo('#s7-q', { scale:1 }, { scale:1.03, duration:3.0, ease:'none',
-                                    transformOrigin:'0% 50%' }, 6.60);
+  tl.fromTo('#s7-q',    { opacity:0, y:58 }, { opacity:1, y:0, duration:0.70 }, @w(Could)-0.05);
+  // "Could" lands late in this take (this scene's own gap before it runs
+  // ~6.3s, past the 6.0s cadence ceiling on its own) -- a slow, continuous
+  // dim on #s7-line spans the wait instead of one beat landing right before
+  // #s7-q, so nothing on #root sits frozen for the whole gap.
+  tl.to('#s7-line', { opacity:0.42, duration:@w(Could)-1.6 }, 1.6);
+  tl.fromTo('#s7-under', { backgroundImage:
+      'linear-gradient(#C97A5C,#C97A5C)', backgroundRepeat:'no-repeat',
+      backgroundSize:'0% 4px', backgroundPosition:'0% 100%' },
+    { backgroundSize:'100% 4px', duration:0.55, ease:'power2.inOut' }, @w(stressed));
 """
 
-SCENES = [
-    # ACT 1 (pilot, already validated)
-    ("01-hook",       1, S1_BODY, S1_CSS, S1_TL),
-    ("02-osmosis",    2, S2_BODY, S2_CSS, S2_TL),
-    ("03-now",        3, S3_BODY, S3_CSS, S3_TL),
-    ("04-extremolyte",4, S4_BODY, S4_CSS, S4_TL),
-    ("05-halomonas",  5, S5_BODY, S5_CSS, S5_TL),
-    ("06-mechanism",  6, S6_BODY, S6_CSS, S6_TL),
-    ("07-question",   7, S7_BODY, S7_CSS, S7_TL),
-] + [
-    # ACTS 2-7 -- authored to the corrected (panel-scale) beat vocabulary.
-    (cid, vo, spec["body"], spec["css"], spec["tl"]) for cid, spec, vo in SCENES_A27
-]
+# scene id -> spec dict, act 1 in the same shape as frames_a27's SCENES_A27
+FRAME_DEFS = {
+    "01-hook":        dict(body=S1_BODY, css=S1_CSS, tl=S1_TL),
+    "02-osmosis":     dict(body=S2_BODY, css=S2_CSS, tl=S2_TL),
+    "03-now":         dict(body=S3_BODY, css=S3_CSS, tl=S3_TL),
+    "04-extremolyte": dict(body=S4_BODY, css=S4_CSS, tl=S4_TL),
+    "05-halomonas":   dict(body=S5_BODY, css=S5_CSS, tl=S5_TL),
+    "06-mechanism":   dict(body=S6_BODY, css=S6_CSS, tl=S6_TL),
+    "07-question":    dict(body=S7_BODY, css=S7_CSS, tl=S7_TL),
+}
+FRAME_DEFS.update({cid: spec for cid, spec in SCENES_A27})
+
+assert set(FRAME_DEFS) == set(ORDER), (
+    f"FRAME_DEFS/vo_lines.LINES mismatch: "
+    f"missing frames {set(ORDER) - set(FRAME_DEFS)}, "
+    f"orphaned frames {set(FRAME_DEFS) - set(ORDER)}")
+
+
+# ---- word-marker binding --------------------------------------------------
+# @w(word[,occurrence]), @we(word[,occurrence]) -> a plain number (seconds on
+# THIS scene's own timeline). @first / @last / @dur -> bare tokens, no parens.
+# @sent(i) -> the i-th sentence's start. Arithmetic around a resolved token
+# (`@w(Bitop)-0.10`) is left as literal JS text for the browser to evaluate --
+# only the marker itself is substituted.
+TOKEN_RE = re.compile(
+    r"@(w|we)\(\s*([A-Za-z0-9']+)\s*(?:,\s*(\d+)\s*)?\)"
+    r"|@(first|last|dur)\b"
+    r"|@sent\(\s*(\d+)\s*\)")
+
+
+def bind(tl_src, ctx, cid, reveals):
+    def repl(m):
+        if m.group(1):
+            fn, word = m.group(1), m.group(2)
+            occ = int(m.group(3)) if m.group(3) else 1
+            val = (ctx.w if fn == "w" else ctx.we)(word, occ)
+            reveals.append({"scene": cid, "kind": fn, "word": word,
+                             "occurrence": occ, "seconds": val})
+            return f"{val:.3f}"
+        if m.group(4):
+            return f"{getattr(ctx, m.group(4))():.3f}"
+        if m.group(5) is not None:
+            return f"{ctx.sent(int(m.group(5))):.3f}"
+        return m.group(0)
+
+    out = TOKEN_RE.sub(repl, tl_src)
+    if "@" in out:
+        leftover = re.findall(r"@[A-Za-z0-9_(),]*", out)
+        raise SystemExit(
+            f"scene {cid}: unresolved marker token(s) after bind(): {leftover}\n"
+            f"Run `python3 scripts/timing.py --words {cid}` to see this scene's "
+            f"real words and fix the marker.")
+    return out
+
+
+def arrival(kind):
+    """Child-travel snippet appended to the INCOMING scene's own timeline for
+    a transition of this `kind`, on top of the root-level clip-path wipe
+    (scripts/build_index.py). Each carry/chapter/arrive/settle scene's actual
+    travel is bespoke and lives in that scene's own tl string in
+    frames_a27.py (see 09-exclusion's ground-inversion beat for the pattern);
+    this hook returns nothing by default and is the extension point for
+    scenes not yet given a bespoke arrival."""
+    return ""
 
 
 def main():
+    scenes, total = walk()
     out = ROOT / "compositions" / "frames"
     out.mkdir(parents=True, exist_ok=True)
-    rows, missing = [], []
-    for cid, vo_n, body, css, tlj in SCENES:
-        d = vo_duration(vo_n)
-        if d is None:
-            missing.append(vo_n); continue
-        dur = round(d + TAIL_PAD, 3)
-        (out / f"{cid}.html").write_text(scene(cid, dur, body, css, tlj))
-        rows.append((cid, vo_n, d, dur))
-    print(f"{'scene':16s} {'vo':>4s} {'vo_dur':>8s} {'scene_dur':>10s}")
-    total = 0.0
-    for cid, n, d, dur in rows:
-        print(f"{cid:16s} {n:4d} {d:8.3f} {dur:10.3f}")
-        total += dur
-    print(f"{'TOTAL':16s} {'':4s} {'':8s} {total:10.3f}")
-    if missing:
-        print(f"\nMISSING VO takes (scenes not written): {missing}")
+    reveals = []
+    rows = []
+    for s in scenes:
+        spec = FRAME_DEFS[s.cid]
+        ctx = Ctx(s)
+        tl_bound = bind(spec["tl"], ctx, s.cid, reveals) + arrival(s.kind_in)
+        (out / f"{s.cid}.html").write_text(
+            scene(s.cid, s.dur, spec["body"], spec["css"], tl_bound))
+        rows.append((s.cid, s.start, s.own, s.dur, s.kind_in or "-"))
+
+    (ROOT / "index.reveals.json").write_text(json.dumps(reveals, indent=2) + "\n")
+
+    print(f"{'scene':16s} {'start':>8s} {'own':>7s} {'dur':>7s}  in")
+    for cid, start, own, dur, kind in rows:
+        print(f"{cid:16s} {start:8.3f} {own:7.3f} {dur:7.3f}  {kind}")
+    print(f"{'TOTAL':16s} {'':8s} {'':7s} {total:7.3f}")
+    print(f"  {len(reveals)} word marker(s) resolved -> index.reveals.json")
     return 0
 
 

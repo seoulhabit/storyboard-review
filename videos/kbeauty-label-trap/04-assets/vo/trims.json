@@ -1,0 +1,56 @@
+{
+  "raw-00.wav": {
+    "front": 0.298,
+    "back": 15.775,
+    "dur": 15.477,
+    "raw_total": 16.17
+  },
+  "raw-01.wav": {
+    "front": 1.623,
+    "back": 28.416,
+    "dur": 26.792,
+    "raw_total": 28.74
+  },
+  "raw-02.wav": {
+    "front": 0.0,
+    "back": 38.281,
+    "dur": 38.281,
+    "raw_total": 38.51
+  },
+  "raw-03.wav": {
+    "front": 0.534,
+    "back": 28.6,
+    "dur": 28.066,
+    "raw_total": 28.6
+  },
+  "raw-04.wav": {
+    "front": 0.0,
+    "back": 33.608,
+    "dur": 33.608,
+    "raw_total": 33.92
+  },
+  "raw-05.wav": {
+    "front": 0.397,
+    "back": 39.78,
+    "dur": 39.383,
+    "raw_total": 39.78
+  },
+  "raw-06.wav": {
+    "front": 0.224,
+    "back": 24.866,
+    "dur": 24.642,
+    "raw_total": 25.14
+  },
+  "raw-07.wav": {
+    "front": 0.24,
+    "back": 25.215,
+    "dur": 24.976,
+    "raw_total": 25.54
+  },
+  "raw-08.wav": {
+    "front": 0.455,
+    "back": 20.7,
+    "dur": 20.245,
+    "raw_total": 20.7
+  }
+}

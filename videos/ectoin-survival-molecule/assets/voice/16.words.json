@@ -1,0 +1,160 @@
+{
+  "scene": "16-trial104",
+  "block": "act4",
+  "cut": {
+    "start": 0.0,
+    "end": 12.03
+  },
+  "gain_db": 2.7,
+  "lufs": -20.0,
+  "wpm": 166.4,
+  "words": [
+    {
+      "text": "So",
+      "start": 0.0,
+      "end": 0.23
+    },
+    {
+      "text": "does",
+      "start": 0.23,
+      "end": 0.7
+    },
+    {
+      "text": "it",
+      "start": 0.7,
+      "end": 0.93
+    },
+    {
+      "text": "do",
+      "start": 0.93,
+      "end": 1.16
+    },
+    {
+      "text": "anything",
+      "start": 1.72,
+      "end": 2.06
+    },
+    {
+      "text": "to",
+      "start": 2.16,
+      "end": 2.33
+    },
+    {
+      "text": "actual",
+      "start": 2.33,
+      "end": 3.04
+    },
+    {
+      "text": "people?",
+      "start": 3.04,
+      "end": 4.18
+    },
+    {
+      "text": "In",
+      "start": 4.18,
+      "end": 4.31
+    },
+    {
+      "text": "one",
+      "start": 4.31,
+      "end": 4.5
+    },
+    {
+      "text": "randomized,",
+      "start": 4.5,
+      "end": 5.29
+    },
+    {
+      "text": "double-blind",
+      "start": 5.29,
+      "end": 6.07
+    },
+    {
+      "text": "study,",
+      "start": 6.07,
+      "end": 6.56
+    },
+    {
+      "text": "104",
+      "start": 6.56,
+      "end": 7.22
+    },
+    {
+      "text": "women",
+      "start": 7.26,
+      "end": 7.56
+    },
+    {
+      "text": "used",
+      "start": 7.56,
+      "end": 8.0
+    },
+    {
+      "text": "a",
+      "start": 8.0,
+      "end": 8.04
+    },
+    {
+      "text": "cream",
+      "start": 8.3,
+      "end": 8.44
+    },
+    {
+      "text": "with",
+      "start": 8.44,
+      "end": 8.76
+    },
+    {
+      "text": "2%",
+      "start": 8.76,
+      "end": 9.08
+    },
+    {
+      "text": "ectoin",
+      "start": 9.08,
+      "end": 9.56
+    },
+    {
+      "text": "against",
+      "start": 9.57,
+      "end": 10.09
+    },
+    {
+      "text": "the",
+      "start": 10.18,
+      "end": 10.41
+    },
+    {
+      "text": "same",
+      "start": 10.41,
+      "end": 10.72
+    },
+    {
+      "text": "cream",
+      "start": 10.72,
+      "end": 11.11
+    },
+    {
+      "text": "without",
+      "start": 11.11,
+      "end": 11.51
+    },
+    {
+      "text": "it.",
+      "start": 11.51,
+      "end": 11.758
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 4.18,
+      "text": "So does it do anything to actual people?"
+    },
+    {
+      "start": 4.18,
+      "end": 11.758,
+      "text": "In one randomized, double-blind study, 104 women used a cream with 2% ectoin against the same cream without it."
+    }
+  ]
+}

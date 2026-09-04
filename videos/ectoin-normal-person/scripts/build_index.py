@@ -42,6 +42,38 @@ VO_LEVEL = 1.0    # VO is the reference level; the plateau IS this
 
 GROUP = {"S": "vo-soulhabit", "J": "vo-jay"}
 
+# ---- music bed + local SFX (non-negotiable #12) ----------------------------
+# The bed is ONE frozen, finite file (assets/music/bed.mp3, 241.262s, built
+# once via `ffmpeg -stream_loop` from a loop-prepared source and committed --
+# not a runtime loop, per the render-safety ban on infinite loops) carved
+# against BOTH voice groups (see hyperframes-audio skill: "sources" is a
+# list, summed onto the bed's own clock -- a bed under a two-voice dialogue
+# ducks under either speaker, dynamically, never a fixed depth). Every SFX
+# cue is a short local one-shot, sourced from this channel's own existing
+# kit (catalog convention: reuse before generating) rather than a fresh
+# license. Timestamps below are read directly off scripts/timing.py's walk,
+# not estimated -- re-derive them (see the __main__ block at the bottom of
+# this file) if the script changes again.
+BED = ("assets/music/bed.mp3", 241.262, 0.30)
+
+# (at_seconds, file, duration, volume, note)
+SFX_CUES = [
+    (4.25,   "cream-swoosh-short.mp3",                 0.350, 0.40, "t072: the bottle turns"),
+    (6.62,   "chime-trimmed.mp3",                       1.100, 0.38, "t076: the verdict lands"),
+    (44.40,  "whoosh-soft-split-reveal.mp3",             1.056, 0.40, "CH1->CH2 chapter wipe"),
+    (55.86,  "ui-toggle-trimmed.mp3",                    0.350, 0.42, "04-protein: Jargon Alarm fires"),
+    (79.93,  "whoosh-soft-split-reveal.mp3",             1.056, 0.40, "CH2->CH3 chapter wipe"),
+    (110.82, "whoosh-soft-split-reveal.mp3",             1.056, 0.40, "CH3->CH4 chapter wipe"),
+    (141.51, "glass-clink.mp3",                          0.312, 0.38, "09-miracle: Yes"),
+    (144.38, "sharp-text-stamp-impact-hit.trimmed.mp3",  1.100, 0.42, "09-miracle: No"),
+    (146.70, "sharp-text-stamp-impact-hit.trimmed.mp3",  1.100, 0.40, "10-notprove: the claims struck"),
+    (154.13, "citation-tick-trimmed.mp3",                0.500, 0.36, "11-twelve: the count lands"),
+    (163.23, "whoosh-soft-split-reveal.mp3",             1.056, 0.40, "CH4->CH5 chapter wipe"),
+    (185.05, "click-soft-chip-pair-lands.mp3",           0.264, 0.36, "12-bottle: Jargon Alarm retires"),
+    (202.74, "whoosh-soft-split-reveal.mp3",             1.056, 0.40, "CH5->CH6 chapter wipe"),
+    (237.06, "chime.mp3",                                2.500, 0.34, "18-endscreen: the close"),
+]
+
 # ---- transition system (harvested; see the predecessor's build_index.py) ----
 # Two types, both CLIP-PATH WIPES. Nothing translates and opacity is never
 # touched, so no frame composites two grounds -- which is what makes this safe
@@ -126,6 +158,15 @@ def main():
                 f'data-volume="{VO_LEVEL}" data-audio-group="{GROUP[spk]}"\n'
                 f"           data-automation='{automation(alen, VO_LEVEL)}'></audio>")
 
+    bed_src, bed_dur, bed_vol = BED
+    sfx_divs = [
+        f'    <audio id="sfx-{i}" src="assets/sfx/{fname}"\n'
+        f'           data-start="{at:.3f}" data-duration="{dur:.3f}"\n'
+        f'           data-track-index="21" data-volume="{vol}"></audio>'
+        f'  <!-- {note} -->'
+        for i, (at, fname, dur, vol, note) in enumerate(SFX_CUES)
+    ]
+
     html = f'''<!DOCTYPE html>
 <html lang="en" data-resolution="landscape">
 <head>
@@ -149,6 +190,19 @@ def main():
                     data-fx-chain='{fx_chain("J")}'>
     </hf-audio-group>
 {chr(10).join(audio_divs)}
+
+    <!-- Music bed, carved against BOTH voice groups (hyperframes-audio:
+         "sources" is a list, summed onto the bed's own clock -- one analysis
+         covers a two-speaker dialogue). strength 0.25 is the documented
+         default: audible room for the voice without reading as a hole. -->
+    <audio id="bed-music" src="{bed_src}"
+           data-start="0.000" data-duration="{bed_dur:.3f}"
+           data-track-index="20" data-volume="{bed_vol}"
+           data-fx-carve='{{"enabled":true,"sources":["vo-soulhabit","vo-jay"],"strength":0.25,"dynamic":true}}'></audio>
+
+    <!-- Local one-shot SFX. Own track, no carve of their own -- each is a
+         short transient at a transition or reveal beat, not a bed. -->
+{chr(10).join(sfx_divs)}
   </div>
 
   <style>

@@ -26,3 +26,56 @@
 
 - **Result:** `b3cbede`, clean merge, no conflicts.
 - **Checks:** ruff/mypy/pytest all pass; `hyperframes check videos/snail-mucin-medical-secret-v2` → 0 errors (7 info-level layout-overflow advisories, pre-existing style notes, not merge-introduced).
+
+## Blocked — `claude/kbeauty-ingredient-video-675976`
+
+- **File:** `videos/_channel/spend.jsonl` — JSON-data. Per Rule 4, stopping to
+  ask rather than resolving. `videos/_channel/policy-change-proposals.md`
+  auto-merged cleanly on the same attempt (no conflict).
+- **What the conflict actually is:** both sides independently *appended*
+  distinct, non-overlapping log entries at the same point in the file (master
+  added 2 snail-mucin-medical-secret entries; this branch adds 1
+  kbeauty-label-trap entry). Not a real disagreement — a concatenate-both
+  resolution looks safe — but per Rule 4 this needs a yes, not an assumption.
+- **Status:** merge attempted then aborted, worktree left clean. Not yet
+  resolved.
+
+## Major correction — `session/ectoin-normal-person` and `claude/faceless-video-feedback-6c6c24` are superseded, not mergeable
+
+- Attempting to merge `session/ectoin-normal-person` produced ~40 add/add
+  conflicts across nearly every file in `videos/ectoin-normal-person/` —
+  contradicting `docs/wo/BRANCH-REGISTER.md`'s "zero overlap" finding for
+  this branch. Aborted immediately to investigate rather than resolve blind.
+- **Root cause, found in the project's own decision ledger
+  (`00-decision-ledger.md`, already on master):** master's copy of this
+  project was not produced by merging either branch. Commit `72ab419`
+  ("Import ectoin-normal-person from f893e7b, plus newer catalog tooling")
+  did `git checkout f893e7b -- videos/ectoin-normal-person ...` — a content
+  import from `claude/faceless-video-feedback-6c6c24`'s tip, done deliberately
+  to avoid ref surgery on a branch that worktree didn't have checked out (the
+  ledger cites CLAUDE.md's own guidance for this). That import breaks git's
+  ancestry tracking for these paths even though the content lineage is real,
+  which is exactly why a normal `git merge` now sees "independently added"
+  files with no common history instead of a clean fast-forward.
+- **Master then continued past that import** with three more commits
+  (`80c55c1`, `5c13bc9`, `1d38a897` — the last already confirmed on master
+  and already accounted for elsewhere in the register) doing real work: VO
+  generation, a claim-ledger correction pass (reversing an earlier wrong
+  claim-verification call, tightening an authorship claim), script
+  compression, and a final render/gate pass.
+- **Conclusion: master's `videos/ectoin-normal-person/` is strictly more
+  advanced than both `session/ectoin-normal-person` (the pre-import state)
+  and `claude/faceless-video-feedback-6c6c24` (the exact commit that got
+  imported and then superseded).** Merging either now would not add new
+  work — it would overwrite master's more-evolved content with an older
+  snapshot. **Revised disposition for both: DROP (superseded), not MERGE.**
+  Neither was merged. `docs/wo/BRANCH-REGISTER.md` Cluster 4 needs updating
+  to reflect this — not done automatically here, flagged for the user.
+
+## Merge 2 — `wip/storyboard-6a-2026-09-04`
+
+- **Result:** `b1753ed`, clean merge, no conflicts (confirmed clean ancestry
+  from the already-merged `session/story-board-6a` first via
+  `merge-base --is-ancestor`, unlike the ectoin-normal-person case above).
+- **Checks:** ruff/mypy/pytest all pass. No `hyperframes check` run — single
+  binary media file, no composition logic touched.

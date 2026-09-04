@@ -83,7 +83,7 @@ PLATE_CSS = """
 def pv(pid, src, start, dur, style=""):
     """Full-bleed video plate. start/dur on the SCENE's own clock."""
     return (f'    <div class="plate" id="pl-{pid}"><video class="clip" id="pv-{pid}" '
-            f'src="assets/plates/{src}" data-start="{start:.3f}" '
+            f'data-layout-allow-overflow src="assets/plates/{src}" data-start="{start:.3f}" '
             f'data-duration="{dur:.3f}" muted playsinline'
             f'{(" style=" + chr(34) + style + chr(34)) if style else ""}></video></div>\n')
 
@@ -92,7 +92,7 @@ def pi(pid, src, style="", wrap_style=""):
     """Full-bleed still plate."""
     ws = f' style="{wrap_style}"' if wrap_style else ""
     st = f' style="{style}"' if style else ""
-    return (f'    <div class="plate" id="pl-{pid}"{ws}><img id="pi-{pid}" '
+    return (f'    <div class="plate" id="pl-{pid}"{ws}><img id="pi-{pid}" data-layout-allow-overflow '
             f'src="assets/plates/{src}" alt=""{st}></div>\n')
 
 
@@ -423,7 +423,7 @@ S08 = dict(css=PLATE_CSS + CHBAND_CSS + """
                  display:flex; flex-direction:column; gap:var(--s-2); }
     .card .p-title { color:var(--paper); }
     .card .p-body { color:rgba(247,245,240,.8); }
-    .card .kicker { color:rgba(247,245,240,.65); }
+    .card .kicker { color:rgba(247,245,240,.88); }
 """, body=(
     chband_body("08-humectant")
     + pi("a", "I12-hydration.jpg", style="filter:blur(3px) brightness(.55)")
@@ -432,7 +432,7 @@ S08 = dict(css=PLATE_CSS + CHBAND_CSS + """
       <em>normal moisturiser.</em></p>
     <div class="g2">
       <div class="card" id="c-hum" style="opacity:0">
-        <img id="ci-hum" src="assets/plates/I23-glycerin.jpg" alt="">
+        <img id="ci-hum" data-layout-allow-overflow src="assets/plates/I23-glycerin.jpg" alt="">
         <div class="cap">
           <p class="kicker">A familiar humectant</p>
           <p class="p-title">Glycerin. Hyaluronic acid.</p>
@@ -440,7 +440,7 @@ S08 = dict(css=PLATE_CSS + CHBAND_CSS + """
         </div>
       </div>
       <div class="card" id="c-ect" style="opacity:0">
-        <img id="ci-ect" src="assets/plates/I24-membrane.jpg" alt="">
+        <img id="ci-ect" data-layout-allow-overflow src="assets/plates/I24-membrane.jpg" alt="">
         <div class="cap">
           <p class="kicker">Ectoin</p>
           <p class="p-title">Works on how water arranges itself.</p>
@@ -755,7 +755,7 @@ S27 = dict(css=PLATE_CSS + """
     .wh-h { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 8px);
             z-index:5; margin:0; font-family:var(--font-display); font-size:var(--t-figure);
             text-shadow:0 2px 20px rgba(0,0,0,.5); }
-    .wh-note { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .wh-note { position:absolute; right:var(--safe-right); top:calc(var(--safe-top) + 14px);
                z-index:5; margin:0; background:rgba(19,21,22,.8); border-radius:var(--r-pill);
                padding:12px 26px; font-family:var(--font-mono); font-size:var(--t-caption);
                letter-spacing:var(--tr-mono-wide); text-transform:uppercase; }
@@ -771,9 +771,9 @@ S27 = dict(css=PLATE_CSS + """
     </div>
     <p class="wh-h hd" id="wh-h" style="opacity:0">You will already find it in&hellip;</p>
     <div class="where" id="where">
-      <div class="wh" id="wh-0" style="opacity:0"><img id="wi-0" src="assets/plates/C-serum.jpg" alt=""><div class="cap">Barrier serums</div></div>
-      <div class="wh" id="wh-1" style="opacity:0"><img id="wi-1" src="assets/plates/C-tonerpad.jpg" alt=""><div class="cap">Toners</div></div>
-      <div class="wh" id="wh-2" style="opacity:0"><img id="wi-2" src="assets/plates/I25-suntube.jpg" alt=""><div class="cap">Sun products</div></div>
+      <div class="wh" id="wh-0" style="opacity:0"><img id="wi-0" data-layout-allow-overflow src="assets/plates/C-serum.jpg" alt=""><div class="cap">Barrier serums</div></div>
+      <div class="wh" id="wh-1" style="opacity:0"><img id="wi-1" data-layout-allow-overflow src="assets/plates/C-tonerpad.jpg" alt=""><div class="cap">Toners</div></div>
+      <div class="wh" id="wh-2" style="opacity:0"><img id="wi-2" data-layout-allow-overflow src="assets/plates/I25-suntube.jpg" alt=""><div class="cap">Sun products</div></div>
     </div>
     <p class="wh-note" id="wh-note" style="opacity:0">Often in smaller type than the trend suggests</p>
 """

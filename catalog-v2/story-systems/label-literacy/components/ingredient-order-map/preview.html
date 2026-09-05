@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingredient Order Map — Catalog V2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --rice:#f3f4ef; --ink:#172332; --soft:#526071; --line:rgba(23,35,50,.16);
+      --perilla:#7f9d88; --assay:#6358a7; --signal:#e15f52; --glass:rgba(255,255,255,.72);
+    }
+    html,body{min-height:100%}
+    body{margin:0;padding:clamp(16px,2vw,30px);background:#d7dcd8;color:var(--ink);font-family:"Avenir Next","Noto Sans KR","Helvetica Neue",Arial,sans-serif}
+    button{font:inherit}
+    .shell{width:min(1600px,100%);margin:auto}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:14px}
+    .toolbar-copy{display:grid;gap:2px}.toolbar-copy strong{font-size:15px}.toolbar-copy span{font-size:13px;color:var(--soft)}
+    .switcher{display:flex;padding:4px;border:1px solid rgba(23,35,50,.24);border-radius:999px;background:rgba(255,255,255,.42)}
+    .switcher button{border:0;border-radius:999px;padding:8px 15px;color:var(--soft);background:transparent;cursor:pointer}
+    .switcher button[aria-selected="true"]{color:white;background:var(--ink)}
+    button:focus-visible{outline:3px solid var(--assay);outline-offset:3px}
+    .stage{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(23,35,50,.17);border-radius:24px;background:linear-gradient(102deg,#e3e8e2 0 43%,var(--rice) 43%);box-shadow:0 28px 70px rgba(23,35,50,.15)}
+    .stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 53px,rgba(23,35,50,.025) 53px 54px)}
+    .masthead{position:absolute;z-index:5;top:4.3%;left:4%;right:4%;display:flex;justify-content:space-between;font-size:clamp(11px,.85vw,16px)}
+    .brand{font-weight:680}.source{max-width:44ch;color:var(--soft);text-align:right;line-height:1.35}
+    .content{position:absolute;z-index:2;inset:12% 4% 6%;display:grid;grid-template-columns:minmax(330px,.82fr) minmax(0,1.45fr);gap:clamp(34px,4vw,72px)}
+    .receipt{position:relative;min-height:0;padding:clamp(22px,2vw,38px);border:1px solid rgba(255,255,255,.86);border-radius:20px;background:rgba(255,255,255,.68);box-shadow:0 20px 50px rgba(23,35,50,.09);backdrop-filter:blur(12px)}
+    .receipt::before{content:"";position:absolute;left:0;top:0;width:8px;height:100%;border-radius:20px 0 0 20px;background:linear-gradient(var(--perilla) 0 48%,var(--signal) 48%)}
+    .receipt-title{display:flex;justify-content:space-between;gap:20px;padding-bottom:14px;border-bottom:1px solid var(--line);color:var(--soft);font-size:clamp(11px,.75vw,14px)}
+    .rows{display:grid;margin-top:7px}
+    .ingredient{position:relative;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;min-height:clamp(42px,4.1vw,68px);border-bottom:1px solid rgba(23,35,50,.09);color:var(--soft);font-size:clamp(13px,1vw,18px)}
+    .ingredient .rank{font-size:.76em;color:rgba(23,35,50,.42)}
+    .ingredient .amount{min-width:44px;padding:5px 8px;border-radius:6px;background:repeating-linear-gradient(135deg,rgba(23,35,50,.1) 0 4px,transparent 4px 8px);color:transparent;text-align:center}
+    .ingredient.selected{color:var(--ink);font-weight:650}
+    .ingredient.selected::after{content:"";position:absolute;inset:7px -10px;border:2px solid var(--assay);border-radius:10px;pointer-events:none}
+    .threshold{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;margin:7px 0;color:var(--signal);font-size:clamp(10px,.72vw,13px)}
+    .threshold::after{content:"";height:2px;background:var(--signal)}
+    .flex-zone{position:absolute;z-index:-1;left:8px;right:0;bottom:0;height:48%;background:linear-gradient(180deg,rgba(225,95,82,.04),rgba(225,95,82,.1));border-radius:0 0 20px 12px}
+    .analysis{display:grid;grid-template-rows:auto 1fr auto;gap:clamp(18px,2vw,34px);min-width:0}
+    h1{max-width:13ch;margin:0;font-size:clamp(38px,4.6vw,86px);font-weight:610;letter-spacing:-.06em;line-height:.93}
+    .finding-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.6vw,28px);align-self:center}
+    .finding{position:relative;min-height:clamp(150px,15vw,250px);padding:clamp(18px,2vw,36px);border-top:7px solid var(--perilla);background:var(--glass);box-shadow:inset 0 0 0 1px rgba(23,35,50,.08)}
+    .finding.cannot{border-color:var(--signal)}
+    .finding-title{color:var(--soft);font-size:clamp(11px,.8vw,15px)}
+    .finding-value{margin-top:clamp(18px,2vw,34px);font-size:clamp(21px,2.1vw,40px);font-weight:630;letter-spacing:-.04em;line-height:1.02}
+    .finding-note{position:absolute;left:clamp(18px,2vw,36px);right:clamp(18px,2vw,36px);bottom:clamp(16px,1.6vw,28px);color:var(--soft);font-size:clamp(10px,.72vw,13px);line-height:1.3}
+    .precision{display:inline-block;margin-left:5px;padding:0 .22em;color:transparent;background:repeating-linear-gradient(135deg,var(--ink) 0 7px,#334052 7px 12px);border-radius:4px;user-select:none}
+    .verdict{display:flex;align-items:center;gap:16px;padding:clamp(15px,1.4vw,24px);border-radius:14px;color:white;background:var(--ink);font-size:clamp(14px,1.25vw,23px);font-weight:560}
+    .verdict::before{content:"≠";display:grid;place-items:center;flex:0 0 clamp(38px,3.3vw,60px);aspect-ratio:1;border:2px solid var(--signal);border-radius:50%;color:var(--signal);font-size:1.4em}
+    @media(max-width:840px){body{padding:12px}.toolbar{align-items:flex-start;flex-direction:column}.stage{aspect-ratio:9/16;min-height:760px}.source{display:none}.content{inset:9% 5% 4%;grid-template-columns:1fr;grid-template-rows:1.2fr .8fr;gap:18px}.receipt{padding:18px}.ingredient{min-height:35px;font-size:12px}.analysis{grid-template-rows:auto 1fr auto;gap:12px}h1{font-size:37px;max-width:none}.finding{min-height:140px;padding:14px}.finding-value{font-size:21px}.finding-note{left:14px;right:14px;bottom:12px}.verdict{font-size:12px}.receipt-title{font-size:10px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="toolbar">
+      <div class="toolbar-copy"><strong>Ingredient Order Map</strong><span>Working Catalog V2 component · fictional Cica label for behavior testing</span></div>
+      <div class="switcher" role="tablist" aria-label="Selected ingredient position">
+        <button type="button" role="tab" aria-selected="true" data-select="0">Cica near top</button>
+        <button type="button" role="tab" aria-selected="false" data-select="5">Allantoin below line</button>
+      </div>
+    </header>
+    <section class="stage" aria-label="Ingredient order component preview">
+      <div class="masthead"><div class="brand">SeoulHabit label review</div><div class="source">Illustrative ingredient list · the jurisdiction and ordering rule must be supplied by the story</div></div>
+      <div class="content">
+        <article class="receipt">
+          <div class="receipt-title"><span>Ingredient declaration</span><span>Exact percentages undisclosed</span></div>
+          <div class="rows" id="rows"></div>
+          <div class="flex-zone"></div>
+        </article>
+        <div class="analysis">
+          <h1>Order is not an exact dose.</h1>
+          <div class="finding-grid">
+            <article class="finding"><div class="finding-title">The list can show</div><div class="finding-value" id="canValue">Relative position</div><div class="finding-note" id="canNote">Centella Asiatica Extract appears first in this fictional list.</div></article>
+            <article class="finding cannot"><div class="finding-title">The list cannot show</div><div class="finding-value">Exact amount <span class="precision">??%</span></div><div class="finding-note">Do not reverse-engineer a percentage from rank alone.</div></article>
+          </div>
+          <div class="verdict" id="verdict">Rank is visible. Quantity remains unknown.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const ingredients=["Centella Asiatica Extract","Water","Glycerin","Niacinamide","Panthenol","Allantoin","Fragrance"];
+    const thresholdAfter=3;
+    const rows=document.querySelector("#rows");
+    function render(selected){
+      rows.innerHTML=ingredients.map((name,index)=>`${index===thresholdAfter+1?'<div class="threshold"><span>1% teaching line</span></div>':''}<div class="ingredient ${index===selected?'selected':''}"><span class="rank">${String(index+1).padStart(2,'0')}</span><span>${name}</span><span class="amount">unknown</span></div>`).join("");
+      const below=selected>thresholdAfter;
+      document.querySelector("#canValue").textContent=below?"A flexible zone":"Relative position";
+      document.querySelector("#canNote").textContent=below?`${ingredients[selected]} appears inside the story’s flexible-order teaching zone.`:`${ingredients[selected]} appears first in this fictional list.`;
+      document.querySelector("#verdict").textContent=below?"Position below the line still does not reveal the dose.":"Rank is visible. Quantity remains unknown.";
+    }
+    document.querySelectorAll("[data-select]").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("[data-select]").forEach(item=>item.setAttribute("aria-selected","false"));button.setAttribute("aria-selected","true");render(Number(button.dataset.select));}));
+    render(0);
+  </script>
+</body>
+</html>

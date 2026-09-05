@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seoulhabit.example/schemas/evidence-distance.schema.json",
+  "title": "SeoulHabit evidence distance fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "ingredient_id",
+    "evidence_id",
+    "claim_summary",
+    "study_facts",
+    "target_product",
+    "chain",
+    "boundary",
+    "citation"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "fixture_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "ingredient_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "evidence_id": { "type": "string" },
+    "claim_summary": { "type": "string", "minLength": 1 },
+    "study_facts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["design", "population", "duration", "tested_material", "route", "finished_formula"],
+      "properties": {
+        "design": { "type": "string" },
+        "population": { "type": "string" },
+        "duration": { "type": "string" },
+        "tested_material": { "type": "string" },
+        "route": { "type": "string" },
+        "finished_formula": { "type": "string" }
+      }
+    },
+    "target_product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "route", "package_media", "identity_status"],
+      "properties": {
+        "name": { "type": "string" },
+        "route": { "type": "string" },
+        "package_media": { "type": "string" },
+        "media_background": { "enum": ["transparent", "fixed_light", "fixed_dark"] },
+        "identity_status": { "type": "string" }
+      }
+    },
+    "chain": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage", "value", "relation"],
+        "properties": {
+          "stage": { "type": "string" },
+          "value": { "type": "string" },
+          "relation": { "enum": ["origin", "matches", "partial", "unknown", "different"] }
+        }
+      }
+    },
+    "boundary": { "type": "string", "minLength": 1 },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "year", "url"],
+      "properties": {
+        "title": { "type": "string" },
+        "year": { "type": "integer" },
+        "url": { "type": "string" },
+        "doi": { "type": "string" },
+        "pmid": { "type": "string" }
+      }
+    }
+  }
+}

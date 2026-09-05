@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "centella-source-story-demo",
+  "ingredient_id": "centella-demo",
+  "status": "example",
+  "package_media": {
+    "path": "none; typographic label specimen",
+    "asset_id": "centella-label-specimen",
+    "status": "reference_only",
+    "background": "transparent"
+  },
+  "front_claim": {
+    "value": "Cica",
+    "state": "requires_context",
+    "source": "Fictional source-story demonstration"
+  },
+  "ingredient_declaration": {
+    "value": "Centella Asiatica Extract",
+    "state": "requires_context",
+    "source": "Fictional source-story label specimen; verify against a selected commercial product"
+  },
+  "inspection": {
+    "quantity": {
+      "value": "Exact concentration is not established by the fictional list.",
+      "state": "not_established"
+    },
+    "identity": {
+      "value": "The label term does not disclose the extraction process or standardization.",
+      "state": "requires_context"
+    },
+    "vehicle": {
+      "value": "The finished formula vehicle is not documented.",
+      "state": "not_established"
+    },
+    "evidence": {
+      "value": "The studied material must match the product-specific extract.",
+      "state": "requires_context"
+    },
+    "boundary": {
+      "value": "Ingredient identity does not certify product performance.",
+      "state": "known"
+    }
+  },
+  "citation_ids": [],
+  "disclosure": "Fictional demonstration derived from kbeauty-label-trap—not a commercial product review."
+}

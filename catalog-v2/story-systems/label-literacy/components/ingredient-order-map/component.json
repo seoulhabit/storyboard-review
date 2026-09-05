@@ -1,0 +1,30 @@
+{
+  "component_id": "ingredient-order-map",
+  "display_name": "Ingredient Order Map",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Explain what ingredient position can and cannot establish without inventing an exact percentage.",
+  "required_inputs": [
+    "ordered_ingredients",
+    "selected_ingredient",
+    "jurisdiction_label",
+    "ordering_rule",
+    "flexible_zone",
+    "disclosure",
+    "citations"
+  ],
+  "visual_states": ["selected_above_zone", "selected_inside_zone", "amount_disclosed", "amount_unknown"],
+  "layouts": ["16:9", "9:16-safe"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s04", "s05"],
+    "promoted": ["rank is not exact quantity", "flexible ordering zone", "source chip"],
+    "reference_only": ["ingredient canyon composition", "unsourced low-dose efficacy implication"]
+  },
+  "approval_gates": [
+    "jurisdiction rule must be supplied and cited",
+    "no inferred percentages",
+    "long ingredient-list stress test",
+    "16:9 and 9:16 rendered-frame review"
+  ]
+}

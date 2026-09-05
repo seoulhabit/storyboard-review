@@ -1,0 +1,46 @@
+{
+  "component_id": "evidence-distance-map",
+  "display_name": "Evidence Distance Map",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Show how directly a study supports the product being discussed by exposing material, route, formula, and product matches or gaps.",
+  "input_schema": "../../evidence-distance.schema.json",
+  "required_inputs": [
+    "claim_summary",
+    "study_facts",
+    "target_product",
+    "chain",
+    "boundary",
+    "citation"
+  ],
+  "relation_states": ["origin", "matches", "partial", "unknown", "different"],
+  "visual_states": ["untraced", "traced", "route_break"],
+  "layouts": ["16:9", "9:16-safe"],
+  "fixtures": [
+    "../../examples/evidence-distance-snail.json",
+    "../../examples/evidence-distance-pdrn-topical.json",
+    "../../examples/evidence-distance-pdrn-injected.json"
+  ],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s10"],
+    "promoted": [
+      "evidence has a measurable distance from the finished product",
+      "tested material, people, duration, and measurement remain visible",
+      "missing links are shown instead of scored"
+    ],
+    "reference_only": [
+      "petri-dish icon",
+      "generic human-skin icon",
+      "tunnel composition",
+      "exact scene animation"
+    ]
+  },
+  "approval_gates": [
+    "evidence-record extraction test",
+    "long study-title overflow test",
+    "route-mismatch comprehension review",
+    "16:9 rendered-frame review",
+    "9:16 rendered-frame review"
+  ]
+}

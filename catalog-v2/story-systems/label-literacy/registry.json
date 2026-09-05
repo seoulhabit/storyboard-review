@@ -1,7 +1,7 @@
 {
   "system_id": "label-literacy",
   "display_name": "Label Literacy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "prototype",
   "harvest_source": "videos/kbeauty-label-trap",
   "components": [
@@ -10,31 +10,40 @@
       "status": "prototype",
       "path": "catalog-v2/story-systems/label-literacy/components/label-compare-stage/preview.html",
       "source_scenes": ["s01", "s02", "s03", "s12", "s13"],
-      "fixtures": ["snail-mucin", "pdrn"]
+      "fixtures": ["centella-demo", "snail-mucin", "pdrn"]
     },
     {
       "id": "ingredient-order-map",
-      "status": "planned",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/components/ingredient-order-map/preview.html",
       "source_scenes": ["s04", "s05"]
     },
     {
       "id": "ingredient-identity-map",
-      "status": "planned",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/components/ingredient-identity-map/preview.html",
+      "fixtures": ["centella-demo", "snail-mucin", "pdrn"],
       "source_scenes": ["s02", "s06", "s07"]
     },
     {
       "id": "formula-vehicle-journey",
-      "status": "planned",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/components/formula-vehicle-journey/preview.html",
+      "fixtures": ["centella-demo", "snail-mucin", "pdrn"],
       "source_scenes": ["s08", "s09"]
     },
     {
       "id": "evidence-distance-map",
-      "status": "planned",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/components/evidence-distance-map/preview.html",
+      "fixtures": ["snail-mucin", "pdrn-topical", "pdrn-injected"],
       "source_scenes": ["s10"]
     },
     {
       "id": "boundary-suitability-card",
-      "status": "planned",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/components/boundary-suitability-card/preview.html",
+      "fixtures": ["centella-demo", "snail-mucin", "pdrn"],
       "source_scenes": ["s11"]
     }
   ],
@@ -43,7 +52,9 @@
     { "id": "illustrative-disclosure", "status": "prototype" },
     { "id": "ingredient-list-ribbon", "status": "prototype" },
     { "id": "question-seal", "status": "planned" },
-    { "id": "citation-chip", "status": "planned" },
-    { "id": "forensic-scanner-motion", "status": "planned" }
+    { "id": "citation-chip", "status": "prototype" },
+    { "id": "forensic-scanner-motion", "status": "prototype" },
+    { "id": "boundary-marker", "status": "prototype" },
+    { "id": "unknown-data-mask", "status": "prototype" }
   ]
 }

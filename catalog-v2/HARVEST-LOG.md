@@ -68,3 +68,17 @@ Created without new media generation:
 - a scene-by-scene source map documenting promoted and reference-only material.
 
 The source video's drawn bottles, vials, scientific icons, and exact Centella compositions remain reference-only. They were not copied into the component.
+
+## Extension 03 — complete kbeauty-label-trap component kit
+
+Built the remaining five working prototypes without generating media:
+
+- Ingredient Order Map
+- Ingredient Identity Map
+- Formula Vehicle Journey
+- Evidence Distance Map
+- Boundary and Suitability Card
+
+Added `story-systems/label-literacy/kit-preview.html` as a single review surface for all six components. Centella/Cica is used only as a declared fictional source-story demonstration. Snail Mucin and PDRN use governed pack boundaries where their data is available; missing formula or label information renders as unknown rather than being invented.
+
+The PDRN injected-evidence fixture visibly breaks the evidence chain at the delivery route. This is a reusable accuracy safeguard, not a story-specific animation.

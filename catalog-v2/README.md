@@ -34,6 +34,11 @@ catalog-v2/
       registry.json
       components/
         label-compare-stage/
+        ingredient-order-map/
+        ingredient-identity-map/
+        formula-vehicle-journey/
+        evidence-distance-map/
+        boundary-suitability-card/
       examples/
         snail-mucin.json
         pdrn.json
@@ -76,4 +81,4 @@ Story systems may assemble ingredient data into a teaching view, but they do not
 
 - Snail Mucin: ready for use across formats.
 - PDRN: ready for identity, topical product, route separation, and scoped evidence stories. Route-comparison is the highest-priority missing component.
-- Label Literacy: first working prototype created; Label Compare Stage has Snail Mucin and PDRN fixtures and requires real-label stress testing before approval.
+- Label Literacy: six-component prototype kit created from `kbeauty-label-trap`; Centella/Cica demonstrates the source story and Snail Mucin/PDRN test reuse. Components require real-label and narration-timed stress testing before approval.

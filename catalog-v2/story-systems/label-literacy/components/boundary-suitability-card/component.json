@@ -1,0 +1,30 @@
+{
+  "component_id": "boundary-suitability-card",
+  "display_name": "Boundary and Suitability Card",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Make the stopping point of a label or evidence conclusion explicit without turning education into a personal safety verdict.",
+  "required_inputs": [
+    "supported_conclusion",
+    "unsupported_extension",
+    "product_check",
+    "context_check",
+    "stop_condition",
+    "escalation_condition",
+    "source_status"
+  ],
+  "visual_states": ["evidence_boundary", "product_boundary", "personal_boundary", "route_boundary"],
+  "layouts": ["16:9", "9:16-safe"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s11"],
+    "promoted": ["the boundary is part of the answer", "check, context, stop, and escalate actions"],
+    "reference_only": ["skin fissure drawing", "universal gentle-language claim", "exact icon row"]
+  },
+  "approval_gates": [
+    "personal suitability is never inferred from an ingredient name",
+    "medical guidance is reviewed or routed to a qualified source",
+    "source status remains visible",
+    "16:9 and 9:16 rendered-frame review"
+  ]
+}

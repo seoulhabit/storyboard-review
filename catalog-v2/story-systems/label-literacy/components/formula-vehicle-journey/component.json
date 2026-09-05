@@ -1,0 +1,29 @@
+{
+  "component_id": "formula-vehicle-journey",
+  "display_name": "Formula Vehicle Journey",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Show that an ingredient travels inside a complete formula while keeping authored mechanisms visibly illustrative.",
+  "required_inputs": [
+    "ingredient_actor",
+    "formula_vehicle",
+    "journey_stages",
+    "endpoint",
+    "evidence_status",
+    "disclosure"
+  ],
+  "visual_states": ["illustrative_path", "vehicle_unknown", "route_boundary"],
+  "layouts": ["16:9", "9:16-safe"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s08", "s09"],
+    "promoted": ["ingredient as passenger", "formula as vehicle", "single and comparison modes"],
+    "reference_only": ["symbol-only corridor", "chaotic-versus-orderly transit verdict", "exact mechanism animation"]
+  },
+  "approval_gates": [
+    "mechanism evidence or illustrative disclosure is required",
+    "unknown vehicle state is supported",
+    "no penetration outcome is implied without evidence",
+    "16:9 and 9:16 rendered-frame review"
+  ]
+}

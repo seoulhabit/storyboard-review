@@ -1,0 +1,29 @@
+{
+  "component_id": "ingredient-identity-map",
+  "display_name": "Ingredient Identity Map",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Separate a consumer-facing hero name from the exact declaration, source, process or form, and studied material.",
+  "required_inputs": [
+    "consumer_name",
+    "ingredient_declaration",
+    "source",
+    "process_or_form",
+    "studied_material_match",
+    "disclosure"
+  ],
+  "field_states": ["known", "not_disclosed", "not_established", "requires_context"],
+  "layouts": ["16:9", "9:16-safe"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s02", "s06", "s07"],
+    "promoted": ["identity is not performance", "one hero name can hide product-specific variables"],
+    "reference_only": ["passport card styling", "three generic extraction vials", "traveler silhouettes"]
+  },
+  "approval_gates": [
+    "no automatic synonym substitution",
+    "missing source and process remain explicit",
+    "studied-material match is evidence-linked",
+    "16:9 and 9:16 rendered-frame review"
+  ]
+}

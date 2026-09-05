@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "snail-photoaging-to-category",
+  "ingredient_id": "snail-mucin",
+  "evidence_id": "SNAIL-SCI-2013-PHOTOAGING",
+  "claim_summary": "A small randomized split-face trial reported improvement in periocular rhytides with one specific snail-secretion-filtrate regimen.",
+  "study_facts": {
+    "design": "Randomized split-face human trial",
+    "population": "25 participants with photoaged skin",
+    "duration": "12 weeks",
+    "tested_material": "Specific Cryptomphalus aspersa secretion products",
+    "route": "Topical",
+    "finished_formula": "A specific branded regimen"
+  },
+  "target_product": {
+    "name": "Generic Snail Mucin archetype",
+    "route": "Topical",
+    "package_media": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
+    "media_background": "transparent",
+    "identity_status": "No photographed label or formula match is available"
+  },
+  "chain": [
+    { "stage": "Study", "value": "Human split-face trial", "relation": "origin" },
+    { "stage": "Tested material", "value": "Specific C. aspersa secretion", "relation": "partial" },
+    { "stage": "Route", "value": "Topical", "relation": "matches" },
+    { "stage": "Finished formula", "value": "Specific study regimen", "relation": "unknown" },
+    { "stage": "Your product", "value": "Generic category archetype", "relation": "unknown" }
+  ],
+  "boundary": "The study is evidence for one small, specific regimen—not proof for every product labeled snail mucin.",
+  "citation": {
+    "title": "The Effects of Filtrate of the Secretion of the Cryptomphalus Aspersa on Photoaged Skin",
+    "year": 2013,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23652894/",
+    "pmid": "23652894"
+  }
+}

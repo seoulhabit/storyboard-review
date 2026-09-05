@@ -179,6 +179,42 @@
       filter: drop-shadow(0 22px 20px rgba(23,35,50,0.12));
     }
 
+    .product-placeholder {
+      position: relative;
+      z-index: 1;
+      display: none;
+      width: 78%;
+      aspect-ratio: 0.72;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.88);
+      border-radius: 28px 28px 64px 64px;
+      color: var(--ink);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.78), rgba(127,157,136,.2)),
+        rgba(255,255,255,.5);
+      box-shadow: inset 0 0 0 1px rgba(23,35,50,.06), 0 22px 44px rgba(23,35,50,.12);
+      font-size: clamp(28px, 3.4vw, 64px);
+      font-weight: 680;
+      letter-spacing: -0.05em;
+    }
+
+    .product-placeholder::after {
+      content: "label specimen";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 11%;
+      color: var(--soft-ink);
+      font-size: clamp(9px, .7vw, 13px);
+      font-weight: 500;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .product-matte.specimen .product-image { display: none; }
+    .product-matte.specimen .product-placeholder { display: grid; }
+
     .product-matte.fixed-light {
       width: 76%;
       height: 75%;
@@ -491,7 +527,8 @@
         <span>Working Catalog V2 component · use the reveal control inside the frame</span>
       </div>
       <div class="switcher" role="tablist" aria-label="Ingredient fixture">
-        <button type="button" role="tab" aria-selected="true" data-fixture="snail">Snail Mucin</button>
+        <button type="button" role="tab" aria-selected="true" data-fixture="cica">Cica demo</button>
+        <button type="button" role="tab" aria-selected="false" data-fixture="snail">Snail Mucin</button>
         <button type="button" role="tab" aria-selected="false" data-fixture="pdrn">PDRN</button>
       </div>
     </header>
@@ -506,6 +543,7 @@
         <div class="claim-ghost" id="claimGhost">Snail</div>
         <div class="product-matte" id="productMatte">
           <img class="product-image" id="productImage" alt="Unbranded Snail Mucin package archetype">
+          <div class="product-placeholder" id="productPlaceholder" aria-hidden="true">Cica</div>
         </div>
       </div>
 
@@ -547,6 +585,27 @@
 
   <script>
     const fixtures = {
+      cica: {
+        title: "Cica",
+        ghost: "Cica",
+        image: "",
+        imageAlt: "",
+        imageMode: "specimen",
+        placeholder: "Cica",
+        frontClaim: "Cica",
+        exactValue: "Centella Asiatica Extract",
+        exactSource: "Fictional source-story label specimen; verify against a selected commercial product",
+        exactState: "requires_context",
+        exactStateLabel: "Needs product context",
+        disclosure: "Fictional demonstration derived from kbeauty-label-trap—not a commercial product review.",
+        inspection: [
+          ["How much?", "Exact concentration is not established by the fictional list.", "not established"],
+          ["Which version?", "The label name does not disclose the extract process.", "context required"],
+          ["What carries it?", "The finished formula vehicle is not documented.", "not established"],
+          ["What evidence?", "The tested material must match the product-specific extract.", "context required"],
+          ["Where does it stop?", "Ingredient identity does not certify performance.", "known boundary"]
+        ]
+      },
       snail: {
         title: "Snail Mucin",
         ghost: "Snail",
@@ -604,6 +663,7 @@
       const productImage = document.querySelector("#productImage");
       productImage.src = fixture.image;
       productImage.alt = fixture.imageAlt;
+      document.querySelector("#productPlaceholder").textContent = fixture.placeholder || fixture.title;
 
       const productMatte = document.querySelector("#productMatte");
       productMatte.className = `product-matte ${fixture.imageMode}`;
@@ -640,7 +700,7 @@
       });
     });
 
-    renderFixture("snail");
+    renderFixture("cica");
   </script>
 </body>
 </html>

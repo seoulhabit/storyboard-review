@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evidence Distance Map — Catalog V2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --rice: #f3f4ef;
+      --ink: #172332;
+      --soft-ink: #526071;
+      --line: rgba(23, 35, 50, 0.16);
+      --perilla: #7f9d88;
+      --assay: #6358a7;
+      --signal: #e15f52;
+      --amber: #a67b35;
+      --unknown: #7d8791;
+      --shadow: rgba(23, 35, 50, 0.15);
+    }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      padding: clamp(16px, 2vw, 30px);
+      background: #d7dcd8;
+      color: var(--ink);
+      font-family: "Avenir Next", "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .preview-shell { width: min(1600px, 100%); margin: 0 auto; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-copy { display: grid; gap: 2px; }
+    .toolbar-copy strong { font-size: 15px; font-weight: 650; }
+    .toolbar-copy span { color: var(--soft-ink); font-size: 13px; }
+
+    .switcher {
+      display: flex;
+      padding: 4px;
+      border: 1px solid rgba(23, 35, 50, 0.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.42);
+    }
+
+    .switcher button {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: var(--soft-ink);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .switcher button[aria-selected="true"] { color: white; background: var(--ink); }
+
+    button:focus-visible { outline: 3px solid var(--assay); outline-offset: 3px; }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border: 1px solid rgba(23, 35, 50, 0.17);
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, rgba(99,88,167,0.055) 1px, transparent 1px) 0 0 / 54px 54px,
+        linear-gradient(rgba(99,88,167,0.055) 1px, transparent 1px) 0 0 / 54px 54px,
+        var(--rice);
+      box-shadow: 0 28px 70px var(--shadow);
+    }
+
+    .masthead {
+      position: absolute;
+      z-index: 5;
+      top: 4.3%;
+      left: 4%;
+      right: 4%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand { font-size: clamp(13px, 1vw, 19px); font-weight: 680; }
+
+    .record-id {
+      max-width: 44%;
+      color: var(--soft-ink);
+      font-size: clamp(10px, 0.76vw, 14px);
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .content {
+      position: absolute;
+      inset: 12% 4% 7%;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      gap: clamp(14px, 1.5vw, 28px);
+    }
+
+    .heading-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 30px;
+      padding-bottom: clamp(10px, 1vw, 17px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 18ch;
+      font-size: clamp(34px, 4vw, 74px);
+      font-weight: 610;
+      letter-spacing: -0.055em;
+      line-height: 0.95;
+    }
+
+    .trace-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      padding: 10px 18px;
+      color: var(--ink);
+      background: rgba(255,255,255,0.54);
+      cursor: pointer;
+    }
+
+    .trace-button::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--assay);
+      box-shadow: 0 0 0 5px rgba(99,88,167,0.13);
+    }
+
+    .stage.traced .trace-button { color: white; background: var(--ink); }
+
+    .claim-band {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+      gap: clamp(18px, 2.4vw, 42px);
+      align-items: start;
+    }
+
+    .claim-summary {
+      max-width: 78ch;
+      margin: 0;
+      font-size: clamp(15px, 1.35vw, 25px);
+      font-weight: 530;
+      line-height: 1.38;
+    }
+
+    .study-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 0;
+    }
+
+    .study-facts div {
+      padding-left: 10px;
+      border-left: 3px solid var(--perilla);
+    }
+
+    .study-facts dt { color: var(--soft-ink); font-size: clamp(9px, 0.63vw, 12px); }
+    .study-facts dd { margin: 4px 0 0; font-size: clamp(11px, 0.76vw, 14px); font-weight: 600; line-height: 1.25; }
+
+    .chain-wrap {
+      position: relative;
+      display: grid;
+      align-items: stretch;
+      min-height: 0;
+    }
+
+    .chain {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: clamp(22px, 3.1vw, 56px);
+      align-items: center;
+      padding: 2% 0 1%;
+    }
+
+    .chain::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      left: 7%;
+      right: 7%;
+      top: 50%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(23,35,50,0.09);
+      transform: translateY(-50%);
+    }
+
+    .node {
+      position: relative;
+      z-index: 2;
+      min-width: 0;
+      min-height: clamp(170px, 15vw, 270px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      padding: clamp(16px, 1.6vw, 28px);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: inset 0 0 0 1px rgba(23,35,50,0.05), 0 18px 40px rgba(23,35,50,0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .node::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 7px;
+      border-radius: 18px 18px 0 0;
+      background: var(--relation, var(--assay));
+    }
+
+    .node[data-relation="matches"] { --relation: var(--perilla); }
+    .node[data-relation="partial"] { --relation: var(--amber); }
+    .node[data-relation="unknown"] { --relation: var(--unknown); }
+    .node[data-relation="different"] { --relation: var(--signal); }
+
+    .node-stage { color: var(--soft-ink); font-size: clamp(10px, 0.7vw, 13px); }
+    .node-value { align-self: center; font-size: clamp(15px, 1.25vw, 23px); font-weight: 620; letter-spacing: -0.025em; line-height: 1.08; }
+
+    .relation {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--soft-ink);
+      font-size: clamp(9px, 0.65vw, 12px);
+      opacity: 0.25;
+      transition: opacity 220ms ease;
+    }
+
+    .relation::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--relation, var(--assay)); }
+    .stage.traced .relation { opacity: 1; }
+
+    .connector {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      right: calc(-1 * clamp(22px, 3.1vw, 56px));
+      width: clamp(22px, 3.1vw, 56px);
+      height: 42px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .connector::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 19px;
+      height: 4px;
+      background: var(--relation, var(--assay));
+      opacity: 0.16;
+      transform: scaleX(0.25);
+      transform-origin: left;
+      transition: transform 420ms cubic-bezier(.2,.8,.2,1), opacity 240ms ease;
+    }
+
+    .stage.traced .connector::before { opacity: 0.9; transform: scaleX(1); }
+
+    .node[data-relation="different"] .connector::before {
+      top: 12px;
+      height: 18px;
+      background: repeating-linear-gradient(135deg, var(--signal) 0 6px, transparent 6px 11px);
+      clip-path: polygon(0 42%, 38% 42%, 46% 0, 54% 100%, 62% 42%, 100% 42%, 100% 64%, 64% 64%, 56% 100%, 44% 0, 36% 64%, 0 64%);
+    }
+
+    .product-node { overflow: hidden; }
+
+    .product-thumb {
+      position: absolute;
+      right: -4%;
+      bottom: -8%;
+      width: 56%;
+      height: 72%;
+      object-fit: contain;
+      opacity: 0.2;
+      filter: saturate(0.75);
+      transition: opacity 260ms ease, transform 460ms cubic-bezier(.2,.8,.2,1);
+      transform: translateY(8%);
+    }
+
+    .product-thumb.fixed-light { object-fit: cover; border-radius: 16px 0 18px 0; mix-blend-mode: multiply; }
+    .stage.traced .product-thumb { opacity: 0.58; transform: translateY(0); }
+    .product-node .node-value, .product-node .relation, .product-node .node-stage { position: relative; z-index: 2; }
+
+    .boundary-band {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: clamp(14px, 1.4vw, 24px);
+      align-items: center;
+      min-height: clamp(70px, 6vw, 108px);
+      padding: clamp(12px, 1.2vw, 21px) clamp(16px, 1.7vw, 30px);
+      border-radius: 16px;
+      color: white;
+      background: var(--ink);
+    }
+
+    .boundary-mark {
+      display: grid;
+      place-items: center;
+      width: clamp(36px, 3vw, 52px);
+      aspect-ratio: 1;
+      border: 2px solid var(--signal);
+      border-radius: 50%;
+      color: var(--signal);
+      font-size: clamp(19px, 1.6vw, 30px);
+      font-weight: 700;
+    }
+
+    .boundary-copy { font-size: clamp(13px, 1.12vw, 21px); font-weight: 540; line-height: 1.3; }
+
+    .citation {
+      max-width: 31ch;
+      color: rgba(255,255,255,0.66);
+      font-size: clamp(9px, 0.64vw, 12px);
+      line-height: 1.25;
+      text-align: right;
+    }
+
+    @media (max-width: 840px) {
+      body { padding: 12px; }
+      .toolbar { align-items: stretch; flex-direction: column; }
+      .switcher { align-self: flex-start; max-width: 100%; overflow-x: auto; }
+      .switcher button { white-space: nowrap; }
+      .stage { aspect-ratio: 9 / 16; min-height: 760px; border-radius: 18px; }
+      .record-id { display: none; }
+      .content { inset: 9% 5% 4%; grid-template-rows: auto auto 1fr auto; gap: 12px; }
+      .heading-row { grid-template-columns: 1fr; align-items: start; gap: 10px; }
+      h1 { font-size: 38px; }
+      .trace-button { justify-self: start; min-height: 42px; }
+      .claim-band { grid-template-columns: 1fr; gap: 10px; }
+      .claim-summary { font-size: 14px; }
+      .study-facts { display: none; }
+      .chain { grid-template-columns: 1fr; gap: 14px; padding: 0; }
+      .chain::before { left: 18px; right: auto; top: 5%; bottom: 5%; width: 5px; height: auto; transform: none; }
+      .node { min-height: 74px; grid-template-columns: 0.65fr 1.7fr 0.8fr; grid-template-rows: auto; align-items: center; gap: 8px; padding: 12px 14px 12px 21px; }
+      .node::before { width: 7px; height: 100%; border-radius: 18px 0 0 18px; }
+      .node-value { font-size: 13px; }
+      .relation { font-size: 9px; }
+      .connector { display: none; }
+      .product-thumb { width: 28%; height: 120%; right: 28%; bottom: -12%; }
+      .boundary-band { grid-template-columns: auto 1fr; }
+      .citation { display: none; }
+      .boundary-copy { font-size: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="preview-shell">
+    <header class="toolbar">
+      <div class="toolbar-copy">
+        <strong>Evidence Distance Map</strong>
+        <span>Working Catalog V2 component · trace the chain inside the frame</span>
+      </div>
+      <div class="switcher" role="tablist" aria-label="Evidence fixture">
+        <button type="button" role="tab" aria-selected="true" data-fixture="snail">Snail study</button>
+        <button type="button" role="tab" aria-selected="false" data-fixture="pdrnTopical">PDRN topical</button>
+        <button type="button" role="tab" aria-selected="false" data-fixture="pdrnInjected">PDRN injected</button>
+      </div>
+    </header>
+
+    <section class="stage" id="stage" aria-label="Evidence distance component preview">
+      <div class="masthead">
+        <div class="brand">SeoulHabit evidence review</div>
+        <div class="record-id" id="recordId"></div>
+      </div>
+
+      <div class="content">
+        <div class="heading-row">
+          <h1>How far does this study travel?</h1>
+          <button class="trace-button" id="traceButton" type="button" aria-pressed="false">Trace the evidence</button>
+        </div>
+
+        <div class="claim-band">
+          <p class="claim-summary" id="claimSummary"></p>
+          <dl class="study-facts" id="studyFacts"></dl>
+        </div>
+
+        <div class="chain-wrap">
+          <div class="chain" id="chain" aria-label="Evidence chain"></div>
+        </div>
+
+        <div class="boundary-band">
+          <div class="boundary-mark">!</div>
+          <div class="boundary-copy" id="boundary"></div>
+          <div class="citation" id="citation"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const fixtures = {
+      snail: {
+        recordId: "SNAIL-SCI-2013-PHOTOAGING",
+        claim: "A small randomized split-face trial reported improvement in periocular rhytides with one specific snail-secretion-filtrate regimen.",
+        facts: [["People", "25 participants"], ["Time", "12 weeks"], ["Route", "Topical"]],
+        chain: [
+          ["Study", "Human split-face trial", "origin"],
+          ["Tested material", "Specific C. aspersa secretion", "partial"],
+          ["Route", "Topical", "matches"],
+          ["Finished formula", "Specific study regimen", "unknown"],
+          ["Your product", "Generic category archetype", "unknown"]
+        ],
+        boundary: "The study is evidence for one small, specific regimen—not proof for every product labeled snail mucin.",
+        citation: "Fabi et al. · 2013 · PMID 23652894",
+        image: "../../../../ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
+        imageMode: "transparent"
+      },
+      pdrnTopical: {
+        recordId: "PDRN-SCI-2026-TOPICAL-850K",
+        claim: "A small randomized split-face study reported greater 28-day improvements in several periocular measures with one defined 0.1% PDRN-850K eye cream.",
+        facts: [["People", "31 women"], ["Time", "28 days"], ["Route", "Topical"]],
+        chain: [
+          ["Study", "Human split-face study", "origin"],
+          ["Tested material", "Defined PDRN-850K", "unknown"],
+          ["Route", "Topical", "matches"],
+          ["Finished formula", "0.1% eye cream", "different"],
+          ["Your product", "Generic serum archetype", "unknown"]
+        ],
+        boundary: "Promising evidence for one defined eye cream does not establish a category-wide PDRN serum claim.",
+        citation: "Ye et al. · 2026 · DOI 10.1371/journal.pone.0350905",
+        image: "../../../../ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+        imageMode: "fixed-light"
+      },
+      pdrnInjected: {
+        recordId: "PDRN-SCI-2014-DIABETIC-ULCER",
+        claim: "A randomized clinical trial reported improved healing outcomes with injected PDRN in people with hard-to-heal diabetic foot ulcers.",
+        facts: [["People", "216 randomized"], ["Time", "8 weeks"], ["Route", "Injected"]],
+        chain: [
+          ["Study", "Medical wound trial", "origin"],
+          ["Tested material", "Medical PDRN preparation", "unknown"],
+          ["Route", "Injected", "different"],
+          ["Finished formula", "Medical treatment", "different"],
+          ["Your product", "Topical serum archetype", "different"]
+        ],
+        boundary: "The route breaks the evidence chain: injected wound-treatment results cannot support a topical cosmetic-serum claim.",
+        citation: "Squadrito et al. · 2014 · PMID 24483158",
+        image: "../../../../ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+        imageMode: "fixed-light"
+      }
+    };
+
+    const labels = {
+      origin: "study origin",
+      matches: "matches",
+      partial: "partial match",
+      unknown: "match unknown",
+      different: "different"
+    };
+
+    const stage = document.querySelector("#stage");
+    const traceButton = document.querySelector("#traceButton");
+
+    function renderFixture(key) {
+      const fixture = fixtures[key];
+      document.querySelector("#recordId").textContent = fixture.recordId;
+      document.querySelector("#claimSummary").textContent = fixture.claim;
+      document.querySelector("#boundary").textContent = fixture.boundary;
+      document.querySelector("#citation").textContent = fixture.citation;
+      document.querySelector("#studyFacts").innerHTML = fixture.facts.map(([name, value]) => `<div><dt>${name}</dt><dd>${value}</dd></div>`).join("");
+
+      document.querySelector("#chain").innerHTML = fixture.chain.map(([name, value, relation], index) => `
+        <article class="node ${index === fixture.chain.length - 1 ? "product-node" : ""}" data-relation="${relation}">
+          <div class="node-stage">${name}</div>
+          <div class="node-value">${value}</div>
+          <div class="relation">${labels[relation]}</div>
+          ${index < fixture.chain.length - 1 ? '<div class="connector"></div>' : ''}
+          ${index === fixture.chain.length - 1 ? `<img class="product-thumb ${fixture.imageMode}" src="${fixture.image}" alt="">` : ''}
+        </article>
+      `).join("");
+
+      stage.classList.remove("traced");
+      traceButton.setAttribute("aria-pressed", "false");
+      traceButton.textContent = "Trace the evidence";
+    }
+
+    traceButton.addEventListener("click", () => {
+      const traced = stage.classList.toggle("traced");
+      traceButton.setAttribute("aria-pressed", String(traced));
+      traceButton.textContent = traced ? "Reset the trace" : "Trace the evidence";
+    });
+
+    document.querySelectorAll("[data-fixture]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-fixture]").forEach((item) => item.setAttribute("aria-selected", "false"));
+        button.setAttribute("aria-selected", "true");
+        renderFixture(button.dataset.fixture);
+      });
+    });
+
+    renderFixture("snail");
+  </script>
+</body>
+</html>

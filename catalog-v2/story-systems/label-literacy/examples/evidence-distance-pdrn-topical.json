@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "pdrn-topical-850k-to-category",
+  "ingredient_id": "pdrn",
+  "evidence_id": "PDRN-SCI-2026-TOPICAL-850K",
+  "claim_summary": "A small randomized split-face study reported greater 28-day improvements in several periocular measures with one defined 0.1% PDRN-850K eye cream.",
+  "study_facts": {
+    "design": "Randomized double-blind split-face study",
+    "population": "31 healthy Chinese women aged 35–55",
+    "duration": "28 days",
+    "tested_material": "Defined medium-length salmon-derived PDRN-850K",
+    "route": "Topical",
+    "finished_formula": "One 0.1% eye cream"
+  },
+  "target_product": {
+    "name": "Generic PDRN serum archetype",
+    "route": "Topical",
+    "package_media": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+    "media_background": "fixed_light",
+    "identity_status": "Source, fragment profile, concentration, and vehicle are not documented"
+  },
+  "chain": [
+    { "stage": "Study", "value": "Human split-face study", "relation": "origin" },
+    { "stage": "Tested material", "value": "Defined PDRN-850K", "relation": "unknown" },
+    { "stage": "Route", "value": "Topical", "relation": "matches" },
+    { "stage": "Finished formula", "value": "0.1% eye cream", "relation": "different" },
+    { "stage": "Your product", "value": "Generic serum archetype", "relation": "unknown" }
+  ],
+  "boundary": "Promising evidence for one defined eye cream does not establish a category-wide PDRN serum claim.",
+  "citation": {
+    "title": "Topical medium-length PDRN enhances dermal extracellular matrix repair in photodamaged skin via PI3K–Akt/TGF-β–regulated pathways",
+    "year": 2026,
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0350905",
+    "doi": "10.1371/journal.pone.0350905"
+  }
+}

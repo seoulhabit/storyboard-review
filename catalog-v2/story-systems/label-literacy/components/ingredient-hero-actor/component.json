@@ -1,0 +1,19 @@
+{
+  "component_id": "ingredient-hero-actor",
+  "display_name": "Ingredient Hero Actor",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Give the ingredient a persistent visual identity that remains recognizable while products, labels, formulas, and evidence contexts change.",
+  "required_inputs": ["ingredient_id", "display_name", "actor_description", "visual_signature", "motion_grammar", "source_status", "disclosure"],
+  "variants": ["identity", "source", "formula", "recap"],
+  "visual_states": ["hero", "contained", "transitioning", "unknown_version", "illustrative"],
+  "layouts": ["16:9", "9:16-safe"],
+  "fixtures": ["snail-mucin", "pdrn", "centella-demo"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s01", "s02", "s06", "s07", "s08", "s12", "s14"],
+    "promoted": ["one ingredient remains the story subject", "actor persists while product context changes"],
+    "reference_only": ["source droplet", "generic molecular travelers", "exact passport transformation"]
+  },
+  "approval_gates": ["ingredient actor is not confused with a product", "illustrative state is disclosed", "recognition survives 9:16 crop", "motion follows ingredient-pack grammar"]
+}

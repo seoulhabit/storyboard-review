@@ -1,0 +1,19 @@
+{
+  "component_id": "source-process-version-map",
+  "display_name": "Source, Process and Version Map",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Separate where an ingredient starts, what happens to it, and which preparation reaches a formula without inventing undisclosed steps.",
+  "required_inputs": ["ingredient_actor", "source", "process_steps", "version_name", "version_variables", "known_fields", "unknown_fields", "disclosure"],
+  "variants": ["single_path", "version_compare", "unknown_process"],
+  "visual_states": ["known", "not_disclosed", "illustrative", "version_divergence"],
+  "layouts": ["16:9", "9:16-safe"],
+  "fixtures": ["snail-mucin", "pdrn", "centella-demo"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s06", "s07"],
+    "promoted": ["source, process and version are separate questions", "one consumer name can lead to materially different preparations"],
+    "reference_only": ["generic extraction chambers", "three-vial art", "passport gate"]
+  },
+  "approval_gates": ["no undisclosed manufacturing step is asserted", "source imagery does not imply welfare or purity", "different label terms are not treated as synonyms", "16:9 and 9:16 review"]
+}

@@ -1,60 +1,39 @@
 {
   "system_id": "label-literacy",
-  "display_name": "Label Literacy",
-  "version": "0.2.0",
-  "status": "prototype",
+  "display_name": "K-Beauty Label Trap",
+  "version": "0.3.0",
+  "status": "complete_prototype",
   "harvest_source": "videos/kbeauty-label-trap",
+  "coverage": {
+    "source_scenes": 14,
+    "covered_scenes": 14,
+    "component_count": 9,
+    "pattern_count": 2
+  },
   "components": [
-    {
-      "id": "label-compare-stage",
-      "status": "prototype",
-      "path": "catalog-v2/story-systems/label-literacy/components/label-compare-stage/preview.html",
-      "source_scenes": ["s01", "s02", "s03", "s12", "s13"],
-      "fixtures": ["centella-demo", "snail-mucin", "pdrn"]
-    },
-    {
-      "id": "ingredient-order-map",
-      "status": "prototype",
-      "path": "catalog-v2/story-systems/label-literacy/components/ingredient-order-map/preview.html",
-      "source_scenes": ["s04", "s05"]
-    },
-    {
-      "id": "ingredient-identity-map",
-      "status": "prototype",
-      "path": "catalog-v2/story-systems/label-literacy/components/ingredient-identity-map/preview.html",
-      "fixtures": ["centella-demo", "snail-mucin", "pdrn"],
-      "source_scenes": ["s02", "s06", "s07"]
-    },
-    {
-      "id": "formula-vehicle-journey",
-      "status": "prototype",
-      "path": "catalog-v2/story-systems/label-literacy/components/formula-vehicle-journey/preview.html",
-      "fixtures": ["centella-demo", "snail-mucin", "pdrn"],
-      "source_scenes": ["s08", "s09"]
-    },
-    {
-      "id": "evidence-distance-map",
-      "status": "prototype",
-      "path": "catalog-v2/story-systems/label-literacy/components/evidence-distance-map/preview.html",
-      "fixtures": ["snail-mucin", "pdrn-topical", "pdrn-injected"],
-      "source_scenes": ["s10"]
-    },
-    {
-      "id": "boundary-suitability-card",
-      "status": "prototype",
-      "path": "catalog-v2/story-systems/label-literacy/components/boundary-suitability-card/preview.html",
-      "fixtures": ["centella-demo", "snail-mucin", "pdrn"],
-      "source_scenes": ["s11"]
-    }
+    {"id":"ingredient-hero-actor","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/ingredient-hero-actor/preview.html","source_scenes":["s01","s02","s06","s07","s08","s12","s14"],"fixtures":["centella-demo","snail-mucin","pdrn"]},
+    {"id":"label-compare-stage","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/label-compare-stage/preview.html","source_scenes":["s01","s02","s12"],"fixtures":["centella-demo","snail-mucin","pdrn"]},
+    {"id":"five-question-progress","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/five-question-progress/preview.html","source_scenes":["s03","s04","s05","s06","s07","s08","s09","s10","s11","s12","s13"],"fixtures":["centella-demo","snail-mucin","pdrn"]},
+    {"id":"ingredient-order-map","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/ingredient-order-map/preview.html","source_scenes":["s04","s05"]},
+    {"id":"ingredient-identity-map","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/ingredient-identity-map/preview.html","source_scenes":["s02","s06","s07"],"fixtures":["centella-demo","snail-mucin","pdrn"]},
+    {"id":"source-process-version-map","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/source-process-version-map/preview.html","source_scenes":["s06","s07"],"fixtures":["centella-demo","snail-mucin","pdrn"]},
+    {"id":"formula-vehicle-journey","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/formula-vehicle-journey/preview.html","source_scenes":["s08","s09"],"fixtures":["centella-demo","snail-mucin","pdrn"]},
+    {"id":"evidence-distance-map","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/evidence-distance-map/preview.html","source_scenes":["s10"],"fixtures":["snail-mucin","pdrn-topical","pdrn-injected"]},
+    {"id":"boundary-suitability-card","status":"prototype","path":"catalog-v2/story-systems/label-literacy/components/boundary-suitability-card/preview.html","source_scenes":["s11"],"fixtures":["centella-demo","snail-mucin","pdrn"]}
+  ],
+  "patterns": [
+    {"id":"verdict-reveal","status":"prototype","path":"catalog-v2/story-systems/label-literacy/patterns/verdict-reveal/preview.html","source_scenes":["s01","s12"],"uses":["ingredient-hero-actor","label-compare-stage","five-question-progress"]},
+    {"id":"five-question-recap","status":"prototype","path":"catalog-v2/story-systems/label-literacy/patterns/five-question-recap/preview.html","source_scenes":["s13","s14"],"uses":["ingredient-hero-actor","five-question-progress"]}
   ],
   "shared_primitives": [
-    { "id": "evidence-status-chip", "status": "prototype" },
-    { "id": "illustrative-disclosure", "status": "prototype" },
-    { "id": "ingredient-list-ribbon", "status": "prototype" },
-    { "id": "question-seal", "status": "planned" },
-    { "id": "citation-chip", "status": "prototype" },
-    { "id": "forensic-scanner-motion", "status": "prototype" },
-    { "id": "boundary-marker", "status": "prototype" },
-    { "id": "unknown-data-mask", "status": "prototype" }
+    {"id":"evidence-status-chip","status":"prototype"},
+    {"id":"illustrative-disclosure","status":"prototype"},
+    {"id":"ingredient-list-ribbon","status":"prototype"},
+    {"id":"question-seal","status":"prototype"},
+    {"id":"citation-chip","status":"prototype"},
+    {"id":"forensic-scanner-motion","status":"prototype"},
+    {"id":"boundary-marker","status":"prototype"},
+    {"id":"unknown-data-mask","status":"prototype"},
+    {"id":"neutral-package-shell","status":"prototype"}
   ]
 }

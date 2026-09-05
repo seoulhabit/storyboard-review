@@ -1,0 +1,10 @@
+{
+  "pattern_id": "verdict-reveal",
+  "display_name": "Ingredient Verdict Reveal",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Return to the opening A/B labels and reveal what the five questions changed without declaring a universal winner.",
+  "uses": ["ingredient-hero-actor", "label-compare-stage", "five-question-progress", "evidence-status-chip"],
+  "states": ["opening_question", "scan_return", "decision_useful", "more_unknowns", "no_verdict"],
+  "source_scenes": ["s01", "s12"]
+}

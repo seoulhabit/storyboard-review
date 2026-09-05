@@ -1,14 +1,15 @@
 {
   "component_id": "label-compare-stage",
   "display_name": "Label Compare Stage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "prototype",
-  "purpose": "Reveal the difference between a front-of-pack ingredient claim, an exact ingredient declaration, and what remains unknown.",
+  "purpose": "Compare two product labels around one anchored ingredient, revealing the difference between front claims, exact declarations, and unknown product details.",
   "input_schema": "../../label-review.schema.json",
   "required_inputs": [
-    "package_media",
-    "front_claim",
-    "ingredient_declaration",
+    "ingredient_actor",
+    "products[].package_media",
+    "products[].front_claim",
+    "products[].ingredient_declaration",
     "inspection.quantity",
     "inspection.identity",
     "inspection.vehicle",
@@ -18,12 +19,14 @@
   ],
   "visual_states": [
     "front_claim",
-    "label_revealed",
+    "paired_label_revealed",
+    "same_hero_different_declaration",
     "known",
     "not_disclosed",
     "not_established",
     "requires_context"
   ],
+  "variants": ["paired", "single", "return_verdict"],
   "layouts": ["16:9", "9:16-safe"],
   "shared_primitives": [
     "ingredient-list-ribbon",

@@ -1,0 +1,10 @@
+{
+  "pattern_id": "five-question-recap",
+  "display_name": "Five-Question Recap",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Compress the five inspection answers into a legible memory aid for recap and closing scenes.",
+  "uses": ["ingredient-hero-actor", "five-question-progress", "citation-chip"],
+  "states": ["summary", "vertical_short", "brand_handoff"],
+  "source_scenes": ["s13", "s14"]
+}

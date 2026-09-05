@@ -1,5 +1,5 @@
 {
-  "catalog_version": "2.0.0-alpha.4",
+  "catalog_version": "2.0.0-alpha.5",
   "updated": "2026-09-05",
   "policy": "harvest_first",
   "ingredient_packs": [
@@ -32,13 +32,14 @@
     {
       "system_id": "label-literacy",
       "display_name": "Label Literacy",
-      "version": "0.2.0",
-      "status": "prototype",
+      "version": "0.3.0",
+      "status": "complete_prototype",
       "path": "catalog-v2/story-systems/label-literacy/registry.json",
-      "working_component_count": 6,
+      "working_component_count": 9,
+      "working_pattern_count": 2,
       "planned_component_count": 0,
       "first_fixtures": ["snail-mucin", "pdrn"],
-      "highest_priority_gate": "stress test the kit with a photographed real-product label and narration-timed video integration"
+      "highest_priority_gate": "stress test the complete kit with photographed real-product labels and narration-timed video integration"
     }
   ],
   "global_rules": [

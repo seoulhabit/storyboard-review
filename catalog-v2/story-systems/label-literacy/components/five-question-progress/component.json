@@ -1,0 +1,18 @@
+{
+  "component_id": "five-question-progress",
+  "display_name": "Five-Question Progress",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Keep the Label Trap investigation visible as quantity, identity, vehicle, evidence, and boundary are answered across a story.",
+  "required_inputs": ["questions", "active_question", "question_states", "answer_summaries", "verdict_state"],
+  "variants": ["rail", "seal_cluster", "compact"],
+  "visual_states": ["unseen", "active", "answered", "needs_context", "unknown", "complete"],
+  "layouts": ["16:9", "9:16-safe"],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s03", "s04", "s06", "s08", "s10", "s11", "s12", "s13", "s14"],
+    "promoted": ["five-question memory structure", "progress persists across chapters", "answer states remain non-binary"],
+    "reference_only": ["rough seal drawings", "exact seal-to-logo animation"]
+  },
+  "approval_gates": ["all five questions have distinct accessible labels", "unknown is not styled as failure", "compact state remains readable in 9:16", "reduced-motion mode supported"]
+}

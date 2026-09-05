@@ -6,7 +6,7 @@
     "dev": "npx --yes hyperframes@0.8.20 preview",
     "check": "npx --yes hyperframes@0.8.20 check && python3 scripts/check-sfx-durations.py .",
     "render": "npx --yes hyperframes@0.8.20 render --quality high --workers 1",
-    "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . && python3 scripts/check-safe-area.py . --safe-top 192 --safe-bottom 384 --safe-right 162",
+    "postrender": "python3 scripts/check-blank-frames.py . renders/peeling-question-open_FINAL_mastered.mp4 && python3 scripts/check-sfx-durations.py . && python3 scripts/check-motion-gaps.py renders/peeling-question-open_FINAL_mastered.mp4 --project-root . --advisory && python3 scripts/check-static-hold.py . && python3 scripts/check-safe-area.py . --safe-top 192 --safe-bottom 384 --safe-right 162",
     "publish": "npx --yes hyperframes@0.8.20 publish"
   },
   "devDependencies": {

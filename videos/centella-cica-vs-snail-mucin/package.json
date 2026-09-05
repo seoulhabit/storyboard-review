@@ -6,7 +6,7 @@
     "dev": "npx --yes hyperframes@0.8.17 preview",
     "check": "npx --yes hyperframes@0.8.17 check && python3 scripts/check-sfx-durations.py .",
     "render": "npx --yes hyperframes@0.8.17 render",
-    "postrender": "python3 scripts/check-blank-frames.py .",
+    "postrender": "python3 scripts/check-blank-frames.py . renders/centella-cica-vs-snail-mucin_2026-08-30_19-38-01.mp4 && python3 scripts/check-sfx-durations.py . && python3 scripts/check-motion-gaps.py renders/centella-cica-vs-snail-mucin_2026-08-30_19-38-01.mp4 --project-root . --advisory",
     "publish": "npx --yes hyperframes@0.8.17 publish"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@
     "check": "python3 ../../catalog/tooling/check-dead-sets.py && hyperframes check --samples 60",
     "render": "hyperframes render --quality high -o renders/ectoin-normal-person.raw.mp4",
     "master": "python3 scripts/master-audio.py . renders/ectoin-normal-person.raw.mp4 renders/ectoin-normal-person.mp4",
-    "postrender": "python3 ../../catalog/tooling/check-static-hold.py . renders/ectoin-normal-person.mp4 --landscape && python3 ../../catalog/tooling/check-safe-area.py . renders/ectoin-normal-person.mp4 --landscape && python3 ../../catalog/tooling/check-cadence.py . renders/ectoin-normal-person.mp4 --longform && python3 ../../catalog/tooling/continuity-audit.py . --gate",
+    "postrender": "python3 ../../catalog/tooling/check-blank-frames.py . renders/ectoin-normal-person.mp4 && python3 ../../catalog/tooling/check-sfx-durations.py . && python3 ../../catalog/tooling/check-motion-gaps.py renders/ectoin-normal-person.mp4 --project-root . --advisory && python3 ../../catalog/tooling/check-static-hold.py . renders/ectoin-normal-person.mp4 --landscape && python3 ../../catalog/tooling/check-safe-area.py . renders/ectoin-normal-person.mp4 --landscape && python3 ../../catalog/tooling/check-cadence.py . renders/ectoin-normal-person.mp4 --longform && python3 ../../catalog/tooling/continuity-audit.py . --gate",
     "publish": "hyperframes publish"
   },
   "devDependencies": {

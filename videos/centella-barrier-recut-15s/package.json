@@ -6,6 +6,6 @@
     "dev": "npx --yes hyperframes@0.8.19 preview",
     "check": "npx --yes hyperframes@0.8.19 check",
     "render": "npx --yes hyperframes@0.8.19 render --quality high --workers 1",
-    "postrender": "python3 scripts/check-static-hold.py . && python3 scripts/check-safe-area.py . --safe-top 192 --safe-bottom 384 --safe-right 162"
+    "postrender": "python3 scripts/check-blank-frames.py . renders/centella-barrier-recut-15s_delivery.mp4 && python3 scripts/check-sfx-durations.py . && python3 scripts/check-motion-gaps.py renders/centella-barrier-recut-15s_delivery.mp4 --project-root . --advisory && python3 scripts/check-static-hold.py . && python3 scripts/check-safe-area.py . --safe-top 192 --safe-bottom 384 --safe-right 162"
   }
 }

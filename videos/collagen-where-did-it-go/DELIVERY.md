@@ -161,16 +161,15 @@ None of these were visible in any output. Each was found by comparing a number t
 `npm run qc` writes five sheets to `renders/qc/`, all of which were looked at:
 
 - `sheet-early/mid/late.png` — 24 frames per third of the runtime. The muted read holds end to end: contradiction, tagged trial field, shield, building, sun cutting, door refusal, film, digestion, the filter, the numbered hierarchy, the verdict.
-- `phone.png` — 22 kinetic-anchor moments at **25% (480×270)**. Every text beat is still legible, including the size cards and the citation chips. This pass is the only one that has ever caught a `.worldclip` crop on this channel.
+- `phone.png` — 22 kinetic-anchor moments at **25% (480×270)**. Every text beat is legible, including the size cards and the citation chips. This is the pass that caught the camera-crop defect, and the only one that could have: at full size a sliced chip reads as a chip.
 - `seams.png` — the seven transition midpoints, tiled.
 - `seam-A1-A2.wav`, `seam-A2-A3.wav`, `seam-A3-B.wav` — six seconds across each block seam, for the ear.
 
-Two defects were found by looking rather than by a gate, and fixed:
+Three defects were found by looking rather than by a gate, and fixed:
 
 1. **The four distribution labels were readable eleven seconds before the line that names them.** `skin / joints / tendons / other tissue` were on screen from the digestion file's first frame, giving away "your body decides where they go" and holding the right half of the frame static until it arrived. They now build with the branch map.
 2. **The two citation chips in the hierarchy sat edge to edge** and read as one pill. Spaced.
-
-
+3. **The camera pushes were slicing text off the frame edge** — the trial count, a filter chip and three citation chips, across two scenes. That one has its own section below.
 
 ---
 

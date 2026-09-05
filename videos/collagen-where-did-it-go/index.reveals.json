@@ -194,8 +194,8 @@
   "kind": "w",
   "word": "trials",
   "occurrence": 1,
-  "seconds": 1.465,
-  "abs": 6.727
+  "seconds": 1.478,
+  "abs": 6.74
  },
  {
   "file": "02-promise",
@@ -203,8 +203,8 @@
   "kind": "w",
   "word": "trials",
   "occurrence": 1,
-  "seconds": 1.465,
-  "abs": 6.727
+  "seconds": 1.478,
+  "abs": 6.74
  },
  {
   "file": "02-promise",
@@ -239,8 +239,8 @@
   "kind": "w",
   "word": "industry",
   "occurrence": 1,
-  "seconds": 3.512,
-  "abs": 8.774
+  "seconds": 3.642,
+  "abs": 8.904
  },
  {
   "file": "02-promise",
@@ -266,8 +266,8 @@
   "kind": "w",
   "word": "first",
   "occurrence": 1,
-  "seconds": 6.271,
-  "abs": 11.533
+  "seconds": 6.569,
+  "abs": 11.831
  },
  {
   "file": "02-promise",
@@ -275,8 +275,8 @@
   "kind": "w",
   "word": "first",
   "occurrence": 1,
-  "seconds": 6.271,
-  "abs": 11.533
+  "seconds": 6.569,
+  "abs": 11.831
  },
  {
   "file": "02-promise",
@@ -284,8 +284,8 @@
   "kind": "w",
   "word": "first",
   "occurrence": 1,
-  "seconds": 6.271,
-  "abs": 11.533
+  "seconds": 6.569,
+  "abs": 11.831
  },
  {
   "file": "02-promise",
@@ -293,8 +293,8 @@
   "kind": "w",
   "word": "first",
   "occurrence": 1,
-  "seconds": 6.271,
-  "abs": 11.533
+  "seconds": 6.569,
+  "abs": 11.831
  },
  {
   "file": "02-promise",
@@ -302,8 +302,8 @@
   "kind": "w",
   "word": "protects",
   "occurrence": 1,
-  "seconds": 6.525,
-  "abs": 11.787
+  "seconds": 7.021,
+  "abs": 12.283
  },
  {
   "file": "02-promise",
@@ -311,8 +311,8 @@
   "kind": "w",
   "word": "protects",
   "occurrence": 1,
-  "seconds": 6.525,
-  "abs": 11.787
+  "seconds": 7.021,
+  "abs": 12.283
  },
  {
   "file": "02-promise",
@@ -320,8 +320,8 @@
   "kind": "w",
   "word": "collagen",
   "occurrence": 1,
-  "seconds": 7.066,
-  "abs": 12.328
+  "seconds": 7.721,
+  "abs": 12.983
  },
  {
   "file": "02-promise",
@@ -329,8 +329,8 @@
   "kind": "w",
   "word": "protects",
   "occurrence": 1,
-  "seconds": 6.525,
-  "abs": 11.787
+  "seconds": 7.021,
+  "abs": 12.283
  },
  {
   "file": "02-promise",
@@ -338,8 +338,8 @@
   "kind": "w",
   "word": "protects",
   "occurrence": 1,
-  "seconds": 6.525,
-  "abs": 11.787
+  "seconds": 7.021,
+  "abs": 12.283
  },
  {
   "file": "03-building",
@@ -347,8 +347,8 @@
   "kind": "w",
   "word": "building",
   "occurrence": 1,
-  "seconds": 0.791,
-  "abs": 14.778
+  "seconds": 1.21,
+  "abs": 15.853
  },
  {
   "file": "03-building",
@@ -356,8 +356,8 @@
   "kind": "w",
   "word": "building",
   "occurrence": 1,
-  "seconds": 0.791,
-  "abs": 14.778
+  "seconds": 1.21,
+  "abs": 15.853
  },
  {
   "file": "03-building",
@@ -365,8 +365,8 @@
   "kind": "w",
   "word": "building",
   "occurrence": 1,
-  "seconds": 0.791,
-  "abs": 14.778
+  "seconds": 1.21,
+  "abs": 15.853
  },
  {
   "file": "03-building",
@@ -374,8 +374,8 @@
   "kind": "w",
   "word": "building",
   "occurrence": 1,
-  "seconds": 0.791,
-  "abs": 14.778
+  "seconds": 1.21,
+  "abs": 15.853
  },
  {
   "file": "03-building",
@@ -384,7 +384,7 @@
   "word": "structure",
   "occurrence": 1,
   "seconds": 2.286,
-  "abs": 16.273
+  "abs": 16.929
  },
  {
   "file": "03-building",
@@ -393,7 +393,7 @@
   "word": "structure",
   "occurrence": 1,
   "seconds": 2.286,
-  "abs": 16.273
+  "abs": 16.929
  },
  {
   "file": "03-building",
@@ -402,7 +402,7 @@
   "word": "structure",
   "occurrence": 1,
   "seconds": 2.286,
-  "abs": 16.273
+  "abs": 16.929
  },
  {
   "file": "03-building",
@@ -411,7 +411,7 @@
   "word": "inside",
   "occurrence": 1,
   "seconds": 3.129,
-  "abs": 17.116
+  "abs": 17.772
  },
  {
   "file": "03-building",
@@ -420,7 +420,7 @@
   "word": "firm",
   "occurrence": 1,
   "seconds": 5.161,
-  "abs": 19.148
+  "abs": 19.804
  },
  {
   "file": "03-building",
@@ -428,8 +428,8 @@
   "kind": "w",
   "word": "age",
   "occurrence": 1,
-  "seconds": 6.303,
-  "abs": 20.29
+  "seconds": 6.444,
+  "abs": 21.087
  },
  {
   "file": "03-building",
@@ -437,8 +437,8 @@
   "kind": "w",
   "word": "age",
   "occurrence": 1,
-  "seconds": 6.303,
-  "abs": 20.29
+  "seconds": 6.444,
+  "abs": 21.087
  },
  {
   "file": "03-building",
@@ -447,7 +447,7 @@
   "word": "ultraviolet",
   "occurrence": 1,
   "seconds": 8.952,
-  "abs": 22.939
+  "abs": 23.595
  },
  {
   "file": "03-building",
@@ -456,7 +456,7 @@
   "word": "ultraviolet",
   "occurrence": 1,
   "seconds": 8.952,
-  "abs": 22.939
+  "abs": 23.595
  },
  {
   "file": "03-building",
@@ -465,7 +465,7 @@
   "word": "enzymes",
   "occurrence": 1,
   "seconds": 10.675,
-  "abs": 24.662
+  "abs": 25.318
  },
  {
   "file": "03-building",
@@ -474,7 +474,7 @@
   "word": "enzymes",
   "occurrence": 1,
   "seconds": 10.675,
-  "abs": 24.662
+  "abs": 25.318
  },
  {
   "file": "03-building",
@@ -483,7 +483,7 @@
   "word": "cut",
   "occurrence": 1,
   "seconds": 11.379,
-  "abs": 25.366
+  "abs": 26.022
  },
  {
   "file": "03-building",
@@ -492,7 +492,7 @@
   "word": "cut",
   "occurrence": 1,
   "seconds": 11.379,
-  "abs": 25.366
+  "abs": 26.022
  },
  {
   "file": "03-building",
@@ -501,7 +501,7 @@
   "word": "apart",
   "occurrence": 1,
   "seconds": 12.332,
-  "abs": 26.319
+  "abs": 26.975
  },
  {
   "file": "03-building",
@@ -510,7 +510,7 @@
   "word": "demolition",
   "occurrence": 1,
   "seconds": 13.428,
-  "abs": 27.415
+  "abs": 28.071
  },
  {
   "file": "03-building",
@@ -519,7 +519,7 @@
   "word": "demolition",
   "occurrence": 1,
   "seconds": 13.428,
-  "abs": 27.415
+  "abs": 28.071
  },
  {
   "file": "03-building",
@@ -528,7 +528,7 @@
   "word": "demolition",
   "occurrence": 1,
   "seconds": 13.428,
-  "abs": 27.415
+  "abs": 28.071
  },
  {
   "file": "03-building",
@@ -536,8 +536,8 @@
   "kind": "w",
   "word": "weekends",
   "occurrence": 1,
-  "seconds": 14.832,
-  "abs": 28.819
+  "seconds": 14.904,
+  "abs": 29.547
  },
  {
   "file": "03-building",
@@ -545,8 +545,8 @@
   "kind": "w",
   "word": "weekends",
   "occurrence": 1,
-  "seconds": 14.832,
-  "abs": 28.819
+  "seconds": 14.904,
+  "abs": 29.547
  },
  {
   "file": "03-building",
@@ -555,7 +555,7 @@
   "word": "enzymes",
   "occurrence": 1,
   "seconds": 10.675,
-  "abs": 24.662
+  "abs": 25.318
  },
  {
   "file": "03-building",
@@ -564,7 +564,7 @@
   "word": "sunscreen",
   "occurrence": 1,
   "seconds": 15.585,
-  "abs": 29.572
+  "abs": 30.228
  },
  {
   "file": "03-building",
@@ -573,7 +573,7 @@
   "word": "draws",
   "occurrence": 1,
   "seconds": 17.159,
-  "abs": 31.146
+  "abs": 31.802
  },
  {
   "file": "03-building",
@@ -582,7 +582,7 @@
   "word": "boundary",
   "occurrence": 1,
   "seconds": 17.789,
-  "abs": 31.776
+  "abs": 32.432
  },
  {
   "file": "03-building",
@@ -591,7 +591,7 @@
   "word": "around",
   "occurrence": 1,
   "seconds": 18.556,
-  "abs": 32.543
+  "abs": 33.199
  },
  {
   "file": "03-building",
@@ -600,7 +600,7 @@
   "word": "boundary",
   "occurrence": 1,
   "seconds": 17.789,
-  "abs": 31.776
+  "abs": 32.432
  },
  {
   "file": "03-building",
@@ -609,7 +609,7 @@
   "word": "draws",
   "occurrence": 1,
   "seconds": 17.159,
-  "abs": 31.146
+  "abs": 31.802
  },
  {
   "file": "03-building",
@@ -618,7 +618,7 @@
   "word": "boundary",
   "occurrence": 1,
   "seconds": 17.789,
-  "abs": 31.776
+  "abs": 32.432
  },
  {
   "file": "03-building",
@@ -627,7 +627,7 @@
   "word": "preserving",
   "occurrence": 1,
   "seconds": 20.564,
-  "abs": 34.551
+  "abs": 35.207
  },
  {
   "file": "03-building",
@@ -636,7 +636,7 @@
   "word": "preserving",
   "occurrence": 1,
   "seconds": 20.564,
-  "abs": 34.551
+  "abs": 35.207
  },
  {
   "file": "03-building",
@@ -645,7 +645,7 @@
   "word": "preserving",
   "occurrence": 1,
   "seconds": 20.564,
-  "abs": 34.551
+  "abs": 35.207
  },
  {
   "file": "03-building",
@@ -654,7 +654,7 @@
   "word": "preserving",
   "occurrence": 1,
   "seconds": 20.564,
-  "abs": 34.551
+  "abs": 35.207
  },
  {
   "file": "03-building",
@@ -663,7 +663,7 @@
   "word": "preserving",
   "occurrence": 1,
   "seconds": 20.564,
-  "abs": 34.551
+  "abs": 35.207
  },
  {
   "file": "03-building",
@@ -672,7 +672,7 @@
   "word": "replacing",
   "occurrence": 1,
   "seconds": 22.86,
-  "abs": 36.847
+  "abs": 37.503
  },
  {
   "file": "03-building",
@@ -681,7 +681,7 @@
   "word": "replacing",
   "occurrence": 1,
   "seconds": 22.86,
-  "abs": 36.847
+  "abs": 37.503
  },
  {
   "file": "03-building",
@@ -690,7 +690,7 @@
   "word": "replacing",
   "occurrence": 1,
   "seconds": 22.86,
-  "abs": 36.847
+  "abs": 37.503
  },
  {
   "file": "03-building",
@@ -699,7 +699,7 @@
   "word": "replacing",
   "occurrence": 1,
   "seconds": 22.86,
-  "abs": 36.847
+  "abs": 37.503
  },
  {
   "file": "03-building",
@@ -708,7 +708,7 @@
   "word": "later",
   "occurrence": 1,
   "seconds": 23.754,
-  "abs": 37.741
+  "abs": 38.397
  },
  {
   "file": "06-door",
@@ -716,8 +716,8 @@
   "kind": "w",
   "word": "cream",
   "occurrence": 1,
-  "seconds": 0.799,
-  "abs": 38.823
+  "seconds": 0.717,
+  "abs": 39.397
  },
  {
   "file": "06-door",
@@ -725,8 +725,8 @@
   "kind": "w",
   "word": "skin",
   "occurrence": 1,
-  "seconds": 2.271,
-  "abs": 40.295
+  "seconds": 2.189,
+  "abs": 40.869
  },
  {
   "file": "06-door",
@@ -734,8 +734,8 @@
   "kind": "w",
   "word": "skin",
   "occurrence": 1,
-  "seconds": 2.271,
-  "abs": 40.295
+  "seconds": 2.189,
+  "abs": 40.869
  },
  {
   "file": "06-door",
@@ -743,8 +743,8 @@
   "kind": "w",
   "word": "pass",
   "occurrence": 1,
-  "seconds": 1.859,
-  "abs": 39.883
+  "seconds": 1.777,
+  "abs": 40.457
  },
  {
   "file": "06-door",
@@ -752,8 +752,8 @@
   "kind": "w",
   "word": "daltons",
   "occurrence": 1,
-  "seconds": 5.577,
-  "abs": 43.601
+  "seconds": 5.495,
+  "abs": 44.175
  },
  {
   "file": "06-door",
@@ -761,8 +761,8 @@
   "kind": "w",
   "word": "daltons",
   "occurrence": 1,
-  "seconds": 5.577,
-  "abs": 43.601
+  "seconds": 5.495,
+  "abs": 44.175
  },
  {
   "file": "06-door",
@@ -770,8 +770,8 @@
   "kind": "w",
   "word": "daltons",
   "occurrence": 1,
-  "seconds": 5.577,
-  "abs": 43.601
+  "seconds": 5.495,
+  "abs": 44.175
  },
  {
   "file": "06-door",
@@ -779,8 +779,8 @@
   "kind": "w",
   "word": "thousand",
   "occurrence": 1,
-  "seconds": 7.558,
-  "abs": 45.582
+  "seconds": 7.476,
+  "abs": 46.156
  },
  {
   "file": "06-door",
@@ -788,8 +788,8 @@
   "kind": "w",
   "word": "thousand",
   "occurrence": 1,
-  "seconds": 7.558,
-  "abs": 45.582
+  "seconds": 7.476,
+  "abs": 46.156
  },
  {
   "file": "06-door",
@@ -797,8 +797,8 @@
   "kind": "w",
   "word": "collagen",
   "occurrence": 1,
-  "seconds": 6.319,
-  "abs": 44.343
+  "seconds": 6.237,
+  "abs": 44.917
  },
  {
   "file": "06-door",
@@ -806,8 +806,8 @@
   "kind": "w",
   "word": "collagen",
   "occurrence": 1,
-  "seconds": 6.319,
-  "abs": 44.343
+  "seconds": 6.237,
+  "abs": 44.917
  },
  {
   "file": "06-door",
@@ -815,8 +815,8 @@
   "kind": "w",
   "word": "thousand",
   "occurrence": 1,
-  "seconds": 7.558,
-  "abs": 45.582
+  "seconds": 7.476,
+  "abs": 46.156
  },
  {
   "file": "06-door",
@@ -824,8 +824,8 @@
   "kind": "w",
   "word": "thousand",
   "occurrence": 1,
-  "seconds": 7.558,
-  "abs": 45.582
+  "seconds": 7.476,
+  "abs": 46.156
  },
  {
   "file": "06-door",
@@ -833,8 +833,8 @@
   "kind": "w",
   "word": "daltons",
   "occurrence": 1,
-  "seconds": 5.577,
-  "abs": 43.601
+  "seconds": 5.495,
+  "abs": 44.175
  },
  {
   "file": "06-door",
@@ -842,8 +842,8 @@
   "kind": "w",
   "word": "not",
   "occurrence": 1,
-  "seconds": 8.378,
-  "abs": 46.402
+  "seconds": 8.295,
+  "abs": 46.975
  },
  {
   "file": "06-door",
@@ -851,8 +851,8 @@
   "kind": "w",
   "word": "door",
   "occurrence": 1,
-  "seconds": 9.529,
-  "abs": 47.553
+  "seconds": 9.447,
+  "abs": 48.127
  },
  {
   "file": "06-door",
@@ -860,8 +860,8 @@
   "kind": "w",
   "word": "not",
   "occurrence": 1,
-  "seconds": 8.378,
-  "abs": 46.402
+  "seconds": 8.295,
+  "abs": 46.975
  },
  {
   "file": "06-door",
@@ -869,8 +869,8 @@
   "kind": "w",
   "word": "not",
   "occurrence": 1,
-  "seconds": 8.378,
-  "abs": 46.402
+  "seconds": 8.295,
+  "abs": 46.975
  },
  {
   "file": "06-door",
@@ -878,8 +878,8 @@
   "kind": "w",
   "word": "not",
   "occurrence": 1,
-  "seconds": 8.378,
-  "abs": 46.402
+  "seconds": 8.295,
+  "abs": 46.975
  },
  {
   "file": "06-door",
@@ -887,8 +887,8 @@
   "kind": "w",
   "word": "door",
   "occurrence": 1,
-  "seconds": 9.529,
-  "abs": 47.553
+  "seconds": 9.447,
+  "abs": 48.127
  },
  {
   "file": "06-door",
@@ -896,8 +896,8 @@
   "kind": "w",
   "word": "door",
   "occurrence": 1,
-  "seconds": 9.529,
-  "abs": 47.553
+  "seconds": 9.447,
+  "abs": 48.127
  },
  {
   "file": "06-door",
@@ -905,8 +905,8 @@
   "kind": "w",
   "word": "door",
   "occurrence": 1,
-  "seconds": 9.529,
-  "abs": 47.553
+  "seconds": 9.447,
+  "abs": 48.127
  },
  {
   "file": "06-door",
@@ -914,8 +914,8 @@
   "kind": "w",
   "word": "door",
   "occurrence": 1,
-  "seconds": 9.529,
-  "abs": 47.553
+  "seconds": 9.447,
+  "abs": 48.127
  },
  {
   "file": "06-door",
@@ -923,8 +923,8 @@
   "kind": "w",
   "word": "film",
   "occurrence": 1,
-  "seconds": 12.008,
-  "abs": 50.032
+  "seconds": 12.33,
+  "abs": 51.01
  },
  {
   "file": "06-door",
@@ -932,8 +932,8 @@
   "kind": "w",
   "word": "film",
   "occurrence": 1,
-  "seconds": 12.008,
-  "abs": 50.032
+  "seconds": 12.33,
+  "abs": 51.01
  },
  {
   "file": "06-door",
@@ -941,8 +941,8 @@
   "kind": "w",
   "word": "film",
   "occurrence": 1,
-  "seconds": 12.008,
-  "abs": 50.032
+  "seconds": 12.33,
+  "abs": 51.01
  },
  {
   "file": "06-door",
@@ -950,8 +950,8 @@
   "kind": "w",
   "word": "film",
   "occurrence": 1,
-  "seconds": 12.008,
-  "abs": 50.032
+  "seconds": 12.33,
+  "abs": 51.01
  },
  {
   "file": "06-door",
@@ -959,8 +959,8 @@
   "kind": "w",
   "word": "film",
   "occurrence": 1,
-  "seconds": 12.008,
-  "abs": 50.032
+  "seconds": 12.33,
+  "abs": 51.01
  },
  {
   "file": "06-door",
@@ -968,8 +968,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -977,8 +977,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -986,8 +986,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -995,8 +995,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -1004,8 +1004,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -1013,8 +1013,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -1022,8 +1022,8 @@
   "kind": "w",
   "word": "polishing",
   "occurrence": 1,
-  "seconds": 15.606,
-  "abs": 53.63
+  "seconds": 15.927,
+  "abs": 54.607
  },
  {
   "file": "06-door",
@@ -1031,8 +1031,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -1040,8 +1040,8 @@
   "kind": "w",
   "word": "smoother",
   "occurrence": 1,
-  "seconds": 14.286,
-  "abs": 52.31
+  "seconds": 14.608,
+  "abs": 53.288
  },
  {
   "file": "06-door",
@@ -1049,8 +1049,8 @@
   "kind": "w",
   "word": "polishing",
   "occurrence": 1,
-  "seconds": 15.606,
-  "abs": 53.63
+  "seconds": 15.927,
+  "abs": 54.607
  },
  {
   "file": "06-door",
@@ -1058,8 +1058,8 @@
   "kind": "w",
   "word": "not",
   "occurrence": 1,
-  "seconds": 16.087,
-  "abs": 54.111
+  "seconds": 16.768,
+  "abs": 55.448
  },
  {
   "file": "06-door",
@@ -1067,8 +1067,8 @@
   "kind": "w",
   "word": "replacing",
   "occurrence": 1,
-  "seconds": 16.106,
-  "abs": 54.13
+  "seconds": 16.889,
+  "abs": 55.569
  },
  {
   "file": "06-door",
@@ -1076,8 +1076,8 @@
   "kind": "w",
   "word": "replacing",
   "occurrence": 1,
-  "seconds": 16.106,
-  "abs": 54.13
+  "seconds": 16.889,
+  "abs": 55.569
  },
  {
   "file": "06-door",
@@ -1085,8 +1085,8 @@
   "kind": "w",
   "word": "replacing",
   "occurrence": 1,
-  "seconds": 16.106,
-  "abs": 54.13
+  "seconds": 16.889,
+  "abs": 55.569
  },
  {
   "file": "08-digestion",
@@ -1095,7 +1095,7 @@
   "word": "powder",
   "occurrence": 1,
   "seconds": 0.944,
-  "abs": 56.87
+  "abs": 57.848
  },
  {
   "file": "08-digestion",
@@ -1104,7 +1104,7 @@
   "word": "swallow",
   "occurrence": 1,
   "seconds": 1.434,
-  "abs": 57.36
+  "abs": 58.338
  },
  {
   "file": "08-digestion",
@@ -1113,7 +1113,7 @@
   "word": "swallow",
   "occurrence": 1,
   "seconds": 1.434,
-  "abs": 57.36
+  "abs": 58.338
  },
  {
   "file": "08-digestion",
@@ -1122,7 +1122,7 @@
   "word": "breaks",
   "occurrence": 1,
   "seconds": 3.051,
-  "abs": 58.977
+  "abs": 59.955
  },
  {
   "file": "08-digestion",
@@ -1131,7 +1131,7 @@
   "word": "breaks",
   "occurrence": 1,
   "seconds": 3.051,
-  "abs": 58.977
+  "abs": 59.955
  },
  {
   "file": "08-digestion",
@@ -1140,7 +1140,7 @@
   "word": "peptides",
   "occurrence": 1,
   "seconds": 4.144,
-  "abs": 60.07
+  "abs": 61.048
  },
  {
   "file": "08-digestion",
@@ -1149,7 +1149,7 @@
   "word": "peptides",
   "occurrence": 1,
   "seconds": 4.144,
-  "abs": 60.07
+  "abs": 61.048
  },
  {
   "file": "08-digestion",
@@ -1158,7 +1158,7 @@
   "word": "amino",
   "occurrence": 1,
   "seconds": 4.875,
-  "abs": 60.801
+  "abs": 61.779
  },
  {
   "file": "08-digestion",
@@ -1167,7 +1167,7 @@
   "word": "stomach",
   "occurrence": 1,
   "seconds": 6.064,
-  "abs": 61.99
+  "abs": 62.968
  },
  {
   "file": "08-digestion",
@@ -1176,7 +1176,7 @@
   "word": "stomach",
   "occurrence": 1,
   "seconds": 6.064,
-  "abs": 61.99
+  "abs": 62.968
  },
  {
   "file": "08-digestion",
@@ -1184,8 +1184,8 @@
   "kind": "w",
   "word": "facial",
   "occurrence": 1,
-  "seconds": 6.965,
-  "abs": 62.891
+  "seconds": 6.928,
+  "abs": 63.832
  },
  {
   "file": "08-digestion",
@@ -1193,8 +1193,8 @@
   "kind": "we",
   "word": "delivery",
   "occurrence": 1,
-  "seconds": 7.838,
-  "abs": 63.764
+  "seconds": 8.074,
+  "abs": 64.978
  },
  {
   "file": "08-digestion",
@@ -1202,8 +1202,8 @@
   "kind": "w",
   "word": "absorbed",
   "occurrence": 1,
-  "seconds": 8.738,
-  "abs": 64.664
+  "seconds": 9.247,
+  "abs": 66.151
  },
  {
   "file": "08-digestion",
@@ -1211,8 +1211,8 @@
   "kind": "w",
   "word": "absorbed",
   "occurrence": 1,
-  "seconds": 8.738,
-  "abs": 64.664
+  "seconds": 9.247,
+  "abs": 66.151
  },
  {
   "file": "08-digestion",
@@ -1220,8 +1220,8 @@
   "kind": "w",
   "word": "signals",
   "occurrence": 1,
-  "seconds": 11.002,
-  "abs": 66.928
+  "seconds": 11.511,
+  "abs": 68.415
  },
  {
   "file": "08-digestion",
@@ -1229,8 +1229,8 @@
   "kind": "w",
   "word": "signals",
   "occurrence": 1,
-  "seconds": 11.002,
-  "abs": 66.928
+  "seconds": 11.511,
+  "abs": 68.415
  },
  {
   "file": "08-digestion",
@@ -1238,8 +1238,8 @@
   "kind": "w",
   "word": "signals",
   "occurrence": 1,
-  "seconds": 11.002,
-  "abs": 66.928
+  "seconds": 11.511,
+  "abs": 68.415
  },
  {
   "file": "08-digestion",
@@ -1247,8 +1247,8 @@
   "kind": "w",
   "word": "decides",
   "occurrence": 1,
-  "seconds": 12.125,
-  "abs": 68.051
+  "seconds": 12.634,
+  "abs": 69.538
  },
  {
   "file": "08-digestion",
@@ -1256,8 +1256,8 @@
   "kind": "w",
   "word": "decides",
   "occurrence": 1,
-  "seconds": 12.125,
-  "abs": 68.051
+  "seconds": 12.634,
+  "abs": 69.538
  },
  {
   "file": "08-digestion",
@@ -1265,8 +1265,8 @@
   "kind": "w",
   "word": "skin",
   "occurrence": 1,
-  "seconds": 13.628,
-  "abs": 69.554
+  "seconds": 14.137,
+  "abs": 71.041
  },
  {
   "file": "08-digestion",
@@ -1274,8 +1274,8 @@
   "kind": "w",
   "word": "joints",
   "occurrence": 1,
-  "seconds": 13.646,
-  "abs": 69.572
+  "seconds": 14.286,
+  "abs": 71.19
  },
  {
   "file": "08-digestion",
@@ -1283,8 +1283,8 @@
   "kind": "w",
   "word": "tendons",
   "occurrence": 1,
-  "seconds": 14.0,
-  "abs": 69.926
+  "seconds": 14.509,
+  "abs": 71.413
  },
  {
   "file": "08-digestion",
@@ -1292,8 +1292,8 @@
   "kind": "w",
   "word": "wherever",
   "occurrence": 1,
-  "seconds": 14.602,
-  "abs": 70.528
+  "seconds": 15.111,
+  "abs": 72.015
  },
  {
   "file": "08-digestion",
@@ -1301,8 +1301,8 @@
   "kind": "w",
   "word": "scaffolding",
   "occurrence": 1,
-  "seconds": 17.425,
-  "abs": 73.351
+  "seconds": 17.935,
+  "abs": 74.839
  },
  {
   "file": "08-digestion",
@@ -1310,8 +1310,8 @@
   "kind": "w",
   "word": "scaffolding",
   "occurrence": 1,
-  "seconds": 17.425,
-  "abs": 73.351
+  "seconds": 17.935,
+  "abs": 74.839
  },
  {
   "file": "08-digestion",
@@ -1319,8 +1319,8 @@
   "kind": "w",
   "word": "scaffolding",
   "occurrence": 1,
-  "seconds": 17.425,
-  "abs": 73.351
+  "seconds": 17.935,
+  "abs": 74.839
  },
  {
   "file": "08-digestion",
@@ -1328,8 +1328,8 @@
   "kind": "w",
   "word": "box",
   "occurrence": 1,
-  "seconds": 19.152,
-  "abs": 75.078
+  "seconds": 19.661,
+  "abs": 76.565
  },
  {
   "file": "08-digestion",
@@ -1337,8 +1337,8 @@
   "kind": "w",
   "word": "box",
   "occurrence": 1,
-  "seconds": 19.152,
-  "abs": 75.078
+  "seconds": 19.661,
+  "abs": 76.565
  },
  {
   "file": "08-digestion",
@@ -1346,8 +1346,8 @@
   "kind": "w",
   "word": "box",
   "occurrence": 1,
-  "seconds": 19.152,
-  "abs": 75.078
+  "seconds": 19.661,
+  "abs": 76.565
  },
  {
   "file": "10-evidence",
@@ -1355,8 +1355,8 @@
   "kind": "w",
   "word": "trials",
   "occurrence": 1,
-  "seconds": 1.953,
-  "abs": 78.582
+  "seconds": 1.919,
+  "abs": 80.036
  },
  {
   "file": "10-evidence",
@@ -1364,8 +1364,8 @@
   "kind": "w",
   "word": "improvements",
   "occurrence": 1,
-  "seconds": 2.804,
-  "abs": 79.433
+  "seconds": 4.131,
+  "abs": 82.248
  },
  {
   "file": "10-evidence",
@@ -1373,8 +1373,8 @@
   "kind": "w",
   "word": "report",
   "occurrence": 1,
-  "seconds": 2.438,
-  "abs": 79.067
+  "seconds": 3.766,
+  "abs": 81.883
  },
  {
   "file": "10-evidence",
@@ -1382,8 +1382,8 @@
   "kind": "w",
   "word": "improvements",
   "occurrence": 1,
-  "seconds": 2.804,
-  "abs": 79.433
+  "seconds": 4.131,
+  "abs": 82.248
  },
  {
   "file": "10-evidence",
@@ -1391,8 +1391,8 @@
   "kind": "w",
   "word": "hydration",
   "occurrence": 1,
-  "seconds": 4.387,
-  "abs": 81.016
+  "seconds": 5.715,
+  "abs": 83.832
  },
  {
   "file": "10-evidence",
@@ -1400,8 +1400,8 @@
   "kind": "w",
   "word": "elasticity",
   "occurrence": 1,
-  "seconds": 4.813,
-  "abs": 81.442
+  "seconds": 6.141,
+  "abs": 84.258
  },
  {
   "file": "10-evidence",
@@ -1409,8 +1409,8 @@
   "kind": "w",
   "word": "wrinkles",
   "occurrence": 1,
-  "seconds": 6.165,
-  "abs": 82.794
+  "seconds": 7.493,
+  "abs": 85.61
  },
  {
   "file": "10-evidence",
@@ -1418,8 +1418,8 @@
   "kind": "we",
   "word": "wrinkles",
   "occurrence": 1,
-  "seconds": 6.591,
-  "abs": 83.22
+  "seconds": 7.919,
+  "abs": 86.036
  },
  {
   "file": "10-evidence",
@@ -1427,8 +1427,8 @@
   "kind": "we",
   "word": "wrinkles",
   "occurrence": 1,
-  "seconds": 6.591,
-  "abs": 83.22
+  "seconds": 7.919,
+  "abs": 86.036
  },
  {
   "file": "10-evidence",
@@ -1436,8 +1436,8 @@
   "kind": "w",
   "word": "small",
   "occurrence": 1,
-  "seconds": 7.562,
-  "abs": 84.191
+  "seconds": 8.89,
+  "abs": 87.007
  },
  {
   "file": "10-evidence",
@@ -1445,8 +1445,8 @@
   "kind": "w",
   "word": "pooled",
   "occurrence": 1,
-  "seconds": 11.801,
-  "abs": 88.43
+  "seconds": 13.129,
+  "abs": 91.246
  },
  {
   "file": "10-evidence",
@@ -1454,8 +1454,8 @@
   "kind": "w",
   "word": "small",
   "occurrence": 1,
-  "seconds": 7.562,
-  "abs": 84.191
+  "seconds": 8.89,
+  "abs": 87.007
  },
  {
   "file": "10-evidence",
@@ -1463,8 +1463,8 @@
   "kind": "w",
   "word": "small",
   "occurrence": 1,
-  "seconds": 7.562,
-  "abs": 84.191
+  "seconds": 8.89,
+  "abs": 87.007
  },
  {
   "file": "10-evidence",
@@ -1472,8 +1472,8 @@
   "kind": "w",
   "word": "small",
   "occurrence": 1,
-  "seconds": 7.562,
-  "abs": 84.191
+  "seconds": 8.89,
+  "abs": 87.007
  },
  {
   "file": "10-evidence",
@@ -1481,8 +1481,8 @@
   "kind": "w",
   "word": "small",
   "occurrence": 1,
-  "seconds": 7.562,
-  "abs": 84.191
+  "seconds": 8.89,
+  "abs": 87.007
  },
  {
   "file": "10-evidence",
@@ -1490,8 +1490,8 @@
   "kind": "w",
   "word": "small",
   "occurrence": 1,
-  "seconds": 7.562,
-  "abs": 84.191
+  "seconds": 8.89,
+  "abs": 87.007
  },
  {
   "file": "10-evidence",
@@ -1499,8 +1499,8 @@
   "kind": "w",
   "word": "short",
   "occurrence": 1,
-  "seconds": 8.007,
-  "abs": 84.636
+  "seconds": 9.335,
+  "abs": 87.452
  },
  {
   "file": "10-evidence",
@@ -1508,8 +1508,8 @@
   "kind": "w",
   "word": "industry",
   "occurrence": 1,
-  "seconds": 8.782,
-  "abs": 85.411
+  "seconds": 10.11,
+  "abs": 88.227
  },
  {
   "file": "10-evidence",
@@ -1517,8 +1517,8 @@
   "kind": "w",
   "word": "industry",
   "occurrence": 1,
-  "seconds": 8.782,
-  "abs": 85.411
+  "seconds": 10.11,
+  "abs": 88.227
  },
  {
   "file": "10-evidence",
@@ -1526,8 +1526,8 @@
   "kind": "we",
   "word": "funded",
   "occurrence": 1,
-  "seconds": 10.173,
-  "abs": 86.802
+  "seconds": 11.501,
+  "abs": 89.618
  },
  {
   "file": "10-evidence",
@@ -1535,8 +1535,8 @@
   "kind": "w",
   "word": "industry",
   "occurrence": 1,
-  "seconds": 8.782,
-  "abs": 85.411
+  "seconds": 10.11,
+  "abs": 88.227
  },
  {
   "file": "10-evidence",
@@ -1544,8 +1544,8 @@
   "kind": "w",
   "word": "pooled",
   "occurrence": 1,
-  "seconds": 11.801,
-  "abs": 88.43
+  "seconds": 13.129,
+  "abs": 91.246
  },
  {
   "file": "10-evidence",
@@ -1553,8 +1553,8 @@
   "kind": "w",
   "word": "pooled",
   "occurrence": 1,
-  "seconds": 11.801,
-  "abs": 88.43
+  "seconds": 13.129,
+  "abs": 91.246
  },
  {
   "file": "10-evidence",
@@ -1562,8 +1562,8 @@
   "kind": "w",
   "word": "pooled",
   "occurrence": 1,
-  "seconds": 11.801,
-  "abs": 88.43
+  "seconds": 13.129,
+  "abs": 91.246
  },
  {
   "file": "10-evidence",
@@ -1571,8 +1571,8 @@
   "kind": "w",
   "word": "three",
   "occurrence": 1,
-  "seconds": 12.527,
-  "abs": 89.156
+  "seconds": 13.855,
+  "abs": 91.972
  },
  {
   "file": "10-evidence",
@@ -1580,8 +1580,8 @@
   "kind": "w",
   "word": "three",
   "occurrence": 1,
-  "seconds": 12.527,
-  "abs": 89.156
+  "seconds": 13.855,
+  "abs": 91.972
  },
  {
   "file": "10-evidence",
@@ -1589,8 +1589,8 @@
   "kind": "w",
   "word": "three",
   "occurrence": 1,
-  "seconds": 12.527,
-  "abs": 89.156
+  "seconds": 13.855,
+  "abs": 91.972
  },
  {
   "file": "10-evidence",
@@ -1598,8 +1598,8 @@
   "kind": "w",
   "word": "randomised",
   "occurrence": 1,
-  "seconds": 12.745,
-  "abs": 89.374
+  "seconds": 14.073,
+  "abs": 92.19
  },
  {
   "file": "10-evidence",
@@ -1607,8 +1607,8 @@
   "kind": "w",
   "word": "three",
   "occurrence": 1,
-  "seconds": 12.527,
-  "abs": 89.156
+  "seconds": 13.855,
+  "abs": 91.972
  },
  {
   "file": "10-evidence",
@@ -1616,8 +1616,8 @@
   "kind": "w",
   "word": "benefit",
   "occurrence": 1,
-  "seconds": 15.474,
-  "abs": 92.103
+  "seconds": 16.802,
+  "abs": 94.919
  },
  {
   "file": "10-evidence",
@@ -1625,8 +1625,8 @@
   "kind": "w",
   "word": "together",
   "occurrence": 1,
-  "seconds": 14.946,
-  "abs": 91.575
+  "seconds": 16.274,
+  "abs": 94.391
  },
  {
   "file": "10-evidence",
@@ -1634,8 +1634,8 @@
   "kind": "w",
   "word": "benefit",
   "occurrence": 1,
-  "seconds": 15.474,
-  "abs": 92.103
+  "seconds": 16.802,
+  "abs": 94.919
  },
  {
   "file": "10-evidence",
@@ -1643,8 +1643,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 1,
-  "seconds": 15.669,
-  "abs": 92.298
+  "seconds": 16.997,
+  "abs": 95.114
  },
  {
   "file": "10-evidence",
@@ -1652,8 +1652,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 1,
-  "seconds": 15.669,
-  "abs": 92.298
+  "seconds": 16.997,
+  "abs": 95.114
  },
  {
   "file": "10-evidence",
@@ -1661,8 +1661,8 @@
   "kind": "w",
   "word": "without",
   "occurrence": 1,
-  "seconds": 16.426,
-  "abs": 93.055
+  "seconds": 17.754,
+  "abs": 95.871
  },
  {
   "file": "10-evidence",
@@ -1670,8 +1670,8 @@
   "kind": "w",
   "word": "without",
   "occurrence": 1,
-  "seconds": 16.426,
-  "abs": 93.055
+  "seconds": 17.754,
+  "abs": 95.871
  },
  {
   "file": "10-evidence",
@@ -1679,8 +1679,8 @@
   "kind": "w",
   "word": "without",
   "occurrence": 1,
-  "seconds": 16.426,
-  "abs": 93.055
+  "seconds": 17.754,
+  "abs": 95.871
  },
  {
   "file": "10-evidence",
@@ -1688,8 +1688,8 @@
   "kind": "w",
   "word": "without",
   "occurrence": 1,
-  "seconds": 16.426,
-  "abs": 93.055
+  "seconds": 17.754,
+  "abs": 95.871
  },
  {
   "file": "10-evidence",
@@ -1697,8 +1697,8 @@
   "kind": "w",
   "word": "without",
   "occurrence": 1,
-  "seconds": 16.426,
-  "abs": 93.055
+  "seconds": 17.754,
+  "abs": 95.871
  },
  {
   "file": "10-evidence",
@@ -1706,8 +1706,8 @@
   "kind": "w",
   "word": "longer",
   "occurrence": 1,
-  "seconds": 18.715,
-  "abs": 95.344
+  "seconds": 20.043,
+  "abs": 98.16
  },
  {
   "file": "10-evidence",
@@ -1715,8 +1715,8 @@
   "kind": "w",
   "word": "longer",
   "occurrence": 1,
-  "seconds": 18.715,
-  "abs": 95.344
+  "seconds": 20.043,
+  "abs": 98.16
  },
  {
   "file": "10-evidence",
@@ -1724,8 +1724,8 @@
   "kind": "w",
   "word": "longer",
   "occurrence": 1,
-  "seconds": 18.715,
-  "abs": 95.344
+  "seconds": 20.043,
+  "abs": 98.16
  },
  {
   "file": "10-evidence",
@@ -1733,8 +1733,8 @@
   "kind": "w",
   "word": "longer",
   "occurrence": 1,
-  "seconds": 18.715,
-  "abs": 95.344
+  "seconds": 20.043,
+  "abs": 98.16
  },
  {
   "file": "10-evidence",
@@ -1742,8 +1742,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1751,8 +1751,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1760,8 +1760,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1769,8 +1769,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1778,8 +1778,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1787,8 +1787,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1796,8 +1796,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1805,8 +1805,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1814,8 +1814,8 @@
   "kind": "w",
   "word": "keep",
   "occurrence": 2,
-  "seconds": 20.684,
-  "abs": 97.313
+  "seconds": 22.012,
+  "abs": 100.129
  },
  {
   "file": "10-evidence",
@@ -1823,8 +1823,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1832,8 +1832,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1841,8 +1841,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1850,8 +1850,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1859,8 +1859,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1868,8 +1868,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1877,8 +1877,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1886,8 +1886,8 @@
   "kind": "w",
   "word": "quality",
   "occurrence": 1,
-  "seconds": 21.571,
-  "abs": 98.2
+  "seconds": 22.899,
+  "abs": 101.016
  },
  {
   "file": "10-evidence",
@@ -1895,8 +1895,8 @@
   "kind": "w",
   "word": "same",
   "occurrence": 1,
-  "seconds": 22.584,
-  "abs": 99.213
+  "seconds": 24.274,
+  "abs": 102.391
  },
  {
   "file": "10-evidence",
@@ -1904,8 +1904,8 @@
   "kind": "w",
   "word": "same",
   "occurrence": 1,
-  "seconds": 22.584,
-  "abs": 99.213
+  "seconds": 24.274,
+  "abs": 102.391
  },
  {
   "file": "10-evidence",
@@ -1913,8 +1913,8 @@
   "kind": "w",
   "word": "effect",
   "occurrence": 1,
-  "seconds": 23.584,
-  "abs": 100.213
+  "seconds": 25.274,
+  "abs": 103.391
  },
  {
   "file": "10-evidence",
@@ -1922,8 +1922,8 @@
   "kind": "w",
   "word": "effect",
   "occurrence": 1,
-  "seconds": 23.584,
-  "abs": 100.213
+  "seconds": 25.274,
+  "abs": 103.391
  },
  {
   "file": "10-evidence",
@@ -1931,8 +1931,8 @@
   "kind": "w",
   "word": "effect",
   "occurrence": 1,
-  "seconds": 23.584,
-  "abs": 100.213
+  "seconds": 25.274,
+  "abs": 103.391
  },
  {
   "file": "10-evidence",
@@ -1940,8 +1940,8 @@
   "kind": "w",
   "word": "effect",
   "occurrence": 1,
-  "seconds": 23.584,
-  "abs": 100.213
+  "seconds": 25.274,
+  "abs": 103.391
  },
  {
   "file": "10-evidence",
@@ -1949,8 +1949,8 @@
   "kind": "w",
   "word": "stops",
   "occurrence": 1,
-  "seconds": 23.737,
-  "abs": 100.366
+  "seconds": 25.427,
+  "abs": 103.544
  },
  {
   "file": "10-evidence",
@@ -1958,8 +1958,8 @@
   "kind": "w",
   "word": "stops",
   "occurrence": 1,
-  "seconds": 23.737,
-  "abs": 100.366
+  "seconds": 25.427,
+  "abs": 103.544
  },
  {
   "file": "10-evidence",
@@ -1967,8 +1967,8 @@
   "kind": "w",
   "word": "showing",
   "occurrence": 1,
-  "seconds": 24.219,
-  "abs": 100.848
+  "seconds": 25.909,
+  "abs": 104.026
  },
  {
   "file": "10-evidence",
@@ -1976,8 +1976,8 @@
   "kind": "we",
   "word": "up",
   "occurrence": 1,
-  "seconds": 24.687,
-  "abs": 101.316
+  "seconds": 26.377,
+  "abs": 104.494
  },
  {
   "file": "10-evidence",
@@ -1985,8 +1985,8 @@
   "kind": "w",
   "word": "definitely",
   "occurrence": 1,
-  "seconds": 25.456,
-  "abs": 102.085
+  "seconds": 27.146,
+  "abs": 105.263
  },
  {
   "file": "10-evidence",
@@ -1994,8 +1994,8 @@
   "kind": "w",
   "word": "independent",
   "occurrence": 1,
-  "seconds": 30.885,
-  "abs": 107.514
+  "seconds": 32.84,
+  "abs": 110.957
  },
  {
   "file": "10-evidence",
@@ -2003,8 +2003,8 @@
   "kind": "w",
   "word": "independent",
   "occurrence": 1,
-  "seconds": 30.885,
-  "abs": 107.514
+  "seconds": 32.84,
+  "abs": 110.957
  },
  {
   "file": "10-evidence",
@@ -2012,8 +2012,8 @@
   "kind": "w",
   "word": "cannot",
   "occurrence": 1,
-  "seconds": 26.752,
-  "abs": 103.381
+  "seconds": 28.442,
+  "abs": 106.559
  },
  {
   "file": "10-evidence",
@@ -2021,8 +2021,8 @@
   "kind": "w",
   "word": "cannot",
   "occurrence": 1,
-  "seconds": 26.752,
-  "abs": 103.381
+  "seconds": 28.442,
+  "abs": 106.559
  },
  {
   "file": "10-evidence",
@@ -2030,8 +2030,8 @@
   "kind": "w",
   "word": "definitely",
   "occurrence": 2,
-  "seconds": 27.713,
-  "abs": 104.342
+  "seconds": 29.668,
+  "abs": 107.785
  },
  {
   "file": "10-evidence",
@@ -2039,8 +2039,8 @@
   "kind": "w",
   "word": "cannot",
   "occurrence": 2,
-  "seconds": 28.894,
-  "abs": 105.523
+  "seconds": 30.849,
+  "abs": 108.966
  },
  {
   "file": "10-evidence",
@@ -2048,8 +2048,8 @@
   "kind": "w",
   "word": "cannot",
   "occurrence": 2,
-  "seconds": 28.894,
-  "abs": 105.523
+  "seconds": 30.849,
+  "abs": 108.966
  },
  {
   "file": "10-evidence",
@@ -2057,8 +2057,8 @@
   "kind": "w",
   "word": "independent",
   "occurrence": 1,
-  "seconds": 30.885,
-  "abs": 107.514
+  "seconds": 32.84,
+  "abs": 110.957
  },
  {
   "file": "10-evidence",
@@ -2066,8 +2066,8 @@
   "kind": "w",
   "word": "uncertain",
   "occurrence": 1,
-  "seconds": 31.664,
-  "abs": 108.293
+  "seconds": 33.619,
+  "abs": 111.736
  },
  {
   "file": "10-evidence",
@@ -2075,8 +2075,8 @@
   "kind": "w",
   "word": "uncertain",
   "occurrence": 1,
-  "seconds": 31.664,
-  "abs": 108.293
+  "seconds": 33.619,
+  "abs": 111.736
  },
  {
   "file": "14-hierarchy",
@@ -2085,7 +2085,7 @@
   "word": "supports",
   "occurrence": 1,
   "seconds": 1.533,
-  "abs": 110.667
+  "abs": 114.109
  },
  {
   "file": "14-hierarchy",
@@ -2093,8 +2093,8 @@
   "kind": "w",
   "word": "sunscreen",
   "occurrence": 1,
-  "seconds": 2.191,
-  "abs": 111.325
+  "seconds": 4.308,
+  "abs": 116.884
  },
  {
   "file": "14-hierarchy",
@@ -2102,8 +2102,8 @@
   "kind": "w",
   "word": "sunscreen",
   "occurrence": 1,
-  "seconds": 2.191,
-  "abs": 111.325
+  "seconds": 4.308,
+  "abs": 116.884
  },
  {
   "file": "14-hierarchy",
@@ -2111,8 +2111,8 @@
   "kind": "w",
   "word": "sunscreen",
   "occurrence": 1,
-  "seconds": 2.191,
-  "abs": 111.325
+  "seconds": 4.308,
+  "abs": 116.884
  },
  {
   "file": "14-hierarchy",
@@ -2120,8 +2120,8 @@
   "kind": "w",
   "word": "smoking",
   "occurrence": 1,
-  "seconds": 4.255,
-  "abs": 113.389
+  "seconds": 6.853,
+  "abs": 119.429
  },
  {
   "file": "14-hierarchy",
@@ -2129,8 +2129,8 @@
   "kind": "w",
   "word": "smoking",
   "occurrence": 1,
-  "seconds": 4.255,
-  "abs": 113.389
+  "seconds": 6.853,
+  "abs": 119.429
  },
  {
   "file": "14-hierarchy",
@@ -2138,8 +2138,8 @@
   "kind": "w",
   "word": "protein",
   "occurrence": 1,
-  "seconds": 5.152,
-  "abs": 114.286
+  "seconds": 7.75,
+  "abs": 120.326
  },
  {
   "file": "14-hierarchy",
@@ -2147,8 +2147,8 @@
   "kind": "w",
   "word": "protein",
   "occurrence": 1,
-  "seconds": 5.152,
-  "abs": 114.286
+  "seconds": 7.75,
+  "abs": 120.326
  },
  {
   "file": "14-hierarchy",
@@ -2156,8 +2156,8 @@
   "kind": "w",
   "word": "vitamin",
   "occurrence": 1,
-  "seconds": 5.911,
-  "abs": 115.045
+  "seconds": 8.509,
+  "abs": 121.085
  },
  {
   "file": "14-hierarchy",
@@ -2165,8 +2165,8 @@
   "kind": "w",
   "word": "protein",
   "occurrence": 1,
-  "seconds": 5.152,
-  "abs": 114.286
+  "seconds": 7.75,
+  "abs": 120.326
  },
  {
   "file": "14-hierarchy",
@@ -2174,8 +2174,8 @@
   "kind": "w",
   "word": "retinoids",
   "occurrence": 1,
-  "seconds": 8.444,
-  "abs": 117.578
+  "seconds": 11.042,
+  "abs": 123.618
  },
  {
   "file": "14-hierarchy",
@@ -2183,8 +2183,8 @@
   "kind": "w",
   "word": "retinoids",
   "occurrence": 1,
-  "seconds": 8.444,
-  "abs": 117.578
+  "seconds": 11.042,
+  "abs": 123.618
  },
  {
   "file": "14-hierarchy",
@@ -2192,8 +2192,8 @@
   "kind": "w",
   "word": "encouraging",
   "occurrence": 1,
-  "seconds": 10.82,
-  "abs": 119.954
+  "seconds": 13.418,
+  "abs": 125.994
  },
  {
   "file": "14-hierarchy",
@@ -2201,8 +2201,8 @@
   "kind": "w",
   "word": "encouraging",
   "occurrence": 1,
-  "seconds": 10.82,
-  "abs": 119.954
+  "seconds": 13.418,
+  "abs": 125.994
  },
  {
   "file": "14-hierarchy",
@@ -2210,8 +2210,8 @@
   "kind": "w",
   "word": "production",
   "occurrence": 1,
-  "seconds": 12.042,
-  "abs": 121.176
+  "seconds": 14.64,
+  "abs": 127.216
  },
  {
   "file": "14-hierarchy",
@@ -2219,8 +2219,8 @@
   "kind": "w",
   "word": "production",
   "occurrence": 1,
-  "seconds": 12.042,
-  "abs": 121.176
+  "seconds": 14.64,
+  "abs": 127.216
  },
  {
   "file": "14-hierarchy",
@@ -2228,8 +2228,8 @@
   "kind": "w",
   "word": "cream",
   "occurrence": 1,
-  "seconds": 14.055,
-  "abs": 123.189
+  "seconds": 16.653,
+  "abs": 129.229
  },
  {
   "file": "14-hierarchy",
@@ -2237,8 +2237,8 @@
   "kind": "w",
   "word": "cream",
   "occurrence": 1,
-  "seconds": 14.055,
-  "abs": 123.189
+  "seconds": 16.653,
+  "abs": 129.229
  },
  {
   "file": "14-hierarchy",
@@ -2246,8 +2246,8 @@
   "kind": "w",
   "word": "cream",
   "occurrence": 1,
-  "seconds": 14.055,
-  "abs": 123.189
+  "seconds": 16.653,
+  "abs": 129.229
  },
  {
   "file": "14-hierarchy",
@@ -2255,8 +2255,8 @@
   "kind": "w",
   "word": "powder",
   "occurrence": 1,
-  "seconds": 16.275,
-  "abs": 125.409
+  "seconds": 18.873,
+  "abs": 131.449
  },
  {
   "file": "14-hierarchy",
@@ -2264,8 +2264,8 @@
   "kind": "w",
   "word": "pleasant",
   "occurrence": 1,
-  "seconds": 14.536,
-  "abs": 123.67
+  "seconds": 17.134,
+  "abs": 129.71
  },
  {
   "file": "14-hierarchy",
@@ -2273,8 +2273,8 @@
   "kind": "w",
   "word": "powder",
   "occurrence": 1,
-  "seconds": 16.275,
-  "abs": 125.409
+  "seconds": 18.873,
+  "abs": 131.449
  },
  {
   "file": "14-hierarchy",
@@ -2282,8 +2282,8 @@
   "kind": "w",
   "word": "optional",
   "occurrence": 1,
-  "seconds": 16.683,
-  "abs": 125.817
+  "seconds": 19.281,
+  "abs": 131.857
  },
  {
   "file": "14-hierarchy",
@@ -2291,8 +2291,8 @@
   "kind": "w",
   "word": "protect",
   "occurrence": 1,
-  "seconds": 17.396,
-  "abs": 126.53
+  "seconds": 19.994,
+  "abs": 132.57
  },
  {
   "file": "14-hierarchy",
@@ -2300,8 +2300,8 @@
   "kind": "w",
   "word": "protect",
   "occurrence": 1,
-  "seconds": 17.396,
-  "abs": 126.53
+  "seconds": 19.994,
+  "abs": 132.57
  },
  {
   "file": "14-hierarchy",
@@ -2309,8 +2309,8 @@
   "kind": "w",
   "word": "protect",
   "occurrence": 1,
-  "seconds": 17.396,
-  "abs": 126.53
+  "seconds": 19.994,
+  "abs": 132.57
  },
  {
   "file": "14-hierarchy",
@@ -2318,8 +2318,8 @@
   "kind": "w",
   "word": "protect",
   "occurrence": 1,
-  "seconds": 17.396,
-  "abs": 126.53
+  "seconds": 19.994,
+  "abs": 132.57
  },
  {
   "file": "14-hierarchy",
@@ -2327,8 +2327,8 @@
   "kind": "w",
   "word": "building",
   "occurrence": 1,
-  "seconds": 17.988,
-  "abs": 127.122
+  "seconds": 20.586,
+  "abs": 133.162
  },
  {
   "file": "14-hierarchy",
@@ -2336,8 +2336,8 @@
   "kind": "w",
   "word": "before",
   "occurrence": 1,
-  "seconds": 18.377,
-  "abs": 127.511
+  "seconds": 20.975,
+  "abs": 133.551
  },
  {
   "file": "14-hierarchy",
@@ -2345,7 +2345,7 @@
   "kind": "w",
   "word": "bricks",
   "occurrence": 1,
-  "seconds": 19.914,
-  "abs": 129.048
+  "seconds": 22.512,
+  "abs": 135.088
  }
 ]

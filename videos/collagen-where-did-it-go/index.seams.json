@@ -16,66 +16,66 @@
   "from": "02-promise",
   "into": "03-building",
   "kind": "iris",
-  "seam": 13.987,
+  "seam": 14.643,
   "d": 0.55,
   "gap": 0.35,
   "iris_at": [
    486.2,
    499.61
   ],
-  "first_word": 14.287
+  "first_word": 14.943
  },
  {
   "from": "03-building",
   "into": "06-door",
   "kind": "iris",
-  "seam": 38.024,
+  "seam": 38.68,
   "d": 0.55,
   "gap": 0.35,
   "iris_at": [
    486.2,
    657.2
   ],
-  "first_word": 38.324
+  "first_word": 38.98
  },
  {
   "from": "06-door",
   "into": "08-digestion",
   "kind": "iris",
-  "seam": 55.926,
+  "seam": 56.904,
   "d": 0.55,
   "gap": 0.35,
   "iris_at": [
    486.2,
    586.13
   ],
-  "first_word": 56.226
+  "first_word": 57.204
  },
  {
   "from": "08-digestion",
   "into": "10-evidence",
   "kind": "invert",
-  "seam": 76.629,
+  "seam": 78.117,
   "d": 0.6,
   "gap": 0.55,
   "iris_at": null,
-  "first_word": 77.079
+  "first_word": 78.567
  },
  {
   "from": "10-evidence",
   "into": "14-hierarchy",
   "kind": "invert",
-  "seam": 109.134,
+  "seam": 112.576,
   "d": 0.6,
   "gap": 0.55,
   "iris_at": null,
-  "first_word": 109.584
+  "first_word": 113.026
  },
  {
   "from": "14-hierarchy",
   "into": "16-end",
   "kind": "curtain",
-  "seam": 129.794,
+  "seam": 135.834,
   "d": 0.9,
   "gap": 1.1,
   "iris_at": null,

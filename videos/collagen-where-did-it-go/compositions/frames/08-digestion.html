@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="08-digestion"
-       data-width="1920" data-height="1080" data-duration="21.303">
+       data-width="1920" data-height="1080" data-duration="21.813">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -458,27 +458,27 @@
     });
     tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 6.064 - 0.3);
     tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 6.064 - 0.2);
-    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 6.965);
+    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 6.928);
     // the struck route leaves the frame: it is closed, and the 1.9s between
     // the strike and the dots setting off held completely still
-    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, 7.838 + 0.15);
+    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, 8.074 + 0.15);
 
     // ---- unit 9: the body decides where the pieces go -----------------------------
     dots.forEach(function (d, i) {
-      pathFollow(tl, d, tract, 8.738 + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
+      pathFollow(tl, d, tract, 9.247 + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
     });   // this call owns each dot's frame-zero pose; the branches below pass set:false
-    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 8.738 + 0.3);
+    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 9.247 + 0.3);
     // reframe onto the distribution map: the branches, not the gut, are the subject now
-    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 11.002);
-    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 11.002 + 0.2, 0.7, 0.12, EASE.wipe);
+    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 11.511);
+    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 11.511 + 0.2, 0.7, 0.12, EASE.wipe);
     ["skin", "joints", "tendons", "other"].forEach(function (k, i) {
       tl.fromTo("#d-" + k, { opacity:0, x:26 }, { opacity:1, x:0, duration:0.4, ease:EASE.arrive },
-                11.002 + 0.35 + i * 0.12);
+                11.511 + 0.35 + i * 0.12);
     });
-    reveal(tl, "#decides", 12.125);
-    tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 12.125);
+    reveal(tl, "#decides", 12.634);
+    tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 12.634);
     // dispatch: fixed assignment -- skin gets ONE dot, joints two, tendons two, other one
-    var GO = [["skin", [0], 13.628], ["joints", [1, 2], 13.646], ["tendons", [3, 4], 14.000], ["other", [5], 14.602]];
+    var GO = [["skin", [0], 14.137], ["joints", [1, 2], 14.286], ["tendons", [3, 4], 14.509], ["other", [5], 15.111]];
     GO.forEach(function (g) {
       var br = document.getElementById("br-" + g[0]);
       g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.7, "power1.inOut", { ox:q62.x, oy:q62.y, set:false }); });
@@ -486,17 +486,17 @@
       // the panel is knocked as the dot lands -- delivery is felt, not labelled
       tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.6);
     });
-    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 17.425 - 0.3);
-    reveal(tl, "#scaff", 17.425);
-    tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 17.425);
-    reveal(tl, "#crate", 19.152);
-    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 19.152);
-    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 19.152 + 0.1);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 17.935 - 0.3);
+    reveal(tl, "#scaff", 17.935);
+    tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 17.935);
+    reveal(tl, "#crate", 19.661);
+    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 19.661);
+    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 19.661 + 0.1);
 
     // departure: push under the invert wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 20.703);
+    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 21.213);
 
-    tl.to({}, { duration: 21.303 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 21.813 }, 0);   // full-span anchor -- always last
     window.__timelines["08-digestion"] = tl;
   </script>
 </template>

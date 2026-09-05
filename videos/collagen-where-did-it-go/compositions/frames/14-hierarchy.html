@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="14-hierarchy"
-       data-width="1920" data-height="1080" data-duration="21.560">
+       data-width="1920" data-height="1080" data-duration="24.158">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -397,61 +397,61 @@
       tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, 1.533 - 0.2 + i * 0.08);
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
-    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 2.191);
+    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.308);
     // sunscreen LOCKS ACROSS the foundation, left to right, as it is named
     tl.fromTo("#slab-lock", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
-              { scaleX:1, duration:0.38, ease:EASE.slam }, 2.191 + 0.10);
-    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 2.191 + 0.10);
-    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.255);
-    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 4.255 + 0.3);
-    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.152);
+              { scaleX:1, duration:0.38, ease:EASE.slam }, 4.308 + 0.10);
+    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 4.308 + 0.10);
+    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 6.853);
+    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 6.853 + 0.3);
+    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 7.750);
     // PROTEIN is the building material, so the partial repair rides that line:
     // three of six beams come back and the lean comes out. The damage is not undone.
     ["4a", "3a", "1a"].forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 5.152 + 0.25 + i * 0.3);
+      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 7.750 + 0.25 + i * 0.3);
     });
-    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 5.911);
+    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 8.509);
     // the smoking chip steps back so it is not read as sourcing the nutrition line
-    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 5.152 + 0.2);
-    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.444);
-    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 8.444 + 0.4);
+    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 7.750 + 0.2);
+    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 11.042);
+    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 11.042 + 0.4);
     // "encouraging collagen production": ONE more beam draws in, and the camera
     // leans toward the building to watch it. One beam, not six -- the claim is
     // stronger evidence for production, not a rebuilt structure.
-    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 10.820 - 0.3);
-    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 10.820);
+    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 13.418 - 0.3);
+    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 13.418);
     // the whole brace set brightens as production is named, so the claim reads as
     // the building gaining rather than one line quietly redrawing itself
-    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, 12.042 - 0.2);
+    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, 14.640 - 0.2);
     tl.fromTo("#shield", { opacity:0.30 }, { opacity:0.44, duration:0.9, yoyo:true, repeat:1,
-              ease:EASE.hold }, 12.042 + 0.1);
+              ease:EASE.hold }, 14.640 + 0.1);
 
     // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
     // the optional column ARRIVES: the camera pans right so cream and powder
     // enter the frame from outside the first-line actions, never sharing their row
-    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, 14.055 - 0.5);
-    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 14.055 - 0.2);
-    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.055);
-    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 16.275);
+    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, 16.653 - 0.5);
+    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 16.653 - 0.2);
+    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 16.653);
+    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 18.873);
     // the two optional cards settle back and dim as the verdict is spoken over
     // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
-    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 14.536 - 0.2);
-    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 16.275 + 0.15);
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 16.683);
-    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 17.396 - 0.9);
-    tl.to("#final", { opacity:1, duration:0.1 }, 17.396 - 0.1);
-    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 17.396 - 0.1);
-    kineticWords(tl, "#final-kt", 17.396 + 0.15, 0.08, "rise");
+    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 17.134 - 0.2);
+    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 18.873 + 0.15);
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 19.281);
+    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 19.994 - 0.9);
+    tl.to("#final", { opacity:1, duration:0.1 }, 19.994 - 0.1);
+    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 19.994 - 0.1);
+    kineticWords(tl, "#final-kt", 19.994 + 0.15, 0.08, "rise");
     // the bricks are already leaving as they are named; the building they were
     // never going to build takes the frame back over the closing words
-    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, 17.988 - 0.2);
-    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, 18.377);
-    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, 19.914);
+    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, 20.586 - 0.2);
+    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, 20.975);
+    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, 22.512);
 
     // departure: push under the curtain wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 20.660);
+    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 23.258);
 
-    tl.to({}, { duration: 21.560 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 24.158 }, 0);   // full-span anchor -- always last
     window.__timelines["14-hierarchy"] = tl;
   </script>
 </template>

@@ -387,15 +387,15 @@
     gsap.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 });
     gsap.set(".beam", { strokeDashoffset:640 });
     // frame zero already shows the slab and the shell: the iris opens on a site, not a void
-    tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, 0.791 - 0.2);
+    tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, 1.210 - 0.2);
     // GROUND UP: floors are laid bottom-first (stagger from:"end" -- DOM order is
     // top-down), each drawn across rather than faded in; the door is hung last
     tl.fromTo(".b-floor", { scaleX:0, transformOrigin:"0% 50%" },
-              { scaleX:1, opacity:0.55, duration:0.32, stagger:{ each:0.07, from:"end" }, ease:EASE.arrive }, 0.791 + 0.15);
+              { scaleX:1, opacity:0.55, duration:0.32, stagger:{ each:0.07, from:"end" }, ease:EASE.arrive }, 1.210 + 0.15);
     tl.fromTo(".b-win", { opacity:0, scale:0.6 }, { opacity:1, scale:1, duration:0.3,
-              stagger:{ each:0.03, from:"end" }, ease:EASE.arrive }, 0.791 + 0.45);
+              stagger:{ each:0.03, from:"end" }, ease:EASE.arrive }, 1.210 + 0.45);
     tl.fromTo("#b-door", { scaleY:0, opacity:1, transformOrigin:"50% 100%" },
-              { scaleY:1, duration:0.35, ease:EASE.arrive }, 0.791 + 0.9);
+              { scaleY:1, duration:0.35, ease:EASE.arrive }, 1.210 + 0.9);
     // the collagen: beams DRAW in with the word
     tl.to(".beam", { strokeDashoffset:0, duration:0.55, stagger:{ each:0.10, from:"end" }, ease:EASE.wipe }, 2.286 - 0.1);
     reveal(tl, "#chip-beams", 2.286 + 0.2);
@@ -413,9 +413,9 @@
     // six thin lines is a real pixel change but moves no bounding box, so this
     // stretch read as 2.25s frozen; the sun arriving is both the missing motion
     // and the cause of everything that follows it.
-    tl.to(".beam", { opacity:0.6, duration:0.6, ease:EASE.hold }, 6.303);
+    tl.to(".beam", { opacity:0.6, duration:0.6, ease:EASE.hold }, 6.444);
     tl.fromTo("#sun", { y:-300, scale:1, opacity:1, transformOrigin:"50% 50%" },
-              { y:0, duration:1.9, ease:EASE.arrive }, 6.303 + 0.2);
+              { y:0, duration:1.9, ease:EASE.arrive }, 6.444 + 0.2);
     tl.to("#sun", { scale:1.12, duration:0.28, yoyo:true, repeat:1, ease:EASE.slam }, 8.952 - 0.1);
     tl.fromTo("#sky-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 8.952 - 0.1);
     tl.to("#rays", { opacity:1, duration:0.1 }, 10.675);
@@ -436,8 +436,8 @@
     reveal(tl, "#uv", 13.428 - 0.1);
     tl.fromTo("#uv-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 13.428 - 0.1);
     kineticWords(tl, "#uv-1", 13.428, 0.08, "slam");
-    kineticWords(tl, "#uv-2", 14.832, 0.08, "slam");
-    tl.to("#sun", { scale:1.12, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.832);
+    kineticWords(tl, "#uv-2", 14.904, 0.08, "slam");
+    tl.to("#sun", { scale:1.12, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.904);
     tl.fromTo("#cite-uv", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 10.675 + 0.3);
 
     // ---- unit 5: the boundary ----------------------------------------------------

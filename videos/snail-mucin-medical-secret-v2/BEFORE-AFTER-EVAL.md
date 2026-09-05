@@ -5,6 +5,13 @@ Comparing the shipped v1 render (`snail-mucin-medical-secret/renders/snail-mucin
 render-mode optimization pass) against v2 (`snail-mucin-medical-secret-v2/renders/snail-mucin-medical-secret-v2.mp4`,
 84.88s). All v1 numbers below were independently re-measured, not taken from the review on faith.
 
+**Update, 2026-09-05:** a silent 4.5s SeoulHabit end card (`compositions/frames/07-endcard.html`)
+was appended after this build, per an explicit request — the shipped file is now 89.38s. Every
+measurement below (words, claims, cadence, and the 84.90s-vs-84.88s-VO audio-sync check) describes
+the 84.88s of narrated content this evaluation was actually about, which the end card does not
+touch — it carries no VO and no captions. See `00-decision-ledger.md`'s corresponding entry for the
+addition itself.
+
 ## Baseline (v1, 2026-08-29 render)
 
 | Metric | Measured value | Method |

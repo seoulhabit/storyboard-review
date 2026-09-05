@@ -1272,26 +1272,39 @@ def fix_exit_fades():
     cut-entered scene carries no leftover clip-path, so its exit IS audited --
     and flagged, though nothing is visible on extracted frames.
 
-    Rather than lean on that accident, give these two boundaries what the
+    Rather than lean on that accident, give these boundaries what the
     checker actually recognises: a real fade on the outgoing wrapper across
-    the wipe. Both are visually safe: s03 is PAPER fading over a PAPER body,
-    invisible; s12 is INK fading toward the cream the incoming recap already
-    is, so the un-revealed region lifts to the new ground a few frames before
-    the wipe front reaches it -- the dark "letting go" of the warning block.
-    The same fade on an INK -> INK boundary would flash cream, which is why
-    it is not applied generically.
+    the wipe. s03/s12 are visually safe because both share their incoming
+    scene's ground (s03 PAPER fading over a PAPER body; s12 INK lifting
+    toward the cream the recap already is). The same fade on an INK -> INK
+    boundary would flash cream, which is why this is not applied generically
+    to every plain wipe.
+
+    s05->s06 needed the SAME treatment for a different reason, found only
+    after fix_transition_hold() started keeping the outgoing scene visible
+    for its full mount window: s05 and s06 are the reused serum actor at the
+    identical screen position (`build_plumping()`'s own comment: "SAME seed
+    as s05 -- the actor is REUSED, not redrawn"), so once s05 stopped going
+    blank mid-wipe, its EPIDERMIS/DERMIS labels and headline sat pixel-for-
+    pixel under s06's own -- two DOM elements, same text, same spot,
+    `content_overlap`/`text_occluded` on 7 findings (confirmed on the render,
+    not assumed). Fading s05 out across the same window it used to (wrongly)
+    disappear across removes the coincidence instead of re-hiding it.
     """
     path = f"{HERE}/05-composition/index.html"
     html = open(path).read()
-    MARK = "exit fade companion"
-    if MARK in html:
-        print("  exit fades already patched; skipping (idempotent)")
-        return
     import re as _re
     n = 0
-    for out_id, in_id in (("s03-not-filler", "s04-split"), ("s12-risks", "s13-badges")):
+    for out_id, in_id in (("s03-not-filler", "s04-split"), ("s12-risks", "s13-badges"),
+                          ("s05-size", "s06-plumping")):
+        MARK = f"exit fade companion: {out_id} lets go"
+        if MARK in html:
+            continue   # idempotent per-boundary, not a blanket file-level guard --
+                       # boundaries were added to this list incrementally across
+                       # this session, and a single "any fade present" check
+                       # silently skipped adding the newest one.
         pat = _re.compile(
-            r"(    // wipe-up ([\d.]+)s: " + out_id + r" -> " + in_id + r", overlap opens at ([\d.]+)s\n"
+            r"(    // wipe-(?:up|left) ([\d.]+)s: " + out_id + r" -> " + in_id + r", overlap opens at ([\d.]+)s\n"
             r"    tl\.fromTo\('#scene-" + in_id + r"'[^\n]*\n)")
         m = pat.search(html)
         assert m, f"wipe-up {out_id} -> {in_id} not found in index.html (transition type changed?)"
@@ -1300,7 +1313,7 @@ def fix_exit_fades():
         # front reaches the top band where both scenes put their headline,
         # or the checker sees two solid text blocks overlapping for the last
         # ~0.1s of the window (it did, at 103.0-103.08s, under power1.in).
-        line = (f"    // {MARK}: {out_id} lets go across the same window (see fix_exit_fades)\n"
+        line = (f"    // {MARK} across the same window (see fix_exit_fades)\n"
                 f"    tl.to('#scene-{out_id}', {{ opacity: 0, duration: {dur:.3f}, ease: \"power2.out\" }}, {t0:.3f});\n")
         html = html.replace(m.group(1), m.group(1) + line, 1)
         n += 1
@@ -1426,6 +1439,120 @@ def fix_endcard_lockup():
     print("  s14 lockup patched (two entrances + bounded bloom)")
 
 
+def fix_transition_hold():
+    """Extend every scene's OWN internal duration to match its outer wrapper's
+    transition-extended duration, so it does not go invisible mid-wipe.
+
+    Root cause, found empirically (confirmed on the UNTOUCHED, pre-session
+    v3 baseline too -- this is not something this session's edits caused):
+    index.html correctly extends each `<div class="scene clip">` wrapper's
+    `data-duration` to cover the transition overlap (the generator's own
+    documented mechanic: "the outgoing clip is extended by exactly the
+    window its successor pulls back into"). But the SUB-COMPOSITION's own
+    internal root/`#<sid>-stage` elements keep their NATURAL, un-extended
+    `data-duration` -- and the runtime hides an element once ANY ancestor
+    carrying its own `data-start`/`data-duration` falls outside its active
+    window (`hyperframe-runtime.js`'s per-frame visibility walk climbs every
+    `[data-start]` ancestor, not just the outermost one). Once local time
+    (global - outer mount start) exceeds the sub-composition's own shorter
+    natural duration -- which happens for exactly the tail d_out seconds of
+    EVERY wipe/crossfade/zoom boundary in this piece -- `#<sid>-stage` gets
+    `visibility:hidden`, and the frame goes blank until the incoming scene's
+    reveal catches up. Verified on an extracted frame (s08-seals at 67.1-
+    67.45s, blank cream) and again on the UNCHANGED v3 baseline (s05-size at
+    42.7-42.9s, same blank-then-reveal pattern) before writing this fix, and
+    verified GONE on the same s08 frame after a hand-patched duration/anchor
+    extension, before generalizing that patch into this function.
+
+    The fix touches only two numbers per scene -- `data-duration` on #root
+    and `#<sid>-stage`, and the final anchor tween's duration -- to the
+    scene's natural duration plus its own d_out (read back from index.html's
+    ALREADY-RESOLVED wrapper duration, not re-derived, so it can never drift
+    from whatever fix_hero_transitions()/fix_exit_fades() left in place).
+    Nothing before the natural duration changes: every beat's own timing,
+    and every motion assertion in index.motion.json, is untouched -- this
+    only tells the scene to keep holding its last frame for longer instead
+    of disappearing while the mount window says it should still be there.
+
+    HAND-AUTHORED SCENES ONLY. beats_to_composition.py's own `render_scene()`
+    already computes `total_dur = dur + d_in + d_out` for every scene IT
+    writes (confirmed by reading that function, not assumed) -- so the 4
+    generated scenes (s03, s11, s12, s14) are correct on arrival and carry
+    NO occurrence of the raw natural duration to find. That generator
+    explicitly never touches a `handoff: "hand-authored"` scene's file, so
+    those 10 scenes -- everything `scene_shell()` writes -- are the only
+    ones missing the extension this function applies.
+    """
+    import re as _re
+    idx_path = f"{HERE}/05-composition/index.html"
+    idx_html = open(idx_path).read()
+    bs = json.load(open(f"{HERE}/03-beat-sheet.json"))
+    natural = {sc["id"]: (sc["start"], sc["duration"]) for sc in bs["scenes"]
+               if sc["id"] in BUILD}
+
+    rows = _re.findall(
+        r'<div class="scene clip" id="scene-([a-z0-9-]+)"[^>]*\n'
+        r'\s*data-composition-src="[^"]*"\n'
+        r'\s*data-start="([\d.]+)" data-duration="([\d.]+)"',
+        idx_html)
+    rows = [r for r in rows if r[0] in natural]
+    assert len(rows) == len(natural), (
+        f"expected {len(natural)} hand-authored scene rows in index.html, "
+        f"found {len(rows)} -- has BUILD or the generator's row format changed?")
+
+    fixed = 0
+    for sid, wrap_start, wrap_dur in rows:
+        wrap_dur = float(wrap_dur)
+        nat_start, nat_dur = natural[sid]
+        # Target the OUTER WRAPPER's own duration DIRECTLY -- do not
+        # recompute it from d_in/d_out. A first attempt derived only d_out
+        # (the exit side) from d_in = nat_start - wrap_start, reasoning that
+        # the entrance overlap "doesn't matter because the scene is the one
+        # being revealed then, not the one disappearing." That reasoning
+        # does not actually establish the entrance side is safe -- nothing
+        # here confirmed it empirically, whereas copying the wrapper's own
+        # value is *by construction* the exact window the wrapper considers
+        # this scene mounted for, covering both the entrance and exit
+        # overlap with no arithmetic of my own that could be wrong twice.
+        target = round(wrap_dur, 3)
+        if target - nat_dur <= 1e-6:
+            continue   # nothing to extend (e.g. a cut on both sides)
+
+        idx = ORDER.index(sid) + 1
+        path = f"{OUT}/{idx:02d}-{sid}.html"
+        html = open(path).read()
+        MARK = f"<!-- fix_transition_hold: {target:.3f} -->"
+        if MARK in html:
+            continue   # idempotent: already extended to this exact target
+        # Undo a PRIOR extension first, if this is a re-run after the
+        # transition timings changed (duration shrinks back to natural,
+        # matching scene_shell()/the external generator's own un-extended
+        # output, before applying the new target) -- otherwise a second run
+        # after e.g. a hero-transition duration edit would compound.
+        old_mark = _re.search(r"<!-- fix_transition_hold: ([\d.]+) -->", html)
+        if old_mark:
+            prev = old_mark.group(1)
+            html = html.replace(f'<!-- fix_transition_hold: {prev} -->', '', 1)
+            html = html.replace(f'data-duration="{prev}">\n  <div class="clip stage"',
+                                f'data-duration="{nat_dur:.3f}">\n  <div class="clip stage"', 1)
+            html = html.replace(f'data-duration="{prev}">',
+                                f'data-duration="{nat_dur:.3f}">', 1)
+            html = html.replace(f"duration: {prev}, ease: 'none'",
+                                f"duration: {nat_dur:.3f}, ease: 'none'", 1)
+
+        n1 = html.count(f'data-duration="{nat_dur:.3f}">')
+        assert n1 >= 2, (f"{sid}: expected >=2 occurrences of natural duration "
+                        f"{nat_dur:.3f} (root + stage), found {n1}")
+        html = html.replace(f'data-duration="{nat_dur:.3f}">',
+                            f'data-duration="{target:.3f}">', n1)
+        html = html.replace(
+            f"tl.to({{}}, {{ duration: {nat_dur:.3f}, ease: 'none' }}, 0);",
+            f"tl.to({{}}, {{ duration: {target:.3f}, ease: 'none' }}, 0);" + f"   {MARK}", 1)
+        open(path, "w").write(html)
+        fixed += 1
+    print("  transition-hold extension applied to %d scene(s)" % fixed)
+
+
 def fix_motion_sidecar():
     """[S7/R-1b]: set root `keepsMoving.maxStaticSec` from the FORMAT's cadence.
 
@@ -1495,6 +1622,7 @@ def main():
     fix_exit_fades()
     fix_risk_pictograms()
     fix_endcard_lockup()
+    fix_transition_hold()
     fix_motion_sidecar()
 
 if __name__ == "__main__":

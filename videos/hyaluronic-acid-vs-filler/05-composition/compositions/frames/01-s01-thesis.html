@@ -100,8 +100,8 @@
 </style>
 
 <div id="root" data-composition-id="s01-thesis" data-width="1920" data-height="1080"
-     data-duration="5.911">
-  <div class="clip stage" id="s01-thesis-stage" data-start="0" data-duration="5.911">
+     data-duration="6.411">
+  <div class="clip stage" id="s01-thesis-stage" data-start="0" data-duration="6.411">
     <div class="cam" id="s01-thesis-cam"><div class="cam-in" id="s01-thesis-cam-in">
     <div class="col-wrap">
       <div class="kicker beat is-entering" id="s01-thesis-b1" style="text-align:center">Same name</div>
@@ -347,7 +347,7 @@
   tl.to('#s01-thesis-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 1.360);
   tl.to('#s01-thesis-b1', { opacity: 1, y: 0, duration: 1.100, ease: 'power3.out' }, 1.569);
   tl.to('#s01-thesis-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 2.976);
-  tl.to({}, { duration: 5.911, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to({}, { duration: 6.411, ease: 'none' }, 0);   <!-- fix_transition_hold: 6.411 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s01-thesis'] = tl;
 })();

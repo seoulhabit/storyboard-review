@@ -102,6 +102,8 @@
     tl.fromTo('#scene-s05-size', { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.500, ease: "power3.out" }, 30.795);
     // wipe-left 0.450s: s05-size -> s06-plumping, overlap opens at 42.630s
     tl.fromTo('#scene-s06-plumping', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 42.630);
+    // exit fade companion: s05-size lets go across the same window (see fix_exit_fades)
+    tl.to('#scene-s05-size', { opacity: 0, duration: 0.450, ease: "power2.out" }, 42.630);
     // wipe-left 0.450s: s06-plumping -> s07-binds, overlap opens at 50.757s
     tl.fromTo('#scene-s07-binds', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 50.757);
     // crossfade 0.600s: s07-binds -> s08-seals, overlap opens at 59.232s

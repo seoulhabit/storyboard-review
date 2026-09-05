@@ -81,8 +81,8 @@
 </style>
 
 <div id="root" data-composition-id="s04-split" data-width="1920" data-height="1080"
-     data-duration="9.394">
-  <div class="clip stage" id="s04-split-stage" data-start="0" data-duration="9.394">
+     data-duration="10.344">
+  <div class="clip stage" id="s04-split-stage" data-start="0" data-duration="10.344">
     <div class="cam" id="s04-split-cam"><div class="cam-in" id="s04-split-cam-in">
     <div class="split-two">
       <h1 class="head beat is-entering split-title" id="s04-split-b0">Here's where the two versions really split</h1>
@@ -256,7 +256,7 @@
   tl.to('#s04-split-kw1', { color: '#C97A5C', textShadow: '0 0 22px rgba(201,122,92,0.5)', duration: 0.420, ease: 'power2.out' }, 8.111);
   tl.to('#s04-split-kw1', { textShadow: '0 0 0px rgba(201,122,92,0)', duration: 0.900, ease: 'power2.inOut' }, 8.531);
   tl.to('#s04-split-cam-in', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
-  tl.to({}, { duration: 9.394, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to({}, { duration: 10.344, ease: 'none' }, 0);   <!-- fix_transition_hold: 10.344 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s04-split'] = tl;
 })();

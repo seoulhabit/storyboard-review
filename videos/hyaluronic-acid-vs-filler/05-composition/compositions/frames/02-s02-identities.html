@@ -76,8 +76,8 @@
 </style>
 
 <div id="root" data-composition-id="s02-identities" data-width="1920" data-height="1080"
-     data-duration="5.284">
-  <div class="clip stage" id="s02-identities-stage" data-start="0" data-duration="5.284">
+     data-duration="5.784">
+  <div class="clip stage" id="s02-identities-stage" data-start="0" data-duration="5.784">
     <div class="cam" id="s02-identities-cam"><div class="cam-in" id="s02-identities-cam-in">
     <div class="col-wrap">
 
@@ -320,7 +320,7 @@
   tl.to('#s02-identities-b1', { opacity: 1, y: 0, duration: 1.200, ease: 'power2.inOut' }, 1.423);
   tl.to('#s02-identities-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 2.845);
   tl.to('#s02-identities-b2', { opacity: 1, y: 0, duration: 1.200, ease: 'power2.inOut' }, 2.845);
-  tl.to({}, { duration: 5.284, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to({}, { duration: 5.784, ease: 'none' }, 0);   <!-- fix_transition_hold: 5.784 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s02-identities'] = tl;
 })();

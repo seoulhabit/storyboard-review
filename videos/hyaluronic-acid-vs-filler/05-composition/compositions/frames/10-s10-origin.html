@@ -68,8 +68,8 @@
 </style>
 
 <div id="root" data-composition-id="s10-origin" data-width="1920" data-height="1080"
-     data-duration="6.092">
-  <div class="clip stage" id="s10-origin-stage" data-start="0" data-duration="6.092">
+     data-duration="6.692">
+  <div class="clip stage" id="s10-origin-stage" data-start="0" data-duration="6.692">
     <div class="cam" id="s10-origin-cam"><div class="cam-in" id="s10-origin-cam-in">
     <div class="split2">
       <div class="col" id="s10-origin-col">
@@ -100,7 +100,7 @@
   tl.to('#s10-origin-b0', { opacity: 1, scale: 1, duration: 1.400, ease: 'power2.out' }, 0.000);
   tl.to('#s10-origin-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.500, ease: 'power2.inOut' }, 1.747);
   tl.to('#s10-origin-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 3.994);
-  tl.to({}, { duration: 6.092, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to({}, { duration: 6.692, ease: 'none' }, 0);   <!-- fix_transition_hold: 6.692 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s10-origin'] = tl;
 })();

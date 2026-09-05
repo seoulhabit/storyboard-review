@@ -22,8 +22,8 @@ question. Each row below is the question that actually mattered.
 | First word | **4.92s** | **0.100s** | five near-static seconds before anyone speaks is the whole hook budget |
 | Curiosity loop opened | never (the twist arrives at 1:40 unannounced) | "Twenty three trials" at **6.73s**, "Remove the industry funded ones" at **8.41s** | the industry-funding reversal is the piece's best asset and was unadvertised |
 | Composition files | 6, averaging 31.5s | 8, carrying 16 units | a 31s page is four beats pretending to be one |
-| Beat cadence | 207 authored tweens, and the payoff still held 6.6s | **90 registering beats, longest gap 3.69s**, none over 4s | an authored tween is not a rendered pixel change |
-| Major resets | 5 boundaries in 3:09 | **27, longest gap 11.00s**, median 4.77s | the brief's budget is one every 8-12s |
+| Beat cadence | 207 authored tweens, and the payoff still held 6.6s | 103 authored beats, and **0 static holds over 2s measured on rendered pixels** | an authored tween is not a rendered pixel change |
+| Major resets | 5 boundaries in 3:09 | **30, longest gap 11.00s**, median 3.73s | the brief's budget is one every 8-12s |
 | On-screen language | two-lane dialogue cards; every spoken sentence also printed | 54 beats, longest 5 words, ~10 kinetic phrases, one deliberate duplicate | printing what is being said gives the viewer nothing to do |
 | Transitions | 4 near-identical wipes + 1 hard cut | iris ×4, invert ×2, curtain ×1, each meaning something | one transition repeated is a slide deck's page turn |
 | Climax | the 23-trial line held **6.6s** on a single beat | tiles tagged, dropped in two visible stages, result moving with them, then a 132px flood | the reversal is the reason to watch and it was a caption |

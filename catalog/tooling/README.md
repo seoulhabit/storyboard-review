@@ -1020,10 +1020,50 @@ individually, plus the attribute-order anchor. Each mutant fails the control
 aimed at it and the restored gate passes clean.
 
 **Status: 12 fixtures, all passing, none reaching outside `catalog/tooling/`.**
-One gate here still has no control: **`check-contrast-tokens.py`**. It is the
-source-side half of the contrast pair, and its ratio arithmetic is shared with
-`check-contrast-pixels.py` (which is covered), but its own JSON pair-loading and
-its `expected FAIL` inversion -- the feature that makes the gate fail when a
-documented-bad pair starts passing -- are untested. That inversion is the part
-worth a fixture: it is the one place in this directory where a PASS is the
-failure condition.
+See the entry below for the thirteenth, which closed the last gap.
+
+---
+
+## Controls — `test-contrast-tokens-controls.py` — added 2026-09-05
+
+The last gate here without a control. Its arithmetic is a near-twin of
+`check-contrast-pixels.py`'s, which is covered — but "near-twin" is not
+"shared", and its own JSON pair-loading, floor selection and expected-FAIL
+inversion were untested.
+
+**The arithmetic is anchored to numbers from outside this repo.** Black on
+white is 21.00:1 and a colour on itself is 1.00:1, both by definition; `#767676`
+and `#949494` on white are WCAG's own published AA and AA-large boundary greys,
+4.54:1 and 3.03:1. The two definitional anchors are not enough on their own and
+the fixture says so — **measured, not assumed**: with the sRGB linearisation
+deleted, black/white still reads 21.000 and white/white still reads 1.000 while
+the greys collapse to 2.048 and 1.666. The greys are what pin the curve.
+
+**The expected-FAIL inversion gets all four combinations**, each in its own run
+so one pair's finding cannot mask another's: a plain pair passing (fine) or
+failing (a finding), and an `expected FAIL` pair failing (fine, and counted
+separately as documented) or **passing** (a finding). That last is the whole
+reason the feature exists and the only case in this directory where a PASS is
+the failure condition — a note reading "expected FAIL" is a claim about the
+palette, and it becomes a lie the moment someone lightens the token. A control
+checking only the happy direction would keep passing while the inversion was
+deleted.
+
+Floor selection is checked with **one** 3.45:1 pair declared three ways — text,
+graphic, and a numeric literal — so the floor is the only variable; the
+`--text-floor` override is checked by flipping that same pair's verdict.
+Token resolution is checked both ways (a key and a literal must agree) and a
+typo'd key must be a FATAL exit, since a gate that quietly resolved an unknown
+token to black would report a beautiful 21:1 for a pair nobody ships.
+
+Every fixture asserts the **exit status**, not just the printed text: this is a
+hard gate, and a gate that prints FAIL and exits 0 protects nothing — a defect
+that has shipped in this directory before, when an `np.bool_` silently failed
+an `is False` identity test.
+
+**Mutation-tested, five breakages, all caught:** the inversion removed, the
+sRGB gamma dropped, the per-pair floor ignored, an unknown token silently
+defaulted, and `main()` forced to always exit 0.
+
+**Status: every gate in `catalog/tooling/` now has a control fixture** — 13
+gates, 13 fixtures, all passing, none reaching outside this directory.

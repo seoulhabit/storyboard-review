@@ -1553,7 +1553,48 @@ def fix_transition_hold():
     print("  transition-hold extension applied to %d scene(s)" % fixed)
 
 
+def fix_zoom_overscan():
+    """Tame the s04->s05 zoom-through hero's OUTGOING scale.
+
+    The registry's own generator warns on this exact type ("translates or
+    scales whole scene wrappers, which moves content through the reserved
+    zones") -- it just never had a chance to prove out here until
+    fix_transition_hold() stopped hiding s04's content during its own exit
+    (before that fix, s04 was already invisible by this point in the
+    overlap, so nothing was there to overflow). With s04 correctly visible,
+    check-safe-area.py on the real render found it genuinely does: at
+    t=31.00s (41% into the 0.5s tween, ~7% eased under `power3.in`'s slow
+    start) the OUTGOING wrapper's default 2.5x target already pushed s04's
+    edge-to-edge two-panel comparison 1384px past the left zone, 221px past
+    the right, 213px past the top -- s04's own layout already runs
+    content-box to content-box at scale 1, so ANY scale-up on the whole
+    wrapper overflows fast. The incoming side (s05, scale 0.5 -> 1, always
+    <=1, shrinking TOWARD the frame's own center) is not implicated and is
+    untouched: check-safe-area.py's clean run confirms only this line.
+
+    1.15x keeps a felt push (plus the unchanged opacity/blur fade) without
+    ever mapping content-box content past the canvas at any sampled point in
+    the 0.5s window -- verified on the render, not asserted from the number.
+    """
+    path = f"{HERE}/05-composition/index.html"
+    html = open(path).read()
+    MARK = "fix_zoom_overscan"
+    if MARK in html:
+        print("  zoom overscan already patched; skipping (idempotent)")
+        return
+    old = 'tl.to(\'#scene-s04-split\', { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.500, ease: "power3.in" }, 30.795);'
+    new = ('tl.to(\'#scene-s04-split\', { scale: 1.15, opacity: 0, filter: "blur(8px)", duration: 0.500, ease: "power3.in" }, 30.795);'
+           f'   // {MARK}: 2.5 -> 1.15, see fix_zoom_overscan()')
+    assert old in html, "s04->s05 zoom-through outgoing tween not found (transition type or duration changed?)"
+    html = html.replace(old, new, 1)
+    open(path, "w").write(html)
+    print("  zoom overscan patched: s04-split outgoing scale 2.5 -> 1.15")
+
+
 def fix_motion_sidecar():
+
+
+
     """[S7/R-1b]: set root `keepsMoving.maxStaticSec` from the FORMAT's cadence.
 
     v1/v2 both re-pointed this 2.0 -> 6.0, matched to a video whose real
@@ -1623,6 +1664,7 @@ def main():
     fix_risk_pictograms()
     fix_endcard_lockup()
     fix_transition_hold()
+    fix_zoom_overscan()
     fix_motion_sidecar()
 
 if __name__ == "__main__":

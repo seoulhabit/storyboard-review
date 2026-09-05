@@ -98,7 +98,7 @@
     // exit fade companion: s03-not-filler lets go across the same window (see fix_exit_fades)
     tl.to('#scene-s03-not-filler', { opacity: 0, duration: 0.450, ease: "power2.out" }, 21.451);
     // zoom-through 0.500s: s04-split -> s05-size, overlap opens at 30.795s
-    tl.to('#scene-s04-split', { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.500, ease: "power3.in" }, 30.795);
+    tl.to('#scene-s04-split', { scale: 1.15, opacity: 0, filter: "blur(8px)", duration: 0.500, ease: "power3.in" }, 30.795);   // fix_zoom_overscan: 2.5 -> 1.15, see fix_zoom_overscan()
     tl.fromTo('#scene-s05-size', { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.500, ease: "power3.out" }, 30.795);
     // wipe-left 0.450s: s05-size -> s06-plumping, overlap opens at 42.630s
     tl.fromTo('#scene-s06-plumping', { clipPath: "inset(0% 0% 0% 100%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.450, ease: "power3.inOut" }, 42.630);

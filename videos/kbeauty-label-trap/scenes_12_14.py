@@ -4,6 +4,7 @@ from build_composition import write, stamp_svg, bottle_svg
 from catalog_components import (
     ingredient_actor_svg, neutral_package_shell_svg, five_question_progress,
     question_seal, illustrative_disclosure, brand_mark_svg, QUESTIONS,
+    icon_svg, evidence_state_chip,
 )
 
 # ---------------------------------------------------------------- s12 -----
@@ -108,69 +109,65 @@ script = f"""
 write("s12-reveal", style, body, script, bg="dark")
 
 # ---------------------------------------------------------------- s13 -----
+# Catalog source: five-question-recap pattern. The ingredient actor stays
+# visible on the left -- this is a recap of ingredient literacy, not a bare
+# checklist -- while five compact rows carry each question's own glyph,
+# short label, and the Cica-specific answer state already established
+# across s03-s11. No full-sentence captions.
 style = """
-  .recap { position:relative; height:100%; width:100%; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; }
-  .recap-card { width:1500px; border:2px solid var(--rule-strong); border-radius:24px; padding:60px;
-    background: var(--mist, #F0EBE1); opacity:0; }
-  .recap-row { display:flex; justify-content:space-between; padding:22px 0; border-bottom:1px solid var(--rule-strong); }
+  .recap { position:relative; height:100%; width:100%; display:flex; align-items:center; justify-content:center; gap:120px; }
+  .recap-actor { text-align:center; opacity:0; }
+  .recap-actor .name { margin-top:18px; font-weight:800; font-size:34px; letter-spacing:-.02em; }
+  .recap-rows { display:flex; flex-direction:column; width:1080px; }
+  .recap-row { display:grid; grid-template-columns:70px 260px 1fr auto; align-items:center; gap:22px;
+    padding:20px 0; border-bottom:1px solid var(--line); opacity:0; }
   .recap-row:last-child { border-bottom:none; }
-  .recap-num { font-family:var(--font-mono); font-size:34px; color:var(--vermilion); width:60px; }
-  .recap-q { font-family:var(--font-display); font-size:42px; }
+  .recap-q { font-weight:700; font-size:28px; letter-spacing:-.01em; }
+  .recap-a { color:var(--ink-soft); font-size:22px; }
 """
-qs = [
-    "How much is there?",
-    "Which version is it?",
-    "What formula carries it?",
-    "What evidence matches the claim?",
-    "Where does the answer stop?",
+QS = [
+    ("quantity", "How much?", "Rank, not exact amount", "requires_context"),
+    ("identity-version", "Which version?", "Process undisclosed", "unknown"),
+    ("formula-vehicle", "What carries it?", "Formula-specific", "unknown"),
+    ("evidence", "What evidence?", "Material match required", "requires_context"),
+    ("boundary", "Where does it stop?", "Identity &ne; performance", "known"),
 ]
 rows = "\n".join(
-    f'<div class="recap-row" id="s13-row-{i}" style="opacity:0"><div class="recap-num">{i+1}</div><div class="recap-q">{q}</div></div>'
-    for i, q in enumerate(qs)
+    f'<div class="recap-row" id="s13-row-{i}">{icon_svg(f"s13-icon-{i}", icon, size=44, color="var(--ink-soft)")}'
+    f'<div class="recap-q">{q}</div><div class="recap-a">{a}</div>{evidence_state_chip(f"s13-chip-{i}", state)}</div>'
+    for i, (icon, q, a, state) in enumerate(QS)
 )
 body = f'''
     <div class="recap">
-      <div class="recap-card" id="s13-card">
-        {rows}
-      </div>
+      <div class="recap-actor" id="s13-actor">{ingredient_actor_svg("s13-actor-svg", size=260)}<div class="name">CICA</div></div>
+      <div class="recap-rows" id="s13-rows">{rows}</div>
     </div>
 '''
 row_tweens = "\n".join(
-    f"  tl.to('#s13-row-{i}', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, {1.2+i*0.9:.2f});"
+    f"  tl.to('#s13-row-{i}', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, {1.4+i*0.7:.2f});"
     for i in range(5)
 )
-
-# Idle beat for the long hold after all five rows have landed (~5.3s) through
-# the end of the scene's own timeline (11.994s), per cadence gate: a soft,
-# slow pulse on the vermilion numerals, in sequence, echoing the stamp motif
-# used elsewhere. Two short waves, chained .to() calls (not GSAP repeat).
-NUM_SELECTORS = [f"#s13-row-{i} .recap-num" for i in range(5)]
-_num_wave_starts = [6.0, 9.0]
-_num_stagger = 0.4
-_num_pulse_dur = 0.5
-_num_pulse_lines = []
-for _ws in _num_wave_starts:
-    for _i, _sel in enumerate(NUM_SELECTORS):
-        _t0 = _ws + _i * _num_stagger
-        _t1 = _t0 + _num_pulse_dur + 0.02
-        _num_pulse_lines.append(
-            f"  tl.to('{_sel}', {{ scale: 1.18, duration: {_num_pulse_dur}, ease: 'sine.inOut' }}, {_t0:.2f});"
-        )
-        _num_pulse_lines.append(
-            f"  tl.to('{_sel}', {{ scale: 1.0, duration: {_num_pulse_dur}, ease: 'sine.inOut' }}, {_t1:.2f});"
-        )
-num_pulse_js = "\n".join(_num_pulse_lines)
+# Idle beat for the hold after all five rows land (~6.5s) through the scene's
+# own end (11.994s): a soft, slow pulse across the icon glyphs, in sequence.
+ICON_SELECTORS = [f"#s13-icon-{i}" for i in range(5)]
+_pulse_lines = []
+for _ws in [7.0, 9.6]:
+    for _i, _sel in enumerate(ICON_SELECTORS):
+        _t0 = _ws + _i * 0.35
+        _t1 = _t0 + 0.4 + 0.02
+        _pulse_lines.append(f"  tl.to('{_sel}', {{ scale: 1.15, duration: 0.4, ease: 'sine.inOut' }}, {_t0:.2f});")
+        _pulse_lines.append(f"  tl.to('{_sel}', {{ scale: 1.0, duration: 0.4, ease: 'sine.inOut' }}, {_t1:.2f});")
+icon_pulse_js = "\n".join(_pulse_lines)
 
 script = f"""
-  gsap.set('#s13-card', {{ opacity: 0, y: 20 }});
-  gsap.set('.recap-row', {{ opacity: 0 }});
-  gsap.set('.recap-num', {{ scale: 1, transformOrigin: '50% 50%' }});
+  gsap.set('#s13-actor', {{ opacity: 0, x: -20 }});
+  gsap.set('.recap-row', {{ opacity: 0, x: 14 }});
+  gsap.set('.icon', {{ transformOrigin: '50% 50%' }});
 
   var tl = gsap.timeline({{ paused: true }});
-  tl.to('#s13-card', {{ opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }}, 0.0);
+  tl.to('#s13-actor', {{ opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' }}, 0.0);
 {row_tweens}
-{num_pulse_js}
+{icon_pulse_js}
   tl.to({{}}, {{ duration: 11.994, ease: 'none' }}, 0);
   window.__timelines = window.__timelines || {{}};
   window.__timelines['s13-recap-questions'] = tl;

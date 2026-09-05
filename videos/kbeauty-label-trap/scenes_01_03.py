@@ -3,7 +3,7 @@
 from build_composition import write, stamp_svg, bottle_svg
 from catalog_components import (
     ingredient_actor_svg, neutral_package_shell_svg, five_question_progress,
-    question_seal, icon_svg,
+    question_seal, icon_svg, evidence_state_chip,
 )
 
 # ---------------------------------------------------------------- s01 -----
@@ -117,56 +117,80 @@ script = """
 write("s01-bench-hook", style, body, script, bg="dark")
 
 # ---------------------------------------------------------------- s02 -----
+# Catalog source: ingredient-identity-map. Racing leaderboard fractures into
+# an identity dossier -- five separate fields, not a ranked score -- with
+# the passport reduced to a secondary corner motif per the brief's map.
 style = """
   .pass-stage { position:relative; height:100%; width:100%;
-    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%);
-    display:flex; align-items:center; justify-content:center; }
-  .leaderboard { position:absolute; left:50%; top:26%; transform:translate(-50%,-50%);
+    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%); }
+  .leaderboard { position:absolute; left:50%; top:32%; transform:translate(-50%,-50%);
     display:flex; gap:90px; opacity:0; }
   .lb-col { width:280px; font-family:var(--font-mono); font-size:26px; color:rgba(247,245,240,0.55); }
   .lb-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
-  .passport { position:relative; width:640px; height:420px; border-radius:14px;
-    background: linear-gradient(160deg, #F7F5F0, #E9E4D8); opacity:0; transform:scale(0.85);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5); padding:44px; }
-  .passport-title { font-family:var(--font-mono); font-size:24px; letter-spacing:.18em; color:var(--ink-2); }
-  .passport-name { font-family:var(--font-display); font-size:52px; color:var(--ink); margin-top:14px; }
-  .passport-sub { font-family:var(--font-body); font-size:28px; color:var(--ink-2); margin-top:22px; line-height:1.4; }
-  .passport-stamp-wrap { position:absolute; right:36px; bottom:36px; opacity:0; transform:scale(0.5); }
-  .thesis { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 50px); text-align:center; opacity:0; }
+  .dossier { position:absolute; left:50%; top:30%; transform:translate(-50%,-50%);
+    width:1560px; opacity:0; }
+  .dossier-name { text-align:center; font-family:var(--font-display); font-weight:800; font-size:64px;
+    color:var(--paper); letter-spacing:-.03em; margin-bottom:30px; }
+  .dossier-fields { display:flex; gap:0; border-top:1px solid rgba(255,255,255,0.18); }
+  .field { flex:1; min-width:0; padding:20px 22px; border-right:1px solid rgba(255,255,255,0.18); }
+  .field:last-child { border-right:none; }
+  .field-name { font-family:var(--font-mono); font-size:20px; color:rgba(247,245,240,0.5); margin-bottom:10px; }
+  .field-value { font-weight:700; font-size:26px; color:var(--paper); line-height:1.25; margin-bottom:12px; min-height:64px; }
+  .id-seal-wrap { position:absolute; right:-10px; top:-40px; opacity:0; transform:scale(0.5) rotate(-14deg); }
+  .id-tag { font-family:var(--font-mono); font-size:22px; color:var(--assay); letter-spacing:.1em; margin-top:6px; text-align:center; }
+  .thesis { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 40px); text-align:center; opacity:0; }
 """
+fields = [
+    ("CONSUMER NAME", "Cica", "known"),
+    ("LABEL DECLARATION", "Centella Asiatica Extract", "requires_context"),
+    ("SOURCE", "Centella asiatica plant", "requires_context"),
+    ("PROCESS OR FORM", "Not disclosed", "not_disclosed"),
+    ("STUDIED-MATERIAL MATCH", "Not established", "not_established"),
+]
+field_html = "\n".join(
+    f'<div class="field" id="s02-field-{i}"><div class="field-name">{name}</div>'
+    f'<div class="field-value">{val}</div>{evidence_state_chip(f"s02-chip-{i}", state)}</div>'
+    for i, (name, val, state) in enumerate(fields)
+)
 body = f'''
     <div class="pass-stage">
       <div class="leaderboard" id="s02-leaderboard">
         <div class="lb-col"><div class="lb-row"><span>1</span><span>CENTELLA EXTRACT</span></div><div class="lb-row"><span>2</span><span>NIACINAMIDE</span></div><div class="lb-row"><span>3</span><span>PANTHENOL</span></div></div>
         <div class="lb-col"><div class="lb-row"><span>1</span><span>CENTELLA EXTRACT</span></div><div class="lb-row"><span>2</span><span>MADECASSOSIDE</span></div><div class="lb-row"><span>3</span><span>NIACINAMIDE</span></div></div>
       </div>
-      <div class="passport" id="s02-passport">
-        <div class="passport-title">INGREDIENT PASSPORT</div>
-        <div class="passport-name">Centella Asiatica Extract</div>
-        <div class="passport-sub">This document certifies identity only.<br>It does not certify performance.</div>
-        <div class="passport-stamp-wrap" id="s02-stamp-wrap">
-          {stamp_svg("s02-stamp", "ID ONLY", size=170)}
+      <div class="dossier" id="s02-dossier">
+        <div class="dossier-name">Cica — Ingredient Identity Record</div>
+        <div class="dossier-fields">{field_html}</div>
+        <div class="id-seal-wrap" id="s02-seal-wrap">
+          {question_seal("s02-seal", 1, "answered", size=110, bg="dark")}
+          <div class="id-tag">IDENTITY ONLY</div>
         </div>
       </div>
       <div class="thesis" id="s02-thesis">
-        <div class="head" style="color:var(--paper); font-size:76px;">A LIST IS A PASSPORT — NOT A SCORECARD</div>
+        <div class="head" style="color:var(--paper); font-size:72px;">A LIST IS A PASSPORT — NOT A SCORECARD</div>
       </div>
     </div>
 '''
-script = """
-  gsap.set('#s02-leaderboard', { opacity: 0 });
-  gsap.set('#s02-passport', { opacity: 0, scale: 0.85 });
-  gsap.set('#s02-stamp-wrap', { opacity: 0, scale: 0.5, rotation: -18 });
-  gsap.set('#s02-thesis', { opacity: 0, y: 16 });
+field_tweens = "\n".join(
+    f"  tl.to('#s02-field-{i}', {{ opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }}, {4.5 + i*0.18:.2f});"
+    for i in range(5)
+)
+script = f"""
+  gsap.set('#s02-leaderboard', {{ opacity: 0 }});
+  gsap.set('#s02-dossier', {{ opacity: 0, scale: 0.92 }});
+  gsap.set('.field', {{ opacity: 0, y: 12 }});
+  gsap.set('#s02-seal-wrap', {{ opacity: 0, scale: 0.5, rotation: -14 }});
+  gsap.set('#s02-thesis', {{ opacity: 0, y: 16 }});
 
-  var tl = gsap.timeline({ paused: true });
-  tl.to('#s02-leaderboard', { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.0);
-  tl.to('#s02-leaderboard', { opacity: 0, y: -20, duration: 0.6, ease: 'power2.in' }, 1.9);
-  tl.to('#s02-passport', { opacity: 1, scale: 1, duration: 1.0, ease: 'back.out(1.4)' }, 2.4);
-  tl.to('#s02-stamp-wrap', { opacity: 1, scale: 1, rotation: -6, duration: 0.6, ease: 'back.out(2.2)' }, 4.6);
-  tl.to('#s02-thesis', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 6.6);
-  tl.to({}, { duration: 12.257, ease: 'none' }, 0);
-  window.__timelines = window.__timelines || {};
+  var tl = gsap.timeline({{ paused: true }});
+  tl.to('#s02-leaderboard', {{ opacity: 1, duration: 0.8, ease: 'power2.out' }}, 0.0);
+  tl.to('#s02-leaderboard', {{ opacity: 0, y: -20, duration: 0.6, ease: 'power2.in' }}, 1.9);
+  tl.to('#s02-dossier', {{ opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }}, 4.3);
+{field_tweens}
+  tl.to('#s02-seal-wrap', {{ opacity: 1, scale: 1, rotation: -6, duration: 0.6, ease: 'back.out(2.2)' }}, 5.6);
+  tl.to('#s02-thesis', {{ opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }}, 7.5);
+  tl.to({{}}, {{ duration: 12.257, ease: 'none' }}, 0);
+  window.__timelines = window.__timelines || {{}};
   window.__timelines['s02-scorecard-passport'] = tl;
 """
 write("s02-scorecard-passport", style, body, script, bg="dark")

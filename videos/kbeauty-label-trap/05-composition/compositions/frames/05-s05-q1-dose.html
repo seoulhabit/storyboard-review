@@ -56,65 +56,99 @@
 
   #root { background:var(--paper); color:var(--ink); }
 
-  .dose-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; }
-  .axis-region { position:relative; width:1100px; margin-top:20px; }
-  .axis-cap { text-align:center; color:var(--ink-2); }
-  .axis-cap-top { margin-bottom:24px; }
-  .axis-cap-bottom { margin-top:24px; }
-  .axis-track { position:relative; height:460px; }
-  .axis-ghost { position:absolute; inset:0; display:flex; flex-direction:column;
-    justify-content:space-between; opacity:0.07; pointer-events:none; }
-  .ghost-row { height:2px; background:var(--ink-3); margin:0 auto; }
-  .axis-line { position:absolute; left:50%; margin-left:-2px; top:0; bottom:0; width:4px;
-    transform-origin:top center;
-    background:linear-gradient(to bottom, var(--rule-strong), var(--celadon)); }
-  .axis-node { position:absolute; left:50%; transform:translate(-75px,-50%);
-    display:flex; align-items:center; gap:34px; }
-  .node-dot-slot { width:150px; flex-shrink:0; display:flex; justify-content:center; }
-  .dose-dot { width:34px; height:34px; border-radius:50%; }
-  .dose-dot.small { background: var(--celadon); box-shadow: 0 0 0 0 var(--celadon); }
-  .dose-dot.big { width:150px; height:150px; background: var(--ink-3); opacity:0.35; }
-  .node-copy { text-align:left; max-width:460px; }
-  .dose-label { font-family:var(--font-mono); font-size:30px; color:var(--ink-2); }
-  .msg { text-align:center; margin-top:40px; opacity:0; }
-  .msg .body { font-size:48px; max-width:1200px; margin:0 auto; }
-  .tag2 { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 40px); text-align:center; opacity:0; }
-  .tag2 .sub { font-size:56px; color:var(--vermilion); }
+  .om-wrap { display:flex; gap:70px; align-items:stretch; }
+  .om-receipt { position:relative; width:660px; flex:none; padding:34px 36px; border:1px solid var(--line);
+    border-radius:20px; background:rgba(255,255,255,0.6); }
+  .om-receipt-title { display:flex; justify-content:space-between; padding-bottom:12px;
+    border-bottom:1px solid var(--line); color:var(--ink-soft); font-family:var(--font-mono); font-size:20px; }
+  .om-rows { margin-top:6px; }
+  .om-row { position:relative; display:grid; grid-template-columns:36px 1fr auto; align-items:center;
+    gap:12px; min-height:56px; border-bottom:1px solid rgba(23,35,50,.09); color:var(--ink-soft); font-size:24px; opacity:0; }
+  .om-rank { font-family:var(--font-mono); font-size:18px; color:rgb(90,94,99); }
+  .om-amount { font-family:var(--font-mono); min-width:70px; padding:4px 8px; border-radius:6px;
+    background:repeating-linear-gradient(135deg, rgba(23,35,50,.65) 0 4px, transparent 4px 8px);
+    background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+    text-align:center; }
+  .om-row.selected { color:var(--ink); font-weight:700; }
+  .om-row.selected::after { content:""; position:absolute; inset:5px -8px; border:2px solid var(--assay); border-radius:8px; }
+  .om-threshold { display:flex; align-items:center; gap:12px; margin:6px 0; color:#B23D2C;
+    font-family:var(--font-mono); font-size:18px; opacity:0; }
+  .om-threshold::after { content:""; flex:1; height:2px; background:var(--signal); }
+  .om-flexzone { position:absolute; left:8px; right:0; bottom:8px; height:0; background:rgba(217,95,82,.06);
+    border-radius:0 0 18px 12px; }
+  .om-analysis { flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; gap:32px; }
+  .om-finding-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .om-finding { position:relative; min-height:200px; padding:30px; border-top:6px solid var(--celadon);
+    background:rgba(255,255,255,0.55); opacity:0; }
+  .om-finding.cannot { border-color:var(--signal); }
+  .om-finding-title { color:var(--ink-soft); font-size:22px; }
+  .om-finding-value { margin-top:26px; font-size:34px; font-weight:700; letter-spacing:-.02em; }
+  .om-finding-note { position:absolute; left:30px; right:30px; bottom:24px; color:var(--ink-soft); font-size:20px; line-height:1.35; }
+  .om-precision { display:inline-block; margin-left:6px; padding:0 .22em; border-radius:4px;
+    background:repeating-linear-gradient(135deg, var(--ink) 0 7px, #334052 7px 12px);
+    background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
+  .om-verdict { display:flex; align-items:center; gap:18px; padding:22px 28px; border-radius:14px;
+    color:var(--paper); background:var(--ink); font-size:30px; font-weight:600; opacity:0; }
+  .om-verdict::before { content:"\2260"; display:grid; place-items:center; flex:none; width:52px; height:52px;
+    border:2px solid var(--signal); border-radius:50%; color:var(--signal); font-size:1.3em; }
+
+  .om-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .om-push { transform-origin:36% 45%; }
+  .msg { text-align:center; margin-top:36px; opacity:0; }
+  .msg .body { font-size:44px; max-width:1300px; margin:0 auto; }
+  .tag2 { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 30px); text-align:center; opacity:0; }
+  .tag2 .sub { font-size:52px; color:var(--signal); }
+  .seal-lock { position:absolute; right:calc(var(--safe-right) + 40px); bottom:calc(var(--safe-bottom) + 30px);
+    opacity:0; transform:scale(0.5); }
 
 </style>
 
 <div id="root" data-composition-id="s05-q1-dose" data-width="1920" data-height="1080" data-duration="19.212">
   <div class="clip stage" id="s05-q1-dose-stage" data-start="0" data-duration="19.212">
 
-    <div class="dose-stage">
-      <div class="axis-region">
-        <div class="axis-cap axis-cap-top kicker">TOP OF LIST</div>
-        <div class="axis-track">
-          <div class="axis-ghost" id="s05-ghost">
-            <div class="ghost-row" style="width:82%"></div>
-            <div class="ghost-row" style="width:68%"></div>
-            <div class="ghost-row" style="width:74%"></div>
-            <div class="ghost-row" style="width:58%"></div>
-            <div class="ghost-row" style="width:64%"></div>
-            <div class="ghost-row" style="width:48%"></div>
-          </div>
-          <div class="axis-line" id="s05-axis-line"></div>
-          <div class="axis-node" id="s05-bignode" style="top:22%;">
-            <div class="node-dot-slot"><div class="dose-dot big" id="s05-bigdot"></div></div>
-            <div class="node-copy"><div class="dose-label">near the top — not automatically effective</div></div>
-          </div>
-          <div class="axis-node" id="s05-smallnode" style="top:70%;">
-            <div class="node-dot-slot"><div class="dose-dot small" id="s05-smalldot"></div></div>
-            <div class="node-copy">
-              <div class="dose-label">may be active at low levels</div>
-              <div class="uf-badge" id="s05-flag" style="margin-top:14px;">○ UNSOURCED — no record in this system</div>
-            </div>
-          </div>
+    <div class="om-stage">
+      <div class="om-wrap om-push" id="s05-push">
+        <div class="om-receipt" id="s05-receipt">
+          <div class="om-receipt-title"><span>Ingredient declaration</span><span>Exact percentages undisclosed</span></div>
+          <div class="om-rows" id="s05-rows"><div class="om-row" id="s05-row-0"><span class="om-rank">01</span><span class="om-name">Centella Asiatica Extract</span><span class="om-amount">unknown</span></div>
+<div class="om-row" id="s05-row-1"><span class="om-rank">02</span><span class="om-name">Water</span><span class="om-amount">unknown</span></div>
+<div class="om-row" id="s05-row-2"><span class="om-rank">03</span><span class="om-name">Glycerin</span><span class="om-amount">unknown</span></div>
+<div class="om-row" id="s05-row-3"><span class="om-rank">04</span><span class="om-name">Niacinamide</span><span class="om-amount">unknown</span></div>
+<div class="om-threshold" id="s05-threshold"><span>1% teaching line</span></div>
+<div class="om-row selected" id="s05-row-4"><span class="om-rank">05</span><span class="om-name">Panthenol</span><span class="om-amount">unknown</span></div>
+<div class="om-row" id="s05-row-5"><span class="om-rank">06</span><span class="om-name">Allantoin</span><span class="om-amount">unknown</span></div>
+<div class="om-row" id="s05-row-6"><span class="om-rank">07</span><span class="om-name">Sodium Hyaluronate</span><span class="om-amount">unknown</span></div>
+<div class="om-row" id="s05-row-7"><span class="om-rank">08</span><span class="om-name">Fragrance</span><span class="om-amount">unknown</span></div></div>
+          <div class="om-flexzone" id="s05-flexzone" style="height:168px;"></div>
         </div>
-        <div class="axis-cap axis-cap-bottom kicker">BOTTOM OF LIST</div>
+        <div class="om-analysis">
+          <div class="om-finding-grid">
+    <article class="om-finding"><div class="om-finding-title">The list can show</div>
+      <div class="om-finding-value" id="s05-can">A flexible zone</div>
+      <div class="om-finding-note" id="s05-can-note">Panthenol appears inside the story's flexible-order teaching zone.</div></article>
+    <article class="om-finding cannot"><div class="om-finding-title">The list cannot show</div>
+      <div class="om-finding-value">Exact amount <span class="om-precision">??%</span></div>
+      <div class="om-finding-note">Do not reverse-engineer a percentage from rank alone.</div></article>
+  </div>
+  <div class="om-verdict" id="s05-verdict">Position below the line still does not reveal the dose.</div>
+          <div class="uf-badge" id="s05-flag" style="width:max-content;">&#9675; UNSOURCED — no record in this system</div>
+        </div>
       </div>
       <div class="msg" id="s05-msg"><div class="body">Unless a brand publishes the percentage — don't invent a number.</div></div>
       <div class="tag2" id="s05-tag2"><div class="sub">RANK, NOT QUANTITY</div></div>
+      <div class="seal-lock" id="s05-seal-lock"><div class="q-seal" id="s05-q1-seal" style="position:relative;width:110px;height:110px;flex:none;">
+  <svg width="110" height="110" viewBox="0 0 110 110" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s05-q1-seal-ring" cx="55.0" cy="55.0" r="51.0" fill="rgba(255,255,255,0.55)" stroke="#6358A7" stroke-width="3"/>
+    <circle id="s05-q1-seal-keyline" cx="55.0" cy="55.0" r="40.7" fill="none" stroke="#6358A7" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-quantity" id="s05-q1-seal-glyph" viewBox="0 0 96 96" width="46.199999999999996" height="46.199999999999996" style="overflow:visible;color:#6358A7;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Rank ticks descending toward a dashed cutoff -- "position is visible, dose is not." -->
+  <line x1="30" y1="34" x2="62" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="44" x2="54" y2="44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="62" x2="42" y2="62" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <line x1="26" y1="53" x2="66" y2="53" stroke="#C5944D" stroke-width="2.2" stroke-dasharray="3 4"/></svg></div>
+</div></div>
     </div>
 
   </div>
@@ -122,42 +156,34 @@
 <script>
 (function () {
 
-  gsap.set('#s05-bigdot', { opacity: 0.35, scale: 1 });
-  gsap.set('#s05-smalldot', { opacity: 0.5, scale: 1 });
+  gsap.set('.om-row', { opacity: 1 });
+  gsap.set('#s05-push', { scale: 1.16, x: 60 });
+  gsap.set('.om-finding', { opacity: 0, y: 16 });
+  gsap.set('.om-verdict', { opacity: 0 });
+  gsap.set('#s05-flag', { opacity: 0 });
   gsap.set('#s05-msg', { opacity: 0, y: 14 });
   gsap.set('#s05-tag2', { opacity: 0, y: 16 });
-  gsap.set('#s05-flag', { opacity: 0 });
-  gsap.set('#s05-axis-line', { scaleY: 0 });
+  gsap.set('#s05-seal-lock', { opacity: 0, scale: 0.5 });
 
   var tl = gsap.timeline({ paused: true });
-  // Axis draws in first -- establishes top-of-list/bottom-of-list before
-  // either dot claims a position on it.
-  tl.to('#s05-axis-line', { scaleY: 1, duration: 1.0, ease: 'power2.out' }, 0.0);
-  tl.to('#s05-smalldot', { opacity: 1, scale: 1.3, duration: 0.5, ease: 'power2.out' }, 0.4);
+  // camera pushes into the selected row -- whole-stage move, matching the
+  // camera-dive convention already used at s04/s06/s11.
+  tl.to('#s05-push', { scale: 1.0, x: 0, duration: 1.4, ease: 'power2.out' }, 0.0);
+  tl.to('.om-finding', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15 }, 1.6);
+  tl.to('.om-verdict', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 2.4);
   // [K-2] flag fires CONCURRENTLY with the claim it discloses, per C6 in
   // 01-story-brief.md -- not before, not after.
-  tl.to('#s05-flag', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.6);
+  tl.to('#s05-flag', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 2.6);
   tl.to('#s05-flag', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 10.5);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 24px rgba(147,184,150,0)', duration: 1.1, ease: 'power2.out' }, 0.4);
-  tl.to('#s05-smalldot', { scale: 1, duration: 0.4, ease: 'power2.inOut' }, 0.9);
-  tl.to('#s05-bigdot', { opacity: 0.2, duration: 0.8, ease: 'power2.out' }, 1.2);
-  // Idle ambient: the active molecule keeps pulsing low through the long
-  // quiet stretch before the closing message -- also reads as "still
-  // active" rather than merely inert-and-forgotten.
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 1.7);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 1.7);
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 4.2);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 4.2);
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 6.7);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 6.7);
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 9.0);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 9.0);
   tl.to('#s05-msg', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 11.0);
-  // The taller diagram pushes this message lower than the old compact
-  // layout did -- clear it before the closing tag lands at the same fixed
-  // bottom position, same fix s04 uses for its own tag/content collision.
   tl.to('#s05-msg', { opacity: 0, duration: 0.5, ease: 'power2.in' }, 15.0);
   tl.to('#s05-tag2', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 15.5);
+  // snap back to the bottles' own question rail -- Question 1 seal turns
+  // face-up (active -> answered) in the beat sheet's own final 1s window.
+  tl.to('#s05-seal-lock', { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, 17.76);
+  tl.to('#s05-q1-seal-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 17.9);
+  tl.to('#s05-q1-seal-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 17.9);
+  tl.to('#s05-q1-seal .icon', { color: '#426B50', duration: 0.35, ease: 'power2.out' }, 17.9);
   tl.to({}, { duration: 18.762, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s05-q1-dose'] = tl;

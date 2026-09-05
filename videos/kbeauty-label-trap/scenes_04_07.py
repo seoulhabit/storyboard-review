@@ -3,7 +3,74 @@
 from build_composition import write, stamp_svg
 from catalog_components import (
     ingredient_actor_svg, evidence_state_chip, citation_chip, illustrative_disclosure, icon_svg,
+    question_seal,
 )
+
+
+def order_map_markup(uid, ingredients, threshold_after, selected_idx):
+    """Catalog source: ingredient-order-map. Shared by s04 (full list) and
+    s05 (pushed-in state on one row) -- same receipt + analysis structure,
+    only the selection/zoom differs, per the brief's reuse requirement."""
+    rows = []
+    for i, name in enumerate(ingredients):
+        cls = " selected" if i == selected_idx else ""
+        rows.append(
+            f'<div class="om-row{cls}" id="{uid}-row-{i}"><span class="om-rank">{i+1:02d}</span>'
+            f'<span class="om-name">{name}</span><span class="om-amount">unknown</span></div>')
+        if i == threshold_after:
+            rows.append(f'<div class="om-threshold" id="{uid}-threshold"><span>1% teaching line</span></div>')
+    return "\n".join(rows)
+
+
+def order_map_finding(uid, can_value, can_note, verdict_text):
+    return f'''<div class="om-finding-grid">
+    <article class="om-finding"><div class="om-finding-title">The list can show</div>
+      <div class="om-finding-value" id="{uid}-can">{can_value}</div>
+      <div class="om-finding-note" id="{uid}-can-note">{can_note}</div></article>
+    <article class="om-finding cannot"><div class="om-finding-title">The list cannot show</div>
+      <div class="om-finding-value">Exact amount <span class="om-precision">??%</span></div>
+      <div class="om-finding-note">Do not reverse-engineer a percentage from rank alone.</div></article>
+  </div>
+  <div class="om-verdict" id="{uid}-verdict">{verdict_text}</div>'''
+
+
+ORDER_MAP_CSS = """
+  .om-wrap { display:flex; gap:70px; align-items:stretch; }
+  .om-receipt { position:relative; width:660px; flex:none; padding:34px 36px; border:1px solid var(--line);
+    border-radius:20px; background:rgba(255,255,255,0.6); }
+  .om-receipt-title { display:flex; justify-content:space-between; padding-bottom:12px;
+    border-bottom:1px solid var(--line); color:var(--ink-soft); font-family:var(--font-mono); font-size:20px; }
+  .om-rows { margin-top:6px; }
+  .om-row { position:relative; display:grid; grid-template-columns:36px 1fr auto; align-items:center;
+    gap:12px; min-height:56px; border-bottom:1px solid rgba(23,35,50,.09); color:var(--ink-soft); font-size:24px; opacity:0; }
+  .om-rank { font-family:var(--font-mono); font-size:18px; color:rgb(90,94,99); }
+  .om-amount { font-family:var(--font-mono); min-width:70px; padding:4px 8px; border-radius:6px;
+    background:repeating-linear-gradient(135deg, rgba(23,35,50,.65) 0 4px, transparent 4px 8px);
+    background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+    text-align:center; }
+  .om-row.selected { color:var(--ink); font-weight:700; }
+  .om-row.selected::after { content:""; position:absolute; inset:5px -8px; border:2px solid var(--assay); border-radius:8px; }
+  .om-threshold { display:flex; align-items:center; gap:12px; margin:6px 0; color:#B23D2C;
+    font-family:var(--font-mono); font-size:18px; opacity:0; }
+  .om-threshold::after { content:""; flex:1; height:2px; background:var(--signal); }
+  .om-flexzone { position:absolute; left:8px; right:0; bottom:8px; height:0; background:rgba(217,95,82,.06);
+    border-radius:0 0 18px 12px; }
+  .om-analysis { flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; gap:32px; }
+  .om-finding-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .om-finding { position:relative; min-height:200px; padding:30px; border-top:6px solid var(--celadon);
+    background:rgba(255,255,255,0.55); opacity:0; }
+  .om-finding.cannot { border-color:var(--signal); }
+  .om-finding-title { color:var(--ink-soft); font-size:22px; }
+  .om-finding-value { margin-top:26px; font-size:34px; font-weight:700; letter-spacing:-.02em; }
+  .om-finding-note { position:absolute; left:30px; right:30px; bottom:24px; color:var(--ink-soft); font-size:20px; line-height:1.35; }
+  .om-precision { display:inline-block; margin-left:6px; padding:0 .22em; border-radius:4px;
+    background:repeating-linear-gradient(135deg, var(--ink) 0 7px, #334052 7px 12px);
+    background-clip:text; -webkit-background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
+  .om-verdict { display:flex; align-items:center; gap:18px; padding:22px 28px; border-radius:14px;
+    color:var(--paper); background:var(--ink); font-size:30px; font-weight:600; opacity:0; }
+  .om-verdict::before { content:"\\2260"; display:grid; place-items:center; flex:none; width:52px; height:52px;
+    border:2px solid var(--signal); border-radius:50%; color:var(--signal); font-size:1.3em; }
+"""
 
 
 def spv_station(uid, role, icon_name, title, copy, state, variables=None, actor=False):
@@ -45,89 +112,77 @@ def spv_connector(uid):
             f'background:var(--paper);"></div></div>')
 
 # ---------------------------------------------------------------- s04 -----
-# Adapts catalog/visual-components/threshold-list (ranked list + cutoff rule
-# + below-cutoff desaturate/scramble) restyled as the "paper canyon."
-style = """
-  .canyon { position:relative; height:100%; width:100%; display:flex; flex-direction:column; }
-  .canyon-title { text-align:center; margin-top:10px; }
-  .canyon-list { margin:30px auto 0; width:1100px; }
-  .canyon-row { font-family:var(--font-mono); font-size:40px; padding:14px 0;
-    border-bottom:1px solid var(--rule-strong); opacity:0; }
-  .canyon-row.below { color:rgb(143,139,129); } /* check's own re-suggested color after the token repalette shifted --paper slightly darker */
-  .cutoff-rule { width:100%; height:6px; margin:6px 0 12px; background:var(--vermilion);
-    transform:scaleX(0); transform-origin:left center; }
-  .cutoff-label { font-family:var(--font-mono); font-size:28px; color:var(--vermilion);
-    letter-spacing:.1em; opacity:0; }
-  .tag-row { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 40px);
-    text-align:center; opacity:0; }
-  .tag-row .sub { font-size:56px; color:var(--vermilion); }
+# Catalog source: ingredient-order-map, full-list state. Receipt (ranked
+# declaration + flexible zone) on the left, analysis panel (can-show /
+# cannot-show + verdict) on the right -- s05 reuses this same structure.
+style = ORDER_MAP_CSS + """
+  .om-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .om-head { text-align:center; margin-bottom:34px; opacity:0; }
+  .om-cites { display:flex; gap:18px; margin-top:22px; opacity:0; }
+  .tag-row { margin-top:34px; text-align:center; opacity:0; }
+  .tag-row .sub { font-size:52px; color:var(--signal); }
+  .tag-row .sub2 { margin-top:10px; font-size:52px; color:var(--ink); }
 """
-above = ["CENTELLA ASIATICA EXTRACT", "WATER", "GLYCERIN", "NIACINAMIDE"]
-below = ["PANTHENOL", "ALLANTOIN", "SODIUM HYALURONATE", "FRAGRANCE"]
-rows_above = "\n".join(f'<div class="canyon-row" id="s04-above-{i}">{name}</div>' for i, name in enumerate(above))
-rows_below = "\n".join(f'<div class="canyon-row below" id="s04-below-{i}">{name}</div>' for i, name in enumerate(below))
+INGREDIENTS_S04 = ["Centella Asiatica Extract", "Water", "Glycerin", "Niacinamide",
+                    "Panthenol", "Allantoin", "Sodium Hyaluronate", "Fragrance"]
+s04_rows = order_map_markup("s04", INGREDIENTS_S04, threshold_after=3, selected_idx=0)
+s04_finding = order_map_finding("s04", "Relative position",
+    "Centella Asiatica Extract appears first in this fictional list.",
+    "Rank is visible. Quantity remains unknown.")
 body = f'''
-    <div class="canyon" id="s04-camera" style="transform-origin:50% 30%;">
-      <div class="canyon-title"><div class="kicker">THE INGREDIENT LIST</div></div>
-      <div class="canyon-list">
-        {rows_above}
-        <div class="cutoff-rule" id="s04-cutoff"></div>
-        <div class="cutoff-label" id="s04-cutoff-label">1% — ORDER NO LONGER GUARANTEED</div>
-        {rows_below}
-        <div style="display:flex; gap:20px; margin-top:24px;">
-          <div class="cite" id="s04-cite-fda">FDA · 21 CFR 701.3</div>
-          <div class="cite" id="s04-cite-eu">EU · Reg. 1223/2009 Art. 19</div>
+    <div class="om-stage" id="s04-camera" style="transform-origin:50% 40%;">
+      <div class="om-head" id="s04-head"><div class="kicker">THE INGREDIENT DECLARATION</div></div>
+      <div class="om-wrap">
+        <div class="om-receipt" id="s04-receipt">
+          <div class="om-receipt-title"><span>Ingredient declaration</span><span>Exact percentages undisclosed</span></div>
+          <div class="om-rows" id="s04-rows">{s04_rows}</div>
+          <div class="om-flexzone" id="s04-flexzone"></div>
+        </div>
+        <div class="om-analysis">
+          {s04_finding}
+          <div class="om-cites" id="s04-cites">
+            {citation_chip("s04-cite-fda", "FDA &middot; 21 CFR 701.3")}
+            {citation_chip("s04-cite-eu", "EU &middot; Reg. 1223/2009 Art. 19")}
+          </div>
         </div>
       </div>
-      <div class="tag-row" id="s04-tag1"><div class="sub">ORDER ≠ EXACT DOSE</div></div>
+      <div class="tag-row" id="s04-tag1"><div class="sub">ORDER &ne; EXACT DOSE</div><div class="sub2">RANK, NOT QUANTITY</div></div>
     </div>
 '''
-above_tweens = "\n".join(
-    f"  tl.fromTo('#s04-above-{i}', {{opacity:0,y:10}}, {{opacity:1,y:0,duration:0.35,ease:'power3.out'}}, {1.2+i*0.3:.2f});"
-    for i in range(len(above))
-)
-below_tweens = "\n".join(
-    f"  tl.fromTo('#s04-below-{i}', {{opacity:0,y:10}}, {{opacity:0.55,y:0,duration:0.35,ease:'power3.out'}}, {4.6+i*0.3:.2f});"
-    for i in range(len(below))
+row_tweens = "\n".join(
+    f"  tl.fromTo('#s04-row-{i}', {{opacity:0,y:10}}, {{opacity:1,y:0,duration:0.32,ease:'power3.out'}}, {1.4+i*0.28:.2f});"
+    for i in range(len(INGREDIENTS_S04))
 )
 scramble = "\n".join([
-    "  tl.to('#s04-below-2', { x: 22, duration: 0.35, ease: 'power2.inOut' }, 7.4);",
-    "  tl.to('#s04-below-3', { x: -22, duration: 0.35, ease: 'power2.inOut' }, 7.4);",
-    "  tl.to('#s04-below-2', { x: 0, duration: 0.35, ease: 'power2.inOut' }, 7.8);",
-    "  tl.to('#s04-below-3', { x: 0, duration: 0.35, ease: 'power2.inOut' }, 7.8);",
+    "  tl.to('#s04-row-5', { x: 22, duration: 0.35, ease: 'power2.inOut' }, 8.2);",
+    "  tl.to('#s04-row-6', { x: -22, duration: 0.35, ease: 'power2.inOut' }, 8.2);",
+    "  tl.to('#s04-row-5', { x: 0, duration: 0.35, ease: 'power2.inOut' }, 8.6);",
+    "  tl.to('#s04-row-6', { x: 0, duration: 0.35, ease: 'power2.inOut' }, 8.6);",
 ])
 script = f"""
-  gsap.set('.canyon-row', {{ opacity: 0, y: 10 }});
-  gsap.set('#s04-cutoff', {{ scaleX: 0 }});
-  gsap.set('#s04-cutoff-label', {{ opacity: 0 }});
-  gsap.set('#s04-tag1', {{ opacity: 0, y: 16, scale: 1 }});
-  gsap.set('#s04-camera', {{ scale: 1.12, y: 40 }});
-  gsap.set('#s04-cite-fda', {{ opacity: 0 }});
-  gsap.set('#s04-cite-eu', {{ opacity: 0 }});
+  gsap.set('#s04-head', {{ opacity: 0, y: -10 }});
+  gsap.set('.om-row', {{ opacity: 0, y: 10 }});
+  gsap.set('#s04-threshold', {{ opacity: 0 }});
+  gsap.set('#s04-flexzone', {{ height: 0 }});
+  gsap.set('.om-finding', {{ opacity: 0, y: 16 }});
+  gsap.set('.om-verdict', {{ opacity: 0, y: 16 }});
+  gsap.set('#s04-cites', {{ opacity: 0 }});
+  gsap.set('#s04-tag1', {{ opacity: 0, y: 16 }});
+  gsap.set('#s04-camera', {{ scale: 1.1, y: 30 }});
 
   var tl = gsap.timeline({{ paused: true }});
-  // Camera dive into the canyon: whole-stage push-in, not an element reveal
-  // [S6/A-9]. Settles before the first row lands so the read stays sharp.
   tl.to('#s04-camera', {{ scale: 1.0, y: 0, duration: 1.1, ease: 'power2.out' }}, 0.0);
-{above_tweens}
-  tl.fromTo('#s04-cutoff', {{ scaleX: 0 }}, {{ scaleX: 1, duration: 0.3, ease: 'power2.in' }}, 4.2);
-  tl.to('#s04-cutoff-label', {{ opacity: 1, duration: 0.3, ease: 'power2.out' }}, 4.5);
-  tl.to('#s04-cite-fda', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 5.0);
-  tl.to('#s04-cite-eu', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 5.3);
-{below_tweens}
+  tl.to('#s04-head', {{ opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }}, 0.6);
+{row_tweens}
+  tl.to('#s04-threshold', {{ opacity: 1, duration: 0.3, ease: 'power2.out' }}, 4.6);
+  tl.to('#s04-flexzone', {{ height: 168, duration: 0.6, ease: 'power2.out' }}, 4.9);
+  tl.to('#s04-cites', {{ opacity: 1, duration: 0.4, ease: 'power2.out' }}, 5.4);
 {scramble}
-  // The tag sits over the list's own bottom rows at this canvas size --
-  // dim the list first so the tag never visually collides with live text
-  // underneath it (caught on an extracted frame, not by `check`'s sampling).
-  tl.to('.canyon-list', {{ opacity: 0.1, duration: 0.5, ease: 'power2.inOut' }}, 8.5);
-  tl.to('#s04-tag1', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 9.0);
-  // Idle ambient: the tag holds a slow breathing scale through the long dim
-  // stretch, and its fade is pushed to just before the scene ends instead of
-  // sitting fully static from ~13s -- fills what was otherwise a dead tail.
-  tl.to('#s04-tag1', {{ scale: 1.035, duration: 3.2, ease: 'sine.inOut' }}, 9.8);
-  tl.to('#s04-tag1', {{ scale: 1.0, duration: 3.2, ease: 'sine.inOut' }}, 13.0);
-  tl.to('#s04-tag1', {{ scale: 1.03, duration: 3.0, ease: 'sine.inOut' }}, 16.2);
-  tl.to('#s04-tag1', {{ opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }}, 19.4);
+  tl.to('.om-finding', {{ opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15 }}, 10.6);
+  tl.to('.om-verdict', {{ opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }}, 11.4);
+  tl.to('#s04-tag1', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 13.0);
+  tl.to('#s04-tag1', {{ scale: 1.02, duration: 3.0, ease: 'sine.inOut' }}, 14.0);
+  tl.to('#s04-tag1', {{ scale: 1.0, duration: 3.0, ease: 'sine.inOut' }}, 17.0);
   tl.to({{}}, {{ duration: 20.319, ease: 'none' }}, 0);
   window.__timelines = window.__timelines || {{}};
   window.__timelines['s04-q1-canyon'] = tl;
@@ -135,108 +190,72 @@ script = f"""
 write("s04-q1-canyon", style, body, script, bg="paper")
 
 # ---------------------------------------------------------------- s05 -----
-# Redesigned per 06-render/design-critique.md's top follow-up: the two dots
-# were confined to the upper third of the canvas with ~65% of the frame
-# empty. Rebuilt as a vertical "concentration axis" (top-of-list to
-# bottom-of-list) so the two dots' positions on it carry the same meaning
-# their captions always stated, plus a faint ghost of s04's canyon rows as
-# the third compositional element the critique suggested. Same on-screen
-# text throughout; UnsourcedFlag (#s05-flag) keeps its exact content/timing.
-style = """
-  .dose-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; }
-  .axis-region { position:relative; width:1100px; margin-top:20px; }
-  .axis-cap { text-align:center; color:var(--ink-2); }
-  .axis-cap-top { margin-bottom:24px; }
-  .axis-cap-bottom { margin-top:24px; }
-  .axis-track { position:relative; height:460px; }
-  .axis-ghost { position:absolute; inset:0; display:flex; flex-direction:column;
-    justify-content:space-between; opacity:0.07; pointer-events:none; }
-  .ghost-row { height:2px; background:var(--ink-3); margin:0 auto; }
-  .axis-line { position:absolute; left:50%; margin-left:-2px; top:0; bottom:0; width:4px;
-    transform-origin:top center;
-    background:linear-gradient(to bottom, var(--rule-strong), var(--celadon)); }
-  .axis-node { position:absolute; left:50%; transform:translate(-75px,-50%);
-    display:flex; align-items:center; gap:34px; }
-  .node-dot-slot { width:150px; flex-shrink:0; display:flex; justify-content:center; }
-  .dose-dot { width:34px; height:34px; border-radius:50%; }
-  .dose-dot.small { background: var(--celadon); box-shadow: 0 0 0 0 var(--celadon); }
-  .dose-dot.big { width:150px; height:150px; background: var(--ink-3); opacity:0.35; }
-  .node-copy { text-align:left; max-width:460px; }
-  .dose-label { font-family:var(--font-mono); font-size:30px; color:var(--ink-2); }
-  .msg { text-align:center; margin-top:40px; opacity:0; }
-  .msg .body { font-size:48px; max-width:1200px; margin:0 auto; }
-  .tag2 { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 40px); text-align:center; opacity:0; }
-  .tag2 .sub { font-size:56px; color:var(--vermilion); }
+# Same Ingredient Order Map, pushed into a closer state on one below-the-
+# line row -- s04 and s05 are two states of one component, not unrelated
+# illustrations, per the brief's reuse requirement. UnsourcedFlag (#s05-flag)
+# keeps its exact content/timing; closes with the Q1 seal turning face-up.
+style = ORDER_MAP_CSS + """
+  .om-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .om-push { transform-origin:36% 45%; }
+  .msg { text-align:center; margin-top:36px; opacity:0; }
+  .msg .body { font-size:44px; max-width:1300px; margin:0 auto; }
+  .tag2 { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 30px); text-align:center; opacity:0; }
+  .tag2 .sub { font-size:52px; color:var(--signal); }
+  .seal-lock { position:absolute; right:calc(var(--safe-right) + 40px); bottom:calc(var(--safe-bottom) + 30px);
+    opacity:0; transform:scale(0.5); }
 """
-body = '''
-    <div class="dose-stage">
-      <div class="axis-region">
-        <div class="axis-cap axis-cap-top kicker">TOP OF LIST</div>
-        <div class="axis-track">
-          <div class="axis-ghost" id="s05-ghost">
-            <div class="ghost-row" style="width:82%"></div>
-            <div class="ghost-row" style="width:68%"></div>
-            <div class="ghost-row" style="width:74%"></div>
-            <div class="ghost-row" style="width:58%"></div>
-            <div class="ghost-row" style="width:64%"></div>
-            <div class="ghost-row" style="width:48%"></div>
-          </div>
-          <div class="axis-line" id="s05-axis-line"></div>
-          <div class="axis-node" id="s05-bignode" style="top:22%;">
-            <div class="node-dot-slot"><div class="dose-dot big" id="s05-bigdot"></div></div>
-            <div class="node-copy"><div class="dose-label">near the top — not automatically effective</div></div>
-          </div>
-          <div class="axis-node" id="s05-smallnode" style="top:70%;">
-            <div class="node-dot-slot"><div class="dose-dot small" id="s05-smalldot"></div></div>
-            <div class="node-copy">
-              <div class="dose-label">may be active at low levels</div>
-              <div class="uf-badge" id="s05-flag" style="margin-top:14px;">○ UNSOURCED — no record in this system</div>
-            </div>
-          </div>
+INGREDIENTS_S05 = INGREDIENTS_S04
+s05_rows = order_map_markup("s05", INGREDIENTS_S05, threshold_after=3, selected_idx=4)
+s05_finding = order_map_finding("s05", "A flexible zone",
+    "Panthenol appears inside the story's flexible-order teaching zone.",
+    "Position below the line still does not reveal the dose.")
+body = f'''
+    <div class="om-stage">
+      <div class="om-wrap om-push" id="s05-push">
+        <div class="om-receipt" id="s05-receipt">
+          <div class="om-receipt-title"><span>Ingredient declaration</span><span>Exact percentages undisclosed</span></div>
+          <div class="om-rows" id="s05-rows">{s05_rows}</div>
+          <div class="om-flexzone" id="s05-flexzone" style="height:168px;"></div>
         </div>
-        <div class="axis-cap axis-cap-bottom kicker">BOTTOM OF LIST</div>
+        <div class="om-analysis">
+          {s05_finding}
+          <div class="uf-badge" id="s05-flag" style="width:max-content;">&#9675; UNSOURCED — no record in this system</div>
+        </div>
       </div>
       <div class="msg" id="s05-msg"><div class="body">Unless a brand publishes the percentage — don't invent a number.</div></div>
       <div class="tag2" id="s05-tag2"><div class="sub">RANK, NOT QUANTITY</div></div>
+      <div class="seal-lock" id="s05-seal-lock">{question_seal("s05-q1-seal", 0, "active", size=110, bg="paper")}</div>
     </div>
 '''
 script = """
-  gsap.set('#s05-bigdot', { opacity: 0.35, scale: 1 });
-  gsap.set('#s05-smalldot', { opacity: 0.5, scale: 1 });
+  gsap.set('.om-row', { opacity: 1 });
+  gsap.set('#s05-push', { scale: 1.16, x: 60 });
+  gsap.set('.om-finding', { opacity: 0, y: 16 });
+  gsap.set('.om-verdict', { opacity: 0 });
+  gsap.set('#s05-flag', { opacity: 0 });
   gsap.set('#s05-msg', { opacity: 0, y: 14 });
   gsap.set('#s05-tag2', { opacity: 0, y: 16 });
-  gsap.set('#s05-flag', { opacity: 0 });
-  gsap.set('#s05-axis-line', { scaleY: 0 });
+  gsap.set('#s05-seal-lock', { opacity: 0, scale: 0.5 });
 
   var tl = gsap.timeline({ paused: true });
-  // Axis draws in first -- establishes top-of-list/bottom-of-list before
-  // either dot claims a position on it.
-  tl.to('#s05-axis-line', { scaleY: 1, duration: 1.0, ease: 'power2.out' }, 0.0);
-  tl.to('#s05-smalldot', { opacity: 1, scale: 1.3, duration: 0.5, ease: 'power2.out' }, 0.4);
+  // camera pushes into the selected row -- whole-stage move, matching the
+  // camera-dive convention already used at s04/s06/s11.
+  tl.to('#s05-push', { scale: 1.0, x: 0, duration: 1.4, ease: 'power2.out' }, 0.0);
+  tl.to('.om-finding', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.15 }, 1.6);
+  tl.to('.om-verdict', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 2.4);
   // [K-2] flag fires CONCURRENTLY with the claim it discloses, per C6 in
   // 01-story-brief.md -- not before, not after.
-  tl.to('#s05-flag', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.6);
+  tl.to('#s05-flag', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 2.6);
   tl.to('#s05-flag', { opacity: 0, duration: 0.4, ease: 'power2.in' }, 10.5);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 24px rgba(147,184,150,0)', duration: 1.1, ease: 'power2.out' }, 0.4);
-  tl.to('#s05-smalldot', { scale: 1, duration: 0.4, ease: 'power2.inOut' }, 0.9);
-  tl.to('#s05-bigdot', { opacity: 0.2, duration: 0.8, ease: 'power2.out' }, 1.2);
-  // Idle ambient: the active molecule keeps pulsing low through the long
-  // quiet stretch before the closing message -- also reads as "still
-  // active" rather than merely inert-and-forgotten.
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 1.7);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 1.7);
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 4.2);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 4.2);
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 6.7);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 6.7);
-  tl.set('#s05-smalldot', { boxShadow: '0 0 0 0 rgba(147,184,150,1)' }, 9.0);
-  tl.to('#s05-smalldot', { boxShadow: '0 0 0 26px rgba(147,184,150,0)', duration: 1.9, ease: 'power2.out' }, 9.0);
   tl.to('#s05-msg', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 11.0);
-  // The taller diagram pushes this message lower than the old compact
-  // layout did -- clear it before the closing tag lands at the same fixed
-  // bottom position, same fix s04 uses for its own tag/content collision.
   tl.to('#s05-msg', { opacity: 0, duration: 0.5, ease: 'power2.in' }, 15.0);
   tl.to('#s05-tag2', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 15.5);
+  // snap back to the bottles' own question rail -- Question 1 seal turns
+  // face-up (active -> answered) in the beat sheet's own final 1s window.
+  tl.to('#s05-seal-lock', { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, 17.76);
+  tl.to('#s05-q1-seal-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 17.9);
+  tl.to('#s05-q1-seal-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 17.9);
+  tl.to('#s05-q1-seal .icon', { color: '#426B50', duration: 0.35, ease: 'power2.out' }, 17.9);
   tl.to({}, { duration: 18.762, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s05-q1-dose'] = tl;
@@ -325,43 +344,72 @@ script = f"""
 write("s06-q2-leaf-chambers", style, body, script, bg="paper")
 
 # ---------------------------------------------------------------- s07 -----
+# Reuses s06's Source/Process/Version component in version_compare state:
+# one actor branches into three distinct preparation signatures under one
+# common identity gate. Complete Question 2 (identity-version seal locks).
 style = """
-  .gate-stage { position:relative; height:100%; width:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-  .gate-wrap { position:relative; width:900px; height:420px; display:flex; align-items:center; justify-content:center; }
-  .traveler { position:absolute; width:26px; height:26px; border-radius:50%; opacity:0; }
-  .gate-arch { width:6px; height:340px; background:var(--rule-strong); border-radius:4px; }
-  .tag3 { text-align:center; margin-top:50px; opacity:0; }
-  .tag3 .sub { font-size:56px; color:var(--vermilion); }
+  .gate-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .gate-actor { opacity:0; margin-bottom:18px; }
+  .gate-lines { position:relative; width:900px; height:70px; }
+  .gate-line { position:absolute; top:0; left:50%; width:2px; height:100%; background:var(--line);
+    transform-origin:top center; transform:scaleY(0); }
+  .gate-row { display:flex; gap:44px; }
+  .gate-card { width:270px; padding:22px 24px; border:1px solid var(--line); border-radius:16px;
+    background:rgba(255,255,255,0.6); text-align:left; opacity:0; }
+  .gate-card .name { font-weight:800; font-size:24px; letter-spacing:-.02em; margin-bottom:8px; }
+  .gate-card .note { color:var(--ink-soft); font-size:18px; line-height:1.35; }
+  .tag3 { text-align:center; margin-top:36px; opacity:0; }
+  .tag3 .sub { font-size:50px; color:var(--signal); }
+  .seal-lock { position:absolute; right:calc(var(--safe-right) + 40px); bottom:calc(var(--safe-bottom) + 20px);
+    opacity:0; transform:scale(0.5); }
 """
-travelers = [("#93B896", -260), ("#4F6B52", 0), ("#131516", 260)]
-trav_html = "\n".join(
-    f'<div class="traveler" id="s07-trav-{i}" style="background:{c}; left:calc(50% + {x-350}px); top:50%;"></div>'
-    for i, (c, x) in enumerate(travelers)
+variants = [
+    ("Water extract", "Mild, water-soluble fraction"),
+    ("Solvent extract", "Different compound profile"),
+    ("Standardized compound", "Purified, quantified active"),
+]
+gate_cards = "".join(
+    f'<div class="gate-card" id="s07-card-{i}"><div class="name">{name}</div><div class="note">{note}</div></div>'
+    for i, (name, note) in enumerate(variants)
 )
-script = """
-  gsap.set('.traveler', { opacity: 0, x: -400 });
-  gsap.set('#s07-tag', { opacity: 0, y: 16 });
-
-  // Staggered so the LAST traveler is still crossing well into the window
-  // instead of all three arriving together and leaving the rest of this
-  // (shortest) scene static -- each one also takes longer to cross.
-  var tl = gsap.timeline({ paused: true });
-  tl.to('#s07-trav-0', { opacity: 1, x: 700, duration: 4.2, ease: 'power1.inOut' }, 0.3);
-  tl.to('#s07-trav-1', { opacity: 1, x: 700, duration: 4.4, ease: 'power1.inOut' }, 0.9);
-  tl.to('#s07-trav-2', { opacity: 1, x: 700, duration: 4.8, ease: 'power1.inOut' }, 1.5);
-  tl.to('.traveler', { opacity: 0, duration: 0.4 }, 6.5);
-  tl.to('#s07-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 7.0);
-  tl.to({}, { duration: 8.012, ease: 'none' }, 0);
-  window.__timelines = window.__timelines || {};
-  window.__timelines['s07-q2-travelers'] = tl;
-"""
+gate_lines = "".join(
+    f'<div class="gate-line" id="s07-line-{i}" style="left:{p}%;"></div>' for i, p in enumerate([18, 50, 82])
+)
 body = f'''
     <div class="gate-stage">
-      <div class="gate-wrap">
-        <div class="gate-arch"></div>
-        {trav_html}
-      </div>
+      <div class="gate-actor" id="s07-actor">{ingredient_actor_svg("s07-actor-svg", size=140)}</div>
+      <div class="gate-lines">{gate_lines}</div>
+      <div class="gate-row">{gate_cards}</div>
       <div class="tag3" id="s07-tag"><div class="sub">ONE NAME. MANY EXTRACTS.</div></div>
+      <div class="seal-lock" id="s07-seal-lock">{question_seal("s07-q2-seal", 1, "active", size=100, bg="paper")}</div>
     </div>
 '''
+line_tweens = "\n".join(
+    f"  tl.to('#s07-line-{i}', {{ scaleY: 1, duration: 0.4, ease: 'power2.out' }}, {1.4 + i*0.15:.2f});"
+    for i in range(3)
+)
+card_tweens = "\n".join(
+    f"  tl.to('#s07-card-{i}', {{ opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }}, {1.9 + i*0.2:.2f});"
+    for i in range(3)
+)
+script = f"""
+  gsap.set('#s07-actor', {{ opacity: 0, y: -10 }});
+  gsap.set('.gate-card', {{ opacity: 0, y: 14 }});
+  gsap.set('#s07-tag', {{ opacity: 0, y: 16 }});
+  gsap.set('#s07-seal-lock', {{ opacity: 0, scale: 0.5 }});
+
+  var tl = gsap.timeline({{ paused: true }});
+  tl.to('#s07-actor', {{ opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }}, 0.0);
+{line_tweens}
+{card_tweens}
+  tl.to('#s07-tag', {{ opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }}, 3.2);
+  // snap, Question 2 seal turns face-up.
+  tl.to('#s07-seal-lock', {{ opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }}, 6.0);
+  tl.to('#s07-q2-seal-ring', {{ attr: {{ stroke: '#426B50' }}, duration: 0.3, ease: 'power2.out' }}, 6.1);
+  tl.to('#s07-q2-seal-keyline', {{ attr: {{ stroke: '#426B50' }}, duration: 0.3, ease: 'power2.out' }}, 6.1);
+  tl.to('#s07-q2-seal .icon', {{ color: '#426B50', duration: 0.3, ease: 'power2.out' }}, 6.1);
+  tl.to({{}}, {{ duration: 8.012, ease: 'none' }}, 0);
+  window.__timelines = window.__timelines || {{}};
+  window.__timelines['s07-q2-travelers'] = tl;
+"""
 write("s07-q2-travelers", style, body, script, bg="paper")

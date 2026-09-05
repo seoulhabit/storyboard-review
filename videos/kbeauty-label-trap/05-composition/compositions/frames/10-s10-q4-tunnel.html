@@ -70,6 +70,8 @@
   .cards { display:flex; justify-content:center; gap:40px; margin-top:52px; }
   .card { font-family:var(--font-mono); font-size:30px; color:var(--ink); border:2px solid var(--ink);
     border-radius:10px; padding:14px 22px; opacity:0; }
+  .seal-lock { position:absolute; right:calc(var(--safe-right) + 40px); bottom:calc(var(--safe-bottom) + 20px);
+    opacity:0; transform:scale(0.5); }
 
 </style>
 
@@ -129,6 +131,20 @@
         <div class="card">TESTED WHAT?</div><div class="card">PEOPLE?</div>
         <div class="card">HOW LONG?</div><div class="card">MEASURED?</div>
       </div>
+      <div class="seal-lock" id="s10-seal-lock"><div class="q-seal" id="s10-q4-seal" style="position:relative;width:100px;height:100px;flex:none;">
+  <svg width="100" height="100" viewBox="0 0 100 100" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s10-q4-seal-ring" cx="50.0" cy="50.0" r="46.0" fill="rgba(255,255,255,0.55)" stroke="#6358A7" stroke-width="3"/>
+    <circle id="s10-q4-seal-keyline" cx="50.0" cy="50.0" r="37.0" fill="none" stroke="#6358A7" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-evidence" id="s10-q4-seal-glyph" viewBox="0 0 96 96" width="42.0" height="42.0" style="overflow:visible;color:#6358A7;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/></svg></div>
+</div></div>
     </div>
 
   </div>
@@ -140,6 +156,7 @@
   gsap.set('.tstage', { opacity: 0, y: 20, transformOrigin: '50% 50%' });
   gsap.set('.tgap', { opacity: 0 });
   gsap.set('.card', { opacity: 0, y: 14 });
+  gsap.set('#s10-seal-lock', { opacity: 0, scale: 0.5 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s10-head', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.4);
@@ -185,6 +202,11 @@
   tl.to('.card:nth-child(2)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.85);
   tl.to('.card:nth-child(3)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 25.20);
   tl.to('.card:nth-child(4)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 25.55);
+  // snap, Question 4 seal turns face-up.
+  tl.to('#s10-seal-lock', { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, 39.0);
+  tl.to('#s10-q4-seal-ring', { attr: { stroke: '#426B50' }, duration: 0.3, ease: 'power2.out' }, 39.1);
+  tl.to('#s10-q4-seal-keyline', { attr: { stroke: '#426B50' }, duration: 0.3, ease: 'power2.out' }, 39.1);
+  tl.to('#s10-q4-seal .icon', { color: '#426B50', duration: 0.3, ease: 'power2.out' }, 39.1);
   tl.to({}, { duration: 39.983, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s10-q4-tunnel'] = tl;

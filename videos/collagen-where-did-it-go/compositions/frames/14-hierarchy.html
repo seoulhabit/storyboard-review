@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="14-hierarchy"
-       data-width="1920" data-height="1080" data-duration="21.674">
+       data-width="1920" data-height="1080" data-duration="20.966">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -23,7 +23,14 @@
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
     --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    --t-caption:24px; --t-label:40px; --t-chip:40px; --t-floor:20px;
+    /* --t-label / --t-chip raised from 32px: at a 25% phone-scale preview
+       (480x270), 32px source text becomes ~8px on screen -- below what a
+       viewer can read for citations, chart axis labels, filter pills and
+       size-limit annotations, none of which are duplicated as on-screen
+       kinetic text. --t-floor (20px) and --t-caption (24px) are unused --
+       nothing in this project's scenes references them; the real shipped
+       floor before this change was 32px, and is now 40px. */
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -153,7 +160,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); } /* was --ink-3-dark (4.13:1 on ink-soft, fails 4.5 text floor); --ink-2-dark measures 4.78:1 */
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -402,56 +409,56 @@
     tl.fromTo("#slab-lock", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
               { scaleX:1, duration:0.38, ease:EASE.slam }, 2.229 + 0.10);
     tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 2.229 + 0.10);
-    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.295);
-    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 4.295 + 0.3);
-    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.252);
+    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.119);
+    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 4.119 + 0.3);
+    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.076);
     // PROTEIN is the building material, so the partial repair rides that line:
     // three of six beams come back and the lean comes out. The damage is not undone.
     ["4a", "3a", "1a"].forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 5.252 + 0.25 + i * 0.3);
+      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 5.076 + 0.25 + i * 0.3);
     });
-    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 6.020);
+    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 5.845);
     // the smoking chip steps back so it is not read as sourcing the nutrition line
-    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 5.252 + 0.2);
-    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.094);
-    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 8.094 + 0.4);
+    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 5.076 + 0.2);
+    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 7.519);
+    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 7.519 + 0.4);
     // "encouraging collagen production": ONE more beam draws in, and the camera
     // leans toward the building to watch it. One beam, not six -- the claim is
     // stronger evidence for production, not a rebuilt structure.
-    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 11.076 - 0.3);
-    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 11.076);
+    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 10.501 - 0.3);
+    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 10.501);
     // the whole brace set brightens as production is named, so the claim reads as
     // the building gaining rather than one line quietly redrawing itself
-    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, 11.872 - 0.2);
+    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, 11.297 - 0.2);
     tl.fromTo("#shield", { opacity:0.30 }, { opacity:0.44, duration:0.9, yoyo:true, repeat:1,
-              ease:EASE.hold }, 11.872 + 0.1);
+              ease:EASE.hold }, 11.297 + 0.1);
 
     // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
     // the optional column ARRIVES: the camera pans right so cream and powder
     // enter the frame from outside the first-line actions, never sharing their row
-    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, 14.302 - 0.5);
-    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 14.302 - 0.2);
-    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.302);
-    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 16.397);
+    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, 12.952 - 0.5);
+    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 12.952 - 0.2);
+    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 12.952);
+    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 15.689);
     // the two optional cards settle back and dim as the verdict is spoken over
     // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
-    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 14.922 - 0.2);
-    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 16.397 + 0.15);
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 16.842);
-    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 17.332 - 0.9);
-    tl.to("#final", { opacity:1, duration:0.1 }, 17.332 - 0.1);
-    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 17.332 - 0.1);
-    kineticWords(tl, "#final-kt", 17.332 + 0.15, 0.08, "rise");
+    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 13.822 - 0.2);
+    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 15.689 + 0.15);
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 16.133);
+    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 16.624 - 0.9);
+    tl.to("#final", { opacity:1, duration:0.1 }, 16.624 - 0.1);
+    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 16.624 - 0.1);
+    kineticWords(tl, "#final-kt", 16.624 + 0.15, 0.08, "rise");
     // the bricks are already leaving as they are named; the building they were
     // never going to build takes the frame back over the closing words
-    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, 18.015 - 0.2);
-    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, 18.382);
-    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, 20.130);
+    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, 17.307 - 0.2);
+    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, 17.674);
+    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, 19.421);
 
     // departure: push under the curtain wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 20.774);
+    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 20.066);
 
-    tl.to({}, { duration: 21.674 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 20.966 }, 0);   // full-span anchor -- always last
     window.__timelines["14-hierarchy"] = tl;
   </script>
 </template>

@@ -121,7 +121,7 @@ def file_02_promise(fspan, fctx):
     .abs { position:absolute; }
     #stageB { position:absolute; left:0; top:0; }
     #promise-q { position:absolute; left:0; top:70px; width:940px; }
-    .qmark { fill:none; stroke:var(--ink-3); stroke-width:16; stroke-linecap:round; }
+    .qmark { fill:none; stroke:var(--ink-2); stroke-width:16; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper); --ink-2 measures 4.89:1 */
     #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
             justify-content:center; gap:var(--s-4); }
     .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }

@@ -63,6 +63,12 @@ POST_KEEP = 0.06              # kept after a word when no trailing silence is de
 SNAP_MIN_SIL = 0.15           # a silence this long inside a word span is a real pause
 MIN_WORD_S = 0.035            # no spoken word, even one letter, is shorter than this
 MIN_MS_PER_CHAR = 8.0         # implied speaking rate above ~125 chars/s is not speech
+MAX_MS_PER_CHAR = 175.0       # the mirror-image defect: a word (or run) that absorbs a
+# real SILENCE ahead of it reads as impossibly SLOW, not fast -- "the" at 2773ms (07-film,
+# this project's own take) and "As"/"we"/"age," together spanning 4.35s for what real audio
+# shows is a ~2.3s sentence. Calibrated on this manifest's own legitimate slow endings
+# ("upright." 149.6ms/char, "benefit." 133.6ms/char, both real, both plausible sentence-final
+# deceleration) against the clear failures starting at 185ms/char and running past 900ms/char.
 # Both floors exist because whisper's word-level timestamps can drift a whole run of
 # words into a nearby silence gap without moving their SPAN, then snap_words_to_silence
 # (correctly) relocates only the first word of the run out of that silence, leaving the
@@ -554,11 +560,11 @@ def drop_silent_tail(words, wav):
     return keep, (trailing if len(keep) != len(words) else None)
 
 
-def repair_implausible_runs(words):
+def repair_implausible_runs(words, sil=None):
     """Re-time any run of words whose measured span implies an impossible
-    speaking rate, using the same character-weighted interpolation already
-    used for a word ASR never found at all (see MIN_WORD_S / MIN_MS_PER_CHAR
-    above align_block).
+    speaking rate -- too FAST (MIN_WORD_S / MIN_MS_PER_CHAR) or too SLOW
+    (MAX_MS_PER_CHAR) -- using the same character-weighted interpolation
+    already used for a word ASR never found at all.
 
     Run this AFTER alignment and after snap_words_to_silence, on the FINISHED
     block, because either stage can produce the defect on its own: alignment
@@ -569,12 +575,25 @@ def repair_implausible_runs(words):
     "Think of your skin as a" collapsed to five ~18ms words this way.
     Checking the physical plausibility of the RESULT, not which mechanism
     produced it, catches both in one place. Measured before this existed:
-    56 of 364 words (15.4%) in 39 runs, spread from 0:05 to 1:55."""
+    56 of 364 words (15.4%) in 39 runs, spread from 0:05 to 1:55.
+
+    The MAX side is the mirror image: a word (or run) that absorbs a real
+    SILENCE ahead of it reads as impossibly slow, not fast -- 24 of 350 words
+    on this project's own re-recorded take, "As"/"we"/"age," together
+    spanning 4.35s where the real audio holds a ~2.3s sentence after a
+    genuine pause. Blindly character-weighting a bad run's WHOLE anchor-to-
+    anchor window would just relocate the same error: the pause is real and
+    belongs to nobody's word. So when `sil` is available, any qualifying
+    silence found inside [prev_end, next_start] moves prev_end to its end
+    first -- the run is redistributed only across what's left, the same
+    principle tail_cut() uses to find a take's true trailing silence."""
     n = len(words)
 
     def implausible(w):
         chars = max(1, len(w["norm"]))
-        return (w["end"] - w["start"]) < max(MIN_WORD_S, chars * MIN_MS_PER_CHAR / 1000)
+        dur = w["end"] - w["start"]
+        return (dur < max(MIN_WORD_S, chars * MIN_MS_PER_CHAR / 1000)
+                or dur > chars * MAX_MS_PER_CHAR / 1000)
 
     # A word snap_words_to_silence moved -- for ANY reason, including being
     # dragged forward by its overrun guard -- is not a trustworthy anchor
@@ -605,6 +624,12 @@ def repair_implausible_runs(words):
             prev_end = max(0.0, next_start - sum(lens) * 0.075)
         if next_start is None:
             next_start = prev_end + sum(lens) * 0.075
+        if sil and next_start is not None:
+            for a, b in sil:
+                if b is None:
+                    continue
+                if prev_end <= a and b <= next_start and (b - a) >= SNAP_MIN_SIL:
+                    prev_end = max(prev_end, b)
         span = max(next_start - prev_end, 0.02 * len(lens))
         tot, cur = sum(lens), prev_end
         for k, L in zip(range(i, j), lens):
@@ -647,7 +672,7 @@ def load_blocks(require_asr=True):
         snapped = snap_words_to_silence(words, sil_b)
         if snapped:
             print(f"  {name:8s} snapped {snapped} word boundary/ies to the measured silence")
-        repaired = repair_implausible_runs(words) if words else 0
+        repaired = repair_implausible_runs(words, sil_b) if words else 0
         if repaired:
             print(f"  {name:8s} re-timed {repaired} word(s) with an impossible speaking "
                   f"rate (see repair_implausible_runs)")

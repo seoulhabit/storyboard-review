@@ -23,7 +23,14 @@
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
     --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    --t-caption:24px; --t-label:40px; --t-chip:40px; --t-floor:20px;
+    /* --t-label / --t-chip raised from 32px: at a 25% phone-scale preview
+       (480x270), 32px source text becomes ~8px on screen -- below what a
+       viewer can read for citations, chart axis labels, filter pills and
+       size-limit annotations, none of which are duplicated as on-screen
+       kinetic text. --t-floor (20px) and --t-caption (24px) are unused --
+       nothing in this project's scenes references them; the real shipped
+       floor before this change was 32px, and is now 40px. */
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -153,7 +160,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); } /* was --ink-3-dark (4.13:1 on ink-soft, fails 4.5 text floor); --ink-2-dark measures 4.78:1 */
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -216,7 +223,7 @@
     .abs { position:absolute; }
     #stageB { position:absolute; left:0; top:0; }
     #promise-q { position:absolute; left:0; top:70px; width:940px; }
-    .qmark { fill:none; stroke:var(--ink-3); stroke-width:16; stroke-linecap:round; }
+    .qmark { fill:none; stroke:var(--ink-2); stroke-width:16; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper); --ink-2 measures 4.89:1 */
     #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
             justify-content:center; gap:var(--s-4); }
     .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }
@@ -373,7 +380,7 @@
     gsap.set("#data-wash", { scaleX:1, scaleY:0, transformOrigin:"50% 100%" });
     kineticWords(tl, "#promise-q", 1.683 - 0.1, 0.09, "rise");
     // the question is DRAWN around the molecule, not typeset beside it
-    drawIn(tl, "#qmark", 1.976 - 0.25, 0.55, 0, EASE.wipe);
+    drawIn(tl, "#qmark", 2.403 - 0.25, 0.55, 0, EASE.wipe);
     tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, 2.624);
 
     // ---- the data column rises and takes the frame -------------------------

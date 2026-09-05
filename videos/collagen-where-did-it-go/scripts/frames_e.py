@@ -40,7 +40,10 @@ def file_10_evidence(fspan, fctx):
              font-weight:800; font-size:var(--t-frame); opacity:0; }
 
     .res-note { position:absolute; left:32px; bottom:14px; margin:0; font-family:var(--font-mono);
-                font-size:var(--t-chip); line-height:1.2; opacity:.85; }
+                font-size:var(--t-chip); line-height:1.2; opacity:1; }
+    /* was opacity:.85 -- the wash-forced --paper text composites to 4.43:1 on
+       the moss wash, just under the 4.5 text floor; full opacity clears it.
+       This note is on screen, unanimated, for the whole 33s evidence file. */
     .m-axis { stroke:var(--paper); stroke-width:3; opacity:.6; }
     .m-zero { stroke:var(--paper); stroke-width:4; }
     .m-ci { fill:var(--celadon); stroke:var(--paper); stroke-width:2; }

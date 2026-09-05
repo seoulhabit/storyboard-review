@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "ingredient_id": "snail-mucin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "production_ready",
   "updated": "2026-09-05",
   "identity": {
@@ -100,8 +100,9 @@
       {
         "id": "collection-method-compare",
         "type": "process comparison",
-        "status": "planned",
-        "purpose": "Show that measured composition changes with collection or extraction method."
+        "status": "approved",
+        "purpose": "Show that measured composition changes with collection or extraction method.",
+        "path": "catalog-v2/ingredients/snail-mucin/components/collection-method-compare.svg"
       }
     ]
   },
@@ -243,6 +244,8 @@
     "application_media": "catalog-v2/ingredients/snail-mucin/assets/snail-application-cheek-vertical.png",
     "product_container": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
     "mechanism_actor": null,
+    "route_comparison": null,
+    "process_comparison": "catalog-v2/ingredients/snail-mucin/components/collection-method-compare.svg",
     "evidence_cards": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN", "SNAIL-SCI-2024-COMPOSITION"],
     "boundary_card": "Specific extracts have limited human data; do not treat every snail-mucin formula as equivalent.",
     "citation_ids": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN", "SNAIL-SCI-2024-COMPOSITION"]
@@ -258,12 +261,6 @@
     }
   ],
   "gaps": [
-    {
-      "priority": "next",
-      "item": "collection-method comparison component",
-      "reason": "This is the ingredient's most distinctive evidence-backed teaching visual.",
-      "build_when": "the next source/process story enters production"
-    },
     {
       "priority": "later",
       "item": "real-product label macro template",

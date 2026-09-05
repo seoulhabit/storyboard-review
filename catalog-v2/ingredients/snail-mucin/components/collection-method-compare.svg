@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc" data-component="snail-collection-method-compare" data-version="1.0.0">
+  <title id="title">Snail secretion collection method comparison</title>
+  <desc id="desc">An editorial diagram showing that commercial snail secretion filtrate composition varied across manual, citric-acid, and lactic-acid extraction methods in a 2024 laboratory study.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="15" stdDeviation="20" flood-color="#0F2016" flood-opacity="0.09"/></filter>
+    <linearGradient id="gel-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/><stop offset="1" stop-color="#BFD3C3" stop-opacity="0.72"/></linearGradient>
+    <linearGradient id="gel-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.92"/><stop offset="1" stop-color="#D8B398" stop-opacity="0.67"/></linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="#F7F5F0"/>
+
+  <g id="header">
+    <text x="72" y="82" fill="#6F8F72" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="5">SNAIL SECRETION FILTRATE</text>
+    <text x="70" y="164" fill="#131516" font-family="Georgia, 'Times New Roman', serif" font-size="67">Method changes</text>
+    <text x="70" y="230" fill="#131516" font-family="Georgia, 'Times New Roman', serif" font-size="67">the measured mix.</text>
+    <text x="72" y="274" fill="#626864" font-family="Arial, Helvetica, sans-serif" font-size="22">Four commercial filtrates · laboratory comparison · 2024</text>
+  </g>
+
+  <g id="methods" transform="translate(72 330)">
+    <g id="method-manual" filter="url(#shadow)">
+      <rect width="288" height="322" rx="28" fill="#FFFEFB" stroke="#6F8F72" stroke-width="3"/>
+      <text x="28" y="50" fill="#4F6B52" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="800" letter-spacing="3">METHOD 01</text>
+      <text x="28" y="90" fill="#131516" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">Manual</text>
+      <g transform="translate(45 95)">
+        <ellipse cx="99" cy="139" rx="91" ry="28" fill="#E8ECE6" stroke="#4F6B52" stroke-width="4"/>
+        <path d="M14 128 C45 70 148 55 184 124 C155 148 47 154 14 128Z" fill="url(#gel-a)" stroke="#93B896" stroke-width="4"/>
+        <path d="M48 81 C73 37 128 34 151 79" fill="none" stroke="#B9835A" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="61" cy="111" r="6" fill="#FFFFFF"/><circle cx="126" cy="98" r="5" fill="#FFFFFF"/>
+      </g>
+      <text x="28" y="294" fill="#666D68" font-family="Arial, Helvetica, sans-serif" font-size="17">Commercial sample group</text>
+    </g>
+    <g id="method-citric" transform="translate(324)" filter="url(#shadow)">
+      <rect width="288" height="322" rx="28" fill="#FFFEFB" stroke="#B9835A" stroke-width="3"/>
+      <text x="28" y="50" fill="#8B5E43" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="800" letter-spacing="3">METHOD 02</text>
+      <text x="28" y="90" fill="#131516" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">Citric acid</text>
+      <g transform="translate(45 95)">
+        <ellipse cx="99" cy="139" rx="91" ry="28" fill="#F0E8E2" stroke="#8B5E43" stroke-width="4"/>
+        <path d="M14 128 C45 80 148 49 184 124 C155 150 47 154 14 128Z" fill="url(#gel-b)" stroke="#C69370" stroke-width="4"/>
+        <circle cx="75" cy="103" r="12" fill="#F5D69E"/><circle cx="124" cy="86" r="8" fill="#F5D69E"/><circle cx="146" cy="120" r="5" fill="#FFFFFF"/>
+      </g>
+      <text x="28" y="294" fill="#666D68" font-family="Arial, Helvetica, sans-serif" font-size="17">Stimulated collection</text>
+    </g>
+    <g id="method-lactic" transform="translate(648)" filter="url(#shadow)">
+      <rect width="288" height="322" rx="28" fill="#FFFEFB" stroke="#59B8AE" stroke-width="3"/>
+      <text x="28" y="50" fill="#315D56" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="800" letter-spacing="3">METHOD 03</text>
+      <text x="28" y="90" fill="#131516" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">Lactic acid</text>
+      <g transform="translate(45 95)">
+        <ellipse cx="99" cy="139" rx="91" ry="28" fill="#E5EEEE" stroke="#315D56" stroke-width="4"/>
+        <path d="M14 128 C45 61 148 70 184 124 C155 148 47 154 14 128Z" fill="#D8EBE7" fill-opacity="0.84" stroke="#59B8AE" stroke-width="4"/>
+        <circle cx="55" cy="105" r="8" fill="#FFFFFF"/><circle cx="103" cy="89" r="13" fill="#FFFFFF" fill-opacity="0.76"/><circle cx="146" cy="111" r="7" fill="#FFFFFF"/>
+      </g>
+      <text x="28" y="294" fill="#666D68" font-family="Arial, Helvetica, sans-serif" font-size="17">Stimulated collection</text>
+    </g>
+  </g>
+
+  <g id="measured-results" transform="translate(72 704)">
+    <text x="0" y="0" fill="#131516" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="800" letter-spacing="4">WHAT THE LAB MEASURED</text>
+    <g id="dry-residue" transform="translate(0 34)" filter="url(#shadow)">
+      <rect width="450" height="214" rx="28" fill="#0F2016"/>
+      <text x="30" y="48" fill="#BFD3C3" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="3">DRY RESIDUE</text>
+      <text x="28" y="126" fill="#FFFFFF" font-family="Georgia, 'Times New Roman', serif" font-size="58">0.8–2.48%</text>
+      <text x="30" y="174" fill="#C8D1CB" font-family="Arial, Helvetica, sans-serif" font-size="20">The samples were 97.5–99.2% water.</text>
+    </g>
+    <g id="protein" transform="translate(486 34)" filter="url(#shadow)">
+      <rect width="450" height="214" rx="28" fill="#FFFEFB" stroke="#B9835A" stroke-width="3"/>
+      <text x="30" y="48" fill="#8B5E43" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="3">PROTEIN CONTENT</text>
+      <text x="28" y="126" fill="#131516" font-family="Georgia, 'Times New Roman', serif" font-size="58">0.81–1.80</text>
+      <text x="32" y="169" fill="#626864" font-family="Arial, Helvetica, sans-serif" font-size="20">mg/mL across tested filtrates</text>
+    </g>
+    <g id="profiles" transform="translate(0 276)">
+      <rect width="936" height="148" rx="24" fill="#E8EDE8"/>
+      <path d="M32 101 C95 25 133 127 190 59 C243 1 293 127 354 73 C419 17 456 118 520 61 C581 9 638 124 698 72 C762 18 818 109 902 45" fill="none" stroke="#4F6B52" stroke-width="7" stroke-linecap="round"/>
+      <text x="32" y="38" fill="#315D56" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="800">Protein profiles also differed by method.</text>
+    </g>
+  </g>
+
+  <g id="boundary" transform="translate(72 1168)">
+    <rect width="936" height="112" rx="24" fill="#F1E8E2"/>
+    <text x="28" y="45" fill="#8B4F39" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="800">THIS IS COMPOSITION EVIDENCE</text>
+    <text x="28" y="79" fill="#5D514B" font-family="Arial, Helvetica, sans-serif" font-size="21">It does not prove a skin benefit or independently verify animal welfare.</text>
+  </g>
+  <text x="72" y="1321" fill="#6D746F" font-family="Arial, Helvetica, sans-serif" font-size="16">Scientific Reports · 2024 · PMID 39333225 · SNAIL-SCI-2024-COMPOSITION</text>
+</svg>

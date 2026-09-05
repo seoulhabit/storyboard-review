@@ -146,6 +146,8 @@
         "application_media": { "type": ["string", "null"] },
         "product_container": { "type": ["string", "null"] },
         "mechanism_actor": { "type": ["string", "null"] },
+        "route_comparison": { "type": ["string", "null"] },
+        "process_comparison": { "type": ["string", "null"] },
         "evidence_cards": { "type": "array", "items": { "type": "string" } },
         "boundary_card": { "type": ["string", "null"] },
         "citation_ids": { "type": "array", "items": { "type": "string" } }

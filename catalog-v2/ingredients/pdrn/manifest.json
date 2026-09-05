@@ -31,5 +31,15 @@
       "dimensions": "1080x600",
       "has_alpha": false
     }
+  ],
+  "components": [
+    {
+      "id": "pdrn-route-comparison",
+      "file": "components/route-comparison.svg",
+      "origin": "authored_code_native_after_harvest",
+      "status": "approved",
+      "dimensions": "1080x1350",
+      "sha256": "11168cba52834377baf37438275b86cf57cf56d300df7a2f7f59a354ec9f272f"
+    }
   ]
 }

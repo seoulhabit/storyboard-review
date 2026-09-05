@@ -1,29 +1,31 @@
 {
-  "catalog_version": "2.0.0-alpha.1",
+  "catalog_version": "2.0.0-alpha.2",
   "updated": "2026-09-05",
   "policy": "harvest_first",
   "ingredient_packs": [
     {
       "ingredient_id": "snail-mucin",
       "display_name": "Snail Mucin",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "status": "production_ready",
       "pack": "catalog-v2/ingredients/snail-mucin/pack.json",
       "manifest": "catalog-v2/ingredients/snail-mucin/manifest.json",
       "approved_asset_count": 5,
       "restricted_asset_count": 1,
-      "highest_priority_gap": "collection-method comparison component"
+      "approved_component_count": 2,
+      "highest_priority_gap": "real-product label macro template"
     },
     {
       "ingredient_id": "pdrn",
       "display_name": "PDRN",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "status": "production_ready_with_restrictions",
       "pack": "catalog-v2/ingredients/pdrn/pack.json",
       "manifest": "catalog-v2/ingredients/pdrn/manifest.json",
       "approved_asset_count": 2,
       "restricted_asset_count": 0,
-      "highest_priority_gap": "route-comparison component"
+      "approved_component_count": 2,
+      "highest_priority_gap": "transparent PDRN dropper cutout"
     }
   ],
   "global_rules": [

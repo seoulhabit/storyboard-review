@@ -29,13 +29,21 @@ Method: targeted inspection of the existing catalog and the relevant completed v
 | `catalog/visual-components/evidence-meter/evidencemeter-spike.html` | restricted source reference | Reusable pattern, but old PDRN internal citations need replacement before direct adoption. |
 | `catalog/visual-components/split-face-protocol/splitfaceprotocol-spike.html` | quarantined source reference | Current PDRN source ID is not traceable to a primary publication in the sampled repository. |
 
-## Confirmed gaps — no regeneration yet
+## Confirmed gaps after the first component extension
 
-1. PDRN route-comparison component: topical / procedure-assisted / injected.
-2. Transparent PDRN dropper cutout for dark and colored backgrounds.
-3. Snail Mucin collection-method comparison component.
-4. Real-product label macros for both ingredients once specific products are selected.
+1. Transparent PDRN dropper cutout for dark and colored backgrounds.
+2. Real-product label macros for both ingredients once specific products are selected.
+3. Standalone PDRN fragment actor, extracted only after a second format requests it.
 
 ## Harvest result
 
 Eight image assets and two identity cards now form the V2 pilot. Everything else remains a reference, restriction, quarantine, or declared gap. No new media was generated during this catalog harvest.
+
+## Extension 01 — code-native teaching components
+
+Added after the harvest, without generating media:
+
+- `ingredients/pdrn/components/route-comparison.svg`
+- `ingredients/snail-mucin/components/collection-method-compare.svg`
+
+These close the two highest-priority explanatory gaps while preserving the harvest-first rule.

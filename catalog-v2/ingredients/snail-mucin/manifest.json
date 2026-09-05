@@ -71,5 +71,15 @@
       "dimensions": "1080x600",
       "has_alpha": false
     }
+  ],
+  "components": [
+    {
+      "id": "snail-collection-method-compare",
+      "file": "components/collection-method-compare.svg",
+      "origin": "authored_code_native_after_harvest",
+      "status": "approved",
+      "dimensions": "1080x1350",
+      "sha256": "9d68ab2de0c85bc4df3d71bb73122805fd0d58dcfbfb68e2870af21e533cdf9d"
+    }
   ]
 }

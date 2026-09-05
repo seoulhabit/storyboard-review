@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "ingredient_id": "pdrn",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "production_ready",
   "updated": "2026-09-05",
   "identity": {
@@ -83,8 +83,9 @@
       {
         "id": "route-comparison",
         "type": "topical versus procedure versus injected comparison",
-        "status": "planned",
-        "purpose": "Prevent route borrowing, the biggest accuracy risk in PDRN content."
+        "status": "approved",
+        "purpose": "Prevent route borrowing, the biggest accuracy risk in PDRN content.",
+        "path": "catalog-v2/ingredients/pdrn/components/route-comparison.svg"
       },
       {
         "id": "split-face-protocol",
@@ -227,6 +228,8 @@
     "application_media": null,
     "product_container": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
     "mechanism_actor": "videos/pdrn-cellular-science/compositions/frames/02-identity.html",
+    "route_comparison": "catalog-v2/ingredients/pdrn/components/route-comparison.svg",
+    "process_comparison": null,
     "evidence_cards": ["PDRN-SCI-2014-DIABETIC-ULCER", "PDRN-SCI-2026-TOPICAL-850K", "PDRN-SCI-2026-MECHANISM-850K"],
     "boundary_card": "Route, preparation, and formula matter: injection evidence is not serum evidence.",
     "citation_ids": ["PDRN-SCI-2014-DIABETIC-ULCER", "PDRN-SCI-2026-TOPICAL-850K"]
@@ -250,12 +253,6 @@
     }
   ],
   "gaps": [
-    {
-      "priority": "now",
-      "item": "route-comparison component",
-      "reason": "Route borrowing is the central editorial risk and the strongest recurring PDRN story device.",
-      "build_when": "before the next PDRN evidence video"
-    },
     {
       "priority": "next",
       "item": "transparent PDRN dropper cutout",

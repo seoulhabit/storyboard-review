@@ -14,6 +14,8 @@
     "texture_media": "Tactile visual",
     "application_media": "Usage visual that does not imply an outcome",
     "mechanism_actor": "Only when an approved evidence record supports it",
+    "route_comparison": "Route-specific evidence map when delivery changes the meaning of a claim",
+    "process_comparison": "Source or manufacturing comparison when method changes the ingredient",
     "evidence_cards": "One or more scoped evidence summaries"
   },
   "format_owned_fields": [

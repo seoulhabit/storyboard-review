@@ -630,8 +630,20 @@ S17 = dict(css="""
   // the qualifier slides up over the result -- the honest beat, and a big one
   tl.set('#pr-q', { opacity:0, y:90 }, 0);
   tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, @w(preference)-0.35);
-  // and it settles across the rest of the line rather than stopping dead on it
-  tl.to('#pr-q', { y:-10, duration:@dur-(@w(preference)+0.30), ease:'none' },
+  // The arms hold the result while the qualifier is still coming: a slow,
+  // continuous settle from the grid collapse to the qualifier's entrance. The
+  // re-paced scene left 4.2s in there with nothing above the motion gate's
+  // threshold, and a paper-ground scene has no plate drift to fall back on.
+  // Sized against the gate's own sampling, not by eye: it samples at 4fps and
+   // thresholds the frame-average |luma delta| at 0.35, so a drift has to move
+   // enough per 0.25s STEP -- a travel that reads fine at 0.5s intervals is half
+   // that per step and lands under the floor.
+  tl.to('.arms', { y:-40, scale:1.028, transformOrigin:'50% 50%',
+                   duration:@w(preference)-@w(preferred)-0.35, ease:'none' },
+        @w(preferred)+0.30);
+  // and the qualifier settles across the rest of the line rather than stopping
+  // dead on it
+  tl.to('#pr-q', { y:-26, duration:@dur-(@w(preference)+0.30), ease:'none' },
         @w(preference)+0.30);
 """)
 
@@ -695,10 +707,16 @@ S18 = dict(css="""
                     ease:'power2.inOut' }, @w(performed)-0.40);
   tl.to('#ez-f2', { scaleY:0.76, backgroundColor:'#59B8AE', duration:2.10,
                     ease:'power2.inOut' }, @w(performed)-0.40);
-  // and the pair settles across "and was well tolerated" rather than stopping
-  // dead on "tested against".
-  tl.to(['#ez-f1','#ez-f2'], { scaleY:0.80, duration:@dur-@w(against), ease:'none' },
-        @w(against));
+  // The bars keep rising, slowly, from the moment they converge to the end of
+  // the line -- one continuous move rather than a 0.04 scale nudge that the
+  // motion gate cannot see. 18-eczema left 5.5s static after the re-pace.
+  tl.to(['#ez-f1','#ez-f2'], { scaleY:0.96, duration:@dur-@w(performed)-0.4,
+                               ease:'none' }, @w(performed)+1.70);
+  tl.to('#ez-prog', { scaleX:1.10, transformOrigin:'0% 50%',
+                      duration:@dur-@w(performed)-0.4, ease:'none' },
+        @w(performed)+1.70);
+  tl.to('#ez-h', { y:-30, duration:@dur-@w(performed)-0.4, ease:'none' },
+        @w(performed)+1.70);
   tl.to('#ez-prog', { backgroundColor:'#4F6B52', duration:1.20 }, 10.60);
 """)
 

@@ -43,8 +43,8 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 13 | `14-notforce` | 2:42.72 | 10.54s | 5 | 0.47 |
 | 14 | `15-framing` | 2:52.86 | 8.62s | 7 | 0.81 |
 | 15 | `16-trial104` | 3:00.88 | 15.66s | 15 | 0.96 |
-| 16 | `17-preference` | 3:16.04 | 13.51s | 12 | 0.89 |
-| 17 | `18-eczema` | 3:29.16 | 17.63s | 12 | 0.68 |
+| 16 | `17-preference` | 3:16.04 | 13.51s | 13 | 0.96 |
+| 17 | `18-eczema` | 3:29.16 | 17.63s | 14 | 0.79 |
 | 18 | `19-limits` | 3:46.39 | 8.31s | 7 | 0.84 |
 | 19 | `20-twelve` | 3:54.30 | 9.67s | 10 | 1.03 |
 | 20 | `21-verdict` | 4:03.46 | 14.48s | 15 | 1.04 |
@@ -58,4 +58,4 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 28 | `29-cta` | 5:54.32 | 14.47s | 5 | 0.35 |
 | 29 | `30-endcard` | 6:07.99 | 3.84s | 5 | 1.30 |
 
-**355 authored beats across 371.8s (0.95/s average).**
+**358 authored beats across 371.8s (0.96/s average).**

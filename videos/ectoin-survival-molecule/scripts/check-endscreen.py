@@ -31,7 +31,9 @@ def closing_start():
     last scene if the reserve marker cannot be found -- never to a constant."""
     html = (ROOT / "index.html").read_text()
     scenes = re.findall(r'data-composition-id="([^"]+)"[^>]*?data-start="([0-9.]+)"', html)
-    reserved = [(cid, float(t)) for cid, t in scenes
+    durs = dict(re.findall(
+        r'data-composition-id="([^"]+)"[^>]*?data-duration="([0-9.]+)"', html))
+    reserved = [(cid, float(t), float(durs.get(cid, 0.0))) for cid, t in scenes
                 if (ROOT / "compositions" / "frames" / f"{cid}.html").exists()
                 # the token is DEFINED in every frame's inlined preamble, so the
                 # test is whether the scene USES it -- `var(--endscreen-right)`
@@ -40,15 +42,20 @@ def closing_start():
     if not reserved:
         sys.exit("check-endscreen: no scene declares the end-screen reserve "
                  "(--endscreen-right); nothing to check against")
-    cid, t = reserved[0]
-    # plus the settle wipe, so the outgoing scene's ground is never sampled
-    # mid-transition
-    return cid, t + 0.90
+    # EVERY reserving scene, each sampled from its own start plus the settle
+    # wipe. Sampling one continuous window from the first of them walks the
+    # probe straight through the wipe INTO the next -- 181k px of "off-ground"
+    # at t=368.22s, which is a transition in flight, not content in the reserve.
+    # Each scene is sampled only to its OWN end, less the wipe into the next.
+    return [(cid, t + 0.90, max(0.5, d - 1.6)) for cid, t, d in reserved]
 
 
-def frames(path, start, step):
-    cmd = ["ffmpeg", "-v", "error", "-ss", f"{start:.3f}", "-i", path, "-vf", f"fps=1/{step}",
-           "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+def frames(path, start, step, dur=None):
+    cmd = ["ffmpeg", "-v", "error", "-ss", f"{start:.3f}"]
+    if dur is not None:
+        cmd += ["-t", f"{dur:.3f}"]
+    cmd += ["-i", path, "-vf", f"fps=1/{step}",
+            "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     raw = subprocess.run(cmd, capture_output=True).stdout
     n = len(raw) // (W * H * 3)
     return np.frombuffer(raw[: n * W * H * 3], dtype=np.uint8).reshape(n, H, W, 3)
@@ -59,14 +66,26 @@ def main():
     ap.add_argument("render"); ap.add_argument("--start", type=float, default=None)
     ap.add_argument("--step", type=float, default=0.5); ap.add_argument("--tol", type=int, default=28)
     a = ap.parse_args()
-    cid, derived = closing_start()
-    if a.start is None:
-        a.start = derived
-    print(f"[endscreen] reserve begins at {cid} -> sampling from {a.start:.2f}s")
-    fr = frames(a.render, a.start, a.step)
+    spans = closing_start()
+    if a.start is not None:
+        spans = [("--start", a.start, 1e6)]
+    bad = 0
+    total = 0
+    for cid, t0, d in spans:
+        print(f"[endscreen] {cid}: sampling {t0:.2f}s -> {t0 + d:.2f}s")
+        bad += scan(a, t0, d)
+        total += 1
+    print(f"{total} reserving scene(s); {'PASS' if bad == 0 else 'FAIL'} ({bad} zone hits)")
+    return 0 if bad == 0 else 1
+
+
+def scan(a, start, dur):
+    # Each scene is sampled only to its OWN end; ends() gives the next
+    # reserving scene's wipe-in, or EOF for the last one.
+    fr = frames(a.render, start, a.step, dur)
     bad = 0
     for i, f in enumerate(fr):
-        t = a.start + i * a.step
+        t = start + i * a.step
         right = f[:, 1280:, :]; lower = f[780:, 960:, :]
         for name, zone in (("right-third", right), ("lower-right", lower)):
             z = zone.astype(int)
@@ -76,8 +95,8 @@ def main():
             if ink > 40:
                 bad += 1
                 print(f"  t={t:7.2f}s  {name:12s}  {ink} px off-ground")
-    print(f"{len(fr)} frames from {a.start}s; {'PASS' if bad == 0 else 'FAIL'} ({bad} zone hits)")
-    return 0 if bad == 0 else 1
+    print(f"  {len(fr)} frames from {start:.2f}s, {bad} hit(s)")
+    return bad
 
 
 if __name__ == "__main__":

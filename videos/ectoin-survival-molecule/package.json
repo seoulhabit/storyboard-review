@@ -9,8 +9,9 @@
     "gates:source": "python3 scripts/contrast.py && python3 scripts/check-vo.py && python3 scripts/check-seams.py . && python3 scripts/check-captions.py && python3 scripts/check-sfx-durations.py .",
     "render": "hyperframes render --quality high --workers 1 -o renders/ectoin-survival-molecule_a11y-raw.mp4",
     "master": "python3 scripts/master-retention.py renders/ectoin-survival-molecule_a11y-raw.mp4 renders/ectoin-survival-molecule_a11y-master.mp4",
-    "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . renders/ectoin-survival-molecule_a11y-master.mp4 --landscape && python3 scripts/check-safe-area.py . renders/ectoin-survival-molecule_a11y-master.mp4 --landscape && python3 scripts/check-cadence.py . renders/ectoin-survival-molecule_a11y-master.mp4 --longform && python3 scripts/check-seams.py . --render renders/ectoin-survival-molecule_a11y-master.mp4 && python3 scripts/check-endscreen.py renders/ectoin-survival-molecule_a11y-master.mp4 && python3 scripts/check-motion-gaps.py renders/ectoin-survival-molecule_a11y-master.mp4 && python3 scripts/check-contrast-pixels.py renders/ectoin-survival-molecule_a11y-master.mp4",
-    "opencaptions": "python3 scripts/build_open_captions.py renders/ectoin-survival-molecule_a11y-master.mp4"
+    "postrender": "python3 scripts/check-blank-frames.py . && python3 scripts/check-static-hold.py . renders/ectoin-survival-molecule_a11y-master.mp4 --landscape && python3 scripts/check-cadence.py . renders/ectoin-survival-molecule_a11y-master.mp4 --longform && python3 scripts/check-seams.py . --render renders/ectoin-survival-molecule_a11y-master.mp4 && python3 scripts/check-endscreen.py renders/ectoin-survival-molecule_a11y-master.mp4 && python3 scripts/check-motion-gaps.py renders/ectoin-survival-molecule_a11y-master.mp4 && python3 scripts/check-contrast-pixels.py renders/ectoin-survival-molecule_a11y-master.mp4",
+    "opencaptions": "python3 scripts/build_open_captions.py renders/ectoin-survival-molecule_a11y-master.mp4",
+    "gates:safe-area": "python3 scripts/check-safe-area.py . renders/ectoin-survival-molecule_a11y-master.mp4 --landscape"
   },
   "devDependencies": {
     "@hyperframes/core": "^0.8.20"

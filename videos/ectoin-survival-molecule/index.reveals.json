@@ -751,6 +751,27 @@
   {
     "scene": "17-preference",
     "kind": "w",
+    "word": "preferred",
+    "occurrence": 1,
+    "seconds": 3.852
+  },
+  {
+    "scene": "17-preference",
+    "kind": "w",
+    "word": "preferred",
+    "occurrence": 1,
+    "seconds": 3.852
+  },
+  {
+    "scene": "17-preference",
+    "kind": "w",
+    "word": "preference",
+    "occurrence": 1,
+    "seconds": 8.77
+  },
+  {
+    "scene": "17-preference",
+    "kind": "w",
     "word": "preference",
     "occurrence": 1,
     "seconds": 8.77
@@ -786,16 +807,44 @@
   {
     "scene": "18-eczema",
     "kind": "w",
-    "word": "against",
+    "word": "performed",
     "occurrence": 1,
-    "seconds": 13.568
+    "seconds": 9.888
   },
   {
     "scene": "18-eczema",
     "kind": "w",
-    "word": "against",
+    "word": "performed",
     "occurrence": 1,
-    "seconds": 13.568
+    "seconds": 9.888
+  },
+  {
+    "scene": "18-eczema",
+    "kind": "w",
+    "word": "performed",
+    "occurrence": 1,
+    "seconds": 9.888
+  },
+  {
+    "scene": "18-eczema",
+    "kind": "w",
+    "word": "performed",
+    "occurrence": 1,
+    "seconds": 9.888
+  },
+  {
+    "scene": "18-eczema",
+    "kind": "w",
+    "word": "performed",
+    "occurrence": 1,
+    "seconds": 9.888
+  },
+  {
+    "scene": "18-eczema",
+    "kind": "w",
+    "word": "performed",
+    "occurrence": 1,
+    "seconds": 9.888
   },
   {
     "scene": "20-twelve",

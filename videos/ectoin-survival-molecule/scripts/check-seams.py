@@ -154,13 +154,22 @@ def check_gaps_render(scenes, mp4):
                "-f", "null", "-")
         m = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r.stderr)
         gap_db = float(m.group(1)) if m and m.group(1) != "-inf" else -99.0
-        narr_start = max(0.0, gap_start - 1.0)
-        r2 = sh("ffmpeg", "-nostdin", "-ss", f"{narr_start:.3f}", "-t", "1.0",
-                "-i", str(mp4), "-af",
-                "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
-                "-f", "null", "-")
-        m2 = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r2.stderr)
-        narr_db = float(m2.group(1)) if m2 and m2.group(1) != "-inf" else -99.0
+        # REPRESENTATIVE narration, not "the second before the gap". That window
+        # is only narration if the scene ends on a run of speech, and after the
+        # 2026-09-05 pass authored rests inside scenes it often lands in one:
+        # 04-extremolyte measured -36.8 dB there, QUIETER than its own gap, and
+        # six boundaries failed on a reference that was itself silence. The
+        # loudest 0.5s in the preceding 3s is speech wherever speech exists.
+        narr_db = -99.0
+        for k in range(6):
+            w0 = max(0.0, gap_start - 0.5 * (k + 1))
+            r2 = sh("ffmpeg", "-nostdin", "-ss", f"{w0:.3f}", "-t", "0.5",
+                    "-i", str(mp4), "-af",
+                    "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
+                    "-f", "null", "-")
+            m2 = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r2.stderr)
+            if m2 and m2.group(1) != "-inf":
+                narr_db = max(narr_db, float(m2.group(1)))
         ok = (narr_db - gap_db) >= 12.0
         if not ok:
             hard.append((s.cid, nxt.cid, gap_db, narr_db))

@@ -337,8 +337,20 @@
   // the qualifier slides up over the result -- the honest beat, and a big one
   tl.set('#pr-q', { opacity:0, y:90 }, 0);
   tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, 8.770-0.35);
-  // and it settles across the rest of the line rather than stopping dead on it
-  tl.to('#pr-q', { y:-10, duration:13.513-(8.770+0.30), ease:'none' },
+  // The arms hold the result while the qualifier is still coming: a slow,
+  // continuous settle from the grid collapse to the qualifier's entrance. The
+  // re-paced scene left 4.2s in there with nothing above the motion gate's
+  // threshold, and a paper-ground scene has no plate drift to fall back on.
+  // Sized against the gate's own sampling, not by eye: it samples at 4fps and
+   // thresholds the frame-average |luma delta| at 0.35, so a drift has to move
+   // enough per 0.25s STEP -- a travel that reads fine at 0.5s intervals is half
+   // that per step and lands under the floor.
+  tl.to('.arms', { y:-40, scale:1.028, transformOrigin:'50% 50%',
+                   duration:8.770-3.852-0.35, ease:'none' },
+        3.852+0.30);
+  // and the qualifier settles across the rest of the line rather than stopping
+  // dead on it
+  tl.to('#pr-q', { y:-26, duration:13.513-(8.770+0.30), ease:'none' },
         8.770+0.30);
   tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:13.513, ease:'none' }, 0.000);
 

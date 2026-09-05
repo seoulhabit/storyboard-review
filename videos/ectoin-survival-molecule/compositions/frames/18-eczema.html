@@ -333,10 +333,16 @@
                     ease:'power2.inOut' }, 9.888-0.40);
   tl.to('#ez-f2', { scaleY:0.76, backgroundColor:'#59B8AE', duration:2.10,
                     ease:'power2.inOut' }, 9.888-0.40);
-  // and the pair settles across "and was well tolerated" rather than stopping
-  // dead on "tested against".
-  tl.to(['#ez-f1','#ez-f2'], { scaleY:0.80, duration:17.634-13.568, ease:'none' },
-        13.568);
+  // The bars keep rising, slowly, from the moment they converge to the end of
+  // the line -- one continuous move rather than a 0.04 scale nudge that the
+  // motion gate cannot see. 18-eczema left 5.5s static after the re-pace.
+  tl.to(['#ez-f1','#ez-f2'], { scaleY:0.96, duration:17.634-9.888-0.4,
+                               ease:'none' }, 9.888+1.70);
+  tl.to('#ez-prog', { scaleX:1.10, transformOrigin:'0% 50%',
+                      duration:17.634-9.888-0.4, ease:'none' },
+        9.888+1.70);
+  tl.to('#ez-h', { y:-30, duration:17.634-9.888-0.4, ease:'none' },
+        9.888+1.70);
   tl.to('#ez-prog', { backgroundColor:'#4F6B52', duration:1.20 }, 10.60);
   tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:17.634, ease:'none' }, 0.000);
 

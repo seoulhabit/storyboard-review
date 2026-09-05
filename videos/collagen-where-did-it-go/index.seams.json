@@ -65,17 +65,17 @@
   "from": "10-evidence",
   "into": "14-hierarchy",
   "kind": "invert",
-  "seam": 109.798,
+  "seam": 111.598,
   "d": 0.6,
   "gap": 0.55,
   "iris_at": null,
-  "first_word": 110.248
+  "first_word": 112.048
  },
  {
   "from": "14-hierarchy",
   "into": "16-end",
   "kind": "curtain",
-  "seam": 129.864,
+  "seam": 131.664,
   "d": 0.9,
   "gap": 1.1,
   "iris_at": null,

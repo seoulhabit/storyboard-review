@@ -526,7 +526,12 @@
     // the camera DROPS BELOW the polished surface while "smoother" is still being
     // said: down there the cut hatch is still cut. The animation makes the
     // "not structural" case before the verdict card states it.
-    tl.to("#world", { scale:1.18, x:83, y:-76, duration:0.9, ease:EASE.camera }, 16.338 - 0.1);
+    // Animation item 6 (review): routine camera scale kept near 1.03-1.08.
+    // Was 1.18 (x:83, y:-76), which cropped 215px off each side -- the exact
+    // defect DELIVERY.md records, where .worldclip removes the pixels before
+    // the safe-area gate ever sees them. Pan scaled down with it (0.18->0.08
+    // extra zoom, x/y scaled by the same ratio) to keep the same framing.
+    tl.to("#world", { scale:1.08, x:37, y:-34, duration:0.9, ease:EASE.camera }, 16.338 - 0.1);
     // the dive crops 215px off each side, which sliced "EPIDERMIS" mid-word. The
     // labels leave instead: we have gone past the layer they name.
     tl.to(".bar-label", { opacity:0, duration:0.45, ease:EASE.exit }, 16.338 - 0.1);

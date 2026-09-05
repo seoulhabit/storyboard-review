@@ -13,6 +13,7 @@ finding before the next project rebuilds the same check from scratch.
 | [check-contrast-pixels.py](check-contrast-pixels.py) | `check-contrast-pixels.py` | Measures text contrast from **rendered pixels** — crop, Otsu-split into a dark and a light cluster, take each cluster's median, compute the WCAG ratio. Catches the two classes a stylesheet-reading check structurally cannot: a colour the compositor changes (a plate, a scrim, an opacity tween, a rule that overrides the declared value at render time) and an element sampled while it is clipped. **Hard gate.** Probes come from a JSON file, timed by `cid + offset` so the table survives a re-time. |
 | [check-contrast-tokens.py](check-contrast-tokens.py) | `check-contrast-tokens.py` | The source-side half of the same pair: every declared token pair against the ground it actually lands on. Catches a token that clears its floor on one ground and fails on another — `--ink-2` is 4.89:1 on paper and 3.44:1 on ink. Pairs come from a JSON file and may carry an `expected FAIL` note, which inverts the assertion so the gate fails if a documented-bad pair ever starts passing. **Hard gate**, runs with no render. |
 | [check-captions.py](check-captions.py) | `check-captions.py` | Gates the **shipped** `.srt`/`.vtt` rather than the builder's own output: reading speed (CPS), line length and count, minimum duration, overlaps, per-cue placement settings, non-speech cue cap, and case-sensitive term spelling from a JSON list. The spelling check is the one worth having — an ASR-derived track substitutes its best guess for exactly the vocabulary a technical channel depends on, and a case-insensitive check passes all of it. **Hard gate** unless `--advisory`. |
+| [check-motion-gaps.py](check-motion-gaps.py) | `check-motion-gaps.py` | Retention rule on rendered pixels: no shot sits still longer than `--open` seconds early or `--rest` seconds later. A step counts as motion when the frame-average |luma delta| clears `--eps` **or** any cell of a 6x4 grid clears `--eps-local` — the frame average alone asks the wrong question, because a sun rising or a column of tiles falling is unmistakable on screen and moves a small share of the pixels. Three ways to declare a deliberate hold, all of which print what they dropped. **Hard gate** unless `--advisory`. |
 
 **Provenance.** Built for `videos/peeling-not-progress`'s round-6 safe-area
 fix (2026-08-31) — an external QC report flagged content near the Shorts UI
@@ -773,3 +774,63 @@ because a silenced gate passes a one-sided test.
 **Status: validated against two real projects.** Copy into a new project's
 `scripts/` and wire into `package.json`, per this directory's copy-don't-import
 convention.
+
+---
+
+## check-motion-gaps.py
+
+**Provenance.** Both accessibility passes of the 2026-09-05 harvest carried a
+copy, diverged in different directions, and each had the half the other needed.
+
+From `videos/collagen-where-did-it-go`: **the grid test**, which is the
+substantive idea. The original gate thresholded the frame-average |luma delta|
+alone, and that is the wrong question — a sun rising through frame, six
+fragments drifting apart, twelve tiles sinking in a stagger each move a small
+share of the pixels and average to 0.14–0.34 against a 0.35 threshold. Five
+spans flagged that way on a probe render carried continuous motion in every
+sample. `--eps-local`'s default was derived from that render, not picked:
+genuinely identical frames measure a per-cell max of 0.00–0.16, spans with
+visible motion measure 0.39–1.05, and 0.9 sits in the gap. Also
+`--exempt-window` and `--exempt-last`.
+
+From `videos/ectoin-survival-molecule`: **`--exempt-marker`**, which derives the
+exempt point from the first scene whose composition declares a marker (its
+end-screen reserve token) rather than from scene order. That project reserves
+across *two* closing scenes, and `--exempt-last` would have exempted only the
+final one and failed the scene before it. Also the habit of printing every
+exempted run — `--exempt-last` used to `continue` silently, and an exemption
+nobody can see is one nobody can audit.
+
+**A defect both copies had, in different shapes.** Given a render path that does
+not exist, one printed `0 steps @ 4fps ... PASS (0 static runs over limit)` and
+exited **0**; the other raised a `ValueError` out of a reshape. A gate that
+reports clean on no data is worse than no gate, and a traceback is not a
+verdict. Reading fewer than two frames is now a hard, explained failure.
+
+**Field contract.** `python3 check-motion-gaps.py <render.mp4> [--fps 4]
+[--eps 0.35] [--eps-local 0.9] [--open 2.0] [--open-until 31.0] [--rest 4.0]
+[--exempt-window START-END]… [--exempt-last | --exempt-marker STRING]
+[--project-root DIR] [--advisory]`. The exemption flags read the project's built
+`index.html`, matching on attributes rather than tag-opening bytes — this repo's
+preview server injects `data-hf-id` as the first attribute on every tag, and a
+pattern anchored to a tag's opening silently stops matching.
+
+**Sizing authored motion against this gate.** It steps at `--fps` and thresholds
+the delta between *consecutive* steps. A drift that reads as continuous at
+half-second intervals is half that per step and lands under the floor — on one
+project, authored motion was added, measured at 0.5s spacing, and still failed
+here; it took measuring at the gate's own 0.25s step to size it.
+
+**Controls.** `test-motion-gaps-controls.py`, eight of them, each a reject/accept
+pair, driven through the CLI. The pair that matters asserts a small block
+creeping across a still frame is **accepted**, and that the same fixture with
+`--eps-local 999` (the grid disabled) is **rejected** — so the control fails if
+anyone removes the grid test. Its fixture sizes are measured, not eyeballed:
+0.177 frame-average against a 0.35 threshold, 3.74 per-cell against 0.9. The
+first version of that fixture used a 26px block and measured 0.755
+frame-average, cleared both tests, demonstrated nothing, and made a working gate
+look broken.
+
+**Status: validated against two real projects,** reproducing each one's existing
+verdict exactly under its own flags — ectoin's closing-hold exemption and
+collagen's four reviewed windows — and adopted by both.

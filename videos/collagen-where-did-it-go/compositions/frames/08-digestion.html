@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="08-digestion"
-       data-width="1920" data-height="1080" data-duration="20.832">
+       data-width="1920" data-height="1080" data-duration="21.862">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -445,31 +445,31 @@
 
     // ---- unit 8: swallow, fragment, no facial delivery ---------------------------
     tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:0.9, ease:EASE.camera }, 0);
-    tl.to("#scoop", { rotation:-22, svgOrigin:"250 540", duration:0.5, ease:EASE.swap }, 0.337);
-    drawIn(tl, "#tract", 0.982 - 0.2, 1.6, 0, EASE.wipe);
-    pathFollow(tl, mol, tract, 0.982, 2.2, "power1.inOut", { to:0.62, rotate:true });
+    tl.to("#scoop", { rotation:-22, svgOrigin:"250 540", duration:0.5, ease:EASE.swap }, 0.381);
+    drawIn(tl, "#tract", 1.539 - 0.2, 1.6, 0, EASE.wipe);
+    pathFollow(tl, mol, tract, 1.539, 2.2, "power1.inOut", { to:0.62, rotate:true });
     // the stomach: the molecule breaks into six segments, which become dots
-    tl.fromTo("#stomach-p-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 3.180 - 0.1);
+    tl.fromTo("#stomach-p-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 3.737 - 0.1);
     for (var s = 0; s < 6; s++) {
       tl.fromTo("#mol-seg-" + s, { x:0, y:0, rotation:0 }, { x:(s % 2 ? 1 : -1) * (20 + 8 * s), y:-40 + 14 * s,
-                rotation:(s % 2 ? 35 : -35), duration:0.45, ease:EASE.slam }, 3.180 + s * 0.05);
-      tl.to("#mol-seg-" + s, { scale:0.25, opacity:0, duration:0.3, ease:EASE.swap }, 4.509 + s * 0.06);
+                rotation:(s % 2 ? 35 : -35), duration:0.45, ease:EASE.slam }, 3.737 + s * 0.05);
+      tl.to("#mol-seg-" + s, { scale:0.25, opacity:0, duration:0.3, ease:EASE.swap }, 5.066 + s * 0.06);
       // the fragment CONDENSES out of the segment that just flew apart
       tl.fromTo("#fr-" + s, { opacity:1, scale:0, transformOrigin:"50% 50%" },
-                { scale:1, duration:0.3, ease:EASE.slam }, 4.509 + s * 0.06 + 0.1);
+                { scale:1, duration:0.3, ease:EASE.slam }, 5.066 + s * 0.06 + 0.1);
     }
     // the fragments drift apart while "peptides and amino acids" is said: they
     // are loose pieces now, and 2.3s of identical frames sat here otherwise
     var SPREAD = [[-34,-18],[-16,-26],[12,-22],[30,-10],[-6,10],[22,16]];
     dots.forEach(function (d, i) {
-      tl.to(d, { x:SPREAD[i][0], y:SPREAD[i][1], duration:1.4, ease:EASE.hold }, 5.296 - 0.5);
+      tl.to(d, { x:SPREAD[i][0], y:SPREAD[i][1], duration:1.4, ease:EASE.hold }, 5.853 - 0.5);
     });
-    tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 6.555 - 0.3);
-    tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 6.555 - 0.2);
-    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 7.805);
+    tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 7.150 - 0.3);
+    tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 7.150 - 0.2);
+    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 8.581);
     // the struck route leaves the frame: it is closed, and the 1.9s between
     // the strike and the dots setting off held completely still
-    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, 8.348 + 0.15);
+    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, 9.203 + 0.15);
 
     // ---- unit 9: the body decides where the pieces go -----------------------------
     // "some pieces may be absorbed / certain peptides act as signals" was cut
@@ -478,20 +478,20 @@
     // stomach-to-branch dispatch anchors on the unit's own first/near-first
     // words instead of the removed hedge sentence.
     dots.forEach(function (d, i) {
-      pathFollow(tl, d, tract, 8.648 + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
+      pathFollow(tl, d, tract, 9.503 + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
     });   // this call owns each dot's frame-zero pose; the branches below pass set:false
-    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 8.648 + 0.3);
+    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 9.503 + 0.3);
     // reframe onto the distribution map: the branches, not the gut, are the subject now
-    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 9.116);
-    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 9.116 + 0.2, 0.7, 0.12, EASE.wipe);
+    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 9.971);
+    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 9.971 + 0.2, 0.7, 0.12, EASE.wipe);
     ["skin", "joints", "tendons", "other"].forEach(function (k, i) {
       tl.fromTo("#d-" + k, { opacity:0, x:26 }, { opacity:1, x:0, duration:0.4, ease:EASE.arrive },
-                9.116 + 0.35 + i * 0.12);
+                9.971 + 0.35 + i * 0.12);
     });
-    reveal(tl, "#decides", 9.324);
-    tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 9.324);
+    reveal(tl, "#decides", 10.179);
+    tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 10.179);
     // dispatch: fixed assignment -- skin gets ONE dot, joints two, tendons two, other one
-    var GO = [["skin", [0], 11.425], ["joints", [1, 2], 11.449], ["tendons", [3, 4], 11.622], ["other", [5], 12.751]];
+    var GO = [["skin", [0], 12.280], ["joints", [1, 2], 12.304], ["tendons", [3, 4], 12.477], ["other", [5], 13.606]];
     GO.forEach(function (g) {
       var br = document.getElementById("br-" + g[0]);
       g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.7, "power1.inOut", { ox:q62.x, oy:q62.y, set:false }); });
@@ -499,32 +499,32 @@
       // the panel is knocked as the dot lands -- delivery is felt, not labelled
       tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.6);
     });
-    // was 15.965-0.3: the destination dots finish arriving by
+    // was 16.952-0.3: the destination dots finish arriving by
     // ~71.9s and "scaffolding." isn't said until 74.2s, leaving ~1.9s of
     // true stillness (measured on the render: t=72.0-74.0s pixel-identical).
     // Starting the camera-home leg on "urgent." fills that gap with the
     // same motion, just earlier, rather than adding a new one.
-    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 14.641 - 0.3);
-    reveal(tl, "#scaff", 15.965);
-    tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 15.965);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 15.496 - 0.3);
+    reveal(tl, "#scaff", 16.952);
+    tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 16.952);
     // "It got A BOX OF spare parts" -> "It got spare parts instead."; the
     // crate payoff now lands on "parts" rather than the removed "box".
-    reveal(tl, "#crate", 17.266);
-    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 17.266);
-    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 17.266 + 0.1);
+    reveal(tl, "#crate", 18.296);
+    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 18.296);
+    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 18.296 + 0.1);
     // "Trials do point to a modest benefit" -- the partial evidence payoff
     // (added in the Phase 1 narration trim) had no visual event of its own,
     // leaving 76.3-78.4s dead (measured: t=76.0-78.5s pixel-identical on the
     // render). The freed-up stomach-p space hosts a small foreshadow of the
     // evidence section this line sets up.
-    reveal(tl, "#benefit-teaser", 18.071);
-    tl.fromTo("#benefit-teaser-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 18.071);
-    drawIn(tl, "#benefit-line,#benefit-head", 18.071 + 0.15, 0.5, 0.1, EASE.wipe);
+    reveal(tl, "#benefit-teaser", 19.101);
+    tl.fromTo("#benefit-teaser-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 19.101);
+    drawIn(tl, "#benefit-line,#benefit-head", 19.101 + 0.15, 0.5, 0.1, EASE.wipe);
 
     // departure: push under the invert wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 20.232);
+    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 21.262);
 
-    tl.to({}, { duration: 20.832 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 21.862 }, 0);   // full-span anchor -- always last
     window.__timelines["08-digestion"] = tl;
   </script>
 </template>

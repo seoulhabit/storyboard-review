@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="03-building"
-       data-width="1920" data-height="1080" data-duration="25.275">
+       data-width="1920" data-height="1080" data-duration="25.827">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -452,43 +452,43 @@
 
     // ---- unit 5: the boundary ----------------------------------------------------
     tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 16.975 - 0.1);
-    drawIn(tl, "#shield", 18.763 - 0.1, 0.9, 0, EASE.wipe);
-    tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, 19.748);
+    drawIn(tl, "#shield", 19.047 - 0.1, 0.9, 0, EASE.wipe);
+    tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, 20.032);
     // the boundary CLOSES around the building as it is named -- 2.2s of
     // identical frames sat here while the shield was merely present
     tl.fromTo(["#shield", "#shield-fill"], { scale:1.09, transformOrigin:"50% 50%" },
-              { scale:1, duration:1.1, ease:EASE.arrive }, 19.902 - 0.2);
+              { scale:1, duration:1.1, ease:EASE.arrive }, 20.186 - 0.2);
     // the rays STOP at the boundary; the sun band cools
     gsap.utils.toArray(".ray").forEach(function (r) {
       var L = r.getTotalLength();
-      tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, 19.748 + 0.1);
+      tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, 20.032 + 0.1);
     });
     // the sky cools as the boundary is drawn (the only transform in a stretch of
     // stroke-dashoffset reveals, which a bounding-box motion tracker cannot see)
-    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.exit }, 18.763 - 0.1);
-    tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, 19.748 + 0.1);
-    reveal(tl, "#preserve", 21.916);
-    tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 21.916);
-    tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 21.916);
+    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.exit }, 19.047 - 0.1);
+    tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, 20.032 + 0.1);
+    reveal(tl, "#preserve", 22.200);
+    tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 22.200);
+    tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 22.200);
     // PRESERVING holds: the shield takes one pulse as it is named, and the camera
     // pulls back to take in the whole protected building -- the reframe the line
     // asks for, and the only bounding-box motion in a stretch whose other beats
     // are all stroke-dashoffset (invisible to the motion checker, which found
     // 2.32s frozen here before this leg existed).
-    tl.to("#shield-fill", { opacity:0.42, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }, 21.916 + 0.1);
-    tl.to("#world", { scale:0.955, duration:1.0, ease:EASE.camera }, 21.916 + 0.4);
+    tl.to("#shield-fill", { opacity:0.42, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }, 22.200 + 0.1);
+    tl.to("#world", { scale:0.955, duration:1.0, ease:EASE.camera }, 22.200 + 0.4);
     // REPLACING is tried, and fails: a cut beam starts to redraw and falls back.
     // The tail of the file is this attempt, not an idle drift.
-    tl.fromTo("#beam-4a", { strokeDashoffset:640 }, { strokeDashoffset:430, duration:0.45, ease:EASE.arrive }, 23.369 - 0.1);
-    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, 23.369 + 0.3);
-    tl.to("#bwrap", { y:14, duration:0.45, ease:EASE.swap }, 23.369 + 0.3);
-    tl.to("#world", { scale:1, duration:0.55, ease:EASE.camera }, 23.369 + 0.4);
-    tl.to("#bwrap", { y:9, duration:0.4, ease:EASE.arrive }, 24.203);
+    tl.fromTo("#beam-4a", { strokeDashoffset:640 }, { strokeDashoffset:430, duration:0.45, ease:EASE.arrive }, 23.794 - 0.1);
+    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, 23.794 + 0.3);
+    tl.to("#bwrap", { y:14, duration:0.45, ease:EASE.swap }, 23.794 + 0.3);
+    tl.to("#world", { scale:1, duration:0.55, ease:EASE.camera }, 23.794 + 0.4);
+    tl.to("#bwrap", { y:9, duration:0.4, ease:EASE.arrive }, 24.709);
 
     // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 24.725);
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 25.277);
 
-    tl.to({}, { duration: 25.275 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 25.827 }, 0);   // full-span anchor -- always last
     window.__timelines["03-building"] = tl;
   </script>
 </template>

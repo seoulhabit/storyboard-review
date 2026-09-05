@@ -63,6 +63,13 @@ def file_10_evidence(fspan, fctx):
     # then overlapped #tag-note below it -- found on the rendered frame at
     # t=92.5s, not readable from source. "trials / pooled in 2025" is 2 lines
     # again, restoring the clearance #tag-note's top:132px assumes.
+    #
+    # #tag-note itself also wrapped ("tag pattern illustrative" needs more
+    # width than this 40px font leaves it), and its own wrapped 2nd line
+    # extended into the tile grid starting at canvas y=176 -- found the same
+    # way, on a later rendered frame (t=99.5s, after a later pace-correction
+    # pass shifted what was visible when). Shortened to fit one line; there
+    # is no vertical room here for a 2-line #tag-note at this font size.
     tags = "".join(f'<div class="tr" id="tr-{i}"><span class="tr-tag" id="tag-{i}"></span></div>' for i in range(23))
     body = f"""
       <div class="stage">
@@ -70,7 +77,7 @@ def file_10_evidence(fspan, fctx):
         <div class="abs" style="{abs_(0, 0, 600, 150)}">
           <p class="ev-n" id="ev-n">0</p>
           <p class="ev-n-l" id="ev-n-l" style="position:absolute;left:200px;top:34px;">trials<br>pooled in 2025</p>
-          <p class="ev-n-l" id="tag-note" style="position:absolute;left:0;top:132px;opacity:.85;">tag pattern illustrative</p>
+          <p class="ev-n-l" id="tag-note" style="position:absolute;left:0;top:132px;opacity:.85;">tags illustrative</p>
         </div>
         {panel("caveat-panel", "dim", kt("caveat", "small · short · industry funded", "on-ink"), abs_(620, 0, 1108, 150))}
         <div class="grid abs" id="grid" style="{abs_(0, 176, 1040, 464)}">{tags}</div>

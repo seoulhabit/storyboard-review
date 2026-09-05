@@ -177,10 +177,20 @@ def main():
             elif i + 1 < len(ext) and ext[i + 1][0] == ui and would_fit(g, ext[i + 1][3]):
                 nui, nstart, nend, ng = ext[i + 1]
                 cues.append([start, max(nend, start + MIN_CUE_S), g + ng]); i += 2; continue
+            elif cues and cues[-1][2][-1]["cid"] == g[0]["cid"] and would_fit(cues[-1][2], g):
+                # No forward rescue available -- typically the LAST cue of a
+                # unit, with only a transition's fixed gap ahead of it, not
+                # real borrowable silence, and no next same-unit cue to merge
+                # forward into. Merge BACKWARD into the previous, same-unit
+                # cue instead of shipping a sub-floor card (e.g. a single
+                # trailing word like "face." before an iris cut).
+                cues[-1][1] = max(end, cues[-1][0] + MIN_CUE_S)
+                cues[-1][2] = cues[-1][2] + g
+                i += 1; continue
             # else: genuinely too short even after every rescue tried above
             # (an isolated short cue at a unit boundary with no same-unit
-            # neighbour to merge into) -- kept as-is and reported, rather
-            # than merged across a scene change.
+            # neighbour on either side to merge into) -- kept as-is and
+            # reported, rather than merged across a scene change.
         cues.append([start, end, g]); i += 1
 
     cues = [[a, b, wrap(caption_text([w["text"] for w in g])), g] for a, b, g in cues]

@@ -162,28 +162,28 @@
  ],
  "sentences": [
   {
-   "start": 0.08,
-   "end": 3.08,
+   "start": 0.089,
+   "end": 3.422,
    "text": "But do not buy it off the front of the bottle."
   },
   {
-   "start": 3.08,
-   "end": 4.154,
+   "start": 3.422,
+   "end": 5.066,
    "text": "Turn it around."
   },
   {
-   "start": 4.154,
-   "end": 6.274,
+   "start": 5.066,
+   "end": 8.271,
    "text": "Plenty of brands do print a number."
   },
   {
-   "start": 6.836,
-   "end": 8.668,
+   "start": 9.246,
+   "end": 11.281,
    "text": "Paula's Choice says 7%."
   },
   {
-   "start": 8.701,
-   "end": 11.579,
+   "start": 11.658,
+   "end": 14.856,
    "text": "The Ordinary lists 2% Ectoin."
   }
  ],

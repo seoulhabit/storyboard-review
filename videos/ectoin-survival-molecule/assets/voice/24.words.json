@@ -192,23 +192,23 @@
  ],
  "sentences": [
   {
-   "start": 0.1,
-   "end": 7.2,
+   "start": 0.111,
+   "end": 8.0,
    "text": "The brand Abib promotes Ectoin Panthenol 11%, but that 11% combines the two ingredients."
   },
   {
-   "start": 7.491,
-   "end": 9.92,
+   "start": 8.673,
+   "end": 11.372,
    "text": "Panthenol is second on the ingredient list."
   },
   {
-   "start": 9.92,
-   "end": 11.594,
+   "start": 11.372,
+   "end": 13.532,
    "text": "Ectoin is 11th."
   },
   {
-   "start": 11.594,
-   "end": 15.082,
+   "start": 13.532,
+   "end": 17.658,
    "text": "The big number on the front is not always the Ectoin number."
   }
  ],

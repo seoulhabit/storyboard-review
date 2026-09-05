@@ -42,6 +42,12 @@ INTRA_GAP_OVERRIDES = {"20-twelve": 0.45, "21-verdict": 0.40, "19-limits": 0.35}
 END_TAIL = 1.50
 FADE_IN = 0.06
 FADE_OUT = 0.08
+# How far a stored sentence span may sit from the word it was cut from before
+# Ctx.sent() calls the manifest inconsistent. Both writers round times to 3
+# decimals and copy sentence ends verbatim off a word, so agreement is exact;
+# 10ms is slack for rounding only, and sits far under this project's ~400ms
+# mean word spacing, so it cannot accidentally accept a shifted span.
+SENT_TOL = 0.010
 
 ORDER = [cid for cid, _ in LINES]
 
@@ -144,7 +150,46 @@ class Ctx:
         return self.scene.dur
 
     def sent(self, i):
-        return self._rel(self.scene.sentences[i]["start"])
+        """The i-th sentence's start, on this scene's own timeline.
+
+        UNLIKE @w/@we/@first/@last, this reads the manifest's `sentences`
+        array, which is STORED derived data rather than the words themselves.
+        A pass that rewrites `words` and forgets `sentences` leaves spans
+        describing audio that no longer exists, and because @sent() is bound
+        by no scene spec today, nothing would notice: scripts/repace_vo.py
+        time-stretched nine scenes on 2026-09-05 and left their sentence spans
+        on the pre-stretch clock, and every gate in the project stayed green.
+        The first spec to reach for @sent() would have bound silently to times
+        that are not in the audio. So this checks before it answers.
+
+        A sentence is cut out of the word list -- its span IS some word's start
+        and some (later) word's end -- so agreement is exact by construction,
+        and SENT_TOL only absorbs rounding. Both ends are checked because
+        start alone is not enough: in 29-cta, whose single authored rest landed
+        on a sentence boundary, every stale sentence still started on a word
+        and only the ends gave the staleness away.
+        """
+        if not 0 <= i < len(self.scene.sentences):
+            raise SystemExit(
+                f"@sent({i}) is out of range in scene {self.scene.cid}, which "
+                f"has {len(self.scene.sentences)} sentence(s): "
+                f"{[s['text'] for s in self.scene.sentences]}")
+        s = self.scene.sentences[i]
+        for field in ("start", "end"):
+            t = s[field]
+            if not any(abs(w[field] - t) <= SENT_TOL for w in self.scene.words):
+                raise SystemExit(
+                    f"scene {self.scene.cid}: @sent({i}) reads a sentence span "
+                    f"no word matches -- {field}={t:.3f}s is not within "
+                    f"{SENT_TOL * 1000:.0f}ms of any word's {field} "
+                    f"({self.scene.words[0]['start']:.3f}-"
+                    f"{self.scene.words[-1]['end']:.3f}s of speech).\n"
+                    f"  sentence {i}: {s['text']!r}\n"
+                    f"  assets/voice/{self.scene.n:02d}.words.json has words and "
+                    f"sentences on different clocks -- re-run "
+                    f"scripts/repace_vo.py (or gen_vo.py cut) to rebuild both "
+                    f"together. Do NOT hand-edit the times.")
+        return self._rel(s["start"])
 
 
 def walk():

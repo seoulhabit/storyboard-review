@@ -13,7 +13,8 @@ WHAT IT DOES, per scene:
   * `anullsrc` silence inserted at authored rest points, which atempo never
     touches -- so a 0.5s rest is 0.5s, not 0.5/T,
   * a rewritten NN.words.json whose times are CONSTRUCTED from the same plan the
-    ffmpeg graph executes, never remapped afterwards.
+    ffmpeg graph executes, never remapped afterwards -- BOTH arrays it stores,
+    `words` and the `sentences` derived from them (see resentence()).
 
 THE SEGMENT PIN is load-bearing and is ported from
 videos/collagen-where-did-it-go/scripts/gen_vo.py:829-868. atempo's output is not
@@ -40,6 +41,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vo_lines import LINES, TEXT, SLOWED
+# The manifest's `sentences` array is authored by gen_vo.py's cut; re-deriving
+# it here with the SAME function is what keeps a re-paced manifest's sentence
+# split identical to the one the cut produced. See resentence().
+from gen_vo import sentences_from
 
 VOICE = ROOT / "assets" / "voice"
 ORIG = VOICE / "_orig"
@@ -199,6 +204,41 @@ def plan(cid, wav, man, tempo, rests):
     return segs, new_words, round(cursor, 3)
 
 
+def resentence(cid, man, new_words):
+    """Sentence spans re-derived from the REWRITTEN words.
+
+    A manifest stores two views of the same read: `words`, and the `sentences`
+    that gen_vo.py's cut split off them at terminal punctuation. The second is
+    derived, but it is STORED, and every consumer reads it rather than
+    recomputing it -- so rewriting `words` and leaving `sentences` alone leaves
+    spans describing audio that no longer exists.
+
+    That is not hypothetical: this script did exactly that until 2026-09-05,
+    and nothing anywhere failed, because the only reader of the array is
+    timing.Ctx.sent() and no scene spec binds @sent(i). Nine manifests carried
+    pre-stretch spans -- 17-preference's "That is a real result." (five words)
+    read as 0.21s long, and 17's words ran 1.4s past the end of its own last
+    sentence. The first spec to reach for @sent() would have bound silently to
+    times that are not in the audio.
+
+    REUSE, NOT REIMPLEMENTATION. sentences_from() is the function that authored
+    these arrays in the first place, so the split cannot drift between the tool
+    that writes a manifest and the tool that rewrites it. What changes here is
+    the clock, never the read: the sentence TEXTS have to come back identical,
+    and if they do not, the words themselves moved -- which is not something a
+    re-pace is allowed to do -- so that is a hard stop rather than a warning.
+    """
+    sents = sentences_from(new_words)
+    was = [s["text"] for s in man["sentences"]]
+    now = [s["text"] for s in sents]
+    if was != now:
+        raise SystemExit(
+            f"{cid}: re-derived sentences do not match the cut's own -- the "
+            f"word list has changed under this script, not just its timing.\n"
+            f"  cut:      {was}\n  re-paced: {now}")
+    return sents
+
+
 def build(wav, segs, tempo, out):
     parts, labels = [], []
     for k, item in enumerate(segs):
@@ -262,9 +302,12 @@ def main():
         segs, new_words, total = plan(cid, wav, man, tempo, rests)
         now = wpm_of(cid, new_words)
         n = scene_n(cid)
+        # Derived alongside the plan, not inside `if not report`, so --report
+        # exercises the same consistency stop a real run does.
+        new_sents = resentence(cid, man, new_words)
         if not report:
             build(wav, segs, tempo, VOICE / f"{n:02d}.wav")
-            out = dict(man, words=new_words, wpm=now,
+            out = dict(man, words=new_words, sentences=new_sents, wpm=now,
                        repaced={"tempo": tempo, "rests": rests})
             (VOICE / f"{n:02d}.words.json").write_text(json.dumps(out, indent=1))
         print(f"  {cid:16s} {tempo:5.2f} {len(rests):5d}  {was:6.1f} -> {now:6.1f}   "

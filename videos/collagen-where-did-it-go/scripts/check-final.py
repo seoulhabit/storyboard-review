@@ -155,7 +155,12 @@ def main():
         "none short, none overlapping, first <= 0.30s, last within the render")
 
     blocks = manifest.get("blocks") or []
-    stats = [b for b in blocks if isinstance(b, dict) and b.get("stats")]
+    # stats_master is measured on the cut master, AFTER the per-block level and
+    # brightness match; `stats` describes the raw takes, i.e. what was corrected.
+    stats = [b for b in blocks if isinstance(b, dict) and b.get("stats_master")]
+    for b in stats:
+        b = b.setdefault("stats", b["stats_master"])
+    stats = [{"name": b["name"], "stats": b["stats_master"]} for b in stats]
     if len(stats) >= 2:
         # EVERY adjacent pair. With four blocks there are three seams, and the one
         # that separates is not necessarily the first.

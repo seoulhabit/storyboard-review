@@ -30,7 +30,17 @@
     "tilt": 7.5,
     "f0": 213.3,
     "duration": 51.004
-   }
+   },
+   "stats_master": {
+    "lufs": -21.2,
+    "centroid": 1894.2,
+    "tilt": 7.3,
+    "f0": 210.5
+   },
+   "span": [
+    0.1,
+    37.974
+   ]
   },
   {
    "name": "A2",
@@ -52,7 +62,17 @@
     "f0": 213.3,
     "duration": 50.173
    },
-   "master_seam": 38.324
+   "master_seam": 38.324,
+   "stats_master": {
+    "lufs": -21.3,
+    "centroid": 1924.3,
+    "tilt": 6.4,
+    "f0": 210.5
+   },
+   "span": [
+    38.324,
+    76.529
+   ]
   },
   {
    "name": "A3",
@@ -74,7 +94,17 @@
     "f0": 213.3,
     "duration": 41.135
    },
-   "master_seam": 77.079
+   "master_seam": 77.079,
+   "stats_master": {
+    "lufs": -21.3,
+    "centroid": 1825.6,
+    "tilt": 6.1,
+    "f0": 213.3
+   },
+   "span": [
+    77.079,
+    109.034
+   ]
   },
   {
    "name": "B",
@@ -94,7 +124,17 @@
     "f0": 207.8,
     "duration": 31.5
    },
-   "master_seam": 109.584
+   "master_seam": 109.584,
+   "stats_master": {
+    "lufs": -21.6,
+    "centroid": 1789.3,
+    "tilt": 6.2,
+    "f0": 207.8
+   },
+   "span": [
+    109.584,
+    129.594
+   ]
   }
  ],
  "words": [

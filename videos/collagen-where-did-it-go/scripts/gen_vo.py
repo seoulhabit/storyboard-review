@@ -219,6 +219,23 @@ def median_f0(p):
     return round(float(np.median(f0)), 1) if f0 else None
 
 
+def region_stats(path, start, dur):
+    """Timbre of one span of a finished file. A block's whole span is a fair
+    window; a four-second clip either side of a seam is not -- two differently
+    worded four-second windows of the SAME voice measured 22% apart at the
+    centroid here, which is a fact about the sentences, not the speaker."""
+    tmp = path.with_suffix(".region.wav")
+    r = sh("ffmpeg", "-y", "-nostdin", "-v", "error", "-i", str(path),
+           "-af", f"atrim=start={start:.3f}:duration={dur:.3f},asetpts=PTS-STARTPTS",
+           "-c:a", "pcm_s16le", str(tmp))
+    if r.returncode or not tmp.exists():
+        return {}
+    out = {"lufs": integrated_lufs(tmp), "centroid": spectral_centroid(tmp),
+           "tilt": band_tilt(tmp), "f0": median_f0(tmp)}
+    tmp.unlink(missing_ok=True)
+    return out
+
+
 def block_stats(wav, words):
     n = len(words)
     span = (words[-1]["end"] - words[0]["start"]) if n > 1 else 0.0
@@ -945,6 +962,24 @@ def cmd_cut(argv):
                "-t", "6", "-i", str(MASTER), str(qc / name))
             print(f"  block seam {blocks[i-1]['name']} -> {blocks[i]['name']} at {seam_at:.3f}s "
                   f"-> renders/qc/{name} (listen before shipping)")
+    # The numbers check-final asserts are measured on the MASTER, after the level
+    # and brightness match -- the raw-take numbers describe what was corrected,
+    # not what ships. Each block's own span is the window.
+    bounds = []
+    for i, b in enumerate(blocks):
+        first = next((w["start"] for w in master_words if w["cid"] == b["cids"][0]), None)
+        last = max((w["end"] for w in master_words if w["cid"] in b["cids"]), default=None)
+        bounds.append((first, last))
+    for i, (a, z) in enumerate(bounds):
+        if a is not None and z is not None and z - a > 2.0:
+            meta[i]["stats_master"] = region_stats(MASTER, a, z - a)
+            meta[i]["span"] = [round(a, 3), round(z, 3)]
+    print(f"  {'block':8s} {'master span':>16s} {'LUFS':>7s} {'centroid':>9s} {'tilt dB':>8s} {'F0 Hz':>7s}")
+    for i, b in enumerate(blocks):
+        st = meta[i].get("stats_master") or {}
+        sp = meta[i].get("span") or [0, 0]
+        print(f"  {b['name']:8s} {sp[0]:7.2f}-{sp[1]:7.2f} {st.get('lufs') or 0:7.1f} "
+              f"{st.get('centroid') or 0:9.1f} {st.get('tilt') or 0:8.2f} {st.get('f0') or 0:7.1f}")
     m = write_manifest(master_words, tempo, "blocks" if len(blocks) > 1 else "master", meta,
                        round(lufs, 1) if lufs is not None else None)
     _report(m, seq)

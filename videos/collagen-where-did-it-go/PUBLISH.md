@@ -30,7 +30,12 @@ trials, the benefit stopped showing up.
 This is not "collagen is a scam." It's a question of how it reaches you, and what
 the evidence survives.
 
-CHAPTERS_GO_HERE
+0:00 Where does it actually go?
+0:14 Your skin is a building
+0:38 Why the cream can't get in
+0:56 Your stomach doesn't do facial delivery
+1:17 The evidence plot twist
+1:49 What actually protects it
 
 SOURCES
 • Fisher GJ, Voorhees JJ. J Investig Dermatol Symp Proc. 1998;3(1):61-8. PMID 9732061

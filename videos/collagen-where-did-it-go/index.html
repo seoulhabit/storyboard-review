@@ -12,7 +12,7 @@
        ================================================================== -->
   
   <div id="root" data-composition-id="main" data-start="0"
-       data-duration="136.664" data-width="1920" data-height="1080"
+       data-duration="135.864" data-width="1920" data-height="1080"
        data-fps="30">
 
     <div id="scene-01-hook" class="scene clip" data-composition-id="01-hook"
@@ -37,30 +37,30 @@
          data-track-index="0"></div>
     <div id="scene-10-evidence" class="scene clip" data-composition-id="10-evidence"
          data-composition-src="compositions/frames/10-evidence.html"
-         data-start="78.502" data-duration="33.696"
+         data-start="78.502" data-duration="32.896"
          data-track-index="0"></div>
     <div id="scene-14-hierarchy" class="scene clip" data-composition-id="14-hierarchy"
          data-composition-src="compositions/frames/14-hierarchy.html"
-         data-start="111.598" data-duration="20.966"
+         data-start="110.798" data-duration="20.966"
          data-track-index="0"></div>
     <div id="scene-16-end" class="scene clip" data-composition-id="16-end"
          data-composition-src="compositions/frames/16-end.html"
-         data-start="131.664" data-duration="5.000"
+         data-start="130.864" data-duration="5.000"
          data-track-index="0"></div>
 
     <hf-audio-group id="voiceover" data-label="Voiceover" data-volume="1"
                     data-fx-chain='{"version":1,"nodes":[{"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},{"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.8,"q":1.2}},{"type":"compressor","id":"n3","label":"Even Out Loudness","params":{"threshold":-24,"ratio":4,"attack":5,"release":140,"knee":2,"makeup":3,"mix":1}},{"type":"peaking","id":"n4","label":"Add Clarity","params":{"frequency":3000,"gain":2.5,"q":1}},{"type":"peaking","id":"n5","label":"De-ess (fallback)","params":{"frequency":6500,"gain":-4,"q":3.5}},{"type":"limiter","id":"n6","label":"Peak Ceiling","params":{"limit":-9,"attack":0.05,"release":40,"level_out":0}}]}'>
       <audio id="vo-master" src="assets/voice/master.wav"
-             data-start="0.000" data-duration="131.876"
+             data-start="0.000" data-duration="131.076"
              data-track-index="10" data-volume="1.0"
              data-audio-group="voiceover"
-             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.06,"v":1.0},{"t":131.796,"v":1.0},{"t":131.876,"v":0}]}]}'></audio>
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.06,"v":1.0},{"t":130.996,"v":1.0},{"t":131.076,"v":0}]}]}'></audio>
     </hf-audio-group>
 
     <!-- Music bed, carved against the voiceover GROUP. -->
-    <audio id="bgm" src="assets/bgm/bed.mp3" data-start="0" data-duration="136.664"
+    <audio id="bgm" src="assets/bgm/bed.mp3" data-start="0" data-duration="135.864"
            data-track-index="20" data-volume="0.12"
-           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.25,"v":0.12},{"t":135.164,"v":0.12},{"t":136.664,"v":0}]}]}'
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.25,"v":0.12},{"t":134.364,"v":0.12},{"t":135.864,"v":0}]}]}'
            data-fx-carve='{"sources":["voiceover"],"strength":0.25}'></audio>
 
     <!-- one-shot SFX, own track, no carve -->
@@ -70,8 +70,8 @@
     <audio id="sfx-3" src="assets/sfx/fragment.wav" data-start="61.450" data-duration="0.500" data-track-index="21" data-volume="0.28"></audio>  <!-- molecule fragments -->
     <audio id="sfx-4" src="assets/sfx/citation-tick-trimmed.mp3" data-start="89.778" data-duration="0.500" data-track-index="21" data-volume="0.3"></audio>  <!-- 23 lands (the 2025 pooled n) -->
     <audio id="sfx-5" src="assets/sfx/filter.wav" data-start="93.622" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- industry-funded tiles drop -->
-    <audio id="sfx-6" src="assets/sfx/filter.wav" data-start="99.462" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- low-quality tiles drop -->
-    <audio id="sfx-7" src="assets/sfx/lock.wav" data-start="113.926" data-duration="0.300" data-track-index="21" data-volume="0.3"></audio>  <!-- sunscreen locks into the foundation -->
+    <audio id="sfx-6" src="assets/sfx/filter.wav" data-start="98.662" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- low-quality tiles drop -->
+    <audio id="sfx-7" src="assets/sfx/lock.wav" data-start="113.126" data-duration="0.300" data-track-index="21" data-volume="0.3"></audio>  <!-- sunscreen locks into the foundation -->
   </div>
 
   <style>
@@ -96,10 +96,10 @@
     tl.fromTo("#scene-10-evidence", { clipPath:"inset(100% 0% 0% 0%)" },
       { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 78.502);   // invert: 08-digestion -> 10-evidence
     tl.fromTo("#scene-14-hierarchy", { clipPath:"inset(100% 0% 0% 0%)" },
-      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 111.598);   // invert: 10-evidence -> 14-hierarchy
+      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 110.798);   // invert: 10-evidence -> 14-hierarchy
     tl.fromTo("#scene-16-end", { clipPath:"inset(0% 0% 0% 100%)" },
-      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.90, ease:"power2.inOut" }, 131.664);   // curtain: 14-hierarchy -> 16-end
-    tl.to({}, { duration: 136.664 }, 0);   // anchor
+      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.90, ease:"power2.inOut" }, 130.864);   // curtain: 14-hierarchy -> 16-end
+    tl.to({}, { duration: 135.864 }, 0);   // anchor
     window.__timelines["main"] = tl;
   </script>
 </body>

@@ -46,6 +46,7 @@ def file_08_digestion(fspan, fctx):
         {dests}
         {panel("scaff", "aqua", '<svg id="bmini" viewBox="0 0 620 720" width="150" height="174" aria-hidden="true"></svg>' + chip("scaff-chip", "scaffolding", ""), abs_(60, 380, 520, 220), "card late")}
         {panel("crate", "coral", '<svg viewBox="0 0 200 160" width="180" height="144" aria-hidden="true"><rect class="slat" x="10" y="40" width="180" height="110" rx="6"/><rect class="slat" id="slat-1" x="10" y="40" width="180" height="26"/><rect class="slat" id="slat-2" x="10" y="82" width="180" height="26"/><rect class="slat" id="slat-3" x="10" y="124" width="180" height="26"/></svg>' + chip("crate-chip", "spare parts", ""), abs_(60, 640, 520, 240), "card late")}
+        {panel("benefit-teaser", "aqua", '<svg viewBox="0 0 200 110" width="160" height="88" aria-hidden="true"><path class="face" id="benefit-line" d="M 15 95 L 65 55 L 105 72 L 175 15" fill="none"/><path class="face" id="benefit-head" d="M 175 15 L 148 18 M 175 15 L 172 42" fill="none"/></svg>' + chip("benefit-chip", "modest benefit", ""), abs_(640, 560, 520, 280), "card late")}
        </div>
       </div>
 """
@@ -121,7 +122,12 @@ def file_08_digestion(fspan, fctx):
       // the panel is knocked as the dot lands -- delivery is felt, not labelled
       tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.6);
     });
-    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, @w(scaffolding) - 0.3);
+    // was @w(scaffolding)-0.3: the destination dots finish arriving by
+    // ~71.9s and "scaffolding." isn't said until 74.2s, leaving ~1.9s of
+    // true stillness (measured on the render: t=72.0-74.0s pixel-identical).
+    // Starting the camera-home leg on "urgent." fills that gap with the
+    // same motion, just earlier, rather than adding a new one.
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, @w(urgent) - 0.3);
     reveal(tl, "#scaff", @w(scaffolding));
     tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(scaffolding));
     // "It got A BOX OF spare parts" -> "It got spare parts instead."; the
@@ -129,6 +135,14 @@ def file_08_digestion(fspan, fctx):
     reveal(tl, "#crate", @w(parts));
     tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(parts));
     tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, @w(parts) + 0.1);
+    // "Trials do point to a modest benefit" -- the partial evidence payoff
+    // (added in the Phase 1 narration trim) had no visual event of its own,
+    // leaving 76.3-78.4s dead (measured: t=76.0-78.5s pixel-identical on the
+    // render). The freed-up stomach-p space hosts a small foreshadow of the
+    // evidence section this line sets up.
+    reveal(tl, "#benefit-teaser", @w(trials));
+    tl.fromTo("#benefit-teaser-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(trials));
+    drawIn(tl, "#benefit-line,#benefit-head", @w(trials) + 0.15, 0.5, 0.1, EASE.wipe);
 """
     MOTION["08-digestion"]["beats"] = [
         {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 40, "dur": 0.9},
@@ -145,8 +159,9 @@ def file_08_digestion(fspan, fctx):
         {"name": "decides wash", "at": "@w(decides)", "area": 0.044, "dl": 94, "dur": 0.4},
         {"name": "skin lands", "at": "@w(skin)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},
         {"name": "tendons land", "at": "@w(tendons)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},
-        {"name": "camera home", "at": "@w(scaffolding)-0.3", "area": 0.5, "dl": 60, "dur": 0.8},
+        {"name": "camera home", "at": "@w(urgent)-0.3", "area": 0.5, "dl": 60, "dur": 0.8},
         {"name": "crate wash", "at": "@w(parts)", "area": 0.06, "dl": 103, "dur": 0.4},
+        {"name": "benefit teaser", "at": "@w(trials)", "area": 0.05, "dl": 81, "dur": 0.4},
     ]
     return body, css, tl
 

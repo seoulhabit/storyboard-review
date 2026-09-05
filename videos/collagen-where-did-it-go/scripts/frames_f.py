@@ -90,10 +90,16 @@ def file_14_hierarchy(fspan, fctx):
     tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, @w(protein) + 0.2);
     tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(retinoids));
     tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(retinoids) + 0.4);
-    // "encouraging collagen production": ONE more beam draws in, and the camera
-    // leans toward the building to watch it. One beam, not six -- the claim is
-    // stronger evidence for production, not a rebuilt structure.
-    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(encouraging) - 0.3);
+    // "considerably stronger evidence for encouraging collagen production": ONE
+    // more beam draws in, and the camera leans toward the building to watch it.
+    // One beam, not six -- the claim is stronger evidence for production, not a
+    // rebuilt structure. The push now starts on "stronger" rather than waiting
+    // for "encouraging" -- between the retinoid citation settling (~118.7s) and
+    // the old @w(encouraging)-0.3 anchor (121.0s) sat ~2.3s of nothing, measured
+    // on the render as a pixel-identical t=120-122s freeze, during the section's
+    // longest sentence. The camera lean now fills that gap directly; the beam
+    // repair keeps its own anchor on "encouraging", the word it depicts.
+    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(stronger) - 0.1);
     tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, @w(encouraging));
     // the whole brace set brightens as production is named, so the claim reads as
     // the building gaining rather than one line quietly redrawing itself
@@ -132,7 +138,7 @@ def file_14_hierarchy(fspan, fctx):
         {"name": "row 3 wash",     "at": "@w(protein)",       "area": 0.047, "dl": 91,  "dur": 0.4},
         {"name": "building straightens", "at": "@w(vitamin)", "area": 0.17,  "dl": 60,  "dur": 1.1},
         {"name": "row 4 wash",     "at": "@w(retinoids)",     "area": 0.047, "dl": 91,  "dur": 0.4},
-        {"name": "retinoid beam",  "at": "@w(encouraging)-0.3", "area": 0.5,  "dl": 60,  "dur": 0.8},
+        {"name": "retinoid beam",  "at": "@w(stronger)-0.1", "area": 0.5,  "dl": 60,  "dur": 0.8},
         {"name": "braces brighten", "at": "@w(production)-0.2",  "area": 0.17, "dl": 55,  "dur": 1.0},
     ]
     MOTION["15-verdict"]["beats"] = [

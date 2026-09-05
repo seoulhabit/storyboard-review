@@ -586,7 +586,7 @@
   "file": "08-digestion",
   "unit": "09-dispatch",
   "name": "camera home",
-  "abs": 73.935,
+  "abs": 72.611,
   "area": 0.5,
   "dl": 60,
   "dur": 0.8,
@@ -602,6 +602,17 @@
   "dl": 103,
   "dur": 0.4,
   "per_step": 1.93,
+  "registers": true
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "name": "benefit teaser",
+  "abs": 76.341,
+  "area": 0.05,
+  "dl": 81,
+  "dur": 0.4,
+  "per_step": 1.27,
   "registers": true
  },
  {
@@ -1048,7 +1059,7 @@
   "file": "14-hierarchy",
   "unit": "14-hierarchy",
   "name": "retinoid beam",
-  "abs": 120.999,
+  "abs": 119.69,
   "area": 0.5,
   "dl": 60,
   "dur": 0.8,

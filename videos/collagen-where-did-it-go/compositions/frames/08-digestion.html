@@ -261,6 +261,7 @@
         <div class="panel dest late" id="d-skin" style="position:absolute;left:1340px;top:120px;width:380px;height:150px;"><div class="wash aqua" id="d-skin-wash"></div><p class="p-title">skin</p></div><div class="panel dest late" id="d-joints" style="position:absolute;left:1340px;top:300px;width:380px;height:150px;"><div class="wash aqua" id="d-joints-wash"></div><p class="p-title">joints</p></div><div class="panel dest late" id="d-tendons" style="position:absolute;left:1340px;top:480px;width:380px;height:150px;"><div class="wash aqua" id="d-tendons-wash"></div><p class="p-title">tendons</p></div><div class="panel dest late" id="d-other" style="position:absolute;left:1340px;top:660px;width:380px;height:150px;"><div class="wash aqua" id="d-other-wash"></div><p class="p-title">other tissue</p></div>
         <div class="panel card late" id="scaff" style="position:absolute;left:60px;top:380px;width:520px;height:220px;"><div class="wash aqua" id="scaff-wash"></div><svg id="bmini" viewBox="0 0 620 720" width="150" height="174" aria-hidden="true"></svg><p class="chip " id="scaff-chip" style="">scaffolding</p></div>
         <div class="panel card late" id="crate" style="position:absolute;left:60px;top:640px;width:520px;height:240px;"><div class="wash coral" id="crate-wash"></div><svg viewBox="0 0 200 160" width="180" height="144" aria-hidden="true"><rect class="slat" x="10" y="40" width="180" height="110" rx="6"/><rect class="slat" id="slat-1" x="10" y="40" width="180" height="26"/><rect class="slat" id="slat-2" x="10" y="82" width="180" height="26"/><rect class="slat" id="slat-3" x="10" y="124" width="180" height="26"/></svg><p class="chip " id="crate-chip" style="">spare parts</p></div>
+        <div class="panel card late" id="benefit-teaser" style="position:absolute;left:640px;top:560px;width:520px;height:280px;"><div class="wash aqua" id="benefit-teaser-wash"></div><svg viewBox="0 0 200 110" width="160" height="88" aria-hidden="true"><path class="face" id="benefit-line" d="M 15 95 L 65 55 L 105 72 L 175 15" fill="none"/><path class="face" id="benefit-head" d="M 175 15 L 148 18 M 175 15 L 172 42" fill="none"/></svg><p class="chip " id="benefit-chip" style="">modest benefit</p></div>
        </div>
       </div>
       </div>
@@ -498,7 +499,12 @@
       // the panel is knocked as the dot lands -- delivery is felt, not labelled
       tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.6);
     });
-    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 15.965 - 0.3);
+    // was 15.965-0.3: the destination dots finish arriving by
+    // ~71.9s and "scaffolding." isn't said until 74.2s, leaving ~1.9s of
+    // true stillness (measured on the render: t=72.0-74.0s pixel-identical).
+    // Starting the camera-home leg on "urgent." fills that gap with the
+    // same motion, just earlier, rather than adding a new one.
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 14.641 - 0.3);
     reveal(tl, "#scaff", 15.965);
     tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 15.965);
     // "It got A BOX OF spare parts" -> "It got spare parts instead."; the
@@ -506,6 +512,14 @@
     reveal(tl, "#crate", 17.266);
     tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 17.266);
     tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 17.266 + 0.1);
+    // "Trials do point to a modest benefit" -- the partial evidence payoff
+    // (added in the Phase 1 narration trim) had no visual event of its own,
+    // leaving 76.3-78.4s dead (measured: t=76.0-78.5s pixel-identical on the
+    // render). The freed-up stomach-p space hosts a small foreshadow of the
+    // evidence section this line sets up.
+    reveal(tl, "#benefit-teaser", 18.071);
+    tl.fromTo("#benefit-teaser-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 18.071);
+    drawIn(tl, "#benefit-line,#benefit-head", 18.071 + 0.15, 0.5, 0.1, EASE.wipe);
 
     // departure: push under the invert wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 20.232);

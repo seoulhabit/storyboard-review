@@ -43,7 +43,7 @@ Paste-ready. Re-derived from the walk on every build.
 | 2 | `02-promise` | 4.950 | 9.305 | 02-promise | 22 |
 | 3 | `03-building` | 13.705 | 25.275 | 03-building, 04-demolition, 05-boundary | 47 |
 | 4 | `06-door` | 38.430 | 20.390 | 06-door, 07-film | 47 |
-| 5 | `08-digestion` | 58.270 | 20.832 | 08-digestion, 09-dispatch | 31 |
+| 5 | `08-digestion` | 58.270 | 20.832 | 08-digestion, 09-dispatch | 32 |
 | 6 | `10-evidence` | 78.502 | 32.896 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 83 |
 | 7 | `14-hierarchy` | 110.798 | 20.966 | 14-hierarchy, 15-verdict | 40 |
 | 8 | `16-end` | 130.864 | 5.000 | 16-end | 2 |
@@ -69,5 +69,5 @@ Paste-ready. Re-derived from the walk on every build.
 | 15 | `15-verdict` | `14-hierarchy` | 123.723 | 7.141 | 123.72 | 20 | optional · collagen cream · collagen powder · Protect the building first. | optional pan, final band, bricks exit | — |
 | 16 | `16-end` | `16-end` | 130.864 | 5.000 | — | 0 | SeoulHabit · Evidence, not hype. · sources in the description | curtain, calm drift | — |
 
-**293 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
+**294 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
 

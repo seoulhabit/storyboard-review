@@ -1227,10 +1227,10 @@
   "file": "08-digestion",
   "unit": "09-dispatch",
   "kind": "w",
-  "word": "scaffolding",
+  "word": "urgent",
   "occurrence": 1,
-  "seconds": 15.965,
-  "abs": 74.235
+  "seconds": 14.641,
+  "abs": 72.911
  },
  {
   "file": "08-digestion",
@@ -1245,10 +1245,10 @@
   "file": "08-digestion",
   "unit": "09-dispatch",
   "kind": "w",
-  "word": "parts",
+  "word": "scaffolding",
   "occurrence": 1,
-  "seconds": 17.266,
-  "abs": 75.536
+  "seconds": 15.965,
+  "abs": 74.235
  },
  {
   "file": "08-digestion",
@@ -1267,6 +1267,42 @@
   "occurrence": 1,
   "seconds": 17.266,
   "abs": 75.536
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "kind": "w",
+  "word": "parts",
+  "occurrence": 1,
+  "seconds": 17.266,
+  "abs": 75.536
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "kind": "w",
+  "word": "trials",
+  "occurrence": 1,
+  "seconds": 18.071,
+  "abs": 76.341
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "kind": "w",
+  "word": "trials",
+  "occurrence": 1,
+  "seconds": 18.071,
+  "abs": 76.341
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "kind": "w",
+  "word": "trials",
+  "occurrence": 1,
+  "seconds": 18.071,
+  "abs": 76.341
  },
  {
   "file": "10-evidence",
@@ -2113,6 +2149,15 @@
   "occurrence": 1,
   "seconds": 10.501,
   "abs": 121.299
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
+  "word": "stronger",
+  "occurrence": 1,
+  "seconds": 8.992,
+  "abs": 119.79
  },
  {
   "file": "14-hierarchy",

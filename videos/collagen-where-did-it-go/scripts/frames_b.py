@@ -113,6 +113,10 @@ def file_03_building(fspan, fctx):
     tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, @w(sunscreen) - 0.1);
     drawIn(tl, "#shield", @w(draws) - 0.1, 0.9, 0, EASE.wipe);
     tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, @w(boundary));
+    // the boundary CLOSES around the building as it is named -- 2.2s of
+    // identical frames sat here while the shield was merely present
+    tl.fromTo(["#shield", "#shield-fill"], { scale:1.09, transformOrigin:"50% 50%" },
+              { scale:1, duration:1.1, ease:EASE.arrive }, @w(around) - 0.2);
     // the rays STOP at the boundary; the sun band cools
     gsap.utils.toArray(".ray").forEach(function (r) {
       var L = r.getTotalLength();
@@ -158,6 +162,7 @@ def file_03_building(fspan, fctx):
         {"name": "camera home",    "at": "@w(sunscreen)-0.1", "area": 0.5,   "dl": 60, "dur": 1.0},
         {"name": "sky cools",      "at": "@w(draws)-0.1",     "area": 0.119, "dl": 77, "dur": 0.6},
         {"name": "shield fills",   "at": "@w(boundary)",      "area": 0.19,  "dl": 44, "dur": 0.7},
+        {"name": "boundary closes", "at": "@w(around)-0.2",   "area": 0.19,  "dl": 60, "dur": 1.1},
         {"name": "preserve wash",  "at": "@w(preserving)",     "area": 0.048, "dl": 91, "dur": 0.45},
         {"name": "camera pulls back", "at": "@w(preserving)+0.4", "area": 0.5, "dl": 60, "dur": 1.0},
         {"name": "building sinks", "at": "@w(replacing)+0.3",  "area": 0.17,  "dl": 60, "dur": 0.45},

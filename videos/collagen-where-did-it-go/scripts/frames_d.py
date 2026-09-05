@@ -76,6 +76,12 @@ def file_08_digestion(fspan, fctx):
       tl.fromTo("#fr-" + s, { opacity:1, scale:0, transformOrigin:"50% 50%" },
                 { scale:1, duration:0.3, ease:EASE.slam }, @w(peptides) + s * 0.06 + 0.1);
     }
+    // the fragments drift apart while "peptides and amino acids" is said: they
+    // are loose pieces now, and 2.3s of identical frames sat here otherwise
+    var SPREAD = [[-34,-18],[-16,-26],[12,-22],[30,-10],[-6,10],[22,16]];
+    dots.forEach(function (d, i) {
+      tl.to(d, { x:SPREAD[i][0], y:SPREAD[i][1], duration:1.4, ease:EASE.hold }, @w(amino) - 0.5);
+    });
     tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, @w(stomach) - 0.3);
     tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(stomach) - 0.2);
     tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, @w(facial));
@@ -109,6 +115,7 @@ def file_08_digestion(fspan, fctx):
     MOTION["08-digestion"]["beats"] = [
         {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 40, "dur": 0.9},
         {"name": "stomach wash", "at": "@w(breaks)-0.1", "area": 0.07, "dl": 81, "dur": 0.5},
+        {"name": "fragments drift", "at": "@w(amino)-0.5", "area": 0.04, "dl": 90, "dur": 1.4},
         {"name": "face card dim", "at": "@w(stomach)-0.2", "area": 0.06, "dl": 84, "dur": 0.4},
         {"name": "face void", "at": "@w(facial)", "area": 0.06, "dl": 103, "dur": 0.3},
     ]

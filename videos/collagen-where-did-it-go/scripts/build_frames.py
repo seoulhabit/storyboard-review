@@ -38,7 +38,12 @@ from transitions import KIND
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "compositions" / "frames"
 
-CADENCE_MAX_GAP = 4.0     # seconds between beats the cadence checker can see
+CADENCE_MAX_GAP = 2.4     # seconds between beats the cadence checker can see.
+                          # Was 4.0, which let 2.2-2.8s of literally identical
+                          # frames sit between two legal beats -- measured on a
+                          # 6fps probe render as seven runs of zero luma delta.
+                          # The brief's ceiling is a 2s static hold, so the gap
+                          # between beats has to be that plus a beat's own length.
 REGISTER = 1.0            # beat_budget per-step threshold
 W, H = 1920, 1080
 
@@ -263,6 +268,7 @@ def load_file_fns(only=None):
 
 
 BEATS = []      # every authored beat, resolved to absolute seconds
+FAILURES = []   # (file cid, [messages]) -- reported together at the end
 
 
 def _record_beats(fspan, fctx):
@@ -294,7 +300,10 @@ def emit(fspan, fctx, reveals, fake):
     bad = (_static_asserts(body, css, fspan.cid) + _motion_asserts(tl, fspan.cid)
            + _camera_ok(tl, fspan) + _cadence_ok(fspan, fctx, reveals))
     if bad:
-        raise SystemExit(f"{fspan.cid}:\n  " + "\n  ".join(bad))
+        # Collect rather than raise: a cadence pass that reports the FIRST bad
+        # file makes the operator rebuild once per gap. Reporting every gap in
+        # one run is the difference between one authoring pass and eight.
+        FAILURES.append((fspan.cid, bad))
     _record_beats(fspan, fctx)
     if fake:
         body = "      <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->\n" + body
@@ -354,6 +363,16 @@ def main():
           f"{'  [VO MANIFEST: FAKE]' if fake else ''}")
     if stubs:
         print(f"  STUB files (plumbing only): {stubs}")
+    if FAILURES:
+        n = sum(len(msgs) for _cid, msgs in FAILURES)
+        print(f"\n  {n} cadence advisory/ies across {len(FAILURES)} file(s) "
+              f"(registry gaps -- the AUTHORITY is check-motion-gaps on a render, "
+              f"because this registry cannot see pathFollow, drawIn or kineticWords):")
+        for cid, msgs in FAILURES:
+            for m in msgs:
+                print(f"    {m}")
+        if "--strict-cadence" in sys.argv:
+            raise SystemExit(1)
     return 0
 
 

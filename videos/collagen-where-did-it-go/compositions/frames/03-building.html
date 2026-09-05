@@ -444,6 +444,10 @@
     tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 15.585 - 0.1);
     drawIn(tl, "#shield", 17.159 - 0.1, 0.9, 0, EASE.wipe);
     tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, 17.789);
+    // the boundary CLOSES around the building as it is named -- 2.2s of
+    // identical frames sat here while the shield was merely present
+    tl.fromTo(["#shield", "#shield-fill"], { scale:1.09, transformOrigin:"50% 50%" },
+              { scale:1, duration:1.1, ease:EASE.arrive }, 18.556 - 0.2);
     // the rays STOP at the boundary; the sun band cools
     gsap.utils.toArray(".ray").forEach(function (r) {
       var L = r.getTotalLength();

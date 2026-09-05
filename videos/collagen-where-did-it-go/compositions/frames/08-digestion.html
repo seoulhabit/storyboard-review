@@ -450,6 +450,12 @@
       tl.fromTo("#fr-" + s, { opacity:1, scale:0, transformOrigin:"50% 50%" },
                 { scale:1, duration:0.3, ease:EASE.slam }, 4.144 + s * 0.06 + 0.1);
     }
+    // the fragments drift apart while "peptides and amino acids" is said: they
+    // are loose pieces now, and 2.3s of identical frames sat here otherwise
+    var SPREAD = [[-34,-18],[-16,-26],[12,-22],[30,-10],[-6,10],[22,16]];
+    dots.forEach(function (d, i) {
+      tl.to(d, { x:SPREAD[i][0], y:SPREAD[i][1], duration:1.4, ease:EASE.hold }, 4.875 - 0.5);
+    });
     tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 6.064 - 0.3);
     tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 6.064 - 0.2);
     tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 6.965);

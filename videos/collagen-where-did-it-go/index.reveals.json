@@ -588,6 +588,15 @@
   "file": "03-building",
   "unit": "05-boundary",
   "kind": "w",
+  "word": "around",
+  "occurrence": 1,
+  "seconds": 18.556,
+  "abs": 32.543
+ },
+ {
+  "file": "03-building",
+  "unit": "05-boundary",
+  "kind": "w",
   "word": "boundary",
   "occurrence": 1,
   "seconds": 17.789,
@@ -1137,6 +1146,15 @@
   "file": "08-digestion",
   "unit": "08-digestion",
   "kind": "w",
+  "word": "amino",
+  "occurrence": 1,
+  "seconds": 4.875,
+  "abs": 60.801
+ },
+ {
+  "file": "08-digestion",
+  "unit": "08-digestion",
+  "kind": "w",
   "word": "stomach",
   "occurrence": 1,
   "seconds": 6.064,
@@ -1326,6 +1344,15 @@
   "file": "10-evidence",
   "unit": "10-trials",
   "kind": "w",
+  "word": "report",
+  "occurrence": 1,
+  "seconds": 2.438,
+  "abs": 79.067
+ },
+ {
+  "file": "10-evidence",
+  "unit": "10-trials",
+  "kind": "w",
   "word": "improvements",
   "occurrence": 1,
   "seconds": 2.804,
@@ -1468,6 +1495,24 @@
  },
  {
   "file": "10-evidence",
+  "unit": "11-caveat",
+  "kind": "we",
+  "word": "funded",
+  "occurrence": 1,
+  "seconds": 10.173,
+  "abs": 86.802
+ },
+ {
+  "file": "10-evidence",
+  "unit": "11-caveat",
+  "kind": "w",
+  "word": "industry",
+  "occurrence": 1,
+  "seconds": 8.782,
+  "abs": 85.411
+ },
+ {
+  "file": "10-evidence",
   "unit": "12-filter",
   "kind": "w",
   "word": "pooled",
@@ -1519,6 +1564,15 @@
   "occurrence": 1,
   "seconds": 12.527,
   "abs": 89.156
+ },
+ {
+  "file": "10-evidence",
+  "unit": "12-filter",
+  "kind": "w",
+  "word": "randomised",
+  "occurrence": 1,
+  "seconds": 12.745,
+  "abs": 89.374
  },
  {
   "file": "10-evidence",
@@ -1537,6 +1591,15 @@
   "occurrence": 1,
   "seconds": 15.474,
   "abs": 92.103
+ },
+ {
+  "file": "10-evidence",
+  "unit": "12-filter",
+  "kind": "w",
+  "word": "together",
+  "occurrence": 1,
+  "seconds": 14.946,
+  "abs": 91.575
  },
  {
   "file": "10-evidence",
@@ -1882,6 +1945,15 @@
  },
  {
   "file": "10-evidence",
+  "unit": "12-filter",
+  "kind": "we",
+  "word": "up",
+  "occurrence": 1,
+  "seconds": 24.687,
+  "abs": 101.316
+ },
+ {
+  "file": "10-evidence",
   "unit": "13-uncertain",
   "kind": "w",
   "word": "definitely",
@@ -2104,6 +2176,24 @@
   "occurrence": 1,
   "seconds": 10.82,
   "abs": 119.954
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
+  "word": "production",
+  "occurrence": 1,
+  "seconds": 12.042,
+  "abs": 121.176
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
+  "word": "production",
+  "occurrence": 1,
+  "seconds": 12.042,
+  "abs": 121.176
  },
  {
   "file": "14-hierarchy",

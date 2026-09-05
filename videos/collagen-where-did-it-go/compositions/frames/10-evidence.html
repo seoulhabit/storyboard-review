@@ -399,6 +399,10 @@
     gsap.set("#res-ci", { attr:{ x:235, width:0 } });
     gsap.set("#res-pt", { opacity:0 });
     tl.to("#res-ci", { attr:{ x:330, width:190 }, duration:0.75, ease:EASE.arrive }, 2.804 - 0.2);
+    // the field acknowledges the claim: a wave across the tiles as "trials do
+    // report" is said, before the named outcomes light their own bands
+    tl.to(".tr", { scaleY:1.06, duration:0.28, yoyo:true, repeat:1, stagger:{ each:0.02 },
+                   ease:EASE.swap }, 2.438 - 0.1);
     tl.fromTo("#res-pt", { opacity:0, scale:0.4, transformOrigin:"50% 50%" },
               { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 2.804 + 0.45);
     // one outcome per named outcome, each lighting the band of trials that measured it
@@ -424,6 +428,16 @@
     tl.to(SMALL, { scale:0.8, duration:0.4, stagger:0.02, ease:EASE.swap }, 7.562);
     tl.to(SHORT, { scaleX:0.7, transformOrigin:"0% 50%", duration:0.4, stagger:0.02, ease:EASE.swap }, 8.007);
     tl.to(IND, { backgroundColor:"#C97A5C", borderColor:"#C97A5C", duration:0.45, stagger:0.02, ease:EASE.swap }, 8.782);
+    // the flagged tiles sink as they are named -- the field stops being uniform,
+    // and 2.8s of identical frames sat between the tag and the pooling
+    // the flagged tiles sink AS they are named, one after another, rather than
+    // all at once after the sentence: 12 tiles at 45ms apart carry the whole
+    // "and industry funded" span, which otherwise held 2.5s of still frames
+    tl.to(IND, { y:16, duration:0.9, stagger:{ each:0.045 }, ease:EASE.hold }, 8.782 + 0.25);
+    // "funded." sits for 1.4s before the next sentence starts. The caveat has
+    // done its work, so it steps back and hands the frame to the pooling.
+    tl.to("#caveat-panel", { y:-26, scale:0.97, transformOrigin:"50% 0%", opacity:0.55,
+                             duration:1.0, ease:EASE.exit }, 10.173 + 0.15);
     TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$", opacity:1 }, 8.782 + 0.2); });
 
     // ---- unit 12: pooled -> filtered, twice; the meter tells the truth ---------
@@ -435,9 +449,16 @@
     tl.fromTo("#ev-n", { opacity:0, y:20 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, 12.527 - 0.3);
     count(tl, "ev-n", 0, 23, 12.527 - 0.2, 1.0);
     tl.fromTo("#ev-n-l", { opacity:0, y:14 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 12.527 + 0.3);
+    // a wave across the field on "randomised trials" -- the tiles are what the
+    // numeral is counting, so they answer to it rather than sitting still
+    tl.to(".tr", { scaleY:1.08, duration:0.30, yoyo:true, repeat:1,
+                   stagger:{ each:0.012 }, ease:EASE.swap }, 12.745 + 0.1);
     tl.fromTo("#tag-note", { opacity:0 }, { opacity:0.85, duration:0.3, ease:EASE.arrive }, 12.527 + 0.7);
     // "a benefit": the result panel flashes celadon -- the pooled claim, at panel scale
     tl.to("#res-wash", { backgroundColor:"#93B896", duration:0.3, yoyo:true, repeat:1, ease:EASE.swap }, 15.474);
+    // every tile rises back to level as they are pooled: "all together" is the
+    // field becoming one dataset again
+    tl.to(".tr", { y:0, duration:0.9, stagger:{ each:0.015 }, ease:EASE.arrive }, 14.946 - 0.3);
     tl.to("#res", { scale:1.03, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 15.474);
     // filter 1: independent only
     // lean in for the filter: the trial field is what is being examined
@@ -485,6 +506,10 @@
     kineticWords(tl, "#stops-3", 24.219, 0.10, "slam");
 
     // ---- unit 13: two questions, two refusals, one honest word ----------------
+    // the payoff type settles while it is held, so the frame is not identical
+    // for the 2.3s between the last slam and the first question
+    tl.to("#stops-1 .kt-word, #stops-2 .kt-word, #stops-3 .kt-word",
+          { y:-14, duration:1.0, stagger:{ each:0.03 }, ease:EASE.hold }, 24.687 + 0.25);
     kineticWords(tl, "#q1", 25.456 - 0.1, 0.08, "rise");
     // "the independent evidence" is literally what is left standing: the paper
     // flood retracts to the survivor field with the low-quality tiles still down

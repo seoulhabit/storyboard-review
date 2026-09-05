@@ -95,6 +95,11 @@ def file_14_hierarchy(fspan, fctx):
     // stronger evidence for production, not a rebuilt structure.
     tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(encouraging) - 0.3);
     tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, @w(encouraging));
+    // the whole brace set brightens as production is named, so the claim reads as
+    // the building gaining rather than one line quietly redrawing itself
+    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, @w(production) - 0.2);
+    tl.fromTo("#shield", { opacity:0.30 }, { opacity:0.44, duration:0.9, yoyo:true, repeat:1,
+              ease:EASE.hold }, @w(production) + 0.1);
 
     // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
     // the optional column ARRIVES: the camera pans right so cream and powder
@@ -120,6 +125,7 @@ def file_14_hierarchy(fspan, fctx):
         {"name": "building straightens", "at": "@w(vitamin)", "area": 0.17,  "dl": 60,  "dur": 1.1},
         {"name": "row 4 wash",     "at": "@w(retinoids)",     "area": 0.047, "dl": 91,  "dur": 0.4},
         {"name": "retinoid beam",  "at": "@w(encouraging)-0.3", "area": 0.5,  "dl": 60,  "dur": 0.8},
+        {"name": "braces brighten", "at": "@w(production)-0.2",  "area": 0.17, "dl": 55,  "dur": 1.0},
     ]
     MOTION["15-verdict"]["beats"] = [
         {"name": "camera pans right", "at": "@w(cream,2)-0.5", "area": 0.5,   "dl": 60,  "dur": 0.9},

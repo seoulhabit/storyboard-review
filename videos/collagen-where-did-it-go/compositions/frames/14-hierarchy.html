@@ -420,6 +420,11 @@
     // stronger evidence for production, not a rebuilt structure.
     tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 10.820 - 0.3);
     tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 10.820);
+    // the whole brace set brightens as production is named, so the claim reads as
+    // the building gaining rather than one line quietly redrawing itself
+    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, 12.042 - 0.2);
+    tl.fromTo("#shield", { opacity:0.30 }, { opacity:0.44, duration:0.9, yoyo:true, repeat:1,
+              ease:EASE.hold }, 12.042 + 0.1);
 
     // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
     // the optional column ARRIVES: the camera pans right so cream and powder

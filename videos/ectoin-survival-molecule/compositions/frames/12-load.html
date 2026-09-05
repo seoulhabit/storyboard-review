@@ -149,18 +149,60 @@
     }
 
 
-    #root { background:var(--paper); color:var(--ink); }
-    .g12 { display:flex; flex-direction:column; justify-content:center;
-           gap:var(--s-6); height:100%; }
-    .stressors { display:grid; grid-template-columns:repeat(5,1fr); gap:var(--s-4); }
-    .st { background:var(--ink); color:var(--paper); border-radius:var(--r-3);
-          padding:var(--s-5) var(--s-4); text-align:center;
-          font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
-          min-height:0; }
-    .barrier { position:relative; height:150px; background:var(--mist);
-               border-radius:var(--r-3); overflow:hidden; }
-    .barrier .brick { position:absolute; background:var(--celadon);
-                      border:3px solid var(--paper); }
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
 
     /* top/left/right are offset from #root's own edge (the chband div is a
        sibling of .stage, not nested inside it), so the safe-area tokens are
@@ -178,74 +220,68 @@
     .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
                        letter-spacing:var(--tr-mono); }
 
+    .l-h { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 150px);
+           z-index:4; margin:0; max-width:1100px; font-family:var(--font-display);
+           font-size:var(--t-figure); line-height:var(--lh-snug);
+           text-shadow:0 2px 20px rgba(0,0,0,.45); }
+    .stressors { position:absolute; left:var(--safe-left); right:var(--safe-right);
+                 bottom:var(--safe-bottom); z-index:4; display:grid;
+                 grid-template-columns:repeat(5,1fr); gap:var(--s-4); }
+    .st { background:rgba(19,21,22,.82); color:var(--paper); border-radius:var(--r-3);
+          padding:var(--s-5) var(--s-4); text-align:center;
+          font-family:var(--font-body); font-weight:800; font-size:var(--t-body); }
+    .l-note { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+              z-index:4; margin:0; max-width:1000px; background:rgba(19,21,22,.72);
+              border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+              font-family:var(--font-display); font-size:var(--t-figure);
+              line-height:var(--lh-snug); }
+    .l-note b { font-weight:400; color:var(--coral); }
+
     </style>
       <div class="chband" id="ch-band">
         <div class="wash moss" id="ch-wash"></div>
         <p class="kicker" id="ch-title">What it might actually do for skin</p>
-      </div>
-    <div class="stage">
-      <div class="g12">
-        <p class="fig" id="l-h">Your outer barrier is under constant load.</p>
-        <div class="stressors">
-          <div class="st" id="st-0">Dry air</div>
-          <div class="st" id="st-1">Cleansing</div>
-          <div class="st" id="st-2">Pollution</div>
-          <div class="st" id="st-3">Sun</div>
-          <div class="st" id="st-4">Strong actives</div>
-        </div>
-        <div class="barrier" id="l-wall"></div>
-        <p class="p-body" id="l-note">Water escapes more easily. Skin can feel tight,
-          rough, or unusually reactive.</p>
-      </div>
+      </div>    <div class="plate" id="pl-a"><img id="pi-a" data-layout-allow-overflow src="assets/plates/I16-barrier-calm.jpg" alt=""></div>
+    <div class="plate" id="pl-b"><video class="clip" id="pv-b" data-layout-allow-overflow src="assets/plates/V10-escape.mp4" data-start="6.100" data-duration="7.500" muted playsinline></video></div>
+    <div class="scrim b"></div>
+    <div class="stage"></div>
+    <p class="l-h hd" id="l-h">Your outer barrier is under constant load.</p>
+    <div class="stressors" id="l-st">
+      <div class="st" id="st-0">Dry air</div>
+      <div class="st" id="st-1">Cleansing</div>
+      <div class="st" id="st-2">Pollution</div>
+      <div class="st" id="st-3">Sun</div>
+      <div class="st" id="st-4">Strong actives</div>
     </div>
+    <p class="l-note" id="l-note" style="opacity:0">Water <b>escapes</b> more easily. Skin can feel
+      <b id="l-w1">tight</b>, <b id="l-w2">rough</b>, or <b id="l-w3">unusually reactive</b>.</p>
+    <p class="cv" id="cv">Conceptual visualization</p>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  tl.fromTo('#pi-a', { scale:1.0, x:0, y:0 }, { scale:1.1, x:0, y:-30, duration:6.400, ease:'none' }, 0);
+  tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 2.2);
 
-  // Five full-height cards, each ~9% of the frame, entering across 5.5s -- the
-  // enumeration in the VO is slow (measured 110wpm on the comma list), so the
-  // beats are spread to match it rather than clustered at the top.
-  for (var i = 0; i < 5; i++) {
-    tl.fromTo('#st-' + i, { opacity:0, y:60 },
-                          { opacity:1, y:0, duration:0.45 }, 2.20 + i*0.95);
-  }
-  var wall = document.getElementById('l-wall');
-  for (var r = 0; r < 3; r++) for (var c = 0; c < 12; c++) {
-    var b = document.createElement('div');
-    b.className = 'brick';
-    // 12 x 8% = 96%, leaving 4% for the odd-row stagger -- so a staggered row
-    // ends exactly at 100% instead of 70px past the container's clip edge.
-    b.style.left = (c*8 + (r%2?4:0)) + '%'; b.style.top = (r*50) + 'px';
-    b.style.width = '8%'; b.style.height = '50px';
-    b.id = 'bk-' + r + '-' + c; wall.appendChild(b);
-  }
-  // Chapter opener: first spoken beat bound to 0.450.
   tl.fromTo('#l-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.50 }, 0.450);
-  // the wall visibly loosens as the stressors land -- one large synchronised move
-  for (var r2 = 0; r2 < 3; r2++) for (var c2 = 0; c2 < 12; c2++) {
-    tl.to('#bk-' + r2 + '-' + c2,
-          { y: (r2 === 0 ? -10 : r2 === 1 ? 4 : 12) + (c2 % 3) * 3,
-            backgroundColor:'#C97A5C', duration:1.8, ease:'power1.inOut' },
-          9.60 + c2*0.05);
-  }
-  tl.fromTo('#l-note', { opacity:0 }, { opacity:1, duration:0.55 }, 12.60);
-  // The whole barrier band recolours and opens up -- ~8% of the frame, against
-  // brick nudges that measured as no beat at all.
-  // Recolour the BRICKS, not the wall's background -- the bricks cover it almost
-  // completely, so the previous background tween changed nothing visible. And
-  // displace them far enough to register (10px did not).
-  for (var r3 = 0; r3 < 3; r3++) for (var c3 = 0; c3 < 12; c3++) {
-    tl.to('#bk-' + r3 + '-' + c3,
-          // --ink, NOT --coral: celadon->coral is a 27-luma step and measured as
-          // no beat at all, despite reading as a big hue change to the eye.
-          { backgroundColor:'#131516', duration:0.90 }, 11.80 + c3*0.07);
-    tl.to('#bk-' + r3 + '-' + c3,
-          { y: (r3 === 0 ? -34 : r3 === 1 ? 8 : 30) + (c3 % 3) * 9,
-            rotation: (c3 % 5 - 2) * 3, duration:1.70, ease:'power2.inOut' },
-          14.10 + c3*0.05);
-  }
+  tl.fromTo('#st-0', { opacity:0, y:60 }, { opacity:1, y:0, duration:0.40 }, 3.390-0.15);
+  tl.fromTo('#st-1', { opacity:0, y:60 }, { opacity:1, y:0, duration:0.40 }, 4.030-0.15);
+  tl.fromTo('#st-2', { opacity:0, y:60 }, { opacity:1, y:0, duration:0.40 }, 4.440-0.15);
+  tl.fromTo('#st-3', { opacity:0, y:60 }, { opacity:1, y:0, duration:0.40 }, 5.080-0.15);
+  tl.fromTo('#st-4', { opacity:0, y:60 }, { opacity:1, y:0, duration:0.40 }, 5.710-0.15);
+  // "When it struggles": cut to the stressed barrier -- water visibly escaping.
+  tl.to('#l-h', { opacity:0, duration:0.3 }, 6.882-0.3);
+  tl.to('#l-st', { opacity:0, y:30, duration:0.35 }, 6.882-0.3);
+  tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.30 }, 6.882-0.25);
+  tl.fromTo('#pv-b', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:7.400, ease:'none' }, 6.1);
+
+  tl.fromTo('#l-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.5 }, 8.042-0.3);
+  tl.set(['#l-w1','#l-w2','#l-w3'], { color:'#F7F5F0' }, 0);
+  tl.to('#l-w1', { color:'#C97A5C', duration:0.25 }, 10.111);
+  tl.to('#l-w2', { color:'#C97A5C', duration:0.25 }, 10.671);
+  tl.to('#l-w3', { color:'#C97A5C', duration:0.25 }, 11.401);
 
   // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
   tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);

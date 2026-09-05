@@ -167,7 +167,69 @@
     .void-flash { position:absolute; inset:-8px -16px; background:var(--coral);
                   opacity:0; border-radius:var(--r-2); z-index:-1; }
 
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
+
+    .ground { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .ground img { position:absolute; left:0; top:0; width:1920px; height:1080px;
+                  object-fit:cover; transform-origin:50% 50%; }
+
+    #root { color:inherit; }
+    
     </style>
+    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I14-pinkpond.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
     <div class="stage">
       <div class="ghost12" id="ghost-12">12</div>
       <div class="g21">
@@ -218,6 +280,7 @@
   tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, 7.313);
   // "no" gets a coral void flash -- the negating half of the verdict.
   tl.fromTo('#v-no-flash', { opacity:0 }, { opacity:0.85, duration:0.30 }, 8.563);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:9.700, ease:'none' }, 0);
 
     tl.to({}, { duration: 9.653 }, 0);   // full-span anchor -- always last
     window.__timelines["21-verdict"] = tl;

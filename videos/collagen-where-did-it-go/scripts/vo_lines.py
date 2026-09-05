@@ -33,9 +33,8 @@ SCENES = [
      "Collagen cream does not replace your collagen. "
      "Collagen powder does not travel straight to your face."),
     ("02-promise",
-     "So where does it go? Twenty three trials say the powder works. "
-     "Remove the industry funded ones, and watch what happens. "
-     "But first, what protects the collagen you already have?"),
+     "So where does it go? Across twenty three trials, it appears to help. "
+     "Remove the industry funded studies, and the answer changes."),
     ("03-building",
      "Think of your skin as a building. Collagen is the main structure inside it. "
      "It keeps everything firm and upright."),
@@ -48,7 +47,7 @@ SCENES = [
      "Preserving collagen is usually easier than replacing it later."),
     ("06-door",
      "Now, the cream. To pass through skin, a molecule generally needs to be "
-     "under about five hundred daltons. Collagen is around three hundred thousand. "
+     "under five hundred daltons. Collagen is around three hundred thousand. "
      "It is not getting through that door."),
     ("07-film",
      "It may still form a moisturising film on the surface. Skin may feel smoother. "
@@ -57,10 +56,10 @@ SCENES = [
      "Now, the powder. Swallow collagen, and digestion breaks it into peptides "
      "and amino acids. Your stomach does not offer facial delivery."),
     ("09-dispatch",
-     "Some pieces may be absorbed. Certain peptides may even act as signals. "
-     "But your body decides where they go. "
-     "Skin, joints, tendons, wherever repairs are most urgent. "
-     "Your face ordered scaffolding. It got a box of spare parts."),
+     "But your body decides where they go, to skin, joints, tendons, "
+     "or wherever repairs are most urgent. "
+     "Your face ordered scaffolding. It got spare parts instead. "
+     "Trials do point to a modest benefit."),
     ("10-trials",
      "Does the powder work? Trials do report modest improvements in hydration, "
      "elasticity, or wrinkles."),

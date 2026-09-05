@@ -90,7 +90,10 @@ def file_03_building(fspan, fctx):
     tl.to("#rays", { opacity:1, duration:0.1 }, @w(enzymes));
     drawIn(tl, ".ray", @w(enzymes), 0.5, 0.10, EASE.wipe);
     // camera pushes INTO the storeys being cut, then comes home on "sunscreen"
-    tl.to("#world", { scale:1.18, x:83, y:23, duration:1.1, ease:EASE.camera }, @w(cut) - 0.2);
+    // Animation item 6 (review): routine camera scale kept near 1.03-1.08.
+    // Was 1.18 (x:83, y:23); pan scaled down with it (0.18->0.08 extra zoom)
+    // to keep the same framing on the beam being cut.
+    tl.to("#world", { scale:1.08, x:37, y:10, duration:1.1, ease:EASE.camera }, @w(cut) - 0.2);
     // each cut: the beam flashes at the cut point, retracts, and a SHARD of it
     // falls away -- UV is a cutting force, not an eraser
     CUT_ORDER.forEach(function (k, i) {

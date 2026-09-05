@@ -104,14 +104,26 @@ def active(r):
 
 
 def _flags(argv):
-    """--ceiling <s>, --exempt-last and --gate, stripped from argv.
+    """--ceiling <s>, --exempt-last, --exempt-window <lo-hi> (repeatable) and
+    --gate, stripped from argv.
 
     These were passed by package.json and SILENTLY IGNORED: the old filter kept
     only the profile flag, so `--ceiling` landed in argv[0] and became the
     project root while the ceiling stayed at its profile default. A gate that
     is handed a stricter number and quietly uses a looser one is worse than no
-    gate, because its PASS line names the number it was given."""
-    out, ceiling, exempt_last, gate = [], None, False, False
+    gate, because its PASS line names the number it was given.
+
+    --exempt-window matches check-static-hold.py / check-motion-gaps.py's own
+    flag of the same name: a reviewed, intentional pause (this project's own
+    "not significant" hold and reading holds) that the negative gates already
+    carry an exemption for. A pace correction upstream can widen or shift such
+    a pause enough to also cross THIS script's separate, tighter 4.0s ceiling
+    -- measured on this project when slowing two 12-filter sentences for
+    caption CPS widened the same "not significant" pause from ~2.75s to
+    ~4.24s, newly tripping this gate though check-static-hold.py's own
+    exemption for it (recalibrated to the same new position) still covered
+    it fine at its own 2.0s ceiling."""
+    out, ceiling, exempt_last, gate, exempt_windows = [], None, False, False, []
     i = 0
     while i < len(argv):
         a = argv[i]
@@ -119,10 +131,13 @@ def _flags(argv):
             ceiling = float(argv[i + 1]); i += 2; continue
         if a == "--exempt-last":
             exempt_last = True; i += 1; continue
+        if a == "--exempt-window":
+            lo, hi = argv[i + 1].split("-")
+            exempt_windows.append((float(lo), float(hi))); i += 2; continue
         if a == "--gate":
             gate = True; i += 1; continue
         out.append(a); i += 1
-    return out, ceiling, exempt_last, gate
+    return out, ceiling, exempt_last, gate, exempt_windows
 
 
 def main():
@@ -130,7 +145,7 @@ def main():
     argv = [a for a in sys.argv[1:] if a not in LONGFORM_FLAGS]
     if any(f in sys.argv for f in LONGFORM_FLAGS):
         QUIET_CEILING_S = 6.0
-    argv, ceiling, exempt_last, gate = _flags(argv)
+    argv, ceiling, exempt_last, gate, exempt_windows = _flags(argv)
     if ceiling is not None:
         QUIET_CEILING_S = ceiling   # AFTER the profile, or the profile wins
 
@@ -183,12 +198,14 @@ def main():
                     run, rs = 0, None
             quiet = best / SAMPLE_FPS
             last = (i == len(scenes))
-            bad = quiet > QUIET_CEILING_S and not (exempt_last and last)
+            exempted = quiet > QUIET_CEILING_S and brs is not None and any(
+                lo - 0.05 <= brs and bre <= hi + 0.05 for lo, hi in exempt_windows)
+            bad = quiet > QUIET_CEILING_S and not (exempt_last and last) and not exempted
             if bad:
                 findings.append((i, s, e, quiet, brs, bre))
+            tag = "  <-- over ceiling" if bad else ("  <-- exempt-window: reviewed hold" if exempted else "")
             print(f"  {i:>6}  {s:6.2f}-{e:5.2f}  {len(a):>3}/{len(seg):<3} "
-                  f"{100*len(a)/len(seg):>3.0f}%  {quiet:5.2f}s"
-                  f"{'  <-- over ceiling' if bad else ''}")
+                  f"{100*len(a)/len(seg):>3.0f}%  {quiet:5.2f}s{tag}")
 
     # Scope the summary to what was actually MEASURED. The inherited line was
     # "Overall: clean (no scene exceeds the quiet ceiling)", which reads as a

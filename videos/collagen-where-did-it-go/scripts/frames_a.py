@@ -102,11 +102,15 @@ FILES = {"01-hook": file_01_hook}
 def file_02_promise(fspan, fctx):
     """The promise, and the curiosity loop the evidence act pays off.
 
-    Three compositions on one set of nodes: the question drawn AROUND the
+    Two compositions on one set of nodes: the question drawn AROUND the
     parked molecule; an ink data column that rises and shoves it aside, tags
     the industry-funded trials and drops them WITHOUT showing a result (the
-    loop stays open); the column leaves and the molecule is shielded -- the
-    promise, stated in 05-boundary's own vocabulary.
+    loop stays open) -- then HOLDS there, unresolved, into the iris. There is
+    no second curiosity loop here: the withdrawn draft's separate "what
+    protects it?" shield teaser is gone (review Animation item 4, and the
+    text that carried it -- "But first, what protects the collagen you
+    already have?" -- was cut from vo_lines.py for the same reason: one open
+    question, not two).
 
     The tile TAG PATTERN is illustrative: Myung & Park 2025 report 23 RCTs and
     subgroup results by funding source and quality, but no per-subgroup trial
@@ -117,7 +121,7 @@ def file_02_promise(fspan, fctx):
     .abs { position:absolute; }
     #stageB { position:absolute; left:0; top:0; }
     #promise-q { position:absolute; left:0; top:70px; width:940px; }
-    .qmark { fill:none; stroke:var(--ink-3); stroke-width:16; stroke-linecap:round; }
+    .qmark { fill:none; stroke:var(--ink-2); stroke-width:16; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper); --ink-2 measures 4.89:1 */
     #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
             justify-content:center; gap:var(--s-4); }
     .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }
@@ -126,26 +130,27 @@ def file_02_promise(fspan, fctx):
     .tr.mini .tr-tag { font-family:var(--font-mono); font-size:44px; font-weight:500;
                        color:var(--ink); opacity:0; }
     #data .chip { position:relative; }
-    .shield-line { fill:none; stroke:var(--aqua); stroke-width:7; }
-    .shield-fill { fill:var(--aqua); opacity:0; }
-    #protect { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
 """
+    # the "data" panel below was abs_(1000, 0, 728, 918): right edge landed at
+    # canvas x=1824 and bottom at y=972 -- EXACTLY the safe-area reserve
+    # boundary, zero margin. check-safe-area.py caught the panel's own ink a
+    # few px past both edges on one sampled frame mid-transition (t=14.00s,
+    # "162px masked in-zone" on the right and bottom) -- a hairline boundary
+    # that was always one render away from tripping this, not a defect tied
+    # to any one change. 10px margin added on each side.
     body = f"""
       <div class="stage">
        <div class="world" id="world">
         <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <path class="qmark" id="qmark" d="M 1206 372 C 1206 316 1250 288 1290 300 C 1332 313 1338 362 1308 392 C 1282 418 1268 436 1268 470"/>
           <circle class="qmark" id="qmark-dot" cx="1268" cy="524" r="3"/>
-          <rect class="shield-fill" id="shield2-fill" x="104" y="286" width="600" height="320" rx="30"/>
-          <rect class="shield-line" id="shield2" x="104" y="286" width="600" height="320" rx="30"/>
         </svg>
         {kt("promise-q", "Where does it actually go?", "serif")}
         {panel("data", "ink", '<div class="mini-grid" id="mini-grid"></div>'
                + chip("mini-cap", "23 trials", "on-ink")
                + chip("mini-leg", "$ = industry funded", "on-ink")
                + chip("mini-note", "tag pattern illustrative", "on-ink"),
-               abs_(1000, 0, 728, 918), "late")}
-        {panel("protect", "aqua", '<p class="p-title">what protects it?</p>', abs_(64, 740, 820, 130), "late")}
+               abs_(1000, 0, 718, 908), "late")}
        </div>
       </div>
 """
@@ -182,32 +187,18 @@ def file_02_promise(fspan, fctx):
     // the tags have done their work by the time the tiles leave; they fade with
     // the fall rather than riding it down over the row below and the caption
     tl.to(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, @w(watch));
-    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, @w(watch));
-
-    // ---- the column leaves; the molecule becomes the thing worth protecting --
-    tl.to("#data-wash", { scaleY:0, duration:0.5, ease:EASE.exit }, @w(first) - 0.1);
-    tl.to([".tr.mini", "#mini-cap", "#mini-leg", "#mini-note"],
-          { y:150, opacity:0, duration:0.35, stagger:0.008, ease:EASE.exit }, @w(first) - 0.1);
-    tl.to("#promise-q", { y:-70, opacity:0, duration:0.35, ease:EASE.exit }, @w(first) - 0.1);
-    tl.to(mol, { x:-460, y:-60, duration:0.8, ease:EASE.camera }, @w(first) + 0.1);
-    tl.to("#world", { scale:1.06, duration:0.6, ease:EASE.camera }, @w(protects) - 0.1);
-    drawIn(tl, "#shield2", @w(protects), 0.7, 0, EASE.wipe);
-    tl.to("#shield2-fill", { opacity:0.18, duration:0.5, ease:EASE.wipe }, @w(collagen));
-    reveal(tl, "#protect", @w(protects) + 0.1);
-    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(protects) + 0.1);
-    // home before the file's own span ends, so the iris opens on a settled frame
-    tl.to("#world", { scale:1, duration:0.7, ease:EASE.camera }, @uend(02-promise) - 0.75);
+          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, @w(changes));
+    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, @w(changes));
+    // ---- HOLD, unresolved: the loop is open and stays open into the iris ----
+    // review Animation item 4: at least 700ms of settled, unresolved state
+    // before the transition -- one curiosity loop, not answered here.
 """
     MOTION["02-promise"]["beats"] = [
         {"name": "hero rise",      "at": "@w(where)-0.1",   "area": 0.065, "dl": 224, "dur": 0.34},
         {"name": "data column up", "at": "@w(twenty)-0.45", "area": 0.32,  "dl": 224, "dur": 0.5},
         {"name": "tiles rise",     "at": "@w(trials)-0.1",  "area": 0.10,  "dl": 100, "dur": 0.46},
         {"name": "industry tags",  "at": "@w(remove)",      "area": 0.05,  "dl": 72,  "dur": 0.25},
-        {"name": "tiles fall",     "at": "@w(watch)",       "area": 0.10,  "dl": 131, "dur": 0.45},
-        {"name": "column retract", "at": "@w(first)-0.1",   "area": 0.32,  "dl": 224, "dur": 0.5},
-        {"name": "camera push",    "at": "@w(protects)-0.1", "area": 0.5,  "dl": 60,  "dur": 0.6},
-        {"name": "camera home",    "at": "@uend(02-promise)-0.75", "area": 0.5, "dl": 60, "dur": 0.7},
+        {"name": "tiles fall",     "at": "@w(changes)",     "area": 0.10,  "dl": 131, "dur": 0.45},
     ]
     return body, css, tl
 

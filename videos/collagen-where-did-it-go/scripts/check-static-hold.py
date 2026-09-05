@@ -500,14 +500,22 @@ def region_check(render_path, project_root):
 
 
 def _flags(argv):
-    """--ceiling <s>, --exempt-last and --gate, stripped from argv.
+    """--ceiling <s>, --exempt-last, --exempt-window <start>-<end> (repeatable)
+    and --gate, stripped from argv.
 
     These were passed by package.json and SILENTLY IGNORED: the old filter kept
     only the profile flag, so `--ceiling` landed in argv[0] and became the
     project root while the ceiling stayed at its profile default. A gate that
     is handed a stricter number and quietly uses a looser one is worse than no
-    gate, because its PASS line names the number it was given."""
-    out, ceiling, exempt_last, gate = [], None, False, False
+    gate, because its PASS line names the number it was given.
+
+    --exempt-window is --exempt-last generalised: a named, reviewed window is
+    a design decision (Animation item 11 in this project's review: "allows
+    intentional comprehension holds and rejects only unmotivated dead time"),
+    not evidence the checker should keep re-discovering. Unlike --exempt-last
+    it is NOT open-ended -- pass the exact window a finding actually measured,
+    so a genuine regression that grows past it still gates."""
+    out, ceiling, exempt_last, gate, exempt_windows = [], None, False, False, []
     i = 0
     while i < len(argv):
         a = argv[i]
@@ -515,10 +523,13 @@ def _flags(argv):
             ceiling = float(argv[i + 1]); i += 2; continue
         if a == "--exempt-last":
             exempt_last = True; i += 1; continue
+        if a == "--exempt-window":
+            lo, hi = argv[i + 1].split("-")
+            exempt_windows.append((float(lo), float(hi))); i += 2; continue
         if a == "--gate":
             gate = True; i += 1; continue
         out.append(a); i += 1
-    return out, ceiling, exempt_last, gate
+    return out, ceiling, exempt_last, gate, exempt_windows
 
 
 def main():
@@ -526,7 +537,7 @@ def main():
     argv = [a for a in sys.argv[1:] if a != "--landscape"]
     if "--landscape" in sys.argv:
         apply_landscape_profile()
-    argv, ceiling, exempt_last, gate = _flags(argv)
+    argv, ceiling, exempt_last, gate, exempt_windows = _flags(argv)
     if ceiling is not None:
         CADENCE_CEILING_S = ceiling   # AFTER apply_landscape_profile(), which resets it
 
@@ -564,6 +575,16 @@ def main():
             if dropped:
                 print(f"  --exempt-last: {len(dropped)} finding(s) inside the closing "
                       f"scene (from {last_start:.2f}s) treated as the authored end-card hold")
+    if exempt_windows and whole_findings:
+        def _covered(f):
+            t0, t1 = f[0], f[1]
+            return any(lo - 0.05 <= t0 and t1 <= hi + 0.05 for lo, hi in exempt_windows)
+        dropped = [f for f in whole_findings if _covered(f)]
+        whole_findings = [f for f in whole_findings if not _covered(f)]
+        if dropped:
+            for lo, hi in exempt_windows:
+                print(f"  --exempt-window {lo:.2f}-{hi:.2f}s: reviewed, intentional hold")
+            print(f"  {len(dropped)} finding(s) fell fully inside a reviewed window and were dropped")
     region_findings = region_check(render_path, project_root)
 
     # Scope the summary to what was actually TESTED. "Overall: clean" reads as a

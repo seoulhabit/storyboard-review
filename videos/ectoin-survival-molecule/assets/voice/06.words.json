@@ -142,18 +142,18 @@
  ],
  "sentences": [
   {
-   "start": 0.1,
-   "end": 0.355,
+   "start": 0.104,
+   "end": 0.37,
    "text": "Why?"
   },
   {
-   "start": 0.712,
-   "end": 2.547,
+   "start": 0.742,
+   "end": 2.653,
    "text": "Because salt pulls water out of cells."
   },
   {
-   "start": 2.547,
-   "end": 9.068,
+   "start": 2.653,
+   "end": 9.446,
    "text": "Lose enough water and proteins start to lose their shape, membranes get unstable, and the cell stops working."
   }
  ],

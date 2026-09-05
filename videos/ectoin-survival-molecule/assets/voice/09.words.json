@@ -302,28 +302,28 @@
  ],
  "sentences": [
   {
-   "start": 0.1,
-   "end": 2.887,
+   "start": 0.109,
+   "end": 3.138,
    "text": "Scientists call the idea preferential exclusion."
   },
   {
-   "start": 2.917,
-   "end": 4.07,
+   "start": 3.171,
+   "end": 4.424,
    "text": "The tidy version."
   },
   {
-   "start": 4.07,
-   "end": 10.197,
+   "start": 4.424,
+   "end": 11.084,
    "text": "Ectoin protects proteins by staying off their surface, which helps the water around them stay organized."
   },
   {
-   "start": 10.217,
-   "end": 12.546,
+   "start": 11.505,
+   "end": 14.037,
    "text": "The honest version is messier."
   },
   {
-   "start": 12.566,
-   "end": 23.668,
+   "start": 14.809,
+   "end": 26.876,
    "text": "In the simulations, Ectoin also showed some attraction to that surface, and how far it stays back depends on how tightly the protein's own water is already arranged."
   }
  ],

@@ -57,13 +57,19 @@ def file_10_evidence(fspan, fctx):
     .q-void { position:absolute; left:40px; height:110px; width:940px; background:var(--coral);
               opacity:0; border-radius:var(--r-3); }
 """
+    # ev-n-l dropped "randomised" from its own label (kept in VO/captions): at
+    # the 40px --t-label floor (Phase 3, mobile legibility), "randomised trials"
+    # no longer fit the ~400px available width and wrapped to a 3rd line, which
+    # then overlapped #tag-note below it -- found on the rendered frame at
+    # t=92.5s, not readable from source. "trials / pooled in 2025" is 2 lines
+    # again, restoring the clearance #tag-note's top:132px assumes.
     tags = "".join(f'<div class="tr" id="tr-{i}"><span class="tr-tag" id="tag-{i}"></span></div>' for i in range(23))
     body = f"""
       <div class="stage">
        <div class="world" id="world">
         <div class="abs" style="{abs_(0, 0, 600, 150)}">
           <p class="ev-n" id="ev-n">0</p>
-          <p class="ev-n-l" id="ev-n-l" style="position:absolute;left:200px;top:34px;">randomised trials<br>pooled in 2025</p>
+          <p class="ev-n-l" id="ev-n-l" style="position:absolute;left:200px;top:34px;">trials<br>pooled in 2025</p>
           <p class="ev-n-l" id="tag-note" style="position:absolute;left:0;top:132px;opacity:.85;">tag pattern illustrative</p>
         </div>
         {panel("caveat-panel", "dim", kt("caveat", "small · short · industry funded", "on-ink"), abs_(620, 0, 1108, 150))}
@@ -194,7 +200,10 @@ def file_10_evidence(fspan, fctx):
     tl.to("#res-pt", { x:292 - 425, duration:1.8, ease:EASE.swap }, @w(without) + 0.25);
     tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.wipe }, @w(longer));
     tl.to("#res-v1", { opacity:0, duration:0.25, ease:EASE.exit }, @w(longer));
-    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(longer) + 0.2);
+    // EASE.arrive, not slam: this is the evidence-limitation label itself
+    // (Animation item 2 -- back.out's playful bounce is reserved for impacts
+    // and jokes, never a limitation, uncertainty, or guidance claim).
+    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, @w(longer) + 0.2);
     tl.to("#res-zero", { attr:{ "stroke-width":9 }, stroke:"CORAL", duration:0.5, ease:EASE.swap }, @w(longer) + 0.3);
     // restore, then filter 2: higher quality only
     tl.to(IND, { y:0, opacity:1, scale:1, backgroundColor:"CELADON", duration:0.4, stagger:0.01, ease:EASE.swap }, @w(keep,2) - 0.30);
@@ -213,8 +222,9 @@ def file_10_evidence(fspan, fctx):
     tl.to("#res-pt", { x:272 - 425, duration:1.4, ease:EASE.swap }, @w(quality) + 0.25);
     tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.wipe }, @w(quality) + 0.5);
     tl.to("#res-v1", { opacity:0, duration:0.2, ease:EASE.exit }, @w(quality) + 0.5);
-    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(quality) + 0.7);
-    tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(same) + 0.1);
+    // EASE.arrive here too, and for the pulse below -- same limitation label
+    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, @w(quality) + 0.7);
+    tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.arrive }, @w(same) + 0.1);
     // settle before the flood: the biggest beat lands on a settled frame
     tl.to("#res", { scale:1, transformOrigin:"100% 50%", duration:0.8, ease:EASE.camera }, @w(same));
     // THE PAYOFF: the biggest beat in the piece -- a paper flood, then three slams
@@ -249,7 +259,8 @@ def file_10_evidence(fspan, fctx):
     // sliver of it.
     tl.to("#res-ci", { attr:{ x:150, width:245 }, duration:0.9, ease:EASE.swap }, @w(independent));
     tl.to("#res-v2", { opacity:0, duration:0.25, ease:EASE.exit }, @w(uncertain) - 0.4);
-    tl.fromTo("#res-v3", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(uncertain) - 0.1);
+    // EASE.arrive: UNCERTAIN is the scene's own uncertainty label, not an impact
+    tl.fromTo("#res-v3", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, @w(uncertain) - 0.1);
 """.replace("CELADON_EDGE", CELADON_EDGE).replace("CELADON", CELADON).replace("CORAL_DEEP", CORAL_DEEP).replace("CORAL", CORAL)
     MOTION["10-trials"]["beats"] = [
         {"name": "tile field settles", "at": "0.0", "area": 0.30, "dl": 60, "dur": 0.5},

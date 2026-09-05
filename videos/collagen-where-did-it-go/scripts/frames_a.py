@@ -131,6 +131,13 @@ def file_02_promise(fspan, fctx):
                        color:var(--ink); opacity:0; }
     #data .chip { position:relative; }
 """
+    # the "data" panel below was abs_(1000, 0, 728, 918): right edge landed at
+    # canvas x=1824 and bottom at y=972 -- EXACTLY the safe-area reserve
+    # boundary, zero margin. check-safe-area.py caught the panel's own ink a
+    # few px past both edges on one sampled frame mid-transition (t=14.00s,
+    # "162px masked in-zone" on the right and bottom) -- a hairline boundary
+    # that was always one render away from tripping this, not a defect tied
+    # to any one change. 10px margin added on each side.
     body = f"""
       <div class="stage">
        <div class="world" id="world">
@@ -143,7 +150,7 @@ def file_02_promise(fspan, fctx):
                + chip("mini-cap", "23 trials", "on-ink")
                + chip("mini-leg", "$ = industry funded", "on-ink")
                + chip("mini-note", "tag pattern illustrative", "on-ink"),
-               abs_(1000, 0, 728, 918), "late")}
+               abs_(1000, 0, 718, 908), "late")}
        </div>
       </div>
 """

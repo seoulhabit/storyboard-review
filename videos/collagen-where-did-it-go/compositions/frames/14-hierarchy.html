@@ -458,7 +458,10 @@
     // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
     tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 13.822 - 0.2);
     tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 15.689 + 0.15);
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 16.133);
+    // EASE.arrive: "optional" is the scene's health-guidance verdict on these
+    // two products, not an impact (Animation item 2 -- reserve the playful
+    // back.out bounce for impacts/jokes, never a limitation or guidance claim).
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.arrive }, 16.133);
     tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 16.624 - 0.9);
     tl.to("#final", { opacity:1, duration:0.1 }, 16.624 - 0.1);
     tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 16.624 - 0.1);

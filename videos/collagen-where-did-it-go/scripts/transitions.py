@@ -57,14 +57,38 @@ BOUNDARIES = {
 # -1%, past the frame edge, so the eased tail of the tween -- where velocity
 # approaches zero -- spends its time OFF the visible frame rather than with a
 # sliver of the outgoing ground sitting inside a reserved zone. For the circle,
-# 2400px exceeds the farthest possible corner distance (sqrt(1920^2+1080^2) =
-# 2203px) from any centre, so the reveal has fully covered the frame while
-# still decelerating.
+# a flat 2400px (a margin over 2203px, the diagonal of the 1920x1080 canvas
+# and so the worst case for ANY centre) covers every iris_at regardless of
+# position -- but a near-CENTRE iris only needs ~1111px to reach every corner,
+# so under the shared power2.inOut/0.55s timing it fully covers the frame
+# well before the transition's own nominal midpoint: half of 2400px (1200px)
+# alone exceeds the ~1111px a centred iris needs. check-seams.py's render-level
+# PSNR check caught exactly this on 01-hook -> 02-promise (iris_at 960,560,
+# dead centre by design -- the molecule parks there): the midpoint frame was
+# already indistinguishable from the settled incoming scene (76dB, "matches a
+# neighbour").
+#
+# The fix is scoped to iris_at positions that actually need it (far <
+# FLAT_RADIUS/2), not applied uniformly: an EARLIER version of this scaled
+# the radius to every iris_at's own farthest-corner distance, which also
+# shrank the overshoot for the three transitions that were never broken
+# (each already needs >1200px, so the flat 2400 already produces a genuine
+# mid-transition blend for them) -- and that shrinkage retimed exactly when
+# each circle's edge sweeps through a given point, which moved 02-promise ->
+# 03-building's edge into check-safe-area.py's bottom-right reserved zone at
+# a sampled instant (t=14.00s) it never touched before. A gate-passing
+# transition regressed to fix one that wasn't passing. Below the threshold,
+# keep the exact flat 2400 every previously-verified transition already uses;
+# only a genuinely near-centre iris gets a smaller, still-safe radius (same
+# margin ratio as the flat number's own margin over the 2203px worst case).
+FLAT_RADIUS = 2400
+IRIS_OVERSHOOT_FACTOR = FLAT_RADIUS / 2203
 CLIP_PATH = {
-    "iris":    ("circle(0px at {x}px {y}px)", "circle(2400px at {x}px {y}px)", "power2.inOut"),
+    "iris":    ("circle(0px at {x}px {y}px)", "circle({r}px at {x}px {y}px)", "power2.inOut"),
     "invert":  ("inset(100% 0% 0% 0%)",       "inset(-1% -1% -1% -1%)",       "power3.inOut"),
     "curtain": ("inset(0% 0% 0% 100%)",       "inset(-1% -1% -1% -1%)",       "power2.inOut"),
 }
+CANVAS_W, CANVAS_H = 1920, 1080
 
 
 def kind_into(cid):
@@ -92,5 +116,8 @@ def plan(cid, iris_at=None):
     if kind == "iris":
         assert iris_at, f"{cid}: iris boundary needs an iris_at centre"
         x, y = int(round(iris_at[0])), int(round(iris_at[1]))
-        hidden, shown = hidden.format(x=x, y=y), shown.format(x=x, y=y)
+        far = max(((x - cx) ** 2 + (y - cy) ** 2) ** 0.5
+                  for cx in (0, CANVAS_W) for cy in (0, CANVAS_H))
+        r = int(round(far * IRIS_OVERSHOOT_FACTOR)) if far < FLAT_RADIUS / 2 else FLAT_RADIUS
+        hidden, shown = hidden.format(x=x, y=y), shown.format(x=x, y=y, r=r)
     return kind, d, seam_after, j, gap, hidden, shown, ease

@@ -61,7 +61,15 @@ def main():
     # fastest way to teach an operator to ignore a gate.
     ap.add_argument("--exempt-last", action="store_true",
                     help="ignore runs inside the last scene of index.html")
+    # Generalises --exempt-last: a named, reviewed window is a design decision
+    # (this project's review, Animation item 11: "allows intentional
+    # comprehension holds and rejects only unmotivated dead time"), not
+    # evidence the checker should keep re-discovering. Bounded, unlike
+    # --exempt-last -- a run that grows past the reviewed window still fails.
+    ap.add_argument("--exempt-window", action="append", default=[],
+                    metavar="START-END", help="reviewed hold, e.g. 52.00-54.50 (repeatable)")
     a = ap.parse_args()
+    exempt_windows = [tuple(float(x) for x in w.split("-")) for w in a.exempt_window]
     exempt_from = None
     if a.exempt_last:
         import re as _re
@@ -90,6 +98,9 @@ def main():
         t0, t1 = s * step, (e + 1) * step
         limit = a.open if t0 < a.open_until else a.rest
         if exempt_from is not None and t0 >= exempt_from - 0.01:
+            continue
+        if any(lo - 0.05 <= t0 and t1 <= hi + 0.05 for lo, hi in exempt_windows):
+            print(f"  --exempt-window: {t0:.2f}-{t1:.2f}s falls inside a reviewed hold, dropped")
             continue
         if t1 - t0 > limit:
             fails += 1

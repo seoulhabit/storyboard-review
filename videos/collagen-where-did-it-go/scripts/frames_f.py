@@ -126,7 +126,10 @@ def file_14_hierarchy(fspan, fctx):
     // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
     tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(pleasant) - 0.2);
     tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(powder) + 0.15);
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(optional));
+    // EASE.arrive: "optional" is the scene's health-guidance verdict on these
+    // two products, not an impact (Animation item 2 -- reserve the playful
+    // back.out bounce for impacts/jokes, never a limitation or guidance claim).
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.arrive }, @w(optional));
     tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, @w(protect) - 0.9);
     tl.to("#final", { opacity:1, duration:0.1 }, @w(protect) - 0.1);
     tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, @w(protect) - 0.1);

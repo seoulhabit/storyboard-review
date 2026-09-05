@@ -24,6 +24,8 @@ CHECKS = [
     ("cadence",      [str(S/"check-cadence.py"),      str(root), render], False),
     ("sfx-durations",[str(S/"check-sfx-durations.py"), str(root)],        False),
     ("contrast-px",  [str(S/"check-contrast-pixels.py"), render],         False),
+    ("motion-gaps",  [str(S/"check-motion-gaps.py"), render, "--project-root", str(root),
+                      "--advisory"],                                       False),
     ("safe-area",    [str(S/"check-safe-area.py"),    str(root), render, *SAFE], True),
 ]
 

@@ -28,11 +28,21 @@ from build_captions import SLUG
 
 # ASS is the burn-in format because it is the only one libass positions
 # reliably per cue. \an8 = top-centre, \an2 = bottom-centre.
-FONT = "Inter"
+#
+# The face is the project's OWN Inter, converted from the bundled woff2 to a TTF
+# libass can load and handed over with `fontsdir`. Naming "Inter" without that
+# would silently fall through to whatever fontconfig matches -- on this machine
+# `fc-match Inter` answers Verdana -- and the burned captions would ship in a
+# typeface that appears nowhere else in the video.
+FONT = "Inter ExtraBold"
+FONTS_DIR = "assets/fonts/ttf"
 FONT_SIZE = 54          # 1080p; ~5% of frame height, comfortably above the floor
 MARGIN_V = 96           # inside title-safe on both edges
-STYLE = (f"Style: Caption,{FONT},{FONT_SIZE},&H00F5F7F7,&H00F5F7F7,&H00161513,"
-         f"&HC0161513,-1,0,0,0,100,100,0,0,3,0,4,2,96,96,{MARGIN_V},1")
+# &HAABBGGRR. Primary = --paper, box = --ink at ~90% opacity: 15.1:1 against the
+# type, and opaque enough that a bright plate underneath cannot bleed through.
+# BorderStyle 3 is the opaque box; Outline is its padding, Shadow is off.
+STYLE = (f"Style: Caption,{FONT},{FONT_SIZE},&H00F0F5F7,&H00F0F5F7,&H00161513,"
+         f"&H1A161513,-1,0,0,0,100,100,0,0,3,10,0,2,96,96,{MARGIN_V},1")
 
 
 def parse_vtt(text):
@@ -94,7 +104,7 @@ def main():
     # Video is re-encoded (burning changes pixels); audio is copied untouched,
     # so the mastered loudness of the clean file carries over exactly.
     cmd = ["ffmpeg", "-y", "-v", "error", "-i", str(src),
-           "-vf", f"subtitles={ass.relative_to(ROOT)}",
+           "-vf", f"subtitles={ass.relative_to(ROOT)}:fontsdir={FONTS_DIR}",
            "-c:v", "libx264", "-preset", "medium", "-crf", "18",
            "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart", str(dst)]
     subprocess.run(cmd, cwd=ROOT, check=True)

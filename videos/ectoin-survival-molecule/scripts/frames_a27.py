@@ -1107,7 +1107,7 @@ S24 = dict(css="""
   tl.to('#el-prop', { opacity:1, duration:0.30 }, @w(big)+0.80);
   tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, @w(big)+0.90);
   tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, @w(big)+2.00);
-  tl.to('#el-inci', { opacity:0.75, duration:1.10 }, @w(big)+3.00);
+  tl.to('#el-inci', { opacity:0.88, duration:1.10 }, @w(big)+3.00);
 """)
 
 # ---------------------------------------------------------------- 25 formula (UNSOURCED)

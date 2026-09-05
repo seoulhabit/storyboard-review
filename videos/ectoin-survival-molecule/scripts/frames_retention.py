@@ -35,6 +35,17 @@ PLATE_ROOT_INK = """
 """
 
 PLATE_CSS = PLATE_ROOT_INK + """
+    /* MUTED TEXT ON A PLATE IS NOT MUTED TEXT ON INK. The .on-ink variants are
+       tuned against flat --ink (#131516); a .scrim.ink over a bright photo
+       composites to about #404342 -- measured on the render behind 24-eleven's
+       ingredient list -- where --ink-2-dark reads 3.18:1 instead of the 5.83:1
+       it scores on the flat ground. One step lighter, bound HERE so it applies
+       only to plate scenes, clears 4.5:1 on the plate and stays muted against
+       --paper. The alternative, deepening every scrim until the token works,
+       costs the photograph the plates exist for. */
+    #root { --muted-on-plate:#B7BBBA; }
+    .kicker.on-ink, .p-body.on-ink, .inci { color:var(--muted-on-plate); }
+    .cite.on-ink { color:var(--muted-on-plate); }
     .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
     .plate > video, .plate > img { position:absolute; left:0; top:0;
              width:1920px; height:1080px; object-fit:cover; display:block;
@@ -592,7 +603,7 @@ S09 = dict(css=PLATE_CSS + """
   }
   tl.to('#m-ring', { scale:1.06, transformOrigin:'310px 310px', duration:1.2,
                      ease:'power1.inOut', yoyo:true, repeat:1 }, @w(depends));
-  tl.to('#m-note', { opacity:0.75, duration:0.60 }, @w(arranged));
+  tl.to('#m-note', { opacity:0.90, duration:0.60 }, @w(arranged));
 """)
 
 # ---------------------------------------------------------------- 12 load (chapter)

@@ -33,12 +33,12 @@ something other than what the label implies, I say that too.
 
 CHAPTERS
 0:00 A molecule invented by bacteria trying not to die
-1:09 Why it is not just another hyaluronic acid
-2:01 What it might actually do for skin
-2:49 What the human evidence really says
-3:53 How to read an ectoin label
-4:44 Why K-beauty picked it up
-5:09 The verdict
+1:10 Why it is not just another hyaluronic acid
+2:12 What it might actually do for skin
+3:00 What the human evidence really says
+4:17 How to read an ectoin label
+5:14 Why K-beauty picked it up
+5:39 The verdict
 
 WHAT THE EVIDENCE ACTUALLY SHOWS
 PubMed indexes 12 ectoine clinical trials in total (queried 2026-09-02). That
@@ -78,6 +78,65 @@ believing in?
 ```
 
 ---
+
+## Accessible source list (goes in the description, verbatim)
+
+The 2026-09-05 accessibility review's P1 item 2 allows supplementary citations
+to sit below the on-screen reading floor **only if they are also given in the
+description or an accessible source list**. Two things in this video are below
+that floor by design and are reproduced here in full:
+
+**1. Every on-screen citation chip.** The frame carries `Journal · Year` only;
+the resolvable reference is here.
+
+- 0:41 *Environ Microbiol* · 2010 — Schwibbert et al. — https://doi.org/10.1111/j.1462-2920.2010.02336.x
+- 1:14 *Appl Microbiol Biotechnol* · 2006 — Lentzen & Schwarz — https://doi.org/10.1007/s00253-006-0553-9
+- 1:30 *J Phys Chem B* · 2007 — Yu, Jindo & Nagaoka — https://doi.org/10.1021/jp068367z
+- 2:20 *Phys Chem Chem Phys* · 2018 — Sahle et al. — https://doi.org/10.1039/c8cp05308a
+- 2:40 *Clin Dermatol* · 2008 — Graf et al. — https://doi.org/10.1016/j.clindermatol.2008.01.002
+- 2:55 *Biochem Biophys Rep* · 2021 — Bow et al. — https://doi.org/10.1016/j.bbrep.2021.101134
+- 3:05 *Skin Pharmacol Physiol* · 2007 — Heinrich, Garbe & Tronnier — https://doi.org/10.1159/000103204
+- 3:30 *Skin Pharmacol Physiol* · 2013 — Marini et al. — https://doi.org/10.1159/000351381
+
+Cited nowhere on screen, available for the same claim: Alexopoulos et al. 2022,
+*Pediatr Dermatol* — https://doi.org/10.1111/pde.15117
+
+**2. The Abib ingredient list shown at 4:43.** Read from the product's own INCI
+panel. An ingredient at position 11 cannot be 10% of a formula, which is the
+whole point of the beat:
+
+1. Water · 2. Panthenol · 3. Propanediol · 4. Cetyl Ethylhexanoate ·
+5. Squalane · 6. Diisobutyl Adipate · 7. Vinyl Dimethicone ·
+8. Propylheptyl Caprylate · 9. Cetearyl Alcohol · 10. Glyceryl Glucoside ·
+11. Ectoin
+
+**3. The percentages quoted at 4:31.** Paula's Choice states 7% ectoin; The
+Ordinary states 2% ectoin; Abib markets "Ectoin Panthenol 11%", which is the
+two ingredients added together, not 11% ectoin.
+
+## Captions
+
+Two sidecars ship, both hand-verified against the audio rather than taken from
+an auto-caption pass:
+
+- `captions/ectoin-survival-molecule.vtt` — **the one to upload.** Carries per-cue
+  positioning (`line:10%`) so a caption never sits on top of a chart, an
+  ingredient list or a lower third; 43 of 116 cues are moved to the top for that
+  reason. Max 2 lines, max 42 characters a line, 1.0s minimum on screen.
+- `captions/ectoin-survival-molecule.srt` — the same text with no positioning.
+  SRT placement is not portably honoured, so a positioned SRT would be a guess.
+
+`renders/ectoin-survival-molecule_open-captions.mp4` is a burned-in cut of the
+same master, for platforms that do not reliably offer a selectable track (an
+Instagram or TikTok repost). **Upload the clean master to YouTube** — burned-in
+captions cannot be turned off, and YouTube displays the sidecar reliably.
+
+Every term the review asked to have verified by ear is checked mechanically by
+`scripts/check-captions.py`, case-sensitively: Ectoin, Halomonas elongata,
+extremolyte, humectants, preferential exclusion, glycerin, hyaluronic acid,
+keratin, atopic dermatitis, bitop (lowercase — the company's own styling),
+Merck, Kao, Paula's Choice, The Ordinary, Abib, panthenol, squalane, ceramides,
+and the closing "bacteria-made survival molecule".
 
 ## Tags (`[S3/P-4]`)
 

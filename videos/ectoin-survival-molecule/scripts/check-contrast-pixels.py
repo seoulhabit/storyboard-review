@@ -91,8 +91,12 @@ def measure(a, box, label, floor, t):
               f"Either the element has not entered yet or the probe box is wrong.")
         return None
     cd, cl = np.median(dark, axis=0), np.median(light, axis=0)
-    r = ratio(cd, cl)
-    ok = r >= floor
+    r = float(ratio(cd, cl))
+    # float(), not the raw numpy scalar. `ok` was an np.bool_ and main()'s
+    # `r is False` identity test never matched it, so the gate printed FAIL on
+    # four probes and then exited 0. A gate that reports and passes is worse
+    # than no gate.
+    ok = bool(r >= floor)
     print(f"  {'PASS' if ok else 'FAIL'}  {r:6.2f}:1 (floor {floor})  {label:44s} "
           f"t={t:7.2f}s  ink=({cd[0]:.0f},{cd[1]:.0f},{cd[2]:.0f}) "
           f"ground=({cl[0]:.0f},{cl[1]:.0f},{cl[2]:.0f})")
@@ -107,18 +111,21 @@ def measure(a, box, label, floor, t):
 TARGETS = [
     ("01-hook",       5.60, (1100, 175, 1760, 300), "01 NOT THIS label on plate",        AA_NORMAL),
     ("05-halomonas",  4.40, (96, 330, 980, 760),    "05 Halomonas name + note on deck",  AA_LARGE),
-    ("07-question",   5.00, (96, 700, 1500, 1000),  "07 closing question on deck",       AA_LARGE),
+    ("07-question",   8.60, (140, 730, 1150, 950),  "07 closing question on deck",       AA_LARGE),
     ("08-humectant", 11.00, (96, 560, 900, 900),    "08 humectant card while dimmed",    AA_NORMAL),
-    ("09-exclusion",  6.00, (96, 300, 900, 830),    "09 paper world on deck",            AA_NORMAL),
+    ("09-exclusion",  6.00, (140, 300, 760, 800),   "09 paper world on deck",            AA_NORMAL),
     ("09-exclusion", 24.00, (96, 300, 900, 830),    "09 ink world note while dimmed",    AA_NORMAL),
     ("19-limits",     2.60, (96, 330, 1824, 500),   "19 headline on ink",                AA_LARGE),
     ("19-limits",     6.80, (96, 470, 1824, 720),   "19 claim cards after the strike",   AA_NORMAL),
     ("21-verdict",    5.00, (96, 230, 1824, 430),   "21 bitop / Merck / Kao tiles",      AA_NORMAL),
     ("21-verdict",    9.20, (200, 480, 1720, 900),  "21 verdict panel on the moss wash", AA_LARGE),
-    ("23-numbers",   12.00, (96, 240, 900, 460),    "23 brand cards, name row",          AA_NORMAL),
+    ("23-numbers",    4.00, (96, 240, 980, 420),    "23 headline serif on plate",        AA_LARGE),
+    ("23-numbers",   13.50, (96, 700, 980, 900),     "23 brand card name row",            AA_NORMAL),
     ("24-eleven",     3.20, (96, 100, 1824, 300),   "24 carry row while inactive",       AA_NORMAL),
-    ("24-eleven",    12.00, (940, 300, 1824, 760),  "24 ingredient list",                AA_NORMAL),
-    ("24-eleven",    17.50, (940, 300, 1824, 760),  "24 ingredient list while dimmed",   AA_NORMAL),
+    ("24-eleven",    12.00, (990, 385, 1800, 700),  "24 ingredient list",                AA_NORMAL),
+    # banded to rows 3-10, so the two aqua-filled rows are not what Otsu
+    # splits on -- the question is whether the DIMMED list is readable.
+    ("24-eleven",    17.50, (990, 385, 1800, 700),  "24 ingredient list while dimmed",   AA_NORMAL),
     ("28-remember",  10.00, (96, 640, 1400, 980),   "28 closing line on montage",        AA_LARGE),
     ("30-endcard",    2.40, (96, 380, 1180, 700),   "30 end card handle",                AA_LARGE),
 ]
@@ -137,7 +144,7 @@ def main():
             sys.exit(f"FATAL: probe names scene {cid}, which is not in the walk")
         t = starts[cid] + off
         results.append(measure(frame(render, t), box, label, floor, t))
-    bad = [r for r in results if r is False]
+    bad = [r for r in results if r is not None and not r]
     miss = [r for r in results if r is None]
     print(f"[contrast] {len(bad)} below floor, {len(miss)} probe(s) found no text")
     return 1 if (bad or miss) else 0

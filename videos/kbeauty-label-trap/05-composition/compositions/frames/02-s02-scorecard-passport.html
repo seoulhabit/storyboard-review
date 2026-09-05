@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,42 +30,50 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--ink); color:var(--paper); }
 
   .pass-stage { position:relative; height:100%; width:100%;
-    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%);
-    display:flex; align-items:center; justify-content:center; }
-  .leaderboard { position:absolute; left:50%; top:26%; transform:translate(-50%,-50%);
+    background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%); }
+  .leaderboard { position:absolute; left:50%; top:32%; transform:translate(-50%,-50%);
     display:flex; gap:90px; opacity:0; }
   .lb-col { width:280px; font-family:var(--font-mono); font-size:26px; color:rgba(247,245,240,0.55); }
   .lb-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
-  .passport { position:relative; width:640px; height:420px; border-radius:14px;
-    background: linear-gradient(160deg, #F7F5F0, #E9E4D8); opacity:0; transform:scale(0.85);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5); padding:44px; }
-  .passport-title { font-family:var(--font-mono); font-size:24px; letter-spacing:.18em; color:var(--ink-2); }
-  .passport-name { font-family:var(--font-display); font-size:52px; color:var(--ink); margin-top:14px; }
-  .passport-sub { font-family:var(--font-body); font-size:28px; color:var(--ink-2); margin-top:22px; line-height:1.4; }
-  .passport-stamp-wrap { position:absolute; right:36px; bottom:36px; opacity:0; transform:scale(0.5); }
-  .thesis { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 50px); text-align:center; opacity:0; }
+  .dossier { position:absolute; left:50%; top:30%; transform:translate(-50%,-50%);
+    width:1560px; opacity:0; }
+  .dossier-name { text-align:center; font-family:var(--font-display); font-weight:800; font-size:64px;
+    color:var(--paper); letter-spacing:-.03em; margin-bottom:30px; }
+  .dossier-fields { display:flex; gap:0; border-top:1px solid rgba(255,255,255,0.18); }
+  .field { flex:1; min-width:0; padding:20px 22px; border-right:1px solid rgba(255,255,255,0.18); }
+  .field:last-child { border-right:none; }
+  .field-name { font-family:var(--font-mono); font-size:20px; color:rgba(247,245,240,0.5); margin-bottom:10px; }
+  .field-value { font-weight:700; font-size:26px; color:var(--paper); line-height:1.25; margin-bottom:12px; min-height:64px; }
+  .id-seal-wrap { position:absolute; right:-10px; top:-40px; opacity:0; transform:scale(0.5) rotate(-14deg); }
+  .id-tag { font-family:var(--font-mono); font-size:22px; color:var(--assay); letter-spacing:.1em; margin-top:6px; text-align:center; }
+  .thesis { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 40px); text-align:center; opacity:0; }
 
 </style>
 
@@ -64,24 +85,34 @@
         <div class="lb-col"><div class="lb-row"><span>1</span><span>CENTELLA EXTRACT</span></div><div class="lb-row"><span>2</span><span>NIACINAMIDE</span></div><div class="lb-row"><span>3</span><span>PANTHENOL</span></div></div>
         <div class="lb-col"><div class="lb-row"><span>1</span><span>CENTELLA EXTRACT</span></div><div class="lb-row"><span>2</span><span>MADECASSOSIDE</span></div><div class="lb-row"><span>3</span><span>NIACINAMIDE</span></div></div>
       </div>
-      <div class="passport" id="s02-passport">
-        <div class="passport-title">INGREDIENT PASSPORT</div>
-        <div class="passport-name">Centella Asiatica Extract</div>
-        <div class="passport-sub">This document certifies identity only.<br>It does not certify performance.</div>
-        <div class="passport-stamp-wrap" id="s02-stamp-wrap">
-          <svg class="stamp" id="s02-stamp" viewBox="0 0 170 170" width="170" height="170"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 85.0 85.0)">
-    <circle cx="85.0" cy="85.0" r="79.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="85.0" cy="85.0" r="63.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="85.0" y="94.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="27" fill="var(--vermilion)" letter-spacing="1">ID ONLY</text>
-  </g>
-</svg>
+      <div class="dossier" id="s02-dossier">
+        <div class="dossier-name">Cica — Ingredient Identity Record</div>
+        <div class="dossier-fields"><div class="field" id="s02-field-0"><div class="field-name">CONSUMER NAME</div><div class="field-value">Cica</div><span class="ev-chip" id="s02-chip-0" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #426B50;border-radius:999px;padding:8px 22px;color:#426B50;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#426B50" stroke-width="1.6" style=""/></svg>Known</span></div>
+<div class="field" id="s02-field-1"><div class="field-name">LABEL DECLARATION</div><div class="field-value">Centella Asiatica Extract</div><span class="ev-chip" id="s02-chip-1" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #6358A7;border-radius:999px;padding:8px 22px;color:#6358A7;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#6358A7" stroke-width="1.6" style=""/></svg>Context required</span></div>
+<div class="field" id="s02-field-2"><div class="field-name">SOURCE</div><div class="field-value">Centella asiatica plant</div><span class="ev-chip" id="s02-chip-2" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #6358A7;border-radius:999px;padding:8px 22px;color:#6358A7;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#6358A7" stroke-width="1.6" style=""/></svg>Context required</span></div>
+<div class="field" id="s02-field-3"><div class="field-name">PROCESS OR FORM</div><div class="field-value">Not disclosed</div><span class="ev-chip" id="s02-chip-3" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #D95F52;border-radius:999px;padding:8px 22px;color:#D95F52;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#D95F52" stroke-width="1.6" style="stroke-dasharray:3 4;"/></svg>Not disclosed</span></div>
+<div class="field" id="s02-field-4"><div class="field-name">STUDIED-MATERIAL MATCH</div><div class="field-value">Not established</div><span class="ev-chip" id="s02-chip-4" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #7D8791;border-radius:999px;padding:8px 22px;color:#7D8791;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#7D8791" stroke-width="1.6" style=""/></svg>Not established</span></div></div>
+        <div class="id-seal-wrap" id="s02-seal-wrap">
+          <div class="q-seal" id="s02-seal" style="position:relative;width:110px;height:110px;flex:none;">
+  <svg width="110" height="110" viewBox="0 0 110 110" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s02-seal-ring" cx="55.0" cy="55.0" r="51.0" fill="rgba(255,255,255,0.05)" stroke="#426B50" stroke-width="3"/>
+    <circle id="s02-seal-keyline" cx="55.0" cy="55.0" r="40.7" fill="none" stroke="#426B50" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-identity-version" id="s02-seal-glyph" viewBox="0 0 96 96" width="46.199999999999996" height="46.199999999999996" style="overflow:visible;color:#426B50;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+</div>
+          <div class="id-tag">IDENTITY ONLY</div>
         </div>
       </div>
       <div class="thesis" id="s02-thesis">
-        <div class="head" style="color:var(--paper); font-size:76px;">A LIST IS A PASSPORT — NOT A SCORECARD</div>
+        <div class="head" style="color:var(--paper); font-size:72px;">A LIST IS A PASSPORT — NOT A SCORECARD</div>
       </div>
     </div>
 
@@ -91,16 +122,22 @@
 (function () {
 
   gsap.set('#s02-leaderboard', { opacity: 0 });
-  gsap.set('#s02-passport', { opacity: 0, scale: 0.85 });
-  gsap.set('#s02-stamp-wrap', { opacity: 0, scale: 0.5, rotation: -18 });
+  gsap.set('#s02-dossier', { opacity: 0, scale: 0.92 });
+  gsap.set('.field', { opacity: 0, y: 12 });
+  gsap.set('#s02-seal-wrap', { opacity: 0, scale: 0.5, rotation: -14 });
   gsap.set('#s02-thesis', { opacity: 0, y: 16 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s02-leaderboard', { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.0);
   tl.to('#s02-leaderboard', { opacity: 0, y: -20, duration: 0.6, ease: 'power2.in' }, 1.9);
-  tl.to('#s02-passport', { opacity: 1, scale: 1, duration: 1.0, ease: 'back.out(1.4)' }, 2.4);
-  tl.to('#s02-stamp-wrap', { opacity: 1, scale: 1, rotation: -6, duration: 0.6, ease: 'back.out(2.2)' }, 4.6);
-  tl.to('#s02-thesis', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 6.6);
+  tl.to('#s02-dossier', { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' }, 4.3);
+  tl.to('#s02-field-0', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 4.50);
+  tl.to('#s02-field-1', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 4.68);
+  tl.to('#s02-field-2', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 4.86);
+  tl.to('#s02-field-3', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 5.04);
+  tl.to('#s02-field-4', { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 5.22);
+  tl.to('#s02-seal-wrap', { opacity: 1, scale: 1, rotation: -6, duration: 0.6, ease: 'back.out(2.2)' }, 5.6);
+  tl.to('#s02-thesis', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 7.5);
   tl.to({}, { duration: 12.257, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s02-scorecard-passport'] = tl;

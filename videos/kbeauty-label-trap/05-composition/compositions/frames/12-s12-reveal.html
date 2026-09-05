@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,23 +30,28 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--ink); color:var(--paper); }
@@ -43,20 +61,28 @@
   .bench-surface { position:absolute; left:0; right:0; bottom:0; height:38%;
     background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
     border-top:1px solid rgba(255,255,255,0.06); }
-  .bottle-pair { position:absolute; left:50%; top:36%; transform:translate(-50%,-50%);
-    display:flex; gap:220px; }
-  .bottle-label { text-align:center; margin-top:18px; }
-  .verdict-row { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 60px);
-    display:flex; justify-content:center; gap:340px; }
-  .verdict { text-align:center; opacity:0; }
-  .verdict .illus-tag { color:var(--ink-3); }
-  .verdict .label { font-size:30px; margin-top:8px; }
-  .verdict.a .label { color:var(--ink-3); }
+  .actor-row { position:absolute; left:50%; top:26%;
+    display:flex; align-items:center; justify-content:center; gap:130px; }
+  .bottle-slot { text-align:center; }
+  /* Anchored to the SAME bottle centers the actor-row's own flex math
+     produces (bottle 150 + gap 130 + actor 190 + gap 130 + bottle 150 =>
+     bottle centers sit at +-300px from page center) so the seal readout and
+     verdict labels visibly belong to their own bottle, not a separately
+     centered block that drifts out of alignment. */
+  .seal-col { position:absolute; top:48%; display:flex; gap:12px; opacity:0; }
+  .seal-col-a { left:calc(50% - 300px); transform:translateX(-50%); }
+  .seal-col-b { left:calc(50% + 300px); transform:translateX(-50%); }
+  .verdict-row { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 70px); }
+  .verdict { position:absolute; top:0; text-align:center; opacity:0; width:360px; }
+  .verdict.a { left:calc(50% - 300px); }
+  .verdict.b { left:calc(50% + 300px); }
+  .verdict .label { font-size:28px; margin-top:8px; font-family:var(--font-display); font-weight:800; letter-spacing:-.01em; }
+  .verdict.a .label { color:var(--ink-soft); }
   .verdict.b .label { color:var(--celadon); }
-  .seal-row { position:absolute; left:50%; top:14%; transform:translate(-50%,0); display:flex; gap:24px; }
-  .card-focus { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 60px);
+  .card-focus { position:absolute; left:0; right:0; bottom:calc(var(--safe-bottom) + 50px);
     text-align:center; opacity:0; }
-  .card-focus .head { font-size:60px; color:var(--paper); }
+  .card-focus .head { font-size:58px; color:var(--paper); }
+  .card-focus .sub2 { margin-top:16px; font-size:32px; color:var(--ink-soft); font-family:var(--font-mono); }
 
 </style>
 
@@ -65,123 +91,222 @@
 
     <div class="bench">
       <div class="bench-surface"></div>
-      <div class="seal-row" id="s12-seals"><svg class="stamp" id="s12-sealf-0" viewBox="0 0 80 80" width="80" height="80"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 40.0 40.0)">
-    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">1</text>
-  </g>
-</svg><svg class="stamp" id="s12-sealf-1" viewBox="0 0 80 80" width="80" height="80"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 40.0 40.0)">
-    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">2</text>
-  </g>
-</svg><svg class="stamp" id="s12-sealf-2" viewBox="0 0 80 80" width="80" height="80"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 40.0 40.0)">
-    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">3</text>
-  </g>
-</svg><svg class="stamp" id="s12-sealf-3" viewBox="0 0 80 80" width="80" height="80"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 40.0 40.0)">
-    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">4</text>
-  </g>
-</svg><svg class="stamp" id="s12-sealf-4" viewBox="0 0 80 80" width="80" height="80"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 40.0 40.0)">
-    <circle cx="40.0" cy="40.0" r="34.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="40.0" cy="40.0" r="18.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="40.0" y="49.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="13" fill="var(--vermilion)" letter-spacing="1">5</text>
-  </g>
-</svg></div>
-      <div class="bottle-pair" id="s12-bottles">
-        <div class="bottle-label">
-          <svg class="bottle" id="s12-bottle-a" viewBox="0 0 190 320" width="190" height="320"
-     style="overflow:visible" aria-hidden="true">
+      <div class="actor-row">
+        <div class="bottle-slot" id="s12-slot-a">
+          <svg class="package-shell package-a" id="s12-bottle-a" viewBox="0 0 150 300"
+     width="150" height="300" style="overflow:visible" aria-hidden="true">
   <defs>
     <linearGradient id="s12-bottle-a-glass" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
-      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="0%" stop-color="#F1F2ED" stop-opacity="0.12"/>
+      <stop offset="46%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="54%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#F1F2ED" stop-opacity="0.12"/>
     </linearGradient>
-    <linearGradient id="s12-bottle-a-liquid" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    <linearGradient id="s12-bottle-a-liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7F9D88" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#426B50" stop-opacity="0.72"/>
     </linearGradient>
   </defs>
-  <rect x="-75.0" y="66.0" width="150" height="234.0" rx="21.000000000000004"
-        fill="url(#s12-bottle-a-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
-  <clipPath id="s12-bottle-a-clip"><rect x="-69.0" y="72.0" width="138" height="222.0" rx="18.0"/></clipPath>
-        <g clip-path="url(#s12-bottle-a-clip)">
-          <rect x="-75.0" y="66.0" width="150" height="234.0" fill="url(#s12-bottle-a-liquid)"/>
-          <g stroke="var(--celadon)" stroke-width="3" fill="none" opacity="0.85">
-            <path d="M -45.0 264.9 L -15.0 194.70000000000002 L 22.5 229.79999999999998 L 7.5 136.2 L 45.0 112.80000000000001"/>
-            <path d="M -15.0 194.70000000000002 L -37.5 124.5"/>
-            <path d="M 22.5 229.79999999999998 L 45.0 183.0"/>
-          </g>
-          <g fill="var(--celadon)" opacity="0.9">
-            <circle cx="-45.0" cy="264.9" r="5"/>
-            <circle cx="-15.0" cy="194.70000000000002" r="6"/>
-            <circle cx="22.5" cy="229.79999999999998" r="5"/>
-            <circle cx="7.5" cy="136.2" r="6"/>
-            <circle cx="45.0" cy="112.80000000000001" r="5"/>
-            <circle cx="-37.5" cy="124.5" r="4"/>
-            <circle cx="45.0" cy="183.0" r="4"/>
-          </g>
-        </g>
-  <rect x="-24.0" y="0" width="48.0" height="66.0" rx="6"
+  <rect x="51.0" y="0" width="48.0" height="60.0" rx="8"
         fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
-  <rect x="-7.5" y="94.08" width="21.000000000000004" height="128.70000000000002" rx="9.0"
-        fill="#FFFFFF" opacity="0.18"/>
+  <rect x="6.0" y="66.0" width="138.0" height="234.0" rx="24.0"
+        fill="url(#s12-bottle-a-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.92"/>
+  <rect x="12.0" y="117.47999999999999" width="126.0"
+          height="163.79999999999998" rx="12.0" fill="url(#s12-bottle-a-liq)"/>
+        <line x1="12.0" y1="117.47999999999999" x2="138.0" y2="117.47999999999999"
+          stroke="#426B50" stroke-width="2" opacity="0.4"/>
+  <rect x="30.0" y="89.4" width="15.0" height="117.0"
+        rx="7.5" fill="#FFFFFF" opacity="0.16"/>
 </svg>
         </div>
-        <div class="bottle-label">
-          <svg class="bottle" id="s12-bottle-b" viewBox="0 0 190 320" width="190" height="320"
+        <div class="actor-slot" id="s12-actor-slot"><svg class="ingredient-actor" id="s12-actor" viewBox="0 0 200 200" width="190" height="190"
      style="overflow:visible" aria-hidden="true">
   <defs>
-    <linearGradient id="s12-bottle-b-glass" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
-      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
-    </linearGradient>
-    <linearGradient id="s12-bottle-b-liquid" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    <linearGradient id="s12-actor-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#B7CDBD"/>
+      <stop offset="100%" stop-color="#3F6B4E"/>
     </linearGradient>
   </defs>
-  <rect x="-75.0" y="66.0" width="150" height="234.0" rx="21.000000000000004"
-        fill="url(#s12-bottle-b-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
-  <clipPath id="s12-bottle-b-clip"><rect x="-69.0" y="72.0" width="138" height="222.0" rx="18.0"/></clipPath>
-        <g clip-path="url(#s12-bottle-b-clip)">
-          <rect x="-75.0" y="108.12" width="150" height="191.88" fill="url(#s12-bottle-b-liquid)"/>
-          <line x1="-75.0" y1="108.12" x2="75.0" y2="108.12" stroke="var(--celadon)" stroke-width="2" opacity="0.5"/>
-        </g>
-  <rect x="-24.0" y="0" width="48.0" height="66.0" rx="6"
+  <path id="s12-actor-body" d="M100 164C86 140 63 125 50 98C35 65 58 34 94 42C108 22 143 32 149 62
+    C172 74 165 113 138 125C127 137 113 151 100 164Z"
+    fill="url(#s12-actor-leaf)" stroke="#426B50" stroke-width="2.6"/>
+  <g fill="none" stroke="#F1F2ED" stroke-opacity=".85" stroke-width="1.8">
+    <path d="M100 162V49M100 92L62 66M100 110L140 68M100 128L61 103M100 140L138 112"/>
+  </g>
+  <circle cx="100" cy="49" r="5" fill="#F1F2ED" stroke="#426B50" stroke-width="1.6"/>
+</svg></div>
+        <div class="bottle-slot" id="s12-slot-b">
+          <svg class="package-shell package-b" id="s12-bottle-b" viewBox="0 0 150 300"
+     width="150" height="300" style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s12-bottle-b-glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F1F2ED" stop-opacity="0.12"/>
+      <stop offset="46%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="54%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#F1F2ED" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="s12-bottle-b-liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7F9D88" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#426B50" stop-opacity="0.72"/>
+    </linearGradient>
+  </defs>
+  <rect x="51.0" y="0" width="48.0" height="60.0" rx="4"
         fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
-  <rect x="-7.5" y="94.08" width="21.000000000000004" height="128.70000000000002" rx="9.0"
-        fill="#FFFFFF" opacity="0.18"/>
+  <rect x="6.0" y="66.0" width="138.0" height="234.0" rx="10.500000000000002"
+        fill="url(#s12-bottle-b-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.92"/>
+  <rect x="12.0" y="74.0" width="126.0" height="218.0"
+          rx="7.3500000000000005" fill="url(#s12-bottle-b-liq)"/>
+        <g stroke="#7F9D88" stroke-width="2.4" fill="none" opacity="0.85">
+          <path d="M 32.99999999999999 257.88 L 63.0 187.68
+                   L 97.5 220.44 L 81.0 131.52
+                   L 120.0 108.12"/>
+        </g>
+        <g fill="#7F9D88">
+          <circle cx="32.99999999999999" cy="257.88" r="4.5"/>
+          <circle cx="63.0" cy="187.68" r="5.5"/>
+          <circle cx="97.5" cy="220.44" r="4.5"/>
+          <circle cx="81.0" cy="131.52" r="5.5"/>
+          <circle cx="120.0" cy="108.12" r="4.5"/>
+        </g>
+  <rect x="30.0" y="89.4" width="15.0" height="117.0"
+        rx="7.5" fill="#FFFFFF" opacity="0.16"/>
 </svg>
         </div>
       </div>
+      <div class="seal-col seal-col-a" id="s12-seals-a"><div class="q-seal" id="s12-a-seal-0" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-a-seal-0-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-a-seal-0-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-quantity" id="s12-a-seal-0-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Rank ticks descending toward a dashed cutoff -- "position is visible, dose is not." -->
+  <line x1="30" y1="34" x2="62" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="44" x2="54" y2="44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="62" x2="42" y2="62" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <line x1="26" y1="53" x2="66" y2="53" stroke="#C5944D" stroke-width="2.2" stroke-dasharray="3 4"/></svg></div>
+</div><div class="q-seal" id="s12-a-seal-1" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-a-seal-1-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-a-seal-1-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-identity-version" id="s12-a-seal-1-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+</div><div class="q-seal" id="s12-a-seal-2" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-a-seal-2-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-a-seal-2-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-formula-vehicle" id="s12-a-seal-2-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Vessel carrying a passenger droplet -- the ingredient never travels alone. -->
+  <path d="M42 26H54V38L62 60C64 65 61 69 56 69H40C35 69 32 65 34 60L42 38V26Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="39" y1="26" x2="57" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="56" r="6" fill="#5F9294"/></svg></div>
+</div><div class="q-seal" id="s12-a-seal-3" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-a-seal-3-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-a-seal-3-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-evidence" id="s12-a-seal-3-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/></svg></div>
+</div><div class="q-seal" id="s12-a-seal-4" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-a-seal-4-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-a-seal-4-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-boundary" id="s12-a-seal-4-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/></svg></div>
+</div></div>
+      <div class="seal-col seal-col-b" id="s12-seals-b"><div class="q-seal" id="s12-b-seal-0" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-b-seal-0-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-b-seal-0-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-quantity" id="s12-b-seal-0-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Rank ticks descending toward a dashed cutoff -- "position is visible, dose is not." -->
+  <line x1="30" y1="34" x2="62" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="44" x2="54" y2="44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="62" x2="42" y2="62" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <line x1="26" y1="53" x2="66" y2="53" stroke="#C5944D" stroke-width="2.2" stroke-dasharray="3 4"/></svg></div>
+</div><div class="q-seal" id="s12-b-seal-1" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-b-seal-1-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-b-seal-1-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-identity-version" id="s12-b-seal-1-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+</div><div class="q-seal" id="s12-b-seal-2" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-b-seal-2-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-b-seal-2-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-formula-vehicle" id="s12-b-seal-2-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Vessel carrying a passenger droplet -- the ingredient never travels alone. -->
+  <path d="M42 26H54V38L62 60C64 65 61 69 56 69H40C35 69 32 65 34 60L42 38V26Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="39" y1="26" x2="57" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="56" r="6" fill="#5F9294"/></svg></div>
+</div><div class="q-seal" id="s12-b-seal-3" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-b-seal-3-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-b-seal-3-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-evidence" id="s12-b-seal-3-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/></svg></div>
+</div><div class="q-seal" id="s12-b-seal-4" style="position:relative;width:58px;height:58px;flex:none;">
+  <svg width="58" height="58" viewBox="0 0 58 58" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s12-b-seal-4-ring" cx="29.0" cy="29.0" r="25.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s12-b-seal-4-keyline" cx="29.0" cy="29.0" r="21.46" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-boundary" id="s12-b-seal-4-glyph" viewBox="0 0 96 96" width="24.36" height="24.36" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/></svg></div>
+</div></div>
       <div class="verdict-row" id="s12-verdicts">
-        <div class="verdict a"><div class="illus-tag">[Authored, illustrative — not a claim]</div><div class="label">MORE UNCERTAINTY</div></div>
-        <div class="verdict b"><div class="illus-tag">[Authored, illustrative — not a claim]</div><div class="label">MORE DECISION-USEFUL INFORMATION</div></div>
+        <div class="verdict a"><div class="illus-tag" id="s12-tag-a">Authored, illustrative — not a claim.</div><div class="label">MORE UNCERTAINTY</div></div>
+        <div class="verdict b"><div class="illus-tag" id="s12-tag-b">Authored, illustrative — not a claim.</div><div class="label">MORE DECISION-USEFUL INFORMATION</div></div>
       </div>
-      <div class="card-focus" id="s12-card"><div class="head">FIVE QUESTIONS. ONE VERDICT.</div></div>
+      <div class="card-focus" id="s12-card">
+        <div class="head">FIVE QUESTIONS. ONE VERDICT.</div>
+        <div class="sub2">NOT AUTOMATICALLY BETTER</div>
+      </div>
     </div>
 
   </div>
@@ -189,47 +314,50 @@
 <script>
 (function () {
 
-  gsap.set('#s12-bottles', { opacity: 1 });
-  gsap.set('.verdict', { opacity: 0, y: 16 });
+  gsap.set('.actor-row', { opacity: 0, y: 20, xPercent: -50 });
+  gsap.set('.seal-col', { opacity: 0 });
+  gsap.set('.verdict', { opacity: 0, y: 16, xPercent: -50 });
   gsap.set('#s12-card', { opacity: 0, y: 16 });
-  gsap.set('#s12-seals', { opacity: 0.9 });
-  gsap.set(['#s12-sealf-0', '#s12-sealf-1', '#s12-sealf-2', '#s12-sealf-3', '#s12-sealf-4'], { scale: 1, transformOrigin: '50% 50%' });
 
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s12-bottles', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0.0);
-  tl.to('.verdict.a', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 7.0);
-  tl.to('.verdict.b', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 7.6);
-  tl.to('#s12-sealf-0', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 1.00);
-  tl.to('#s12-sealf-0', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 1.92);
-  tl.to('#s12-sealf-1', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 1.60);
-  tl.to('#s12-sealf-1', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 2.52);
-  tl.to('#s12-sealf-2', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 2.20);
-  tl.to('#s12-sealf-2', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 3.12);
-  tl.to('#s12-sealf-3', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 2.80);
-  tl.to('#s12-sealf-3', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 3.72);
-  tl.to('#s12-sealf-4', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 3.40);
-  tl.to('#s12-sealf-4', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 4.32);
-  tl.to('#s12-sealf-0', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 9.00);
-  tl.to('#s12-sealf-0', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 9.92);
-  tl.to('#s12-sealf-1', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 9.60);
-  tl.to('#s12-sealf-1', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 10.52);
-  tl.to('#s12-sealf-2', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 10.20);
-  tl.to('#s12-sealf-2', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 11.12);
-  tl.to('#s12-sealf-3', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 10.80);
-  tl.to('#s12-sealf-3', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 11.72);
-  tl.to('#s12-sealf-4', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 11.40);
-  tl.to('#s12-sealf-4', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 12.32);
-  tl.to('#s12-sealf-0', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 13.60);
-  tl.to('#s12-sealf-0', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 14.52);
-  tl.to('#s12-sealf-1', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 14.20);
-  tl.to('#s12-sealf-1', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 15.12);
-  tl.to('#s12-sealf-2', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 14.80);
-  tl.to('#s12-sealf-2', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 15.72);
-  tl.to('#s12-sealf-3', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 15.40);
-  tl.to('#s12-sealf-3', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 16.32);
-  tl.to('#s12-sealf-4', { scale: 1.05, duration: 0.9, ease: 'sine.inOut' }, 16.00);
-  tl.to('#s12-sealf-4', { scale: 1.0, duration: 0.9, ease: 'sine.inOut' }, 16.92);
-  tl.to('#s12-bottles', { opacity: 0.25, duration: 1.0, ease: 'power2.inOut' }, 17.0);
+  tl.to('.actor-row', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0.0);
+  tl.to('#s12-seals-a', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 1.0);
+  tl.to('#s12-a-seal-0-ring', { attr: { stroke: '#D95F52' }, duration: 0.35, ease: 'power2.out' }, 1.20);
+  tl.to('#s12-a-seal-0-keyline', { attr: { stroke: '#D95F52' }, duration: 0.35, ease: 'power2.out' }, 1.20);
+  tl.to('#s12-a-seal-0 .icon', { color: '#D95F52', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 1.20);
+  tl.to('#s12-a-seal-1-ring', { attr: { stroke: '#D95F52' }, duration: 0.35, ease: 'power2.out' }, 1.90);
+  tl.to('#s12-a-seal-1-keyline', { attr: { stroke: '#D95F52' }, duration: 0.35, ease: 'power2.out' }, 1.90);
+  tl.to('#s12-a-seal-1 .icon', { color: '#D95F52', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 1.90);
+  tl.to('#s12-a-seal-2-ring', { attr: { stroke: '#D95F52' }, duration: 0.35, ease: 'power2.out' }, 2.60);
+  tl.to('#s12-a-seal-2-keyline', { attr: { stroke: '#D95F52' }, duration: 0.35, ease: 'power2.out' }, 2.60);
+  tl.to('#s12-a-seal-2 .icon', { color: '#D95F52', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 2.60);
+  tl.to('#s12-a-seal-3-ring', { attr: { stroke: '#6358A7' }, duration: 0.35, ease: 'power2.out' }, 3.30);
+  tl.to('#s12-a-seal-3-keyline', { attr: { stroke: '#6358A7' }, duration: 0.35, ease: 'power2.out' }, 3.30);
+  tl.to('#s12-a-seal-3 .icon', { color: '#6358A7', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 3.30);
+  tl.to('#s12-a-seal-4-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 4.00);
+  tl.to('#s12-a-seal-4-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 4.00);
+  tl.to('#s12-a-seal-4 .icon', { color: '#426B50', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 4.00);
+  tl.to('#s12-seals-b', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 7.0);
+  tl.to('#s12-b-seal-0-ring', { attr: { stroke: '#6358A7' }, duration: 0.35, ease: 'power2.out' }, 7.20);
+  tl.to('#s12-b-seal-0-keyline', { attr: { stroke: '#6358A7' }, duration: 0.35, ease: 'power2.out' }, 7.20);
+  tl.to('#s12-b-seal-0 .icon', { color: '#6358A7', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 7.20);
+  tl.to('#s12-b-seal-1-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 7.90);
+  tl.to('#s12-b-seal-1-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 7.90);
+  tl.to('#s12-b-seal-1 .icon', { color: '#426B50', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 7.90);
+  tl.to('#s12-b-seal-2-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 8.60);
+  tl.to('#s12-b-seal-2-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 8.60);
+  tl.to('#s12-b-seal-2 .icon', { color: '#426B50', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 8.60);
+  tl.to('#s12-b-seal-3-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 9.30);
+  tl.to('#s12-b-seal-3-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 9.30);
+  tl.to('#s12-b-seal-3 .icon', { color: '#426B50', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 9.30);
+  tl.to('#s12-b-seal-4-ring', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 10.00);
+  tl.to('#s12-b-seal-4-keyline', { attr: { stroke: '#426B50' }, duration: 0.35, ease: 'power2.out' }, 10.00);
+  tl.to('#s12-b-seal-4 .icon', { color: '#426B50', scale: 1.08, duration: 0.35, ease: 'back.out(2)' }, 10.00);
+  tl.to('.verdict.a', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 13.0);
+  tl.to('.verdict.b', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 13.6);
+  // camera chooses no bottle -- both recede together, card-focus takes the frame.
+  tl.to('.actor-row', { opacity: 0.2, duration: 1.0, ease: 'power2.inOut' }, 17.0);
+  tl.to('.seal-col', { opacity: 0.2, duration: 1.0, ease: 'power2.inOut' }, 17.0);
   tl.to('.verdict', { opacity: 0, duration: 0.6, ease: 'power2.in' }, 17.0);
   tl.to('#s12-card', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 18.2);
   tl.to({}, { duration: 25.425, ease: 'none' }, 0);

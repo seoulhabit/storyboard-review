@@ -1,12 +1,12 @@
 {
   "measured_I": -23.72,
-  "measured_TP": 0.38,
-  "measured_LRA": 5.8,
+  "measured_TP": 0.34,
+  "measured_LRA": 5.80,
   "measured_thresh": -34.23,
   "target_I": -14,
   "target_TP": -2.5,
   "target_LRA": 11,
-  "final_output_I": -16.1,
-  "final_output_TP": -1.8,
-  "note": "linear pass fell back to dynamic normalization -- the source crest factor (measured_TP - measured_I = 24.1 LU) makes a pure-linear path to -14 LUFS exceed the -2.5dBTP ceiling. Re-measured on final.mp4 itself, not the pre-mux intermediate."
+  "final_output_I": -15.05,
+  "final_output_TP": -1.72,
+  "note": "Catalog V2 redesign re-render (2026-09-05). Audio content unchanged from the original production (VO + music, ducked to 0.12, amix normalize=0) -- only the video layer changed, so measured input values match the prior round almost exactly. Two-pass loudnorm fell back to dynamic normalization again (same high crest factor as before). Re-measured on final.mp4 itself, not the pre-mux intermediate."
 }

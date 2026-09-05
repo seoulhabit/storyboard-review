@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,70 +30,101 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--paper); color:var(--ink); }
 
   .barrier { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; }
-  .skin-band { width:1400px; height:280px; position:relative; }
-  .fissure { position:absolute; top:40%; stroke:var(--rule-dark); stroke-width:2; opacity:0; fill:none; }
-  .boundary-ring { position:absolute; left:50%; top:38%; width:900px; height:220px; transform:translate(-50%,-50%);
-    border:4px solid var(--celadon); border-radius:200px; opacity:0; }
-  .icon-row { display:flex; gap:80px; margin-top:56px; }
-  .icon-item { text-align:center; opacity:0; }
-  .icon-item .label { margin-top:12px; }
-  .tag5 { text-align:center; margin-top:40px; opacity:0; }
-  .tag5 .sub { font-size:56px; color:var(--vermilion); }
+  .bd-wrap { position:relative; width:1650px; }
+  .bd-zones { display:flex; align-items:stretch; gap:80px; }
+  .bd-zone { flex:1; min-width:0; padding:34px 38px; border-top:6px solid var(--celadon); border-radius:4px 4px 20px 20px;
+    background:rgba(255,255,255,0.55); opacity:0; }
+  .bd-zone.outside { border-top-color:var(--signal); }
+  .bd-zone-name { color:var(--ink-soft); font-size:22px; margin-bottom:16px; }
+  .bd-zone-value { font-size:30px; font-weight:700; letter-spacing:-.02em; line-height:1.3; margin-bottom:14px; }
+  .bd-zone-copy { color:var(--ink-soft); font-size:20px; line-height:1.4; }
+  .bd-badge { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(-6deg); width:150px; height:150px;
+    border-radius:50%; border:6px solid var(--signal); background:var(--paper); display:flex; align-items:center;
+    justify-content:center; text-align:center; font-weight:700; font-size:24px; color:var(--signal); opacity:0; }
+  .bd-actions { display:flex; margin-top:40px; border-radius:14px; overflow:hidden; opacity:0; }
+  .bd-action { flex:1; display:flex; align-items:center; gap:16px; padding:22px 24px; background:var(--ink);
+    border-right:1px solid rgba(255,255,255,.14); }
+  .bd-action:last-child { border-right:none; }
+  .bd-action .mark { width:44px; height:44px; flex:none; border-radius:50%; border:2px solid var(--ink-mark, var(--celadon));
+    color:var(--ink-mark, var(--celadon)); display:flex; align-items:center; justify-content:center; font-weight:700; }
+  .bd-action .name { color:var(--paper); font-size:20px; font-weight:650; }
+  .bd-action .copy { color:rgba(247,245,240,0.62); font-size:16px; margin-top:4px; }
+  .tag5 { text-align:center; margin-top:34px; opacity:0; }
+  .tag5 .sub { font-size:50px; color:var(--signal); }
   .gentle-row { position:absolute; left:0; right:0; top:calc(var(--safe-top) + 30px); text-align:center; opacity:0; }
   .gentle-row .body { font-size:44px; margin-bottom:14px; }
+  .seal-lock { position:absolute; right:calc(var(--safe-right) + 40px); bottom:calc(var(--safe-bottom) + 20px);
+    opacity:0; transform:scale(0.5); }
 
 </style>
 
 <div id="root" data-composition-id="s11-q5-boundary" data-width="1920" data-height="1080" data-duration="25.242">
   <div class="clip stage" id="s11-q5-boundary-stage" data-start="0" data-duration="25.242">
 
-    <div class="barrier" id="s11-camera" style="transform-origin:50% 40%;">
+    <div class="barrier" id="s11-camera" style="transform-origin:50% 42%;">
       <div class="gentle-row" id="s11-gentle">
         <div class="body">"Gentle" isn't a fixed property</div>
         <div class="uf-badge" id="s11-flag" style="margin:0 auto;">○ UNSOURCED — no record in this system</div>
       </div>
-      <div class="skin-band">
-        <svg width="1400" height="280" viewBox="0 0 1400 280">
-          <path d="M0 90 Q175 70 350 90 T700 90 T1050 90 T1400 90" fill="none" stroke="var(--ink)" stroke-width="4" opacity="0.7"/>
-          <line x1="0" y1="150" x2="1400" y2="150" stroke="var(--ink)" stroke-width="2" stroke-dasharray="14 10" opacity="0.4"/>
-          <path class="fissure" id="s11-fissure-0" d="M 150 60 L 170 120 L 140 180"/>
-<path class="fissure" id="s11-fissure-1" d="M 370 60 L 390 120 L 360 180"/>
-<path class="fissure" id="s11-fissure-2" d="M 590 60 L 610 120 L 580 180"/>
-<path class="fissure" id="s11-fissure-3" d="M 810 60 L 830 120 L 800 180"/>
-<path class="fissure" id="s11-fissure-4" d="M 1030 60 L 1050 120 L 1020 180"/>
-<path class="fissure" id="s11-fissure-5" d="M 1250 60 L 1270 120 L 1240 180"/>
-        </svg>
-      </div>
-      <div class="boundary-ring" id="s11-ring"></div>
-      <div class="icon-row" id="s11-icons">
-        <div class="icon-item" id="s11-icon-0"><svg width="70" height="70" viewBox="0 0 70 70"><rect x="14" y="14" width="42" height="42" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><path d="M24 35 L32 43 L48 27" fill="none" stroke="var(--celadon)" stroke-width="4"/></svg><div class="label">PATCH</div></div>
-<div class="icon-item" id="s11-icon-1"><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="24" fill="none" stroke="currentColor" stroke-width="4"/><path d="M35 20 L35 35 L46 42" stroke="currentColor" stroke-width="4" fill="none"/></svg><div class="label">ROUTINE</div></div>
-<div class="icon-item" id="s11-icon-2"><svg width="70" height="70" viewBox="0 0 70 70"><polygon points="22,10 48,10 60,22 60,48 48,60 22,60 10,48 10,22" fill="none" stroke="currentColor" stroke-width="4"/><line x1="24" y1="24" x2="46" y2="46" stroke="currentColor" stroke-width="4"/></svg><div class="label">STOP</div></div>
-<div class="icon-item" id="s11-icon-3"><svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="4"/><path d="M15 58 Q35 38 55 58" fill="none" stroke="currentColor" stroke-width="4"/></svg><div class="label">CLINICIAN</div></div>
+      <div class="bd-wrap">
+        <div class="bd-zones">
+          <div class="bd-zone inside" id="s11-inside">
+            <div class="bd-zone-name">INSIDE THE EVIDENCE</div>
+            <div class="bd-zone-value">The label may identify Centella Asiatica Extract.</div>
+            <div class="bd-zone-copy">That identity can support a focused product question when the declaration is visible.</div>
+          </div>
+          <div class="bd-zone outside" id="s11-outside">
+            <div class="bd-zone-name">OUTSIDE THE EVIDENCE</div>
+            <div class="bd-zone-value">It does not certify performance or personal suitability.</div>
+            <div class="bd-zone-copy">Exact extract, amount, vehicle, evidence match and individual context remain separate questions.</div>
+          </div>
+        </div>
+        <div class="bd-badge" id="s11-badge">BOUNDARY</div>
+        <div class="bd-actions" id="s11-actions"><div class="bd-action" id="s11-action-0"><div class="mark" style="--ink-mark:#7F9D88;">1</div><div><div class="name">Check the product</div><div class="copy">Use its actual label and directions.</div></div></div>
+<div class="bd-action" id="s11-action-1"><div class="mark" style="--ink-mark:#5F9294;">2</div><div><div class="name">Check the context</div><div class="copy">Formula, route, routine and skin state matter.</div></div></div>
+<div class="bd-action" id="s11-action-2"><div class="mark" style="--ink-mark:#D95F52;">3</div><div><div class="name">Stop the inference</div><div class="copy">Do not extend the evidence past this line.</div></div></div>
+<div class="bd-action" id="s11-action-3"><div class="mark" style="--ink-mark:#6358A7;">4</div><div><div class="name">Escalate the question</div><div class="copy">Personal medical decisions belong with a qualified clinician.</div></div></div></div>
       </div>
       <div class="tag5" id="s11-tag"><div class="sub">THE BOUNDARY IS THE ANSWER.</div></div>
+      <div class="seal-lock" id="s11-seal-lock"><div class="q-seal" id="s11-q5-seal" style="position:relative;width:100px;height:100px;flex:none;">
+  <svg width="100" height="100" viewBox="0 0 100 100" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s11-q5-seal-ring" cx="50.0" cy="50.0" r="46.0" fill="rgba(255,255,255,0.55)" stroke="#6358A7" stroke-width="3"/>
+    <circle id="s11-q5-seal-keyline" cx="50.0" cy="50.0" r="37.0" fill="none" stroke="#6358A7" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-boundary" id="s11-q5-seal-glyph" viewBox="0 0 96 96" width="42.0" height="42.0" style="overflow:visible;color:#6358A7;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/></svg></div>
+</div></div>
     </div>
 
   </div>
@@ -88,12 +132,13 @@
 <script>
 (function () {
 
-  gsap.set('.fissure', { opacity: 0 });
   gsap.set('#s11-camera', { scale: 1.09, y: 26 });
-  gsap.set('#s11-ring', { opacity: 0, scale: 0.9 });
-  gsap.set('.icon-item', { opacity: 0, y: 16 });
+  gsap.set('.bd-zone', { opacity: 0, y: 24 });
+  gsap.set('#s11-badge', { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' });
+  gsap.set('.bd-action', { opacity: 0 });
   gsap.set('#s11-tag', { opacity: 0, y: 16 });
   gsap.set('#s11-gentle', { opacity: 0, y: -10 });
+  gsap.set('#s11-seal-lock', { opacity: 0, scale: 0.5 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s11-camera', { scale: 1.0, y: 0, duration: 1.2, ease: 'power2.out' }, 0.0);
@@ -101,24 +146,25 @@
   // narrated right after "where does the answer stop applying?", ~0.9-6s in.
   tl.to('#s11-gentle', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.9);
   tl.to('#s11-gentle', { opacity: 0, y: -10, duration: 0.5, ease: 'power2.in' }, 5.8);
-  tl.to('#s11-fissure-0', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 2.00);
-  tl.to('#s11-fissure-1', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 2.50);
-  tl.to('#s11-fissure-2', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 3.00);
-  tl.to('#s11-fissure-3', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 3.50);
-  tl.to('#s11-fissure-4', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 4.00);
-  tl.to('#s11-fissure-5', { opacity: 0.7, duration: 0.3, ease: 'power2.out' }, 4.50);
-  tl.to('#s11-ring', { opacity: 1, scale: 1, duration: 0.9, ease: 'power2.out' }, 7.0);
-  tl.to('#s11-ring', { scale: 1.035, opacity: 1.0, duration: 2.80, ease: 'sine.inOut' }, 8.20);
-  tl.to('#s11-ring', { scale: 0.975, opacity: 0.88, duration: 2.80, ease: 'sine.inOut' }, 11.02);
-  tl.to('#s11-ring', { scale: 1.035, opacity: 1.0, duration: 2.80, ease: 'sine.inOut' }, 13.84);
-  tl.to('#s11-ring', { scale: 0.975, opacity: 0.88, duration: 2.80, ease: 'sine.inOut' }, 16.66);
-  tl.to('#s11-ring', { scale: 1.035, opacity: 1.0, duration: 2.80, ease: 'sine.inOut' }, 19.48);
-  tl.to('#s11-ring', { scale: 0.975, opacity: 0.88, duration: 2.70, ease: 'sine.inOut' }, 22.30);
-  tl.to('#s11-icon-0', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.00);
-  tl.to('#s11-icon-1', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.30);
-  tl.to('#s11-icon-2', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.60);
-  tl.to('#s11-icon-3', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 12.90);
+  tl.to('#s11-inside', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 7.0);
+  tl.to('#s11-outside', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 7.5);
+  tl.to('#s11-badge', { opacity: 1, scale: 1, duration: 0.7, ease: 'back.out(1.8)' }, 8.2);
+  tl.to('#s11-badge', { scale: 1.04, duration: 2.80, ease: 'sine.inOut' }, 8.90);
+  tl.to('#s11-badge', { scale: 0.97, duration: 2.80, ease: 'sine.inOut' }, 11.72);
+  tl.to('#s11-badge', { scale: 1.04, duration: 2.80, ease: 'sine.inOut' }, 14.54);
+  tl.to('#s11-badge', { scale: 0.97, duration: 2.80, ease: 'sine.inOut' }, 17.36);
+  tl.to('#s11-badge', { scale: 1.04, duration: 2.80, ease: 'sine.inOut' }, 20.18);
+  tl.to('#s11-badge', { scale: 0.97, duration: 1.60, ease: 'sine.inOut' }, 23.00);
+  tl.to('#s11-action-0', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 12.00);
+  tl.to('#s11-action-1', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 12.25);
+  tl.to('#s11-action-2', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 12.50);
+  tl.to('#s11-action-3', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 12.75);
   tl.to('#s11-tag', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 17.0);
+  // snap, Question 5 seal turns face-up -- the last of the five.
+  tl.to('#s11-seal-lock', { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, 24.24);
+  tl.to('#s11-q5-seal-ring', { attr: { stroke: '#426B50' }, duration: 0.3, ease: 'power2.out' }, 24.34);
+  tl.to('#s11-q5-seal-keyline', { attr: { stroke: '#426B50' }, duration: 0.3, ease: 'power2.out' }, 24.34);
+  tl.to('#s11-q5-seal .icon', { color: '#426B50', duration: 0.3, ease: 'power2.out' }, 24.34);
   tl.to({}, { duration: 25.242, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s11-q5-boundary'] = tl;

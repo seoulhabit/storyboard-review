@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,23 +30,28 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--ink); color:var(--paper); }
@@ -42,11 +60,11 @@
     background: radial-gradient(120% 90% at 50% 20%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%);
     display:flex; flex-direction:column; align-items:center; justify-content:center; }
   .lock-ring { position:relative; width:340px; height:340px; }
-  .mark { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-display); font-size:120px; color:var(--celadon); opacity:0; }
+  .actor-recede { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .mark-wrap { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; }
   .end-head { text-align:center; margin-top:56px; opacity:0; }
   .end-head .head { color:var(--paper); font-size:64px; max-width:1300px; }
-  .footer { margin-top:28px; opacity:0; color:var(--ink-3); font-size:30px; }
+  .footer { margin-top:28px; opacity:0; color:var(--ink-3); font-size:30px; font-family:var(--font-mono); }
 
 </style>
 
@@ -55,48 +73,91 @@
 
     <div class="endcard">
       <div class="lock-ring">
-        <div id="s14-seals" style="display:flex; gap:14px; position:absolute; inset:0; align-items:center; justify-content:center;"><svg class="stamp" id="s14-seal-0" viewBox="0 0 64 64" width="64" height="64"
+        <div class="actor-recede" id="s14-actor-wrap"><svg class="ingredient-actor" id="s14-actor" viewBox="0 0 200 200" width="170" height="170"
      style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 32.0 32.0)">
-    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">1</text>
+  <defs>
+    <linearGradient id="s14-actor-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#B7CDBD"/>
+      <stop offset="100%" stop-color="#3F6B4E"/>
+    </linearGradient>
+  </defs>
+  <path id="s14-actor-body" d="M100 164C86 140 63 125 50 98C35 65 58 34 94 42C108 22 143 32 149 62
+    C172 74 165 113 138 125C127 137 113 151 100 164Z"
+    fill="url(#s14-actor-leaf)" stroke="#426B50" stroke-width="2.6"/>
+  <g fill="none" stroke="#F1F2ED" stroke-opacity=".85" stroke-width="1.8">
+    <path d="M100 162V49M100 92L62 66M100 110L140 68M100 128L61 103M100 140L138 112"/>
   </g>
-</svg><svg class="stamp" id="s14-seal-1" viewBox="0 0 64 64" width="64" height="64"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 32.0 32.0)">
-    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">2</text>
-  </g>
-</svg><svg class="stamp" id="s14-seal-2" viewBox="0 0 64 64" width="64" height="64"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 32.0 32.0)">
-    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">3</text>
-  </g>
-</svg><svg class="stamp" id="s14-seal-3" viewBox="0 0 64 64" width="64" height="64"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 32.0 32.0)">
-    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">4</text>
-  </g>
-</svg><svg class="stamp" id="s14-seal-4" viewBox="0 0 64 64" width="64" height="64"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 32.0 32.0)">
-    <circle cx="32.0" cy="32.0" r="26.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="32.0" cy="32.0" r="10.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="32.0" y="41.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="10" fill="var(--vermilion)" letter-spacing="1">5</text>
-  </g>
+  <circle cx="100" cy="49" r="5" fill="#F1F2ED" stroke="#426B50" stroke-width="1.6"/>
 </svg></div>
-        <div class="mark" id="s14-mark">습</div>
+        <div id="s14-seals" style="display:flex; gap:12px; position:absolute; inset:0; align-items:center; justify-content:center;"><div class="q-seal" id="s14-seal-0" style="position:relative;width:68px;height:68px;flex:none;">
+  <svg width="68" height="68" viewBox="0 0 68 68" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s14-seal-0-ring" cx="34.0" cy="34.0" r="30.0" fill="rgba(255,255,255,0.05)" stroke="#426B50" stroke-width="3"/>
+    <circle id="s14-seal-0-keyline" cx="34.0" cy="34.0" r="25.16" fill="none" stroke="#426B50" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-quantity" id="s14-seal-0-glyph" viewBox="0 0 96 96" width="28.56" height="28.56" style="overflow:visible;color:#426B50;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Rank ticks descending toward a dashed cutoff -- "position is visible, dose is not." -->
+  <line x1="30" y1="34" x2="62" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="44" x2="54" y2="44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="62" x2="42" y2="62" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <line x1="26" y1="53" x2="66" y2="53" stroke="#C5944D" stroke-width="2.2" stroke-dasharray="3 4"/></svg></div>
+</div><div class="q-seal" id="s14-seal-1" style="position:relative;width:68px;height:68px;flex:none;">
+  <svg width="68" height="68" viewBox="0 0 68 68" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s14-seal-1-ring" cx="34.0" cy="34.0" r="30.0" fill="rgba(255,255,255,0.05)" stroke="#426B50" stroke-width="3"/>
+    <circle id="s14-seal-1-keyline" cx="34.0" cy="34.0" r="25.16" fill="none" stroke="#426B50" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-identity-version" id="s14-seal-1-glyph" viewBox="0 0 96 96" width="28.56" height="28.56" style="overflow:visible;color:#426B50;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+</div><div class="q-seal" id="s14-seal-2" style="position:relative;width:68px;height:68px;flex:none;">
+  <svg width="68" height="68" viewBox="0 0 68 68" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s14-seal-2-ring" cx="34.0" cy="34.0" r="30.0" fill="rgba(255,255,255,0.05)" stroke="#426B50" stroke-width="3"/>
+    <circle id="s14-seal-2-keyline" cx="34.0" cy="34.0" r="25.16" fill="none" stroke="#426B50" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-formula-vehicle" id="s14-seal-2-glyph" viewBox="0 0 96 96" width="28.56" height="28.56" style="overflow:visible;color:#426B50;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Vessel carrying a passenger droplet -- the ingredient never travels alone. -->
+  <path d="M42 26H54V38L62 60C64 65 61 69 56 69H40C35 69 32 65 34 60L42 38V26Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="39" y1="26" x2="57" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="56" r="6" fill="#5F9294"/></svg></div>
+</div><div class="q-seal" id="s14-seal-3" style="position:relative;width:68px;height:68px;flex:none;">
+  <svg width="68" height="68" viewBox="0 0 68 68" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s14-seal-3-ring" cx="34.0" cy="34.0" r="30.0" fill="rgba(255,255,255,0.05)" stroke="#426B50" stroke-width="3"/>
+    <circle id="s14-seal-3-keyline" cx="34.0" cy="34.0" r="25.16" fill="none" stroke="#426B50" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-evidence" id="s14-seal-3-glyph" viewBox="0 0 96 96" width="28.56" height="28.56" style="overflow:visible;color:#426B50;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/></svg></div>
+</div><div class="q-seal" id="s14-seal-4" style="position:relative;width:68px;height:68px;flex:none;">
+  <svg width="68" height="68" viewBox="0 0 68 68" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s14-seal-4-ring" cx="34.0" cy="34.0" r="30.0" fill="rgba(255,255,255,0.05)" stroke="#426B50" stroke-width="3"/>
+    <circle id="s14-seal-4-keyline" cx="34.0" cy="34.0" r="25.16" fill="none" stroke="#426B50" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-boundary" id="s14-seal-4-glyph" viewBox="0 0 96 96" width="28.56" height="28.56" style="overflow:visible;color:#426B50;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/></svg></div>
+</div></div>
+        <div class="mark-wrap" id="s14-mark-wrap"><svg class="brand-mark" id="s14-mark" viewBox="0 0 96 96" width="210" height="210" style="overflow:visible" aria-hidden="true"><!-- Canonical channel signet, editable local copy of brand/channel/watermark-150.html.
+       Disc 88/96 of frame, paper ring 4px scaled from the 4/150 reference ratio.
+       Coral + paper only -- this exact pairing is reserved for brand touchpoints. -->
+  <circle cx="48" cy="48" r="44" fill="#C97A5C" stroke="#F7F5F0" stroke-width="4"/>
+  <text x="48" y="51.5" text-anchor="middle" font-family="'Noto Sans KR Video','Noto Sans KR',sans-serif"
+        font-weight="500" font-size="50" fill="#F7F5F0">습</text></svg></div>
       </div>
       <div class="end-head" id="s14-head"><div class="head">DON'T FOLLOW THE HYPE. FOLLOW THE QUESTION.</div></div>
       <div class="footer" id="s14-footer">Educational, not diagnostic.</div>
@@ -107,14 +168,24 @@
 <script>
 (function () {
 
-  gsap.set('#s14-seals', { opacity: 1, scale: 1 });
-  gsap.set('#s14-mark', { opacity: 0, scale: 0.6 });
+  gsap.set('#s14-actor-wrap', { opacity: 0.5, scale: 0.9 });
+  gsap.set('#s14-seals', { opacity: 1 });
+  gsap.set('#s14-mark-wrap', { opacity: 0, scale: 0.6 });
   gsap.set('#s14-head', { opacity: 0, y: 16 });
   gsap.set('#s14-footer', { opacity: 0 });
 
   var tl = gsap.timeline({ paused: true });
+  // five seals converge into a single decision boundary; the actor recedes
+  // but stays visible underneath so the mark reads as ITS resolution.
+  tl.to('#s14-seal-0', { x: 0, y: 0, scale: 0.6, duration: 0.9, ease: 'power2.inOut' }, 0.6);
+  tl.to('#s14-seal-1', { x: 0, y: 0, scale: 0.6, duration: 0.9, ease: 'power2.inOut' }, 0.6);
+  tl.to('#s14-seal-2', { x: 0, y: 0, scale: 0.6, duration: 0.9, ease: 'power2.inOut' }, 0.6);
+  tl.to('#s14-seal-3', { x: 0, y: 0, scale: 0.6, duration: 0.9, ease: 'power2.inOut' }, 0.6);
+  tl.to('#s14-seal-4', { x: 0, y: 0, scale: 0.6, duration: 0.9, ease: 'power2.inOut' }, 0.6);
+  tl.to('#s14-actor-wrap', { opacity: 0.15, scale: 0.75, duration: 0.9, ease: 'power2.inOut' }, 0.6);
   tl.to('#s14-seals', { scale: 0.7, opacity: 0, duration: 0.8, ease: 'power2.in' }, 3.0);
-  tl.to('#s14-mark', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.6)' }, 3.4);
+  // match-cut: the seal cluster's own circular field becomes the mark's disc.
+  tl.to('#s14-mark-wrap', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.6)' }, 3.4);
   tl.to('#s14-head', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 5.0);
   tl.to('#s14-footer', { opacity: 1, duration: 0.8, ease: 'power2.out' }, 6.6);
   tl.to({}, { duration: 9.451, ease: 'none' }, 0);

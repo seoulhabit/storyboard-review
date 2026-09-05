@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Boundary">
+  <circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/>
+</svg>

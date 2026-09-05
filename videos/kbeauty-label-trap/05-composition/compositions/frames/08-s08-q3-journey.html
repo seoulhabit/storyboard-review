@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,53 +30,65 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--paper); color:var(--ink); }
 
-  .corridor { position:relative; height:100%; width:100%; overflow:hidden; }
-  .lane { position:absolute; inset:0; display:flex; }
-  .leg { flex:1 1 0; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    border-right:1px solid var(--rule-strong); }
-  .leg:last-child { border-right:none; }
-  .leg-fill { position:absolute; inset:0; opacity:0.35; }
-  .leg-label { font-family:var(--font-mono); font-size:28px; color:var(--ink-2); letter-spacing:.08em;
-    position:relative; z-index:1; margin-top:14px; }
-  .passenger { position:absolute; width:30px; height:30px; border-radius:50%;
+  .veh-channel { position:relative; display:flex; border:1px solid var(--line); border-radius:24px;
+    background:rgba(255,255,255,0.5); overflow:hidden; }
+  .veh-leg { flex:1; min-width:0; padding:26px 20px; text-align:center; border-right:1px solid var(--line); }
+  .veh-leg:last-child { border-right:none; }
+  .veh-icon { color:var(--ink); opacity:0.85; margin-bottom:8px; display:flex; justify-content:center; }
+  .veh-name { font-weight:700; font-size:24px; letter-spacing:-.01em; margin-bottom:10px; }
+  .veh-route { position:absolute; left:5%; right:5%; top:50%; height:3px; border-radius:999px;
+    background:rgba(23,35,50,.1); }
+  .veh-payload { position:absolute; left:5%; top:calc(50% - 13px); width:26px; height:26px; border-radius:50%;
     background: radial-gradient(circle at 35% 30%, #fff, var(--celadon) 70%);
-    box-shadow: 0 0 20px 4px rgba(147,184,150,0.55); top:50%; left:6%; opacity:0; }
-  .leg-icon { width:90px; height:90px; position:relative; z-index:1; }
+    box-shadow: 0 0 16px 3px rgba(127,157,136,0.5); opacity:0; }
+
+  .journey-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .journey-head { text-align:center; margin-bottom:30px; opacity:0; }
 
 </style>
 
 <div id="root" data-composition-id="s08-q3-journey" data-width="1920" data-height="1080" data-duration="19.610">
   <div class="clip stage" id="s08-q3-journey-stage" data-start="0" data-duration="19.610">
 
-    <div class="corridor">
-      <div class="lane">
-        <div class="leg" id="s08-leg-0" style="background:#DCEDEB22;"><div class="leg-fill" style="background:#DCEDEB;"></div><svg class="leg-icon" viewBox="0 0 90 90"><path d="M20 70 Q30 50 20 30 Q35 45 45 30 Q55 45 70 30 Q60 50 70 70" fill="none" stroke="currentColor" stroke-width="4"/></svg><div class="leg-label">WATER PHASE</div></div>
-<div class="leg" id="s08-leg-1" style="background:#C7DED822;"><div class="leg-fill" style="background:#C7DED8;"></div><svg class="leg-icon" viewBox="0 0 90 90"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M10 20 L30 20 L30 40 L10 40 Z"/><path d="M30 20 L50 20 L50 40 L30 40 Z"/><path d="M50 20 L70 20 L70 40 L50 40 Z"/><path d="M10 40 L30 40 L30 60 L10 60 Z"/><path d="M30 40 L50 40 L50 60 L30 60 Z"/><path d="M50 40 L70 40 L70 60 L50 60 Z"/></g></svg><div class="leg-label">GEL LATTICE</div></div>
-<div class="leg" id="s08-leg-2" style="background:#B7CFC322;"><div class="leg-fill" style="background:#B7CFC3;"></div><svg class="leg-icon" viewBox="0 0 90 90"><g fill="currentColor" opacity="0.6"><circle cx="25" cy="30" r="8"/><circle cx="50" cy="45" r="11"/><circle cx="70" cy="25" r="6"/><circle cx="35" cy="65" r="9"/><circle cx="65" cy="65" r="7"/></g></svg><div class="leg-label">EMULSION</div></div>
-<div class="leg" id="s08-leg-3" style="background:#E9E1CE22;"><div class="leg-fill" style="background:#E9E1CE;"></div><svg class="leg-icon" viewBox="0 0 90 90"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M0 30 Q22 20 45 30 T90 30" /><path d="M0 55 Q22 45 45 55 T90 55" stroke-dasharray="5 6"/></g></svg><div class="leg-label">STRATUM CORNEUM</div></div>
+    <div class="journey-stage">
+      <div class="journey-head" id="s08-head"><div class="kicker">THE INGREDIENT IS THE PASSENGER</div></div>
+      <div style="width:1650px; margin:0 auto;">
+        <div class="veh-channel" id="s08-veh">
+    <div class="veh-route" id="s08-veh-route"></div>
+    <div class="veh-payload" id="s08-veh-payload"></div>
+    <div class="veh-leg" id="s08-veh-leg-0"><div class="veh-icon"><svg width="90" height="90" viewBox="0 0 90 90"><path d="M20 70 Q30 50 20 30 Q35 45 45 30 Q55 45 70 30 Q60 50 70 70" fill="none" stroke="currentColor" stroke-width="4"/></svg></div><div class="veh-name">Water phase</div><span class="ev-chip" id="s08-veh-chip-0" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #8A6738;border-radius:999px;padding:8px 22px;color:#8A6738;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#8A6738" stroke-width="1.6" style=""/></svg>Illustrative</span></div>
+<div class="veh-leg" id="s08-veh-leg-1"><div class="veh-icon"><svg width="90" height="90" viewBox="0 0 90 90"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M10 20 L30 20 L30 40 L10 40 Z"/><path d="M30 20 L50 20 L50 40 L30 40 Z"/><path d="M50 20 L70 20 L70 40 L50 40 Z"/><path d="M10 40 L30 40 L30 60 L10 60 Z"/><path d="M30 40 L50 40 L50 60 L30 60 Z"/><path d="M50 40 L70 40 L70 60 L50 60 Z"/></g></svg></div><div class="veh-name">Gel network</div><span class="ev-chip" id="s08-veh-chip-1" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #8A6738;border-radius:999px;padding:8px 22px;color:#8A6738;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#8A6738" stroke-width="1.6" style=""/></svg>Illustrative</span></div>
+<div class="veh-leg" id="s08-veh-leg-2"><div class="veh-icon"><svg width="90" height="90" viewBox="0 0 90 90"><g fill="currentColor" opacity="0.6"><circle cx="25" cy="30" r="8"/><circle cx="50" cy="45" r="11"/><circle cx="70" cy="25" r="6"/><circle cx="35" cy="65" r="9"/><circle cx="65" cy="65" r="7"/></g></svg></div><div class="veh-name">Complete emulsion</div><span class="ev-chip" id="s08-veh-chip-2" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #6358A7;border-radius:999px;padding:8px 22px;color:#6358A7;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#6358A7" stroke-width="1.6" style=""/></svg>Context required</span></div>
+<div class="veh-leg" id="s08-veh-leg-3"><div class="veh-icon"><svg width="90" height="90" viewBox="0 0 90 90"><g fill="none" stroke="currentColor" stroke-width="3"><path d="M0 30 Q22 20 45 30 T90 30" /><path d="M0 55 Q22 45 45 55 T90 55" stroke-dasharray="5 6"/></g></svg></div><div class="veh-name">Skin surface</div><span class="ev-chip" id="s08-veh-chip-3" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #7D8791;border-radius:999px;padding:8px 22px;color:#7D8791;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#7D8791" stroke-width="1.6" style=""/></svg>Not established</span></div>
+  </div>
+        <div style="margin-top:26px;"><div class="illus-tag" id="s08-disc">Authored formula-path illustration — not a product-performance claim.</div></div>
       </div>
-      <div class="passenger" id="s08-passenger"></div>
     </div>
 
   </div>
@@ -71,33 +96,36 @@
 <script>
 (function () {
 
-  gsap.set('#s08-passenger', { opacity: 0, x: 0 });
+  gsap.set('#s08-head', { opacity: 0, y: -10 });
+  gsap.set('#s08-veh-payload', { opacity: 0, x: 0 });
+  gsap.set('.veh-icon', { transformOrigin: '50% 50%' });
 
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s08-passenger', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2);
-  tl.to('#s08-passenger', { x: 1450, duration: 18.0, ease: 'power1.inOut' }, 0.3);
-  tl.to('#s08-leg-0 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 0.60);
-  tl.to('#s08-leg-0 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 4.12);
-  tl.to('#s08-leg-0 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 7.64);
-  tl.to('#s08-leg-0 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 11.16);
-  tl.to('#s08-leg-0 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 14.68);
-  tl.to('#s08-leg-0 .leg-icon', { scale: 0.975, duration: 0.70, ease: 'sine.inOut' }, 18.20);
-  tl.to('#s08-leg-1 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 0.95);
-  tl.to('#s08-leg-1 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 4.47);
-  tl.to('#s08-leg-1 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 7.99);
-  tl.to('#s08-leg-1 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 11.51);
-  tl.to('#s08-leg-1 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 15.03);
-  tl.to('#s08-leg-1 .leg-icon', { scale: 0.975, duration: 0.35, ease: 'sine.inOut' }, 18.55);
-  tl.to('#s08-leg-2 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 1.30);
-  tl.to('#s08-leg-2 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 4.82);
-  tl.to('#s08-leg-2 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 8.34);
-  tl.to('#s08-leg-2 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 11.86);
-  tl.to('#s08-leg-2 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 15.38);
-  tl.to('#s08-leg-3 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 1.65);
-  tl.to('#s08-leg-3 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 5.17);
-  tl.to('#s08-leg-3 .leg-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 8.69);
-  tl.to('#s08-leg-3 .leg-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 12.21);
-  tl.to('#s08-leg-3 .leg-icon', { scale: 1.035, duration: 3.17, ease: 'sine.inOut' }, 15.73);
+  tl.to('#s08-head', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.0);
+  tl.to('#s08-veh-payload', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2);
+  tl.to('#s08-veh-payload', { x: 1520, duration: 18.0, ease: 'power1.inOut' }, 0.3);
+  tl.to('#s08-veh-leg-0 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 0.60);
+  tl.to('#s08-veh-leg-0 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 4.12);
+  tl.to('#s08-veh-leg-0 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 7.64);
+  tl.to('#s08-veh-leg-0 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 11.16);
+  tl.to('#s08-veh-leg-0 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 14.68);
+  tl.to('#s08-veh-leg-0 .veh-icon', { scale: 0.975, duration: 0.70, ease: 'sine.inOut' }, 18.20);
+  tl.to('#s08-veh-leg-1 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 0.95);
+  tl.to('#s08-veh-leg-1 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 4.47);
+  tl.to('#s08-veh-leg-1 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 7.99);
+  tl.to('#s08-veh-leg-1 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 11.51);
+  tl.to('#s08-veh-leg-1 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 15.03);
+  tl.to('#s08-veh-leg-1 .veh-icon', { scale: 0.975, duration: 0.35, ease: 'sine.inOut' }, 18.55);
+  tl.to('#s08-veh-leg-2 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 1.30);
+  tl.to('#s08-veh-leg-2 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 4.82);
+  tl.to('#s08-veh-leg-2 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 8.34);
+  tl.to('#s08-veh-leg-2 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 11.86);
+  tl.to('#s08-veh-leg-2 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 15.38);
+  tl.to('#s08-veh-leg-3 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 1.65);
+  tl.to('#s08-veh-leg-3 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 5.17);
+  tl.to('#s08-veh-leg-3 .veh-icon', { scale: 1.035, duration: 3.50, ease: 'sine.inOut' }, 8.69);
+  tl.to('#s08-veh-leg-3 .veh-icon', { scale: 0.975, duration: 3.50, ease: 'sine.inOut' }, 12.21);
+  tl.to('#s08-veh-leg-3 .veh-icon', { scale: 1.035, duration: 3.17, ease: 'sine.inOut' }, 15.73);
   tl.to({}, { duration: 19.16, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s08-q3-journey'] = tl;

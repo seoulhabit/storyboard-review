@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Evidence">
+  <circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/>
+</svg>

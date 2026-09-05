@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,37 +30,48 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--paper); color:var(--ink); }
 
   .tunnel { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
-  .tunnel-head { text-align:center; opacity:0; margin-bottom:10px; }
-  .tunnel-row { display:flex; justify-content:center; align-items:flex-end; gap:0; position:relative; }
-  .tstage { width:380px; text-align:center; opacity:0; position:relative; }
-  .tstage-icon { width:110px; height:110px; margin:0 auto 18px; }
-  .tstage-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); }
-  .tgap { width:60px; height:3px; background:var(--rule-strong); align-self:center; opacity:0; }
-  .cards { display:flex; justify-content:center; gap:40px; margin-top:56px; }
+  .tunnel-head { text-align:center; opacity:0; margin-bottom:34px; }
+  .tunnel-row { display:flex; justify-content:center; align-items:stretch; gap:0; position:relative; width:1740px; margin:0 auto; }
+  .tstage { width:360px; text-align:left; opacity:0; position:relative; padding:26px 26px;
+    border:1px solid var(--line); border-radius:20px; background:rgba(255,255,255,0.55); }
+  .tstage-icon-wrap { width:70px; height:70px; border-radius:50%; border:1px solid var(--line);
+    background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+  .tstage-label { font-family:var(--font-mono); font-size:20px; color:var(--ink-soft); letter-spacing:.05em; }
+  .tstage-title { font-weight:800; font-size:30px; letter-spacing:-.02em; margin-top:6px; }
+  .tgap { flex:0 0 58px; position:relative; align-self:center; opacity:0; }
+  .tgap .line { position:absolute; left:0; right:0; top:50%; height:0; border-top:2px dashed var(--ink-soft); }
+  .cards { display:flex; justify-content:center; gap:40px; margin-top:52px; }
   .card { font-family:var(--font-mono); font-size:30px; color:var(--ink); border:2px solid var(--ink);
     border-radius:10px; padding:14px 22px; opacity:0; }
+  .seal-lock { position:absolute; right:calc(var(--safe-right) + 40px); bottom:calc(var(--safe-bottom) + 20px);
+    opacity:0; transform:scale(0.5); }
 
 </style>
 
@@ -55,14 +79,72 @@
   <div class="clip stage" id="s10-q4-tunnel-stage" data-start="0" data-duration="39.983">
 
     <div class="tunnel">
-      <div class="tunnel-head" id="s10-head"><div class="kicker">THE EVIDENCE TUNNEL</div></div>
+      <div class="tunnel-head" id="s10-head"><div class="kicker">EVIDENCE DISTANCE — HOW FAR FROM THE FINISHED PRODUCT</div></div>
       <div class="tunnel-row" id="s10-row">
-        <div class="tstage" id="s10-stage-0"><svg class="tstage-icon" viewBox="0 0 110 110"><ellipse cx="55" cy="55" rx="45" ry="45" fill="none" stroke="currentColor" stroke-width="4"/><ellipse id="s10-stage-0-fill" cx="55" cy="55" rx="35" ry="35" fill="var(--celadon)" opacity="0.25"/></svg><div class="tstage-label">PETRI DISH</div></div><div class="tgap" id="s10-gap-0"></div><div class="tstage" id="s10-stage-1"><svg class="tstage-icon" viewBox="0 0 110 110"><circle id="s10-stage-1-fill" cx="55" cy="55" r="18" fill="var(--celadon)"/><circle cx="55" cy="55" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/></svg><div class="tstage-label">ISOLATED INGREDIENT</div></div><div class="tgap" id="s10-gap-1"></div><div class="tstage" id="s10-stage-2"><svg class="tstage-icon" viewBox="0 0 110 110"><path d="M20 70 Q55 20 90 70" fill="none" stroke="currentColor" stroke-width="4"/><circle id="s10-stage-2-fill" cx="55" cy="55" r="8" fill="var(--celadon)"/></svg><div class="tstage-label">HUMAN SKIN STUDY</div></div><div class="tgap" id="s10-gap-2"></div><div class="tstage" id="s10-stage-3"><svg class="tstage-icon" viewBox="0 0 110 110"><rect x="35" y="20" width="40" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect id="s10-stage-3-fill" x="42" y="30" width="26" height="45" fill="var(--celadon)" opacity="0.4"/></svg><div class="tstage-label">FINISHED PRODUCT TEST</div></div>
+        <div class="tstage" id="s10-stage-0">
+      <div class="tstage-icon-wrap" id="s10-stage-0-fill"><svg class="icon icon-ingredient-source" id="s10-stage-0-icon" viewBox="0 0 96 96" width="38" height="38" style="overflow:visible;color:var(--ink);opacity:1" aria-hidden="true"><!-- Semantic icon family: shared geometry (ring + centered glyph + one accent),
+       inherits the brand mark's circular-field grammar without repeating the
+       mark itself. Ring/glyph use currentColor so scene context sets ink vs.
+       paper; exactly one fixed accent color per icon for restrained warmth. -->
+  <circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <path d="M48 66C40 60 34 52 34 42C34 30 42 24 48 20C54 24 62 30 62 42C62 52 56 60 48 66Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M48 63V26M48 42L40 35M48 48L57 40" fill="none" stroke="#426B50" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="48" cy="22" r="3" fill="#426B50"/></svg></div>
+      <div class="tstage-label">STAGE 1</div>
+      <div class="tstage-title">Cell study</div>
+      <div style="margin-top:14px;"><span class="ev-chip" id="s10-stage-0-chip" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #D95F52;border-radius:999px;padding:8px 22px;color:#D95F52;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#D95F52" stroke-width="1.6" style=""/></svg>Furthest</span></div>
+    </div><div class="tgap" id="s10-gap-0"><div class="line"></div></div><div class="tstage" id="s10-stage-1">
+      <div class="tstage-icon-wrap" id="s10-stage-1-fill"><svg class="icon icon-quantity" id="s10-stage-1-icon" viewBox="0 0 96 96" width="38" height="38" style="overflow:visible;color:var(--ink);opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Rank ticks descending toward a dashed cutoff -- "position is visible, dose is not." -->
+  <line x1="30" y1="34" x2="62" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="44" x2="54" y2="44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="62" x2="42" y2="62" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <line x1="26" y1="53" x2="66" y2="53" stroke="#C5944D" stroke-width="2.2" stroke-dasharray="3 4"/></svg></div>
+      <div class="tstage-label">STAGE 2</div>
+      <div class="tstage-title">Isolated ingredient, human</div>
+      <div style="margin-top:14px;"><span class="ev-chip" id="s10-stage-1-chip" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #6358A7;border-radius:999px;padding:8px 22px;color:#6358A7;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#6358A7" stroke-width="1.6" style=""/></svg>Context required</span></div>
+    </div><div class="tgap" id="s10-gap-1"><div class="line"></div></div><div class="tstage" id="s10-stage-2">
+      <div class="tstage-icon-wrap" id="s10-stage-2-fill"><svg class="icon icon-identity-version" id="s10-stage-2-icon" viewBox="0 0 96 96" width="38" height="38" style="overflow:visible;color:var(--ink);opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+      <div class="tstage-label">STAGE 3</div>
+      <div class="tstage-title">Human ingredient study</div>
+      <div style="margin-top:14px;"><span class="ev-chip" id="s10-stage-2-chip" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #6358A7;border-radius:999px;padding:8px 22px;color:#6358A7;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#6358A7" stroke-width="1.6" style=""/></svg>Context required</span></div>
+    </div><div class="tgap" id="s10-gap-2"><div class="line"></div></div><div class="tstage" id="s10-stage-3">
+      <div class="tstage-icon-wrap" id="s10-stage-3-fill"><svg class="icon icon-boundary" id="s10-stage-3-icon" viewBox="0 0 96 96" width="38" height="38" style="overflow:visible;color:var(--ink);opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/></svg></div>
+      <div class="tstage-label">STAGE 4</div>
+      <div class="tstage-title">Finished product test</div>
+      <div style="margin-top:14px;"><span class="ev-chip" id="s10-stage-3-chip" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #426B50;border-radius:999px;padding:8px 22px;color:#426B50;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#426B50" stroke-width="1.6" style=""/></svg>Target</span></div>
+    </div>
       </div>
       <div class="cards" id="s10-cards">
         <div class="card">TESTED WHAT?</div><div class="card">PEOPLE?</div>
         <div class="card">HOW LONG?</div><div class="card">MEASURED?</div>
       </div>
+      <div class="seal-lock" id="s10-seal-lock"><div class="q-seal" id="s10-q4-seal" style="position:relative;width:100px;height:100px;flex:none;">
+  <svg width="100" height="100" viewBox="0 0 100 100" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s10-q4-seal-ring" cx="50.0" cy="50.0" r="46.0" fill="rgba(255,255,255,0.55)" stroke="#6358A7" stroke-width="3"/>
+    <circle id="s10-q4-seal-keyline" cx="50.0" cy="50.0" r="37.0" fill="none" stroke="#6358A7" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-evidence" id="s10-q4-seal-glyph" viewBox="0 0 96 96" width="42.0" height="42.0" style="overflow:visible;color:#6358A7;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/></svg></div>
+</div></div>
     </div>
 
   </div>
@@ -71,9 +153,10 @@
 (function () {
 
   gsap.set('#s10-head', { opacity: 0, y: -10 });
-  gsap.set('.tstage', { opacity: 0, y: 20 });
+  gsap.set('.tstage', { opacity: 0, y: 20, transformOrigin: '50% 50%' });
   gsap.set('.tgap', { opacity: 0 });
   gsap.set('.card', { opacity: 0, y: 14 });
+  gsap.set('#s10-seal-lock', { opacity: 0, scale: 0.5 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s10-head', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.4);
@@ -84,41 +167,46 @@
   tl.to('#s10-gap-0', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 4.00);
   tl.to('#s10-gap-1', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 6.00);
   tl.to('#s10-gap-2', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 8.00);
-  tl.to('#s10-stage-0-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 3.00);
-  tl.to('#s10-stage-0-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 7.02);
-  tl.to('#s10-stage-0-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 11.04);
-  tl.to('#s10-stage-0-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 15.06);
-  tl.to('#s10-stage-0-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 19.08);
-  tl.to('#s10-stage-0-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 23.10);
-  tl.to('#s10-stage-0-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 27.12);
-  tl.to('#s10-stage-0-fill', { scale: 0.94, duration: 3.86, ease: 'sine.inOut' }, 31.14);
-  tl.to('#s10-stage-1-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 5.00);
-  tl.to('#s10-stage-1-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 9.02);
-  tl.to('#s10-stage-1-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 13.04);
-  tl.to('#s10-stage-1-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 17.06);
-  tl.to('#s10-stage-1-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 21.08);
-  tl.to('#s10-stage-1-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 25.10);
-  tl.to('#s10-stage-1-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 29.12);
-  tl.to('#s10-stage-1-fill', { scale: 0.94, duration: 1.86, ease: 'sine.inOut' }, 33.14);
-  tl.to('#s10-stage-2-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 7.00);
-  tl.to('#s10-stage-2-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 11.02);
-  tl.to('#s10-stage-2-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 15.04);
-  tl.to('#s10-stage-2-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 19.06);
-  tl.to('#s10-stage-2-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 23.08);
-  tl.to('#s10-stage-2-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 27.10);
-  tl.to('#s10-stage-2-fill', { scale: 1.12, duration: 3.88, ease: 'sine.inOut' }, 31.12);
-  tl.to('#s10-stage-3-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 9.00);
-  tl.to('#s10-stage-3-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 13.02);
-  tl.to('#s10-stage-3-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 17.04);
-  tl.to('#s10-stage-3-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 21.06);
-  tl.to('#s10-stage-3-fill', { scale: 1.12, duration: 4.00, ease: 'sine.inOut' }, 25.08);
-  tl.to('#s10-stage-3-fill', { scale: 0.94, duration: 4.00, ease: 'sine.inOut' }, 29.10);
-  tl.to('#s10-stage-3-fill', { scale: 1.12, duration: 1.88, ease: 'sine.inOut' }, 33.12);
+  tl.to('#s10-stage-0-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 3.00);
+  tl.to('#s10-stage-0-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 7.02);
+  tl.to('#s10-stage-0-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 11.04);
+  tl.to('#s10-stage-0-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 15.06);
+  tl.to('#s10-stage-0-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 19.08);
+  tl.to('#s10-stage-0-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 23.10);
+  tl.to('#s10-stage-0-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 27.12);
+  tl.to('#s10-stage-0-fill', { scale: 0.96, duration: 3.86, ease: 'sine.inOut' }, 31.14);
+  tl.to('#s10-stage-1-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 5.00);
+  tl.to('#s10-stage-1-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 9.02);
+  tl.to('#s10-stage-1-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 13.04);
+  tl.to('#s10-stage-1-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 17.06);
+  tl.to('#s10-stage-1-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 21.08);
+  tl.to('#s10-stage-1-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 25.10);
+  tl.to('#s10-stage-1-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 29.12);
+  tl.to('#s10-stage-1-fill', { scale: 0.96, duration: 1.86, ease: 'sine.inOut' }, 33.14);
+  tl.to('#s10-stage-2-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 7.00);
+  tl.to('#s10-stage-2-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 11.02);
+  tl.to('#s10-stage-2-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 15.04);
+  tl.to('#s10-stage-2-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 19.06);
+  tl.to('#s10-stage-2-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 23.08);
+  tl.to('#s10-stage-2-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 27.10);
+  tl.to('#s10-stage-2-fill', { scale: 1.08, duration: 3.88, ease: 'sine.inOut' }, 31.12);
+  tl.to('#s10-stage-3-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 9.00);
+  tl.to('#s10-stage-3-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 13.02);
+  tl.to('#s10-stage-3-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 17.04);
+  tl.to('#s10-stage-3-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 21.06);
+  tl.to('#s10-stage-3-fill', { scale: 1.08, duration: 4.00, ease: 'sine.inOut' }, 25.08);
+  tl.to('#s10-stage-3-fill', { scale: 0.96, duration: 4.00, ease: 'sine.inOut' }, 29.10);
+  tl.to('#s10-stage-3-fill', { scale: 1.08, duration: 1.88, ease: 'sine.inOut' }, 33.12);
   tl.to('#s10-row', { x: -40, duration: 1.0, ease: 'power2.inOut' }, 30.0);
   tl.to('.card:nth-child(1)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.50);
   tl.to('.card:nth-child(2)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 24.85);
   tl.to('.card:nth-child(3)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 25.20);
   tl.to('.card:nth-child(4)', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 25.55);
+  // snap, Question 4 seal turns face-up.
+  tl.to('#s10-seal-lock', { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' }, 39.0);
+  tl.to('#s10-q4-seal-ring', { attr: { stroke: '#426B50' }, duration: 0.3, ease: 'power2.out' }, 39.1);
+  tl.to('#s10-q4-seal-keyline', { attr: { stroke: '#426B50' }, duration: 0.3, ease: 'power2.out' }, 39.1);
+  tl.to('#s10-q4-seal .icon', { color: '#426B50', duration: 0.3, ease: 'power2.out' }, 39.1);
   tl.to({}, { duration: 39.983, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s10-q4-tunnel'] = tl;

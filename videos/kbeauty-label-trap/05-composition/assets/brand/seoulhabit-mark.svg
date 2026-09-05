@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="SeoulHabit mark">
+  <!-- Canonical channel signet, editable local copy of brand/channel/watermark-150.html.
+       Disc 88/96 of frame, paper ring 4px scaled from the 4/150 reference ratio.
+       Coral + paper only -- this exact pairing is reserved for brand touchpoints. -->
+  <circle cx="48" cy="48" r="44" fill="#C97A5C" stroke="#F7F5F0" stroke-width="4"/>
+  <text x="48" y="51.5" text-anchor="middle" font-family="'Noto Sans KR Video','Noto Sans KR',sans-serif"
+        font-weight="500" font-size="50" fill="#F7F5F0">습</text>
+</svg>

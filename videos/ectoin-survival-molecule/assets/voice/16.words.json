@@ -1,160 +1,180 @@
 {
-  "scene": "16-trial104",
-  "block": "act4",
-  "cut": {
-    "start": 0.0,
-    "end": 12.03
+ "scene": "16-trial104",
+ "block": "act4",
+ "cut": {
+  "start": 0.0,
+  "end": 12.03
+ },
+ "gain_db": 2.7,
+ "lufs": -20.0,
+ "wpm": 130.0,
+ "words": [
+  {
+   "text": "So",
+   "start": 0.0,
+   "end": 0.256
   },
-  "gain_db": 2.7,
-  "lufs": -20.0,
-  "wpm": 166.4,
-  "words": [
-    {
-      "text": "So",
-      "start": 0.0,
-      "end": 0.23
-    },
-    {
-      "text": "does",
-      "start": 0.23,
-      "end": 0.7
-    },
-    {
-      "text": "it",
-      "start": 0.7,
-      "end": 0.93
-    },
-    {
-      "text": "do",
-      "start": 0.93,
-      "end": 1.16
-    },
-    {
-      "text": "anything",
-      "start": 1.72,
-      "end": 2.06
-    },
-    {
-      "text": "to",
-      "start": 2.16,
-      "end": 2.33
-    },
-    {
-      "text": "actual",
-      "start": 2.33,
-      "end": 3.04
-    },
-    {
-      "text": "people?",
-      "start": 3.04,
-      "end": 4.18
-    },
-    {
-      "text": "In",
-      "start": 4.18,
-      "end": 4.31
-    },
-    {
-      "text": "one",
-      "start": 4.31,
-      "end": 4.5
-    },
-    {
-      "text": "randomized,",
-      "start": 4.5,
-      "end": 5.29
-    },
-    {
-      "text": "double-blind",
-      "start": 5.29,
-      "end": 6.07
-    },
-    {
-      "text": "study,",
-      "start": 6.07,
-      "end": 6.56
-    },
-    {
-      "text": "104",
-      "start": 6.56,
-      "end": 7.22
-    },
-    {
-      "text": "women",
-      "start": 7.26,
-      "end": 7.56
-    },
-    {
-      "text": "used",
-      "start": 7.56,
-      "end": 8.0
-    },
-    {
-      "text": "a",
-      "start": 8.0,
-      "end": 8.04
-    },
-    {
-      "text": "cream",
-      "start": 8.3,
-      "end": 8.44
-    },
-    {
-      "text": "with",
-      "start": 8.44,
-      "end": 8.76
-    },
-    {
-      "text": "2%",
-      "start": 8.76,
-      "end": 9.08
-    },
-    {
-      "text": "ectoin",
-      "start": 9.08,
-      "end": 9.56
-    },
-    {
-      "text": "against",
-      "start": 9.57,
-      "end": 10.09
-    },
-    {
-      "text": "the",
-      "start": 10.18,
-      "end": 10.41
-    },
-    {
-      "text": "same",
-      "start": 10.41,
-      "end": 10.72
-    },
-    {
-      "text": "cream",
-      "start": 10.72,
-      "end": 11.11
-    },
-    {
-      "text": "without",
-      "start": 11.11,
-      "end": 11.51
-    },
-    {
-      "text": "it.",
-      "start": 11.51,
-      "end": 11.758
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.0,
-      "end": 4.18,
-      "text": "So does it do anything to actual people?"
-    },
-    {
-      "start": 4.18,
-      "end": 11.758,
-      "text": "In one randomized, double-blind study, 104 women used a cream with 2% ectoin against the same cream without it."
-    }
+  {
+   "text": "does",
+   "start": 0.256,
+   "end": 0.778
+  },
+  {
+   "text": "it",
+   "start": 0.778,
+   "end": 1.033
+  },
+  {
+   "text": "do",
+   "start": 1.033,
+   "end": 1.289
+  },
+  {
+   "text": "anything",
+   "start": 1.911,
+   "end": 2.289
+  },
+  {
+   "text": "to",
+   "start": 2.4,
+   "end": 2.589
+  },
+  {
+   "text": "actual",
+   "start": 2.589,
+   "end": 3.378
+  },
+  {
+   "text": "people?",
+   "start": 3.378,
+   "end": 4.644
+  },
+  {
+   "text": "In",
+   "start": 4.644,
+   "end": 5.639
+  },
+  {
+   "text": "one",
+   "start": 5.639,
+   "end": 5.85
+  },
+  {
+   "text": "randomized,",
+   "start": 5.85,
+   "end": 6.728
+  },
+  {
+   "text": "double-blind",
+   "start": 6.728,
+   "end": 7.594
+  },
+  {
+   "text": "study,",
+   "start": 7.594,
+   "end": 8.139
+  },
+  {
+   "text": "104",
+   "start": 8.139,
+   "end": 9.372
+  },
+  {
+   "text": "women",
+   "start": 9.417,
+   "end": 9.75
+  },
+  {
+   "text": "used",
+   "start": 9.75,
+   "end": 10.239
+  },
+  {
+   "text": "a",
+   "start": 10.239,
+   "end": 10.283
+  },
+  {
+   "text": "cream",
+   "start": 10.572,
+   "end": 10.728
+  },
+  {
+   "text": "with",
+   "start": 10.728,
+   "end": 11.083
+  },
+  {
+   "text": "2%",
+   "start": 11.083,
+   "end": 11.439
+  },
+  {
+   "text": "ectoin",
+   "start": 11.439,
+   "end": 12.322
+  },
+  {
+   "text": "against",
+   "start": 12.333,
+   "end": 12.911
+  },
+  {
+   "text": "the",
+   "start": 13.011,
+   "end": 13.267
+  },
+  {
+   "text": "same",
+   "start": 13.267,
+   "end": 13.611
+  },
+  {
+   "text": "cream",
+   "start": 13.611,
+   "end": 14.044
+  },
+  {
+   "text": "without",
+   "start": 14.044,
+   "end": 14.489
+  },
+  {
+   "text": "it.",
+   "start": 14.489,
+   "end": 14.764
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.0,
+   "end": 4.18,
+   "text": "So does it do anything to actual people?"
+  },
+  {
+   "start": 4.18,
+   "end": 11.758,
+   "text": "In one randomized, double-blind study, 104 women used a cream with 2% ectoin against the same cream without it."
+  }
+ ],
+ "repaced": {
+  "tempo": 0.9,
+  "rests": [
+   [
+    7,
+    "people?",
+    0.85
+   ],
+   [
+    12,
+    "study,",
+    0.5
+   ],
+   [
+    19,
+    "2%",
+    0.35
+   ]
   ]
+ }
 }

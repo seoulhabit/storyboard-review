@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""VO text for all 28 scenes, keyed by scene id. Single source for generation.
+"""VO text for all 29 scenes, keyed by scene id. Single source for generation.
 
 TTS-safe: no em-dashes, no colons -- both produce odd pauses in this engine.
 On-screen text keeps real punctuation and spelling; these diverge deliberately.
@@ -19,7 +19,7 @@ LINES = [
     ("06-mechanism",  "Why? Because salt pulls water out of cells. Lose enough water and proteins start to lose their shape, membranes get unstable, and the cell stops working."),
     ("07-question",   "Ectoin keeps the space around those fragile structures survivable. Which led skincare researchers to an obvious question. Could it do the same for stressed human skin?"),
     # --- ACT 2 (mechanism) ---
-    ("08-humectant",  "Here is where ectoin stops behaving like a normal moisturiser. A familiar humectant, glycerin, hyaluronic acid, attracts water and holds onto it. Ectoin seems to work on how water arranges itself around proteins and membranes."),
+    ("08-humectant",  "Here is where ectoin stops behaving like a normal moisturiser. Familiar humectants, such as glycerin and hyaluronic acid, attract water and hold on to it. Ectoin seems to affect how water arranges itself around proteins and membranes."),
     # 09-exclusion carries BOTH the tidy version (formerly scene 09) and the
     # honest correction (formerly scene 10) -- one continuous diagram, one scene.
     ("09-exclusion",  "Scientists call the idea preferential exclusion. The tidy version. Ectoin protects proteins by staying off their surface, which helps the water around them stay organised. The honest version is messier. In the simulations, ectoin also showed some attraction to that surface. And how far it stays back depends on how tightly the protein's own water is already arranged."),
@@ -35,11 +35,21 @@ LINES = [
     ("18-eczema",     "A second randomised study followed sixty five people with mild to moderate atopic dermatitis, eczema. Over four weeks, an ectoin cream performed about as well as the barrier cream it was tested against, and was well tolerated."),
     ("19-limits",     "Encouraging. Not proof that ectoin cures eczema, reverses ageing, or replaces anything a dermatologist prescribes."),
     ("20-twelve",     "And the evidence base is genuinely small. Search PubMed today and you will find twelve ectoin clinical trials. Twelve."),
-    ("21-verdict",    "Some of that research also comes from people who sell the ingredient. Bitop, Merck, Kao. So. Promising supporting ingredient, yes. Miracle molecule, no."),
+    # The three makers get a full stop each, not commas: this engine reads a
+    # comma as a beat and a period as a rest, and the review asked for short
+    # breaks BETWEEN the names. Phonetic locks live in the TTS prompt only
+    # (scripts/gen_vo.py PRONUNCIATION), never in this text -- what is written
+    # here is what the captions say.
+    ("21-verdict",    "Some of that research comes from companies that sell the ingredient. bitop. Merck. And Kao. So. Promising supporting ingredient, yes. Miracle molecule, no."),
     # --- ACT 5 (how to read a label) ---
     ("22-whofor",     "Ectoin is most interesting if your skin runs dry, sensitive, over cleansed, or irritated by a strong routine. It sits comfortably alongside panthenol, glycerin, squalane and ceramides."),
-    ("23-numbers",    "But do not buy it off the front of the bottle. Turn it around. Plenty of brands do print a number. Paula's Choice says seven percent. The Ordinary says two."),
-    ("24-eleven",     "And Abib's Ectoin Panthenol eleven percent? That eleven is the two of them added together. On the ingredient list, panthenol is second. Ectoin is eleventh. The big number on the front is not always the ectoin number."),
+    ("23-numbers",    "But do not buy it off the front of the bottle. Turn it around. Plenty of brands do print a number. Paula's Choice says seven percent. The Ordinary lists two percent ectoin."),
+    # "The brand" is not decoration. Sentence-initial "Abib" came back from the
+    # engine as "Abbey", and both phonetic respellings made it worse -- "Ah-beeb"
+    # read as "AB" and "A-beeb" as "A.B.", each also dragging ectoin off with it
+    # ("ecto-on", "ectoion"). Two words of run-up put the brand mid-phrase, where
+    # it is said correctly and ectoin survives. Verified on whisper large-v3.
+    ("24-eleven",     "The brand Abib promotes Ectoin Panthenol eleven percent, but that eleven percent combines the two ingredients. Panthenol is second on the ingredient list. Ectoin is eleventh. The big number on the front is not always the ectoin number."),
     ("25-formula",    "The rest is judgement, not evidence. Is it fragrance free, if fragrance bothers you? Does the formula carry other useful moisturisers? One good ingredient cannot rescue a badly built product."),
     # --- ACT 6 (the K-beauty connection) ---
     ("26-kbeauty",    "K beauty did not invent ectoin. What Korean formulators are doing well is pairing it with barrier ingredients in light, wearable textures."),
@@ -47,6 +57,9 @@ LINES = [
     # --- ACT 7 (close) ---
     ("28-remember",   "So next time you see ectoin on an ingredient list, remember what you are looking at. A survival strategy, borrowed from bacteria. Not the new hyaluronic acid. Not a miracle. A genuinely interesting supporting molecule."),
     ("29-cta",        "Here is the one thing worth doing. Turn the bottle around and find the actual percentage before you buy. And tell me, would you put a bacteria made survival molecule on your face?"),
+    # --- END CARD (2026-09-05 accessibility pass) ---
+    # Spoken, so it walks like any other scene -- no wordless-unit machinery.
+    ("30-endcard",    "Follow SeoulHabit for more."),
 ]
 
 # scene id -> text, for O(1) lookup elsewhere
@@ -64,6 +77,7 @@ BLOCKS = [
     ("act5", ["22-whofor", "23-numbers", "24-eleven", "25-formula"]),
     ("act6", ["26-kbeauty", "27-resilience"]),
     ("act7", ["28-remember", "29-cta"]),
+    ("act8", ["30-endcard"]),
 ]
 SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
 
@@ -72,6 +86,18 @@ SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
 # narrative scenes around them.
 EVIDENCE = {"13-keratin", "14-notforce", "16-trial104", "17-preference",
             "18-eczema", "19-limits", "21-verdict"}
+
+# The three passages the 2026-09-05 accessibility review asked to be read at
+# 125-135 wpm: the mechanism section (01:13-02:02), the human-evidence section
+# (02:53-03:49) and the label-reading section (04:12-04:32). Timecodes are the
+# review's, against the 5:38 retention master; the scene ids are what they
+# resolve to in that cut and are what the pacing is actually applied to.
+SLOWED = {
+    "08-humectant", "09-exclusion", "11-analogy",
+    "16-trial104", "17-preference", "18-eczema", "19-limits", "20-twelve",
+    "21-verdict",
+    "23-numbers", "24-eleven",
+}
 
 # --from-takes validation (scripts/gen_vo.py): maps each scene id to the take
 # number(s) already recorded under the OLD 29-scene numbering, in
@@ -88,5 +114,5 @@ TAKES_MAP = {
     "20-twelve": [20], "21-verdict": [21],
     "22-whofor": [22], "23-numbers": [23], "24-eleven": [24], "25-formula": [25],
     "26-kbeauty": [26], "27-resilience": [27],
-    "28-remember": [28], "29-cta": [29],
+    "28-remember": [28], "29-cta": [29], "30-endcard": [30],
 }

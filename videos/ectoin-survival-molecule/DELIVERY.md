@@ -1,10 +1,273 @@
 # DELIVERY — Ectoin: the survival molecule
 
-**Complete: 7 acts, 28 scenes, 5:38.14 at 1920×1080 (v2, 2026-09-04).** The
-channel's first long-form video and the first 16:9 render in this repo.
-Nothing has been published anywhere. See **"2026-09-04 — voice continuity,
-word-sync, transitions, audio floor (v2)"** below for the current build; the
-sections after it are the 2026-09-02 history, kept as-is.
+**Complete: 7 acts + an end card, 29 scenes, 6:11.83 at 1920×1080
+(a11y pass, 2026-09-05).** The channel's first long-form video and the first
+16:9 render in this repo. Nothing has been published anywhere. See
+**"2026-09-05 — accessibility and voice flow"** immediately below for the
+current build; every section after it is history, kept as-is.
+
+---
+
+## 2026-09-05 — accessibility and voice flow, `session/ectoin-a11y`
+
+**Deliverables:** `renders/ectoin-survival-molecule_a11y-master.mp4` (clean,
+the file to upload), `renders/ectoin-survival-molecule_open-captions.mp4`
+(burned-in, for platforms that do not offer a selectable track), and the
+positioned `captions/ectoin-survival-molecule.vtt` + plain `.srt`.
+**5:38.14 → 6:11.83.** No render from before this pass was modified.
+
+### The contrast finding, and why every tool missed it
+
+All three P0 contrast complaints were **one rendering bug**, not three design
+choices. `scripts/frames_retention.py`'s two wrappers appended
+`#root { color:inherit }` as the LAST rule in each scene's stylesheet. CSS is
+concatenated last-wins, so it outranked the scene's own
+`#root { background:var(--ink); color:var(--paper) }`; `#root` then inherited
+from `<body>`, which sets no colour, and the computed value was the UA default
+**black**. Paper-white type rendered as black glyphs on a near-black ground.
+
+Measured on the shipped retention master, Otsu split of the text region:
+
+| t | scene | intended | shipped |
+|---|---|---|---|
+| 211.0s | 19-limits headline + claim cards | 16.81:1 / 15.10:1 | **≈1.37:1** |
+| 229.6s | 21-verdict bitop / Merck / Kao tiles | 15.10:1 | **≈1.28:1** |
+| 268.0s | 24-eleven "11%" and the 10% card | 15.10:1 | **≈1.2:1** |
+
+Five ink-ground scenes were affected (04, 14, 19, 21, 24); the paper-ground
+ones were unharmed, because black on paper is fine. That is also why the
+regression survived review: the wrapper loop that applies it is commented
+"paper-ground editorial scenes" while two of the eight scenes it covers are
+ink-ground.
+
+**`hyperframes check` reported 16/16 contrast checks passing on that master.**
+It evaluates DECLARED CSS colours, and the declared colour was still `--paper`.
+No stylesheet-reading tool could have caught this, and neither could reading the
+source. It took extracting frames from the MP4. `scripts/check-contrast-pixels.py`
+now does that on every render, and is the gate that would have caught it.
+
+The root colour is scoped to the wrapper that actually owns an ink ground; both
+`color:inherit` overrides are gone; and `.mk`, `.half.p` and `.c23-card` now
+state their colour explicitly so the same class of bug cannot reach them.
+
+### State is never colour or opacity alone
+
+The review's P0 item 5. Each of these was measured on the shipped render before
+being changed:
+
+- **19-limits** voided each claim with a full-card coral flood at `opacity:0.88`.
+  `.cl .x` is absolutely positioned and is not a `.wash`, so the `_preamble`
+  rule that lifts washed siblings to `z-index:1` never applied and the flood
+  painted **over** the copy — text-vs-flood **1.03:1**. The claims were erased,
+  not struck. Now: a coral rule drawn through the claim, a coral edge, and the
+  words "Not supported", with the copy at 15.1:1 for the whole scene.
+- **21-verdict** carried yes/no in hue: "Yes." got a moss underline and "No."
+  was inline coral, which is 5.03:1 on ink-soft and **1.72:1** once the moss
+  wash sweeps under it — and the moss underline vanishes into the same wash.
+  Now: both underlines in `--paper`, and a glyph plus a word in a
+  `currentColor` pill (✓ Supported by the trials / ✕ Not supported).
+- **24-eleven** dimmed superseded cards to `opacity:0.30` (2.58:1 as authored,
+  ~1.08:1 as shipped) and the whole ingredient list to `0.40` (**1.75:1**), with
+  the live item marked only by an aqua fill. Now 0.60 / 0.75, with dashed vs
+  solid borders and a ▸ marker on the active item.
+
+Token retune, measured against the grounds they actually land on rather than
+against paper alone: `--ink-2` `#6B6B6B → #666666` (4.49:1 → 4.83:1 on `--mist`,
+which is what `.cite` and `.sh.from` sit on) and `--ink-2-dark`
+`#878B8C → #8E9293` (4.78:1 → 5.24:1 on `--ink-soft`, with headroom for the
+plates behind it). `--ink-3-dark` at 4.13:1 no longer carries any text.
+
+### Serif over imagery
+
+The review's P1 item 3. A directional `.scrim` plus a 20–26px `text-shadow` is a
+halo, not a floor — and 05-halomonas' aqua screen-blend tint actively
+*brightens* the plate under its own type. Measured on the shipped master:
+
+| scene | shipped | fix |
+|---|---|---|
+| 01-hook "NOT THIS" label | **1.54:1** | own ground, full alpha |
+| 05-halomonas name + note | **2.31:1** | `.deck` column backing |
+| 09-exclusion paper-world body | **3.78:1** | `.deck` |
+| 28-remember closing line | **1.91:1** | `.deck` |
+| 07-question closing question | 3.82:1 | `.deck` |
+
+Passing and left alone: 01 claim 10.87:1, 09 `#e-term` 10.74:1, 13-keratin
+11.24:1, 23-numbers 11.08:1.
+
+### Type scale
+
+`--t-body` 40 → **48**, `--t-label`/`--t-chip` 32 → **36**, `--t-caption`
+24 → **30**, and the ingredient list's hardcoded 26px → **32px** (it was the
+smallest type in the piece, under the project's own stated 32px floor). Display
+sizes are unchanged — they were never the problem. The INCI list was reflowed
+to seven rows to hold the safe box at the larger size, and the full list is in
+`PUBLISH.md`'s accessible source list, which is what the review's P1 item 2
+requires of anything that stays small.
+
+### Pacing
+
+`scripts/repace_vo.py` is new: it re-paces already-cut scene audio with
+`atempo` plus authored rests, rewrites each `NN.words.json` from the same plan
+the ffmpeg graph executes, and snapshots originals to `assets/voice/_orig/` so
+it is idempotent. The per-segment trim→pad→trim pin is ported verbatim from
+`videos/collagen-where-did-it-go`, where `atempo`'s frame-boundary rounding
+accumulated 0.44s of drift across 61 segments.
+
+`transitions.REST_AFTER` holds authored air at the six scene ends the review
+named by timecode; `timing.walk()` applies it at the seam, so everything
+downstream still derives. Resulting boundary gaps: 03-now 0.65s, 07-question
+1.00s, 19-limits 0.70s, 20-twelve 0.90s, 28-remember 0.90s, 29-cta 1.40s.
+
+Measured WPM, scripted words over the spoken span:
+
+| section | scenes | before | after |
+|---|---|---|---|
+| mechanism | 08, 09, 11 | 152.5 / 147.7 / 161.2 | 131.1 / 130.0 / 130.0 |
+| human evidence | 16, 17, 18, 19, 20 | 163.3 / 146.3 / 147.5 / 124.9 / 135.5 | 130.0 / 130.1 / 129.9 / 124.9 / 135.5 |
+| reading the label | 23, 24 | 167.0 / 152.2 | 130.0 / 129.9 |
+
+**21-verdict is exempt at 102 wpm, with the reason written into
+`repace_vo.EXEMPT`.** It cannot reach 123 without undoing the review's own
+request for short breaks between bitop, Merck and Kao: the line is four
+one-word sentences, so its span is mostly authored pause and a span-based wpm
+reads low by construction. Its articulation is normal. 06-mechanism was slowed
+4% as well — not one of the named sections, but it read 174 wpm once the wpm
+definition was made consistent across `gen_vo`, `check-vo` and `check-seams`
+(the three disagreed by up to 4 wpm, enough to put a scene on either side of a
+band depending on which you asked).
+
+### Re-voiced lines, and two pronunciation locks that mattered
+
+Four lines re-worded to the review's text plus one new end-card line, generated
+from the standing voice element (`674b71b8-…`) via Higgsfield `seed_audio` at
+`speech_rate: -15`, cut with `gen_vo.py cut --from-takes --only <cid>` — a new
+`--only` filter, because a blanket re-cut would have re-levelled 24 untouched
+scenes against a `GAIN_CAP` that has moved since they were written.
+
+Both locks were found by re-transcribing at **whisper large-v3**, not by ear:
+
+- **08-humectant** said "ec-TOE-ane" — consistently, on both models. Fixed by
+  respelling as `ec-toe-in` in the TTS prompt only.
+- **24-eleven** said Abib as "Abbey". Both hyphenated respellings made it worse
+  ("Ah-beeb" → "AB", "A-beeb" → "A.B.") and each dragged *ectoin* off with it.
+  What worked was two words of run-up: "The brand Abib promotes…" puts the name
+  mid-phrase, where it is said correctly. That take also stuttered
+  ("eleven, eleven percent"); the duplicate was cut at a measured silence
+  boundary rather than re-rolled.
+
+Prompt respellings never reach the on-screen text or the caption.
+
+### End card
+
+`30-endcard`, a spoken scene like any other — 3.84s, `@SeoulHabit` at
+`--t-hero` in `--paper` on `--ink` (16.81:1), inside the same scene-scoped
+end-screen reserve `29-cta` uses. A 1.40s hold sits between the closing question
+and the card.
+
+The music bed was frozen at exactly 338.145s — the length of the cut that built
+it — so a longer edit simply ran out of music while the card was on screen.
+`scripts/build_bed.py` (ported from the sibling project, generalised from two
+loop passes to N) rebuilds it from the channel source to the walk's length, and
+a volume lane holds the bed then resolves it across the card instead of stopping
+with the last word.
+
+### Things that were frozen constants and are now derived
+
+Each of these was correct for the cut that wrote it and silently wrong for the
+next one. The re-time made all four wrong at once:
+
+- `build_index.SFX_CUES` — eight literal timestamps → anchored to the boundary
+  each cue belongs to (chapter seam + 0.10, the arrive completion minus the
+  impact file's own 0.403s pre-roll, the second spoken "12" found in the words).
+- `build_index.BED` duration → `walk()`'s total, and `build_bed.py` cuts the
+  file to the same number, so the two cannot disagree.
+- `check-endscreen.py` — a hardcoded `--start 325.3` **and** a `PAPER` ground
+  assumption. Both now derived: the start from the first scene that actually
+  uses `var(--endscreen-right)`, and emptiness from each zone's own median, so
+  an ink-ground end card does not read as 100% ink.
+- `frames_retention`'s plate stagings → `@S()` spans resolved against a frozen
+  `BASELINE_DUR`. Plate moves and video clips authored for a 12.7s scene froze
+  for the extra 1.8s once it was re-paced; scaling them keeps every handoff at
+  the same fraction of its scene.
+
+Two scenes had hand-timed *beats* rather than plate timings (17-preference at
+3.00/3.20/5.90 and 18-eczema at 7.10/8.20/10.40). Those are bound to words now.
+Both showed up as `motion_frozen` — 7.46s of nothing but a blurred 0.16-opacity
+ground — which is exactly what that gate is for.
+
+### Captions
+
+Rebuilt, not patched. The cue packer capped WORDS only and wrapped at the word
+midpoint, so a long-word cue could produce a 55-character line; both a character
+cap (42/line, ≤2 lines) and a greedy phrase-aware wrap are enforced now.
+
+**The alignment had been dropping words.** `scripted_words()` walked the ASR
+token list and mapped each token to at most one scripted word, so wherever
+Whisper collapsed two spoken words into one token the extra scripted word was
+silently lost — "Paula's Choice says seven percent" shipped as "…says seven",
+and 24-eleven lost "percent" twice. Whisper writes "7%" for "seven percent" and
+"104" for "a hundred and four", so on this channel that is the normal case, not
+an edge case. Captions are built from the SCRIPT now; several words sharing one
+token split its span between them.
+
+Cue positioning is new (there was none): 43 of 116 cues carry `line:10%` over
+the ten scenes whose lower third holds a chart, an ingredient list or a lower
+third. SRT stays plain — SRT placement is not portably honoured.
+
+Every term the review listed is checked case-sensitively by
+`scripts/check-captions.py`, including "bitop" lowercase (the company's own
+styling, and it is sentence-initial in the script) and the closing
+"bacteria-made survival molecule", which needed a caption-only display form
+because `vo_lines` is TTS-safe and carries no hyphens.
+
+### Deliverables
+
+| File | What it is |
+|---|---|
+| `renders/ectoin-survival-molecule_a11y-master.mp4` | **The file to upload.** 1920x1080, 30fps, 6:11.83, 248 MB. −15.00 LUFS / −3.30 dBTP. |
+| `renders/ectoin-survival-molecule_open-captions.mp4` | Burned-in captions, 132 MB, same audio (stream-copied). For a repost to a platform that does not offer a selectable track. |
+| `captions/ectoin-survival-molecule.vtt` | Positioned sidecar, 116 cues. **Upload this one.** |
+| `captions/ectoin-survival-molecule.srt` | Same text, no positioning (SRT placement is not portably honoured). |
+| `captions/ectoin-survival-molecule.ass` | The same cues as ASS, for a machine whose ffmpeg has libass. |
+| `renders/ectoin-survival-molecule_a11y-raw.mp4` | Pre-master, kept only until the master is signed off. |
+
+Nothing in `renders/` from before this pass was modified — the retention master
+still hashes to `c08d704c89dbac5d2faaf8b245ac7cdd` and the v2 final to
+`636f3795dd591c3d80081c829e0c366a`.
+
+### Gates
+
+Every gate below ran on `renders/ectoin-survival-molecule_a11y-master.mp4`.
+
+| Gate | Result |
+|---|---|
+| `hyperframes check --samples 60` | **Check passed.** 0 lint / runtime / layout / motion errors. **Contrast 11/11 text checks pass WCAG AA** — it found 0 checks at the start of this pass and 1 failing one mid-way; the chapter band's dissolve was what it was catching, and that band wipes out now instead. 2 lint warnings (index.html line count), 3 layout infos, all intentional and marked. |
+| `contrast.py` (token pairs) | 11 pairs pass, 4 EXPECTED failures kept as the record of why each token is ground-scoped. |
+| `check-vo.py` | **All 29 scenes pass.** LU spread 0.6 LU across the piece (max −19.7, min −20.3). |
+| `check-captions.py` | **PASS.** 116 cues, longest line 42 chars, shortest cue 1.00s, 42 placed top, 1 non-speech cue. |
+| `check-sfx-durations.py` | no findings. |
+| `check-blank-frames.py` | 4 near-blank stretches, each a deliberate ink-ground hold (21-verdict's opening is the 4.6s one). |
+| `check-static-hold.py --landscape` | Whole-frame: **no findings**. Region-aware: the end-screen reserve cells, empty by design. |
+| `check-cadence.py --longform` | advisory holds only, each a deliberate one. |
+| `check-seams.py --render` | **PASS, 0 findings** — against 8 on the retention master and 13 at the start of this pass. |
+| `check-endscreen.py` | **PASS, 0 zone hits**, across both reserving scenes (29-cta and 30-endcard), each bounded to its own span. |
+| `check-motion-gaps.py` | **PASS, 0 static runs over limit.** 4 exempt holds, all in the end-screen scenes. |
+| `check-contrast-pixels.py` | **21/21 probes pass, 0 below floor.** The three scenes the review named measure 13.50:1, 5.58:1, 8.30:1, 14.27:1, 6.92:1, 5.16:1 and 4.72:1 where they measured ~1.3:1 before. |
+| `check-safe-area.py --landscape` | **FAIL by construction, N/A** — unchanged from the retention master's record. The gate estimates a flat page ground from the border ring and reads a full-bleed photograph's margins as ink; the worst frames it names sit on plate scenes (26.25s in 03-now, 41–44.5s in 05-halomonas). Separated out of the `postrender` chain this pass, because an `&&` chain containing a gate that always exits 1 silently truncates everything after it — which is how the endscreen and motion findings above went unseen for two renders. Text and UI are verified inside the safe box by a different measure: **text has high local gradient energy and a photograph's margin does not**, and that sweep found exactly two real intrusions (both fixed, see `--safe-buffer` above) among 87 sampled frames. |
+
+**How this pass was verified without paying for a render each time.** The
+contrast probes, the safe-area geometry sweep and the motion-gap spans all run
+against `hyperframes snapshot` output using the same measurement code as the
+render-side gates — about three minutes against a 35-minute render round trip.
+The gates still run on the real master; the snapshots are how a fix is checked
+BEFORE committing to one.
+
+### Audio
+
+**Unchanged targets, deliberately.** `master-retention.py` keeps
+`I=-14.0, TP=-4.0, LRA=11.0`; the retention master decoded back at
+**−14.90 LUFS / −3.60 dBTP**, already inside the requested −16…−14 LUFS and
+well under −1.5 dBTP. The review said not to make it louder, so nothing moved.
 
 ---
 

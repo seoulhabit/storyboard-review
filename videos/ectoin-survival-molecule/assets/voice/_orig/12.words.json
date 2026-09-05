@@ -1,0 +1,180 @@
+{
+  "scene": "12-load",
+  "block": "single:12-load",
+  "cut": {
+    "start": 0.15,
+    "end": 13.44
+  },
+  "gain_db": 6.3,
+  "lufs": -20.1,
+  "wpm": 146.2,
+  "words": [
+    {
+      "text": "Your",
+      "start": 0.1,
+      "end": 0.15
+    },
+    {
+      "text": "outer",
+      "start": 0.15,
+      "end": 0.53
+    },
+    {
+      "text": "skin",
+      "start": 0.53,
+      "end": 0.83
+    },
+    {
+      "text": "barrier",
+      "start": 0.83,
+      "end": 1.35
+    },
+    {
+      "text": "is",
+      "start": 1.35,
+      "end": 1.46
+    },
+    {
+      "text": "under",
+      "start": 1.52,
+      "end": 1.89
+    },
+    {
+      "text": "constant",
+      "start": 1.89,
+      "end": 2.5
+    },
+    {
+      "text": "load,",
+      "start": 2.5,
+      "end": 3.01
+    },
+    {
+      "text": "dry",
+      "start": 3.04,
+      "end": 3.25
+    },
+    {
+      "text": "air,",
+      "start": 3.25,
+      "end": 3.59
+    },
+    {
+      "text": "cleansing,",
+      "start": 3.68,
+      "end": 4.09
+    },
+    {
+      "text": "pollution,",
+      "start": 4.09,
+      "end": 4.73
+    },
+    {
+      "text": "sun,",
+      "start": 4.73,
+      "end": 5.12
+    },
+    {
+      "text": "strong",
+      "start": 5.36,
+      "end": 5.45
+    },
+    {
+      "text": "actives.",
+      "start": 5.45,
+      "end": 6.339
+    },
+    {
+      "text": "When",
+      "start": 6.352,
+      "end": 6.392
+    },
+    {
+      "text": "it",
+      "start": 6.392,
+      "end": 6.522
+    },
+    {
+      "text": "struggles,",
+      "start": 6.532,
+      "end": 7.332
+    },
+    {
+      "text": "water",
+      "start": 7.332,
+      "end": 7.692
+    },
+    {
+      "text": "escapes",
+      "start": 7.692,
+      "end": 8.162
+    },
+    {
+      "text": "more",
+      "start": 8.202,
+      "end": 8.492
+    },
+    {
+      "text": "easily,",
+      "start": 8.492,
+      "end": 8.948
+    },
+    {
+      "text": "and",
+      "start": 9.021,
+      "end": 9.031
+    },
+    {
+      "text": "skin",
+      "start": 9.031,
+      "end": 9.271
+    },
+    {
+      "text": "can",
+      "start": 9.291,
+      "end": 9.481
+    },
+    {
+      "text": "feel",
+      "start": 9.481,
+      "end": 9.761
+    },
+    {
+      "text": "tight,",
+      "start": 9.761,
+      "end": 10.321
+    },
+    {
+      "text": "rough,",
+      "start": 10.321,
+      "end": 10.891
+    },
+    {
+      "text": "or",
+      "start": 10.891,
+      "end": 11.051
+    },
+    {
+      "text": "unusually",
+      "start": 11.051,
+      "end": 11.711
+    },
+    {
+      "text": "reactive.",
+      "start": 11.791,
+      "end": 12.721
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 6.339,
+      "text": "Your outer skin barrier is under constant load, dry air, cleansing, pollution, sun, strong actives."
+    },
+    {
+      "start": 6.352,
+      "end": 12.721,
+      "text": "When it struggles, water escapes more easily, and skin can feel tight, rough, or unusually reactive."
+    }
+  ]
+}

@@ -27,300 +27,312 @@
     "from": "03-now",
     "to": "04-extremolyte",
     "kind": "continue",
-    "seam": 30.584,
+    "seam": 31.084,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
     "last_word_abs": 30.534,
-    "first_word_abs": 30.684
+    "first_word_abs": 31.184
   },
   {
     "from": "04-extremolyte",
     "to": "05-halomonas",
     "kind": "continue",
-    "seam": 40.066,
+    "seam": 40.566,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 40.016,
-    "first_word_abs": 40.266
+    "last_word_abs": 40.516,
+    "first_word_abs": 40.766
   },
   {
     "from": "05-halomonas",
     "to": "06-mechanism",
     "kind": "continue",
-    "seam": 50.713,
+    "seam": 51.213,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 50.663,
-    "first_word_abs": 50.913
+    "last_word_abs": 51.163,
+    "first_word_abs": 51.417
   },
   {
     "from": "06-mechanism",
     "to": "07-question",
     "kind": "continue",
-    "seam": 59.931,
+    "seam": 60.809,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 59.881,
-    "first_word_abs": 60.131
+    "last_word_abs": 60.759,
+    "first_word_abs": 61.009
   },
   {
     "from": "07-question",
     "to": "08-humectant",
     "kind": "chapter",
-    "seam": 69.655,
+    "seam": 70.983,
     "d": 0.6,
     "seam_after": 0.1,
     "j": 0.15,
     "gap": 0.55,
-    "last_word_abs": 69.555,
-    "first_word_abs": 70.105
+    "last_word_abs": 70.433,
+    "first_word_abs": 71.433
   },
   {
     "from": "08-humectant",
     "to": "09-exclusion",
     "kind": "continue",
-    "seam": 83.821,
+    "seam": 88.411,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 83.771,
-    "first_word_abs": 84.021
+    "last_word_abs": 88.361,
+    "first_word_abs": 88.62
   },
   {
     "from": "09-exclusion",
     "to": "11-analogy",
     "kind": "continue",
-    "seam": 107.639,
+    "seam": 115.437,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 107.589,
-    "first_word_abs": 107.739
+    "last_word_abs": 115.387,
+    "first_word_abs": 115.537
   },
   {
     "from": "11-analogy",
     "to": "12-load",
     "kind": "chapter",
-    "seam": 121.61,
+    "seam": 132.718,
     "d": 0.6,
     "seam_after": 0.1,
     "j": 0.15,
     "gap": 0.55,
-    "last_word_abs": 121.51,
-    "first_word_abs": 122.06
+    "last_word_abs": 132.618,
+    "first_word_abs": 133.168
   },
   {
     "from": "12-load",
     "to": "13-keratin",
     "kind": "continue",
-    "seam": 134.731,
+    "seam": 145.839,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 134.681,
-    "first_word_abs": 134.831
+    "last_word_abs": 145.789,
+    "first_word_abs": 145.939
   },
   {
     "from": "13-keratin",
     "to": "14-notforce",
     "kind": "continue",
-    "seam": 151.614,
+    "seam": 162.722,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 151.564,
-    "first_word_abs": 151.714
+    "last_word_abs": 162.672,
+    "first_word_abs": 162.822
   },
   {
     "from": "14-notforce",
     "to": "15-framing",
     "kind": "continue",
-    "seam": 161.751,
+    "seam": 172.859,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 161.701,
-    "first_word_abs": 161.911
+    "last_word_abs": 172.809,
+    "first_word_abs": 173.019
   },
   {
     "from": "15-framing",
     "to": "16-trial104",
     "kind": "chapter",
-    "seam": 169.771,
+    "seam": 180.879,
     "d": 0.6,
     "seam_after": 0.1,
     "j": 0.15,
     "gap": 0.55,
-    "last_word_abs": 169.671,
-    "first_word_abs": 170.121
+    "last_word_abs": 180.779,
+    "first_word_abs": 181.229
   },
   {
     "from": "16-trial104",
     "to": "17-preference",
     "kind": "carry",
-    "seam": 181.929,
+    "seam": 196.043,
     "d": 0.5,
     "seam_after": 0.05,
     "j": 0.25,
     "gap": 0.3,
-    "last_word_abs": 181.879,
-    "first_word_abs": 182.079
+    "last_word_abs": 195.993,
+    "first_word_abs": 196.193
   },
   {
     "from": "17-preference",
     "to": "18-eczema",
     "kind": "continue",
-    "seam": 193.616,
+    "seam": 209.156,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 193.566,
-    "first_word_abs": 193.716
+    "last_word_abs": 209.106,
+    "first_word_abs": 209.256
   },
   {
     "from": "18-eczema",
     "to": "19-limits",
     "kind": "continue",
-    "seam": 208.818,
+    "seam": 226.39,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 208.768,
-    "first_word_abs": 208.918
+    "last_word_abs": 226.34,
+    "first_word_abs": 226.49
   },
   {
     "from": "19-limits",
     "to": "20-twelve",
     "kind": "continue",
-    "seam": 216.175,
+    "seam": 234.297,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 216.125,
-    "first_word_abs": 216.275
+    "last_word_abs": 233.697,
+    "first_word_abs": 234.397
   },
   {
     "from": "20-twelve",
     "to": "21-verdict",
     "kind": "carry",
-    "seam": 224.741,
+    "seam": 243.463,
     "d": 0.5,
     "seam_after": 0.05,
     "j": 0.25,
     "gap": 0.3,
-    "last_word_abs": 224.691,
-    "first_word_abs": 224.891
+    "last_word_abs": 242.813,
+    "first_word_abs": 243.713
   },
   {
     "from": "21-verdict",
     "to": "22-whofor",
     "kind": "chapter",
-    "seam": 233.794,
+    "seam": 257.339,
     "d": 0.6,
     "seam_after": 0.1,
     "j": 0.15,
     "gap": 0.55,
-    "last_word_abs": 233.694,
-    "first_word_abs": 234.144
+    "last_word_abs": 257.239,
+    "first_word_abs": 257.689
   },
   {
     "from": "22-whofor",
     "to": "23-numbers",
     "kind": "continue",
-    "seam": 245.156,
+    "seam": 268.701,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 245.106,
-    "first_word_abs": 245.356
+    "last_word_abs": 268.651,
+    "first_word_abs": 268.89
   },
   {
     "from": "23-numbers",
     "to": "24-eleven",
     "kind": "carry",
-    "seam": 257.396,
+    "seam": 283.707,
     "d": 0.5,
     "seam_after": 0.05,
     "j": 0.25,
     "gap": 0.3,
-    "last_word_abs": 257.346,
-    "first_word_abs": 257.546
+    "last_word_abs": 283.657,
+    "first_word_abs": 283.968
   },
   {
     "from": "24-eleven",
     "to": "25-formula",
     "kind": "continue",
-    "seam": 272.018,
+    "seam": 301.565,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 271.968,
-    "first_word_abs": 272.218
+    "last_word_abs": 301.515,
+    "first_word_abs": 301.765
   },
   {
     "from": "25-formula",
     "to": "26-kbeauty",
     "kind": "chapter",
-    "seam": 284.929,
+    "seam": 314.476,
     "d": 0.6,
     "seam_after": 0.1,
     "j": 0.15,
     "gap": 0.55,
-    "last_word_abs": 284.829,
-    "first_word_abs": 285.279
+    "last_word_abs": 314.376,
+    "first_word_abs": 314.826
   },
   {
     "from": "26-kbeauty",
     "to": "27-resilience",
     "kind": "continue",
-    "seam": 294.475,
+    "seam": 324.022,
     "d": 0.4,
     "seam_after": 0.05,
     "j": 0.2,
     "gap": 0.25,
-    "last_word_abs": 294.425,
-    "first_word_abs": 294.675
+    "last_word_abs": 323.972,
+    "first_word_abs": 324.222
   },
   {
     "from": "27-resilience",
     "to": "28-remember",
     "kind": "arrive",
-    "seam": 309.924,
+    "seam": 339.471,
     "d": 0.7,
     "seam_after": 0.15,
     "j": 0.25,
     "gap": 0.6,
-    "last_word_abs": 309.774,
-    "first_word_abs": 310.274
+    "last_word_abs": 339.321,
+    "first_word_abs": 339.821
   },
   {
     "from": "28-remember",
     "to": "29-cta",
     "kind": "settle",
-    "seam": 324.37,
+    "seam": 354.317,
     "d": 0.8,
     "seam_after": 0.1,
     "j": 0.3,
     "gap": 0.6,
-    "last_word_abs": 324.27,
-    "first_word_abs": 324.77
+    "last_word_abs": 353.817,
+    "first_word_abs": 354.717
+  },
+  {
+    "from": "29-cta",
+    "to": "30-endcard",
+    "kind": "settle",
+    "seam": 367.992,
+    "d": 0.8,
+    "seam_after": 0.1,
+    "j": 0.3,
+    "gap": 0.6,
+    "last_word_abs": 367.092,
+    "first_word_abs": 368.492
   }
 ]

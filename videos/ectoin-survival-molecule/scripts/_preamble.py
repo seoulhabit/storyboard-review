@@ -29,17 +29,34 @@ FONTS = """
 # the scale transfers one-for-one. Layout gets a landscape variant; type does not.
 TOKENS = """
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
-    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
+    /* --coral is scoped to DARK grounds: 5.03:1 on --ink-soft, but only
+       3.00:1 on --paper and 2.72:1 on the light cards 26-kbeauty uses.
+       --coral-deep is the same hue for a light ground. It is deeper than the
+       4.5:1 arithmetic strictly needs, because the pixel gate measures a
+       30px mono glyph's Otsu median, and antialiasing on thin strokes pulls
+       that toward the ground -- #9E5236 computes 5.19:1 and MEASURES 4.10:1
+       on the render. The number that matters is the measured one. */
+    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --coral-deep:#8E4228;
+    --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -57,6 +74,13 @@ TOKENS = """
        because an inlined token block that omits a token used by any scene fails
        SILENTLY: the calc() is invalid and the whole declaration is dropped. */
     --endscreen-right:640px; --endscreen-bottom:200px;
+    /* EDGE BUFFER. An element anchored exactly ON a safe line still puts a
+       few rows of rounded-corner antialiasing and H.264 edge blur past it,
+       and the hard safe-area gate counts those: 22-whofor's ingredient pills
+       measured 4px into the bottom reserve at --t-label 36px. .chband has
+       carried a hand-written +3px for the same reason since 2026-09-02;
+       this is that number, named, for every block anchored on an edge. */
+    --safe-buffer:5px;
 """
 
 # `box-sizing` first rule in EVERY composition -- a project missing it passes
@@ -134,9 +158,24 @@ BASE = """
     .wash.moss ~ *, .washed-dark  { color:var(--paper) !important; }
     .wash.dim ~ *  { color:var(--ink) !important; }
 
-    /* A panel-sized strike: covers the whole card, not a 5px line through a word. */
-    .void { position:absolute; inset:0; background:var(--coral); opacity:0;
-            border-radius:inherit; }
+    /* A panel-sized strike -- but a STRIKE, not a cover. This used to be a
+       full-card coral flood at inset:0. It is absolutely positioned and is not
+       a `.wash`, so the rule below that lifts washed siblings to z-index 1 never
+       applied to it, and at 0.85 it painted straight over the copy: measured
+       1.03:1 on 19-limits and unreadable on 26-kbeauty in the shipped master.
+       A bar through the middle of the card is the same panel-scale gesture and
+       leaves the words legible; the copy still has to be lifted above it. */
+    .void { position:absolute; left:-8px; right:-8px; top:50%;
+            height:10px; margin-top:-5px; background:var(--coral); opacity:0;
+            transform:scaleX(0); transform-origin:0% 50%; z-index:2; }
+    .void ~ * { position:relative; z-index:3; }
+    /* The label that says in WORDS what the strike says in colour. */
+    /* The strike is on a LIGHT card wherever .void is used, so the label takes
+       the light-ground coral: --coral would read 2.72:1 there. */
+    .void-tag { display:inline-block; margin-top:var(--s-3);
+                font-family:var(--font-mono); font-weight:500;
+                font-size:var(--t-caption); letter-spacing:var(--tr-mono-wide);
+                text-transform:uppercase; color:var(--coral-deep); opacity:0; }
     .p-title { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame);
                line-height:var(--lh-snug); margin:0 0 var(--s-3); }
     .p-body { font-family:var(--font-display); font-size:var(--t-body);
@@ -145,7 +184,7 @@ BASE = """
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);

@@ -23,13 +23,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 from timing import walk, END_TAIL, LEAD_KEEP
-from vo_lines import EVIDENCE
+from transitions import rest_after
+from vo_lines import EVIDENCE, SLOWED
+from repace_vo import EXEMPT as SLOWED_EXEMPT, SHORT as WPM_SHORT
 
 CONTINUE_CARRY_GAP = (0.15, 0.35)
 CHAPTER_ARRIVE_SETTLE_GAP = (0.40, 0.65)
+# The 2026-09-05 pass re-paced the technical and evidence sections. Their
+# scenes are measured against the review's own band, not the narrative one --
+# a scene deliberately read at 130 wpm is not a defect to be flagged at 140.
 WPM_BAND = (140, 170)
 WPM_BAND_EVIDENCE = (120, 170)
+WPM_BAND_SLOWED = (123, 137)
 LU_SPREAD_MAX = 2.0
+WORD_END_BIAS = 0.15   # aligner slop at a boundary; see check_gaps_render()
 
 
 def sh(*a):
@@ -45,6 +52,11 @@ def check_gaps_source(scenes):
                     (s.vo_start + s.words[-1]["end"]), 3)
         band = CONTINUE_CARRY_GAP if nxt.kind_in in ("continue", "carry") \
             else CHAPTER_ARRIVE_SETTLE_GAP
+        # An authored rest widens the band by exactly its own length: the
+        # boundary is still the grammar's, with air held on top of it.
+        rest = rest_after(s.cid)
+        if rest:
+            band = (round(band[0] + rest, 3), round(band[1] + rest, 3))
         ok = band[0] <= gap <= band[1]
         if not ok:
             hard.append((s.cid, nxt.cid, gap, band))
@@ -66,7 +78,15 @@ def check_wpm(scenes):
         mp = ROOT / "assets" / "voice" / f"{s.n:02d}.words.json"
         m = json.loads(mp.read_text())
         wpm = m.get("wpm")
-        lo, hi = WPM_BAND_EVIDENCE if s.cid in EVIDENCE else WPM_BAND
+        if s.cid in SLOWED_EXEMPT or s.cid in WPM_SHORT:
+            print(f"    {s.cid:16s} wpm={wpm}  EXEMPT (see repace_vo.py)")
+            continue
+        if s.cid in SLOWED:
+            lo, hi = WPM_BAND_SLOWED
+        elif s.cid in EVIDENCE:
+            lo, hi = WPM_BAND_EVIDENCE
+        else:
+            lo, hi = WPM_BAND
         ok = wpm is not None and lo <= wpm <= hi
         if not ok:
             hard.append((s.cid, wpm, (lo, hi)))
@@ -128,20 +148,48 @@ def check_gaps_render(scenes, mp4):
         s, nxt = scenes[i], scenes[i + 1]
         gap_start = round(s.vo_start + s.words[-1]["end"], 3)
         gap_end = round(nxt.vo_start + nxt.words[0]["start"] - LEAD_KEEP, 3)
-        L = max(0.05, gap_end - gap_start)
-        r = sh("ffmpeg", "-nostdin", "-ss", f"{gap_start:.3f}", "-t", f"{L:.3f}",
-               "-i", str(mp4), "-af",
-               "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
-               "-f", "null", "-")
-        m = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r.stderr)
-        gap_db = float(m.group(1)) if m and m.group(1) != "-inf" else -99.0
-        narr_start = max(0.0, gap_start - 1.0)
-        r2 = sh("ffmpeg", "-nostdin", "-ss", f"{narr_start:.3f}", "-t", "1.0",
-                "-i", str(mp4), "-af",
-                "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
-                "-f", "null", "-")
-        m2 = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r2.stderr)
-        narr_db = float(m2.group(1)) if m2 and m2.group(1) != "-inf" else -99.0
+        # TWO readings, and the quieter one is the answer. The aligner's word
+        # boundaries are approximate in both directions: whisper reports a
+        # word's end early (the gap window then opens inside the word's release
+        # -- 21-verdict -> 22-whofor reads -28.1 dB whole and -36.5 dB with the
+        # first 0.15s dropped), and on a 0.25s `continue` gap dropping that lead
+        # instead walks the window into the NEXT word's onset. Neither offset is
+        # right for every boundary; a gap that is quiet under EITHER reading has
+        # a quiet moment in it, which is what this check is asking.
+        def window(a, b):
+            if b - a < 0.05:
+                return None
+            r = sh("ffmpeg", "-nostdin", "-ss", f"{a:.3f}", "-t", f"{b - a:.3f}",
+                   "-i", str(mp4), "-af",
+                   "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
+                   "-f", "null", "-")
+            m = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r.stderr)
+            if not m:
+                return None
+            return -99.0 if m.group(1) == "-inf" else float(m.group(1))
+
+        vals = [v for v in (window(gap_start, gap_end),
+                            window(gap_start + WORD_END_BIAS, gap_end),
+                            window(gap_start, max(gap_start + 0.05,
+                                                  gap_end - WORD_END_BIAS)))
+                if v is not None]
+        gap_db = min(vals) if vals else -99.0
+        # REPRESENTATIVE narration, not "the second before the gap". That window
+        # is only narration if the scene ends on a run of speech, and after the
+        # 2026-09-05 pass authored rests inside scenes it often lands in one:
+        # 04-extremolyte measured -36.8 dB there, QUIETER than its own gap, and
+        # six boundaries failed on a reference that was itself silence. The
+        # loudest 0.5s in the preceding 3s is speech wherever speech exists.
+        narr_db = -99.0
+        for k in range(6):
+            w0 = max(0.0, gap_start - 0.5 * (k + 1))
+            r2 = sh("ffmpeg", "-nostdin", "-ss", f"{w0:.3f}", "-t", "0.5",
+                    "-i", str(mp4), "-af",
+                    "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
+                    "-f", "null", "-")
+            m2 = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r2.stderr)
+            if m2 and m2.group(1) != "-inf":
+                narr_db = max(narr_db, float(m2.group(1)))
         ok = (narr_db - gap_db) >= 12.0
         if not ok:
             hard.append((s.cid, nxt.cid, gap_db, narr_db))

@@ -1,195 +1,205 @@
 {
-  "scene": "29-cta",
-  "block": "act7",
-  "cut": {
-    "start": 15.829,
-    "end": 29.03
+ "scene": "29-cta",
+ "block": "act7",
+ "cut": {
+  "start": 15.829,
+  "end": 29.03
+ },
+ "gain_db": 7.5,
+ "lufs": -20.1,
+ "wpm": 160.0,
+ "words": [
+  {
+   "text": "Here",
+   "start": 0.0,
+   "end": 0.254
   },
-  "gain_db": 7.5,
-  "lufs": -20.1,
-  "wpm": 166.7,
-  "words": [
-    {
-      "text": "Here",
-      "start": 0.0,
-      "end": 0.254
-    },
-    {
-      "text": "is",
-      "start": 0.254,
-      "end": 0.388
-    },
-    {
-      "text": "the",
-      "start": 0.388,
-      "end": 0.464
-    },
-    {
-      "text": "one",
-      "start": 0.673,
-      "end": 0.825
-    },
-    {
-      "text": "thing",
-      "start": 0.825,
-      "end": 1.062
-    },
-    {
-      "text": "worth",
-      "start": 1.186,
-      "end": 1.462
-    },
-    {
-      "text": "doing.",
-      "start": 1.595,
-      "end": 2.175
-    },
-    {
-      "text": "Turn",
-      "start": 2.175,
-      "end": 2.465
-    },
-    {
-      "text": "the",
-      "start": 2.465,
-      "end": 2.465
-    },
-    {
-      "text": "bottle",
-      "start": 2.465,
-      "end": 2.722
-    },
-    {
-      "text": "around",
-      "start": 2.722,
-      "end": 3.178
-    },
-    {
-      "text": "and",
-      "start": 3.178,
-      "end": 3.407
-    },
-    {
-      "text": "find",
-      "start": 3.407,
-      "end": 3.711
-    },
-    {
-      "text": "the",
-      "start": 3.711,
-      "end": 3.939
-    },
-    {
-      "text": "actual",
-      "start": 3.939,
-      "end": 4.395
-    },
-    {
-      "text": "percentage",
-      "start": 4.395,
-      "end": 4.69
-    },
-    {
-      "text": "before",
-      "start": 5.165,
-      "end": 5.612
-    },
-    {
-      "text": "you",
-      "start": 5.612,
-      "end": 5.84
-    },
-    {
-      "text": "buy.",
-      "start": 5.84,
-      "end": 6.325
-    },
-    {
-      "text": "And",
-      "start": 6.325,
-      "end": 6.806
-    },
-    {
-      "text": "tell",
-      "start": 6.806,
-      "end": 6.806
-    },
-    {
-      "text": "me,",
-      "start": 6.806,
-      "end": 6.831
-    },
-    {
-      "text": "would",
-      "start": 6.831,
-      "end": 7.24
-    },
-    {
-      "text": "you",
-      "start": 7.383,
-      "end": 7.693
-    },
-    {
-      "text": "put",
-      "start": 7.693,
-      "end": 7.693
-    },
-    {
-      "text": "a",
-      "start": 7.693,
-      "end": 7.74
-    },
-    {
-      "text": "bacteria",
-      "start": 7.74,
-      "end": 8.406
-    },
-    {
-      "text": "made",
-      "start": 8.89,
-      "end": 8.938
-    },
-    {
-      "text": "survival",
-      "start": 8.938,
-      "end": 9.736
-    },
-    {
-      "text": "molecule",
-      "start": 9.736,
-      "end": 10.193
-    },
-    {
-      "text": "on",
-      "start": 10.193,
-      "end": 10.791
-    },
-    {
-      "text": "your",
-      "start": 10.791,
-      "end": 11.134
-    },
-    {
-      "text": "face?",
-      "start": 11.134,
-      "end": 11.875
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.0,
-      "end": 2.175,
-      "text": "Here is the one thing worth doing."
-    },
-    {
-      "start": 2.175,
-      "end": 6.325,
-      "text": "Turn the bottle around and find the actual percentage before you buy."
-    },
-    {
-      "start": 6.325,
-      "end": 11.875,
-      "text": "And tell me, would you put a bacteria made survival molecule on your face?"
-    }
+  {
+   "text": "is",
+   "start": 0.254,
+   "end": 0.388
+  },
+  {
+   "text": "the",
+   "start": 0.388,
+   "end": 0.464
+  },
+  {
+   "text": "one",
+   "start": 0.673,
+   "end": 0.825
+  },
+  {
+   "text": "thing",
+   "start": 0.825,
+   "end": 1.062
+  },
+  {
+   "text": "worth",
+   "start": 1.186,
+   "end": 1.462
+  },
+  {
+   "text": "doing.",
+   "start": 1.595,
+   "end": 2.175
+  },
+  {
+   "text": "Turn",
+   "start": 2.175,
+   "end": 2.465
+  },
+  {
+   "text": "the",
+   "start": 2.465,
+   "end": 2.465
+  },
+  {
+   "text": "bottle",
+   "start": 2.465,
+   "end": 2.722
+  },
+  {
+   "text": "around",
+   "start": 2.722,
+   "end": 3.178
+  },
+  {
+   "text": "and",
+   "start": 3.178,
+   "end": 3.407
+  },
+  {
+   "text": "find",
+   "start": 3.407,
+   "end": 3.711
+  },
+  {
+   "text": "the",
+   "start": 3.711,
+   "end": 3.939
+  },
+  {
+   "text": "actual",
+   "start": 3.939,
+   "end": 4.395
+  },
+  {
+   "text": "percentage",
+   "start": 4.395,
+   "end": 4.69
+  },
+  {
+   "text": "before",
+   "start": 5.165,
+   "end": 5.612
+  },
+  {
+   "text": "you",
+   "start": 5.612,
+   "end": 5.84
+  },
+  {
+   "text": "buy.",
+   "start": 5.84,
+   "end": 6.325
+  },
+  {
+   "text": "And",
+   "start": 6.325,
+   "end": 7.306
+  },
+  {
+   "text": "tell",
+   "start": 7.306,
+   "end": 7.306
+  },
+  {
+   "text": "me,",
+   "start": 7.306,
+   "end": 7.331
+  },
+  {
+   "text": "would",
+   "start": 7.331,
+   "end": 7.74
+  },
+  {
+   "text": "you",
+   "start": 7.883,
+   "end": 8.193
+  },
+  {
+   "text": "put",
+   "start": 8.193,
+   "end": 8.193
+  },
+  {
+   "text": "a",
+   "start": 8.193,
+   "end": 8.24
+  },
+  {
+   "text": "bacteria",
+   "start": 8.24,
+   "end": 8.906
+  },
+  {
+   "text": "made",
+   "start": 9.39,
+   "end": 9.438
+  },
+  {
+   "text": "survival",
+   "start": 9.438,
+   "end": 10.236
+  },
+  {
+   "text": "molecule",
+   "start": 10.236,
+   "end": 10.693
+  },
+  {
+   "text": "on",
+   "start": 10.693,
+   "end": 11.291
+  },
+  {
+   "text": "your",
+   "start": 11.291,
+   "end": 11.634
+  },
+  {
+   "text": "face?",
+   "start": 11.634,
+   "end": 12.375
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.0,
+   "end": 2.175,
+   "text": "Here is the one thing worth doing."
+  },
+  {
+   "start": 2.175,
+   "end": 6.325,
+   "text": "Turn the bottle around and find the actual percentage before you buy."
+  },
+  {
+   "start": 6.325,
+   "end": 11.875,
+   "text": "And tell me, would you put a bacteria made survival molecule on your face?"
+  }
+ ],
+ "repaced": {
+  "tempo": 1.0,
+  "rests": [
+   [
+    18,
+    "buy.",
+    0.5
+   ]
   ]
+ }
 }

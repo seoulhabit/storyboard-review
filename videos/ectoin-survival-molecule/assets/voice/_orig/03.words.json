@@ -1,0 +1,155 @@
+{
+  "scene": "03-now",
+  "block": "act1",
+  "cut": {
+    "start": 21.51,
+    "end": 31.99
+  },
+  "gain_db": 7.0,
+  "lufs": -20.3,
+  "wpm": 153.8,
+  "words": [
+    {
+      "text": "And",
+      "start": 0.0,
+      "end": 0.285
+    },
+    {
+      "text": "it",
+      "start": 0.285,
+      "end": 0.62
+    },
+    {
+      "text": "is",
+      "start": 0.62,
+      "end": 0.955
+    },
+    {
+      "text": "now",
+      "start": 0.955,
+      "end": 1.29
+    },
+    {
+      "text": "turning",
+      "start": 1.29,
+      "end": 2.06
+    },
+    {
+      "text": "up",
+      "start": 2.06,
+      "end": 2.31
+    },
+    {
+      "text": "quietly",
+      "start": 2.31,
+      "end": 3.12
+    },
+    {
+      "text": "in",
+      "start": 3.21,
+      "end": 3.36
+    },
+    {
+      "text": "Korean",
+      "start": 3.57,
+      "end": 3.81
+    },
+    {
+      "text": "serums,",
+      "start": 3.81,
+      "end": 4.34
+    },
+    {
+      "text": "creams,",
+      "start": 4.51,
+      "end": 4.97
+    },
+    {
+      "text": "and",
+      "start": 4.97,
+      "end": 5.19
+    },
+    {
+      "text": "sunscreens.",
+      "start": 5.19,
+      "end": 5.872
+    },
+    {
+      "text": "It",
+      "start": 5.872,
+      "end": 6.002
+    },
+    {
+      "text": "is",
+      "start": 6.002,
+      "end": 6.232
+    },
+    {
+      "text": "called",
+      "start": 6.232,
+      "end": 6.492
+    },
+    {
+      "text": "ectoin,",
+      "start": 6.712,
+      "end": 7.002
+    },
+    {
+      "text": "and",
+      "start": 7.172,
+      "end": 7.212
+    },
+    {
+      "text": "the",
+      "start": 7.212,
+      "end": 7.352
+    },
+    {
+      "text": "real",
+      "start": 7.422,
+      "end": 7.662
+    },
+    {
+      "text": "science",
+      "start": 7.662,
+      "end": 8.062
+    },
+    {
+      "text": "is",
+      "start": 8.152,
+      "end": 8.292
+    },
+    {
+      "text": "stranger",
+      "start": 8.512,
+      "end": 8.772
+    },
+    {
+      "text": "than",
+      "start": 9.022,
+      "end": 9.132
+    },
+    {
+      "text": "the",
+      "start": 9.132,
+      "end": 9.282
+    },
+    {
+      "text": "marketing.",
+      "start": 9.472,
+      "end": 10.362
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 5.872,
+      "text": "And it is now turning up quietly in Korean serums, creams, and sunscreens."
+    },
+    {
+      "start": 5.872,
+      "end": 10.362,
+      "text": "It is called ectoin, and the real science is stranger than the marketing."
+    }
+  ]
+}

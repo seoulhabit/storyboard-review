@@ -1,0 +1,40 @@
+{
+  "scene": "30-endcard",
+  "block": "30-endcard",
+  "cut": {
+    "start": 0.24,
+    "end": 2.178
+  },
+  "gain_db": 4.9,
+  "lufs": -20.0,
+  "wpm": 142.2,
+  "words": [
+    {
+      "text": "follow",
+      "start": 0.1,
+      "end": 0.4
+    },
+    {
+      "text": "SoulHabit",
+      "start": 0.59,
+      "end": 1.15
+    },
+    {
+      "text": "for",
+      "start": 1.15,
+      "end": 1.39
+    },
+    {
+      "text": "more.",
+      "start": 1.39,
+      "end": 1.938
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 1.938,
+      "text": "follow SoulHabit for more."
+    }
+  ]
+}

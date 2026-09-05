@@ -4,21 +4,38 @@
 <body>
 <template>
   <div id="root" data-composition-id="24-eleven"
-       data-width="1920" data-height="1080" data-duration="15.022">
+       data-width="1920" data-height="1080" data-duration="18.258">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
-    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
+    /* --coral is scoped to DARK grounds: 5.03:1 on --ink-soft, but only
+       3.00:1 on --paper and 2.72:1 on the light cards 26-kbeauty uses.
+       --coral-deep is the same hue for a light ground. It is deeper than the
+       4.5:1 arithmetic strictly needs, because the pixel gate measures a
+       30px mono glyph's Otsu median, and antialiasing on thin strokes pulls
+       that toward the ground -- #9E5236 computes 5.19:1 and MEASURES 4.10:1
+       on the render. The number that matters is the measured one. */
+    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --coral-deep:#8E4228;
+    --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -36,6 +53,13 @@
        because an inlined token block that omits a token used by any scene fails
        SILENTLY: the calc() is invalid and the whole declaration is dropped. */
     --endscreen-right:640px; --endscreen-bottom:200px;
+    /* EDGE BUFFER. An element anchored exactly ON a safe line still puts a
+       few rows of rounded-corner antialiasing and H.264 edge blur past it,
+       and the hard safe-area gate counts those: 22-whofor's ingredient pills
+       measured 4px into the bottom reserve at --t-label 36px. .chband has
+       carried a hand-written +3px for the same reason since 2026-09-02;
+       this is that number, named, for every block anchored on an edge. */
+    --safe-buffer:5px;
 }
 
     @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2");
@@ -117,9 +141,24 @@
     .wash.moss ~ *, .washed-dark  { color:var(--paper) !important; }
     .wash.dim ~ *  { color:var(--ink) !important; }
 
-    /* A panel-sized strike: covers the whole card, not a 5px line through a word. */
-    .void { position:absolute; inset:0; background:var(--coral); opacity:0;
-            border-radius:inherit; }
+    /* A panel-sized strike -- but a STRIKE, not a cover. This used to be a
+       full-card coral flood at inset:0. It is absolutely positioned and is not
+       a `.wash`, so the rule below that lifts washed siblings to z-index 1 never
+       applied to it, and at 0.85 it painted straight over the copy: measured
+       1.03:1 on 19-limits and unreadable on 26-kbeauty in the shipped master.
+       A bar through the middle of the card is the same panel-scale gesture and
+       leaves the words legible; the copy still has to be lifted above it. */
+    .void { position:absolute; left:-8px; right:-8px; top:50%;
+            height:10px; margin-top:-5px; background:var(--coral); opacity:0;
+            transform:scaleX(0); transform-origin:0% 50%; z-index:2; }
+    .void ~ * { position:relative; z-index:3; }
+    /* The label that says in WORDS what the strike says in colour. */
+    /* The strike is on a LIGHT card wherever .void is used, so the label takes
+       the light-ground coral: --coral would read 2.72:1 there. */
+    .void-tag { display:inline-block; margin-top:var(--s-3);
+                font-family:var(--font-mono); font-weight:500;
+                font-size:var(--t-caption); letter-spacing:var(--tr-mono-wide);
+                text-transform:uppercase; color:var(--coral-deep); opacity:0; }
     .p-title { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame);
                line-height:var(--lh-snug); margin:0 0 var(--s-3); }
     .p-body { font-family:var(--font-display); font-size:var(--t-body);
@@ -128,7 +167,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -156,31 +195,59 @@
        styling, pixel-identical at t=0 -- PLUS the 11% card the act's payoff
        needs, in the same row, so the row reads as one continuous lineup
        rather than a fresh scene. */
-    .carry23 { position:absolute; top:var(--safe-top); left:var(--safe-left);
-               right:var(--safe-right); display:grid;
-               grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5; }
-    .c23-card { background:var(--ink-soft); border-radius:var(--r-3);
+    /* The active card scales to 1.14 on its beat, and it now carries a 3px
+       border as well, so the row needs room for the overshoot. The room is
+       PADDING, not a negative margin: pulling the box out past the safe lines
+       put the cards 18px into the top reserve and 44px into the right one, which
+       is exactly what the hard safe-area gate is for. */
+    .carry23 { position:absolute; top:calc(var(--safe-top) + var(--safe-buffer)); left:calc(var(--safe-left) + var(--safe-buffer));
+               right:calc(var(--safe-right) + var(--safe-buffer)); display:grid;
+               grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5;
+               padding:18px 44px; }
+    /* CARRY ROW. The two superseded brands used to drop to opacity 0.30 --
+       2.58:1 as authored, 1.08:1 as it actually shipped -- with the live one
+       marked only by an aqua fill. Inactive is now 0.60 plus a dashed edge,
+       active is a solid aqua edge plus a marker glyph, so "which one are we
+       talking about" survives greyscale and a 5px thumbnail alike. */
+    .c23-card { position:relative; background:var(--ink-soft); color:var(--paper);
+                border:3px dashed rgba(247,245,240,.38); border-radius:var(--r-3);
                 padding:var(--s-5); text-align:center; }
+    .c23-card .mark { position:absolute; top:8px; left:14px; opacity:0;
+                      font-family:var(--font-mono); font-size:var(--t-caption);
+                      color:var(--ink); }
     .c23-card .pc { font-family:var(--font-display); font-size:64px; line-height:1;
                      color:var(--aqua); }
     .c23-card .nm { font-family:var(--font-mono); font-size:var(--t-caption);
-                     letter-spacing:var(--tr-mono-wide); color:var(--ink-3-dark);
+                     letter-spacing:var(--tr-mono-wide); color:var(--ink-2-dark);
                      margin-top:var(--s-2); }
-    .c23-card.eleven { background:var(--aqua); color:var(--ink); }
+    .c23-card.eleven { background:var(--aqua); color:var(--ink);
+                       border:3px solid var(--ink); }
     .c23-card.eleven .pc { color:var(--ink); }
-    .c23-card.eleven .nm { color:var(--ink); opacity:0.7; }
+    .c23-card.eleven .nm { color:var(--ink); }
+    .c23-card.eleven .mark { opacity:1; }
     .split { display:flex; gap:var(--s-4); }
     .half { position:relative; flex:1 1 0; min-width:0; border-radius:var(--r-3);
             padding:var(--s-6); text-align:center; }
-    .half.p { background:var(--ink-soft); } .half.e { background:var(--aqua); color:var(--ink); }
+    .half.p { background:var(--ink-soft); color:var(--paper); }
+    .half.e { background:var(--aqua); color:var(--ink); }
     .half .v { font-family:var(--font-display); font-size:78px; line-height:1; }
     .half .k { font-family:var(--font-mono); font-size:var(--t-caption);
                letter-spacing:var(--tr-mono-wide); margin-top:var(--s-2); }
-    .inci { font-family:var(--font-mono); font-size:26px; line-height:2.0;
-            color:var(--ink-3-dark); }
+    /* 26px was the smallest type in the piece, under the project's own 32px
+       "meant to be read" floor, in --ink-3-dark (4.13:1 on --ink-soft) -- and
+       the whole list then dimmed to opacity 0.40, i.e. 1.75:1. Bigger, in the
+       colour that clears AA, and dimmed only to 0.75. The full list is also in
+       the description, per the accessible source list in PUBLISH.md. */
+    .inci { font-family:var(--font-mono); font-size:32px; line-height:1.75;
+            color:var(--ink-2-dark); white-space:nowrap; }
     .inci b { color:var(--paper); font-weight:500; background:var(--ink-soft);
-              padding:3px 10px; border-radius:var(--r-2); }
-    .inci b.hit { background:var(--aqua); color:var(--ink); }
+              padding:3px 10px; border-radius:var(--r-2);
+              border:2px solid transparent; }
+    /* Active INCI entries get weight + a border + a marker glyph on top of the
+       aqua fill; the fill alone was a colour-only state signal. */
+    .inci b.hit { background:var(--aqua); color:var(--ink); font-weight:700;
+                  border-color:var(--ink); }
+    .inci b .mk { opacity:0; }
     /* The 10:1 split drawn TO SCALE across the full column -- the scene's
        largest beat, and a clearer statement of the point than two chips. */
     /* 260px, not 74px: at 74 the bar was 2.9% of the frame and its draw measured
@@ -195,6 +262,18 @@
     .prop-e { flex:1 1 0; background:var(--aqua); color:var(--ink); }
 
     #root { color:var(--paper); }
+
+    /* MUTED TEXT ON A PLATE IS NOT MUTED TEXT ON INK. The .on-ink variants are
+       tuned against flat --ink (#131516); a .scrim.ink over a bright photo
+       composites to about #404342 -- measured on the render behind 24-eleven's
+       ingredient list -- where --ink-2-dark reads 3.18:1 instead of the 5.83:1
+       it scores on the flat ground. One step lighter, bound HERE so it applies
+       only to plate scenes, clears 4.5:1 on the plate and stays muted against
+       --paper. The alternative, deepening every scrim until the token works,
+       costs the photograph the plates exist for. */
+    #root { --muted-on-plate:#B7BBBA; }
+    .kicker.on-ink, .p-body.on-ink, .inci { color:var(--muted-on-plate); }
+    .cite.on-ink { color:var(--muted-on-plate); }
     .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
     .plate > video, .plate > img { position:absolute; left:0; top:0;
              width:1920px; height:1080px; object-fit:cover; display:block;
@@ -216,7 +295,7 @@
     .stage { position:relative; z-index:2; }
     .chband { z-index:10; }
     /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
-    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:calc(var(--safe-right) + var(--safe-buffer));
           z-index:4; margin:0; width:max-content;
           font-family:var(--font-mono); font-size:var(--t-caption);
           letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
@@ -224,11 +303,11 @@
           border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
           padding:8px 18px; opacity:0; }
     /* lower-third block: translucent ink card */
-    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .lt { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
-    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .kicker { color:var(--ink-2-dark); }
     .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
                 line-height:var(--lh-snug); margin:0; color:var(--paper); }
     .lt .line b { font-weight:400; color:var(--coral); }
@@ -244,25 +323,32 @@
     /* headline backing: copy over a bright plate needs a ground of its own */
     .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
           border-radius:var(--r-3); width:max-content; max-width:100%; }
-    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    /* COLUMN backing, for a block of copy rather than one line. MEASURED on
+       the shipped master with an Otsu split of the text region: a directional
+       .scrim plus a 20-26px text-shadow left 05's 60px note at 2.31:1, 09's
+       body at 3.78:1 and 28's 96px headline at 1.91:1 -- a soft halo under a
+       400-weight serif is not a contrast floor, and 05's aqua screen-blend
+       tint actively BRIGHTENS the plate under its own type. A stated ground
+       is the only thing that holds regardless of what the plate does. */
+    .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
+            padding:var(--s-5) var(--s-6); }
+    .mark { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
             letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
-
-    #root { color:inherit; }
 
     </style>
     <div class="plate" id="pl-g"><img id="pi-g" data-layout-allow-overflow src="assets/plates/I19-bottle-back.jpg" alt=""></div>
     <div class="scrim ink"></div>
     <div class="stage">
       <div class="carry23" id="carry-row">
-        <div class="c23-card" id="c23-0"><div class="pc">7%</div><div class="nm">PAULA&rsquo;S CHOICE</div></div>
-        <div class="c23-card" id="c23-1"><div class="pc">2%</div><div class="nm">THE ORDINARY</div></div>
-        <div class="c23-card eleven" id="c23-2"><div class="pc">11%</div><div class="nm">ABIB</div></div>
+        <div class="c23-card" id="c23-0"><span class="mark">&#9656;</span><div class="pc">7%</div><div class="nm">PAULA&rsquo;S CHOICE</div></div>
+        <div class="c23-card" id="c23-1"><span class="mark">&#9656;</span><div class="pc">2%</div><div class="nm">THE ORDINARY</div></div>
+        <div class="c23-card eleven" id="c23-2"><span class="mark">&#9656;</span><div class="pc">11%</div><div class="nm">ABIB</div></div>
       </div>
       <div class="g24">
         <div class="col">
-          <p class="kicker on-ink">Abib &middot; Ectoin Panthenol 11%</p>
+          <p class="kicker on-ink" id="el-k1" style="opacity:0">Abib &middot; Ectoin Panthenol 11%</p>
           <p class="hero" id="el-n" style="opacity:0">11%</p>
           <div class="split" id="el-split" style="margin-top:24px;opacity:0">
             <div class="half p"><div class="v">10%</div><div class="k">PANTHENOL</div></div>
@@ -276,13 +362,16 @@
             The big number on the front is not always the ectoin number.</p>
         </div>
         <div class="col">
-          <p class="kicker on-ink" style="margin-bottom:14px">On the ingredient list</p>
+          <p class="kicker on-ink" id="el-k2" style="margin-bottom:14px;opacity:0">On the ingredient list</p>
           <div class="inci" id="el-inci">
-            1. Water &nbsp; <b id="in-p">2. Panthenol</b> &nbsp; 3. Propanediol<br>
-            4. Cetyl Ethylhexanoate &nbsp; 5. Squalane<br>
-            6. Diisobutyl Adipate &nbsp; 7. Vinyl Dimethicone<br>
-            8. Propylheptyl Caprylate &nbsp; 9. Cetearyl Alcohol<br>
-            10. Glyceryl Glucoside &nbsp; <b id="in-e">11. Ectoin</b>
+            1. Water &nbsp; <b id="in-p"><span class="mk" id="mk-p">&#9656;</span> 2. Panthenol</b><br>
+            3. Propanediol &nbsp; 4. Cetyl Ethylhexanoate<br>
+            5. Squalane &nbsp; 6. Diisobutyl Adipate<br>
+            7. Vinyl Dimethicone<br>
+            8. Propylheptyl Caprylate<br>
+            9. Cetearyl Alcohol<br>
+            10. Glyceryl Glucoside<br>
+            <b id="in-e"><span class="mk" id="mk-e">&#9656;</span> 11. Ectoin</b>
           </div>
         </div>
       </div>
@@ -297,30 +386,42 @@
   // ended (plus the 11% card). On "eleven" the two brand cards dim and the
   // 11% card scales up into the hero position -- the hand-off beat.
   tl.set(['#c23-0','#c23-1','#c23-2'], { opacity:1, y:0, scale:1 }, 0);
-  tl.to(['#c23-0','#c23-1'], { opacity:0.30, duration:0.50 }, 2.350);
-  tl.to('#c23-2', { scale:1.14, duration:0.45, ease:'power2.out' }, 2.350);
-  tl.to('#c23-2', { opacity:0, scale:1.6, duration:0.45, ease:'power2.in' }, 2.350+0.55);
+  tl.to(['#c23-0','#c23-1'], { opacity:0.60, duration:0.50 }, 3.917);
+  tl.to('#c23-2', { scale:1.14, duration:0.45, ease:'power2.out' }, 3.917);
+  tl.to('#c23-2', { opacity:0, scale:1.6, duration:0.45, ease:'power2.in' }, 3.917+0.55);
   tl.fromTo('#el-n', { opacity:0, scale:0.7, transformOrigin:'0% 50%' },
-                     { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, 2.350+0.55);
-  tl.to('#carry-row', { opacity:0, duration:0.01 }, 2.350+1.05);
-  tl.to('#el-n', { opacity:0.25, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, 2.350+2.85);
+                     { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, 3.917+0.55);
+  tl.to('#carry-row', { opacity:0, duration:0.01 }, 3.917+1.05);
+  // The scene's own chrome waits for the carry row to leave. Both sit at the top
+  // of the stage, the row is z-index 5, and at --t-label 36px they collided:
+  // the row's cards sat straight on top of "Abib - Ectoin Panthenol 11%" and cut
+  // "On the ingredient list" in half. A carry is a handover, so the incoming
+  // scene's own labels arrive when the handover finishes.
+  tl.to(['#el-k1','#el-k2'], { opacity:1, duration:0.35 }, 3.917+1.10);
+  tl.to('#el-n', { opacity:0.60, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, 3.917+2.85);
   // "That eleven is the two of them added together" -- the split reveals on "added".
-  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 5.320);
-  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, 5.320+2.20);
+  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, 6.572);
+  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, 6.572+2.20);
   // "panthenol is second" / "Ectoin is eleventh" -- each highlight lands on its own word.
+  // Fill + weight + border + marker, all on the same beat. The fill alone was
+  // a colour-only signal for "this is the entry we are talking about".
   tl.fromTo('#in-p', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 9.101);
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 8.878);
+  tl.to('#in-p', { fontWeight:700, borderColor:'#131516', duration:0.45 }, 8.878);
+  tl.to('#mk-p', { opacity:1, duration:0.30 }, 8.878);
   tl.fromTo('#in-e', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 10.257);
-  tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, 10.869-0.20);
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, 12.416);
+  tl.to('#in-e', { fontWeight:700, borderColor:'#131516', duration:0.45 }, 12.416);
+  tl.to('#mk-e', { opacity:1, duration:0.30 }, 12.416);
+  tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, 14.316-0.20);
   // The two halves of the 11% resolve at panel scale in the back half.
-  tl.to('#el-prop', { opacity:1, duration:0.30 }, 10.869+0.80);
-  tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, 10.869+0.90);
-  tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, 10.869+2.00);
-  tl.to('#el-inci', { opacity:0.40, duration:1.10 }, 10.869+3.00);
-  tl.fromTo('#pi-g', { scale:1.18, x:0, y:0 }, { scale:1.0, x:-70, y:40, duration:15.100, ease:'none' }, 0);
+  tl.to('#el-prop', { opacity:1, duration:0.30 }, 14.316+0.80);
+  tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, 14.316+0.90);
+  tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, 14.316+2.00);
+  tl.to('#el-inci', { opacity:0.88, duration:1.10 }, 14.316+3.00);
+  tl.fromTo('#pi-g', { scale:1.18, x:0, y:0 }, { scale:1.0, x:-70, y:40, duration:18.258, ease:'none' }, 0.000);
 
-    tl.to({}, { duration: 15.022 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 18.258 }, 0);   // full-span anchor -- always last
     window.__timelines["24-eleven"] = tl;
   </script>
 </template>

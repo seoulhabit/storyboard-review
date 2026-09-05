@@ -1,115 +1,115 @@
 {
-  "scene": "15-framing",
-  "block": "single:15-framing",
-  "cut": {
-    "start": 0.0,
-    "end": 7.82
+ "scene": "15-framing",
+ "block": "single:15-framing",
+ "cut": {
+  "start": 0.0,
+  "end": 7.82
+ },
+ "gain_db": 8.6,
+ "lufs": -20.1,
+ "wpm": 146.9,
+ "words": [
+  {
+   "text": "It",
+   "start": 0.06,
+   "end": 0.14
   },
-  "gain_db": 8.6,
-  "lufs": -20.1,
-  "wpm": 150.6,
-  "words": [
-    {
-      "text": "It",
-      "start": 0.06,
-      "end": 0.14
-    },
-    {
-      "text": "is",
-      "start": 0.14,
-      "end": 0.23
-    },
-    {
-      "text": "better",
-      "start": 0.33,
-      "end": 0.7
-    },
-    {
-      "text": "understood",
-      "start": 0.7,
-      "end": 1.28
-    },
-    {
-      "text": "as",
-      "start": 1.4,
-      "end": 1.51
-    },
-    {
-      "text": "a",
-      "start": 1.56,
-      "end": 1.61
-    },
-    {
-      "text": "supporting",
-      "start": 1.61,
-      "end": 2.28
-    },
-    {
-      "text": "ingredient",
-      "start": 2.3,
-      "end": 2.86
-    },
-    {
-      "text": "that",
-      "start": 3.08,
-      "end": 3.18
-    },
-    {
-      "text": "may",
-      "start": 3.26,
-      "end": 3.42
-    },
-    {
-      "text": "help",
-      "start": 3.42,
-      "end": 3.64
-    },
-    {
-      "text": "skin",
-      "start": 3.92,
-      "end": 4.16
-    },
-    {
-      "text": "handle",
-      "start": 4.16,
-      "end": 4.57
-    },
-    {
-      "text": "dehydration",
-      "start": 4.68,
-      "end": 5.48
-    },
-    {
-      "text": "and",
-      "start": 5.48,
-      "end": 5.68
-    },
-    {
-      "text": "environmental",
-      "start": 5.74,
-      "end": 6.49
-    },
-    {
-      "text": "stress",
-      "start": 6.49,
-      "end": 6.86
-    },
-    {
-      "text": "more",
-      "start": 6.86,
-      "end": 7.1
-    },
-    {
-      "text": "comfortably.",
-      "start": 7.1,
-      "end": 7.82
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.06,
-      "end": 7.82,
-      "text": "It is better understood as a supporting ingredient that may help skin handle dehydration and environmental stress more comfortably."
-    }
-  ]
+  {
+   "text": "is",
+   "start": 0.14,
+   "end": 0.23
+  },
+  {
+   "text": "better",
+   "start": 0.33,
+   "end": 0.7
+  },
+  {
+   "text": "understood",
+   "start": 0.7,
+   "end": 1.28
+  },
+  {
+   "text": "as",
+   "start": 1.4,
+   "end": 1.51
+  },
+  {
+   "text": "a",
+   "start": 1.56,
+   "end": 1.61
+  },
+  {
+   "text": "supporting",
+   "start": 1.61,
+   "end": 2.28
+  },
+  {
+   "text": "ingredient",
+   "start": 2.3,
+   "end": 2.86
+  },
+  {
+   "text": "that",
+   "start": 3.08,
+   "end": 3.18
+  },
+  {
+   "text": "may",
+   "start": 3.26,
+   "end": 3.42
+  },
+  {
+   "text": "help",
+   "start": 3.42,
+   "end": 3.64
+  },
+  {
+   "text": "skin",
+   "start": 3.92,
+   "end": 4.16
+  },
+  {
+   "text": "handle",
+   "start": 4.16,
+   "end": 4.57
+  },
+  {
+   "text": "dehydration",
+   "start": 4.68,
+   "end": 5.48
+  },
+  {
+   "text": "and",
+   "start": 5.48,
+   "end": 5.68
+  },
+  {
+   "text": "environmental",
+   "start": 5.74,
+   "end": 6.49
+  },
+  {
+   "text": "stress",
+   "start": 6.49,
+   "end": 6.86
+  },
+  {
+   "text": "more",
+   "start": 6.86,
+   "end": 7.1
+  },
+  {
+   "text": "comfortably.",
+   "start": 7.1,
+   "end": 7.82
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.06,
+   "end": 7.82,
+   "text": "It is better understood as a supporting ingredient that may help skin handle dehydration and environmental stress more comfortably."
+  }
+ ]
 }

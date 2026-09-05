@@ -1,185 +1,185 @@
 {
-  "scene": "25-formula",
-  "block": "act5",
-  "cut": {
-    "start": 46.24,
-    "end": 59.799
+ "scene": "25-formula",
+ "block": "act5",
+ "cut": {
+  "start": 46.24,
+  "end": 59.799
+ },
+ "gain_db": 6.0,
+ "lufs": -20.0,
+ "wpm": 142.7,
+ "words": [
+  {
+   "text": "The",
+   "start": 0.1,
+   "end": 0.11
   },
-  "gain_db": 6.0,
-  "lufs": -20.0,
-  "wpm": 141.3,
-  "words": [
-    {
-      "text": "The",
-      "start": 0.1,
-      "end": 0.11
-    },
-    {
-      "text": "rest",
-      "start": 0.14,
-      "end": 0.53
-    },
-    {
-      "text": "is",
-      "start": 0.53,
-      "end": 0.73
-    },
-    {
-      "text": "judgment,",
-      "start": 0.73,
-      "end": 1.7
-    },
-    {
-      "text": "not",
-      "start": 1.81,
-      "end": 2.07
-    },
-    {
-      "text": "evidence.",
-      "start": 2.11,
-      "end": 2.91
-    },
-    {
-      "text": "Is",
-      "start": 2.91,
-      "end": 3.06
-    },
-    {
-      "text": "it",
-      "start": 3.06,
-      "end": 3.25
-    },
-    {
-      "text": "fragrance",
-      "start": 3.25,
-      "end": 3.88
-    },
-    {
-      "text": "free?",
-      "start": 3.88,
-      "end": 4.35
-    },
-    {
-      "text": "If",
-      "start": 4.41,
-      "end": 4.57
-    },
-    {
-      "text": "fragrance",
-      "start": 4.74,
-      "end": 5.29
-    },
-    {
-      "text": "bothers",
-      "start": 5.29,
-      "end": 5.85
-    },
-    {
-      "text": "you,",
-      "start": 5.85,
-      "end": 6.25
-    },
-    {
-      "text": "does",
-      "start": 6.25,
-      "end": 6.57
-    },
-    {
-      "text": "the",
-      "start": 6.57,
-      "end": 6.78
-    },
-    {
-      "text": "formula",
-      "start": 6.89,
-      "end": 7.37
-    },
-    {
-      "text": "carry",
-      "start": 7.37,
-      "end": 7.65
-    },
-    {
-      "text": "other",
-      "start": 7.84,
-      "end": 8.14
-    },
-    {
-      "text": "useful",
-      "start": 8.14,
-      "end": 8.65
-    },
-    {
-      "text": "moisturizers?",
-      "start": 8.65,
-      "end": 9.441
-    },
-    {
-      "text": "One",
-      "start": 9.441,
-      "end": 9.761
-    },
-    {
-      "text": "good",
-      "start": 9.761,
-      "end": 9.911
-    },
-    {
-      "text": "ingredient",
-      "start": 10.041,
-      "end": 10.571
-    },
-    {
-      "text": "cannot",
-      "start": 10.571,
-      "end": 10.901
-    },
-    {
-      "text": "rescue",
-      "start": 11.011,
-      "end": 11.351
-    },
-    {
-      "text": "a",
-      "start": 11.351,
-      "end": 11.361
-    },
-    {
-      "text": "badly",
-      "start": 11.471,
-      "end": 11.731
-    },
-    {
-      "text": "built",
-      "start": 11.771,
-      "end": 12.071
-    },
-    {
-      "text": "product.",
-      "start": 12.071,
-      "end": 12.711
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.1,
-      "end": 2.91,
-      "text": "The rest is judgment, not evidence."
-    },
-    {
-      "start": 2.91,
-      "end": 4.35,
-      "text": "Is it fragrance free?"
-    },
-    {
-      "start": 4.41,
-      "end": 9.441,
-      "text": "If fragrance bothers you, does the formula carry other useful moisturizers?"
-    },
-    {
-      "start": 9.441,
-      "end": 12.711,
-      "text": "One good ingredient cannot rescue a badly built product."
-    }
-  ]
+  {
+   "text": "rest",
+   "start": 0.14,
+   "end": 0.53
+  },
+  {
+   "text": "is",
+   "start": 0.53,
+   "end": 0.73
+  },
+  {
+   "text": "judgment,",
+   "start": 0.73,
+   "end": 1.7
+  },
+  {
+   "text": "not",
+   "start": 1.81,
+   "end": 2.07
+  },
+  {
+   "text": "evidence.",
+   "start": 2.11,
+   "end": 2.91
+  },
+  {
+   "text": "Is",
+   "start": 2.91,
+   "end": 3.06
+  },
+  {
+   "text": "it",
+   "start": 3.06,
+   "end": 3.25
+  },
+  {
+   "text": "fragrance",
+   "start": 3.25,
+   "end": 3.88
+  },
+  {
+   "text": "free?",
+   "start": 3.88,
+   "end": 4.35
+  },
+  {
+   "text": "If",
+   "start": 4.41,
+   "end": 4.57
+  },
+  {
+   "text": "fragrance",
+   "start": 4.74,
+   "end": 5.29
+  },
+  {
+   "text": "bothers",
+   "start": 5.29,
+   "end": 5.85
+  },
+  {
+   "text": "you,",
+   "start": 5.85,
+   "end": 6.25
+  },
+  {
+   "text": "does",
+   "start": 6.25,
+   "end": 6.57
+  },
+  {
+   "text": "the",
+   "start": 6.57,
+   "end": 6.78
+  },
+  {
+   "text": "formula",
+   "start": 6.89,
+   "end": 7.37
+  },
+  {
+   "text": "carry",
+   "start": 7.37,
+   "end": 7.65
+  },
+  {
+   "text": "other",
+   "start": 7.84,
+   "end": 8.14
+  },
+  {
+   "text": "useful",
+   "start": 8.14,
+   "end": 8.65
+  },
+  {
+   "text": "moisturizers?",
+   "start": 8.65,
+   "end": 9.441
+  },
+  {
+   "text": "One",
+   "start": 9.441,
+   "end": 9.761
+  },
+  {
+   "text": "good",
+   "start": 9.761,
+   "end": 9.911
+  },
+  {
+   "text": "ingredient",
+   "start": 10.041,
+   "end": 10.571
+  },
+  {
+   "text": "cannot",
+   "start": 10.571,
+   "end": 10.901
+  },
+  {
+   "text": "rescue",
+   "start": 11.011,
+   "end": 11.351
+  },
+  {
+   "text": "a",
+   "start": 11.351,
+   "end": 11.361
+  },
+  {
+   "text": "badly",
+   "start": 11.471,
+   "end": 11.731
+  },
+  {
+   "text": "built",
+   "start": 11.771,
+   "end": 12.071
+  },
+  {
+   "text": "product.",
+   "start": 12.071,
+   "end": 12.711
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.1,
+   "end": 2.91,
+   "text": "The rest is judgment, not evidence."
+  },
+  {
+   "start": 2.91,
+   "end": 4.35,
+   "text": "Is it fragrance free?"
+  },
+  {
+   "start": 4.41,
+   "end": 9.441,
+   "text": "If fragrance bothers you, does the formula carry other useful moisturizers?"
+  },
+  {
+   "start": 9.441,
+   "end": 12.711,
+   "text": "One good ingredient cannot rescue a badly built product."
+  }
+ ]
 }

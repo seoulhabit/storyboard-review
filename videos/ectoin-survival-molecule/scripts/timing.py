@@ -33,7 +33,7 @@ VOICE = ROOT / "assets" / "voice"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vo_lines import LINES
-from transitions import KIND, kind_into
+from transitions import KIND, kind_into, rest_after
 
 LEAD_KEEP = 0.10
 TAIL = 0.25
@@ -178,7 +178,10 @@ def walk():
         if i + 1 < len(ORDER):
             next_cid = ORDER[i + 1]
             d2, seam_after2, j2, gap2 = KIND[kind_into(next_cid)]
-            seam = round(last_end + seam_after2, 3)
+            # rest_after(cid) is authored air held after THIS scene's last word
+            # (transitions.REST_AFTER); 0 for every scene the review did not
+            # name, so the grammar is still what sets every other boundary.
+            seam = round(last_end + seam_after2 + rest_after(cid), 3)
         else:
             seam = round(last_end + END_TAIL, 3)
 

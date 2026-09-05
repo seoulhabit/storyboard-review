@@ -1,170 +1,170 @@
 {
-  "scene": "05-halomonas",
-  "block": "single:05-halomonas",
-  "cut": {
-    "start": 0.13,
-    "end": 11.091
+ "scene": "05-halomonas",
+ "block": "single:05-halomonas",
+ "cut": {
+  "start": 0.13,
+  "end": 11.091
+ },
+ "gain_db": 6.3,
+ "lufs": -20.2,
+ "wpm": 161.6,
+ "words": [
+  {
+   "text": "The",
+   "start": 0.1,
+   "end": 0.12
   },
-  "gain_db": 6.3,
-  "lufs": -20.2,
-  "wpm": 159.7,
-  "words": [
-    {
-      "text": "The",
-      "start": 0.1,
-      "end": 0.12
-    },
-    {
-      "text": "bacterium",
-      "start": 0.12,
-      "end": 0.79
-    },
-    {
-      "text": "we",
-      "start": 0.79,
-      "end": 0.94
-    },
-    {
-      "text": "get",
-      "start": 0.94,
-      "end": 1.17
-    },
-    {
-      "text": "most",
-      "start": 1.17,
-      "end": 1.44
-    },
-    {
-      "text": "of",
-      "start": 1.55,
-      "end": 1.62
-    },
-    {
-      "text": "it",
-      "start": 1.62,
-      "end": 1.71
-    },
-    {
-      "text": "from",
-      "start": 1.86,
-      "end": 2.11
-    },
-    {
-      "text": "has",
-      "start": 2.11,
-      "end": 2.49
-    },
-    {
-      "text": "a",
-      "start": 2.49,
-      "end": 2.62
-    },
-    {
-      "text": "name,",
-      "start": 2.62,
-      "end": 3.41
-    },
-    {
-      "text": "Halomonas",
-      "start": 3.41,
-      "end": 4.58
-    },
-    {
-      "text": "elongata.",
-      "start": 4.58,
-      "end": 5.385
-    },
-    {
-      "text": "It",
-      "start": 5.385,
-      "end": 5.437
-    },
-    {
-      "text": "lives",
-      "start": 5.437,
-      "end": 5.677
-    },
-    {
-      "text": "in",
-      "start": 5.857,
-      "end": 5.897
-    },
-    {
-      "text": "salt.",
-      "start": 5.897,
-      "end": 6.467
-    },
-    {
-      "text": "When",
-      "start": 6.467,
-      "end": 6.737
-    },
-    {
-      "text": "the",
-      "start": 6.737,
-      "end": 6.937
-    },
-    {
-      "text": "salt",
-      "start": 6.937,
-      "end": 7.207
-    },
-    {
-      "text": "outside",
-      "start": 7.207,
-      "end": 7.677
-    },
-    {
-      "text": "gets",
-      "start": 7.677,
-      "end": 7.947
-    },
-    {
-      "text": "punishing,",
-      "start": 7.947,
-      "end": 8.707
-    },
-    {
-      "text": "it",
-      "start": 8.707,
-      "end": 8.837
-    },
-    {
-      "text": "floods",
-      "start": 8.837,
-      "end": 9.227
-    },
-    {
-      "text": "itself",
-      "start": 9.227,
-      "end": 9.277
-    },
-    {
-      "text": "with",
-      "start": 9.687,
-      "end": 9.907
-    },
-    {
-      "text": "ectoin.",
-      "start": 9.907,
-      "end": 10.497
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.1,
-      "end": 5.385,
-      "text": "The bacterium we get most of it from has a name, Halomonas elongata."
-    },
-    {
-      "start": 5.385,
-      "end": 6.467,
-      "text": "It lives in salt."
-    },
-    {
-      "start": 6.467,
-      "end": 10.497,
-      "text": "When the salt outside gets punishing, it floods itself with ectoin."
-    }
-  ]
+  {
+   "text": "bacterium",
+   "start": 0.12,
+   "end": 0.79
+  },
+  {
+   "text": "we",
+   "start": 0.79,
+   "end": 0.94
+  },
+  {
+   "text": "get",
+   "start": 0.94,
+   "end": 1.17
+  },
+  {
+   "text": "most",
+   "start": 1.17,
+   "end": 1.44
+  },
+  {
+   "text": "of",
+   "start": 1.55,
+   "end": 1.62
+  },
+  {
+   "text": "it",
+   "start": 1.62,
+   "end": 1.71
+  },
+  {
+   "text": "from",
+   "start": 1.86,
+   "end": 2.11
+  },
+  {
+   "text": "has",
+   "start": 2.11,
+   "end": 2.49
+  },
+  {
+   "text": "a",
+   "start": 2.49,
+   "end": 2.62
+  },
+  {
+   "text": "name,",
+   "start": 2.62,
+   "end": 3.41
+  },
+  {
+   "text": "Halomonas",
+   "start": 3.41,
+   "end": 4.58
+  },
+  {
+   "text": "elongata.",
+   "start": 4.58,
+   "end": 5.385
+  },
+  {
+   "text": "It",
+   "start": 5.385,
+   "end": 5.437
+  },
+  {
+   "text": "lives",
+   "start": 5.437,
+   "end": 5.677
+  },
+  {
+   "text": "in",
+   "start": 5.857,
+   "end": 5.897
+  },
+  {
+   "text": "salt.",
+   "start": 5.897,
+   "end": 6.467
+  },
+  {
+   "text": "When",
+   "start": 6.467,
+   "end": 6.737
+  },
+  {
+   "text": "the",
+   "start": 6.737,
+   "end": 6.937
+  },
+  {
+   "text": "salt",
+   "start": 6.937,
+   "end": 7.207
+  },
+  {
+   "text": "outside",
+   "start": 7.207,
+   "end": 7.677
+  },
+  {
+   "text": "gets",
+   "start": 7.677,
+   "end": 7.947
+  },
+  {
+   "text": "punishing,",
+   "start": 7.947,
+   "end": 8.707
+  },
+  {
+   "text": "it",
+   "start": 8.707,
+   "end": 8.837
+  },
+  {
+   "text": "floods",
+   "start": 8.837,
+   "end": 9.227
+  },
+  {
+   "text": "itself",
+   "start": 9.227,
+   "end": 9.277
+  },
+  {
+   "text": "with",
+   "start": 9.687,
+   "end": 9.907
+  },
+  {
+   "text": "ectoin.",
+   "start": 9.907,
+   "end": 10.497
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.1,
+   "end": 5.385,
+   "text": "The bacterium we get most of it from has a name, Halomonas elongata."
+  },
+  {
+   "start": 5.385,
+   "end": 6.467,
+   "text": "It lives in salt."
+  },
+  {
+   "start": 6.467,
+   "end": 10.497,
+   "text": "When the salt outside gets punishing, it floods itself with ectoin."
+  }
+ ]
 }

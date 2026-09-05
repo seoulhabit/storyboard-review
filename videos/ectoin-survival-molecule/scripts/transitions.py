@@ -39,7 +39,31 @@ BOUNDARIES = {
     "26-kbeauty":    "chapter",
     "28-remember":   "arrive",
     "29-cta":        "settle",
+    "30-endcard":    "settle",
 }
+
+# EXTRA silence held after a named scene's last word, on top of the incoming
+# boundary's own `gap`. The five KINDs give a uniform 0.25-0.60s grammar, which
+# is the right default and the wrong answer at the handful of moments the
+# 2026-09-05 review called out by timecode -- a line that lands needs air that
+# the grammar cannot know about. This is the ONLY authored timing in the walk;
+# it is added at the seam, so everything downstream still derives.
+#
+# `gap` for reference: continue 0.25, carry 0.30, chapter 0.55, arrive 0.60,
+# settle 0.60. The review asked for 0.4-0.6s after a key explanatory sentence
+# and 0.8-1.0s at a section change, so each entry below is the difference.
+REST_AFTER = {
+    "03-now":      0.50,   # 00:30 "...stranger than the marketing."
+    "07-question": 0.45,   # 01:09 "...for stressed human skin?"  -> 1.00 total
+    "19-limits":   0.55,   # 03:35 "...anything a dermatologist prescribes."
+    "20-twelve":   0.60,   # 03:43 the second, standalone "Twelve."
+    "28-remember": 0.40,   # 05:23 "A genuinely interesting supporting molecule."
+    "29-cta":      0.80,   # the hold on the closing question before the end card
+}
+
+
+def rest_after(cid):
+    return REST_AFTER.get(cid, 0.0)
 
 # Incoming clip-path pair (hidden -> shown) and default ease per kind. Child
 # travel during the wipe (the FLIP-carry, the chapter band, the ring rotation,

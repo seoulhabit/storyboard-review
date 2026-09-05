@@ -18,8 +18,19 @@ CORRECTIONS = {
     r"\bectoine\b": "ectoin", r"\bectoy\b": "ectoin",
     r"\bhalomonas\b": "Halomonas", r"\belongata\b": "elongata",
     r"\bbitop\b": "bitop", r"\bpubmed\b": "PubMed", r"\bk beauty\b": "K-beauty",
-    r"\bpaula's choice\b": "Paula's Choice", r"\babib'?s?\b": "Abib's",
+    r"\bpaula's choice\b": "Paula's Choice",
     r"\bpanthenol\b": "panthenol", r"\bsqualane\b": "squalane",
+    # 2026-09-05: the maker names on the re-voiced 21-verdict. small.en returns
+    # "BTOP" and "Cow"; whisper large-v3 reads all three correctly, so the audio
+    # is right and only the transcript needs mapping back. A caption must never
+    # ship the recogniser's guess at a company name.
+    r"\bbtop\b": "bitop", r"\bb\.?\s?top\b": "bitop",
+    r"\bcow\b": "Kao", r"\bkao\b": "Kao", r"\bmerck\b": "Merck",
+    r"\babib'?s?\b": "Abib", r"\bceramides?\b": "ceramides",
+    r"\bkeratin\b": "keratin", r"\bglycerin[e]?\b": "glycerin",
+    r"\bhumectants?\b": "humectants", r"\bextremolyte\b": "extremolyte",
+    r"\batopic\b": "atopic", r"\bdermatitis\b": "dermatitis",
+    r"\bsoul\s?habit\b": "SeoulHabit", r"\bseoul\s?habit\b": "SeoulHabit",
     # ASR normalises to US spelling; this channel's script is UK. The captions
     # should read as the channel writes, not as the recogniser guessed.
     r"\bfavorite\b": "favourite", r"\bmoisturizer\b": "moisturiser",
@@ -30,6 +41,26 @@ CORRECTIONS = {
     r"\bbehaviour\b": "behaviour", r"\bbehavior\b": "behaviour",
     r"\bjudgment\b": "judgement",
 }
+
+# CAPTION-ONLY display forms. vo_lines.LINES is TTS-safe -- no em-dashes, no
+# colons, and no hyphens where the engine would read one as a pause -- so a few
+# words are spelled for the SYNTHESISER there and have to be spelled for the
+# READER here. This map is applied to caption text only; it never touches
+# alignment, the on-screen copy, or what is spoken.
+CAPTION_FORM = {
+    "bacteria made": "bacteria-made",
+    "double blind": "double-blind",
+    "K beauty": "K-beauty",
+    "over cleansed": "over-cleansed",
+    "fragrance free": "fragrance-free",
+}
+
+
+def caption_text(text):
+    for a, b in CAPTION_FORM.items():
+        text = re.sub(rf"\b{re.escape(a)}\b", b, text, flags=re.IGNORECASE)
+    return text
+
 
 # Number/percent aliases: how the TTS-safe script text (vo_lines.LINES) SPEAKS
 # a numeral versus how Whisper is likely to transcribe it. Used only to align

@@ -225,10 +225,8 @@
 
     .abs { position:absolute; }
     #stageD, #barSvg { position:absolute; left:0; top:0; }
-    #epi-wash { position:absolute; left:47px; top:560px; width:1728px; height:140px; background:var(--aqua);
-                transform:scaleY(0); transform-origin:50% 0%; }
-    #derm-wash { position:absolute; left:47px; top:700px; width:1728px; height:218px; background:var(--ink-3);
-                 transform:scaleY(0); transform-origin:50% 0%; opacity:.9; }
+    #epi-wash { position:absolute; left:47px; top:560px; width:1728px; height:140px; background:var(--aqua); }
+    #derm-wash { position:absolute; left:47px; top:700px; width:1728px; height:218px; background:var(--ink-3); opacity:.9; }
     .hidden-path { fill:none; stroke:none; }
     .dot { fill:var(--aqua); }
     .film { fill:var(--aqua); opacity:0; }
@@ -445,6 +443,7 @@
     }
 
     var svg = document.getElementById("stageD");
+    gsap.set(["#epi-wash", "#derm-wash"], { scaleY:0, transformOrigin:"50% 0%" });   // GSAP owns these transforms
     // the barrier lives in its OWN svg below the HTML washes; actors above them
     drawBarrier(document.getElementById("barSvg"), { id:"bar", w:1728, h:918, surf:560, boundary:700,
                 brickRows:2, x:47, door:{ col:2 }, hatch:{ n:8, cut:[1,2,4,6] } });
@@ -462,6 +461,10 @@
     count(tl, "n500", 0, 500, 5.983 - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
     reveal(tl, "#sz-b", 8.408 - 0.6);
     tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.408 - 0.6);
+    // the molecule shifts while the size comparison is read out -- the cards
+    // themselves are wash reveals inside a fixed panel (no outer bbox change,
+    // invisible to a geometry-based motion tracker), so this fills the stretch
+    tl.to(mol, { y:80, duration:0.6, ease:EASE.hold }, 6.610 - 0.2);
     count(tl, "n300k", 0, 300000, 8.408 - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
     tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.408 + 0.6);
     tl.to("#cite-da", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.408 + 0.8);

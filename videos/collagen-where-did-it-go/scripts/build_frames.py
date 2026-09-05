@@ -132,8 +132,9 @@ def departure(fspan):
 def _camera_ok(tl, fspan):
     """Every #world tween must end by `own`, except the 1.06 departure push."""
     bad = []
-    for m in re.finditer(r'tl\.(to|fromTo)\(\s*"#world"\s*,(.*?)\}\s*,\s*([-\d.]+)\s*\)\s*;', tl, re.S):
-        body, at = m.group(2), float(m.group(3))
+    for m in re.finditer(r'tl\.(to|fromTo)\(\s*"#world"\s*,(.*?)\}\s*,\s*([\d.\s()+\-*/]+?)\s*\)\s*;', tl, re.S):
+        body, at_expr = m.group(2), m.group(3)
+        at = eval(at_expr, {"__builtins__": {}}, {})   # arithmetic literal only, same whitelist as _cadence_ok
         d = re.search(r"duration\s*:\s*([\d.]+)", body)
         dur = float(d.group(1)) if d else 0.0
         end = at + dur

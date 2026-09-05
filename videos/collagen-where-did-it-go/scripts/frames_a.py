@@ -26,8 +26,7 @@ def file_01_hook(fspan, fctx):
     .arrow { fill:none; stroke:var(--ink); stroke-width:5; stroke-dasharray:18 14; opacity:.8; }
     .strike { fill:var(--coral); opacity:0; }
     .hidden-path { fill:none; stroke:none; }
-    #epi-wash { position:absolute; left:1067px; top:0; width:177px; height:918px; background:var(--coral);
-                transform:scaleX(0); transform-origin:0% 50%; }
+    #epi-wash { position:absolute; left:1067px; top:0; width:177px; height:918px; background:var(--coral); }
 """
     body = f"""
       <div class="stage">
@@ -49,6 +48,7 @@ def file_01_hook(fspan, fctx):
 """
     tl = EASE_JS + HELPERS_JS + HELIX_JS + BARRIER_JS + """
     var svg = document.getElementById("stageA");
+    gsap.set("#epi-wash", { scaleX:0, transformOrigin:"0% 50%" });
     // the barrier stands on the right, surface facing the molecule
     drawBarrier(svg, { id:"bar", w:918, h:691, surf:30, boundary:207, brickRows:2,
                        orient:"left", x:1037, hatch:{ n:6 } });
@@ -130,7 +130,7 @@ def file_02_promise(fspan, fctx):
     // the molecule is parked at the frame centre -- exactly where the iris opened
     drawHelix(svg, { id:"mol", x:654, y:506, w:420, h:110, strokeW:14 });
     drawTiles(document.getElementById("mini-grid"), 23, { size:"mini" });
-    tl.set(".tr.mini", { scaleY:0.6, opacity:0 }, 0);
+    gsap.set(".tr.mini", { scaleY:0.6, opacity:0 });
     kineticWords(tl, "#promise-q", @w(where) - 0.1, 0.09, "rise");
     reveal(tl, "#twist", @w(twist) - 0.2);
     tl.fromTo("#twist-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(twist) - 0.2);
@@ -145,7 +145,11 @@ def file_02_promise(fspan, fctx):
     tl.to("#mini-cap", { color:"#131516", backgroundColor:"#F0EBE1", duration:0.4 }, @w(industry) + 0.4);
     reveal(tl, "#protect", @w(first) - 0.1);
     tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(first) - 0.1);
-    tl.to("#mol", { y:-24, duration:0.6, yoyo:true, repeat:1, ease:EASE.hold }, @w(protects));
+    // a slow drift fills the quiet stretch between the tile field settling and
+    // the "what protects it" payoff -- geometric motion (transform), not just
+    // the small colour-only flicker/dim on the tile field, which a bbox-based
+    // motion tracker cannot see at all
+    tl.to("#mol", { y:-22, duration:1.0, yoyo:true, repeat:6, ease:EASE.hold }, @w(remove));
 """
     MOTION["02-promise"]["beats"] = [
         {"name": "hero rise", "at": "@w(where)-0.1", "area": 0.065, "dl": 224, "dur": 0.34},

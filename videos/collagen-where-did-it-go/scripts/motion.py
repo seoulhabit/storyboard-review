@@ -24,14 +24,14 @@ MOTION = {
         "treatments": ["path-follow race", "barrier impact", "cream/powder split", "kinetic slam"],
         "text": ["does NOT replace", "CREAM", "POWDER"],
         "iris_at": (960, 560),
-        "copy": {"#hook-slam .kt-word": ("we", "replace", 1, 0.40)},
+        "copy": {"#hook-slam-last": ("we", "replace", 1, 0.40)},
     },
     "02-promise": {
         "treatments": ["kinetic question", "tile foreshadow", "industry dim", "protect wash"],
         "text": ["Where does it actually go?", "stay for the twist", "23 trials",
                  "…and what protects it?"],
         "iris_at": (960, 560),
-        "copy": {"#promise-q .kt-word": ("we", "go", 1, 0.60)},
+        "copy": {"#promise-q-last": ("we", "go", 1, 0.60)},
     },
     "03-building": {
         "treatments": ["structural assembly", "beam draw-in", "camera settle"],
@@ -78,7 +78,7 @@ MOTION = {
         "treatments": ["pooled celadon", "filter drop ×2", "meter crosses zero", "stops band"],
         "text": ["keep only: independent", "keep only: higher quality",
                  "NOT SIGNIFICANT", "THE EFFECT", "STOPS SHOWING UP"],
-        "copy": {"#stops .kt-word": ("we", "up", 1, 0.50)},
+        "copy": {"#stops-3-last": ("we", "up", 1, 0.50)},
     },
     "13-uncertain": {
         "treatments": ["question strikes", "band retract", "meter settles"],

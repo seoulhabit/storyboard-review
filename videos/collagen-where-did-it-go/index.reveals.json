@@ -237,10 +237,10 @@
   "file": "02-promise",
   "unit": "02-promise",
   "kind": "w",
-  "word": "protects",
+  "word": "remove",
   "occurrence": 1,
-  "seconds": 11.561,
-  "abs": 17.358
+  "seconds": 6.867,
+  "abs": 12.664
  },
  {
   "file": "03-building",
@@ -480,10 +480,10 @@
   "file": "03-building",
   "unit": "05-boundary",
   "kind": "w",
-  "word": "boundary",
+  "word": "draws",
   "occurrence": 1,
-  "seconds": 19.363,
-  "abs": 38.922
+  "seconds": 18.84,
+  "abs": 38.399
  },
  {
   "file": "03-building",
@@ -493,6 +493,15 @@
   "occurrence": 1,
   "seconds": 19.363,
   "abs": 38.922
+ },
+ {
+  "file": "03-building",
+  "unit": "05-boundary",
+  "kind": "w",
+  "word": "preserving",
+  "occurrence": 1,
+  "seconds": 21.055,
+  "abs": 40.614
  },
  {
   "file": "03-building",
@@ -601,6 +610,15 @@
   "occurrence": 1,
   "seconds": 8.408,
   "abs": 52.211
+ },
+ {
+  "file": "06-door",
+  "unit": "06-door",
+  "kind": "w",
+  "word": "collagen",
+  "occurrence": 1,
+  "seconds": 6.61,
+  "abs": 50.413
  },
  {
   "file": "06-door",
@@ -1483,6 +1501,15 @@
   "occurrence": 1,
   "seconds": 20.946,
   "abs": 105.628
+ },
+ {
+  "file": "10-evidence",
+  "unit": "12-filter",
+  "kind": "w",
+  "word": "effect",
+  "occurrence": 1,
+  "seconds": 22.039,
+  "abs": 106.721
  },
  {
   "file": "10-evidence",

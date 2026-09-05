@@ -21,8 +21,8 @@ def file_14_hierarchy(fspan, fctx):
     .rank-row .p-title { margin:0; }
     #opt { background:var(--mist); padding:var(--s-4); display:flex; flex-direction:column; gap:12px; }
     .w-card { border-radius:var(--r-3); background:var(--paper); border:3px solid var(--rule-strong);
-              padding:10px 14px; display:flex; align-items:center; gap:14px; position:relative; }
-    .w-card svg { width:70px; height:70px; flex:0 0 auto; }
+              padding:10px 16px; display:flex; align-items:center; gap:14px; position:relative; }
+    .w-card svg { width:56px; height:56px; flex:0 0 auto; }
     .pk-body { fill:var(--paper); stroke:var(--ink); stroke-width:5; }
     .pk-cap  { fill:var(--ink); }
     .w-t { font-family:var(--font-body); font-weight:800; font-size:var(--t-chip); color:var(--ink); margin:0; }
@@ -45,7 +45,7 @@ def file_14_hierarchy(fspan, fctx):
         {panel("opt", "dim", chip("opt-chip", "optional", "", "opacity:0;") +
                '''<div class="w-card" id="w1"><svg viewBox="0 0 200 200"><rect class="pk-body" x="46" y="74" width="108" height="96" rx="8"/><rect class="pk-cap" x="60" y="46" width="80" height="30" rx="5"/></svg><p class="w-t">collagen cream</p></div>
                <div class="w-card" id="w2"><svg viewBox="0 0 200 200"><path class="pk-body" d="M58 46 L142 46 L152 172 L48 172 Z"/><rect class="pk-cap" x="58" y="36" width="84" height="16" rx="4"/></svg><p class="w-t">collagen powder</p></div>''',
-               abs_(1460, 120, 268, 330))}
+               abs_(1440, 120, 288, 330))}
         <svg id="bricks" class="abs" viewBox="0 0 300 220" width="300" height="220" style="{abs_(1440, 560)}" aria-hidden="true">
           <rect class="brick" x="0" y="150" width="140" height="60" rx="6"/><rect class="brick" x="150" y="150" width="140" height="60" rx="6"/>
           <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
@@ -63,7 +63,7 @@ def file_14_hierarchy(fspan, fctx):
     // the building comes back DAMAGED: same beams 04 cut, restated at 0 for cold seeks
     setBeamsCut(tl, CUT_ORDER);
     document.getElementById("bwrap").setAttribute("transform", "translate(40 40) scale(0.9) skewX(-1.4)");
-    tl.set("#bwrap", { skewX:-1.4, y:9 }, 0);
+    gsap.set("#bwrap", { skewX:-1.4, y:9 });
     // camera settles in from the invert
     tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
     // rows are authored in their final slots; frame zero shows them UNSORTED

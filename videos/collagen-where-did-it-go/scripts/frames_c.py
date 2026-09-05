@@ -13,10 +13,8 @@ def file_06_door(fspan, fctx):
     css = HELIX_CSS + BARRIER_CSS + """
     .abs { position:absolute; }
     #stageD, #barSvg { position:absolute; left:0; top:0; }
-    #epi-wash { position:absolute; left:47px; top:560px; width:1728px; height:140px; background:var(--aqua);
-                transform:scaleY(0); transform-origin:50% 0%; }
-    #derm-wash { position:absolute; left:47px; top:700px; width:1728px; height:218px; background:var(--ink-3);
-                 transform:scaleY(0); transform-origin:50% 0%; opacity:.9; }
+    #epi-wash { position:absolute; left:47px; top:560px; width:1728px; height:140px; background:var(--aqua); }
+    #derm-wash { position:absolute; left:47px; top:700px; width:1728px; height:218px; background:var(--ink-3); opacity:.9; }
     .hidden-path { fill:none; stroke:none; }
     .dot { fill:var(--aqua); }
     .film { fill:var(--aqua); opacity:0; }
@@ -55,6 +53,7 @@ def file_06_door(fspan, fctx):
 """
     tl = EASE_JS + HELPERS_JS + HELIX_JS + BARRIER_JS + """
     var svg = document.getElementById("stageD");
+    gsap.set(["#epi-wash", "#derm-wash"], { scaleY:0, transformOrigin:"50% 0%" });   // GSAP owns these transforms
     // the barrier lives in its OWN svg below the HTML washes; actors above them
     drawBarrier(document.getElementById("barSvg"), { id:"bar", w:1728, h:918, surf:560, boundary:700,
                 brickRows:2, x:47, door:{ col:2 }, hatch:{ n:8, cut:[1,2,4,6] } });
@@ -72,6 +71,10 @@ def file_06_door(fspan, fctx):
     count(tl, "n500", 0, 500, @w(daltons,1) - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
     reveal(tl, "#sz-b", @w(thousand) - 0.6);
     tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(thousand) - 0.6);
+    // the molecule shifts while the size comparison is read out -- the cards
+    // themselves are wash reveals inside a fixed panel (no outer bbox change,
+    // invisible to a geometry-based motion tracker), so this fills the stretch
+    tl.to(mol, { y:80, duration:0.6, ease:EASE.hold }, @w(collagen) - 0.2);
     count(tl, "n300k", 0, 300000, @w(thousand) - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
     tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, @w(thousand) + 0.6);
     tl.to("#cite-da", { opacity:1, duration:0.3, ease:EASE.arrive }, @w(thousand) + 0.8);
@@ -112,6 +115,7 @@ def file_06_door(fspan, fctx):
         {"name": "barrier aqua out", "at": "@w(skin)+1.4", "area": 0.117, "dl": 81, "dur": 0.4},
         {"name": "size card A", "at": "@w(daltons,1)-0.5", "area": 0.066, "dl": 94, "dur": 0.4},
         {"name": "size card B", "at": "@w(thousand)-0.6", "area": 0.066, "dl": 103, "dur": 0.4},
+        {"name": "mol shift", "at": "@w(collagen)-0.2", "area": 0.03, "dl": 60, "dur": 0.6},
         {"name": "rejected flash", "at": "@w(door)-0.05", "area": 0.117, "dl": 103, "dur": 0.36},
     ]
     MOTION["07-film"]["beats"] = [

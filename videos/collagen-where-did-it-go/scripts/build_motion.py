@@ -20,11 +20,11 @@ from timing import walk, Ctx
 from motion import MOTION
 
 STATIC_CEILING_S = 2.0
-BEFORE = [("#hook-slam .kt-word", "#promise-q .kt-word"),
-          ("#promise-q .kt-word", "#ev-n"),
-          ("#ev-n", "#stops .kt-word"),
-          ("#stops .kt-word", "#rank-1")]
-STAYS = ["#stops .kt-word", "#rank-1", "#end-line"]
+BEFORE = [("#hook-slam-last", "#promise-q-last"),
+          ("#promise-q-last", "#ev-n"),
+          ("#ev-n", "#stops-3-last"),
+          ("#stops-3-last", "#rank-1")]
+STAYS = ["#stops-3-last", "#rank-1", "#end-line"]
 
 
 def main():

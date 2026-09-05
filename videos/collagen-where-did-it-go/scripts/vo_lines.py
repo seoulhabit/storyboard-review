@@ -98,7 +98,12 @@ ORDER = [cid for cid, _ in SCENES] + ["16-end"]
 # (round 2 of the channel's two-round cap, [S4/V-2]).
 BLOCKS_ONE = [("master", ORDER[0:15])]
 BLOCKS_TWO = [("A", ORDER[0:9]), ("B", ORDER[9:15])]
-BLOCKS = BLOCKS_ONE
+# seed_audio rejects prompts over 2048 chars (measured: our 15-unit master is
+# 2323). BLOCKS_ONE is kept for a shorter future script; this build uses the
+# two-block split -- the seam falls at 09-dispatch -> 10-trials, which is
+# already the "invert" ground-change boundary, so the natural register reset
+# absorbs any block-seam prosody difference.
+BLOCKS = BLOCKS_TWO
 SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
 
 # Description chapters (no engine primitive; re-derived from real data-start

@@ -5,13 +5,13 @@
   "assertions": [
     {
       "kind": "appearsBy",
-      "selector": "#hook-slam .kt-word",
+      "selector": "#hook-slam-last",
       "bySec": 2.22,
       "note": "01-hook: bound to we(replace,1) + 0.4s"
     },
     {
       "kind": "appearsBy",
-      "selector": "#promise-q .kt-word",
+      "selector": "#promise-q-last",
       "bySec": 8.51,
       "note": "02-promise: bound to we(go,1) + 0.6s"
     },
@@ -23,7 +23,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#stops .kt-word",
+      "selector": "#stops-3-last",
       "bySec": 108.47,
       "note": "12-filter: bound to we(up,1) + 0.5s"
     },
@@ -35,27 +35,27 @@
     },
     {
       "kind": "before",
-      "a": "#hook-slam .kt-word",
-      "b": "#promise-q .kt-word"
+      "a": "#hook-slam-last",
+      "b": "#promise-q-last"
     },
     {
       "kind": "before",
-      "a": "#promise-q .kt-word",
+      "a": "#promise-q-last",
       "b": "#ev-n"
     },
     {
       "kind": "before",
       "a": "#ev-n",
-      "b": "#stops .kt-word"
+      "b": "#stops-3-last"
     },
     {
       "kind": "before",
-      "a": "#stops .kt-word",
+      "a": "#stops-3-last",
       "b": "#rank-1"
     },
     {
       "kind": "staysInFrame",
-      "selector": "#stops .kt-word"
+      "selector": "#stops-3-last"
     },
     {
       "kind": "staysInFrame",

@@ -252,7 +252,7 @@
           <rect class="shield-line" id="shield" x="150" y="30" width="510" height="630" rx="30"/>
         </svg>
         <div class="panel late" id="chip-beams" style="position:absolute;left:760px;top:660px;width:760px;height:130px;"><div class="wash aqua" id="chip-beams-wash"></div><p class="p-title">collagen = the beams</p></div>
-        <div class="panel late" id="uv" style="position:absolute;left:760px;top:300px;width:760px;height:240px;"><div class="wash ink" id="uv-wash"></div><p class="kt " id="uv-1"><span class="kt-word">UV</span> <span class="kt-word">cuts</span> <span class="kt-word">collagen</span></p><p class="kt " id="uv-2"><span class="kt-word">works</span> <span class="kt-word">weekends</span></p></div>
+        <div class="panel late" id="uv" style="position:absolute;left:760px;top:300px;width:760px;height:240px;"><div class="wash ink" id="uv-wash"></div><p class="kt " id="uv-1"><span class="kt-word">UV</span> <span class="kt-word">cuts</span> <span class="kt-word" id="uv-1-last">collagen</span></p><p class="kt " id="uv-2"><span class="kt-word">works</span> <span class="kt-word" id="uv-2-last">weekends</span></p></div>
         <div class="panel late" id="preserve" style="position:absolute;left:760px;top:790px;width:900px;height:110px;"><div class="wash aqua" id="preserve-wash"></div><p class="p-title">preserve &gt; replace</p></div>
         <div class="cite" id="cite-uv" style="position:absolute;left:94px;top:700px;">J Invest Dermatol &middot; 1998</div>
        </div>
@@ -368,8 +368,8 @@
     drawBuilding(svg, { door:true, into:bwrap });
     // ---- unit 3: the building assembles from the slab up ----------------------
     tl.fromTo("#world", { scale:1.04 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    tl.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 }, 0);
-    tl.set(".beam", { strokeDashoffset:640 }, 0);
+    gsap.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 });
+    gsap.set(".beam", { strokeDashoffset:640 });
     // frame zero already shows the slab and the shell: the iris opens on a site, not a void
     tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, 1.952 - 0.2);
     tl.to(".b-floor", { opacity:0.55, duration:0.3, stagger:0.06, ease:EASE.arrive }, 1.952 + 0.3);
@@ -409,11 +409,18 @@
       var L = r.getTotalLength();
       tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, 19.363 + 0.1);
     });
-    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.exit }, 19.363 + 0.1);
+    // pulled forward to close the geometric-motion gap between the camera
+    // settling and the shield/rays beats (both those are stroke-dashoffset
+    // reveals -- invisible to a bounding-box motion tracker, so this scaleX
+    // retract is the only transform in this stretch)
+    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.exit }, 18.840 - 0.1);
     tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, 19.363 + 0.1);
     reveal(tl, "#preserve", 21.055);
     tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 21.055);
     tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 21.055);
+    // a small geometric hold fills the tail before the outgoing push -- the
+    // preceding beats (preserve wash, chip fade) are all opacity/colour only
+    tl.to("#world", { y:-6, duration:1.2, yoyo:true, repeat:1, ease:EASE.hold }, 21.055 + 0.3);
 
     // departure: push under the iris wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 24.244);

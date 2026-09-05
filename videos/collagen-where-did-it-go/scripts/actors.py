@@ -307,12 +307,17 @@ TILES_JS = r"""
 # ---------------------------------------------------------------- Python helpers
 
 def kt(id_, text, cls="", em=()):
-    """A kinetic-type block: one span per word (opacity 0 until its beat)."""
+    """A kinetic-type block: one span per word (opacity 0 until its beat).
+    The LAST word carries its own id ({id_}-last) so a motion-sidecar
+    assertion can target exactly one element -- a bare .kt-word class
+    selector matches every word and is rejected as ambiguous."""
+    words = text.split()
     spans = []
-    for w in text.split():
+    for i, w in enumerate(words):
         c = "kt-word" + (" em" if w.strip("?.!,") in em else "")
-        spans.append(f'<span class="{c}">{w}</span>')
-    return f'<p class="kt {cls}" id="{id_}">{" ".join(spans)}</p>'
+        idattr = (' id="' + id_ + '-last"') if i == len(words) - 1 else ""
+        spans.append('<span class="' + c + '"' + idattr + '>' + w + '</span>')
+    return '<p class="kt ' + cls + '" id="' + id_ + '">' + " ".join(spans) + '</p>'
 
 
 def chip(id_, text, cls="", style=""):

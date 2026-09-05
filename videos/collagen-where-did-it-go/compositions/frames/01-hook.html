@@ -235,8 +235,7 @@
     .arrow { fill:none; stroke:var(--ink); stroke-width:5; stroke-dasharray:18 14; opacity:.8; }
     .strike { fill:var(--coral); opacity:0; }
     .hidden-path { fill:none; stroke:none; }
-    #epi-wash { position:absolute; left:1067px; top:0; width:177px; height:918px; background:var(--coral);
-                transform:scaleX(0); transform-origin:0% 50%; }
+    #epi-wash { position:absolute; left:1067px; top:0; width:177px; height:918px; background:var(--coral); }
 
     </style>
       <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->
@@ -254,7 +253,7 @@
           <rect id="arrow-x" class="strike" x="560" y="722" width="450" height="26" rx="6"/>
         </svg>
         <div id="epi-wash"></div>
-        <p class="kt " id="hook-slam"><span class="kt-word">does</span> <span class="kt-word em">NOT</span> <span class="kt-word">replace</span></p>
+        <p class="kt " id="hook-slam"><span class="kt-word">does</span> <span class="kt-word em">NOT</span> <span class="kt-word" id="hook-slam-last">replace</span></p>
         <p class="chip lab" id="lab-cream" style="position:absolute;left:120px;top:330px;">CREAM</p>
        </div>
       </div>
@@ -436,6 +435,7 @@
     }
 
     var svg = document.getElementById("stageA");
+    gsap.set("#epi-wash", { scaleX:0, transformOrigin:"0% 50%" });
     // the barrier stands on the right, surface facing the molecule
     drawBarrier(svg, { id:"bar", w:918, h:691, surf:30, boundary:207, brickRows:2,
                        orient:"left", x:1037, hatch:{ n:6 } });

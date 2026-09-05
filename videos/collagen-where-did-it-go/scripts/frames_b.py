@@ -53,8 +53,8 @@ def file_03_building(fspan, fctx):
     drawBuilding(svg, { door:true, into:bwrap });
     // ---- unit 3: the building assembles from the slab up ----------------------
     tl.fromTo("#world", { scale:1.04 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    tl.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 }, 0);
-    tl.set(".beam", { strokeDashoffset:640 }, 0);
+    gsap.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 });
+    gsap.set(".beam", { strokeDashoffset:640 });
     // frame zero already shows the slab and the shell: the iris opens on a site, not a void
     tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, @w(building) - 0.2);
     tl.to(".b-floor", { opacity:0.55, duration:0.3, stagger:0.06, ease:EASE.arrive }, @w(building) + 0.3);
@@ -94,11 +94,18 @@ def file_03_building(fspan, fctx):
       var L = r.getTotalLength();
       tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, @w(boundary) + 0.1);
     });
-    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.exit }, @w(boundary) + 0.1);
+    // pulled forward to close the geometric-motion gap between the camera
+    // settling and the shield/rays beats (both those are stroke-dashoffset
+    // reveals -- invisible to a bounding-box motion tracker, so this scaleX
+    // retract is the only transform in this stretch)
+    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.exit }, @w(draws) - 0.1);
     tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, @w(boundary) + 0.1);
     reveal(tl, "#preserve", @w(preserving));
     tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(preserving));
     tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, @w(preserving));
+    // a small geometric hold fills the tail before the outgoing push -- the
+    // preceding beats (preserve wash, chip fade) are all opacity/colour only
+    tl.to("#world", { y:-6, duration:1.2, yoyo:true, repeat:1, ease:EASE.hold }, @w(preserving) + 0.3);
 """
     MOTION["03-building"]["beats"] = [
         {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 60, "dur": 1.2},
@@ -112,8 +119,9 @@ def file_03_building(fspan, fctx):
     ]
     MOTION["05-boundary"]["beats"] = [
         {"name": "camera home", "at": "@w(sunscreen)-0.1", "area": 0.5, "dl": 60, "dur": 1.0},
-        {"name": "sky cools", "at": "@w(boundary)+0.1", "area": 0.119, "dl": 77, "dur": 0.5},
+        {"name": "sky cools", "at": "@w(draws)-0.1", "area": 0.119, "dl": 77, "dur": 0.6},
         {"name": "preserve wash", "at": "@w(preserving)", "area": 0.048, "dl": 91, "dur": 0.45},
+        {"name": "closing hold", "at": "@w(preserving)+0.3", "area": 0.5, "dl": 30, "dur": 1.2},
     ]
     return body, css, tl
 

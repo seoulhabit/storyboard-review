@@ -164,6 +164,7 @@ def file_10_evidence(fspan, fctx):
     tl.to("#res-pt", { x:272 - 425, duration:0.6, ease:EASE.swap }, @w(same));
     tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(same) + 0.1);
     // THE PAYOFF: the biggest beat in the piece -- a paper flood, then three slams
+    tl.to(["#f1", "#f2"], { opacity:0, duration:0.3, ease:EASE.exit }, @w(effect) - 0.35);
     tl.fromTo("#stops-wash", { scaleX:0 }, { scaleX:1, duration:0.8, ease:EASE.wipe }, @w(effect) - 0.15);
     tl.to("#caveat-panel", { opacity:0.35, duration:0.5, ease:EASE.exit }, @w(effect) - 0.15);
     kineticWords(tl, "#stops-1", @w(effect), 0.06, "slam");

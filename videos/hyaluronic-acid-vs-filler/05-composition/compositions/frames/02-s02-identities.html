@@ -14,10 +14,21 @@
     font-family:var(--font-body); background:#F7F5F0; color:#131516;
   }
   .clip { position:absolute; inset:0; }
+  /* The stage is the CAMERA HOUSING: it is full-frame, padded to the drift
+     budget, and it clips. It carries no transform of its own -- a transform
+     on a full-frame box maps its edges outside the frame by definition, and
+     that is what produced 13 container_overflow warnings in the v3 check.
+     Two nested layers inside the padding do the moving instead [S7/R-2]. */
   .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
                    calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
-           height:100%; display:flex; }
+           height:100%; display:flex; overflow:hidden; }
   .stage > * { min-width:0; }
+  /* .cam owns the SETTLE (the title punch); .cam-in owns the DRIFT. One
+     transform channel has exactly one owner, so no two tweens can write
+     scale/y on the same element at the same time -- the overlapping_gsap_tweens
+     warning on #s13-badges-stage was precisely that collision. */
+  .cam, .cam-in { flex:1 1 auto; min-width:0; display:flex; width:100%;
+                  transform-origin:50% 50%; }
   /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
   .head { font-family:var(--font-display); font-weight:600; font-size:104px;
           line-height:1.04; letter-spacing:-.018em; margin:0; }
@@ -65,8 +76,9 @@
 </style>
 
 <div id="root" data-composition-id="s02-identities" data-width="1920" data-height="1080"
-     data-duration="5.284">
-  <div class="clip stage" id="s02-identities-stage" data-start="0" data-duration="5.284">
+     data-duration="5.784">
+  <div class="clip stage" id="s02-identities-stage" data-start="0" data-duration="5.784">
+    <div class="cam" id="s02-identities-cam"><div class="cam-in" id="s02-identities-cam-in">
     <div class="col-wrap">
 
       <div class="lanes">
@@ -131,7 +143,7 @@
           <div class="lane-copy beat is-entering" id="s02-identities-b1">The kind in your serum</div>
         </div>
         <div class="lane" id="s02-identities-lane2">
-          <div class="lane-icon"><svg class="icon" viewBox="0 0 96 96" width="96" height="96" aria-hidden="true"><g transform="translate(6,40) rotate(-28 42 8)"><rect x="0" y="0" width="60" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="5"/><rect x="-14" y="3" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="5"/><line x1="60" y1="8" x2="82" y2="8" stroke="currentColor" stroke-width="4"/></g></svg></div>
+          <div class="lane-icon"><svg class="icon" viewBox="0 0 96 96" width="96" height="96" aria-hidden="true"><g transform="translate(14,40) rotate(-28 42 8)"><rect x="0" y="0" width="60" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="5"/><rect x="-14" y="3" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="5"/><line x1="60" y1="8" x2="82" y2="8" stroke="currentColor" stroke-width="4"/></g></svg></div>
           <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <g class="net-seg" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
       <line x1="40.0" y1="40.0" x2="128.0" y2="40.0"/>
@@ -288,6 +300,7 @@
 
       </div>
     </div>
+    </div></div>
   </div>
 </div>
 <script>
@@ -307,7 +320,7 @@
   tl.to('#s02-identities-b1', { opacity: 1, y: 0, duration: 1.200, ease: 'power2.inOut' }, 1.423);
   tl.to('#s02-identities-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 2.845);
   tl.to('#s02-identities-b2', { opacity: 1, y: 0, duration: 1.200, ease: 'power2.inOut' }, 2.845);
-  tl.to({}, { duration: 5.284, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to({}, { duration: 5.784, ease: 'none' }, 0);   <!-- fix_transition_hold: 5.784 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s02-identities'] = tl;
 })();

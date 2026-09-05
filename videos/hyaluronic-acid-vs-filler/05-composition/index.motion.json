@@ -4,22 +4,22 @@
     {
       "kind": "appearsBy",
       "selector": "#s01-thesis-b0",
-      "bySec": 1.35
+      "bySec": 0.95
     },
     {
       "kind": "appearsBy",
       "selector": "#s01-thesis-b1",
-      "bySec": 3.544
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s01-thesis-b2",
-      "bySec": 5.308
+      "bySec": 2.919
     },
     {
       "kind": "before",
       "a": "#s01-thesis-b0",
-      "b": "#s01-thesis-b2"
+      "b": "#s01-thesis-b1"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-thesis-b2",
+      "bySec": 4.626
     },
     {
       "kind": "appearsBy",
@@ -244,7 +244,7 @@
     {
       "kind": "appearsBy",
       "selector": "#s11-warning-b3",
-      "bySec": 88.716
+      "bySec": 88.481
     },
     {
       "kind": "before",
@@ -335,6 +335,36 @@
       "kind": "before",
       "a": "#s14-endcard-b0",
       "b": "#s14-endcard-b1"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-thesis-b0",
+      "bySec": 1.2,
+      "_note": "review: SERUM =/= FILLER fully readable by 1.2s (lands at 0.70s)"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s02-identities-b2",
+      "bySec": 10.2,
+      "_note": "review: all three identities readable by 10.2s"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s11-warning-b3",
+      "bySec": 87.466,
+      "_note": "review: the warning appears by its spoken onset (87.366s); the slam opens 0.24s before it"
+    },
+    {
+      "kind": "before",
+      "a": "#s01-thesis-b0",
+      "b": "#s02-identities-b0",
+      "_note": "review: the answer precedes the orientation"
+    },
+    {
+      "kind": "before",
+      "a": "#s11-warning-b3",
+      "b": "#s12-risks-b0",
+      "_note": "review: the warning precedes the risk list"
     },
     {
       "kind": "keepsMoving",

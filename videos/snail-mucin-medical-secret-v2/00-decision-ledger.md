@@ -220,3 +220,66 @@ frame — legitimate taste note, not a defect (check/contrast both pass regardle
 `collagen`'s own precedent of not centering its end card in the full frame). Not re-edited — per
 this skill's own anti-pattern list, one measurement per fork, not endless re-scoring of a subjective
 call once the mandatory gates are clean.
+
+## Post-build addition — 2026-09-05, later same day (real logo mark, C-3a)
+
+Scope: explicit request to update the skill and then bring this video's end card in line with it —
+supersedes the "text wordmark, not the 습 glyph image" choice locked with the user earlier the same
+day (see the entry above). That was the right call at the time (no shared component existed to
+reuse, and shipping the glyph as a one-off risked a second inconsistent treatment); it's revisited
+now because a shared component now exists specifically to remove that risk.
+
+Between the two entries in this file, `catalog/visual-components/seoulhabit-endcard/` was built
+(session `session/seoulhabit-endcard`, merged to master) and `[S5/C-3a]` was added to
+`decision-policy.md` (skill v2.1.0 → v2.2.0): every video's final scene is now this shared brand
+sign-off, every format, not a per-project one-off. This project's own `07-endcard.html` is the first
+retrofit against that new rule.
+
+Changed in place (composition id, duration, and position in `index.html` all unchanged —
+`data-start="84.88" data-duration="4.50"`, still after `06-verdict`):
+- Added the actual `습` mark (mist-fill disc, 3px ink ring, glyph in `Noto Sans KR Video`) above the
+  existing kicker/headline/rule/sub — the channel's real logo has still never shipped on any video
+  until this render.
+- Swapped this scene's own local tokens from `--paper #fbfaf4 / --ink #0f2016 / --pink #b9835a`
+  (this project's palette) to the catalog component's canonical channel tokens (`--paper #F7F5F0`,
+  `--ink #131516`, `--coral #C97A5C`, `--ink-2 #6B6B6B`, `--mist #F0EBE1`) and `EB Garamond` in
+  place of `Bricolage Grotesque` for the headline — deliberately: a brand sign-off should look
+  identical across every video regardless of that episode's own palette, which is the entire point
+  of it being a shared component now. `06-verdict.html` and every other scene in this project are
+  untouched.
+- Kicker/sub color changed from this project's earlier `--pink` choice to `--ink-2`: measured
+  (WCAG luminance formula) at 3.0:1 against the *canonical* `--paper` — under this skill's own
+  4.5:1 floor, even though the same `--pink`-on-`--paper` pairing was accepted as WCAG-large-text-
+  compliant in this file's own prior entry against this project's *original*, slightly different
+  paper hex. Re-measuring rather than carrying the earlier verdict forward once the underlying hex
+  values changed. `--ink-2` measures 4.89:1. `--coral` stays on the rule only (graphical, not text).
+- Two fonts self-hosted into this project for the first time (`assets/fonts/eb-garamond-400.woff2`,
+  copied from `collagen-where-did-it-go`; `assets/fonts/NotoSansKR-500-subset.woff2`, copied from
+  `brand/channel/`) — both byte-identical to their source copies (`sha1` verified).
+
+[S6 lint, first pass] `check` caught two real defects before any render: `gsap_css_transform_conflict`
+on `#ec-mark` (a static CSS `transform: scale(0.8)` alongside a GSAP `scale` tween — GSAP overwrites
+the whole transform, so the CSS value was dead and misleading; removed, `gsap.set()` is now the only
+source of the initial value) and `invalid_parent_traversal_in_asset_path` (`../../assets/fonts/...`
+resolves fine at render time but 404s in Studio preview, which resolves sub-composition paths
+against the project root — fixed to root-relative `assets/fonts/...`, matching `captions.html`'s
+own existing convention in this project).
+
+[S7/R-1] check → pass, `hyperframes@0.8.27`, 0 errors, 2 pre-existing warnings unrelated to this
+scene (`duplicate_media_discovery_risk` in `04-method.html`/`05-use.html`, not touched). **Contrast
+49/49 AA** (same count as the prior entry — the mark itself has no text node the checker scores;
+the glyph is a single Hangul character, not Latin/mono running text).
+
+Render: `renders/snail-mucin-medical-secret-v2.mp4`, 89.40s (unchanged from the prior entry — same
+scene duration, only its content changed). Verified on pixels extracted from the actual rendered
+MP4: `t=84.98s` (mark mid-fade-in, wordmark/headline/rule/cta all still hidden — correct, matches
+the timeline's 0.10–0.55s mark-only window), `t=85.5s` (mark landed, wordmark+headline visible,
+rule+cta not yet — correct), `t=87.5s` and `t=89.2s` (fully settled: mark, "SeoulHabit", "Evidence,
+not hype.", rule, "Follow for more." all present, legible, inside the safe box, no overlap with the
+mark above them). The old timestamped render artifact was not kept; `renders/snail-mucin-medical-secret-v2.mp4`
+is the only tracked render, matching this project's existing convention.
+
+Not re-invoked this pass: `frontend-design`/`design-critique` companion gates (both already resolved
+against this exact scene's layout in the entry above; only the palette/mark changed, not the
+spatial plan they reviewed) and `00-environment.md`/`09-run-report.md` (same reasoning as the prior
+post-build entry — an explicit, scoped edit-and-re-render, not a full `S0–S9` run).

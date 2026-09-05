@@ -49,32 +49,51 @@ The two-lane card system is not deleted knowledge: it was harvested to
 
 ---
 
-## Voice — back to one, and why the take is split in two
+## Voice — back to one, and why the take is split in four
 
 The channel has run **one** voice across every project
 (`videos/_channel/baseline.yaml`, policies `[S1/S-3]` one presenter,
 `[S1/S-4]` never rotate). The two-hander was this channel's second recorded
 voice-continuity break; withdrawing it returns the channel to its own rule.
 
-| | Voice | Engine | Blocks |
-|---|---|---|---|
-| Narrator | **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (element) | Higgsfield `seed_audio` | A = units 01–13, B = units 14–15 |
+| | Voice | Engine | Blocks | Measured on the master |
+|---|---|---|---|---|
+| Narrator | **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (element) | Higgsfield `seed_audio` | A1 = units 01–05, A2 = 06–09, A3 = 10–13, B = 14–15 | 364 words, 168.7 wpm, tempo 1.08, −21.3 LUFS |
 
-**Two TTS blocks, one narration master.** `seed_audio` rejects a prompt over
-2048 characters and the full script measures 2323, so the read is generated in
-two takes and `gen_vo.py cut` concatenates them into a single
-`assets/voice/master.wav` — one `<audio>` clip at root t=0, so master time IS
-root time and nothing downstream knows there were blocks.
+**Four TTS blocks, one narration master.** `gen_vo.py cut` concatenates them
+into a single `assets/voice/master.wav` — one `<audio>` clip at root t=0, so
+master time IS root time and nothing downstream knows there were blocks.
 
-**Where the seam falls is a decision, not a leftover.** Block A runs 1933
-characters and covers the entire hook-to-climax arc, so the piece's whole
-argument is one continuous performance. The seam lands between
-`13-uncertain` and `14-hierarchy`: under the second invert wipe, at the
-"what the evidence actually supports" chapter turn, where a change of register
-is what the edit is asking for anyway. `gen_vo.py verify` measures the two
-blocks against each other — integrated LUFS, pace, spectral centroid, band
-tilt and median F0 — and names the outlier block if any of them separate
-enough to read as a second speaker.
+**The block length is a measured limit, not the documented one.** `seed_audio`
+rejects a prompt over 2048 characters. It also *drifts off script* well under
+that: a 1933-character block came back faithful for 241 of its 310 words and
+then abandoned the script entirely, improvising about 25 seconds of generic
+skincare copy in Kimberly's voice over live audio — the whole climax simply
+absent. `gen_vo.py verify` scores that take 77.7% against its 90% alignment
+floor, which is what the floor is for. The blocks here are 389–688 characters.
+
+**Where the seams fall is a decision, not a leftover.** Each of the three lands
+on a visible transition — the iris into `06-door`, the invert into the evidence
+ground, and the invert out of it. A block seam is a change of performance, so
+each one is spent where the edit is already changing register.
+
+**The blocks are matched to each other, and the match is measured on the file
+that ships.** `cut` applies a per-block level *and* brightness correction (the
+raw takes measured 22.3% apart at the spectral centroid), then re-measures each
+block's own span on the finished master:
+
+| block | span | LUFS | centroid | tilt | F0 |
+|---|---|---|---|---|---|
+| A1 | 0.10–37.97 | −21.2 | 1894 Hz | 7.30 dB | 210.5 Hz |
+| A2 | 38.32–76.53 | −21.3 | 1924 Hz | 6.40 dB | 210.5 Hz |
+| A3 | 77.08–109.03 | −21.3 | 1826 Hz | 6.10 dB | 213.3 Hz |
+| B | 109.58–129.59 | −21.6 | 1789 Hz | 6.20 dB | 207.8 Hz |
+
+Worst adjacent gap: 0.4 LU, 5.1% brightness, 0.9 dB tilt, 2.6% pitch — inside
+every tolerance `check-final.py` asserts. A four-second window either side of a
+seam is *not* a fair test and is not used: two differently worded four-second
+windows of the same voice measured 22% apart at the centroid, which is a fact
+about the sentences, not the speaker.
 
 One `<hf-audio-group id="voiceover">` carries the channel's canonical 6-node
 voice chain verbatim (md5 `555e4fb8cd83882d982816763cf3a12d`, byte-identical

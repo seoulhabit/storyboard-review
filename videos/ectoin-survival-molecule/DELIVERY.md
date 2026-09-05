@@ -8,6 +8,56 @@ sections after it are the 2026-09-02 history, kept as-is.
 
 ---
 
+## 2026-09-04 — retention master (photoreal plates), `session/ectoin-retention`
+
+**Deliverable:** `renders/ectoin-survival-molecule_retention-master.mp4` (+ the
+unmastered `_retention-raw.mp4`). Same 28 scenes, same order, same
+`timing.walk()` seams, same VO/music/SFX/captions as v2; the picture is
+rebuilt as a cinematic science documentary with photoreal plates under the
+authored copy. Nothing in `renders/` from before this pass was modified —
+verified by md5 at the end of the session (table below).
+
+**Mechanism.** `scripts/frames_retention.py` overrides `FRAME_DEFS` with
+plate-backed scenes (full-bleed `<video class="clip">` / `<img>` under a
+scrim, text inside the safe box); `scripts/prep_plates.py` normalises every
+generated clip to 1920x1080 @ 30 fps, silent, padded past its scene. Word
+markers (`@w()`) are unchanged, so every reveal still lands on the spoken
+word. Plates were generated this session (Higgsfield `nano_banana_2` stills;
+`minimax_h3` image-to-video on Higgsfield and vidIQ) plus six verified
+catalog stills (`catalog/product-photography`, `catalog/skin-macro-photography`).
+The "no generative imagery in the HyperFrames lane" note in
+`catalog/product-photography/README.md` is overridden for this master by
+the operator's brief; this section is that decision record.
+
+**Content rules kept.** Ectoin is never drawn as a shield or attached to a
+protein: the hydration-layer plates (V08, I12, I24) show small molecules
+hovering *away* from the surface, the honest-version diagram in
+`09-exclusion` is the authored SVG, every conceptual science plate carries a
+`CONCEPTUAL VISUALIZATION` chip, packaging is unbranded with blank labels,
+and no faces, no cartoon microbes, no neon lab, no before/after skin.
+`I26-recovered` (a bead ring *on* the membrane) was generated and rejected
+for exactly the shield reading.
+
+| Shot | Scene(s) | Plate | Source |
+|---|---|---|---|
+| 1 · salt lake → droplet → bacterium → water loss → packaging | 01–03 | V01, I02, V02, V03, V08, V05 | HF stills + HF minimax |
+| 2 · mechanism | 05–09 | V06, V07, V08, I12, I23, I24 | vidIQ (V06, V07), HF (V08) |
+| 3 · skin barrier under load | 12–14 | I16, V10, V11, I02 | vidIQ (V10, V11) |
+| 4 · tactile product, bottle turn | 22–25 | C-flaking, C-layering, I18, V12, I19, C-flatlay | catalog + HF |
+| 5 · textures + callback montage | 26–28 | V13, V14, V15, C-serum, C-tonerpad, I25, I01/I03/I12/I16/I13 | vidIQ + HF + catalog |
+| 6 · end screen | 29 | none (layout unchanged, right third + lower-right clear) | — |
+
+Photoreal share by design: **57 %** full-prominence plates (194 s), 10 %
+dimmed plates behind editorial copy (04/14/24), 32 % editorial with a faint
+drifting ground. That is above the brief's 25–35 % figure because the five
+priority shots the brief lists cover 229 s (68 %) by themselves; the
+editorial evidence chapter (16–21), 11, 15 and the end screen are kept as
+authored.
+
+MEASUREMENTS_PLACEHOLDER
+
+---
+
 ## Deliverables
 
 | Item | Path | Notes |

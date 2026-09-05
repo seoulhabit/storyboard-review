@@ -216,7 +216,7 @@
     #root { color:inherit; }
     
     </style>
-    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I16-barrier-calm.jpg" alt="" style="opacity:0.12; filter:blur(8px) saturate(.6)"></div>
+    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I16-barrier-calm.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
     <div class="stage">
       <div class="g15">
         <div class="band" id="fr-band">
@@ -244,7 +244,7 @@
   // Replaces a decorative scale-up that overshot the safe line: the headline
   // resolves to its final two-tone state, which is content, not filler.
   tl.to('#fr-h', { color:'#131516', duration:0.80 }, 5.10);
-  tl.fromTo('#gi', { scale:1.08, x:40, y:0 }, { scale:1.0, x:-40, y:0, duration:8.700, ease:'none' }, 0);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:8.700, ease:'none' }, 0);
 
     tl.to({}, { duration: 8.620 }, 0);   // full-span anchor -- always last
     window.__timelines["15-framing"] = tl;

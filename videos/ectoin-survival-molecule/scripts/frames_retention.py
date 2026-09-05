@@ -471,6 +471,11 @@ S09 = dict(css=PLATE_CSS + """
     .world.paper .col { color:var(--paper); }
     .world.paper .kicker { color:rgba(247,245,240,.7); }
     .world.paper .p-body { color:rgba(247,245,240,.82); }
+    .world.ink .ground { position:absolute; inset:0; z-index:0; overflow:hidden; }
+    .world.ink .ground img { position:absolute; left:0; top:0; width:1920px; height:1080px;
+                             object-fit:cover; opacity:.18; filter:blur(6px) saturate(.5);
+                             transform-origin:50% 50%; }
+    .world.ink .stage { position:relative; z-index:1; }
 """, body=(
     pv("a", "V08-hydration.mp4", 0.0, 11.0)
     + scrim("l")
@@ -488,6 +493,7 @@ S09 = dict(css=PLATE_CSS + """
 """
     + CV
     + """    <div class="world ink" id="w-ink">
+      <div class="ground"><img id="gi-ink" data-layout-allow-overflow src="assets/plates/I24-membrane.jpg" alt=""></div>
       <div class="stage"><div class="g9">
         <div class="col">
           <p class="kicker on-ink">The mechanism</p>
@@ -521,8 +527,9 @@ S09 = dict(css=PLATE_CSS + """
                       { clipPath:'inset(0% 0% 0% 0%)', duration:0.60,
                         ease:'power3.inOut' }, inv);
   tl.fromTo('#m-ring', { rotation:0, transformOrigin:'310px 310px' },
-                       { rotation:6, transformOrigin:'310px 310px', duration:1.40,
-                         ease:'power2.out' }, inv);
+                       { rotation:42, transformOrigin:'310px 310px', duration:14.0,
+                         ease:'none' }, inv);
+  tl.fromTo('#gi-ink', { scale:1.0, x:0, y:0 }, { scale:1.16, x:-60, y:30, duration:14.0, ease:'none' }, inv);
   tl.fromTo('#m-h', { y:24, opacity:0.4 }, { y:0, opacity:1, duration:0.60,
                                              ease:'power2.out' }, inv);
   tl.to('#cv', { opacity:0, duration:0.2 }, inv);
@@ -543,8 +550,8 @@ S09 = dict(css=PLATE_CSS + """
                          duration:1.4, ease:'power2.inOut' }, @w(attraction)-0.8);
     }
   }
-  tl.to('#m-ring', { rotation:14, transformOrigin:'310px 310px', duration:2.60,
-                     ease:'power1.inOut' }, @w(depends));
+  tl.to('#m-ring', { scale:1.06, transformOrigin:'310px 310px', duration:1.2,
+                     ease:'power1.inOut', yoyo:true, repeat:1 }, @w(depends));
   tl.to('#m-note', { opacity:0.75, duration:0.60 }, @w(arranged));
 """)
 
@@ -660,7 +667,7 @@ S23 = dict(css=PLATE_CSS + """
               margin-top:var(--s-3); }
 """, body=(
     pi("a", "I18-bottle-front.jpg")
-    + pv("b", "V12-turn.mp4", 3.6, 9.2)
+    + pv("b", "V12b-turn.mp4", 3.6, 9.2)
     + scrim("l")
     + """    <div class="stage">
       <div class="g23">
@@ -979,7 +986,7 @@ def with_ground(spec, src, opacity=0.14, dur=12.0, blur=8, extra_css=""):
     css = spec["css"] + GROUND_CSS + extra_css + """
     #root { color:inherit; }
     """
-    tl = spec["tl"] + kb('#gi', 0, dur, 1.08, 1.0, 40, -40)
+    tl = spec["tl"] + kb('#gi', 0, dur, 1.16, 1.0, 80, -80, 0, 40)
     return dict(css=css, body=body, tl=tl)
 
 
@@ -988,7 +995,7 @@ def with_plate_img(spec, src, scrim_kind="ink", dur=12.0, s0=1.0, s1=1.08, extra
     the scene's own ink-ground tokens, so only ink-ground scenes use this."""
     body = pi("g", src) + scrim(scrim_kind) + spec["body"]
     css = spec["css"] + PLATE_CSS + extra_css + "\n    #root { color:inherit; }\n"
-    tl = spec["tl"] + kb('#pi-g', 0, dur, s0, s1)
+    tl = spec["tl"] + kb('#pi-g', 0, dur, s0, s1, 0, -70, 0, 40)
     return dict(css=css, body=body, tl=tl)
 
 
@@ -1004,13 +1011,13 @@ def apply(defs):
     })
     # ink-ground editorial scenes: a dimmed plate + scrim behind the authored copy
     out["04-extremolyte"] = with_plate_img(defs["04-extremolyte"], "I14-pinkpond.jpg", "ink", 9.9, 1.10, 1.0)
-    out["14-notforce"] = with_plate_img(defs["14-notforce"], "I02-droplet.jpg", "ink", 10.6, 1.0, 1.08)
-    out["24-eleven"] = with_plate_img(defs["24-eleven"], "I19-bottle-back.jpg", "ink", 15.1, 1.06, 1.0)
+    out["14-notforce"] = with_plate_img(defs["14-notforce"], "I02-droplet.jpg", "ink", 10.6, 1.0, 1.18)
+    out["24-eleven"] = with_plate_img(defs["24-eleven"], "I19-bottle-back.jpg", "ink", 15.1, 1.18, 1.0)
     # paper-ground editorial scenes: a faint drifting ground
     for cid, src, d in [("11-analogy", "I12-hydration.jpg", 14.6), ("15-framing", "I16-barrier-calm.jpg", 8.7),
                         ("16-trial104", "C-baseskin.jpg", 12.7), ("17-preference", "C-baseskin.jpg", 12.1),
                         ("18-eczema", "C-flaking.jpg", 15.7), ("19-limits", "I14-pinkpond.jpg", 7.8),
                         ("20-twelve", "I15-colony.jpg", 9.1), ("21-verdict", "I14-pinkpond.jpg", 9.7),
                         ]:
-        out[cid] = with_ground(defs[cid], src, 0.12, d)
+        out[cid] = with_ground(defs[cid], src, 0.16, d)
     return out

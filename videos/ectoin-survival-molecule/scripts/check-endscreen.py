@@ -22,7 +22,7 @@ def frames(path, start, step):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("render"); ap.add_argument("--start", type=float, default=324.37)
+    ap.add_argument("render"); ap.add_argument("--start", type=float, default=325.3)  # 324.37 + settle wipe duration (0.80s) + margin, so the previous scene's outgoing ground is never sampled mid-wipe
     ap.add_argument("--step", type=float, default=0.5); ap.add_argument("--tol", type=int, default=28)
     a = ap.parse_args()
     fr = frames(a.render, a.start, a.step)

@@ -229,7 +229,7 @@
     #root { color:inherit; }
     
     </style>
-    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I14-pinkpond.jpg" alt="" style="opacity:0.12; filter:blur(8px) saturate(.6)"></div>
+    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I14-pinkpond.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
     <div class="stage">
       <div class="ghost12" id="ghost-12">12</div>
       <div class="g21">
@@ -280,7 +280,7 @@
   tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, 7.313);
   // "no" gets a coral void flash -- the negating half of the verdict.
   tl.fromTo('#v-no-flash', { opacity:0 }, { opacity:0.85, duration:0.30 }, 8.563);
-  tl.fromTo('#gi', { scale:1.08, x:40, y:0 }, { scale:1.0, x:-40, y:0, duration:9.700, ease:'none' }, 0);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:9.700, ease:'none' }, 0);
 
     tl.to({}, { duration: 9.653 }, 0);   // full-span anchor -- always last
     window.__timelines["21-verdict"] = tl;

@@ -217,7 +217,7 @@
     #root { color:inherit; }
     
     </style>
-    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I15-colony.jpg" alt="" style="opacity:0.12; filter:blur(8px) saturate(.6)"></div>
+    <div class="ground" id="gnd"><img id="gi" src="assets/plates/I15-colony.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
     <div class="stage">
       <div class="g20">
         <div class="col">
@@ -257,7 +257,7 @@
   // are already there; this is emphasis, a large-area beat, not a re-entrance.
   tl.to('.tile', { scale:1.14, duration:0.22, yoyo:true, repeat:1,
                    ease:'power1.inOut', transformOrigin:'50% 50%' }, 8.027);
-  tl.fromTo('#gi', { scale:1.08, x:40, y:0 }, { scale:1.0, x:-40, y:0, duration:9.100, ease:'none' }, 0);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:9.100, ease:'none' }, 0);
 
     tl.to({}, { duration: 9.066 }, 0);   // full-span anchor -- always last
     window.__timelines["20-twelve"] = tl;

@@ -213,6 +213,11 @@
     .world.paper .col { color:var(--paper); }
     .world.paper .kicker { color:rgba(247,245,240,.7); }
     .world.paper .p-body { color:rgba(247,245,240,.82); }
+    .world.ink .ground { position:absolute; inset:0; z-index:0; overflow:hidden; }
+    .world.ink .ground img { position:absolute; left:0; top:0; width:1920px; height:1080px;
+                             object-fit:cover; opacity:.18; filter:blur(6px) saturate(.5);
+                             transform-origin:50% 50%; }
+    .world.ink .stage { position:relative; z-index:1; }
 
     </style>
     <div class="plate" id="pl-a"><video class="clip" id="pv-a" data-layout-allow-overflow src="assets/plates/V08-hydration.mp4" data-start="0.000" data-duration="11.000" muted playsinline></video></div>
@@ -230,6 +235,7 @@
     </div>
     <p class="cv" id="cv">Conceptual visualization</p>
     <div class="world ink" id="w-ink">
+      <div class="ground"><img id="gi-ink" data-layout-allow-overflow src="assets/plates/I24-membrane.jpg" alt=""></div>
       <div class="stage"><div class="g9">
         <div class="col">
           <p class="kicker on-ink">The mechanism</p>
@@ -270,8 +276,9 @@
                       { clipPath:'inset(0% 0% 0% 0%)', duration:0.60,
                         ease:'power3.inOut' }, inv);
   tl.fromTo('#m-ring', { rotation:0, transformOrigin:'310px 310px' },
-                       { rotation:6, transformOrigin:'310px 310px', duration:1.40,
-                         ease:'power2.out' }, inv);
+                       { rotation:42, transformOrigin:'310px 310px', duration:14.0,
+                         ease:'none' }, inv);
+  tl.fromTo('#gi-ink', { scale:1.0, x:0, y:0 }, { scale:1.16, x:-60, y:30, duration:14.0, ease:'none' }, inv);
   tl.fromTo('#m-h', { y:24, opacity:0.4 }, { y:0, opacity:1, duration:0.60,
                                              ease:'power2.out' }, inv);
   tl.to('#cv', { opacity:0, duration:0.2 }, inv);
@@ -292,8 +299,8 @@
                          duration:1.4, ease:'power2.inOut' }, 15.586-0.8);
     }
   }
-  tl.to('#m-ring', { rotation:14, transformOrigin:'310px 310px', duration:2.60,
-                     ease:'power1.inOut' }, 18.838);
+  tl.to('#m-ring', { scale:1.06, transformOrigin:'310px 310px', duration:1.2,
+                     ease:'power1.inOut', yoyo:true, repeat:1 }, 18.838);
   tl.to('#m-note', { opacity:0.75, duration:0.60 }, 22.818);
 
     tl.to({}, { duration: 24.218 }, 0);   // full-span anchor -- always last

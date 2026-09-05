@@ -229,7 +229,7 @@
     #root { color:inherit; }
     
     </style>
-    <div class="ground" id="gnd"><img id="gi" src="assets/plates/C-baseskin.jpg" alt="" style="opacity:0.12; filter:blur(8px) saturate(.6)"></div>
+    <div class="ground" id="gnd"><img id="gi" src="assets/plates/C-baseskin.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
     <div class="stage">
       <div class="carry16" id="carry-grid" data-layout-allow-occlusion="true"></div>
       <div class="g17">
@@ -276,7 +276,7 @@
   // the qualifier slides up over the result -- the honest beat, and a big one
   tl.set('#pr-q', { opacity:0, y:90 }, 0);
   tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, 5.90);
-  tl.fromTo('#gi', { scale:1.08, x:40, y:0 }, { scale:1.0, x:-40, y:0, duration:12.100, ease:'none' }, 0);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:12.100, ease:'none' }, 0);
 
     tl.to({}, { duration: 12.087 }, 0);   // full-span anchor -- always last
     window.__timelines["17-preference"] = tl;

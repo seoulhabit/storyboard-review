@@ -234,7 +234,7 @@
     #root { color:inherit; }
     
     </style>
-    <div class="ground" id="gnd"><img id="gi" src="assets/plates/C-baseskin.jpg" alt="" style="opacity:0.12; filter:blur(8px) saturate(.6)"></div>
+    <div class="ground" id="gnd"><img id="gi" src="assets/plates/C-baseskin.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
       <div class="chband" id="ch-band">
         <div class="wash moss" id="ch-wash"></div>
         <p class="kicker" id="ch-title">What the human evidence really says</p>
@@ -289,7 +289,7 @@
   // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
   tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
   tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
-  tl.fromTo('#gi', { scale:1.08, x:40, y:0 }, { scale:1.0, x:-40, y:0, duration:12.700, ease:'none' }, 0);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:12.700, ease:'none' }, 0);
 
     tl.to({}, { duration: 12.658 }, 0);   // full-span anchor -- always last
     window.__timelines["16-trial104"] = tl;

@@ -97,16 +97,26 @@ ORDER = [cid for cid, _ in SCENES] + ["16-end"]
 # (round 2 of the channel's two-round cap, [S4/V-2]).
 BLOCKS_ONE = [("master", ORDER[0:15])]
 BLOCKS_TWO = [("A", ORDER[0:13]), ("B", ORDER[13:15])]
-BLOCKS_TWO_EARLY = [("A", ORDER[0:9]), ("B", ORDER[9:15])]   # fallback split
-# seed_audio rejects prompts over 2048 chars (measured: our 15-unit master is
-# 2323). BLOCKS_ONE is kept for a shorter future script; this build uses the
-# two-block split with the seam at 13-uncertain -> 14-hierarchy: the whole
-# hook-to-climax run (units 1-13) is ONE continuous performance, and the seam
-# falls under the second invert wipe at the "what the evidence supports"
-# chapter turn, where a register reset reads as intended. Block A must stay
-# under 2048 chars (python3 scripts/vo_lines.py prints it); if the service
-# rejects it, fall back to BLOCKS_TWO_EARLY (seam at the first invert).
-BLOCKS = BLOCKS_TWO
+BLOCKS_FOUR = [("A1", ORDER[0:5]), ("A2", ORDER[5:9]), ("A3", ORDER[9:13]), ("B", ORDER[13:15])]
+
+# MEASURED, not assumed. seed_audio's hard limit is 2048 characters, and a
+# 1933-character block came back UNDER it and still failed: the take was
+# faithful for 241 of 310 words and then abandoned the script entirely,
+# improvising ~25 seconds of generic skincare copy in Kimberly's voice over
+# live audio (not silence, so no level check would have caught it). The whole
+# climax -- "the effect stops showing up", both refusals, "the independent
+# evidence is uncertain" -- was simply absent. `gen_vo.py verify` catches this
+# by alignment coverage (77.7% against a 90% floor), which is exactly what that
+# floor is for.
+#
+# So the limit that matters is not the documented one. These four blocks are
+# 400-700 characters each, and every seam falls on a VISIBLE transition:
+#   A1 -> A2  the iris into 06-door
+#   A2 -> A3  the invert into the evidence ground
+#   A3 -> B   the invert out of it
+# A block seam is a change of performance; putting each one where the edit is
+# already changing register is the cheapest place to spend it.
+BLOCKS = BLOCKS_FOUR
 SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
 
 # Description chapters (no engine primitive; re-derived from real data-start

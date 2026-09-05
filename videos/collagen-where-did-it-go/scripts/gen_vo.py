@@ -284,6 +284,21 @@ def cmd_transcribe(argv):
                 w["start"] = round(w["start"] * f, 3); w["end"] = round(w["end"] * f, 3)
             print(f"  {block:8s} WARNING: ASR timestamps ran to {last_end:.2f}s past the "
                   f"{real:.2f}s file -- rescaled by {f:.4f}")
+        # DROP ASR WORDS THAT SIT IN SILENCE. Whisper fills trailing digital
+        # silence with plausible speech: block B's take ends at 25.24s and the
+        # transcript carried "Thanks for watching!" at 30.0-31.48s, inside 6.09s
+        # of measured silence. Left in, a hallucination pollutes the script<->ASR
+        # alignment and can drag a real word's timestamp with it. Anything
+        # starting after the file's final trailing silence begins is not speech.
+        sil = silences(wav)
+        trailing = next((a for a, b in sil if b is None), None)
+        if trailing is not None:
+            keep = [w for w in words if w["start"] < trailing - 0.02]
+            if len(keep) != len(words):
+                dropped = [w["text"] for w in words if w not in keep]
+                print(f"  {block:8s} dropped {len(words) - len(keep)} ASR word(s) inside the "
+                      f"trailing silence from {trailing:.2f}s: {' '.join(dropped)[:60]!r}")
+                words = keep
         asr_path(block).write_text(json.dumps(words))
         print(f"  {block:8s} {len(words):4d} ASR words  file {real:.2f}s  {fmt(wav)}  "
               f"-> {asr_path(block).relative_to(ROOT)}")
@@ -563,6 +578,17 @@ def cmd_verify(argv):
         trailing = next((s for s, e in sil if e is None), b["dur"])
         if last_asr < trailing - 0.5:
             bad.append(f"ASR under-run: last ASR word ends {last_asr:.2f}s, audio runs to {trailing:.2f}s")
+        # A DRIFT AT THE END is the dangerous shape: a take can score acceptable
+        # coverage overall and still be missing the payoff. Measured on this
+        # project: a 1933-char block was faithful for 241 of 310 words and then
+        # improvised 25 seconds of generic copy, taking the entire climax with
+        # it. Check the tail separately from the whole.
+        tail = ws[-12:]
+        tail_eq = sum(1 for w in tail if w["how"] == "equal") / max(1, len(tail))
+        if tail_eq < 0.75:
+            bad.append(f"take drifts off-script at the END: only {tail_eq:.0%} of the last "
+                       f"{len(tail)} words aligned (script tail: "
+                       f"{' '.join(w['text'] for w in tail[-6:])!r}) -- re-roll, and shorten the block")
         interp = sum(1 for w in ws if w["how"] == "interp")
         print(f"  {b['name']:8s} {'FLAGGED' if bad else 'ok':8s} words={len(ws)} equal={cov:.0%} "
               f"interp={interp} eof={eof:.1f}dB dur={b['dur']:.2f}s {fmt(wav)}")

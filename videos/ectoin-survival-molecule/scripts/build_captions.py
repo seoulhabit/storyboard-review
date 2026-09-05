@@ -40,22 +40,42 @@ MAX_CUE_CHARS = MAX_LINE_CHARS * 2
 # carry content in the lower third that a bottom caption would sit on top of, so
 # their cues move to the top instead. Verified against rendered frames, not
 # guessed from the source: each entry names what is actually down there.
+# CUE PLACEMENT, MEASURED. The first version of this table was hand-authored
+# from reading the scene sources -- "the lower third looks busy here" -- and it
+# was wrong for half the piece: 19-limits, 21-verdict, 23-numbers, 24-eleven and
+# 29-cta all have a CLEARER bottom band than top, because this is a full-frame
+# editorial layout rather than a lower-third one. Several scenes hold a 36px
+# kicker just under the safe line, which a top caption lands straight on.
+#
+# So it is measured instead. For each scene, `scripts/measure_cue_bands.py`
+# samples four frames of the render and takes the 99.9th-percentile local
+# gradient (text has sharp edges; a photographic plate at this scale does not)
+# in the two bands a caption can occupy -- top y162-330, bottom y840-1000, both
+# x300-1620. A cue goes top only where the top band is clearly emptier.
+#
+# Regenerate with:  python3 scripts/measure_cue_bands.py <render.mp4>
+#
+# Measured 2026-09-05 on ..._a11y-master.mp4 (top / bottom sharpness):
 TOP_CUE_SCENES = {
-    "01-hook":       "the NOT THIS stack runs to the lower right",
-    "07-question":   "the closing question is set bottom-left",
-    "12-load":       "lower-third load card",
-    "14-notforce":   "the humidity meter and its caption sit low",
-    "19-limits":     "three claim cards across the middle and lower band",
-    "21-verdict":    "the verdict panel fills the lower two thirds",
-    "23-numbers":    "the two brand percentage cards sit low left",
-    "24-eleven":     "the 10%/1% proportion bar and its note sit low left",
-    "28-remember":   "the closing line is set bottom-left",
-    "29-cta":        "the action card and question fill the lower half",
+    "02-osmosis":    (45, 185), "03-now":        (73, 173),
+    "06-mechanism":  (72, 189), "07-question":   (75, 189),
+    "12-load":      (181, 200), "22-whofor":     (25, 196),
+    "25-formula":    (70, 186), "26-kbeauty":    (40, 201),
+    "27-resilience":(160, 182), "28-remember":   (69, 192),
 }
-# WebVTT line positions. `line:10%` puts the cue near the top edge but inside
-# the title-safe box; the default (no setting) leaves the player's own bottom
+
+
+def cue_is_top(cid, local_start=None):
+    return cid in TOP_CUE_SCENES
+
+
+# WebVTT line positions. `line:N%` is the cue box's top edge as a share of frame
+# height. 10% is 108px, which lands ON the kicker band -- several scenes set a
+# 36px mono label just under the safe line, and a top-placed caption sat on top
+# of "ABIB - ECTOIN PANTHENOL 11%" in the burned-in cut. 15% is 162px, clear of
+# a kicker at 54-115. The default (no setting) leaves the player's own bottom
 # placement alone, which is where a viewer expects captions.
-VTT_TOP = "line:10%,align:center"
+VTT_TOP = "line:15%,align:center"
 VTT_BOTTOM = "line:-3,align:center"
 
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -243,8 +263,9 @@ def main():
     srt = "\n".join(f"{i+1}\n{ts(a)} --> {ts(b)}\n{x}\n"
                     for i, (a, b, x, _cid) in enumerate(cues))
     vtt_lines = ["WEBVTT", ""]
+    starts = {s.cid: s.start for s in scenes}
     for a, b, x, cid in cues:
-        setting = VTT_TOP if cid in TOP_CUE_SCENES else VTT_BOTTOM
+        setting = VTT_TOP if cue_is_top(cid, a - starts[cid]) else VTT_BOTTOM
         vtt_lines.append(f"{ts(a,'.')} --> {ts(b,'.')} {setting}")
         vtt_lines.append(x)
         vtt_lines.append("")
@@ -256,7 +277,7 @@ def main():
     over = [x for _a, _b, x, _c in cues
             if any(len(l) > MAX_LINE_CHARS for l in x.split("\n"))
             or x.count("\n") > 1]
-    moved = sum(1 for c in cues if c[3] in TOP_CUE_SCENES)
+    moved = sum(1 for c in cues if cue_is_top(c[3], c[0] - starts[c[3]]))
     print(f"  {len(cues)} cues -> captions/{SLUG}.srt + .vtt")
     print(f"  shortest {min(b-a for a,b,_,_ in cues):.2f}s, "
           f"longest {max(b-a for a,b,_,_ in cues):.2f}s")

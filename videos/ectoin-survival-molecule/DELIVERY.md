@@ -220,6 +220,33 @@ styling, and it is sentence-initial in the script) and the closing
 "bacteria-made survival molecule", which needed a caption-only display form
 because `vo_lines` is TTS-safe and carries no hyphens.
 
+### Gates
+
+Every gate below ran on `renders/ectoin-survival-molecule_a11y-master.mp4`.
+
+| Gate | Result |
+|---|---|
+| `hyperframes check --samples 60` | **Check passed.** 0 lint / runtime / layout / motion errors. **Contrast 11/11 text checks pass WCAG AA** — it found 0 checks at the start of this pass and 1 failing one mid-way; the chapter band's dissolve was what it was catching, and that band wipes out now instead. 2 lint warnings (index.html line count), 3 layout infos, all intentional and marked. |
+| `contrast.py` (token pairs) | 11 pairs pass, 4 EXPECTED failures kept as the record of why each token is ground-scoped. |
+| `check-vo.py` | **All 29 scenes pass.** LU spread 0.6 LU across the piece (max −19.7, min −20.3). |
+| `check-captions.py` | **PASS.** 116 cues, longest line 42 chars, shortest cue 1.00s, 42 placed top, 1 non-speech cue. |
+| `check-sfx-durations.py` | no findings. |
+| `check-blank-frames.py` | 4 near-blank stretches, each a deliberate ink-ground hold (21-verdict's opening is the 4.6s one). |
+| `check-static-hold.py --landscape` | Whole-frame: **no findings**. Region-aware: the end-screen reserve cells, empty by design. |
+| `check-cadence.py --longform` | advisory holds only, each a deliberate one. |
+| `check-seams.py --render` | **PASS, 0 findings** — against 8 on the retention master and 13 at the start of this pass. |
+| `check-endscreen.py` | **PASS, 0 zone hits**, across both reserving scenes (29-cta and 30-endcard), each bounded to its own span. |
+| `check-motion-gaps.py` | **PASS, 0 static runs over limit.** 4 exempt holds, all in the end-screen scenes. |
+| `check-contrast-pixels.py` | **21/21 probes pass, 0 below floor.** The three scenes the review named measure 13.50:1, 5.58:1, 8.30:1, 14.27:1, 6.92:1, 5.16:1 and 4.72:1 where they measured ~1.3:1 before. |
+| `check-safe-area.py --landscape` | **FAIL by construction, N/A** — unchanged from the retention master's record. The gate estimates a flat page ground from the border ring and reads a full-bleed photograph's margins as ink; the worst frames it names sit on plate scenes (26.25s in 03-now, 41–44.5s in 05-halomonas). Separated out of the `postrender` chain this pass, because an `&&` chain containing a gate that always exits 1 silently truncates everything after it — which is how the endscreen and motion findings above went unseen for two renders. Text and UI are verified inside the safe box by a different measure: **text has high local gradient energy and a photograph's margin does not**, and that sweep found exactly two real intrusions (both fixed, see `--safe-buffer` above) among 87 sampled frames. |
+
+**How this pass was verified without paying for a render each time.** The
+contrast probes, the safe-area geometry sweep and the motion-gap spans all run
+against `hyperframes snapshot` output using the same measurement code as the
+render-side gates — about three minutes against a 35-minute render round trip.
+The gates still run on the real master; the snapshots are how a fix is checked
+BEFORE committing to one.
+
 ### Audio
 
 **Unchanged targets, deliberately.** `master-retention.py` keeps

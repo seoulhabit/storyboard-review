@@ -1192,7 +1192,7 @@ S26 = dict(css="""
     <div class="stage">
       <div class="g26">
         <div class="neg" id="kb-neg">
-          <div class="void" id="kb-void"></div>
+          <div class="void" id="kb-void" data-layout-allow-overflow></div>
           <p class="kicker">The easy story</p>
           <p class="hero" style="font-size:var(--t-figure);margin-top:12px">K-beauty
             invented ectoin.</p>

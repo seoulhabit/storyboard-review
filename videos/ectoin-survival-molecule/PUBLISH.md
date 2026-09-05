@@ -120,16 +120,35 @@ Two sidecars ship, both hand-verified against the audio rather than taken from
 an auto-caption pass:
 
 - `captions/ectoin-survival-molecule.vtt` — **the one to upload.** Carries per-cue
-  positioning (`line:10%`) so a caption never sits on top of a chart, an
-  ingredient list or a lower third; 43 of 116 cues are moved to the top for that
-  reason. Max 2 lines, max 42 characters a line, 1.0s minimum on screen.
+  positioning (`line:15%`) so a caption sits in whichever band is emptier; 38 of
+  116 cues are placed top for that reason. Max 2 lines, max 42 characters a line,
+  1.0s minimum on screen.
+
+  **Which band is measured, not guessed.** The first version of that table was
+  hand-authored from reading the scene sources and was wrong for half the piece:
+  19-limits, 21-verdict, 23-numbers, 24-eleven and 29-cta all have a *clearer
+  bottom* than top. This is a full-frame editorial layout rather than a
+  lower-third one, and several scenes hold a 36px kicker just under the safe line
+  that a top caption lands straight on. `scripts/measure_cue_bands.py` samples
+  four frames per scene and compares the local gradient in both bands — text has
+  sharp edges at that scale and a photographic plate does not.
 - `captions/ectoin-survival-molecule.srt` — the same text with no positioning.
   SRT placement is not portably honoured, so a positioned SRT would be a guess.
 
 `renders/ectoin-survival-molecule_open-captions.mp4` is a burned-in cut of the
 same master, for platforms that do not reliably offer a selectable track (an
 Instagram or TikTok repost). **Upload the clean master to YouTube** — burned-in
-captions cannot be turned off, and YouTube displays the sidecar reliably.
+captions cannot be turned off, YouTube displays the sidecar reliably, and on a
+frame this densely composed a burned caption will always cover *something*.
+Even in the emptier band it sits over part of a plate; the sidecar is the version
+a viewer can dismiss.
+
+It is composited from rasterised plates rather than burned with `subtitles=`:
+this machine's ffmpeg is built without libass **and** without libfreetype, so
+neither the `subtitles`/`ass` filters nor `drawtext` exist. Each cue is drawn
+with the project's own Inter (converted from the bundled woff2 to a TTF at
+`assets/fonts/ttf/`) onto a full-frame RGBA plate and overlaid. A
+`captions/<slug>.ass` is written alongside for a machine that does have libass.
 
 Every term the review asked to have verified by ear is checked mechanically by
 `scripts/check-captions.py`, case-sensitively: Ectoin, Halomonas elongata,

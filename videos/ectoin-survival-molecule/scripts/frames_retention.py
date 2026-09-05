@@ -770,7 +770,7 @@ S26 = dict(css=PLATE_CSS + CHBAND_CSS + """
     + """    <div class="stage"></div>
     <div class="g26">
       <div class="neg" id="kb-neg" style="opacity:0">
-        <div class="void" id="kb-void"></div>
+        <div class="void" id="kb-void" data-layout-allow-overflow></div>
         <p class="kicker">The easy story</p>
         <p class="hero">K-beauty invented ectoin.</p>
         <span class="void-tag" id="kb-tag">Not true</span>

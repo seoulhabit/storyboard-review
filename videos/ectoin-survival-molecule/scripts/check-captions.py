@@ -23,6 +23,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SLUG = "ectoin-survival-molecule"
 MAX_LINE_CHARS, MAX_LINES, MIN_CUE_S = 42, 2, 1.0
 
+sys.path.insert(0, str(ROOT / "scripts"))
+from build_captions import VTT_TOP   # one source for what "placed top" means
+
 # The review's list, verbatim, plus the closing caption's hyphen.
 REQUIRED = [
     "Ectoin", "Halomonas elongata", "extremolyte", "humectants",
@@ -99,7 +102,7 @@ def main():
             bad.append(f"forbidden spelling present: {term!r}")
 
     ns = [c for c in cues if c[3].startswith("[")]
-    print(f"  {sum(1 for c in cues if c[2].startswith('line:10%'))} cue(s) placed top, "
+    print(f"  {sum(1 for c in cues if c[2] == VTT_TOP)} cue(s) placed top, "
           f"{len(ns)} non-speech cue(s): {[c[3] for c in ns]}")
     if len(ns) > 3:
         bad.append(f"{len(ns)} non-speech cues -- decorative transitions should not "

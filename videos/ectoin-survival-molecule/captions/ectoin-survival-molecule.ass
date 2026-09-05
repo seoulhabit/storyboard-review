@@ -1,0 +1,129 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Caption,Inter ExtraBold,52,&H00F0F5F7,&H00F0F5F7,&H00161513,&H1A161513,-1,0,0,0,100,100,0,0,3,10,0,2,96,96,96,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.10,0:00:04.06,Caption,,0,0,0,,{\an2}Your next favourite skincare ingredient\Nmay have been invented by bacteria
+Dialogue: 0,0:00:04.06,0:00:05.39,Caption,,0,0,0,,{\an2}trying not to die.
+Dialogue: 0,0:00:05.75,0:00:06.80,Caption,,0,0,0,,{\an2}Not snail mucin.
+Dialogue: 0,0:00:06.80,0:00:08.24,Caption,,0,0,0,,{\an2}Not salmon DNA.
+Dialogue: 0,0:00:08.24,0:00:11.21,Caption,,0,0,0,,{\an2}And not another form of hyaluronic acid.
+Dialogue: 0,0:00:11.36,0:00:16.06,Caption,,0,0,0,,{\an8}This tiny molecule helps microorganisms\Nsurvive places so salty and so
+Dialogue: 0,0:00:16.24,0:00:20.02,Caption,,0,0,0,,{\an8}dry that an ordinary cell would\Nlose its water and stop functioning.
+Dialogue: 0,0:00:20.17,0:00:22.48,Caption,,0,0,0,,{\an8}And it is now turning up,
+Dialogue: 0,0:00:22.48,0:00:26.04,Caption,,0,0,0,,{\an8}quietly, in Korean serums,\Ncreams and sunscreens.
+Dialogue: 0,0:00:26.04,0:00:29.30,Caption,,0,0,0,,{\an8}It is called ectoin, and the\Nreal science is stranger than
+Dialogue: 0,0:00:29.30,0:00:30.53,Caption,,0,0,0,,{\an8}the marketing.
+Dialogue: 0,0:00:31.18,0:00:33.99,Caption,,0,0,0,,{\an2}Ectoin is what researchers\Ncall an extremolyte.
+Dialogue: 0,0:00:33.99,0:00:35.47,Caption,,0,0,0,,{\an2}That sounds like a superhero.
+Dialogue: 0,0:00:35.47,0:00:40.52,Caption,,0,0,0,,{\an2}It just means a protective molecule\Nmade by microbes living somewhere extreme.
+Dialogue: 0,0:00:40.77,0:00:44.08,Caption,,0,0,0,,{\an2}The bacterium we get most of\Nit from has a name.
+Dialogue: 0,0:00:44.08,0:00:46.05,Caption,,0,0,0,,{\an2}Halomonas elongata.
+Dialogue: 0,0:00:46.05,0:00:47.13,Caption,,0,0,0,,{\an2}It lives in salt.
+Dialogue: 0,0:00:47.13,0:00:49.37,Caption,,0,0,0,,{\an2}When the salt outside gets punishing,
+Dialogue: 0,0:00:49.37,0:00:51.16,Caption,,0,0,0,,{\an2}it floods itself with ectoin.
+Dialogue: 0,0:00:51.42,0:00:52.42,Caption,,0,0,0,,{\an8}Why?
+Dialogue: 0,0:00:52.44,0:00:53.97,Caption,,0,0,0,,{\an8}Because salt pulls water out of cells.
+Dialogue: 0,0:00:53.97,0:00:56.92,Caption,,0,0,0,,{\an8}Lose enough water and proteins\Nstart to lose their shape,
+Dialogue: 0,0:00:57.29,0:01:00.76,Caption,,0,0,0,,{\an8}membranes get unstable, and\Nthe cell stops working.
+Dialogue: 0,0:01:01.01,0:01:04.78,Caption,,0,0,0,,{\an8}Ectoin keeps the space around\Nthose fragile structures survivable.
+Dialogue: 0,0:01:04.78,0:01:07.63,Caption,,0,0,0,,{\an8}Which led skincare researchers\Nto an obvious question.
+Dialogue: 0,0:01:07.63,0:01:10.43,Caption,,0,0,0,,{\an8}Could it do the same\Nfor stressed human skin?
+Dialogue: 0,0:01:11.43,0:01:15.33,Caption,,0,0,0,,{\an2}Here is where ectoin stops\Nbehaving like a normal moisturiser.
+Dialogue: 0,0:01:16.04,0:01:20.27,Caption,,0,0,0,,{\an2}Familiar humectants, such as\Nglycerin and hyaluronic acid,
+Dialogue: 0,0:01:20.27,0:01:23.28,Caption,,0,0,0,,{\an2}attract water and hold on to it.
+Dialogue: 0,0:01:23.28,0:01:28.36,Caption,,0,0,0,,{\an2}Ectoin seems to affect how water arranges\Nitself around proteins and membranes.
+Dialogue: 0,0:01:28.62,0:01:31.65,Caption,,0,0,0,,{\an2}Scientists call the\Nidea preferential exclusion.
+Dialogue: 0,0:01:31.68,0:01:32.94,Caption,,0,0,0,,{\an2}The tidy version.
+Dialogue: 0,0:01:32.94,0:01:36.42,Caption,,0,0,0,,{\an2}Ectoin protects proteins by\Nstaying off their surface,
+Dialogue: 0,0:01:36.42,0:01:39.59,Caption,,0,0,0,,{\an2}which helps the water\Naround them stay organised.
+Dialogue: 0,0:01:40.02,0:01:42.55,Caption,,0,0,0,,{\an2}The honest version is messier.
+Dialogue: 0,0:01:43.32,0:01:48.40,Caption,,0,0,0,,{\an2}In the simulations, ectoin also showed\Nsome attraction to that surface.
+Dialogue: 0,0:01:48.40,0:01:51.94,Caption,,0,0,0,,{\an2}And how far it stays back\Ndepends on how tightly the
+Dialogue: 0,0:01:51.94,0:01:55.39,Caption,,0,0,0,,{\an2}protein's own water is already arranged.
+Dialogue: 0,0:01:55.54,0:01:58.73,Caption,,0,0,0,,{\an2}Think of a celebrity inside\Na ring of security.
+Dialogue: 0,0:01:59.30,0:02:02.17,Caption,,0,0,0,,{\an2}Ectoin is not hugging the celebrity.
+Dialogue: 0,0:02:02.83,0:02:06.51,Caption,,0,0,0,,{\an2}It hangs back, and helps\Nthe ring hold its shape.
+Dialogue: 0,0:02:06.52,0:02:12.62,Caption,,0,0,0,,{\an2}Which is why calling it another hydrating\Ningredient misses the interesting part.
+Dialogue: 0,0:02:13.17,0:02:16.08,Caption,,0,0,0,,{\an8}Your outer skin barrier\Nis under constant load.
+Dialogue: 0,0:02:16.11,0:02:19.41,Caption,,0,0,0,,{\an8}Dry air, cleansing, pollution,\Nsun, strong actives.
+Dialogue: 0,0:02:19.42,0:02:22.02,Caption,,0,0,0,,{\an8}When it struggles, water\Nescapes more easily,
+Dialogue: 0,0:02:22.09,0:02:23.96,Caption,,0,0,0,,{\an8}and skin can feel tight, rough,
+Dialogue: 0,0:02:23.96,0:02:25.79,Caption,,0,0,0,,{\an8}or unusually reactive.
+Dialogue: 0,0:02:25.94,0:02:31.55,Caption,,0,0,0,,{\an2}Lab research suggests ectoin can\Nhelp stabilise biological structures and
+Dialogue: 0,0:02:31.55,0:02:35.31,Caption,,0,0,0,,{\an2}improve hydration in that outer layer.
+Dialogue: 0,0:02:35.31,0:02:38.02,Caption,,0,0,0,,{\an2}One study found it changed how keratin,
+Dialogue: 0,0:02:38.19,0:02:41.09,Caption,,0,0,0,,{\an2}the main protein in our outer skin cells,
+Dialogue: 0,0:02:41.09,0:02:42.67,Caption,,0,0,0,,{\an2}behaves with water.
+Dialogue: 0,0:02:42.82,0:02:46.24,Caption,,0,0,0,,{\an2}Though in that same\Nstudy, in punishing dryness,
+Dialogue: 0,0:02:46.24,0:02:50.63,Caption,,0,0,0,,{\an2}below five percent humidity, one\Nstress measure actually got worse.
+Dialogue: 0,0:02:50.64,0:02:52.81,Caption,,0,0,0,,{\an2}It is not a force field.
+Dialogue: 0,0:02:53.02,0:02:56.60,Caption,,0,0,0,,{\an2}It is better understood as a\Nsupporting ingredient that may help
+Dialogue: 0,0:02:56.88,0:03:00.78,Caption,,0,0,0,,{\an2}skin handle dehydration and\Nenvironmental stress more comfortably.
+Dialogue: 0,0:03:01.23,0:03:05.87,Caption,,0,0,0,,{\an2}So does it do anything to actual people?
+Dialogue: 0,0:03:05.87,0:03:09.37,Caption,,0,0,0,,{\an2}In one randomised, double-blind study,
+Dialogue: 0,0:03:09.37,0:03:12.67,Caption,,0,0,0,,{\an2}a hundred and four women used\Na cream with two percent
+Dialogue: 0,0:03:12.67,0:03:15.99,Caption,,0,0,0,,{\an2}ectoin against the same cream without it.
+Dialogue: 0,0:03:16.19,0:03:18.27,Caption,,0,0,0,,{\an2}On the study's own measure,
+Dialogue: 0,0:03:18.27,0:03:23.93,Caption,,0,0,0,,{\an2}the women themselves preferred the ectoin\Nversion. That is a real result.
+Dialogue: 0,0:03:23.93,0:03:25.95,Caption,,0,0,0,,{\an2}And it is a preference,
+Dialogue: 0,0:03:25.95,0:03:29.11,Caption,,0,0,0,,{\an2}not a machine reading their skin.
+Dialogue: 0,0:03:29.26,0:03:34.49,Caption,,0,0,0,,{\an2}A second randomised study followed sixty\Nfive people with mild to
+Dialogue: 0,0:03:34.49,0:03:36.56,Caption,,0,0,0,,{\an2}moderate atopic dermatitis, eczema.
+Dialogue: 0,0:03:36.56,0:03:40.55,Caption,,0,0,0,,{\an2}Over four weeks, an ectoin cream\Nperformed about as well as
+Dialogue: 0,0:03:40.60,0:03:43.53,Caption,,0,0,0,,{\an2}the barrier cream it was tested against,
+Dialogue: 0,0:03:43.53,0:03:46.34,Caption,,0,0,0,,{\an2}and was well tolerated.
+Dialogue: 0,0:03:46.49,0:03:47.49,Caption,,0,0,0,,{\an2}Encouraging.
+Dialogue: 0,0:03:47.51,0:03:49.47,Caption,,0,0,0,,{\an2}Not proof that ectoin cures eczema,
+Dialogue: 0,0:03:49.70,0:03:53.70,Caption,,0,0,0,,{\an2}reverses ageing, or replaces\Nanything a dermatologist prescribes.
+Dialogue: 0,0:03:54.40,0:03:56.84,Caption,,0,0,0,,{\an2}And the evidence base is genuinely small.
+Dialogue: 0,0:03:56.84,0:04:02.81,Caption,,0,0,0,,{\an2}Search PubMed today and you will find\Ntwelve ectoin clinical trials. Twelve.
+Dialogue: 0,0:04:03.71,0:04:08.34,Caption,,0,0,0,,{\an2}Some of that research comes from\Ncompanies that sell the ingredient.
+Dialogue: 0,0:04:08.34,0:04:09.61,Caption,,0,0,0,,{\an2}bitop.
+Dialogue: 0,0:04:09.61,0:04:12.31,Caption,,0,0,0,,{\an2}Merck. And Kao. So.
+Dialogue: 0,0:04:12.32,0:04:15.45,Caption,,0,0,0,,{\an2}Promising supporting ingredient, yes.
+Dialogue: 0,0:04:15.73,0:04:17.24,Caption,,0,0,0,,{\an2}Miracle molecule, no.
+Dialogue: 0,0:04:17.69,0:04:20.72,Caption,,0,0,0,,{\an8}Ectoin is most interesting if\Nyour skin runs dry,
+Dialogue: 0,0:04:20.75,0:04:24.19,Caption,,0,0,0,,{\an8}sensitive, over-cleansed, or irritated\Nby a strong routine.
+Dialogue: 0,0:04:24.21,0:04:26.43,Caption,,0,0,0,,{\an8}It sits comfortably alongside panthenol,
+Dialogue: 0,0:04:26.43,0:04:28.65,Caption,,0,0,0,,{\an8}glycerin, squalane and ceramides.
+Dialogue: 0,0:04:28.89,0:04:32.22,Caption,,0,0,0,,{\an2}But do not buy it off\Nthe front of the bottle.
+Dialogue: 0,0:04:32.22,0:04:33.87,Caption,,0,0,0,,{\an2}Turn it around.
+Dialogue: 0,0:04:33.87,0:04:37.07,Caption,,0,0,0,,{\an2}Plenty of brands do print a number.
+Dialogue: 0,0:04:38.05,0:04:40.08,Caption,,0,0,0,,{\an2}Paula's Choice says seven percent.
+Dialogue: 0,0:04:40.46,0:04:43.66,Caption,,0,0,0,,{\an2}The Ordinary lists two percent ectoin.
+Dialogue: 0,0:04:43.97,0:04:48.57,Caption,,0,0,0,,{\an2}The brand Abib promotes\NEctoin Panthenol eleven percent,
+Dialogue: 0,0:04:48.83,0:04:51.86,Caption,,0,0,0,,{\an2}but that eleven percent\Ncombines the two ingredients.
+Dialogue: 0,0:04:52.53,0:04:55.23,Caption,,0,0,0,,{\an2}Panthenol is second on\Nthe ingredient list.
+Dialogue: 0,0:04:55.23,0:04:57.39,Caption,,0,0,0,,{\an2}Ectoin is eleventh.
+Dialogue: 0,0:04:57.39,0:05:01.51,Caption,,0,0,0,,{\an2}The big number on the front\Nis not always the ectoin number.
+Dialogue: 0,0:05:01.76,0:05:04.57,Caption,,0,0,0,,{\an8}The rest is judgement, not evidence.
+Dialogue: 0,0:05:04.57,0:05:07.92,Caption,,0,0,0,,{\an8}Is it fragrance-free, if\Nfragrance bothers you?
+Dialogue: 0,0:05:07.92,0:05:11.11,Caption,,0,0,0,,{\an8}Does the formula carry\Nother useful moisturisers?
+Dialogue: 0,0:05:11.11,0:05:14.38,Caption,,0,0,0,,{\an8}One good ingredient cannot rescue\Na badly built product.
+Dialogue: 0,0:05:14.83,0:05:17.88,Caption,,0,0,0,,{\an8}K-beauty did not invent ectoin.
+Dialogue: 0,0:05:17.88,0:05:21.18,Caption,,0,0,0,,{\an8}What Korean formulators are doing well\Nis pairing it with barrier
+Dialogue: 0,0:05:21.76,0:05:23.97,Caption,,0,0,0,,{\an8}ingredients in light, wearable textures.
+Dialogue: 0,0:05:24.22,0:05:29.04,Caption,,0,0,0,,{\an8}That fits the wider move away\Nfrom aggressive transformation and towards
+Dialogue: 0,0:05:29.04,0:05:31.84,Caption,,0,0,0,,{\an8}skin that simply stays comfortable.
+Dialogue: 0,0:05:31.84,0:05:34.69,Caption,,0,0,0,,{\an8}You will already find it\Nin Korean barrier serums,
+Dialogue: 0,0:05:34.77,0:05:39.32,Caption,,0,0,0,,{\an8}toners and sun products, often in\Nsmaller type than the trend suggests.
+Dialogue: 0,0:05:39.82,0:05:42.97,Caption,,0,0,0,,{\an8}So next time you see\Nectoin on an ingredient list,
+Dialogue: 0,0:05:43.19,0:05:44.84,Caption,,0,0,0,,{\an8}remember what you are looking at.
+Dialogue: 0,0:05:44.84,0:05:48.00,Caption,,0,0,0,,{\an8}A survival strategy,\Nborrowed from bacteria.
+Dialogue: 0,0:05:48.00,0:05:50.46,Caption,,0,0,0,,{\an8}Not the new hyaluronic\Nacid. Not a miracle.
+Dialogue: 0,0:05:50.46,0:05:53.82,Caption,,0,0,0,,{\an8}A genuinely interesting\Nsupporting molecule.
+Dialogue: 0,0:05:54.72,0:05:56.89,Caption,,0,0,0,,{\an2}Here is the one thing worth doing.
+Dialogue: 0,0:05:56.89,0:06:01.04,Caption,,0,0,0,,{\an2}Turn the bottle around and find\Nthe actual percentage before you buy.
+Dialogue: 0,0:06:01.04,0:06:05.41,Caption,,0,0,0,,{\an2}And tell me, would you\Nput a bacteria-made survival molecule
+Dialogue: 0,0:06:05.41,0:06:07.09,Caption,,0,0,0,,{\an2}on your face?
+Dialogue: 0,0:06:08.49,0:06:10.33,Caption,,0,0,0,,{\an2}Follow SeoulHabit for more.
+Dialogue: 0,0:06:10.58,0:06:11.63,Caption,,0,0,0,,{\an2}[soft music fades]

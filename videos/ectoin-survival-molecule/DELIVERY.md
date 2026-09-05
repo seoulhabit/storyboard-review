@@ -220,6 +220,21 @@ styling, and it is sentence-initial in the script) and the closing
 "bacteria-made survival molecule", which needed a caption-only display form
 because `vo_lines` is TTS-safe and carries no hyphens.
 
+### Deliverables
+
+| File | What it is |
+|---|---|
+| `renders/ectoin-survival-molecule_a11y-master.mp4` | **The file to upload.** 1920x1080, 30fps, 6:11.83, 248 MB. −15.00 LUFS / −3.30 dBTP. |
+| `renders/ectoin-survival-molecule_open-captions.mp4` | Burned-in captions, 132 MB, same audio (stream-copied). For a repost to a platform that does not offer a selectable track. |
+| `captions/ectoin-survival-molecule.vtt` | Positioned sidecar, 116 cues. **Upload this one.** |
+| `captions/ectoin-survival-molecule.srt` | Same text, no positioning (SRT placement is not portably honoured). |
+| `captions/ectoin-survival-molecule.ass` | The same cues as ASS, for a machine whose ffmpeg has libass. |
+| `renders/ectoin-survival-molecule_a11y-raw.mp4` | Pre-master, kept only until the master is signed off. |
+
+Nothing in `renders/` from before this pass was modified — the retention master
+still hashes to `c08d704c89dbac5d2faaf8b245ac7cdd` and the v2 final to
+`636f3795dd591c3d80081c829e0c366a`.
+
 ### Gates
 
 Every gate below ran on `renders/ectoin-survival-molecule_a11y-master.mp4`.

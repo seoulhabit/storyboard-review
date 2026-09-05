@@ -1,0 +1,254 @@
+[
+ {
+  "cid": "01-hook",
+  "offset": 5.6,
+  "box": [
+   1100,
+   175,
+   1760,
+   300
+  ],
+  "label": "01 NOT THIS label on plate",
+  "floor": "normal"
+ },
+ {
+  "cid": "05-halomonas",
+  "offset": 4.4,
+  "box": [
+   96,
+   330,
+   980,
+   760
+  ],
+  "label": "05 Halomonas name + note on deck",
+  "floor": "large"
+ },
+ {
+  "cid": "07-question",
+  "offset": 8.6,
+  "box": [
+   140,
+   730,
+   1150,
+   950
+  ],
+  "label": "07 closing question on deck",
+  "floor": "large"
+ },
+ {
+  "cid": "08-humectant",
+  "offset": 11.0,
+  "box": [
+   96,
+   560,
+   900,
+   900
+  ],
+  "label": "08 humectant card while dimmed",
+  "floor": "normal"
+ },
+ {
+  "cid": "09-exclusion",
+  "offset": 6.0,
+  "box": [
+   140,
+   300,
+   760,
+   800
+  ],
+  "label": "09 paper world on deck",
+  "floor": "normal"
+ },
+ {
+  "cid": "09-exclusion",
+  "offset": 24.0,
+  "box": [
+   96,
+   300,
+   900,
+   830
+  ],
+  "label": "09 ink world note while dimmed",
+  "floor": "normal"
+ },
+ {
+  "cid": "19-limits",
+  "offset": 2.6,
+  "box": [
+   96,
+   330,
+   1824,
+   500
+  ],
+  "label": "19 headline on ink",
+  "floor": "large"
+ },
+ {
+  "cid": "19-limits",
+  "offset": 6.8,
+  "box": [
+   96,
+   470,
+   1824,
+   720
+  ],
+  "label": "19 claim cards after the strike",
+  "floor": "normal"
+ },
+ {
+  "cid": "21-verdict",
+  "offset": 5.0,
+  "box": [
+   96,
+   230,
+   1824,
+   430
+  ],
+  "label": "21 bitop / Merck / Kao tiles",
+  "floor": "normal"
+ },
+ {
+  "cid": "21-verdict",
+  "offset": 9.2,
+  "box": [
+   200,
+   480,
+   1720,
+   900
+  ],
+  "label": "21 verdict panel on the moss wash",
+  "floor": "large"
+ },
+ {
+  "cid": "23-numbers",
+  "offset": 4.0,
+  "box": [
+   96,
+   240,
+   980,
+   420
+  ],
+  "label": "23 headline serif on plate",
+  "floor": "large"
+ },
+ {
+  "cid": "23-numbers",
+  "offset": 13.5,
+  "box": [
+   96,
+   700,
+   980,
+   900
+  ],
+  "label": "23 brand card name row",
+  "floor": "normal"
+ },
+ {
+  "cid": "24-eleven",
+  "offset": 3.2,
+  "box": [
+   96,
+   100,
+   1824,
+   300
+  ],
+  "label": "24 carry row while inactive",
+  "floor": "normal"
+ },
+ {
+  "cid": "24-eleven",
+  "offset": 12.0,
+  "box": [
+   990,
+   385,
+   1800,
+   700
+  ],
+  "label": "24 ingredient list",
+  "floor": "normal"
+ },
+ {
+  "cid": "24-eleven",
+  "offset": 17.5,
+  "box": [
+   990,
+   385,
+   1800,
+   700
+  ],
+  "label": "24 ingredient list while dimmed",
+  "floor": "normal"
+ },
+ {
+  "cid": "26-kbeauty",
+  "offset": 7.5,
+  "box": [
+   170,
+   400,
+   1180,
+   460
+  ],
+  "label": "26 negated claim kicker",
+  "floor": "normal"
+ },
+ {
+  "cid": "26-kbeauty",
+  "offset": 7.5,
+  "box": [
+   170,
+   530,
+   1180,
+   590
+  ],
+  "label": "26 NOT TRUE label",
+  "floor": "normal"
+ },
+ {
+  "cid": "26-kbeauty",
+  "offset": 9.0,
+  "box": [
+   140,
+   700,
+   1180,
+   950
+  ],
+  "label": "26 true claim on ink card",
+  "floor": "large"
+ },
+ {
+  "cid": "27-resilience",
+  "offset": 14.0,
+  "box": [
+   120,
+   800,
+   660,
+   990
+  ],
+  "label": "27 'from' panel while dimmed",
+  "floor": "normal"
+ },
+ {
+  "cid": "28-remember",
+  "offset": 10.0,
+  "box": [
+   96,
+   640,
+   1400,
+   980
+  ],
+  "label": "28 closing line on montage",
+  "floor": "large"
+ },
+ {
+  "cid": "30-endcard",
+  "offset": 2.4,
+  "box": [
+   96,
+   380,
+   1180,
+   700
+  ],
+  "label": "30 end card handle",
+  "floor": "large"
+ }
+]

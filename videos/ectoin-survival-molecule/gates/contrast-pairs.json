@@ -1,0 +1,111 @@
+{
+ "tokens": {
+  "paper": "#F7F5F0",
+  "ink": "#131516",
+  "ink-soft": "#211F1B",
+  "mist": "#F0EBE1",
+  "coral": "#C97A5C",
+  "coral-deep": "#8E4228",
+  "aqua": "#59B8AE",
+  "moss": "#4F6B52",
+  "ink-2": "#666666",
+  "ink-2-dark": "#8E9293",
+  "ink-3": "#9C978D",
+  "ink-3-dark": "#7C8082",
+  "muted-on-plate": "#B7BBBA",
+  "plate-ground": "#404342"
+ },
+ "pairs": [
+  {
+   "label": "paper on ink",
+   "fg": "paper",
+   "bg": "ink"
+  },
+  {
+   "label": "paper on ink-soft",
+   "fg": "paper",
+   "bg": "ink-soft"
+  },
+  {
+   "label": "paper on moss wash",
+   "fg": "paper",
+   "bg": "moss"
+  },
+  {
+   "label": "ink on aqua",
+   "fg": "ink",
+   "bg": "aqua"
+  },
+  {
+   "label": "ink on paper",
+   "fg": "ink",
+   "bg": "paper"
+  },
+  {
+   "label": ".p-body ink-2 on paper",
+   "fg": "ink-2",
+   "bg": "paper"
+  },
+  {
+   "label": ".p-body ink-2 on mist",
+   "fg": "ink-2",
+   "bg": "mist"
+  },
+  {
+   "label": ".kicker.on-ink ink-2-dark on ink",
+   "fg": "ink-2-dark",
+   "bg": "ink"
+  },
+  {
+   "label": ".kicker.on-ink ink-2-dark on ink-soft",
+   "fg": "ink-2-dark",
+   "bg": "ink-soft"
+  },
+  {
+   "label": ".inci ink-2-dark on ink",
+   "fg": "ink-2-dark",
+   "bg": "ink"
+  },
+  {
+   "label": "coral on ink-soft",
+   "fg": "coral",
+   "bg": "ink-soft"
+  },
+  {
+   "label": ".void-tag coral-deep on paper",
+   "fg": "coral-deep",
+   "bg": "paper"
+  },
+  {
+   "label": "muted-on-plate on a scrimmed plate ground",
+   "fg": "muted-on-plate",
+   "bg": "plate-ground",
+   "note": "the plate ground is MEASURED off the render (a .scrim.ink over a bright photo composites to ~#404342), not declared anywhere in the palette"
+  },
+  {
+   "label": "ink-3-dark on ink-soft (superseded, must not carry text)",
+   "fg": "ink-3-dark",
+   "bg": "ink-soft",
+   "note": "expected FAIL -- .kicker.on-ink and .inci use --ink-2-dark instead"
+  },
+  {
+   "label": "ink-3 on paper (graphics only, never text)",
+   "fg": "ink-3",
+   "bg": "paper",
+   "note": "expected FAIL -- .arrow and .cohort dots use --ink-2 since 2026-09-05"
+  },
+  {
+   "label": "coral on moss wash",
+   "fg": "coral",
+   "bg": "moss",
+   "note": "expected FAIL -- why 21-verdict's 'No.' is --paper with a coral rule, not coral type: the wash sweeps under it mid-scene"
+  },
+  {
+   "label": "paper on coral",
+   "fg": "paper",
+   "bg": "coral",
+   "floor": "graphic",
+   "note": "large display type only; below the 4.5 text floor by design"
+  }
+ ]
+}

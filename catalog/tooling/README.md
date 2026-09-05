@@ -8,6 +8,11 @@ finding before the next project rebuilds the same check from scratch.
 |---|---|---|
 | [check-safe-area.py](check-safe-area.py) | `check-safe-area.py` | Scans a rendered MP4 for real content inside YouTube Shorts' reserved UI zones, measured on transformed, rendered pixels — catches a class of defect a source-level "are the `--safe-*` tokens consumed" audit structurally cannot see (a `transform: scale()`/`translate()` between a safe-padded box and the canvas moves ink past a compliant padding value without the source ever being wrong). |
 | [check-static-hold.py](check-static-hold.py) | `check-static-hold.py` | Scans a rendered MP4 for a static-hold two different ways: a whole-frame PSNR check (the original, project-portable form already in use across this channel), plus a region-aware check that grids the safe content box and flags a cell that goes from carrying real content to essentially empty and stays there — catching a scene's own HERO element sitting dead while unrelated motion elsewhere in the same frame keeps the whole-frame check clean. Advisory (exits 0), like the other `check-*.py` scripts here except `check-safe-area.py`. |
+| [check-blank-frames.py](check-blank-frames.py) | `check-blank-frames.py` | Scans a rendered MP4 for near-blank stretches — a gap between reveal beats that reads as a dropped frame rather than a hold. Byte-identical in every project that had it before this harvest, and its own docstring already claimed portability; this README cited it twice as the reference for the advisory-exit-0 convention while not containing it. Advisory (exits 0). |
+| [check-sfx-durations.py](check-sfx-durations.py) | `check-sfx-durations.py` | Checks every `<audio>` SFX cue's declared `data-duration` against the file's real ffprobe'd length, so a clip that is shorter than its slot cannot silently end early. Byte-identical across projects, same as above. Advisory (exits 0). |
+| [check-contrast-pixels.py](check-contrast-pixels.py) | `check-contrast-pixels.py` | Measures text contrast from **rendered pixels** — crop, Otsu-split into a dark and a light cluster, take each cluster's median, compute the WCAG ratio. Catches the two classes a stylesheet-reading check structurally cannot: a colour the compositor changes (a plate, a scrim, an opacity tween, a rule that overrides the declared value at render time) and an element sampled while it is clipped. **Hard gate.** Probes come from a JSON file, timed by `cid + offset` so the table survives a re-time. |
+| [check-contrast-tokens.py](check-contrast-tokens.py) | `check-contrast-tokens.py` | The source-side half of the same pair: every declared token pair against the ground it actually lands on. Catches a token that clears its floor on one ground and fails on another — `--ink-2` is 4.89:1 on paper and 3.44:1 on ink. Pairs come from a JSON file and may carry an `expected FAIL` note, which inverts the assertion so the gate fails if a documented-bad pair ever starts passing. **Hard gate**, runs with no render. |
+| [check-captions.py](check-captions.py) | `check-captions.py` | Gates the **shipped** `.srt`/`.vtt` rather than the builder's own output: reading speed (CPS), line length and count, minimum duration, overlaps, per-cue placement settings, non-speech cue cap, and case-sensitive term spelling from a JSON list. The spelling check is the one worth having — an ASR-derived track substitutes its best guess for exactly the vocabulary a technical channel depends on, and a case-insensitive check passes all of it. **Hard gate** unless `--advisory`. |
 
 **Provenance.** Built for `videos/peeling-not-progress`'s round-6 safe-area
 fix (2026-08-31) — an external QC report flagged content near the Shorts UI
@@ -700,3 +705,71 @@ the correct version passes. `adjacent` and `sparse` guard the other direction,
 so a check tuned until nothing can satisfy it fails here first.
 
 All five control scripts in this directory pass as of 2026-09-03.
+
+---
+
+## The 2026-09-05 harvest — check-blank-frames, check-sfx-durations, check-contrast-pixels, check-contrast-tokens, check-captions
+
+**Provenance.** Two accessibility passes ran the same week against different
+videos — `videos/ectoin-survival-molecule` and `videos/collagen-where-did-it-go`
+— in separate sessions that could not see each other's work. They converged:
+
+- both found their **caption builder silently dropping words** at an ASR
+  alignment boundary (Whisper writes `7%` for "seven percent" as one token, so a
+  builder mapping one ASR token to one scripted word loses the other — "Paula's
+  Choice says seven percent" shipped as "…says seven");
+- both wrote a **`check-captions.py`** from scratch, one arriving at reading
+  speed and exempt windows, the other at line caps, placement and term spelling;
+- both concluded that **contrast has to be measured on rendered pixels**, after
+  a declared-CSS check passed a master that shipped three scenes at ~1.3:1.
+
+Two independent derivations of the same three findings is the signal that they
+are properties of this pipeline rather than one project's bugs, which is what
+put them here. The catalogued versions are the union, with every project-
+specific value moved to a CLI flag or a JSON file.
+
+**What was merged from where.** `check-contrast-pixels.py` takes ectoin's probe
+schema (`cid + offset`, so the table survives a re-time; an absolute second is
+right for exactly one cut), its no-text-is-a-failure rule and its ink/ground RGB
+readout, plus collagen's **bin-edge fix** — `otsu()` returns a bin index over
+`[i, i+1)`, and a flat unjittered fill can land exactly on a bin's lower edge
+and fall on the wrong side of a bare `<= thr`. Without `thr + 1` the control
+fixture below mis-splits, so this one is not optional. It also carries ectoin's
+`float()` cast: `ratio_rgb` returns a numpy scalar, `ok` was an `np.bool_`, and
+a caller's `r is False` identity test never matched it — that gate printed FAIL
+on four probes and exited 0 for two render cycles.
+
+`check-captions.py` takes collagen's CPS ceiling and `--exempt-window` and
+ectoin's line caps, cue-setting requirement, non-speech cap and term lists.
+Every threshold that the two projects set differently defaults to **off**: a
+gate asserting a policy the project never adopted is noise, and noise is how a
+gate stops being read.
+
+**The orphan fixtures.** `test-contrast-controls.py`, `test-legibility-controls.py`
+and `test-vo-pace-controls.py` were catalogued here in the same week **without
+their gates**, and each loaded its gate from
+`videos/collagen-where-did-it-go/scripts/` by repo-root-relative path — a
+catalogued control reaching back into one named project, which is exactly the
+coupling this directory exists to remove. `test-contrast-controls.py` now loads
+the gate beside it. The other two still point into collagen and will until
+`check-legibility.py` and `check-vo-pace.py` are catalogued too; they are
+collagen-only today, so they were out of scope for a *shared*-gate harvest, but
+the coupling is a known defect, not a design.
+
+**Field contract.** Each script's own docstring carries it; all five follow the
+convention above — `<project_root>` or `<render>` first, everything project-
+specific behind a flag or in a JSON file, hard gates exit non-zero.
+`check-contrast-pixels.py` and `check-captions.py` were validated by reproducing
+**both** source projects' existing verdicts exactly, driven only by JSON and
+flags: 21/21 probes on ectoin's master, and collagen's own single 22.4 CPS
+finding with and without its reviewed exempt window.
+
+**Controls.** `test-contrast-controls.py` (re-pointed) and the new
+`test-caption-controls.py`, which drives the gate through its **CLI** rather
+than importing it — so an exit code that stops matching the printed verdict is
+itself caught — and pairs every "must reject" fixture with a "must accept" one,
+because a silenced gate passes a one-sided test.
+
+**Status: validated against two real projects.** Copy into a new project's
+`scripts/` and wire into `package.json`, per this directory's copy-don't-import
+convention.

@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "pdrn-pack-example",
+  "ingredient_id": "pdrn",
+  "status": "example",
+  "package_media": {
+    "path": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+    "asset_id": "pdrn-dropper-packshot",
+    "status": "approved",
+    "background": "fixed_light"
+  },
+  "front_claim": {
+    "value": "PDRN serum",
+    "state": "requires_context",
+    "source": "Illustrative consumer-facing category wording"
+  },
+  "ingredient_declaration": {
+    "value": "Exact label wording required",
+    "state": "not_disclosed",
+    "source": "The ingredient pack forbids automatic substitution among PDRN, PN, Hydrolyzed DNA, and Sodium DNA"
+  },
+  "inspection": {
+    "quantity": {
+      "value": "No photographed product label is attached, so concentration is not established.",
+      "state": "not_established"
+    },
+    "identity": {
+      "value": "Source, fragment profile, formulation, and naming remain product-specific.",
+      "state": "requires_context",
+      "source": "catalog-v2/ingredients/pdrn/pack.json"
+    },
+    "vehicle": {
+      "value": "The example is a topical product archetype; it must remain separate from injected routes.",
+      "state": "known"
+    },
+    "evidence": {
+      "value": "One defined topical eye cream has early human evidence; injected medical evidence is not serum evidence.",
+      "state": "requires_context",
+      "source": "PDRN-SCI-2026-TOPICAL-850K; PDRN-SCI-2014-DIABETIC-ULCER"
+    },
+    "boundary": {
+      "value": "Do not infer salmon source, fragment size, concentration, or category-wide clinical proof.",
+      "state": "known"
+    }
+  },
+  "citation_ids": ["PDRN-SCI-2026-TOPICAL-850K", "PDRN-SCI-2014-DIABETIC-ULCER"],
+  "disclosure": "Catalog demonstration using an authored, unbranded package archetype—not a review of a commercial product."
+}

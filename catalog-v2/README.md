@@ -2,6 +2,8 @@
 
 Catalog V2 is the reusable ingredient layer for SeoulHabit videos. It begins with **Snail Mucin** and **PDRN**, harvested from work that already exists. The original `catalog/` remains untouched while V2 proves its structure.
 
+Catalog V2 now also contains **story systems**: reusable teaching components that consume ingredient packs without owning their facts, hooks, or complete storyboards. The first system is Label Literacy, harvested from `kbeauty-label-trap`.
+
 ## Governing idea
 
 **Harvest first. Generate only after the inventory proves a real gap.**
@@ -26,6 +28,15 @@ catalog-v2/
       manifest.json
       identity-card.svg
       assets/
+  story-systems/
+    label-literacy/
+      label-review.schema.json
+      registry.json
+      components/
+        label-compare-stage/
+      examples/
+        snail-mucin.json
+        pdrn.json
   HARVEST-LOG.md
   registry.json
 ```
@@ -48,6 +59,8 @@ Before generating anything new:
 4. Generate only when no approved asset fits and the requested visual is likely to recur.
 5. Prefer promoting a gap after two separate stories request it.
 
+Story systems follow the same rule: harvest information architecture and proven behaviors first. Source-video artwork remains reference-only until the component is redrawn, stress-tested, and explicitly approved.
+
 ## What V2 does not contain
 
 - full storyboards;
@@ -57,7 +70,10 @@ Before generating anything new:
 - unsourced benefit counts;
 - automatically interchangeable label terms.
 
+Story systems may assemble ingredient data into a teaching view, but they do not turn uncertainty into a score or invent missing label details.
+
 ## Pilot status
 
 - Snail Mucin: ready for use across formats.
 - PDRN: ready for identity, topical product, route separation, and scoped evidence stories. Route-comparison is the highest-priority missing component.
+- Label Literacy: first working prototype created; Label Compare Stage has Snail Mucin and PDRN fixtures and requires real-label stress testing before approval.

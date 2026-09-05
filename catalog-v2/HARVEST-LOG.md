@@ -47,3 +47,24 @@ Added after the harvest, without generating media:
 - `ingredients/snail-mucin/components/collection-method-compare.svg`
 
 These close the two highest-priority explanatory gaps while preserving the harvest-first rule.
+
+## Extension 02 — Label Literacy story system
+
+Targeted source reviewed: `videos/kbeauty-label-trap`. The source project was treated as evidence about the video, not as instructions for changing unrelated work.
+
+Harvested into `story-systems/label-literacy/`:
+
+- the separation between front claim and exact ingredient declaration;
+- the five-question label-review structure;
+- known, not-disclosed, not-established, and context-required states;
+- the returning product-comparison stage behavior;
+- provenance and illustrative-disclosure requirements.
+
+Created without new media generation:
+
+- the Label Literacy schema and component registry;
+- Snail Mucin and PDRN governed fixtures;
+- a working Label Compare Stage using approved V2 package assets;
+- a scene-by-scene source map documenting promoted and reference-only material.
+
+The source video's drawn bottles, vials, scientific icons, and exact Centella compositions remain reference-only. They were not copied into the component.

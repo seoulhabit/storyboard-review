@@ -1,0 +1,60 @@
+{
+  "component_id": "label-compare-stage",
+  "display_name": "Label Compare Stage",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Reveal the difference between a front-of-pack ingredient claim, an exact ingredient declaration, and what remains unknown.",
+  "input_schema": "../../label-review.schema.json",
+  "required_inputs": [
+    "package_media",
+    "front_claim",
+    "ingredient_declaration",
+    "inspection.quantity",
+    "inspection.identity",
+    "inspection.vehicle",
+    "inspection.evidence",
+    "inspection.boundary",
+    "disclosure"
+  ],
+  "visual_states": [
+    "front_claim",
+    "label_revealed",
+    "known",
+    "not_disclosed",
+    "not_established",
+    "requires_context"
+  ],
+  "layouts": ["16:9", "9:16-safe"],
+  "shared_primitives": [
+    "ingredient-list-ribbon",
+    "evidence-status-chip",
+    "illustrative-disclosure"
+  ],
+  "fixtures": [
+    "../../examples/snail-mucin.json",
+    "../../examples/pdrn.json"
+  ],
+  "harvested_from": {
+    "project": "videos/kbeauty-label-trap",
+    "scenes": ["s01", "s02", "s03", "s12", "s13"],
+    "promoted": [
+      "front claim and exact declaration are separate fields",
+      "unknown information remains visible",
+      "five-question inspection rail",
+      "return to the same comparison stage later in a story"
+    ],
+    "reference_only": [
+      "drawn bottle SVGs",
+      "vertical ingredient-list ribbons",
+      "Centella-specific wording",
+      "exact scene animation"
+    ]
+  },
+  "approval_gates": [
+    "photographed real-product label test",
+    "long ingredient-declaration overflow test",
+    "16:9 rendered-frame review",
+    "9:16 rendered-frame review",
+    "narration-speed reveal timing review"
+  ]
+}

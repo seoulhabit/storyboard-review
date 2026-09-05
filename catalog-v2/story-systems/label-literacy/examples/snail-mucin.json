@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "snail-mucin-pack-example",
+  "ingredient_id": "snail-mucin",
+  "status": "example",
+  "package_media": {
+    "path": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
+    "asset_id": "snail-airless-pump",
+    "status": "approved",
+    "background": "transparent"
+  },
+  "front_claim": {
+    "value": "Snail mucin",
+    "state": "requires_context",
+    "source": "Consumer category term from the ingredient pack"
+  },
+  "ingredient_declaration": {
+    "value": "Snail Secretion Filtrate",
+    "state": "requires_context",
+    "source": "Preferred pack term; verify against the selected product label"
+  },
+  "inspection": {
+    "quantity": {
+      "value": "No photographed product label is attached, so concentration is not established.",
+      "state": "not_established"
+    },
+    "identity": {
+      "value": "Animal-derived secretion filtrate; source and processing can vary.",
+      "state": "known",
+      "source": "catalog-v2/ingredients/snail-mucin/pack.json"
+    },
+    "vehicle": {
+      "value": "The example package is an unbranded archetype, not a documented finished formula.",
+      "state": "not_established"
+    },
+    "evidence": {
+      "value": "Small human studies concern specific preparations and do not prove every snail-mucin product.",
+      "state": "requires_context",
+      "source": "SNAIL-SCI-2013-PHOTOAGING; SNAIL-SCI-2020-AGING-REGIMEN"
+    },
+    "boundary": {
+      "value": "Do not infer collection conditions, welfare claims, or a medical mechanism from this image.",
+      "state": "known"
+    }
+  },
+  "citation_ids": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN"],
+  "disclosure": "Catalog demonstration using an authored, unbranded package archetype—not a review of a commercial product."
+}

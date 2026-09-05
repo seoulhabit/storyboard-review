@@ -1,5 +1,5 @@
 {
-  "catalog_version": "2.0.0-alpha.2",
+  "catalog_version": "2.0.0-alpha.3",
   "updated": "2026-09-05",
   "policy": "harvest_first",
   "ingredient_packs": [
@@ -28,11 +28,26 @@
       "highest_priority_gap": "transparent PDRN dropper cutout"
     }
   ],
+  "story_systems": [
+    {
+      "system_id": "label-literacy",
+      "display_name": "Label Literacy",
+      "version": "0.1.0",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/registry.json",
+      "working_component_count": 1,
+      "planned_component_count": 5,
+      "first_fixtures": ["snail-mucin", "pdrn"],
+      "highest_priority_gate": "stress test Label Compare Stage with a photographed real-product label"
+    }
+  ],
   "global_rules": [
     "A format consumes an ingredient pack; it must not copy a complete story.",
     "Every visual must have provenance, status, approved uses, and avoid rules.",
     "Every efficacy claim must resolve to a traceable evidence record.",
     "Medical injection evidence cannot support an intact-skin topical claim.",
-    "No new generation during the initial harvest phase."
+    "No new generation during the initial harvest phase.",
+    "A story system may consume ingredient packs but must not own or duplicate their scientific facts.",
+    "Missing label information must render as not disclosed or not established."
   ]
 }

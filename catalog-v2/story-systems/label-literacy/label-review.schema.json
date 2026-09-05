@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seoulhabit.example/schemas/label-review.schema.json",
+  "title": "SeoulHabit label review fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "ingredient_id",
+    "status",
+    "package_media",
+    "front_claim",
+    "ingredient_declaration",
+    "inspection",
+    "disclosure"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "fixture_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "ingredient_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "status": { "enum": ["example", "reviewed_product"] },
+    "package_media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "asset_id", "status"],
+      "properties": {
+        "path": { "type": "string" },
+        "asset_id": { "type": "string" },
+        "status": { "enum": ["approved", "restricted", "reference_only"] },
+        "background": { "enum": ["transparent", "fixed_light", "fixed_dark"] }
+      }
+    },
+    "front_claim": { "$ref": "#/$defs/fact" },
+    "ingredient_declaration": { "$ref": "#/$defs/fact" },
+    "inspection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "identity", "vehicle", "evidence", "boundary"],
+      "properties": {
+        "quantity": { "$ref": "#/$defs/fact" },
+        "identity": { "$ref": "#/$defs/fact" },
+        "vehicle": { "$ref": "#/$defs/fact" },
+        "evidence": { "$ref": "#/$defs/fact" },
+        "boundary": { "$ref": "#/$defs/fact" }
+      }
+    },
+    "citation_ids": { "type": "array", "items": { "type": "string" } },
+    "disclosure": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "state"],
+      "properties": {
+        "value": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["known", "not_disclosed", "not_established", "requires_context"] },
+        "source": { "type": "string" }
+      }
+    }
+  }
+}

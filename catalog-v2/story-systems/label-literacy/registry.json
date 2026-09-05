@@ -1,0 +1,49 @@
+{
+  "system_id": "label-literacy",
+  "display_name": "Label Literacy",
+  "version": "0.1.0",
+  "status": "prototype",
+  "harvest_source": "videos/kbeauty-label-trap",
+  "components": [
+    {
+      "id": "label-compare-stage",
+      "status": "prototype",
+      "path": "catalog-v2/story-systems/label-literacy/components/label-compare-stage/preview.html",
+      "source_scenes": ["s01", "s02", "s03", "s12", "s13"],
+      "fixtures": ["snail-mucin", "pdrn"]
+    },
+    {
+      "id": "ingredient-order-map",
+      "status": "planned",
+      "source_scenes": ["s04", "s05"]
+    },
+    {
+      "id": "ingredient-identity-map",
+      "status": "planned",
+      "source_scenes": ["s02", "s06", "s07"]
+    },
+    {
+      "id": "formula-vehicle-journey",
+      "status": "planned",
+      "source_scenes": ["s08", "s09"]
+    },
+    {
+      "id": "evidence-distance-map",
+      "status": "planned",
+      "source_scenes": ["s10"]
+    },
+    {
+      "id": "boundary-suitability-card",
+      "status": "planned",
+      "source_scenes": ["s11"]
+    }
+  ],
+  "shared_primitives": [
+    { "id": "evidence-status-chip", "status": "prototype" },
+    { "id": "illustrative-disclosure", "status": "prototype" },
+    { "id": "ingredient-list-ribbon", "status": "prototype" },
+    { "id": "question-seal", "status": "planned" },
+    { "id": "citation-chip", "status": "planned" },
+    { "id": "forensic-scanner-motion", "status": "planned" }
+  ]
+}

@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Label Compare Stage — Catalog V2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --rice: #f3f4ef;
+      --ink: #172332;
+      --soft-ink: #526071;
+      --glass: rgba(255, 255, 255, 0.58);
+      --line: rgba(23, 35, 50, 0.16);
+      --perilla: #7f9d88;
+      --assay: #6358a7;
+      --signal: #e15f52;
+      --shadow: rgba(23, 35, 50, 0.14);
+    }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      padding: clamp(16px, 2vw, 30px);
+      background: #d7dcd8;
+      color: var(--ink);
+      font-family: "Avenir Next", "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .preview-shell {
+      width: min(1600px, 100%);
+      margin: 0 auto;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .toolbar-copy strong { font-size: 15px; font-weight: 650; }
+    .toolbar-copy span { color: var(--soft-ink); font-size: 13px; }
+
+    .switcher {
+      display: flex;
+      padding: 4px;
+      border: 1px solid rgba(23, 35, 50, 0.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.42);
+    }
+
+    .switcher button {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 16px;
+      color: var(--soft-ink);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .switcher button[aria-selected="true"] {
+      color: white;
+      background: var(--ink);
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--assay);
+      outline-offset: 3px;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border: 1px solid rgba(23, 35, 50, 0.17);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 19% 35%, rgba(127,157,136,0.22), transparent 28%),
+        linear-gradient(110deg, #e7ebe6 0 38%, var(--rice) 38% 100%);
+      box-shadow: 0 28px 70px var(--shadow);
+    }
+
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(23,35,50,0.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23,35,50,0.026) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to right, black, transparent 57%);
+    }
+
+    .masthead {
+      position: absolute;
+      z-index: 5;
+      top: 4.5%;
+      left: 4.2%;
+      right: 4.2%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand { font-size: clamp(13px, 1vw, 19px); font-weight: 680; letter-spacing: -0.01em; }
+
+    .mode-note {
+      max-width: 34ch;
+      color: var(--soft-ink);
+      font-size: clamp(11px, 0.8vw, 15px);
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .product-bay {
+      position: absolute;
+      z-index: 2;
+      inset: 12% 61% 8% 3.5%;
+      display: grid;
+      place-items: center;
+    }
+
+    .claim-ghost {
+      position: absolute;
+      left: -1%;
+      top: 49%;
+      width: 100%;
+      color: rgba(23,35,50,0.12);
+      font-size: clamp(58px, 7.2vw, 132px);
+      font-weight: 700;
+      letter-spacing: -0.07em;
+      line-height: 0.78;
+      transform: rotate(-90deg) translate(-8%, -18%);
+      transform-origin: center;
+      white-space: nowrap;
+    }
+
+    .product-matte {
+      position: relative;
+      width: 69%;
+      height: 82%;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 46% 46% 16% 16% / 12% 12% 8% 8%;
+    }
+
+    .product-matte::before {
+      content: "";
+      position: absolute;
+      inset: 20% 5% 3%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(23,35,50,0.19), transparent 68%);
+      filter: blur(18px);
+      transform: translateY(48%);
+    }
+
+    .product-image {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 20px rgba(23,35,50,0.12));
+    }
+
+    .product-matte.fixed-light {
+      width: 76%;
+      height: 75%;
+      border-radius: 30px;
+      background: #eee9e1;
+      box-shadow: inset 0 0 0 1px rgba(23,35,50,0.08), 0 20px 44px rgba(23,35,50,0.10);
+    }
+
+    .product-matte.fixed-light .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dossier {
+      position: absolute;
+      z-index: 3;
+      inset: 13% 3.5% 8% 40%;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: clamp(12px, 1.25vw, 24px);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: clamp(10px, 1vw, 18px);
+    }
+
+    .ingredient-title {
+      max-width: 68%;
+      margin: 0;
+      font-size: clamp(31px, 3.2vw, 60px);
+      font-weight: 610;
+      letter-spacing: -0.045em;
+      line-height: 0.98;
+    }
+
+    .system-title {
+      color: var(--soft-ink);
+      font-size: clamp(12px, 0.85vw, 16px);
+      line-height: 1.25;
+      text-align: right;
+    }
+
+    .label-film {
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.82);
+      border-radius: 22px;
+      background: var(--glass);
+      box-shadow: inset 0 0 0 1px rgba(23,35,50,0.05), 0 18px 60px rgba(56,68,81,0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .film-top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+      min-height: 44%;
+      padding: clamp(18px, 2.2vw, 40px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .field-name { color: var(--soft-ink); font-size: clamp(12px, 0.82vw, 16px); }
+
+    .field-value {
+      margin-top: 8px;
+      font-size: clamp(24px, 2.15vw, 41px);
+      font-weight: 620;
+      letter-spacing: -0.035em;
+      line-height: 1.04;
+    }
+
+    .reveal-button {
+      position: relative;
+      min-width: 126px;
+      min-height: 126px;
+      border: 0;
+      border-radius: 50%;
+      color: white;
+      background: var(--assay);
+      cursor: pointer;
+      box-shadow: 0 14px 38px rgba(99,88,167,0.26);
+    }
+
+    .reveal-button::before,
+    .reveal-button::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      transform-origin: center;
+    }
+
+    .reveal-button::before { width: 31px; height: 2px; left: 47px; top: 55px; }
+    .reveal-button::after { width: 2px; height: 31px; left: 62px; top: 40px; }
+
+    .reveal-button span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 23px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .label-film.revealed .reveal-button::after { transform: rotate(90deg); }
+
+    .film-reveal {
+      position: absolute;
+      z-index: 4;
+      inset: 44% 0 0;
+      padding: clamp(16px, 1.7vw, 31px) clamp(18px, 2.2vw, 40px);
+      background: rgba(248,249,245,0.96);
+      transform: translateY(calc(100% - 9px));
+      transition: transform 560ms cubic-bezier(.2,.85,.26,1);
+      box-shadow: 0 -12px 36px rgba(23,35,50,0.10);
+    }
+
+    .film-reveal::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 9px;
+      background: linear-gradient(90deg, var(--perilla), var(--assay) 52%, var(--signal));
+    }
+
+    .label-film.revealed .film-reveal { transform: translateY(0); }
+
+    .reveal-grid {
+      display: grid;
+      grid-template-columns: 1fr minmax(170px, 0.56fr);
+      gap: clamp(20px, 2vw, 38px);
+      align-items: start;
+    }
+
+    .exact-value {
+      margin-top: 7px;
+      font-size: clamp(23px, 1.8vw, 34px);
+      font-weight: 600;
+      line-height: 1.08;
+    }
+
+    .source-line {
+      margin-top: 9px;
+      max-width: 58ch;
+      color: var(--soft-ink);
+      font-size: clamp(10px, 0.72vw, 14px);
+      line-height: 1.35;
+    }
+
+    .status-chip {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 230px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      padding: 7px 11px;
+      color: var(--soft-ink);
+      font-size: clamp(10px, 0.72vw, 14px);
+      line-height: 1.2;
+    }
+
+    .status-chip::before {
+      content: "";
+      flex: 0 0 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-chip.known { color: #426b50; }
+    .status-chip.requires_context { color: var(--assay); }
+    .status-chip.not_disclosed,
+    .status-chip.not_established { color: #a2473e; }
+
+    .question-rail {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      min-height: clamp(102px, 8.8vw, 166px);
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .question {
+      position: relative;
+      display: grid;
+      align-content: space-between;
+      gap: 8px;
+      padding: clamp(12px, 1.2vw, 22px);
+      border-right: 1px solid var(--line);
+    }
+
+    .question:last-child { border-right: 0; }
+    .question::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      background: var(--question-color, var(--perilla));
+    }
+
+    .question:nth-child(2) { --question-color: #8ca99a; }
+    .question:nth-child(3) { --question-color: #788ba1; }
+    .question:nth-child(4) { --question-color: var(--assay); }
+    .question:nth-child(5) { --question-color: var(--signal); }
+
+    .question-name { color: var(--soft-ink); font-size: clamp(10px, 0.68vw, 13px); }
+    .question-value {
+      display: -webkit-box;
+      overflow: hidden;
+      color: var(--ink);
+      font-size: clamp(11px, 0.82vw, 16px);
+      font-weight: 540;
+      line-height: 1.28;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .question-state {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--soft-ink);
+      font-size: clamp(9px, 0.62vw, 12px);
+    }
+
+    .question-state::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--question-color, var(--perilla));
+    }
+
+    .disclosure {
+      position: absolute;
+      z-index: 5;
+      left: 4.2%;
+      bottom: 2.2%;
+      max-width: 62%;
+      color: rgba(23,35,50,0.67);
+      font-size: clamp(9px, 0.64vw, 12px);
+      line-height: 1.3;
+    }
+
+    .version {
+      position: absolute;
+      z-index: 5;
+      right: 3.5%;
+      bottom: 2.2%;
+      color: rgba(23,35,50,0.54);
+      font-size: clamp(9px, 0.64vw, 12px);
+    }
+
+    @media (max-width: 840px) {
+      body { padding: 12px; }
+      .toolbar { align-items: stretch; flex-direction: column; }
+      .switcher { align-self: flex-start; }
+      .stage { aspect-ratio: 9 / 16; min-height: 700px; border-radius: 18px; }
+      .masthead { top: 3%; }
+      .mode-note { display: none; }
+      .product-bay { inset: 7% 8% 56% 8%; }
+      .claim-ghost { display: none; }
+      .product-matte { width: 50%; height: 100%; }
+      .product-matte.fixed-light { width: 57%; height: 94%; }
+      .dossier { inset: 45% 5% 6% 5%; gap: 9px; }
+      .title-row { padding-bottom: 8px; }
+      .ingredient-title { max-width: 66%; font-size: 28px; }
+      .system-title { font-size: 11px; }
+      .film-top { min-height: 42%; padding: 14px; }
+      .field-value { font-size: 24px; }
+      .reveal-button { min-width: 88px; min-height: 88px; }
+      .reveal-button::before { width: 24px; left: 32px; top: 36px; }
+      .reveal-button::after { height: 24px; left: 43px; top: 25px; }
+      .reveal-button span { bottom: 14px; font-size: 10px; }
+      .film-reveal { inset: 42% 0 0; padding: 17px 14px; }
+      .reveal-grid { gap: 10px; }
+      .exact-value { font-size: 21px; }
+      .status-chip { padding: 5px 8px; font-size: 10px; }
+      .question-rail { min-height: 165px; }
+      .question { padding: 10px 7px; }
+      .question-value { font-size: 10px; -webkit-line-clamp: 5; }
+      .question-state { font-size: 9px; }
+      .disclosure { left: 5%; max-width: 72%; font-size: 8px; }
+      .version { right: 5%; font-size: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="preview-shell">
+    <header class="toolbar">
+      <div class="toolbar-copy">
+        <strong>Label Compare Stage</strong>
+        <span>Working Catalog V2 component · use the reveal control inside the frame</span>
+      </div>
+      <div class="switcher" role="tablist" aria-label="Ingredient fixture">
+        <button type="button" role="tab" aria-selected="true" data-fixture="snail">Snail Mucin</button>
+        <button type="button" role="tab" aria-selected="false" data-fixture="pdrn">PDRN</button>
+      </div>
+    </header>
+
+    <section class="stage" aria-label="Label comparison component preview">
+      <div class="masthead">
+        <div class="brand">SeoulHabit ingredient review</div>
+        <div class="mode-note">A front claim begins the question. The ingredient declaration and missing information determine what can follow.</div>
+      </div>
+
+      <div class="product-bay">
+        <div class="claim-ghost" id="claimGhost">Snail</div>
+        <div class="product-matte" id="productMatte">
+          <img class="product-image" id="productImage" alt="Unbranded Snail Mucin package archetype">
+        </div>
+      </div>
+
+      <div class="dossier">
+        <div class="title-row">
+          <h1 class="ingredient-title" id="ingredientTitle">Snail Mucin</h1>
+          <div class="system-title">Label review<br>five-question view</div>
+        </div>
+
+        <div class="label-film" id="labelFilm">
+          <div class="film-top">
+            <div>
+              <div class="field-name">What the front suggests</div>
+              <div class="field-value" id="frontClaim">Snail mucin</div>
+            </div>
+            <button class="reveal-button" id="revealButton" type="button" aria-expanded="false">
+              <span>Reveal label</span>
+            </button>
+          </div>
+          <div class="film-reveal">
+            <div class="reveal-grid">
+              <div>
+                <div class="field-name">What the ingredient declaration can establish</div>
+                <div class="exact-value" id="exactValue">Snail Secretion Filtrate</div>
+                <div class="source-line" id="exactSource">Preferred pack term; verify against the selected product label</div>
+              </div>
+              <div class="status-chip requires_context" id="exactStatus">Needs product context</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-rail" id="questionRail" aria-label="Five label review questions"></div>
+      </div>
+
+      <div class="disclosure" id="disclosure"></div>
+      <div class="version">Label Literacy 0.1</div>
+    </section>
+  </main>
+
+  <script>
+    const fixtures = {
+      snail: {
+        title: "Snail Mucin",
+        ghost: "Snail",
+        image: "../../../../ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
+        imageAlt: "Unbranded Snail Mucin airless-pump package archetype",
+        imageMode: "transparent",
+        frontClaim: "Snail mucin",
+        exactValue: "Snail Secretion Filtrate",
+        exactSource: "Preferred pack term; verify against the selected product label",
+        exactState: "requires_context",
+        exactStateLabel: "Needs product context",
+        disclosure: "Catalog demonstration using an authored, unbranded package archetype—not a commercial product review.",
+        inspection: [
+          ["How much?", "No photographed label; concentration is not established.", "not established"],
+          ["Which version?", "Animal-derived secretion filtrate; processing can vary.", "known boundary"],
+          ["What carries it?", "Finished formula is not documented by this archetype.", "not established"],
+          ["What evidence?", "Small studies concern specific preparations.", "context required"],
+          ["Where does it stop?", "No welfare or medical-mechanism inference.", "known boundary"]
+        ]
+      },
+      pdrn: {
+        title: "PDRN",
+        ghost: "PDRN",
+        image: "../../../../ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+        imageAlt: "Unbranded PDRN dropper package archetype on a fixed cream background",
+        imageMode: "fixed-light",
+        frontClaim: "PDRN serum",
+        exactValue: "Exact label wording required",
+        exactSource: "Do not automatically substitute PDRN, PN, Hydrolyzed DNA, or Sodium DNA",
+        exactState: "not_disclosed",
+        exactStateLabel: "Not disclosed",
+        disclosure: "Catalog demonstration using an authored, unbranded package archetype—not a commercial product review.",
+        inspection: [
+          ["How much?", "No photographed label; concentration is not established.", "not established"],
+          ["Which version?", "Source and fragment profile remain product-specific.", "context required"],
+          ["What carries it?", "This is topical; injected evidence stays separate.", "known boundary"],
+          ["What evidence?", "One defined topical formula has early human evidence.", "context required"],
+          ["Where does it stop?", "No source, size, or category-wide proof inference.", "known boundary"]
+        ]
+      }
+    };
+
+    const labelFilm = document.querySelector("#labelFilm");
+    const revealButton = document.querySelector("#revealButton");
+
+    function renderFixture(key) {
+      const fixture = fixtures[key];
+      document.querySelector("#ingredientTitle").textContent = fixture.title;
+      document.querySelector("#claimGhost").textContent = fixture.ghost;
+      document.querySelector("#frontClaim").textContent = fixture.frontClaim;
+      document.querySelector("#exactValue").textContent = fixture.exactValue;
+      document.querySelector("#exactSource").textContent = fixture.exactSource;
+      document.querySelector("#disclosure").textContent = fixture.disclosure;
+
+      const productImage = document.querySelector("#productImage");
+      productImage.src = fixture.image;
+      productImage.alt = fixture.imageAlt;
+
+      const productMatte = document.querySelector("#productMatte");
+      productMatte.className = `product-matte ${fixture.imageMode}`;
+
+      const exactStatus = document.querySelector("#exactStatus");
+      exactStatus.className = `status-chip ${fixture.exactState}`;
+      exactStatus.textContent = fixture.exactStateLabel;
+
+      const rail = document.querySelector("#questionRail");
+      rail.innerHTML = fixture.inspection.map(([name, value, state]) => `
+        <article class="question">
+          <div class="question-name">${name}</div>
+          <div class="question-value">${value}</div>
+          <div class="question-state">${state}</div>
+        </article>
+      `).join("");
+
+      labelFilm.classList.remove("revealed");
+      revealButton.setAttribute("aria-expanded", "false");
+      revealButton.querySelector("span").textContent = "Reveal label";
+    }
+
+    revealButton.addEventListener("click", () => {
+      const isRevealed = labelFilm.classList.toggle("revealed");
+      revealButton.setAttribute("aria-expanded", String(isRevealed));
+      revealButton.querySelector("span").textContent = isRevealed ? "Hide label" : "Reveal label";
+    });
+
+    document.querySelectorAll("[data-fixture]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-fixture]").forEach((item) => item.setAttribute("aria-selected", "false"));
+        button.setAttribute("aria-selected", "true");
+        renderFixture(button.dataset.fixture);
+      });
+    });
+
+    renderFixture("snail");
+  </script>
+</body>
+</html>

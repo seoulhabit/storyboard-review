@@ -178,6 +178,17 @@
  {
   "file": "03-building",
   "unit": "04-demolition",
+  "name": "the sun rises",
+  "abs": 20.49,
+  "area": 0.09,
+  "dl": 96,
+  "dur": 1.9,
+  "per_step": 0.57,
+  "registers": false
+ },
+ {
+  "file": "03-building",
+  "unit": "04-demolition",
   "name": "sky warm",
   "abs": 22.839,
   "area": 0.119,

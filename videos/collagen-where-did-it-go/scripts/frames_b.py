@@ -77,8 +77,15 @@ def file_03_building(fspan, fctx):
     tl.to("#world", { scale:1, y:0, duration:0.6, ease:EASE.camera }, @w(firm));
 
     // ---- unit 4: the demolition crew --------------------------------------------
-    tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, @w(age));
-    tl.fromTo("#sun", { scale:0.5, opacity:0, transformOrigin:"50% 50%" }, { scale:1, opacity:1, duration:0.5, ease:EASE.slam }, @w(ultraviolet) - 0.1);
+    // "As we age, collagen production slows" -- the braces dim, and the agent of
+    // the next sentence RISES into frame while it is still being said. A dim on
+    // six thin lines is a real pixel change but moves no bounding box, so this
+    // stretch read as 2.25s frozen; the sun arriving is both the missing motion
+    // and the cause of everything that follows it.
+    tl.to(".beam", { opacity:0.6, duration:0.6, ease:EASE.hold }, @w(age));
+    tl.fromTo("#sun", { y:-300, scale:1, opacity:1, transformOrigin:"50% 50%" },
+              { y:0, duration:1.9, ease:EASE.arrive }, @w(age) + 0.2);
+    tl.to("#sun", { scale:1.12, duration:0.28, yoyo:true, repeat:1, ease:EASE.slam }, @w(ultraviolet) - 0.1);
     tl.fromTo("#sky-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(ultraviolet) - 0.1);
     tl.to("#rays", { opacity:1, duration:0.1 }, @w(enzymes));
     drawIn(tl, ".ray", @w(enzymes), 0.5, 0.10, EASE.wipe);
@@ -141,6 +148,7 @@ def file_03_building(fspan, fctx):
         {"name": "firm settle",     "at": "@w(firm)",         "area": 0.5,   "dl": 60,  "dur": 0.6},
     ]
     MOTION["04-demolition"]["beats"] = [
+        {"name": "the sun rises", "at": "@w(age)+0.2",         "area": 0.09,  "dl": 96,  "dur": 1.9},
         {"name": "sky warm",     "at": "@w(ultraviolet)-0.1", "area": 0.119, "dl": 77,  "dur": 0.5},
         {"name": "camera push",  "at": "@w(cut)-0.2",         "area": 0.5,   "dl": 60,  "dur": 1.1},
         {"name": "shards fall",  "at": "@w(apart)+0.08",      "area": 0.02,  "dl": 80,  "dur": 0.6},

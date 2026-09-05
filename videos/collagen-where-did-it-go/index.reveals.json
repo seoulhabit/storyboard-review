@@ -435,6 +435,15 @@
   "file": "03-building",
   "unit": "04-demolition",
   "kind": "w",
+  "word": "age",
+  "occurrence": 1,
+  "seconds": 6.303,
+  "abs": 20.29
+ },
+ {
+  "file": "03-building",
+  "unit": "04-demolition",
+  "kind": "w",
   "word": "ultraviolet",
   "occurrence": 1,
   "seconds": 8.952,

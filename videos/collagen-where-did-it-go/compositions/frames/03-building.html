@@ -408,8 +408,15 @@
     tl.to("#world", { scale:1, y:0, duration:0.6, ease:EASE.camera }, 5.161);
 
     // ---- unit 4: the demolition crew --------------------------------------------
-    tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, 6.303);
-    tl.fromTo("#sun", { scale:0.5, opacity:0, transformOrigin:"50% 50%" }, { scale:1, opacity:1, duration:0.5, ease:EASE.slam }, 8.952 - 0.1);
+    // "As we age, collagen production slows" -- the braces dim, and the agent of
+    // the next sentence RISES into frame while it is still being said. A dim on
+    // six thin lines is a real pixel change but moves no bounding box, so this
+    // stretch read as 2.25s frozen; the sun arriving is both the missing motion
+    // and the cause of everything that follows it.
+    tl.to(".beam", { opacity:0.6, duration:0.6, ease:EASE.hold }, 6.303);
+    tl.fromTo("#sun", { y:-300, scale:1, opacity:1, transformOrigin:"50% 50%" },
+              { y:0, duration:1.9, ease:EASE.arrive }, 6.303 + 0.2);
+    tl.to("#sun", { scale:1.12, duration:0.28, yoyo:true, repeat:1, ease:EASE.slam }, 8.952 - 0.1);
     tl.fromTo("#sky-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 8.952 - 0.1);
     tl.to("#rays", { opacity:1, duration:0.1 }, 10.675);
     drawIn(tl, ".ray", 10.675, 0.5, 0.10, EASE.wipe);

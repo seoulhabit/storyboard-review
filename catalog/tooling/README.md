@@ -14,6 +14,8 @@ finding before the next project rebuilds the same check from scratch.
 | [check-contrast-tokens.py](check-contrast-tokens.py) | `check-contrast-tokens.py` | The source-side half of the same pair: every declared token pair against the ground it actually lands on. Catches a token that clears its floor on one ground and fails on another — `--ink-2` is 4.89:1 on paper and 3.44:1 on ink. Pairs come from a JSON file and may carry an `expected FAIL` note, which inverts the assertion so the gate fails if a documented-bad pair ever starts passing. **Hard gate**, runs with no render. |
 | [check-captions.py](check-captions.py) | `check-captions.py` | Gates the **shipped** `.srt`/`.vtt` rather than the builder's own output: reading speed (CPS), line length and count, minimum duration, overlaps, per-cue placement settings, non-speech cue cap, and case-sensitive term spelling from a JSON list. The spelling check is the one worth having — an ASR-derived track substitutes its best guess for exactly the vocabulary a technical channel depends on, and a case-insensitive check passes all of it. **Hard gate** unless `--advisory`. |
 | [check-motion-gaps.py](check-motion-gaps.py) | `check-motion-gaps.py` | Retention rule on rendered pixels: no shot sits still longer than `--open` seconds early or `--rest` seconds later. A step counts as motion when the frame-average |luma delta| clears `--eps` **or** any cell of a 6x4 grid clears `--eps-local` — the frame average alone asks the wrong question, because a sun rising or a column of tiles falling is unmistakable on screen and moves a small share of the pixels. Three ways to declare a deliberate hold, all of which print what they dropped. **Hard gate** unless `--advisory`. |
+| [check-legibility.py](check-legibility.py) | `check-legibility.py` | Mobile-legibility floor, two ways: every `--t-*` size declared in the project's token block clears `--floor-px`, **and** a sample of rendered text is measured for actual glyph height on phone-scale frames. The second half is there because the first is necessary but not sufficient — anti-aliasing, letter-spacing and stroke weight all decide whether 40px source type survives being scaled to a phone. Probes are timed by `cid + offset`, like the contrast gate. **Hard gate** unless `--advisory`. |
+| [check-vo-pace.py](check-vo-pace.py) | `check-vo-pace.py` | Narration pace from a voice manifest plus the audio, with no re-transcription: per-sentence WPM above a floor that only applies to sentences long enough for the number to mean anything, sub-second sentences, and sentence-boundary silence **measured on the wav against that take's own level** rather than an absolute dB carried in from another project. Reads both manifest shapes this channel produces. Advisory by default; `--gate` makes it hard. |
 
 **Provenance.** Built for `videos/peeling-not-progress`'s round-6 safe-area
 fix (2026-08-31) — an external QC report flagged content near the Shorts UI
@@ -834,3 +836,121 @@ look broken.
 **Status: validated against two real projects,** reproducing each one's existing
 verdict exactly under its own flags — ectoin's closing-hold exemption and
 collagen's four reviewed windows — and adopted by both.
+
+---
+
+## check-legibility.py, check-vo-pace.py — added 2026-09-05
+
+Both were built for `videos/collagen-where-did-it-go` and were the last two
+project-local gates whose control fixtures already lived here while reaching
+back into that project by path — a coupling this README recorded as a known
+defect rather than silently leaving. This entry closes it.
+
+**Provenance.** `check-legibility.py` comes from that project's own review
+finding: at a 25% phone-scale preview (480x270) a 32px source size becomes ~8px
+on screen, and its Phase 3 raised every referenced type token from 32px to
+40-44px. `check-vo-pace.py`'s third check comes from the same project's
+narration review, which found 13 sentence boundaries under 100ms in the
+manifest of which only 2 were genuine hard joins — the other 11 carried
+60-190ms of real silence the manifest's word timestamps simply did not capture.
+That is the whole argument for the check: **the manifest cannot answer this
+question, and the audio can.**
+
+### Field contract — check-legibility.py
+
+`python3 check-legibility.py --tokens PATH [--floor-px 40]
+[--below-floor-token t-name]… [--source-glob 'scripts/*.py']… [--project-root DIR]
+[--render FILE --probes probes.json] [--scene-map JSON] [--phone-scale 480x270]
+[--min-glyph-px 5] [--advisory]`
+
+`--tokens` reads a `TOKENS = """…"""` block if the file has one (this channel's
+`scripts/_preamble.py` convention) and otherwise the whole file, so a plain
+`assets/tokens/tokens.css` works unchanged. Probes are JSON, `[x0,y0,x1,y1]` in
+**phone-scale** pixels with the background luma at that box, timed by
+`cid + offset` against `--project-root`'s `index.html` or an explicit
+`--scene-map` — the same schema and the same reason as `check-contrast-pixels.py`.
+
+**`--below-floor-token` has no default, deliberately.** It names tokens that are
+declared below the floor and must never actually be *referenced* — a silent trap
+for the next scene that reaches for a token by name without checking whether it
+is live. That list is project vocabulary, not a channel constant: `--t-caption`
+is forbidden in `collagen-where-did-it-go` and referenced **12 times** in
+`ectoin-survival-molecule`, where it is a legitimate 30px caption size. Any
+default here is wrong for one of those two projects whichever way it is set.
+Pass the name without its leading dashes (`--below-floor-token t-floor`);
+argparse reads a value starting with `-` as another flag.
+
+Two defects were fixed in the move. The gate excluded itself from its own
+source scan by a **hardcoded filename string**, so renaming or copying it
+silently un-excluded it; that now derives from `Path(__file__).name`. And a
+probe whose frame would not extract printed `?` and continued — a probe timed
+past the end of the render is exactly what a re-time produces, so it is now a
+finding.
+
+### Field contract — check-vo-pace.py
+
+`python3 check-vo-pace.py MANIFEST.words.json [MORE…] [--wav PATH]
+[--min-words 7] [--max-wpm 210] [--min-sentence-s 1.0] [--min-boundary-ms 100]
+[--calibration-margin-db 6.0] [--gate]`
+
+**The manifest schema is the portability boundary**, so it is stated rather than
+assumed. Each manifest needs `sentences` with at least `start`, `end` and
+`text`. Two shapes are read, both real in this repo:
+
+- **one master manifest** for a continuous take, whose sentences carry `i`,
+  `cid`, `first_word_idx` and `last_word_idx` (collagen's `master.words.json`);
+- **per-scene manifests** whose sentences carry only start/end/text and whose
+  scene id is the manifest's top-level `scene` (ectoin's `NN.words.json`).
+
+Word count comes from the indices when present, else from counting `words[]`
+inside the sentence's own span; a manifest with neither is a named failure, not
+a silent zero — a fabricated word count makes every WPM number here fiction.
+Each manifest pairs with `<stem>.wav` beside it and calibrates its silence
+ceiling on **its own** take, which is the right behaviour when scenes were cut
+and gained separately. Part 3 never compares across manifests: a boundary
+between two files is a transition-grammar gap, not a pace defect.
+
+The gate is **advisory by default** because several of the sentences short
+enough to flag are deliberate punchy beats ("Not smoking.", "Same result."),
+and a reviewed caption-speed exception surfaces here too. `--gate` makes it hard
+once a project has settled which of those it accepts.
+
+### Controls — and two that were testing themselves
+
+`test-legibility-controls.py` (4) and `test-vo-pace-controls.py` (7) now load
+the gate **beside them** instead of reaching into `videos/collagen-where-did-it-go/`.
+Both had a control that could not detect the bug it claimed to:
+
+- the legibility fixture's TOKEN REGEX control **re-implemented the regex
+  inline** and printed "the floor regex is broken" on a copy of the parser, not
+  the one that ships. It now calls `token_sizes()`, which the gate exposes for
+  exactly this reason, and a new fixture asserts a python `TOKENS` block and a
+  bare stylesheet parse identically — with a `--t-decoy` outside the block that
+  must not leak in.
+- the vo-pace fixture computed `gap <= tone - CALIBRATION_MARGIN_DB` **itself**,
+  so it would keep passing while the gate's own classification broke. It now
+  calls `silence_ceiling()` and `is_silent()`, and asserts a loud tone is *not*
+  classified silent, which the one-sided original never did.
+
+A new manifest-shapes control writes the same two sentences in both supported
+shapes and asserts they normalise to identical word counts and cid — the
+portability boundary is where this gate will break, and wrong WPM numbers look
+exactly like right ones.
+
+All four mutants tried against these fixtures were caught: scoping removed from
+the token parser, `glyph_height`'s ink threshold dropped to 0, `is_silent`
+forced true, and the per-scene word count replaced with the manifest's total.
+
+**Status: validated against two real projects.** `check-legibility.py`
+reproduces collagen's existing verdict exactly under its own flags (8 token
+lines, an 8px measured glyph, 0 findings) and collagen is adopted onto it.
+`check-vo-pace.py` reproduces collagen's 9 findings **byte-identically** apart
+from the advisory footer, which was generalised off that project's own scene
+names — and on its first run against `ectoin-survival-molecule`'s per-scene
+manifests it read all 30 of them and immediately surfaced a real defect there:
+that project's `sentences` arrays go **stale after `repace_vo.py` re-paces the
+audio**, which rewrites `words` and leaves `sentences` at pre-stretch times.
+Harmless in the shipped master — nothing in that project consumes `@sent(i)`,
+every binding is word-driven — but `timing.py` exposes the binding, so the first
+scene to use it would silently bind to times that no longer exist. Ectoin is
+**not** wired onto this gate; that finding is recorded, not fixed here.

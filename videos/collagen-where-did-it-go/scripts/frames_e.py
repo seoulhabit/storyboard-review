@@ -130,10 +130,13 @@ def file_10_evidence(fspan, fctx):
     tl.fromTo("#res-v1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @we(wrinkles) + 0.3);
 
     // ---- unit 11: the caveat lands on the tiles as it is spoken --------------
-    // the field is examined, not just labelled: the caveat pushes the camera in
-    // on the trials themselves and it comes back out for the pooled result
-    tl.to("#world", { scale:1.07, y:-30, duration:0.8, ease:EASE.camera }, @w(small) - 0.3);
-    tl.to("#world", { scale:1, y:0, duration:0.7, ease:EASE.camera }, @w(pooled) - 0.9);
+    // the field is examined, not just labelled: the grid lifts toward the caveat
+    // as it lands and settles back for the pooled result. This used to be a
+    // camera push; it is not, because this scene is laid out edge to edge and
+    // ANY world scale slices the count, the chips and both citation chips off
+    // the frame. Lifting the grid says the same thing and crops nothing.
+    tl.to("#grid", { y:-18, duration:0.8, ease:EASE.camera }, @w(small) - 0.3);
+    tl.to("#grid", { y:0, duration:0.7, ease:EASE.camera }, @w(pooled) - 0.9);
     tl.to("#caveat-panel", { opacity:1, duration:0.1 }, @w(small) - 0.10);
     tl.fromTo("#caveat-panel-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(small) - 0.10);
     kineticWords(tl, "#caveat", @w(small), 0.0, "slam");
@@ -174,8 +177,10 @@ def file_10_evidence(fspan, fctx):
     tl.to(".tr", { y:0, duration:0.9, stagger:{ each:0.015 }, ease:EASE.arrive }, @w(together) - 0.3);
     tl.to("#res", { scale:1.03, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(benefit));
     // filter 1: independent only
-    // lean in for the filter: the trial field is what is being examined
-    tl.to("#world", { scale:1.08, duration:0.9, ease:EASE.camera }, @w(keep,1));
+    // lean in for the filter -- on the RESULT panel, not the world. It grows from
+    // its own right edge, which is pinned to the canvas edge, so the swell reads
+    // as a push without moving a single pixel out of frame.
+    tl.to("#res", { scale:1.04, transformOrigin:"100% 50%", duration:0.9, ease:EASE.camera }, @w(keep,1));
     tl.fromTo("#f1", { opacity:0, x:40 }, { opacity:1, x:0, duration:0.3, ease:EASE.arrive }, @w(keep,1));
     tl.to(IND, { backgroundColor:"CORAL", duration:0.2, ease:EASE.swap }, @w(without));
     TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$", opacity:1 }, @w(without)); });
@@ -207,8 +212,8 @@ def file_10_evidence(fspan, fctx):
     tl.to("#res-v1", { opacity:0, duration:0.2, ease:EASE.exit }, @w(quality) + 0.5);
     tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(quality) + 0.7);
     tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(same) + 0.1);
-    // home before the flood: the biggest beat lands on a settled frame
-    tl.to("#world", { scale:1, duration:0.8, ease:EASE.camera }, @w(same));
+    // settle before the flood: the biggest beat lands on a settled frame
+    tl.to("#res", { scale:1, transformOrigin:"100% 50%", duration:0.8, ease:EASE.camera }, @w(same));
     // THE PAYOFF: the biggest beat in the piece -- a paper flood, then three slams
     tl.to(["#f1", "#f2"], { opacity:0, duration:0.3, ease:EASE.exit }, @w(effect) - 0.35);
     tl.fromTo("#stops-wash", { scaleX:0 }, { scaleX:1, duration:0.8, ease:EASE.wipe }, @w(effect) - 0.15);

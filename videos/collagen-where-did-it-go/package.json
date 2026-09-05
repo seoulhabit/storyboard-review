@@ -11,6 +11,6 @@
     "render": "hyperframes render --quality high --workers 1 --player-ready-timeout 120000 --protocol-timeout 600000 -o renders/raw.mp4",
     "master": "python3 scripts/master-audio.py . renders/raw.mp4 renders/collagen-where-did-it-go_final.mp4",
     "gates": "python3 scripts/check-safe-area.py . renders/collagen-where-did-it-go_final.mp4 --landscape && python3 scripts/check-static-hold.py . renders/collagen-where-did-it-go_final.mp4 --landscape --ceiling 2.0 --exempt-last --gate && python3 scripts/check-cadence.py . renders/collagen-where-did-it-go_final.mp4 --longform --ceiling 4.0 --exempt-last --gate && python3 scripts/continuity-audit.py . --gate && python3 scripts/check-blank-frames.py . renders/collagen-where-did-it-go_final.mp4 && python3 scripts/check-motion-gaps.py renders/collagen-where-did-it-go_final.mp4 --open 2.0 --open-until 9999 --rest 2.0 --exempt-last && python3 scripts/check-sfx-durations.py . && python3 scripts/check-endscreen.py renders/collagen-where-did-it-go_final.mp4 && python3 scripts/check-seams.py . --source --render renders/collagen-where-did-it-go_final.mp4 && python3 scripts/check-final.py . renders/collagen-where-did-it-go_final.mp4",
-    "qc": "python3 scripts/qc_sheets.py . renders/collagen-where-did-it-go_final.mp4"
+    "qc": "python3 scripts/qc_sheets.py . renders/collagen-where-did-it-go_final.mp4 && python3 scripts/check-camera-crop.py . renders/collagen-where-did-it-go_final.mp4 --sheet"
   }
 }

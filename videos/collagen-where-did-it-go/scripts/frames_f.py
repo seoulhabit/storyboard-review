@@ -52,8 +52,8 @@ def file_14_hierarchy(fspan, fctx):
           <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
           <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
         </svg>
-        {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(740, 735))}
-        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1246, 735))}
+        {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(620, 735))}
+        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1120, 735))}
         {panel("final", "moss", kt("final-kt", "Protect the building first."), abs_(0, 796, 1728, 122))}
        </div>
       </div>

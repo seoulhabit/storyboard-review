@@ -1038,6 +1038,15 @@
   "file": "06-door",
   "unit": "07-film",
   "kind": "w",
+  "word": "smoother",
+  "occurrence": 1,
+  "seconds": 14.286,
+  "abs": 52.31
+ },
+ {
+  "file": "06-door",
+  "unit": "07-film",
+  "kind": "w",
   "word": "polishing",
   "occurrence": 1,
   "seconds": 15.606,

@@ -123,6 +123,9 @@ def file_06_door(fspan, fctx):
     // said: down there the cut hatch is still cut. The animation makes the
     // "not structural" case before the verdict card states it.
     tl.to("#world", { scale:1.18, x:83, y:-76, duration:0.9, ease:EASE.camera }, @w(smoother) - 0.1);
+    // the dive crops 215px off each side, which sliced "EPIDERMIS" mid-word. The
+    // labels leave instead: we have gone past the layer they name.
+    tl.to(".bar-label", { opacity:0, duration:0.45, ease:EASE.exit }, @w(smoother) - 0.1);
     tl.to(["#bar-h-1", "#bar-hb-1", "#bar-h-2", "#bar-hb-2", "#bar-h-4", "#bar-hb-4", "#bar-h-6", "#bar-hb-6"],
           { stroke:"#9C978D", duration:0.45, ease:EASE.swap }, @w(polishing));
     tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, @w(not,2) - 0.1);
@@ -134,6 +137,7 @@ def file_06_door(fspan, fctx):
     // x=264 so it survives every point of this leg; the leg itself still homes
     // fully before the file's span ends.
     tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, @uend(07-film) - 1.05);
+    tl.to(".bar-label", { opacity:1, duration:0.5, ease:EASE.arrive }, @uend(07-film) - 1.05);
     reveal(tl, "#verdict7", @w(replacing));
     tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(replacing));
 """

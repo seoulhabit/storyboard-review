@@ -33,12 +33,12 @@ something other than what the label implies, I say that too.
 
 CHAPTERS
 0:00 A molecule invented by bacteria trying not to die
-1:13 Why it is not just another hyaluronic acid
-2:07 What it might actually do for skin
-2:54 What the human evidence really says
-4:03 How to read an ectoin label
-4:52 Why K-beauty picked it up
-5:15 The verdict
+1:09 Why it is not just another hyaluronic acid
+2:01 What it might actually do for skin
+2:49 What the human evidence really says
+3:53 How to read an ectoin label
+4:44 Why K-beauty picked it up
+5:09 The verdict
 
 WHAT THE EVIDENCE ACTUALLY SHOWS
 PubMed indexes 12 ectoine clinical trials in total (queried 2026-09-02). That
@@ -158,20 +158,31 @@ Which ingredient should I take apart next?
 
 ## End screen
 
-**Window: 5:29.4 – 5:40.2** (scene 29, `data-start="329.383"`,
-`data-duration="10.771"`) — 10.8s, inside the 8–20s guidance.
+**Window: 5:24.4 – 5:38.1** (scene 29, `data-start="324.370"`,
+`data-duration="13.775"`) — 13.8s, inside the 8–20s guidance.
 
-**Clear space, measured on the shipped render at t=335s, not assumed from
-tokens:**
+These are the v2 / retention-master numbers. This block previously carried
+`329.383` / `10.771` (5:29.4 – 5:40.2) from the superseded 2026-09-02 cut,
+which on a 5:38.2 file would have started the window 5s late and run 2s past
+the end of the video.
+
+**Clear space, measured on the shipped retention master at t=335s, not assumed
+from tokens** (re-measured after the plate rebuild; scene 29's layout is the one
+scene the retention pass left untouched, and the numbers are unchanged from v2
+to the second decimal):
 
 | Region | Ink | Verdict |
 |---|---:|---|
 | Right third, x 1184–1824, y 54–972 | **0.00%** | 640×918 clear |
 | Lower band, x 96–1824, y 772–972 | **0.00%** | clear |
-| Content area, x 96–1184, y 54–972 | 35.56% | occupied |
+| Content area, x 96–1184, y 54–972 | 35.53% | occupied |
 
 Rightmost ink sits at x=1183 — the reserve boundary is exact to the pixel.
-Left column clears from y=728, giving a 244px band.
+Left column clears from y=728, giving a 244px band. Independently gated across
+the whole window by `scripts/check-endscreen.py` (every 0.5s from 325.3s to the
+end): **0 zone hits**. That checker starts after the 0.80s settle wipe on
+purpose — sampling the 324.37s seam itself catches the *outgoing* scene 28
+sweeping through, which reads as a false failure on v2 too.
 
 **What actually fits in the 918px-tall reserve:**
 
@@ -197,7 +208,7 @@ instruction is *"Turn the bottle around and find the actual percentage"*, and
 that Short is precisely about front-label percentages. It is also one of the
 channel's stronger performers (151 views, 8.85× its age-matched median).
 
-Subscribe is included over a second video because a viewer who finished 5:40 of
+Subscribe is included over a second video because a viewer who finished 5:38 of
 dense evidence content is the highest-intent subscriber this channel gets, and
 the channel's first long-form is where that conversion is worth spending an
 element on.
@@ -226,10 +237,48 @@ and scale with player size — verify in Studio before publishing.**
 
 ---
 
+## Thumbnail (`[S3/P-3]`)
+
+Two primaries exist; **pick one at upload, do not A/B them by swapping after
+publish** — a thumbnail change resets the CTR baseline this channel has no
+long-form history to absorb.
+
+| File | Art | Use when |
+|---|---|---|
+| `thumbnail/thumb-retention-1280x720.jpg` | The video's own `I01-saltlake.jpg` plate, ectoine ring over it | **Default.** Ships with the retention master, whose cold open *is* this shot. |
+| `thumbnail/thumb-1280x720.jpg` | Drawn salt-flat band, vector molecule | The v2 cut, which contains no photography. Kept, not superseded. |
+
+Overlay copy is the same on both — **WHERE NOTHING LIVES**, three words, Inter
+900 uppercase, coral underline on the last word. It shares no word with the
+title (`[S3/P-2]`), so the pair reads as claim + place rather than the title
+twice. No ingredient pill: it would make four words, and at feed size the chip
+costs more legibility than the name buys when the title already opens with
+"Ectoin".
+
+Both are 1280×720, under YouTube's 2 MB ceiling (150 KB and 74 KB). `.png` is
+the lossless source; upload the `.jpg`.
+
+**Measured, not eyeballed** (retention thumbnail, on the rendered pixels,
+sampling the ground ring 3–11 px out from the glyphs — the first 3 px are the
+letters' own anti-aliasing and are not background):
+
+| | Ratio |
+|---|---|
+| Median | 17.19:1 |
+| Worst single pixel | 12.43:1 |
+| Under 4.5:1 | 0 % |
+
+Legibility was confirmed at the **168 px feed render**, not only at full size:
+three words, 118 px type, and a scrim that is opaque under the copy rather than
+a vignette that dissolves when the image is small.
+
+---
+
 ## Still open
 
-- **Thumbnail CTR score.** `vidiq_score_thumbnail` needs a published `videoId`
-  or a hosted image URL; the video is unpublished and the image is local.
+- **Thumbnail CTR score.** Both thumbnails are built and contrast-verified;
+  what is missing is only the score. `vidiq_score_thumbnail` needs a published
+  `videoId` or a hosted image URL, and these are unpublished and local.
 - **Pinned comment.** The closing question above is drafted for it.
 - **End-screen targets.** Two elements, chosen against the final scene's
   reserved right third.

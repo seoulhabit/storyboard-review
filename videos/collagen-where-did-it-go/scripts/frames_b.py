@@ -44,7 +44,7 @@ def file_03_building(fspan, fctx):
         {panel("chip-beams", "aqua", '<p class="p-title">collagen = the beams</p>', abs_(760, 660, 760, 130), "late")}
         {panel("uv", "ink", kt("uv-1", "UV cuts collagen") + kt("uv-2", "works weekends"), abs_(760, 300, 760, 240), "late")}
         {panel("preserve", "aqua", '<p class="p-title">preserve &gt; replace</p>', abs_(760, 790, 900, 110), "late")}
-        {cite("cite-uv", "J Invest Dermatol &middot; 1998", False, abs_(94, 700))}
+        {cite("cite-uv", "J Invest Dermatol &middot; 1998", False, abs_(170, 700))}
        </div>
       </div>
 """

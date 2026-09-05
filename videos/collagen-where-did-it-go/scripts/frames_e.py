@@ -195,9 +195,14 @@ def file_10_evidence(fspan, fctx):
     kineticWords(tl, "#q2", @w(definitely,2) - 0.1, 0.08, "rise");
     tl.to("#q2-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, @w(cannot,2));
     tl.to("#q2 .kt-word", { color:"#F7F5F0", duration:0.2 }, @w(cannot,2));
-    tl.to("#res-v2", { opacity:0, duration:0.25, ease:EASE.exit }, @w(uncertain));
-    tl.to("#res-v3", { opacity:1, duration:0.3, ease:EASE.slam }, @w(uncertain) + 0.3);
-    tl.to("#res-ci", { attr:{ x:150, width:245 }, duration:0.6, ease:EASE.swap }, @w(uncertain));
+    // The act's last word is UNCERTAIN, and it used to land 0.2s before the
+    // invert took the frame. The interval widens under "the independent
+    // evidence", so the meter has already told the truth by the time the word
+    // arrives -- and the word gets the whole tail of the unit rather than a
+    // sliver of it.
+    tl.to("#res-ci", { attr:{ x:150, width:245 }, duration:0.9, ease:EASE.swap }, @w(independent));
+    tl.to("#res-v2", { opacity:0, duration:0.25, ease:EASE.exit }, @w(uncertain) - 0.4);
+    tl.fromTo("#res-v3", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(uncertain) - 0.1);
 """.replace("CELADON_EDGE", CELADON_EDGE).replace("CELADON", CELADON).replace("CORAL_DEEP", CORAL_DEEP).replace("CORAL", CORAL)
     MOTION["10-trials"]["beats"] = [
         {"name": "tile field settles", "at": "0.0", "area": 0.30, "dl": 60, "dur": 0.5},
@@ -228,6 +233,7 @@ def file_10_evidence(fspan, fctx):
         {"name": "q1 void",       "at": "@w(cannot,1)",        "area": 0.05, "dl": 103, "dur": 0.3},
         {"name": "q2 void",       "at": "@w(cannot,2)",        "area": 0.05, "dl": 103, "dur": 0.3},
         {"name": "flood retract", "at": "@w(independent)-0.2", "area": 0.46, "dl": 224, "dur": 0.6},
+        {"name": "interval widens", "at": "@w(independent)", "area": 0.147, "dl": 65, "dur": 0.9},
     ]
     return body, css, tl
 

@@ -145,7 +145,7 @@ def file_02_promise(fspan, fctx):
                + chip("mini-leg", "$ = industry funded", "on-ink")
                + chip("mini-note", "tag pattern illustrative", "on-ink"),
                abs_(1000, 0, 728, 918), "late")}
-        {panel("protect", "aqua", '<p class="p-title">what protects it?</p>', abs_(0, 740, 820, 130), "late")}
+        {panel("protect", "aqua", '<p class="p-title">what protects it?</p>', abs_(64, 740, 820, 130), "late")}
        </div>
       </div>
 """

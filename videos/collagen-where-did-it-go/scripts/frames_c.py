@@ -47,7 +47,7 @@ def file_06_door(fspan, fctx):
         {cite("cite-da", "Exp Dermatol &middot; 2000", False, abs_(900, 222))}
         {chip("sz-note", "labelled, not to scale", "note", abs_(900, 486))}
         <div class="stamp" id="stamp">REJECTED</div>
-        {panel("verdict7", "ink", '<p class="p-title">surface smoothing &ne; structural replacement</p>', abs_(60, 740, 1200, 130), "late")}
+        {panel("verdict7", "ink", '<p class="p-title">surface smoothing &ne; structural replacement</p>', abs_(264, 740, 1200, 130), "late")}
        </div>
       </div>
 """
@@ -107,8 +107,9 @@ def file_06_door(fspan, fctx):
     tl.to("#epi-wash", { scaleY:0.08, duration:0.5, ease:EASE.wipe }, @w(smoother) - 0.1);
     tl.to("#bar-surface", { opacity:0, duration:0.4 }, @w(smoother));
     tl.to("#surf-smooth", { opacity:0.7, duration:0.4 }, @w(smoother));
-    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, @w(smoother));
-    tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, @w(smoother));
+    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, @w(smoother) - 0.5);
+    tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, @w(smoother) - 0.5);
+    tl.to(["#sz-a", "#sz-b", "#sz-note", "#cite-da"], { opacity:0, duration:0.3, ease:EASE.exit }, @w(smoother) - 0.1);
     tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, @w(polishing));
     // "...replacing the beams": the dermis dims -- the hatch stays cut
     // "...is NOT replacing the beams": the dermis dims on "not", the verdict lands on "replacing" --
@@ -120,6 +121,13 @@ def file_06_door(fspan, fctx):
     tl.to(["#bar-h-1", "#bar-hb-1", "#bar-h-2", "#bar-hb-2", "#bar-h-4", "#bar-hb-4", "#bar-h-6", "#bar-hb-6"],
           { stroke:"#9C978D", duration:0.45, ease:EASE.swap }, @w(polishing));
     tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, @w(not,2) - 0.1);
+    // The verdict card lands at @w(replacing), while this leg is still running.
+    // At x=60 its left edge mapped to -85px under the 1.18 push and was cropped
+    // for about a second -- the exact defect DELIVERY.md records from ectoin,
+    // where .worldclip removed the offending pixels BEFORE the safe-area gate
+    // looked at them and the gate reported a clean pass. The card is inset to
+    // x=264 so it survives every point of this leg; the leg itself still homes
+    // fully before the file's span ends.
     tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, @uend(07-film) - 1.05);
     reveal(tl, "#verdict7", @w(replacing));
     tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(replacing));

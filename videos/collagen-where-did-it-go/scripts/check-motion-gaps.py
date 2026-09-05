@@ -26,7 +26,24 @@ def main():
     ap.add_argument("--eps", type=float, default=0.35)
     ap.add_argument("--open", type=float, default=2.0); ap.add_argument("--open-until", type=float, default=31.0)
     ap.add_argument("--rest", type=float, default=4.0)
+    # The wordless end card is a deliberate calm hold with one slow settle, and
+    # it is REQUIRED to be calm: YouTube draws its end-screen elements over it.
+    # Without this the gate reports the design working as a defect, which is the
+    # fastest way to teach an operator to ignore a gate.
+    ap.add_argument("--exempt-last", action="store_true",
+                    help="ignore runs inside the last scene of index.html")
     a = ap.parse_args()
+    exempt_from = None
+    if a.exempt_last:
+        import re as _re
+        from pathlib import Path as _P
+        idx = _P(a.render).resolve().parent.parent / "index.html"
+        if idx.exists():
+            starts = [float(m) for tag in _re.findall(r'<div[^>]*class="[^"]*\bscene\b[^"]*"[^>]*>', idx.read_text())
+                      for m in _re.findall(r'data-start="([\d.]+)"', tag)]
+            if starts:
+                exempt_from = max(starts)
+                print(f"  --exempt-last: runs from {exempt_from:.2f}s (the closing scene) are the authored hold")
     L = lumas(a.render, a.fps)
     d = np.abs(np.diff(L, axis=0)).mean(axis=(1, 2))   # d[i] = change between sample i and i+1
     step = 1.0 / a.fps
@@ -41,6 +58,8 @@ def main():
     for s, e in runs:
         t0, t1 = s * step, (e + 1) * step
         limit = a.open if t0 < a.open_until else a.rest
+        if exempt_from is not None and t0 >= exempt_from - 0.01:
+            continue
         if t1 - t0 > limit:
             fails += 1
             print(f"  static {t0:7.2f}-{t1:7.2f}s  ({t1 - t0:4.1f}s > {limit}s)")

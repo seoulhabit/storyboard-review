@@ -2,13 +2,24 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
+  /* Channel-canonical brand tokens (videos/seoulhabit-launch/assets/tokens/tokens.css), not this
+     project's own local --paper/--ink/--pink -- the whole point of a brand sign-off is that it
+     looks identical across every video regardless of that episode's own palette. Scoped to this
+     scene alone; 06-verdict.html keeps its own tokens unchanged. See catalog/visual-components/
+     seoulhabit-endcard/README.md for the full rationale (mark treatment, contrast measurements). */
   :root {
-    --paper: #fbfaf4;
-    --ink: #0f2016;
-    --pink: #b9835a;
-    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --paper: #F7F5F0;
+    --ink: #131516;
+    --ink-2: #6B6B6B;
+    --coral: #C97A5C;
+    --mist: #F0EBE1;
+    --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
     --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --font-kr: "Noto Sans KR Video", "Noto Sans KR", sans-serif;
   }
+  @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2"); font-weight:400; font-display:block; }
+  @font-face { font-family:"Noto Sans KR Video"; src:url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2"); font-weight:500; font-display:block; }
+
   #root {
     position: absolute;
     inset: 0;
@@ -20,48 +31,76 @@
 
   #ec-wrap {
     position: absolute;
-    left: 72px; right: 162px; top: 840px;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 162px 360px 72px;
   }
+
+  #ec-mark {
+    width: 200px; height: 200px; border-radius: 50%;
+    background: var(--mist);
+    border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    /* initial scale set via gsap.set() below, not here -- GSAP overwrites the full CSS
+       transform when it animates `scale`, so a static value here would just be discarded. */
+  }
+  #ec-glyph {
+    font-family: var(--font-kr);
+    font-weight: 500;
+    font-size: 116px;
+    line-height: 1;
+    color: var(--ink);
+    transform: translateY(4px); /* Hangul syllable blocks sit high in the em box */
+  }
+
   .ec-kicker {
+    margin: 32px 0 0;
     font-family: var(--font-mono);
     font-weight: 500;
     font-size: 32px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--pink);
-    margin: 0 0 28px;
+    color: var(--ink-2); /* not --coral: measures 3.0:1 against --paper here, under this
+                             skill's own 4.5:1 floor -- --ink-2 measures 4.89:1. See the
+                             catalog component's README for the full contrast math. */
     opacity: 0;
   }
   .ec-headline {
-    font-weight: 500;
-    font-size: 92px;
-    line-height: 1.04;
+    margin: 20px 0 0;
+    font-weight: 400;
+    font-size: 88px;
+    line-height: 1.06;
     letter-spacing: -0.02em;
     color: var(--ink);
-    margin: 0 0 32px;
+    text-align: center;
     opacity: 0;
   }
   .ec-rule {
-    width: 140px;
-    height: 5px;
-    background: var(--pink);
-    margin: 0 0 32px;
+    margin: 28px 0 0;
+    width: 120px;
+    height: 4px;
+    background: var(--coral);
     opacity: 0;
-    transform-origin: 0% 50%;
+    transform-origin: 50% 50%;
   }
   .ec-sub {
+    margin: 24px 0 0;
     font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 30px;
+    font-size: 28px;
     letter-spacing: 0.04em;
-    color: var(--pink);
-    margin: 0;
+    color: var(--ink-2);
     opacity: 0;
   }
 </style>
 
 <div id="root" data-composition-id="07-endcard" data-width="1080" data-height="1920" data-duration="4.50">
   <div id="ec-wrap">
+    <div id="ec-mark"><div id="ec-glyph">습</div></div>
     <p class="ec-kicker" id="ec-kicker">SeoulHabit</p>
     <p class="ec-headline" id="ec-headline">Evidence,<br>not hype.</p>
     <div class="ec-rule" id="ec-rule"></div>
@@ -71,6 +110,7 @@
 
 <script>
   (function () {
+    gsap.set("#ec-mark", { opacity: 0, scale: 0.8 });
     gsap.set(["#ec-kicker", "#ec-headline", "#ec-sub"], { opacity: 0, y: 20 });
     gsap.set("#ec-rule", { opacity: 0, scaleX: 0 });
 
@@ -78,16 +118,19 @@
     window.__timelines = window.__timelines || {};
     window.__timelines["07-endcard"] = tl;
 
-    // 0.10-0.80: hard cut in (owned by index.html). Kicker, then headline, staggered rise
-    tl.fromTo("#ec-kicker", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.10);
-    tl.fromTo("#ec-headline", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.30);
+    // 0.10-0.55: hard cut in (owned by index.html). The mark leads -- the logo, then the words.
+    tl.to("#ec-mark", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, 0.10);
 
-    // 1.00-1.65: rule draws, sub-line rises in
-    tl.fromTo("#ec-rule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.45, ease: "power2.inOut" }, 1.00);
-    tl.fromTo("#ec-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 1.25);
+    // 0.35-1.05: kicker, then headline, staggered rise
+    tl.fromTo("#ec-kicker", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.35);
+    tl.fromTo("#ec-headline", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.55);
 
-    // 1.20-4.50: calm hold — a very slight settle-drift on the whole block, seek-safe
-    tl.to("#ec-wrap", { y: -10, duration: 3.30, ease: "sine.inOut" }, 1.20);
+    // 1.15-1.70: rule draws, sub-line rises in
+    tl.fromTo("#ec-rule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 1.15);
+    tl.fromTo("#ec-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 1.35);
+
+    // 1.70-4.50: calm hold -- a very slight settle-drift on the whole block, seek-safe
+    tl.to("#ec-wrap", { y: -10, duration: 2.80, ease: "sine.inOut" }, 1.70);
 
     tl.to({}, { duration: 4.50 }, 0);   // full-span anchor — always last
   })();

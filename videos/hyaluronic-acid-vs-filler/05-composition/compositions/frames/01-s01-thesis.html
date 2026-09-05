@@ -73,6 +73,30 @@
   .snap { font-family:var(--font-display); font-weight:700; font-size:96px;
           letter-spacing:-.01em; color:var(--coral); text-align:center; width:100%; }
 
+  /* The collision line is a flex ROW so each word is its own transform
+     target. `.snap` itself carries only the camera pose (hero -> rest), so
+     no element ever has two tweens writing the same channel. */
+  /* width:max-content, NOT 100%: a full-width box scaled up is wider than
+     its content box even when its ink is not -- the exact class of defect
+     the camera relayering just removed. Hugging the text makes box and ink
+     the same thing, so a hero scale on it cannot overflow independently. */
+  .snap { display:flex; align-items:center; justify-content:center; gap:40px;
+          align-self:center; width:max-content; font-size:104px;
+          transform-origin:50%% 50%%; }
+  .snap .w { display:inline-block; }
+  .snap .neq { display:inline-block; color:var(--coral); font-size:1.18em;
+               transform-origin:50%% 50%%; }
+  /* The lineup is what the camera pulls back TO. It starts slightly
+     OVERSIZED and settles to 1, which is what a pull-back looks like from
+     the subject's side; fading it up at a fixed scale would read as a
+     dissolve instead. */
+  /* LANE_CSS clips .lanes so a squeezed lane can never spill into the
+     type. Here the lanes START at 1.08 and settle to 1 -- the camera pulling
+     back -- and a clipping box would shave 11px off every actor for the
+     whole settle. The col-wrap gap is 32px, the overshoot is 15px, and
+     nothing else moves in that window, so let it breathe instead of clip. */
+  .lanes { overflow:visible; will-change:transform; }
+
 </style>
 
 <div id="root" data-composition-id="s01-thesis" data-width="1920" data-height="1080"
@@ -80,7 +104,8 @@
   <div class="clip stage" id="s01-thesis-stage" data-start="0" data-duration="5.911">
     <div class="cam" id="s01-thesis-cam"><div class="cam-in" id="s01-thesis-cam-in">
     <div class="col-wrap">
-      <div class="kicker beat is-entering" id="s01-thesis-b0" style="text-align:center">Same name</div>
+      <div class="kicker beat is-entering" id="s01-thesis-b1" style="text-align:center">Same name</div>
+      <div class="snap beat" id="s01-thesis-b0"><span class="w" id="s01-thesis-w-serum">SERUM</span><span class="neq" id="s01-thesis-w-neq">≠</span><span class="w" id="s01-thesis-w-filler">FILLER</span></div>
       <div class="lanes">
         <div class="lane" id="s01-thesis-lane0">
           <svg class="actor " viewBox="0 0 520 620" width="520" height="620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -291,8 +316,7 @@
         </div>
       </div>
       <div class="foot" style="justify-content:center;width:100%;flex-direction:column;align-items:center;gap:20px">
-      <h1 class="head beat is-entering" id="s01-thesis-b1" style="font-size:76px;text-align:center">Two completely different jobs</h1>
-      <div class="snap beat is-entering" id="s01-thesis-b2">SERUM ≠ FILLER</div>
+      <h1 class="head beat is-entering" id="s01-thesis-b2" style="font-size:76px;text-align:center">Two completely different jobs</h1>
       </div>
     </div>
     </div></div>
@@ -300,24 +324,29 @@
 </div>
 <script>
 (function () {
-  gsap.set('#s01-thesis-lane0', { opacity: 0.55, scale: 0.97 });
-  gsap.set('#s01-thesis-lane1', { opacity: 0.55, scale: 0.97 });
-  gsap.set('#s01-thesis-lane2', { opacity: 0.55, scale: 0.97 });
-  gsap.set('#s01-thesis-b0', { opacity: 0, y: 26 });
-  gsap.set('#s01-thesis-b1', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
-  gsap.set('#s01-thesis-b2', { opacity: 0, scale: 0.7 });
+  gsap.set('#s01-thesis-b0', { scale: 1.30, y: 236 });
+  gsap.set('#s01-thesis-w-serum', { x: -140 });
+  gsap.set('#s01-thesis-w-filler', { x: 140 });
+  gsap.set('#s01-thesis-w-neq', { scale: 0, opacity: 0 });
+  gsap.set('#s01-thesis-lane0', { opacity: 0, scale: 1.08 });
+  gsap.set('#s01-thesis-lane1', { opacity: 0, scale: 1.08 });
+  gsap.set('#s01-thesis-lane2', { opacity: 0, scale: 1.08 });
+  gsap.set('#s01-thesis-b1', { opacity: 0, y: 26 });
+  gsap.set('#s01-thesis-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s01-thesis-lane0', { opacity: 1, scale: 1, duration: 1.100, ease: 'power2.inOut' }, 0.100);
-  tl.to('#s01-thesis-lane1', { opacity: 1, scale: 1, duration: 1.100, ease: 'power2.inOut' }, 0.220);
-  tl.to('#s01-thesis-lane2', { opacity: 1, scale: 1, duration: 1.100, ease: 'power2.inOut' }, 0.340);
-  tl.to('#s01-thesis-b0', { opacity: 1, y: 0, duration: 1.100, ease: 'power3.out' }, 0.000);
-  tl.to('#s01-thesis-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 1.894);
-  tl.to('#s01-thesis-b2', { opacity: 1, scale: 1, duration: 1.000, ease: 'back.out(1.8)' }, 4.058);
-  tl.to('#s01-thesis-lane0', { scale: 0.90, opacity: 0.5, duration: 1.000, ease: 'power2.out' }, 4.058);
-  tl.to('#s01-thesis-lane1', { scale: 0.90, opacity: 0.5, duration: 1.000, ease: 'power2.out' }, 4.058);
-  tl.to('#s01-thesis-lane2', { scale: 0.90, opacity: 0.5, duration: 1.000, ease: 'power2.out' }, 4.058);
+  tl.to('#s01-thesis-w-serum', { x: 90, duration: 0.441, ease: 'power3.in' }, 0.000);
+  tl.to('#s01-thesis-w-filler', { x: -90, duration: 0.441, ease: 'power3.in' }, 0.000);
+  tl.to('#s01-thesis-w-neq', { scale: 1, opacity: 1, duration: 0.259, ease: 'back.out(3.4)' }, 0.441);
+  tl.to('#s01-thesis-w-serum', { x: 0, duration: 0.259, ease: 'power3.out' }, 0.441);
+  tl.to('#s01-thesis-w-filler', { x: 0, duration: 0.259, ease: 'power3.out' }, 0.441);
+  tl.to('#s01-thesis-b0', { scale: 1, y: 0, duration: 1.200, ease: 'power3.inOut' }, 1.100);
+  tl.to('#s01-thesis-lane0', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 1.100);
+  tl.to('#s01-thesis-lane1', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 1.230);
+  tl.to('#s01-thesis-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 1.360);
+  tl.to('#s01-thesis-b1', { opacity: 1, y: 0, duration: 1.100, ease: 'power3.out' }, 1.569);
+  tl.to('#s01-thesis-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.400, ease: 'power2.inOut' }, 2.976);
   tl.to({}, { duration: 5.911, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s01-thesis'] = tl;

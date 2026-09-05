@@ -48,6 +48,18 @@
      renderable surface IS #root. Confirm it is off by looking at frame zero. */
   #root.debug-layout * { outline: 1px solid rgba(255,0,0,.6) !important; }
   #root.debug-layout .clip { outline: 2px solid #00E5FF !important; }
+/* build_actors:fix_generated_grounds v3.1 */
+  /* [S7/R-2] the drift used to run on #<sid>-stage, a full-frame box: a
+     1.018 scale on 1920x1080 maps 17px past each edge by construction, which
+     is where every container_overflow warning in the v3 check came from. The
+     stage now clips and holds still; .cam-in drifts INSIDE the padding, so
+     the same move costs 15px of a 156px pad instead of 17px of frame. */
+  .stage { overflow: hidden; }
+  .cam { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+         transform-origin: 50% 50%; }
+  .cam-in { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
+            flex-direction: column; justify-content: center; gap: 28px;
+            transform-origin: 50% 50%; }
 
   /* [S7/R-2] a slam parked at scale 1.12 on a full-width block
      grows 6% past each edge -- 370px of ink inside left<96 at
@@ -70,23 +82,11 @@
   /* [S7/R-1] dark-ground ink flip: the generator leaves --ink at
      #131516 on a #131516 ground -> 1:1, invisible text. */
   #root { --ink: #F7F5F0; --muted: #878B8C; }
-/* build_actors:fix_generated_grounds v3.1 */
-  /* [S7/R-2] the drift used to run on #<sid>-stage, a full-frame box: a
-     1.018 scale on 1920x1080 maps 17px past each edge by construction, which
-     is where every container_overflow warning in the v3 check came from. The
-     stage now clips and holds still; .cam-in drifts INSIDE the padding, so
-     the same move costs 15px of a 156px pad instead of 17px of frame. */
-  .stage { overflow: hidden; }
-  .cam { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
-         transform-origin: 50% 50%; }
-  .cam-in { flex: 1 1 auto; min-width: 0; width: 100%; display: flex;
-            flex-direction: column; justify-content: center; gap: 28px;
-            transform-origin: 50% 50%; }
 </style>
 
 <div id="root" data-composition-id="s11-warning" data-width="1920" data-height="1080"
-     data-duration="7.423">
-    <div class="clip stage" id="s11-warning-stage" data-start="0" data-duration="7.423">
+     data-duration="6.373">
+    <div class="clip stage" id="s11-warning-stage" data-start="0" data-duration="6.373">
       <div class="cam" id="s11-warning-cam"><div class="cam-in" id="s11-warning-cam-in">
       <div class="beat caption" id="s11-warning-b0">Is a filler just serum with a needle?</div>
       <div class="beat caption is-entering" id="s11-warning-b2">Not even close.</div>
@@ -108,11 +108,11 @@
   // sharing one entrance signature while every explicit-ease grep says
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s11-warning-cam-in', { x: 10, y: -7, scale: 1.018, duration: 0.156, ease: 'sine.inOut' }, 2.500);
-  tl.to('#s11-warning-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 2.656);
-  tl.to('#s11-warning-b3', { opacity: 1, scale: 1, y: 0, duration: 1.100, ease: 'power4.out' }, 3.830);
-  tl.to('#s11-warning-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 5.298);
-  tl.to({}, { duration: 7.423, ease: 'none' }, 0);   // anchor — always last, always at 0
+  tl.to('#s11-warning-cam-in', { x: 10, y: -7, scale: 1.018, duration: 0.156, ease: 'sine.inOut' }, 1.900);
+  tl.to('#s11-warning-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 2.056);
+  tl.to('#s11-warning-b3', { opacity: 1, scale: 1, y: 0, duration: 1.100, ease: 'power4.out' }, 3.230);
+  tl.to('#s11-warning-b4', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 4.698);
+  tl.to({}, { duration: 6.373, ease: 'none' }, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s11-warning'] = tl;
 })();

@@ -4,22 +4,22 @@
     {
       "kind": "appearsBy",
       "selector": "#s01-thesis-b0",
-      "bySec": 1.35
+      "bySec": 0.95
     },
     {
       "kind": "appearsBy",
       "selector": "#s01-thesis-b1",
-      "bySec": 3.544
-    },
-    {
-      "kind": "appearsBy",
-      "selector": "#s01-thesis-b2",
-      "bySec": 5.308
+      "bySec": 2.919
     },
     {
       "kind": "before",
       "a": "#s01-thesis-b0",
-      "b": "#s01-thesis-b2"
+      "b": "#s01-thesis-b1"
+    },
+    {
+      "kind": "appearsBy",
+      "selector": "#s01-thesis-b2",
+      "bySec": 4.626
     },
     {
       "kind": "appearsBy",

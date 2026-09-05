@@ -91,7 +91,7 @@
 </div>
 <script>
 (function () {
-  gsap.set('#s08-seals-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s08-seals-panel', { opacity: 1, x: 0, scale: 1 });
   gsap.set('#s08-seals-drop0', { opacity: 1 });
   gsap.set('#s08-seals-drop1', { opacity: 1 });
   gsap.set('#s08-seals-drop2', { opacity: 1 });
@@ -107,7 +107,6 @@
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s08-seals-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
   tl.to('#s08-seals-drop0', { x: -40, y: -120, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 6.843);
   tl.to('#s08-seals-drop3', { x: 90, y: -210, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 6.963);
   tl.to('#s08-seals-drop6', { x: 270, y: -120, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 7.083);

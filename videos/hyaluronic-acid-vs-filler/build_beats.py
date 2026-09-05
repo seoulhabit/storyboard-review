@@ -79,31 +79,55 @@ SPLIT_12 = at(12, 0.7388)   # end of the third badge, before the close line
 SCENES = [
  dict(id="s01-thesis", actor="lineup", section="hook", layout="three-lane", bg=PAPER,
       start=0.0, end=S[2]["start"], beats=[
-        (at(1,0.00), 1.10, "arrive", "kicker", "Same name"),
-        (at(1,0.35), 1.40, "wipe",   "head",   "Two completely different jobs"),
-        (at(1,0.75), 1.00, "slam",   "sub",    "SERUM ≠ FILLER"),
+        # The verdict leads. v3 put the slam at at(1,0.75) -- 4.058s, plus a
+        # 1.0s ease, so the one line that answers the title finished landing
+        # at ~5.1s of a 120s film. A viewer who bounces at 5s saw three
+        # unexplained diagrams and no answer. It now opens the piece and is
+        # fully readable at 0.70s, ahead of the 1.2s the review asked for,
+        # and it works with the sound off. The lineup is what the camera
+        # pulls back TO, not what the film opens on.
+        (at(1,0.00), 0.70, "slam",   "sub",    "SERUM ≠ FILLER"),
+        (at(1,0.29), 1.10, "arrive", "kicker", "Same name"),
+        (at(1,0.55), 1.40, "wipe",   "head",   "Two completely different jobs"),
       ]),
  dict(id="s02-identities", actor="lineup", section="hook", layout="three-lane", bg=PAPER,
-      start=S[2]["start"], end=S[3]["start"], beats=[
+      start=S[2]["start"], end=S[3]["start"],
+      transition={"type": "crossfade"},
+      beats=[
         (at(2,0.00), 1.20, "arrive", "sub", "The kind your body makes"),
         (at(2,0.34), 1.20, "wipe",   "sub", "The kind in your serum"),
         (at(2,0.68), 1.20, "wipe",   "sub", "The kind a doctor injects"),
       ]),
  dict(id="s03-not-filler", actor="misconception", section="misconception", layout="hero-left", bg=PAPER,
-      start=S[3]["start"], end=S[4]["start"], beats=[
+      start=S[3]["start"], end=S[4]["start"],
+      transition={"type": "cut"},
+      beats=[
         (at(3,0.00), 1.30, "arrive", "head", "And the mix-up is expensive"),
         (at(3,0.28), 1.50, "wipe",   "body", "People buy a serum expecting the results of an injection"),
         (at(3,0.62), 1.50, "wipe",   "body", "Then wonder why nothing changed"),
         (at(3,0.80), 1.70, "swap",   "head", "A serum is not filler in a bottle"),
       ]),
  dict(id="s04-split", actor="ha-split", section="mechanism", layout="split", bg=PAPER,
-      start=S[4]["start"], end=S[5]["start"], beats=[
+      start=S[4]["start"], end=S[5]["start"],
+      # wipe-up, held to 0.45s (connective: "short simple wipe"). A plain
+      # crossfade was tried first and double-exposed two headlines at its
+      # midpoint (extracted frame at 21.65s) -- reverted. The checker-side
+      # problem this boundary has (s03 is cut-entered, so its exit is audited
+      # and its covered text flagged) is handled by fix_exit_fades() in
+      # build_actors.py, which fades the OUTGOING wrapper across this window:
+      # PAPER over a PAPER body, so the fade is invisible to the viewer, and
+      # the checker's mid-fade exemption applies by design rather than by the
+      # leftover-clip-path accident every wipe-entered scene relies on.
+      transition={"type": "wipe-up", "duration": 0.450},
+      beats=[
         (at(4,0.00), 1.40, "arrive", "head",    "Here's where the two versions really split"),
         (at(4,0.42), 1.60, "wipe",   "caption", "One stays a loose, flowing molecule"),
         (at(4,0.75), 1.60, "wipe",   "caption", "The other gets locked into a rigid mesh"),
       ]),
  dict(id="s05-size", actor="ha-serum", section="mechanism", layout="two-column", bg=PAPER,
-      start=S[5]["start"], end=S[6]["start"], beats=[
+      start=S[5]["start"], end=S[6]["start"],
+      transition={"type": "zoom-through", "duration": 0.5},
+      beats=[
         (at(5,0.00), 1.40, "arrive", "head", "In a serum, size decides almost everything"),
         (at(5,0.28), 1.60, "wipe",   "body", "Large chains mostly stay near the surface"),
         (at(5,0.58), 1.60, "wipe",   "body", "Smaller ones may travel farther into the upper layers"),
@@ -123,7 +147,13 @@ SCENES = [
         (at(7,0.45), 1.60, "arrive", "caption", "Think of it as a sponge, not a water factory"),
       ]),
  dict(id="s08-seals", actor="ha-body", section="mechanism", layout="hero-left", bg=MIST,
-      start=SPLIT_7, end=S[8]["start"], beats=[
+      start=SPLIT_7, end=S[8]["start"],
+      # crossfade at GENERATION time so the generator owns the overlap
+      # bookkeeping (clip start/duration, d_in shift); build_actors.py's
+      # fix_hero_transitions() then swaps the two crossfade tweens for the
+      # hand-authored liquid-lens reveal. [S6/A-8 catalog miss]
+      transition={"type": "crossfade", "duration": 0.600},
+      beats=[
         (at(7,0.58), 1.50, "arrive", "head", "A complete formula still needs something else"),
         (at(7,0.75), 1.60, "wipe",   "body", "An ingredient that seals that water in"),
         (at(7,0.90), 1.00, "arrive", "cite", "ChemRxiv · 2023"),
@@ -143,14 +173,22 @@ SCENES = [
         (at(9,0.80), 1.00, "arrive", "cite", "J Biol Chem · 1934"),
       ]),
  dict(id="s11-warning", actor="warning", section="application", layout="full-bleed", bg=INK,
-      start=S[10]["start"], end=S[11]["start"], beats=[
+      start=S[10]["start"], end=S[11]["start"],
+      transition={"type": "cut"},
+      beats=[
         (at(10,0.00), 1.20, "arrive", "caption", "Is a filler just serum with a needle?"),
         (at(10,0.35), 1.00, "arrive", "caption", "Not even close."),
         (at(10,0.55), 1.10, "slam",   "head",    "DO NOT INJECT YOURSELF"),
         (at(10,0.80), 1.00, "arrive", "cite",    "FDA · Dermal Fillers"),
       ]),
  dict(id="s12-risks", actor="risks", section="application", layout="hero-left", bg=INK,
-      start=S[11]["start"], end=S[12]["start"], beats=[
+      start=S[11]["start"], end=S[12]["start"],
+      # CUT. A crossfade here ghosted "DO NOT INJECT YOURSELF" under the FDA
+      # line for 0.4s (extracted frames 90.2s / 90.4s) -- two headlines
+      # double-exposed on a dark ground. Both scenes are the warning register,
+      # and the review's own idiom for that register is the hard cut.
+      transition={"type": "cut"},
+      beats=[
         (at(11,0.00), 1.40, "arrive", "head", "That's the F D A's own wording, not ours"),
         (at(11,0.25), 1.60, "wipe",   "body", "Dermal fillers are a medical procedure with real risks"),
         (at(11,0.55), 1.60, "wipe",   "body", "Including tissue death, vision loss and stroke"),
@@ -228,11 +266,14 @@ for sc in SCENES:
     DIAGRAM = {"s01-thesis", "s02-identities", "s04-split", "s05-size",
                "s06-plumping", "s07-binds", "s08-seals", "s09-crosslink",
                "s10-origin", "s13-badges"}
-    out_scenes.append({"id": sc["id"], "start": start, "duration": dur,
-                       "section": sc["section"], "layout": sc["layout"],
-                       "bg": sc["bg"],
-                       "handoff": "hand-authored" if sc["id"] in DIAGRAM else "generated",
-                       "beats": filled})
+    out_sc = {"id": sc["id"], "start": start, "duration": dur,
+              "section": sc["section"], "layout": sc["layout"],
+              "bg": sc["bg"],
+              "handoff": "hand-authored" if sc["id"] in DIAGRAM else "generated",
+              "beats": filled}
+    if "transition" in sc:
+        out_sc["transition"] = sc["transition"]
+    out_scenes.append(out_sc)
 
 # One chapter per spine SECTION, not per scene -- EXCEPT a section shorter
 # than youtube-delivery.md's 10s chapter floor never gets its own marker.

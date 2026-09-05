@@ -446,7 +446,33 @@ def lane_scene(sid, kinds=("body","serum","filler"), badge_roles=False, icons=No
                   f"duration: {b['dur']:.3f}, ease: 'sine.inOut' }}, {b['offset']:.3f});")
     return sets, tw, markup, lanes
 
-# ---- s01-thesis: all three actors together, then a SERUM =/= FILLER snap --
+# ---- s01-thesis: the myth collision, then a pull-back to the lineup ------
+THESIS_CSS = """
+  /* The collision line is a flex ROW so each word is its own transform
+     target. `.snap` itself carries only the camera pose (hero -> rest), so
+     no element ever has two tweens writing the same channel. */
+  /* width:max-content, NOT 100%: a full-width box scaled up is wider than
+     its content box even when its ink is not -- the exact class of defect
+     the camera relayering just removed. Hugging the text makes box and ink
+     the same thing, so a hero scale on it cannot overflow independently. */
+  .snap { display:flex; align-items:center; justify-content:center; gap:40px;
+          align-self:center; width:max-content; font-size:104px;
+          transform-origin:50%% 50%%; }
+  .snap .w { display:inline-block; }
+  .snap .neq { display:inline-block; color:var(--coral); font-size:1.18em;
+               transform-origin:50%% 50%%; }
+  /* The lineup is what the camera pulls back TO. It starts slightly
+     OVERSIZED and settles to 1, which is what a pull-back looks like from
+     the subject's side; fading it up at a fixed scale would read as a
+     dissolve instead. */
+  /* LANE_CSS clips .lanes so a squeezed lane can never spill into the
+     type. Here the lanes START at 1.08 and settle to 1 -- the camera pulling
+     back -- and a clipping box would shave 11px off every actor for the
+     whole settle. The col-wrap gap is 32px, the overshoot is 15px, and
+     nothing else moves in that window, so let it breathe instead of clip. */
+  .lanes { overflow:visible; will-change:transform; }
+"""
+
 def build_thesis():
     sid = "s01-thesis"
     beats = beats_of(sid)
@@ -464,20 +490,62 @@ def build_thesis():
               f'style="text-align:center">{txt(beats[kick_i])}</div>' if kick_i is not None else "")
     head_md = (f'      <h1 class="head beat is-entering" id="{sid}-b{head_i}" '
               f'style="font-size:76px;text-align:center">{txt(beats[head_i])}</h1>' if head_i is not None else "")
-    slam_md = (f'      <div class="snap beat is-entering" id="{sid}-b{slam_i}">'
-              f'{txt(beats[slam_i])}</div>' if slam_i is not None else "")
-    markup = ('    <div class="col-wrap">\n' + kick_md + '\n'
+    # The three parts of the verdict are separate elements so the words can
+    # collide and the sign can reject them. The text still reads exactly as
+    # the beat sheet writes it -- this splits the RENDERING, not the copy.
+    slam_md = (f'      <div class="snap beat" id="{sid}-b{slam_i}">'
+               f'<span class="w" id="{sid}-w-serum">SERUM</span>'
+               f'<span class="neq" id="{sid}-w-neq">\u2260</span>'
+               f'<span class="w" id="{sid}-w-filler">FILLER</span></div>'
+               if slam_i is not None else "")
+    markup = ('    <div class="col-wrap">\n' + kick_md + '\n' + slam_md + '\n'
               '      <div class="lanes">\n' + "\n".join(lanes) + '\n      </div>\n'
-              '      <div class="foot" style="justify-content:center;width:100%;flex-direction:column;'
-              'align-items:center;gap:20px">\n' + head_md + '\n' + slam_md + '\n      </div>\n    </div>')
+              '      <div class="foot" style="justify-content:center;width:100%;'
+              'flex-direction:column;align-items:center;gap:20px">\n' + head_md
+              + '\n      </div>\n    </div>')
 
     sets, tw = [], []
-    # Frame zero: all three forms present together, at rest -- the hook's
-    # whole argument composed in one frame before a word plays [S6/A-3].
+    # HERO POSE, authored outside the timeline: frame zero is the two words
+    # already apart and already large -- a legible, non-blank first frame that
+    # is the hook itself, not a diagram the viewer has no reason to decode
+    # yet. WORD_X keeps both inside the title-safe box at rest, so the rush
+    # never parks ink in the margin.
+    # Measured, not guessed: the line sets ~861px wide at rest, so the hero
+    # pose is 861*1.30 + 2*140*1.30 = 1483px against a 1608px content box.
+    # The widest moment is frame zero -- the words only ever move inward.
+    WORD_X, MEET_X = 140, 90
+    sets.append(f"gsap.set('#{sid}-b{slam_i}', {{ scale: 1.30, y: 236 }});")
+    sets.append(f"gsap.set('#{sid}-w-serum', {{ x: -{WORD_X} }});")
+    sets.append(f"gsap.set('#{sid}-w-filler', {{ x: {WORD_X} }});")
+    sets.append(f"gsap.set('#{sid}-w-neq', {{ scale: 0, opacity: 0 }});")
     for n in (0, 1, 2):
-        sets.append(f"gsap.set('#{sid}-lane{n}', {{ opacity: 0.55, scale: 0.97 }});")
-        tw.append(f"tl.to('#{sid}-lane{n}', {{ opacity: 1, scale: 1, duration: 1.100, "
-                  f"ease: 'power2.inOut' }}, {0.10 + n*0.12:.3f});")
+        sets.append(f"gsap.set('#{sid}-lane{n}', {{ opacity: 0, scale: 1.08 }});")
+
+    slam_off = beats[slam_i]["offset"]; slam_dur = beats[slam_i]["dur"]
+    rush = round(slam_dur * 0.63, 3)          # accelerate INTO the collision
+    push = round(slam_dur - rush, 3)          # decelerate OUT of the rejection
+    # 1. the merge the viewer expects: both words accelerate at the same centre
+    tw.append(f"tl.to('#{sid}-w-serum', {{ x: {MEET_X}, duration: {rush:.3f}, "
+              f"ease: 'power3.in' }}, {slam_off:.3f});")
+    tw.append(f"tl.to('#{sid}-w-filler', {{ x: -{MEET_X}, duration: {rush:.3f}, "
+              f"ease: 'power3.in' }}, {slam_off:.3f});")
+    # 2. the rejection: the sign lands between them and drives them apart.
+    #    Everything is readable when this settles -- 0.70s.
+    tw.append(f"tl.to('#{sid}-w-neq', {{ scale: 1, opacity: 1, duration: {push:.3f}, "
+              f"ease: 'back.out(3.4)' }}, {slam_off + rush:.3f});")
+    tw.append(f"tl.to('#{sid}-w-serum', {{ x: 0, duration: {push:.3f}, "
+              f"ease: 'power3.out' }}, {slam_off + rush:.3f});")
+    tw.append(f"tl.to('#{sid}-w-filler', {{ x: 0, duration: {push:.3f}, "
+              f"ease: 'power3.out' }}, {slam_off + rush:.3f});")
+    # 3. the pull-back: the verdict shrinks into its resting slot as the three
+    #    identities settle in behind it. One move, so the reveal reads as the
+    #    camera widening rather than as four separate fades.
+    pull = round(slam_off + slam_dur + 0.40, 3)
+    tw.append(f"tl.to('#{sid}-b{slam_i}', {{ scale: 1, y: 0, duration: 1.200, "
+              f"ease: 'power3.inOut' }}, {pull:.3f});")
+    for n in (0, 1, 2):
+        tw.append(f"tl.to('#{sid}-lane{n}', {{ opacity: 1, scale: 1, duration: 1.300, "
+                  f"ease: 'power2.inOut' }}, {pull + n*0.13:.3f});")
     if kick_i is not None:
         sets.append(f"gsap.set('#{sid}-b{kick_i}', {{ opacity: 0, y: 26 }});")
         tw.append(f"tl.to('#{sid}-b{kick_i}', {{ opacity: 1, y: 0, duration: {beats[kick_i]['dur']:.3f}, "
@@ -486,17 +554,7 @@ def build_thesis():
         sets.append(f"gsap.set('#{sid}-b{head_i}', {{ clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 }});")
         tw.append(f"tl.to('#{sid}-b{head_i}', {{ clipPath: 'inset(0 0% 0 0)', y: 0, "
                   f"duration: {beats[head_i]['dur']:.3f}, ease: 'power2.inOut' }}, {beats[head_i]['offset']:.3f});")
-    if slam_i is not None:
-        # the snap-highlight: the whole lineup steps back a touch as the
-        # verdict lands, so the motion READS as a reveal, not a caption fading in.
-        off, d = beats[slam_i]["offset"], beats[slam_i]["dur"]
-        sets.append(f"gsap.set('#{sid}-b{slam_i}', {{ opacity: 0, scale: 0.7 }});")
-        tw.append(f"tl.to('#{sid}-b{slam_i}', {{ opacity: 1, scale: 1, duration: {d:.3f}, "
-                  f"ease: 'back.out(1.8)' }}, {off:.3f});")
-        for n in (0, 1, 2):
-            tw.append(f"tl.to('#{sid}-lane{n}', {{ scale: 0.90, opacity: 0.5, duration: {d:.3f}, "
-                      f"ease: 'power2.out' }}, {off:.3f});")
-    return scene_shell(sid, LANE_CSS, markup, sets, tw)
+    return scene_shell(sid, LANE_CSS + THESIS_CSS, markup, sets, tw)
 
 def build_identities():
     sets, tw, markup, _ = lane_scene("s02-identities", icons=(icon_body, icon_bottle, icon_syringe))
@@ -791,8 +849,12 @@ def build_seals():
     rows = _rows(sid)
     rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
-    sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
-    tw.insert(0, f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
+    # NO panel entrance. This is the molecule s07 ended on, at the same grid
+    # position; the liquid-lens reveal between the two scenes exposes it
+    # already in place, so the circle reads as "same molecule, next idea"
+    # instead of opening onto an empty panel (extracted frame at 59.45s did
+    # exactly that when the panel still slid in from opacity 0).
+    sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1 }});")
     markup = ('    <div class="split2">\n'
               f'      <div class="col" id="{sid}-col">\n' + "\n".join(r[2] for r in rows) + "\n      </div>\n"
               f'      <div class="panel" id="{sid}-panel">\n        {panel}\n      </div>\n    </div>')
@@ -977,6 +1039,114 @@ def fix_generated_grounds():
           % (fixed, total_subs))
 
 
+def fix_hero_transitions():
+    """Hand-author the ONE water-ripple/liquid-lens hero transition the review
+    asks for, between s07-binds and s08-seals (binding -> sealing). No type in
+    this generator's registry (cut / crossfade / blur-crossfade / push-slide /
+    zoom-through / squeeze / wipe-left / wipe-up) does a liquid-lens reveal, so
+    per that registry's own rule -- "if no registry result performs the needed
+    move, hand-author it and record the catalog miss" -- this patches the ROOT
+    timeline in index.html directly.
+
+    03-beat-sheet.json declares the boundary as a plain `crossfade` so the
+    GENERATOR owns every piece of overlap bookkeeping (both clips' start and
+    duration, the d_in shift on the generated scenes). This function only
+    swaps the crossfade's two opacity tweens for the reveal it actually wants:
+
+      * the incoming scene opens as a circle from the panel's own centre of
+        interest to 92%% -- measured, not guessed: 75%% left the top-right
+        corner (1211px from that centre) uncovered at the end of the reveal;
+      * the outgoing scene fades only across the LAST 40%% of the window, once
+        the circle already covers most of the frame. Fading it from the start
+        opened the reveal onto a near-blank frame (extracted at 59.45s).
+
+    The late fade is also what keeps the checker honest here: its
+    cross-scene exemption needs one scene mid-fade (opacity < 0.999), and a
+    clip-path reveal on its own never changes opacity.
+    """
+    path = f"{HERE}/05-composition/index.html"
+    html = open(path).read()
+    MARK = "liquid-lens water-ripple hero"
+    if MARK in html:
+        print("  hero transition already patched; skipping (idempotent)")
+        return
+    import re as _re
+    pat_old = _re.compile(
+        r"    tl\.to\('#scene-s07-binds', \{ opacity: 0, duration: ([\d.]+), "
+        r"ease: \"power2\.inOut\" \}, ([\d.]+)\);\n")
+    pat_new = _re.compile(
+        r"    tl\.fromTo\('#scene-s08-seals', \{ opacity: 0 \}, \{ opacity: 1, duration: ([\d.]+), "
+        r"ease: \"power2\.inOut\" \}, ([\d.]+)\);\n")
+    m1, m2 = pat_old.search(html), pat_new.search(html)
+    assert m1 and m2, ("s07->s08 crossfade tweens not found -- is s08-seals' transition "
+                       "still `crossfade` in build_beats.py, and was the generator re-run?")
+    D, t0 = float(m1.group(1)), float(m1.group(2))
+    assert m2.group(1) == m1.group(1) and m2.group(2) == m1.group(2)
+    fade_d = round(D * 0.40, 3); fade_t = round(t0 + D - fade_d, 3)
+    ripple = (
+        f"    // {MARK} {D:.3f}s: s07-binds -> s08-seals, overlap opens at {t0:.3f}s\n"
+        f"    //   (generator emitted a crossfade here; its two opacity tweens are replaced)\n"
+        f'    tl.fromTo(\'#scene-s08-seals\', {{ clipPath: "circle(0% at 46% 58%)" }}, '
+        f'{{ clipPath: "circle(92% at 46% 58%)", duration: {D:.3f}, ease: "power2.inOut" }}, {t0:.3f});\n'
+        f'    tl.to(\'#scene-s07-binds\', {{ opacity: 0, duration: {fade_d:.3f}, ease: "power1.in" }}, {fade_t:.3f});\n'
+    )
+    html = html.replace(m1.group(0), "", 1)
+    html = html.replace(m2.group(0), ripple, 1)
+    open(path, "w").write(html)
+    print("  hero transition patched: s07-binds -> s08-seals is a %.3fs liquid-lens reveal" % D)
+
+
+def fix_exit_fades():
+    """Fade the OUTGOING wrapper across two wipe-up windows: s03 -> s04 and
+    s12 -> s13. Both outgoing scenes are entered by a hard CUT.
+
+    Why these two and not every wipe. Read from layout-audit.browser.js
+    (0.8.27): `isCrossSceneTransitionOverlap` excuses text covered by another
+    scene only when one of the two scenes is mid-fade (opacity < 0.999). A
+    wipe never touches opacity, so by that rule every outgoing scene under a
+    finished wipe is a "real layering bug". The reason the other wipes pass is
+    `isClippedAway`: a wipe-entered scene keeps `clip-path: inset(0 0 0 0)` on
+    its wrapper for life, and any text with a clip-path ancestor whose probe
+    points hit another element is skipped as clipped-away, never audited. A
+    cut-entered scene carries no leftover clip-path, so its exit IS audited --
+    and flagged, though nothing is visible on extracted frames.
+
+    Rather than lean on that accident, give these two boundaries what the
+    checker actually recognises: a real fade on the outgoing wrapper across
+    the wipe. Both are visually safe: s03 is PAPER fading over a PAPER body,
+    invisible; s12 is INK fading toward the cream the incoming recap already
+    is, so the un-revealed region lifts to the new ground a few frames before
+    the wipe front reaches it -- the dark "letting go" of the warning block.
+    The same fade on an INK -> INK boundary would flash cream, which is why
+    it is not applied generically.
+    """
+    path = f"{HERE}/05-composition/index.html"
+    html = open(path).read()
+    MARK = "exit fade companion"
+    if MARK in html:
+        print("  exit fades already patched; skipping (idempotent)")
+        return
+    import re as _re
+    n = 0
+    for out_id, in_id in (("s03-not-filler", "s04-split"), ("s12-risks", "s13-badges")):
+        pat = _re.compile(
+            r"(    // wipe-up ([\d.]+)s: " + out_id + r" -> " + in_id + r", overlap opens at ([\d.]+)s\n"
+            r"    tl\.fromTo\('#scene-" + in_id + r"'[^\n]*\n)")
+        m = pat.search(html)
+        assert m, f"wipe-up {out_id} -> {in_id} not found in index.html (transition type changed?)"
+        dur, t0 = float(m.group(2)), float(m.group(3))
+        # power2.out, not .in: the fade must be mostly done before the wipe
+        # front reaches the top band where both scenes put their headline,
+        # or the checker sees two solid text blocks overlapping for the last
+        # ~0.1s of the window (it did, at 103.0-103.08s, under power1.in).
+        line = (f"    // {MARK}: {out_id} lets go across the same window (see fix_exit_fades)\n"
+                f"    tl.to('#scene-{out_id}', {{ opacity: 0, duration: {dur:.3f}, ease: \"power2.out\" }}, {t0:.3f});\n")
+        html = html.replace(m.group(1), m.group(1) + line, 1)
+        n += 1
+    open(path, "w").write(html)
+    print("  exit fades patched on %d cut-entered scenes' wipe exits" % n)
+
+
 def fix_motion_sidecar():
     """[S7/R-1b]: set root `keepsMoving.maxStaticSec` from the FORMAT's cadence.
 
@@ -1015,6 +1185,8 @@ def main():
               % (os.path.basename(path), SCENES[sid]["duration"], len(SCENES[sid]["beats"])))
     print("%d diagram scenes emitted (morphology actor: body / serum / filler)" % n)
     fix_generated_grounds()
+    fix_hero_transitions()
+    fix_exit_fades()
     fix_motion_sidecar()
 
 if __name__ == "__main__":

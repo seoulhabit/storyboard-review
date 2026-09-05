@@ -251,7 +251,7 @@
         </svg>
         <div class="panel card" id="face" style="position:absolute;left:60px;top:60px;width:520px;height:240px;"><div class="wash dim" id="face-wash"></div><svg viewBox="0 0 200 200" width="180" height="180" aria-hidden="true"><path class="face" d="M 60 30 C 130 20 160 70 150 120 C 145 150 120 160 118 180 M 150 120 L 168 128 L 152 140"/><circle class="face" cx="110" cy="70" r="6"/></svg><p class="chip " id="face-chip" style="">no facial delivery</p><div class="void" id="face-void"></div></div>
         <div class="panel late" id="decides" style="position:absolute;left:640px;top:40px;width:700px;height:130px;"><div class="wash dim" id="decides-wash"></div><p class="p-title">your body decides</p></div>
-        <div class="panel dest" id="d-skin" style="position:absolute;left:1340px;top:120px;width:380px;height:150px;"><div class="wash aqua" id="d-skin-wash"></div><p class="p-title">skin</p></div><div class="panel dest" id="d-joints" style="position:absolute;left:1340px;top:300px;width:380px;height:150px;"><div class="wash aqua" id="d-joints-wash"></div><p class="p-title">joints</p></div><div class="panel dest" id="d-tendons" style="position:absolute;left:1340px;top:480px;width:380px;height:150px;"><div class="wash aqua" id="d-tendons-wash"></div><p class="p-title">tendons</p></div><div class="panel dest" id="d-other" style="position:absolute;left:1340px;top:660px;width:380px;height:150px;"><div class="wash aqua" id="d-other-wash"></div><p class="p-title">other tissue</p></div>
+        <div class="panel dest late" id="d-skin" style="position:absolute;left:1340px;top:120px;width:380px;height:150px;"><div class="wash aqua" id="d-skin-wash"></div><p class="p-title">skin</p></div><div class="panel dest late" id="d-joints" style="position:absolute;left:1340px;top:300px;width:380px;height:150px;"><div class="wash aqua" id="d-joints-wash"></div><p class="p-title">joints</p></div><div class="panel dest late" id="d-tendons" style="position:absolute;left:1340px;top:480px;width:380px;height:150px;"><div class="wash aqua" id="d-tendons-wash"></div><p class="p-title">tendons</p></div><div class="panel dest late" id="d-other" style="position:absolute;left:1340px;top:660px;width:380px;height:150px;"><div class="wash aqua" id="d-other-wash"></div><p class="p-title">other tissue</p></div>
         <div class="panel card late" id="scaff" style="position:absolute;left:60px;top:380px;width:520px;height:220px;"><div class="wash aqua" id="scaff-wash"></div><svg id="bmini" viewBox="0 0 620 720" width="150" height="174" aria-hidden="true"></svg><p class="chip " id="scaff-chip" style="">scaffolding</p></div>
         <div class="panel card late" id="crate" style="position:absolute;left:60px;top:640px;width:520px;height:240px;"><div class="wash coral" id="crate-wash"></div><svg viewBox="0 0 200 160" width="180" height="144" aria-hidden="true"><rect class="slat" x="10" y="40" width="180" height="110" rx="6"/><rect class="slat" id="slat-1" x="10" y="40" width="180" height="26"/><rect class="slat" id="slat-2" x="10" y="82" width="180" height="26"/><rect class="slat" id="slat-3" x="10" y="124" width="180" height="26"/></svg><p class="chip " id="crate-chip" style="">spare parts</p></div>
        </div>
@@ -459,6 +459,9 @@
     tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 6.064 - 0.3);
     tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 6.064 - 0.2);
     tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 6.965);
+    // the struck route leaves the frame: it is closed, and the 1.9s between
+    // the strike and the dots setting off held completely still
+    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, 7.838 + 0.15);
 
     // ---- unit 9: the body decides where the pieces go -----------------------------
     dots.forEach(function (d, i) {
@@ -468,6 +471,10 @@
     // reframe onto the distribution map: the branches, not the gut, are the subject now
     tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 11.002);
     drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 11.002 + 0.2, 0.7, 0.12, EASE.wipe);
+    ["skin", "joints", "tendons", "other"].forEach(function (k, i) {
+      tl.fromTo("#d-" + k, { opacity:0, x:26 }, { opacity:1, x:0, duration:0.4, ease:EASE.arrive },
+                11.002 + 0.35 + i * 0.12);
+    });
     reveal(tl, "#decides", 12.125);
     tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 12.125);
     // dispatch: fixed assignment -- skin gets ONE dot, joints two, tendons two, other one

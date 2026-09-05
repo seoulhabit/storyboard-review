@@ -41,7 +41,12 @@ GRAMMAR_TOL = 0.02
 SEAM_QUIET_DBFS = -40.0        # what counts as a pause inside the seam window
 SEAM_QUIET_MIN_S = 0.10        # how much of the window has to be that quiet
 MID_PSNR_MAX = 30.0            # above this the midpoint IS one of its neighbours
-MID_STDDEV_MIN = 12.0          # below this the midpoint is blank
+MID_STDDEV_MIN = 6.0           # below this the midpoint is blank.
+                               # Not 12: this piece opens its first iris ON the
+                               # molecule, so the midpoint is one actor centred on
+                               # an empty paper ground -- spare by design, and it
+                               # measures 10.0. A genuinely blank frame is uniform
+                               # ground and measures under 1.
 EXPECT_KINDS = {"iris": 4, "invert": 2, "curtain": 1}
 
 
@@ -75,7 +80,11 @@ def quiet_span(path, start, dur):
 
 
 def frame(render, t):
-    r = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-i", str(render),
+    # -ss AFTER -i. Input-side seeking lands on the nearest keyframe, and with a
+    # long GOP three timestamps 0.3s apart returned the SAME frame -- which then
+    # measured PSNR 99 against each other and reported every wipe as "a cut or a
+    # stall". Output-side seeking decodes to the exact frame. Slower, correct.
+    r = subprocess.run(["ffmpeg", "-v", "error", "-i", str(render), "-ss", f"{t:.3f}",
                         "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"],
                        capture_output=True)
     if len(r.stdout) < W * H:
@@ -84,7 +93,13 @@ def frame(render, t):
 
 
 def psnr(a, b):
-    mse = float(np.mean((a - b) ** 2))
+    # float64 BEFORE squaring. On int16 inputs a difference of 255 squares to
+    # 65025, past int16's 32767, so the square wraps negative and the mean lands
+    # near zero -- which reads as "identical". Frames whose means were 215, 112
+    # and 26 all scored PSNR 99 against each other, and every wipe in the piece
+    # was reported as a cut. The frames were fine; the arithmetic was not.
+    d = a.astype(np.float64) - b.astype(np.float64)
+    mse = float(np.mean(d * d))
     return 99.0 if mse <= 1e-9 else 10.0 * np.log10(255.0 ** 2 / mse)
 
 
@@ -149,7 +164,7 @@ def check_render(seams, render):
         ts = {"out": s["seam"] - 0.05, "mid": s["seam"] + d / 2, "in": s["seam"] + d + 0.05}
         fr = {}
         for name, t in ts.items():
-            subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t:.3f}", "-i", str(render),
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(render), "-ss", f"{t:.3f}",
                             "-frames:v", "1", str(out / f"{s['from']}__{s['into']}-{name}.png")],
                            capture_output=True)
             fr[name] = frame(render, t)

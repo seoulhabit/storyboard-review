@@ -257,7 +257,7 @@
           <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
         </svg>
         <div class="cite" id="cite-smoke" style="position:absolute;left:740px;top:735px;">J Dermatol Sci &middot; 2007</div>
-        <div class="cite" id="cite-ret" style="position:absolute;left:1200px;top:735px;">Arch Dermatol &middot; 2007</div>
+        <div class="cite" id="cite-ret" style="position:absolute;left:1246px;top:735px;">Arch Dermatol &middot; 2007</div>
         <div class="panel " id="final" style="position:absolute;left:0px;top:796px;width:1728px;height:122px;"><div class="wash moss" id="final-wash"></div><p class="kt " id="final-kt"><span class="kt-word">Protect</span> <span class="kt-word">the</span> <span class="kt-word">building</span> <span class="kt-word" id="final-kt-last">first.</span></p></div>
        </div>
       </div>
@@ -433,12 +433,20 @@
     tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 14.055 - 0.2);
     tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.055);
     tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 16.275);
+    // the two optional cards settle back and dim as the verdict is spoken over
+    // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
+    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 14.536 - 0.2);
+    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 16.275 + 0.15);
     tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 16.683);
     tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 17.396 - 0.9);
     tl.to("#final", { opacity:1, duration:0.1 }, 17.396 - 0.1);
     tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 17.396 - 0.1);
     kineticWords(tl, "#final-kt", 17.396 + 0.15, 0.08, "rise");
-    tl.to("#bricks", { x:420, duration:0.6, ease:EASE.exit }, 19.914);
+    // the bricks are already leaving as they are named; the building they were
+    // never going to build takes the frame back over the closing words
+    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, 17.988 - 0.2);
+    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, 18.377);
+    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, 19.914);
 
     // departure: push under the curtain wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 20.660);

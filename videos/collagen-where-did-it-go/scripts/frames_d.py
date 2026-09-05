@@ -27,7 +27,11 @@ def file_08_digestion(fspan, fctx):
     .slat { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
     #bmini .beam { stroke-width:12; }
 """
-    dests = "".join(panel(f"d-{k}", "aqua", f'<p class="p-title">{label}</p>', abs_(1340, y, 380, 150), "dest")
+    # `late`: the four destinations are the ANSWER to "your body decides where
+    # they go", and without it they sat fully readable from the file's first
+    # frame -- eleven seconds before the line, with the right half of the frame
+    # holding them static the whole time. They now build with the branch map.
+    dests = "".join(panel(f"d-{k}", "aqua", f'<p class="p-title">{label}</p>', abs_(1340, y, 380, 150), "dest late")
                     for k, label, y in DESTS)
     body = f"""
       <div class="stage">
@@ -85,6 +89,9 @@ def file_08_digestion(fspan, fctx):
     tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, @w(stomach) - 0.3);
     tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(stomach) - 0.2);
     tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, @w(facial));
+    // the struck route leaves the frame: it is closed, and the 1.9s between
+    // the strike and the dots setting off held completely still
+    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, @we(delivery) + 0.15);
 
     // ---- unit 9: the body decides where the pieces go -----------------------------
     dots.forEach(function (d, i) {
@@ -94,6 +101,10 @@ def file_08_digestion(fspan, fctx):
     // reframe onto the distribution map: the branches, not the gut, are the subject now
     tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, @w(signals));
     drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", @w(signals) + 0.2, 0.7, 0.12, EASE.wipe);
+    ["skin", "joints", "tendons", "other"].forEach(function (k, i) {
+      tl.fromTo("#d-" + k, { opacity:0, x:26 }, { opacity:1, x:0, duration:0.4, ease:EASE.arrive },
+                @w(signals) + 0.35 + i * 0.12);
+    });
     reveal(tl, "#decides", @w(decides));
     tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(decides));
     // dispatch: fixed assignment -- skin gets ONE dot, joints two, tendons two, other one
@@ -118,10 +129,12 @@ def file_08_digestion(fspan, fctx):
         {"name": "fragments drift", "at": "@w(amino)-0.5", "area": 0.04, "dl": 90, "dur": 1.4},
         {"name": "face card dim", "at": "@w(stomach)-0.2", "area": 0.06, "dl": 84, "dur": 0.4},
         {"name": "face void", "at": "@w(facial)", "area": 0.06, "dl": 103, "dur": 0.3},
+        {"name": "struck route leaves", "at": "@we(delivery)+0.15", "area": 0.06, "dl": 90, "dur": 1.1},
     ]
     MOTION["09-dispatch"]["beats"] = [
         {"name": "stomach retract", "at": "@w(absorbed)+0.3", "area": 0.07, "dl": 81, "dur": 0.4},
         {"name": "camera push", "at": "@w(signals)", "area": 0.5, "dl": 60, "dur": 0.9},
+        {"name": "destinations build", "at": "@w(signals)+0.35", "area": 0.13, "dl": 70, "dur": 0.76},
         {"name": "decides wash", "at": "@w(decides)", "area": 0.044, "dl": 94, "dur": 0.4},
         {"name": "skin lands", "at": "@w(skin)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},
         {"name": "tendons land", "at": "@w(tendons)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},

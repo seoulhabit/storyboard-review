@@ -53,7 +53,7 @@ def file_14_hierarchy(fspan, fctx):
           <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
         </svg>
         {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(740, 735))}
-        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1200, 735))}
+        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1246, 735))}
         {panel("final", "moss", kt("final-kt", "Protect the building first."), abs_(0, 796, 1728, 122))}
        </div>
       </div>
@@ -108,12 +108,20 @@ def file_14_hierarchy(fspan, fctx):
     tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(cream,2) - 0.2);
     tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(cream,2));
     tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(powder));
+    // the two optional cards settle back and dim as the verdict is spoken over
+    // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
+    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(pleasant) - 0.2);
+    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(powder) + 0.15);
     tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(optional));
     tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, @w(protect) - 0.9);
     tl.to("#final", { opacity:1, duration:0.1 }, @w(protect) - 0.1);
     tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, @w(protect) - 0.1);
     kineticWords(tl, "#final-kt", @w(protect) + 0.15, 0.08, "rise");
-    tl.to("#bricks", { x:420, duration:0.6, ease:EASE.exit }, @w(bricks));
+    // the bricks are already leaving as they are named; the building they were
+    // never going to build takes the frame back over the closing words
+    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, @w(building) - 0.2);
+    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, @w(before));
+    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, @w(bricks));
 """.replace("SHUFFLE", str(SHUFFLE))
     MOTION["14-hierarchy"]["beats"] = [
         {"name": "camera settle",  "at": "0.0",               "area": 0.5,   "dl": 60,  "dur": 1.2},
@@ -132,7 +140,10 @@ def file_14_hierarchy(fspan, fctx):
         {"name": "optional dim",      "at": "@w(cream,2)-0.2", "area": 0.05,  "dl": 94,  "dur": 0.4},
         {"name": "camera home",       "at": "@w(protect)-0.9", "area": 0.5,   "dl": 60,  "dur": 0.8},
         {"name": "final moss band",   "at": "@w(protect)-0.1", "area": 0.108, "dl": 149, "dur": 0.6},
-        {"name": "bricks exit",       "at": "@w(bricks)",      "area": 0.064, "dl": 103, "dur": 0.6},
+        {"name": "cards settle",      "at": "@w(pleasant)-0.2", "area": 0.05,  "dl": 70,  "dur": 1.2},
+        {"name": "building retakes",  "at": "@w(building)-0.2", "area": 0.20, "dl": 55,  "dur": 1.4},
+        {"name": "bricks drift",      "at": "@w(before)",      "area": 0.064, "dl": 70,  "dur": 0.9},
+        {"name": "bricks exit",       "at": "@w(bricks)",      "area": 0.064, "dl": 103, "dur": 0.7},
     ]
     return body, css, tl
 

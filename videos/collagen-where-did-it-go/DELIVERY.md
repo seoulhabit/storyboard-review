@@ -120,7 +120,57 @@ None of these were visible in any output. Each was found by comparing a number t
 
 ## Verification
 
-GATES_PLACEHOLDER
+### The gate chain, measured on the delivered file
+
+`npm run gates` runs ten checks in order and stops at the first failure. All ten pass.
+
+| gate | what it measures | result |
+|---|---|---|
+| safe-area (HARD) | ink in a reserved zone, 539 frames | **no findings** |
+| static-hold `--ceiling 2.0` | whole-frame PSNR freeze + region content-voids | **no findings**, 270 frames |
+| cadence `--longform --ceiling 4.0` | share of 8fps steps carrying a perceptible beat, per scene | **no scene over the ceiling** |
+| continuity `--gate` | a plain crossfade across a ground change | **pass** |
+| blank frames | per-frame luma stddev | **no findings** |
+| motion gaps `--open 2.0` | static runs on rendered pixels, frame **and** per-cell | **0 runs over 2.0s**, 538 steps |
+| SFX durations | declared vs native length, and cues inside the root | **no findings** |
+| end screen | ink in the right third / lower-right of the reserve | **PASS**, 0 zone hits from 130.89s |
+| seams `--source --render` | seam grammar, measured pause, and both files visible at each midpoint | **7/7 match the grammar and are visibly wipes** |
+| final | the delivery table below | **every row PASS** |
+
+| check | measured | result | expected |
+|---|---|---|---|
+| duration | 134.900s (2:14.90) | **PASS** | 120-150s |
+| matches root data-duration | 0.106s off | **PASS** | <= 0.15s |
+| video stream | 1920x1080 @ 30/1 | **PASS** | 1920x1080 @ 30/1 |
+| first word (manifest) | 0.100s | **PASS** | <= 0.3s |
+| speech energy in the first 0.45s | -22.3 dB vs -22.0 dB at 1-2s | **PASS** | within 12 dB of the narrated level |
+| integrated loudness | -14.8 LUFS | **PASS** | -14.0 +/- 1.0 LUFS |
+| true peak | -1.9 dBTP | **PASS** | < -1.0 dBTP |
+| audio groups | 1 | **PASS** | exactly 1 |
+| narration clips | 1 | **PASS** | exactly 1 (one master take) |
+| group membership | 1 | **PASS** | exactly 1 |
+| second speaker removed | 0 hit(s) | **PASS** | 0 (BRIEF/DELIVERY may name Jay; generated files may not) |
+| no FAKE manifest banner | 0 file(s) [] | **PASS** | 0, and manifest source != fake |
+| generated files clean | 0 data-hf-id | **PASS** | 0 (preview server did not rewrite them) |
+| caption cues | 53 srt / 53 vtt | **PASS** | 30-90, srt == vtt |
+| cue hygiene | 0 under 1.0s, 0 overlapping, first 0.10s, last ends 129.59s | **PASS** | none short, none overlapping, first <= 0.30s, last within the render |
+| block seam continuity | A1->A2 0.10LU/2%; A2->A3 0.00LU/5%; A3->B 0.30LU/2% | **PASS** | every seam <= 2.0 LU and <= 12% centroid |
+
+### Visual review
+
+`npm run qc` writes five sheets to `renders/qc/`, all of which were looked at:
+
+- `sheet-early/mid/late.png` — 24 frames per third of the runtime. The muted read holds end to end: contradiction, tagged trial field, shield, building, sun cutting, door refusal, film, digestion, the filter, the numbered hierarchy, the verdict.
+- `phone.png` — 22 kinetic-anchor moments at **25% (480×270)**. Every text beat is still legible, including the size cards and the citation chips. This pass is the only one that has ever caught a `.worldclip` crop on this channel.
+- `seams.png` — the seven transition midpoints, tiled.
+- `seam-A1-A2.wav`, `seam-A2-A3.wav`, `seam-A3-B.wav` — six seconds across each block seam, for the ear.
+
+Two defects were found by looking rather than by a gate, and fixed:
+
+1. **The four distribution labels were readable eleven seconds before the line that names them.** `skin / joints / tendons / other tissue` were on screen from the digestion file's first frame, giving away "your body decides where they go" and holding the right half of the frame static until it arrived. They now build with the branch map.
+2. **The two citation chips in the hierarchy sat edge to edge** and read as one pill. Spaced.
+
+
 
 ---
 

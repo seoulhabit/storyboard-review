@@ -1180,6 +1180,15 @@
  },
  {
   "file": "08-digestion",
+  "unit": "08-digestion",
+  "kind": "we",
+  "word": "delivery",
+  "occurrence": 1,
+  "seconds": 7.838,
+  "abs": 63.764
+ },
+ {
+  "file": "08-digestion",
   "unit": "09-dispatch",
   "kind": "w",
   "word": "absorbed",
@@ -1195,6 +1204,15 @@
   "occurrence": 1,
   "seconds": 8.738,
   "abs": 64.664
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "kind": "w",
+  "word": "signals",
+  "occurrence": 1,
+  "seconds": 11.002,
+  "abs": 66.928
  },
  {
   "file": "08-digestion",
@@ -2235,6 +2253,24 @@
   "file": "14-hierarchy",
   "unit": "15-verdict",
   "kind": "w",
+  "word": "pleasant",
+  "occurrence": 1,
+  "seconds": 14.536,
+  "abs": 123.67
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
+  "kind": "w",
+  "word": "powder",
+  "occurrence": 1,
+  "seconds": 16.275,
+  "abs": 125.409
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
+  "kind": "w",
   "word": "optional",
   "occurrence": 1,
   "seconds": 16.683,
@@ -2275,6 +2311,24 @@
   "occurrence": 1,
   "seconds": 17.396,
   "abs": 126.53
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
+  "kind": "w",
+  "word": "building",
+  "occurrence": 1,
+  "seconds": 17.988,
+  "abs": 127.122
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
+  "kind": "w",
+  "word": "before",
+  "occurrence": 1,
+  "seconds": 18.377,
+  "abs": 127.511
  },
  {
   "file": "14-hierarchy",

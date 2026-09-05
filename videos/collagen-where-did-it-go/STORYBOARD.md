@@ -41,11 +41,11 @@ Paste-ready. Re-derived from the walk on every build.
 |---|---|---:|---:|---|---:|
 | 1 | `01-hook` | 0.000 | 5.812 | 01-hook | 21 |
 | 2 | `02-promise` | 5.262 | 9.275 | 02-promise | 30 |
-| 3 | `03-building` | 13.987 | 24.587 | 03-building, 04-demolition, 05-boundary | 44 |
+| 3 | `03-building` | 13.987 | 24.587 | 03-building, 04-demolition, 05-boundary | 47 |
 | 4 | `06-door` | 38.024 | 18.452 | 06-door, 07-film | 45 |
-| 5 | `08-digestion` | 55.926 | 21.303 | 08-digestion, 09-dispatch | 28 |
-| 6 | `10-evidence` | 76.629 | 33.105 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 77 |
-| 7 | `14-hierarchy` | 109.134 | 21.560 | 14-hierarchy, 15-verdict | 34 |
+| 5 | `08-digestion` | 55.926 | 21.303 | 08-digestion, 09-dispatch | 31 |
+| 6 | `10-evidence` | 76.629 | 33.105 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 83 |
+| 7 | `14-hierarchy` | 109.134 | 21.560 | 14-hierarchy, 15-verdict | 40 |
 | 8 | `16-end` | 129.794 | 5.000 | 16-end | 2 |
 
 ## Beat units
@@ -69,5 +69,5 @@ Paste-ready. Re-derived from the walk on every build.
 | 15 | `15-verdict` | `14-hierarchy` | 122.865 | 6.929 | 122.86 | 20 | optional · collagen cream · collagen powder · Protect the building first. | optional pan, final band, bricks exit | — |
 | 16 | `16-end` | `16-end` | 129.794 | 5.000 | — | 0 | SeoulHabit · Evidence, not hype. · sources in the description | curtain, calm drift | — |
 
-**281 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
+**299 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
 

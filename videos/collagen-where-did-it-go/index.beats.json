@@ -540,6 +540,17 @@
  },
  {
   "file": "08-digestion",
+  "unit": "08-digestion",
+  "name": "struck route leaves",
+  "abs": 63.914,
+  "area": 0.06,
+  "dl": 90,
+  "dur": 1.1,
+  "per_step": 0.61,
+  "registers": false
+ },
+ {
+  "file": "08-digestion",
   "unit": "09-dispatch",
   "name": "stomach retract",
   "abs": 64.964,
@@ -558,6 +569,17 @@
   "dl": 60,
   "dur": 0.9,
   "per_step": 4.17,
+  "registers": true
+ },
+ {
+  "file": "08-digestion",
+  "unit": "09-dispatch",
+  "name": "destinations build",
+  "abs": 67.278,
+  "area": 0.13,
+  "dl": 70,
+  "dur": 0.76,
+  "per_step": 1.5,
   "registers": true
  },
  {
@@ -1102,6 +1124,17 @@
  {
   "file": "14-hierarchy",
   "unit": "15-verdict",
+  "name": "cards settle",
+  "abs": 123.47,
+  "area": 0.05,
+  "dl": 70,
+  "dur": 1.2,
+  "per_step": 0.36,
+  "registers": false
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
   "name": "camera home",
   "abs": 125.63,
   "area": 0.5,
@@ -1124,12 +1157,34 @@
  {
   "file": "14-hierarchy",
   "unit": "15-verdict",
+  "name": "building retakes",
+  "abs": 126.922,
+  "area": 0.2,
+  "dl": 55,
+  "dur": 1.4,
+  "per_step": 0.98,
+  "registers": false
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
+  "name": "bricks drift",
+  "abs": 127.511,
+  "area": 0.064,
+  "dl": 70,
+  "dur": 0.9,
+  "per_step": 0.62,
+  "registers": false
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "15-verdict",
   "name": "bricks exit",
   "abs": 129.048,
   "area": 0.064,
   "dl": 103,
-  "dur": 0.6,
-  "per_step": 1.37,
+  "dur": 0.7,
+  "per_step": 1.18,
   "registers": true
  }
 ]

@@ -1,6 +1,66 @@
 # Render QA log — kbeauty-label-trap
 
-## Render
+## Catalog V2 redesign re-render (2026-09-05)
+
+Full visual redesign onto the Catalog V2 Label Literacy system (see
+`00-decision-ledger.md`-equivalent context in the session that produced this
+round; narration, timing, transitions, scene IDs, canvas and music are all
+unchanged from the original production -- only the composition source
+changed). Rendered 3 times before shipping:
+
+- **Round A**: 1920x1080/30fps, 257.133s raw video. Audio mastered fresh
+  (VO + music, amix normalize=0, two-pass loudnorm) and muxed to final.mp4.
+  `npm run postrender`'s auto-chained safe-area gate **FAILED**: s03's
+  forensic-scanner sweep line (`#s03-scanner`, a glowing box-shadow element
+  animating top-to-bottom to introduce the five-question seals) bled its
+  glow into the reserved bottom zone (`bottom>=972`) near the end of its
+  3s sweep. Root cause: the tween's target `y` was computed without
+  accounting for the `.promise-stage`'s own content-box offset (~94px from
+  the true canvas top from `.stage`'s safe-area padding) -- `y:890` actually
+  lands at real canvas y≈984, already past the 972 boundary before the glow
+  is even considered.
+- **Round B**: fixed by moving the target to `y:890`→ still measured
+  ~984 real-y; FAILED AGAIN (44087px masked, 2 frames) -- the first fix
+  didn't correct for the content-box offset, only shortened the sweep
+  slightly. Diagnosed by extracting the exact flagged frame and, once that
+  didn't fully explain it, by pixel-measuring the scanner line's rendered Y
+  position directly (Python/PIL) rather than continuing to hand-compute:
+  confirmed the true issue was the missing content-box-offset term.
+- **Round C (final)**: retargeted to `y:700` (real canvas y≈793, 179px of
+  clearance) and tightened the glow (`box-shadow` blur+spread 30px/6px →
+  14px/2px) as a second, independent safety margin. Verified via
+  `hyperframes snapshot` + pixel measurement (scanner line found at
+  y=793 ± rounding) *before* committing to a third full render. Re-rendered:
+  1920×1080/30fps, 257.133s raw video, muxed with the same mastered audio
+  track (audio content never changed across rounds). **Final: 257.120s,
+  26.4MB.**
+- Duration check: 257.133s render vs `vo_duration_s` 257.120s → Δ0.013s,
+  same as the original production, well inside the ±0.15s tolerance.
+
+### Gates on the final round
+
+| Gate | Result |
+|---|---|
+| `hyperframes check --samples 40` | 0 errors, 0 warnings, 42/42 contrast AA. Only info-level findings, all at the s01→s02 wipe-transition overlap window (known clip-path-unaware false positive, see below). |
+| `check-safe-area.py --landscape` | **0 findings, 1028 frames sampled** — passes clean after the round-C fix. |
+| `check-static-hold.py --landscape` | Advisory. 16 region-level content-voids, same pattern/positions as the original production's own accepted 24 (fewer here since several of the original's voids were in scenes now replaced). |
+| `check-cadence.py --longform` | Advisory. 12/14 scenes over the 6.0s quiet ceiling — same scenes, similar longest-quiet-run numbers as the original production (this redesign preserved the exact same beat-sheet timing, so this is expected, not a regression). Not chased further, matching the original project's own documented reasoning: the format's diagrams need reading time while narration continues, both gates are advisory, and the underlying content/claims/safe-area/transitions are all correct. |
+
+### Pixel gate — manual frame review
+
+All 14 scene settle points + frame 0 + the s01→s02 transition midpoint +
+last frame, extracted directly from the final rendered `final.mp4` (not the
+live composition) and reviewed as a montage plus individually for the
+areas that changed this round (s03's fixed scanner, s14's landing card).
+**No defects found**: frame 0 shows the droplet already visible (not
+blank), the s14 brand mark and "Educational, not diagnostic." footer both
+render and hold correctly through the true final frame (no black dead
+zone), s12's closing card-focus text renders cleanly, and the s03 scanner
+now sits well clear of the bottom safe margin in the actual rendered
+pixels (confirmed both by the automated gate and by direct visual
+inspection of the extracted frame).
+
+## Render (original production, superseded by the round above)
 
 - `hyperframes render --quality high --workers 1` — 1920×1080, 30fps, 7714 frames.
 - **Round 1**: 257.133s, 9.0MB, rendered in 9m20s. Superseded — see defects below.

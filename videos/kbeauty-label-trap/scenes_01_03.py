@@ -207,7 +207,7 @@ style = """
   .q-progress { position:absolute; left:50%; top:38%; transform:translate(-50%,-50%); }
   .promise-head { position:absolute; left:0; right:0; top:calc(var(--safe-top) + 20px); text-align:center; opacity:0; }
   .scanner-line { position:absolute; left:0; right:0; top:0; height:4px; background:var(--celadon);
-    box-shadow:0 0 30px 6px var(--celadon); opacity:0; }
+    box-shadow:0 0 14px 2px var(--celadon); opacity:0; }
 """
 seals_html = five_question_progress("s03-seal", states=["unseen"] * 5, size=150, gap=54, bg="dark")
 body = f'''
@@ -248,7 +248,12 @@ script = f"""
   gsap.set('#s03-head', {{ opacity: 0, y: 16 }});
 {seal_sets}
   var tl = gsap.timeline({{ paused: true }});
-  tl.fromTo('#s03-scanner', {{ opacity: 1, y: -10 }}, {{ opacity: 1, y: 1090, duration: 3.0, ease: 'power1.inOut' }}, 0.0);
+  // y stops well short of the canvas bottom, and the glow radius above is
+  // tightened -- the box-shadow's blur bloom was still reaching the bottom
+  // safe zone (>=972px) at the previous y:890/30px-blur combination,
+  // caught by check-safe-area.py on the rendered frame (not visible in the
+  // dev preview crop, only measurable on actual rendered pixels).
+  tl.fromTo('#s03-scanner', {{ opacity: 1, y: -10 }}, {{ opacity: 1, y: 700, duration: 3.0, ease: 'power1.inOut' }}, 0.0);
   tl.to('#s03-scanner', {{ opacity: 0, duration: 0.3 }}, 3.0);
 {seal_tweens}
 {s03_extra_tweens}

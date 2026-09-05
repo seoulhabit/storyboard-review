@@ -83,13 +83,21 @@
      generated ground measures 2.17:1 against the 3:1 floor. Same
      suggestedColor as the hand-authored .kicker fix. */
   .kicker { color:#4B9B93; }
+
+  /* fix_endcard_lockup: two beats, one bounded bloom. */
+  .cam-in { position:relative; }
+  .lock { display:block; }
+  .bloom { position:absolute; left:50%; top:50%; width:1400px; height:720px;
+           transform:translate(-50%,-50%); pointer-events:none; z-index:0;
+           background: radial-gradient(ellipse at center, rgba(89,184,174,0.16), rgba(89,184,174,0) 62%); }
+  .beat { position:relative; z-index:1; }
 </style>
 
 <div id="root" data-composition-id="s14-endcard" data-width="1920" data-height="1080"
      data-duration="4.925">
     <div class="clip stage" id="s14-endcard-stage" data-start="0" data-duration="4.925">
-      <div class="cam" id="s14-endcard-cam"><div class="cam-in" id="s14-endcard-cam-in">
-      <div class="beat head is-entering" id="s14-endcard-b0">Serum hydrates. Filler adds volume.</div>
+      <div class="cam" id="s14-endcard-cam"><div class="cam-in" id="s14-endcard-cam-in"><div class="bloom" id="s14-endcard-bloom" aria-hidden="true"></div>
+      <div class="beat head is-entering" id="s14-endcard-b0"><!-- build_actors:fix_endcard_lockup --><span class="lock" id="s14-endcard-lockA">Serum hydrates.</span><span class="lock" id="s14-endcard-lockB">Filler adds volume.</span></div>
       <div class="beat sub is-entering" id="s14-endcard-b1">Same name, different jobs</div>
       </div></div>
     </div>
@@ -105,9 +113,15 @@
   // UNCOUNTED ease: it is how a video ends up with 65% of its real tweens
   // sharing one entrance signature while every explicit-ease grep says
   // otherwise. Each tween below names the ease its idiom asked for [S6/A-10].
+  gsap.set('#s14-endcard-lockA', { x: -46, opacity: 0 });
+  gsap.set('#s14-endcard-lockB', { x: 46, opacity: 0 });
+  gsap.set('#s14-endcard-bloom', { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' });
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s14-endcard-b0', { opacity: 1, scale: 1, y: 0, duration: 1.300, ease: 'power4.out' }, 0.642);
+  tl.to('#s14-endcard-b0', { opacity: 1, scale: 1, y: 0, duration: 0.350, ease: 'power4.out' }, 0.642);
   tl.to('#s14-endcard-b1', { opacity: 1, y: 0, duration: 1.400, ease: 'power3.out' }, 3.212);
+  tl.to('#s14-endcard-lockA', { x: 0, opacity: 1, duration: 0.600, ease: 'power4.out' }, 0.642);
+  tl.to('#s14-endcard-lockB', { x: 0, opacity: 1, duration: 0.620, ease: 'back.out(1.4)' }, 1.062);
+  tl.to('#s14-endcard-bloom', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.out' }, 0.892);
   tl.to({}, { duration: 4.925, ease: 'none' }, 0);   // anchor — always last, always at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s14-endcard'] = tl;

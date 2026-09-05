@@ -178,7 +178,12 @@ SCENES = [
       beats=[
         (at(10,0.00), 1.20, "arrive", "caption", "Is a filler just serum with a needle?"),
         (at(10,0.35), 1.00, "arrive", "caption", "Not even close."),
-        (at(10,0.55), 1.10, "slam",   "head",    "DO NOT INJECT YOURSELF"),
+        # Opens 0.24s AHEAD of the spoken "Do not inject yourself" (at 0.55)
+        # so the slam is ~80% landed on the word itself; the review's
+        # acceptance line is "the warning appears by its spoken onset", and a
+        # slam that STARTS on the onset is still invisible for its first
+        # frames. Asserted in index.motion.json by fix_motion_sidecar().
+        (at(10,0.51), 1.10, "slam",   "head",    "DO NOT INJECT YOURSELF"),
         (at(10,0.80), 1.00, "arrive", "cite",    "FDA · Dermal Fillers"),
       ]),
  dict(id="s12-risks", actor="risks", section="application", layout="hero-left", bg=INK,

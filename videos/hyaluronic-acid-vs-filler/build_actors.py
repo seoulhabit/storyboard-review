@@ -159,6 +159,28 @@ def boundary_panel(rng, w, h, big_id_prefix=None, small_id_prefix=None,
             f'      <g class="small" id="{small_id_prefix}grp">\n      ' + "\n      ".join(small) + "\n      </g>",
             by)
 
+def skin_layers(w, h, by):
+    """The cross-section GROUND for the size/plumping scenes: a wavy surface
+    line, two flat layer tints, and the EPIDERMIS / DERMIS labels -- the
+    catalog's SkinBand (harvested from this project's own v2, dropped in v3)
+    minus its dashed boundary, because `boundary_panel` already draws that
+    line at `by` and composing SkinBand whole would put two on the frame.
+    SkinBand's own hard-won note: it was once composed twice for one panel
+    and produced two overlapping EPIDERMIS labels. This is composed ONCE,
+    underneath the chains, and is fully deterministic (no rng)."""
+    pts = []
+    for i in range(11):
+        x = w * i / 10
+        pts.append((x, 26 + math.sin(i * 0.9) * 8))
+    surf = "M " + " L ".join(f"{x:.1f} {y:.1f}" for x, y in pts)
+    return (f'<rect x="0" y="26" width="{w}" height="{by-26:.1f}" fill="currentColor" opacity="0.035"/>\n'
+            f'      <rect x="0" y="{by:.1f}" width="{w}" height="{h-by:.1f}" fill="currentColor" opacity="0.07"/>\n'
+            f'      <path d="{surf}" fill="none" stroke="currentColor" stroke-width="4" opacity="0.7"/>\n'
+            f'      <text x="16" y="{by-16:.1f}" font-size="26" fill="currentColor" opacity="0.6" '
+            f'letter-spacing="3" style="font-family:var(--font-mono)">EPIDERMIS</text>\n'
+            f'      <text x="16" y="{h-20:.1f}" font-size="26" fill="currentColor" opacity="0.6" '
+            f'letter-spacing="3" style="font-family:var(--font-mono)">DERMIS</text>')
+
 def skin_band(w, h, boundary_frac=0.30):
     by = h * boundary_frac
     pts = []
@@ -619,22 +641,92 @@ HEROSPLIT_CSS = """
   .panel .actor { color:var(--ink); }
 """
 
-def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None, css_extra=""):
+# The MACRO grammar [review §2 "vary spatial grammar"]. v3 set every
+# mechanism scene as copy-left / 560px card-right; six consecutive scenes in
+# one grammar is what the review meant by "an elegant presentation deck".
+# Here the subject dominates: no card, no border, the actor at 720px of a
+# 798px content box, the copy narrowed to a 644px column beside it. The
+# mechanism IS the frame; the words annotate it.
+MACRO_CSS = """
+  .split2.macro { grid-template-columns: 1fr 900px; gap:64px; }
+  .macro .panel { border:none; background:none; padding:0; }
+  .macro .panel .actor { height:720px; width:auto; }
+  /* The one accent per scene the review allows: a decisive word, not a
+     line. Colour + a BOUNDED bloom, tweened up and back down -- no
+     ongoing wobble. Coral on PAPER measures 3.005:1, over the 3:1 floor
+     for text this size; aqua is used on INK. */
+  .kw { display:inline; font-weight:inherit; }
+"""
+
+def _emphasize(sid, rows, words):
+    """Wrap the first occurrence of each decisive word in a .kw span and
+    return (rows, sets, tweens). One accent per row at most.
+
+    Bug this guards against, found on the first real render: `md` is the
+    WHOLE row markup string, including `id="{sid}-b{i}"` -- and every row's
+    own id CONTAINS the scene id. Naively replacing the word anywhere in
+    `md` matched inside that id attribute whenever a scene's emphasis word
+    happened to be a substring of its own slug (s07-BINDS-b0, s08-SEALS-b3),
+    splicing a <span> into an attribute and breaking every row's id in the
+    scene -- not just the one row that was supposed to get the accent
+    (`motion_selector_missing` on every #sXX-b* selector, all four rows,
+    confirmed by grep: the emitted markup read
+    `id="s07-<span class="kw"...>binds</span>-b0"`). Restrict the search to
+    the element's own TEXT NODE (after the first '>', before the last '<'),
+    and require a real word boundary so "binds" cannot match inside a
+    longer word either.
+    """
+    import re as _re
+    sets, tw, n = [], [], 0
+    out = []
+    for i, bt, md in rows:
+        gt, lt = md.find(">"), md.rfind("<")
+        head, text, tail = md[:gt+1], md[gt+1:lt], md[lt:]
+        for w in words:
+            m = _re.search(r"\b" + _re.escape(w) + r"\b", text)
+            if m and 'class="kw"' not in md:
+                kid = f"{sid}-kw{n}"; n += 1
+                text = text[:m.start()] + f'<span class="kw" id="{kid}">{w}</span>' + text[m.end():]
+                md = head + text + tail
+                dark_ground = dark(SCENES[sid]["bg"])
+                col = "#59B8AE" if dark_ground else "#C97A5C"
+                rgb = "89,184,174" if dark_ground else "201,122,92"
+                t = bt["offset"] + bt["dur"] * 0.9    # after the line has revealed
+                sets.append(f"gsap.set('#{kid}', {{ textShadow: '0 0 0px rgba({rgb},0)' }});")
+                tw.append(f"tl.to('#{kid}', {{ color: '{col}', textShadow: '0 0 22px rgba({rgb},0.5)', "
+                          f"duration: 0.420, ease: 'power2.out' }}, {t:.3f});")
+                tw.append(f"tl.to('#{kid}', {{ textShadow: '0 0 0px rgba({rgb},0)', "
+                          f"duration: 0.900, ease: 'power2.inOut' }}, {t + 0.42:.3f});")
+                break
+        out.append((i, bt, md))
+    return out, sets, tw
+
+def _hero_left(sid, panel_markup, panel_setup_sets=None, panel_extra_tweens=None, css_extra="",
+               macro=False, panel_present=False, emphasis=()):
     rows = _rows(sid)
-    markup = ('    <div class="split2">\n'
+    es, et = [], []
+    if emphasis:
+        rows, es, et = _emphasize(sid, rows, emphasis)
+    cls = "split2 macro" if macro else "split2"
+    markup = (f'    <div class="{cls}">\n'
               f'      <div class="col" id="{sid}-col">\n'
               + "\n".join(r[2] for r in rows) + "\n      </div>\n"
               f'      <div class="panel" id="{sid}-panel">\n'
               f'        {panel_markup}\n'
               "      </div>\n"
               "    </div>")
-    sets = [f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});"]
-    tw = [f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);"]
+    if panel_present:
+        sets = [f"gsap.set('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1 }});"]
+        tw = []
+    else:
+        sets = [f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});"]
+        tw = [f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);"]
     if panel_setup_sets: sets += panel_setup_sets
     if panel_extra_tweens: tw += panel_extra_tweens
     rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
+    sets += es; tw += et
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
-    return scene_shell(sid, HEROSPLIT_CSS + css_extra, markup, sets, tw)
+    return scene_shell(sid, HEROSPLIT_CSS + (MACRO_CSS if macro else "") + css_extra, markup, sets, tw)
 
 # ---- s04-split: free chains (idle drift) beside a mesh that LOCKS in -------
 SPLIT_CSS = """
@@ -670,6 +762,13 @@ def build_split():
                f'{txt(beats[left_cap_i])}</div>' if left_cap_i is not None else "")
     right_cap = (f'<div class="caption beat is-entering" id="{sid}-b{right_cap_i}">'
                 f'{txt(beats[right_cap_i])}</div>' if right_cap_i is not None else "")
+    # decisive words only: `loose` on the left state, `locked` on the right
+    kw_rows = []
+    if left_cap_i is not None: kw_rows.append((left_cap_i, beats[left_cap_i], left_cap))
+    if right_cap_i is not None: kw_rows.append((right_cap_i, beats[right_cap_i], right_cap))
+    kw_rows, kw_sets, kw_tw = _emphasize(sid, kw_rows, ("loose", "locked"))
+    if left_cap_i is not None: left_cap = kw_rows[0][2]
+    if right_cap_i is not None: right_cap = kw_rows[-1][2]
 
     markup = ('    <div class="split-two">\n' + title + '\n'
               f'      <div class="split-panel" id="{sid}-left">\n        {left_actor}\n        {left_cap}\n      </div>\n'
@@ -717,8 +816,9 @@ def build_split():
             tw.append(f"gsap.set('#{sid}-rnode{node_i}', {{ transformOrigin: 'center', scale: 0.3 }});")
             tw.append(f"tl.to('#{sid}-rnode{node_i}', {{ scale: 1, duration: 0.500, "
                       f"ease: 'back.out(2.2)' }}, {t:.3f});")
+    sets += kw_sets; tw += kw_tw
     hs, ht = _hold_drift(sid, f"#{sid}-cam-in"); sets += hs; tw += ht
-    return scene_shell(sid, SPLIT_CSS, markup, sets, tw)
+    return scene_shell(sid, SPLIT_CSS + MACRO_CSS, markup, sets, tw)
 
 # ---- s05-size: big chains stop above the boundary, small cross below it ---
 def build_size():
@@ -729,8 +829,11 @@ def build_size():
     rng = random.Random(23)
     bp, by = boundary_panel(rng, 480, 560, big_id_prefix=f"{sid}-big",
                             small_id_prefix=f"{sid}-small", bottom_reserve=24)
+    # FULL-FRAME SKIN CROSS-SECTION grammar [review 31.30-43.08]: the skin
+    # is the world the camera just dived into, not a card beside the copy.
     panel = (f'<svg class="actor" viewBox="0 0 480 560" width="480" height="560" '
-             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {bp}\n    </svg>')
+             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+             f'      {skin_layers(480, 560, by)}\n      {bp}\n    </svg>')
 
     sets = [f"gsap.set('#{sid}-biggrp', {{ y: -34 }});",
             f"gsap.set('#{sid}-smallgrp', {{ y: -8, opacity: 0.55 }});"]
@@ -750,14 +853,20 @@ def build_size():
         tw.append(f"tl.to('#{sid}-smallgrp', {{ y: 46, opacity: 1, duration: {d+0.3:.3f}, "
                   f"ease: 'power1.inOut' }}, {off:.3f});")
     rows = _rows(sid)
+    rows, es, et = _emphasize(sid, rows, ("surface",))
     rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
+    sets += es; tw += et
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
-    sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
-    tw.insert(0, f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
-    markup = ('    <div class="split2">\n'
+    # the dive lands here: the skin arrives with the camera
+    if False:
+        sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1 }});")
+    else:
+        sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
+        tw.insert(0, f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
+    markup = ('    <div class="split2 macro">\n'
               f'      <div class="col" id="{sid}-col">\n' + "\n".join(r[2] for r in rows) + "\n      </div>\n"
               f'      <div class="panel" id="{sid}-panel">\n        {panel}\n      </div>\n    </div>')
-    return scene_shell(sid, HEROSPLIT_CSS, markup, sets, tw)
+    return scene_shell(sid, HEROSPLIT_CSS + MACRO_CSS, markup, sets, tw)
 
 # ---- s06-plumping: same serum actor, near-surface chains swell then settle-
 def build_plumping():
@@ -767,7 +876,8 @@ def build_plumping():
     bp, by = boundary_panel(rng, 480, 560, small_id_prefix=f"{sid}-small",
                             bottom_reserve=24)   # SAME reserve as s05: same actor
     panel = (f'<svg class="actor" viewBox="0 0 480 560" width="480" height="560" '
-             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n      {bp}\n    </svg>')
+             f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
+             f'      {skin_layers(480, 560, by)}\n      {bp}\n    </svg>')
 
     body_i = [i for i, b in enumerate(beats) if b["idiom"] != "hold" and b.get("role") == "body"]
     sets = [f"gsap.set('#{sid}-smallgrp', {{ transformOrigin: 'center' }});"]
@@ -782,14 +892,20 @@ def build_plumping():
         tw.append(f"tl.to('#{sid}-smallgrp', {{ scale: 1.0, duration: {d*0.7:.3f}, "
                   f"ease: 'power2.inOut' }}, {off+d*0.55:.3f});")
     rows = _rows(sid)
+    rows, es, et = _emphasize(sid, rows, ("temporarily",))
     rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
+    sets += es; tw += et
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
-    sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
-    tw.insert(0, f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
-    markup = ('    <div class="split2">\n'
+    # same skin, same chains: s05's subject, still here -- no re-entrance
+    if True:
+        sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1 }});")
+    else:
+        sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 0, x: 60, scale: 0.94 }});")
+        tw.insert(0, f"tl.to('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }}, 0.001);")
+    markup = ('    <div class="split2 macro">\n'
               f'      <div class="col" id="{sid}-col">\n' + "\n".join(r[2] for r in rows) + "\n      </div>\n"
               f'      <div class="panel" id="{sid}-panel">\n        {panel}\n      </div>\n    </div>')
-    return scene_shell(sid, HEROSPLIT_CSS, markup, sets, tw)
+    return scene_shell(sid, HEROSPLIT_CSS + MACRO_CSS, markup, sets, tw)
 
 # ---- s07-binds: water dots translate onto a free chain and bind -----------
 def build_binds():
@@ -813,7 +929,11 @@ def build_binds():
         drop_sets.append(f"gsap.set('#{sid}-drop{i}', {{ opacity: 0.35 }});")
         drop_tw.append(f"tl.to('#{sid}-drop{i}', {{ x: {ex-sx}, y: {ey-sy}, opacity: 1, scale: 1.15, "
                        f"duration: 1.400, ease: 'power2.inOut' }}, {swap_off + i*0.05:.3f});")
-    return _hero_left(sid, panel, panel_setup_sets=drop_sets, panel_extra_tweens=drop_tw)
+    # "Sync `binds` emphasis to the first attachment": the first drop lands at
+    # swap_off + 1.4; _emphasize fires at offset + 0.9*dur of the row that
+    # carries the word, which for this beat sheet is the same moment.
+    return _hero_left(sid, panel, panel_setup_sets=drop_sets, panel_extra_tweens=drop_tw,
+                      macro=True, emphasis=("binds",))
 
 # ---- s08-seals: continuing the bound state, water leaves without a seal ---
 def build_seals():
@@ -847,7 +967,9 @@ def build_seals():
         tw.append(f"tl.to('#{sid}-drop{di}', {{ x: {ex-sx}, y: {ey-sy}, opacity: 0, scale: 0.6, "
                   f"duration: 1.500, ease: 'power1.in' }}, {off + n*0.12:.3f});")
     rows = _rows(sid)
+    rows, es, et = _emphasize(sid, rows, ("seals",))
     rs, rt = _row_tweens(sid, rows); sets += rs; tw += rt
+    sets += es; tw += et
     hs, ht = _hold_drift(sid, f"#{sid}-panel"); sets += hs; tw += ht
     # NO panel entrance. This is the molecule s07 ended on, at the same grid
     # position; the liquid-lens reveal between the two scenes exposes it
@@ -855,49 +977,78 @@ def build_seals():
     # instead of opening onto an empty panel (extracted frame at 59.45s did
     # exactly that when the panel still slid in from opacity 0).
     sets.insert(0, f"gsap.set('#{sid}-panel', {{ opacity: 1, x: 0, scale: 1 }});")
-    markup = ('    <div class="split2">\n'
+    markup = ('    <div class="split2 macro">\n'
               f'      <div class="col" id="{sid}-col">\n' + "\n".join(r[2] for r in rows) + "\n      </div>\n"
               f'      <div class="panel" id="{sid}-panel">\n        {panel}\n      </div>\n    </div>')
-    return scene_shell(sid, HEROSPLIT_CSS, markup, sets, tw)
+    return scene_shell(sid, HEROSPLIT_CSS + MACRO_CSS, markup, sets, tw)
 
 # ---- s09-crosslink: loose chains fade as lattice NODES pop in, staggered --
 def build_crosslink():
+    """[review 67.65-78.04] "Filler becomes structure": the camera rotates into
+    a shallow 3D field as loose fragments assemble into a cross-linked
+    lattice, then racks focus on the finished gel. `depth-scatter-assemble`
+    with index-derived positions (no rng), a stable perspective on the actor
+    itself (`transformPerspective`), and a flat, sharp final resolve. One
+    hero motion (assembly), one supporting (the rotate-in), one ambient
+    (the panel's hold drift) -- the review's budget per scene."""
     sid = "s09-crosslink"
     rng = random.Random(37)
     loose = free_coils(rng, 5, 480, 560, 300, 28, sw=8)
     net = lattice(480, 560, 6, 7, node_id_prefix=f"{sid}-node")
-    panel = (f'<svg class="actor" viewBox="0 0 480 560" width="480" height="560" '
+    panel = (f'<svg class="actor" id="{sid}-actor" viewBox="0 0 480 560" width="480" height="560" '
              f'preserveAspectRatio="xMidYMid meet" aria-hidden="true">\n'
              f'      <g class="loose-state" id="{sid}-loose">{loose}</g>\n'
-             f'      <g class="net-state" id="{sid}-net" opacity="0" transform="scale(0.92)" '
-             f'transform-origin="240 280">{net}</g>\n    </svg>')
+             f'      <g class="net-state" id="{sid}-net" opacity="0" transform-origin="240 280">{net}</g>\n'
+             f'    </svg>')
 
     beats = beats_of(sid)
     idx = [i for i, b in enumerate(beats) if b["idiom"] != "hold"]
     swap_i = [i for i in idx if beats[i]["idiom"] == "wipe" or beats[i]["idiom"] == "swap"]
     off = beats[swap_i[0]]["offset"] if swap_i else 1.0
     d = beats[swap_i[0]]["dur"] if swap_i else 1.5
+    cite_i = [i for i in idx if beats[i].get("role") == "cite"]
+    resolve = beats[cite_i[0]]["offset"] if cite_i else off + 2.2
 
-    xform_sets = [f"gsap.set('#{sid}-net', {{ opacity: 0, scale: 0.92 }});"]
+    n_nodes = 6 * 7
+    xform_sets = [
+        # shallow 3D field, soft focus: the world before the structure exists
+        f"gsap.set('#{sid}-actor', {{ transformPerspective: 1400, rotationY: -24, rotationX: 9, "
+        f"filter: 'blur(4px)', transformOrigin: '50% 50%' }});",
+        f"gsap.set('#{sid}-net', {{ opacity: 0 }});",
+        f"gsap.set('#{sid}-actor .net-seg', {{ opacity: 0 }});",
+    ]
     xform_tw = [
         f"tl.to('#{sid}-loose', {{ opacity: 0, scale: 0.94, duration: {d:.3f}, ease: 'power2.inOut' }}, {off:.3f});",
-        f"tl.to('#{sid}-net', {{ opacity: 1, scale: 1, duration: {d:.3f}, ease: 'power2.inOut' }}, {off:.3f});",
+        f"tl.to('#{sid}-net', {{ opacity: 1, duration: 0.400, ease: 'power1.out' }}, {off:.3f});",
     ]
-    # The assembly is the point: instead of the whole net cross-fading in as
-    # one flat block, a representative spread of NODES individually pop from
-    # 0 scale with a stagger and an overshoot -- segments and nodes visibly
-    # arriving one after another, not a state-swap of a static picture.
-    n_nodes = 6 * 7
-    stagger_n = 14
-    step = list(range(0, n_nodes, max(1, n_nodes // stagger_n)))[:stagger_n]
-    for k, node_i in enumerate(step):
-        xform_sets.append(f"gsap.set('#{sid}-node{node_i}', {{ transformOrigin: 'center', scale: 0 }});")
-        t = off + 0.15 + k * 0.06
-        xform_tw.append(f"tl.to('#{sid}-node{node_i}', {{ scale: 1, duration: 0.450, "
-                        f"ease: 'back.out(2.4)' }}, {t:.3f});")
-    return _hero_left(sid, panel, panel_setup_sets=xform_sets, panel_extra_tweens=xform_tw)
+    # every node, from an index-derived scatter, to its lattice position.
+    # 42 nodes over ~1.05s: the assembly reads as one event, not 42.
+    # Scatter must stay inside the actor's own 480x560 viewBox: the lattice
+    # is padded 40px from every edge (`lattice(... pad=40)`), so +/-40px is
+    # the largest offset any node can carry without visibly leaving the SVG
+    # -- the checker flags a transformed <g>'s bbox against its container
+    # regardless of the SVG's own overflow:hidden default, so this is a real
+    # budget, not a rendering nicety. First attempt used +/-110/+/-108 and
+    # blew past it by up to 122px (extracted at 69.8s).
+    for k in range(n_nodes):
+        dx = ((k * 37) % 11 - 5) * 7
+        dy = ((k * 53) % 13 - 6) * 6
+        xform_sets.append(f"gsap.set('#{sid}-node{k}', {{ transformOrigin: 'center', x: {dx}, y: {dy}, "
+                          f"scale: 0, opacity: 0 }});")
+        t = off + 0.10 + k * 0.025
+        xform_tw.append(f"tl.to('#{sid}-node{k}', {{ x: 0, y: 0, scale: 1, opacity: 1, duration: 0.550, "
+                        f"ease: 'back.out(1.6)' }}, {t:.3f});")
+    lock = off + 0.10 + (n_nodes - 1) * 0.025 + 0.30     # last node has landed
+    # the cross-links form only once the nodes are in place: THAT is the
+    # cross-linking, and the one place a "lattice lock" cue would sit.
+    xform_tw.append(f"tl.to('#{sid}-actor .net-seg', {{ opacity: 1, duration: 0.600, ease: 'power2.out' }}, {lock:.3f});")
+    # rack focus + flat resolve on the citation beat, or 0.4s after the lock
+    res = max(resolve, lock + 0.40)
+    xform_tw.append(f"tl.to('#{sid}-actor', {{ rotationY: 0, rotationX: 0, filter: 'blur(0px)', "
+                    f"duration: 1.100, ease: 'power3.inOut' }}, {res:.3f});")
+    return _hero_left(sid, panel, panel_setup_sets=xform_sets, panel_extra_tweens=xform_tw,
+                      macro=True, emphasis=("cross-linked", "volume"))
 
-# ---- s10-origin: 1934, cow-eye vitreous, tasteful 1930s idiom --------------
 def build_origin():
     return _hero_left("s10-origin", eye_glassware_svg())
 
@@ -1147,6 +1298,124 @@ def fix_exit_fades():
     print("  exit fades patched on %d cut-entered scenes' wipe exits" % n)
 
 
+PICTS = {
+    # Three restrained, non-graphic clinical pictograms, hand-authored: the
+    # catalog has no clinical-icon component (checked visual-components/ --
+    # SplitFaceProtocol is a bilateral study map, not an icon set). Recorded
+    # as a catalog miss. 120x120 viewBox, one stroked path each, pathLength=1
+    # so a single dashoffset tween draws it (`svg-path-draw`).
+    "tissue": "M 14 104 C 34 76 46 72 58 56 C 68 42 82 36 106 32 M 58 56 C 68 70 82 80 106 88 "
+              "M 34 84 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+    "eye":    "M 10 60 Q 60 12 110 60 Q 60 108 10 60 Z M 44 60 a 16 16 0 1 0 32 0 a 16 16 0 1 0 -32 0",
+    "neuro":  "M 8 60 L 34 60 L 44 30 L 56 92 L 66 44 L 76 76 L 86 60 L 112 60",
+}
+
+def fix_risk_pictograms():
+    """[review 90.51-103.23] The risk section held one text register for ~13s.
+    Under the "tissue death, vision loss and stroke" line, three pictograms
+    draw on one at a time as each risk is named; the active one carries the
+    red, the previous one steps back to the muted ink. The headline anchor is
+    untouched and the stage no longer drifts here (it never did after the
+    camera relayering). Generated scene, so this is a post-pass with its own
+    stamp -- same pattern as fix_generated_grounds()."""
+    path = f"{OUT}/12-s12-risks.html"
+    html = open(path).read()
+    MARK = "<!-- build_actors:fix_risk_pictograms -->"
+    if MARK in html:
+        print("  s12 pictograms already patched; skipping (idempotent)")
+        return
+    import re as _re
+    m = _re.search(r"tl\.to\('#s12-risks-b3', \{[^}]*\}, ([\d.]+)\);", html)
+    assert m, "s12 b3 tween not found"
+    off = float(m.group(1))
+    svgs = []
+    for k, (name, d) in enumerate(PICTS.items()):
+        svgs.append(f'<svg class="pict" id="s12-risks-pict{k}" viewBox="0 0 120 120" aria-hidden="true">'
+                    f'<path d="{d}" pathLength="1" fill="none" stroke="currentColor" stroke-width="5" '
+                    f'stroke-linecap="round" stroke-linejoin="round"/></svg>')
+    row = (f'      {MARK}\n      <div class="picts" id="s12-risks-picts">' + "".join(svgs) + '</div>\n')
+    # after the b3 line, before b4
+    b3_div = _re.search(r'      <div class="beat body is-wiping" id="s12-risks-b3">[^\n]*\n', html)
+    assert b3_div, "s12 b3 markup not found"
+    html = html.replace(b3_div.group(0), b3_div.group(0) + row, 1)
+    css = """
+  /* fix_risk_pictograms: red only on the ACTIVE risk, never the frame. */
+  .picts { display:flex; gap:56px; align-items:center; height:120px; }
+  .pict { width:120px; height:120px; display:block; color:#C97A5C; }
+"""
+    html = html.replace("</style>", css + "</style>", 1)
+    sets, tw = [], []
+    for k in range(3):
+        sets.append(f"  gsap.set('#s12-risks-pict{k} path', {{ strokeDasharray: 1, strokeDashoffset: 1 }});")
+        sets.append(f"  gsap.set('#s12-risks-pict{k}', {{ opacity: 0 }});")
+        t = off + 0.25 + k * 0.48
+        tw.append(f"  tl.to('#s12-risks-pict{k}', {{ opacity: 1, duration: 0.200, ease: 'power1.out' }}, {t:.3f});")
+        tw.append(f"  tl.to('#s12-risks-pict{k} path', {{ strokeDashoffset: 0, duration: 0.550, ease: 'power2.inOut' }}, {t:.3f});")
+        if k > 0:
+            tw.append(f"  tl.to('#s12-risks-pict{k-1}', {{ color: '#878B8C', duration: 0.400, ease: 'power1.inOut' }}, {t:.3f});")
+    html = html.replace("  var tl = gsap.timeline({ paused: true });",
+                        "\n".join(sets) + "\n  var tl = gsap.timeline({ paused: true });", 1)
+    html = html.replace("  tl.to({}, {", "\n".join(tw) + "\n  tl.to({}, {", 1)
+    open(path, "w").write(html)
+    print("  s12 pictograms patched (3 svg-path-draw icons under the risks line)")
+
+
+def fix_endcard_lockup():
+    """[review 115.88-120.36] `SERUM HYDRATES.` and `FILLER ADDS VOLUME.` land
+    as two distinct beats with two different entrances, one bounded
+    ambient-glow-bloom behind the final lockup, no ongoing wobble, and no
+    fade to black. Generated scene; stamped post-pass."""
+    path = f"{OUT}/14-s14-endcard.html"
+    html = open(path).read()
+    MARK = "<!-- build_actors:fix_endcard_lockup -->"
+    if MARK in html:
+        print("  s14 lockup already patched; skipping (idempotent)")
+        return
+    import re as _re
+    m = _re.search(r'(<div class="beat head is-entering" id="s14-endcard-b0">)([^<]*)(</div>)', html)
+    assert m, "s14 b0 markup not found"
+    text = m.group(2)
+    a, b = text.split(". ", 1)
+    a += "."
+    inner = (f'{MARK}<span class="lock" id="s14-endcard-lockA">{a}</span>'
+             f'<span class="lock" id="s14-endcard-lockB">{b}</span>')
+    html = html.replace(m.group(0), m.group(1) + inner + m.group(3), 1)
+    html = html.replace('<div class="cam-in" id="s14-endcard-cam-in">',
+                        '<div class="cam-in" id="s14-endcard-cam-in">'
+                        '<div class="bloom" id="s14-endcard-bloom" aria-hidden="true"></div>', 1)
+    css = """
+  /* fix_endcard_lockup: two beats, one bounded bloom. */
+  .cam-in { position:relative; }
+  .lock { display:block; }
+  .bloom { position:absolute; left:50%; top:50%; width:1400px; height:720px;
+           transform:translate(-50%,-50%); pointer-events:none; z-index:0;
+           background: radial-gradient(ellipse at center, rgba(89,184,174,0.16), rgba(89,184,174,0) 62%); }
+  .beat { position:relative; z-index:1; }
+"""
+    html = html.replace("</style>", css + "</style>", 1)
+    tm = _re.search(r"tl\.to\('#s14-endcard-b0', \{ opacity: 1, scale: 1, y: 0, duration: ([\d.]+), ease: '([^']+)' \}, ([\d.]+)\);", html)
+    assert tm, "s14 b0 slam tween not found"
+    off = float(tm.group(3))
+    # the parent's own slam becomes a short gate so the two spans carry the beats
+    html = html.replace(tm.group(0),
+        f"tl.to('#s14-endcard-b0', {{ opacity: 1, scale: 1, y: 0, duration: 0.350, ease: '{tm.group(2)}' }}, {off:.3f});", 1)
+    sets = [
+        "  gsap.set('#s14-endcard-lockA', { x: -46, opacity: 0 });",
+        "  gsap.set('#s14-endcard-lockB', { x: 46, opacity: 0 });",
+        "  gsap.set('#s14-endcard-bloom', { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' });",
+    ]
+    tw = [
+        f"  tl.to('#s14-endcard-lockA', {{ x: 0, opacity: 1, duration: 0.600, ease: 'power4.out' }}, {off:.3f});",
+        f"  tl.to('#s14-endcard-lockB', {{ x: 0, opacity: 1, duration: 0.620, ease: 'back.out(1.4)' }}, {off + 0.42:.3f});",
+        f"  tl.to('#s14-endcard-bloom', {{ opacity: 1, scale: 1, duration: 1.300, ease: 'power2.out' }}, {off + 0.25:.3f});",
+    ]
+    html = html.replace("  var tl = gsap.timeline({ paused: true });",
+                        "\n".join(sets) + "\n  var tl = gsap.timeline({ paused: true });", 1)
+    html = html.replace("  tl.to({}, {", "\n".join(tw) + "\n  tl.to({}, {", 1)
+    open(path, "w").write(html)
+    print("  s14 lockup patched (two entrances + bounded bloom)")
+
+
 def fix_motion_sidecar():
     """[S7/R-1b]: set root `keepsMoving.maxStaticSec` from the FORMAT's cadence.
 
@@ -1168,8 +1437,35 @@ def fix_motion_sidecar():
                           "loosened to the long-form ceiling, since drift is no longer "
                           "the primary motion source")
             n += 1
+    # The review's own acceptance lines, as assertions the checker can run.
+    # Kinds available in 0.8.27: appearsBy / before / keepsMoving only -- the
+    # spatial ones (chains above the boundary, drops on their sites, lattice
+    # in frame) are proven with `hyperframes keyframes` strips instead.
+    vo = json.load(open(f"{HERE}/04-assets/vo-timing.json"))
+    st = {x["id"]: x for x in vo["stems"]}
+    onset = st[10]["start"] + 0.55 * st[10]["dur"]     # "Do not inject yourself"
+    review = [
+        {"kind": "appearsBy", "selector": "#s01-thesis-b0", "bySec": 1.2,
+         "_note": "review: SERUM =/= FILLER fully readable by 1.2s (lands at 0.70s)"},
+        {"kind": "appearsBy", "selector": "#s02-identities-b2", "bySec": 10.2,
+         "_note": "review: all three identities readable by 10.2s"},
+        {"kind": "appearsBy", "selector": "#s11-warning-b3", "bySec": round(onset + 0.10, 3),
+         "_note": "review: the warning appears by its spoken onset (%.3fs); the slam opens 0.24s before it" % onset},
+        {"kind": "before", "a": "#s01-thesis-b0", "b": "#s02-identities-b0",
+         "_note": "review: the answer precedes the orientation"},
+        {"kind": "before", "a": "#s11-warning-b3", "b": "#s12-risks-b0",
+         "_note": "review: the warning precedes the risk list"},
+    ]
+    have = {(a.get("kind"), a.get("selector"), a.get("a"), a.get("b"), a.get("bySec")) for a in m["assertions"]}
+    added = 0
+    for a in review:
+        key = (a["kind"], a.get("selector"), a.get("a"), a.get("b"), a.get("bySec"))
+        if key in have: continue
+        m["assertions"].insert(len(m["assertions"]) - 1, a)    # keep keepsMoving last
+        added += 1
     json.dump(m, open(p, "w"), indent=2)
-    print("  motion sidecar: %d keepsMoving assertion(s) re-pointed 2.0s -> 3.0s" % n)
+    print("  motion sidecar: %d keepsMoving assertion(s) re-pointed 2.0s -> 3.0s; %d review assertion(s) added"
+          % (n, added))
 
 
 def main():
@@ -1187,6 +1483,8 @@ def main():
     fix_generated_grounds()
     fix_hero_transitions()
     fix_exit_fades()
+    fix_risk_pictograms()
+    fix_endcard_lockup()
     fix_motion_sidecar()
 
 if __name__ == "__main__":

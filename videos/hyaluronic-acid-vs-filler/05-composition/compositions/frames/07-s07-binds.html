@@ -59,16 +59,25 @@
            background:rgba(0,0,0,0.015); }
   .panel .actor { color:var(--ink); }
 
+  .split2.macro { grid-template-columns: 1fr 900px; gap:64px; }
+  .macro .panel { border:none; background:none; padding:0; }
+  .macro .panel .actor { height:720px; width:auto; }
+  /* The one accent per scene the review allows: a decisive word, not a
+     line. Colour + a BOUNDED bloom, tweened up and back down -- no
+     ongoing wobble. Coral on PAPER measures 3.005:1, over the 3:1 floor
+     for text this size; aqua is used on INK. */
+  .kw { display:inline; font-weight:inherit; }
+
 </style>
 
 <div id="root" data-composition-id="s07-binds" data-width="1920" data-height="1080"
      data-duration="8.625">
   <div class="clip stage" id="s07-binds-stage" data-start="0" data-duration="8.625">
     <div class="cam" id="s07-binds-cam"><div class="cam-in" id="s07-binds-cam-in">
-    <div class="split2">
+    <div class="split2 macro">
       <div class="col" id="s07-binds-col">
         <div class="head beat is-entering" id="s07-binds-b0">Here's the part the marketing skips</div>
-        <div class="body beat is-entering" id="s07-binds-b2">Hyaluronic acid binds water</div>
+        <div class="body beat is-entering" id="s07-binds-b2">Hyaluronic acid <span class="kw" id="s07-binds-kw0">binds</span> water</div>
         <div class="sub beat is-entering" id="s07-binds-b3">It doesn't manufacture it</div>
         <div class="caption beat is-entering" id="s07-binds-b4">Think of it as a sponge, not a water factory</div>
       </div>
@@ -104,6 +113,7 @@
   gsap.set('#s07-binds-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   gsap.set('#s07-binds-b3', { opacity: 0, scale: 0.86 });
   gsap.set('#s07-binds-b4', { opacity: 0, y: 30 });
+  gsap.set('#s07-binds-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)' });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
@@ -120,6 +130,8 @@
   tl.to('#s07-binds-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 2.711);
   tl.to('#s07-binds-b3', { opacity: 1, scale: 1, duration: 1.500, ease: 'back.out(1.6)' }, 4.784);
   tl.to('#s07-binds-b4', { opacity: 1, y: 0, duration: 1.449, ease: 'power3.out' }, 7.176);
+  tl.to('#s07-binds-kw0', { color: '#C97A5C', textShadow: '0 0 22px rgba(201,122,92,0.5)', duration: 0.420, ease: 'power2.out' }, 4.151);
+  tl.to('#s07-binds-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)', duration: 0.900, ease: 'power2.inOut' }, 4.571);
   tl.to('#s07-binds-panel', { x: 10, y: -7, scale: 1.018, duration: 0.811, ease: 'sine.inOut' }, 1.900);
   tl.to({}, { duration: 8.625, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};

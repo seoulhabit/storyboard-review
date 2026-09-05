@@ -59,21 +59,35 @@
            background:rgba(0,0,0,0.015); }
   .panel .actor { color:var(--ink); }
 
+  .split2.macro { grid-template-columns: 1fr 900px; gap:64px; }
+  .macro .panel { border:none; background:none; padding:0; }
+  .macro .panel .actor { height:720px; width:auto; }
+  /* The one accent per scene the review allows: a decisive word, not a
+     line. Colour + a BOUNDED bloom, tweened up and back down -- no
+     ongoing wobble. Coral on PAPER measures 3.005:1, over the 3:1 floor
+     for text this size; aqua is used on INK. */
+  .kw { display:inline; font-weight:inherit; }
+
 </style>
 
 <div id="root" data-composition-id="s05-size" data-width="1920" data-height="1080"
      data-duration="11.785">
   <div class="clip stage" id="s05-size-stage" data-start="0" data-duration="11.785">
     <div class="cam" id="s05-size-cam"><div class="cam-in" id="s05-size-cam-in">
-    <div class="split2">
+    <div class="split2 macro">
       <div class="col" id="s05-size-col">
         <div class="head beat is-entering" id="s05-size-b0">In a serum, size decides almost everything</div>
-        <div class="body beat is-entering" id="s05-size-b2">Large chains mostly stay near the surface</div>
+        <div class="body beat is-entering" id="s05-size-b2">Large chains mostly stay near the <span class="kw" id="s05-size-kw0">surface</span></div>
         <div class="body beat is-entering" id="s05-size-b3">Smaller ones may travel farther into the upper layers</div>
         <div class="cite beat is-entering" id="s05-size-b5">Skin Res Technol · 2015</div>
       </div>
       <div class="panel" id="s05-size-panel">
         <svg class="actor" viewBox="0 0 480 560" width="480" height="560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <rect x="0" y="26" width="480" height="231.6" fill="currentColor" opacity="0.035"/>
+      <rect x="0" y="257.6" width="480" height="302.4" fill="currentColor" opacity="0.07"/>
+      <path d="M 0.0 26.0 L 48.0 32.3 L 96.0 33.8 L 144.0 29.4 L 192.0 22.5 L 240.0 18.2 L 288.0 19.8 L 336.0 26.1 L 384.0 32.3 L 432.0 33.8 L 480.0 29.3" fill="none" stroke="currentColor" stroke-width="4" opacity="0.7"/>
+      <text x="16" y="241.6" font-size="26" fill="currentColor" opacity="0.6" letter-spacing="3" style="font-family:var(--font-mono)">EPIDERMIS</text>
+      <text x="16" y="540.0" font-size="26" fill="currentColor" opacity="0.6" letter-spacing="3" style="font-family:var(--font-mono)">DERMIS</text>
       <g class="big" id="s05-size-biggrp">
       <path id="s05-size-big0" d="M 201.3 188.2 C 228.2 188.2 241.6 152.8 268.5 152.8 C 295.4 152.8 308.8 207.8 335.7 207.8 C 362.6 207.8 376.0 169.8 402.9 169.8" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
       <path id="s05-size-big1" d="M 123.9 71.0 C 150.8 71.0 164.2 55.0 191.1 55.0 C 218.0 55.0 231.4 96.6 258.3 96.6 C 285.2 96.6 298.6 66.0 325.5 66.0" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
@@ -106,6 +120,7 @@
   gsap.set('#s05-size-b2', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   gsap.set('#s05-size-b3', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   gsap.set('#s05-size-b5', { opacity: 0, y: 30 });
+  gsap.set('#s05-size-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)' });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
@@ -116,6 +131,8 @@
   tl.to('#s05-size-b2', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.160);
   tl.to('#s05-size-b3', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 6.545);
   tl.to('#s05-size-b5', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 10.157);
+  tl.to('#s05-size-kw0', { color: '#C97A5C', textShadow: '0 0 22px rgba(201,122,92,0.5)', duration: 0.420, ease: 'power2.out' }, 4.600);
+  tl.to('#s05-size-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)', duration: 0.900, ease: 'power2.inOut' }, 5.020);
   tl.to('#s05-size-panel', { x: 10, y: -7, scale: 1.018, duration: 0.900, ease: 'sine.inOut' }, 1.900);
   tl.to('#s05-size-panel', { x: -9, y: 6, scale: 1.005, duration: 0.112, ease: 'sine.inOut' }, 10.045);
   tl.to({}, { duration: 11.785, ease: 'none' }, 0);   // anchor — last, at 0

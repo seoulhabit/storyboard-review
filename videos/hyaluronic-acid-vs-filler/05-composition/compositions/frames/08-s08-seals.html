@@ -59,16 +59,25 @@
            background:rgba(0,0,0,0.015); }
   .panel .actor { color:var(--ink); }
 
+  .split2.macro { grid-template-columns: 1fr 900px; gap:64px; }
+  .macro .panel { border:none; background:none; padding:0; }
+  .macro .panel .actor { height:720px; width:auto; }
+  /* The one accent per scene the review allows: a decisive word, not a
+     line. Colour + a BOUNDED bloom, tweened up and back down -- no
+     ongoing wobble. Coral on PAPER measures 3.005:1, over the 3:1 floor
+     for text this size; aqua is used on INK. */
+  .kw { display:inline; font-weight:inherit; }
+
 </style>
 
 <div id="root" data-composition-id="s08-seals" data-width="1920" data-height="1080"
      data-duration="7.821">
   <div class="clip stage" id="s08-seals-stage" data-start="0" data-duration="7.821">
     <div class="cam" id="s08-seals-cam"><div class="cam-in" id="s08-seals-cam-in">
-    <div class="split2">
+    <div class="split2 macro">
       <div class="col" id="s08-seals-col">
         <div class="head beat is-entering" id="s08-seals-b0">A complete formula still needs something else</div>
-        <div class="body beat is-entering" id="s08-seals-b1">An ingredient that seals that water in</div>
+        <div class="body beat is-entering" id="s08-seals-b1">An ingredient that <span class="kw" id="s08-seals-kw0">seals</span> that water in</div>
         <div class="cite beat is-entering" id="s08-seals-b2">ChemRxiv · 2023</div>
         <div class="sub beat is-entering" id="s08-seals-b3">So it doesn't evaporate away</div>
       </div>
@@ -104,6 +113,7 @@
   gsap.set('#s08-seals-b1', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   gsap.set('#s08-seals-b2', { opacity: 0, y: 30 });
   gsap.set('#s08-seals-b3', { opacity: 0, scale: 0.86 });
+  gsap.set('#s08-seals-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)' });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
@@ -114,6 +124,8 @@
   tl.to('#s08-seals-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.334);
   tl.to('#s08-seals-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 5.726);
   tl.to('#s08-seals-b3', { opacity: 1, scale: 1, duration: 0.978, ease: 'back.out(1.6)' }, 6.843);
+  tl.to('#s08-seals-kw0', { color: '#C97A5C', textShadow: '0 0 22px rgba(201,122,92,0.5)', duration: 0.420, ease: 'power2.out' }, 4.774);
+  tl.to('#s08-seals-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)', duration: 0.900, ease: 'power2.inOut' }, 5.194);
   tl.to({}, { duration: 7.821, ease: 'none' }, 0);   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s08-seals'] = tl;

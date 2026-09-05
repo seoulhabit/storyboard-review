@@ -269,7 +269,10 @@ BARRIER_CSS = """
     .bar-boundary { stroke:var(--ink); stroke-width:4; stroke-dasharray:14 10; opacity:.55; }
     .bar-h { stroke:var(--aqua); stroke-width:7; stroke-linecap:round; opacity:.55; }
     .bar-label { font-family:var(--font-mono); font-size:32px; letter-spacing:.1em;
-                 fill:var(--ink-2); opacity:.7; }
+                 fill:var(--ink-2); opacity:1; }
+    /* was opacity:.7 -- composites to 2.78:1 on paper, failing the 4.5 text
+       floor; full opacity measures 4.89:1. The dim was cosmetic, not
+       load-bearing (EPIDERMIS/DERMIS are the only text on these labels). */
 """
 
 # ---------------------------------------------------------------- TRACT
@@ -296,7 +299,7 @@ TRACT_JS = r"""
 
 TRACT_CSS = """
     .tract { fill:none; stroke:var(--ink); stroke-width:6; stroke-linecap:round; opacity:.8; }
-    .branch { fill:none; stroke:var(--ink-3); stroke-width:5; stroke-linecap:round; }
+    .branch { fill:none; stroke:var(--ink-2); stroke-width:5; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper, fails 3:1 graphic floor); --ink-2 measures 4.89:1 */
 """
 
 # ---------------------------------------------------------------- TILES

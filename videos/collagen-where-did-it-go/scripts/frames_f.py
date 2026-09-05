@@ -67,9 +67,17 @@ def file_14_hierarchy(fspan, fctx):
     gsap.set("#bwrap", { skewX:-1.4, y:9 });
     // camera settles in from the invert
     tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    // rows are authored in their final slots; frame zero shows them UNSORTED
+    // rows are authored in their final slots; frame zero shows them UNSORTED.
+    // Was all four sliding in together at @w(supports) (the INTRO sentence,
+    // before any recommendation is named) -- exactly the review's complaint
+    // (Animation item 9): "asks viewers to track position changes while also
+    // listening to health guidance." Each row now arrives on its OWN named
+    // word instead, the same moment its wash-fill already anchors to, so a
+    // row lands in narrated order: sunscreen, not smoking, nutrition,
+    // retinoids -- never all four before the first one is even spoken.
+    var ROW_AT = [@w(sunscreen), @w(smoking), @w(protein), @w(retinoids)];
     ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
-      tl.fromTo(id, { y:SHUFFLE[i] }, { y:0, duration:0.7, ease:EASE.swap }, @w(supports) - 0.2 + i * 0.08);
+      tl.fromTo(id, { y:SHUFFLE[i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
     tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(sunscreen));
@@ -90,10 +98,16 @@ def file_14_hierarchy(fspan, fctx):
     tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, @w(protein) + 0.2);
     tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(retinoids));
     tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(retinoids) + 0.4);
-    // "encouraging collagen production": ONE more beam draws in, and the camera
-    // leans toward the building to watch it. One beam, not six -- the claim is
-    // stronger evidence for production, not a rebuilt structure.
-    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(encouraging) - 0.3);
+    // "considerably stronger evidence for encouraging collagen production": ONE
+    // more beam draws in, and the camera leans toward the building to watch it.
+    // One beam, not six -- the claim is stronger evidence for production, not a
+    // rebuilt structure. The push now starts on "stronger" rather than waiting
+    // for "encouraging" -- between the retinoid citation settling (~118.7s) and
+    // the old @w(encouraging)-0.3 anchor (121.0s) sat ~2.3s of nothing, measured
+    // on the render as a pixel-identical t=120-122s freeze, during the section's
+    // longest sentence. The camera lean now fills that gap directly; the beam
+    // repair keeps its own anchor on "encouraging", the word it depicts.
+    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(stronger) - 0.1);
     tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, @w(encouraging));
     // the whole brace set brightens as production is named, so the claim reads as
     // the building gaining rather than one line quietly redrawing itself
@@ -112,7 +126,10 @@ def file_14_hierarchy(fspan, fctx):
     // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
     tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(pleasant) - 0.2);
     tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(powder) + 0.15);
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(optional));
+    // EASE.arrive: "optional" is the scene's health-guidance verdict on these
+    // two products, not an impact (Animation item 2 -- reserve the playful
+    // back.out bounce for impacts/jokes, never a limitation or guidance claim).
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.arrive }, @w(optional));
     tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, @w(protect) - 0.9);
     tl.to("#final", { opacity:1, duration:0.1 }, @w(protect) - 0.1);
     tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, @w(protect) - 0.1);
@@ -125,14 +142,13 @@ def file_14_hierarchy(fspan, fctx):
 """.replace("SHUFFLE", str(SHUFFLE))
     MOTION["14-hierarchy"]["beats"] = [
         {"name": "camera settle",  "at": "0.0",               "area": 0.5,   "dl": 60,  "dur": 1.2},
-        {"name": "rows sort in",   "at": "@w(supports)-0.2",  "area": 0.22,  "dl": 70,  "dur": 0.7},
-        {"name": "row 1 wash",     "at": "@w(sunscreen)",     "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "row 1 arrives+wash", "at": "@w(sunscreen)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},
         {"name": "foundation lock", "at": "@w(sunscreen)+0.1", "area": 0.05, "dl": 120, "dur": 0.38},
-        {"name": "row 2 wash",     "at": "@w(smoking)",       "area": 0.047, "dl": 91,  "dur": 0.4},
-        {"name": "row 3 wash",     "at": "@w(protein)",       "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "row 2 arrives+wash", "at": "@w(smoking)-0.3",   "area": 0.10, "dl": 91, "dur": 0.7},
+        {"name": "row 3 arrives+wash", "at": "@w(protein)-0.3",   "area": 0.10, "dl": 91, "dur": 0.7},
         {"name": "building straightens", "at": "@w(vitamin)", "area": 0.17,  "dl": 60,  "dur": 1.1},
-        {"name": "row 4 wash",     "at": "@w(retinoids)",     "area": 0.047, "dl": 91,  "dur": 0.4},
-        {"name": "retinoid beam",  "at": "@w(encouraging)-0.3", "area": 0.5,  "dl": 60,  "dur": 0.8},
+        {"name": "row 4 arrives+wash", "at": "@w(retinoids)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},
+        {"name": "retinoid beam",  "at": "@w(stronger)-0.1", "area": 0.5,  "dl": 60,  "dur": 0.8},
         {"name": "braces brighten", "at": "@w(production)-0.2",  "area": 0.17, "dl": 55,  "dur": 1.0},
     ]
     MOTION["15-verdict"]["beats"] = [

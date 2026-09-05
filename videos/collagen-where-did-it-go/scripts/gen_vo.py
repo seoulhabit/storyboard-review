@@ -61,6 +61,25 @@ SIL_KEEP = 0.03               # audio kept on each side of a compressed pause
 # intersect the silence with the inter-word gap instead of nesting it inside.
 POST_KEEP = 0.06              # kept after a word when no trailing silence is detected
 SNAP_MIN_SIL = 0.15           # a silence this long inside a word span is a real pause
+MIN_WORD_S = 0.035            # no spoken word, even one letter, is shorter than this
+MIN_MS_PER_CHAR = 8.0         # implied speaking rate above ~125 chars/s is not speech
+MAX_MS_PER_CHAR = 175.0       # the mirror-image defect: a word (or run) that absorbs a
+# real SILENCE ahead of it reads as impossibly SLOW, not fast -- "the" at 2773ms (07-film,
+# this project's own take) and "As"/"we"/"age," together spanning 4.35s for what real audio
+# shows is a ~2.3s sentence. Calibrated on this manifest's own legitimate slow endings
+# ("upright." 149.6ms/char, "benefit." 133.6ms/char, both real, both plausible sentence-final
+# deceleration) against the clear failures starting at 185ms/char and running past 900ms/char.
+# Both floors exist because whisper's word-level timestamps can drift a whole run of
+# words into a nearby silence gap without moving their SPAN, then snap_words_to_silence
+# (correctly) relocates only the first word of the run out of that silence, leaving the
+# rest to be squeezed edge-to-edge in ~18ms increments by the monotonic guard below it.
+# Measured on this project's own master.words.json before this fix: 56 of 364 words
+# (15.4%), in 39 separate runs spread from 0:05 to 1:55, at a CONSTANT ~18-19ms
+# regardless of the word's length -- "a" and "getting" and "spectrum" all the same
+# duration, which is the signature of a computed artifact, not measured audio. A
+# threshold on chars/sec catches it without an absolute duration floor low enough to
+# admit it; MIN_MS_PER_CHAR=8 gives a 4-letter word 32ms minimum and an 8-letter word
+# 64ms, well under any real narration pace measured elsewhere in this manifest.
 TAIL_SLOP = 0.30              # tolerance when locating a take's final silence
 TAIL_CLAMP = 0.25             # fallback only: kept after the last word when NO
                               # trailing silence can be found at all
@@ -365,7 +384,16 @@ def align_block(cids, asr):
     Returns [{"cid","text","norm","start","end","how","sent"}] with block-
     relative times; `how` is "equal" | "replace" | "interp". Both sides are
     merged through vo_words.PHRASES first so a spoken numeral phrase and the
-    ASR's digit form cost nothing."""
+    ASR's digit form cost nothing.
+
+    A physically implausible span here (an "equal" match whisper simply
+    mistimed) is NOT filtered in this function -- see
+    repair_implausible_runs, run once on the finished block after
+    snap_words_to_silence. Filtering it here and marking it "interp" was
+    tried and reverted: it corrupts verify's alignment-coverage and
+    end-drift gates, which must keep measuring whether the ASR matched the
+    right WORD, not whether whisper's TIMING for that word was trustworthy
+    -- a different question, answered later and without touching `how`."""
     disp, owner, sent_ix = [], [], []
     for cid in cids:
         ws = script_words(TEXT[cid])
@@ -456,7 +484,29 @@ def snap_words_to_silence(words, sil):
     pauses, after which the compression can stay strictly inside them.
 
     Only silences of at least SNAP_MIN_SIL count, so a stop consonant inside a
-    word is never mistaken for the end of it."""
+    word is never mistaken for the end of it.
+
+    This is per-word and does not know about its neighbours -- when a RUN of
+    consecutive words is each independently mistimed into the SAME silence
+    (whisper put both "Think" and "of" inside one gap, not just "Think"), this
+    pass alone snaps them to the identical instant, and the overrun guard
+    below then drags every FOLLOWING word forward too, one at a time --
+    including a word the silence never touched at all ("building." moved from
+    19.540 to 19.636 here even though it never overlapped the silence, purely
+    because the guard chased it down the chain). A dragged word can still
+    have a perfectly plausible-looking duration, so a duration check alone
+    (`repair_implausible_runs`, after this) cannot tell it apart from a
+    genuinely correct one -- it isn't wrong in LENGTH, it's wrong in
+    POSITION. So only a word the GUARD had to push is marked `_snapped`
+    (stripped before the manifest is written) -- a clean, non-colliding
+    single-word relocation earlier in this function is not, by itself,
+    evidence of anything wrong. The guard only ever fires on an actual
+    overlap, which is exactly the collision signature: "Think" (a lone,
+    isolated relocation) is never touched by it here and stays trusted;
+    every word from "of" through "building." is, because each one only
+    moved by being shoved off whatever collided into it. The repair pass
+    treats a `_snapped` neighbour as untrustworthy, not just an
+    implausibly-short one."""
     moved = 0
     for w in words:
         for a, b in sil:
@@ -477,11 +527,14 @@ def snap_words_to_silence(words, sil):
                 w["start"] = round(b, 3); moved += 1
         if w["end"] <= w["start"]:
             w["end"] = round(w["start"] + 0.02, 3)
-    # a moved word must not overrun the one after it
+    # a moved word must not overrun the one after it -- and THIS is the
+    # collision signature: only a word the guard actually had to push away
+    # from something is marked, see the docstring above.
     for x, y in zip(words, words[1:]):
         if y["start"] < x["end"]:
             y["start"] = x["end"]
             y["end"] = max(y["end"], round(y["start"] + 0.02, 3))
+            y["_snapped"] = True
     return moved
 
 
@@ -507,6 +560,100 @@ def drop_silent_tail(words, wav):
     return keep, (trailing if len(keep) != len(words) else None)
 
 
+def repair_implausible_runs(words, sil=None):
+    """Re-time any run of words whose measured span implies an impossible
+    speaking rate -- too FAST (MIN_WORD_S / MIN_MS_PER_CHAR) or too SLOW
+    (MAX_MS_PER_CHAR) -- using the same character-weighted interpolation
+    already used for a word ASR never found at all.
+
+    Run this AFTER alignment and after snap_words_to_silence, on the FINISHED
+    block, because either stage can produce the defect on its own: alignment
+    can trust a genuinely too-fast "equal" ASR match, and snapping a run of
+    words that are each independently mistimed into the SAME silence gap
+    pins every one of them to the identical instant, which the overrun guard
+    then packs into slivers regardless of how many words were stuck there --
+    "Think of your skin as a" collapsed to five ~18ms words this way.
+    Checking the physical plausibility of the RESULT, not which mechanism
+    produced it, catches both in one place. Measured before this existed:
+    56 of 364 words (15.4%) in 39 runs, spread from 0:05 to 1:55.
+
+    The MAX side is the mirror image: a word (or run) that absorbs a real
+    SILENCE ahead of it reads as impossibly slow, not fast -- 24 of 350 words
+    on this project's own re-recorded take, "As"/"we"/"age," together
+    spanning 4.35s where the real audio holds a ~2.3s sentence after a
+    genuine pause. Blindly character-weighting a bad run's WHOLE anchor-to-
+    anchor window would just relocate the same error: the pause is real and
+    belongs to nobody's word. So when `sil` is available, any qualifying
+    silence found inside [prev_end, next_start] moves prev_end to its end
+    first -- the run is redistributed only across what's left, the same
+    principle tail_cut() uses to find a take's true trailing silence."""
+    n = len(words)
+
+    def implausible(w):
+        chars = max(1, len(w["norm"]))
+        dur = w["end"] - w["start"]
+        return (dur < max(MIN_WORD_S, chars * MIN_MS_PER_CHAR / 1000)
+                or dur > chars * MAX_MS_PER_CHAR / 1000)
+
+    # A word snap_words_to_silence moved -- for ANY reason, including being
+    # dragged forward by its overrun guard -- is not a trustworthy anchor
+    # even when its own duration looks plausible: it isn't wrong in LENGTH,
+    # it's wrong in POSITION, and a duration check alone cannot see that.
+    # "building." passed the duration check at 754ms/8 chars and was still
+    # 96ms later than it should have been, purely from chasing the collision
+    # in front of it. A run is therefore bounded by a word that is BOTH
+    # plausible AND untouched by snapping -- the only kind whose position is
+    # still exactly what alignment originally (and correctly) computed.
+    def untrustworthy(w):
+        return implausible(w) or w.get("_snapped", False)
+
+    fixed = 0
+    i = 0
+    while i < n:
+        if not untrustworthy(words[i]):
+            i += 1; continue
+        j = i
+        while j < n and untrustworthy(words[j]):
+            j += 1
+        prev_end = words[i - 1]["end"] if i > 0 else None
+        next_start = words[j]["start"] if j < n else None
+        lens = [max(1, len(words[k]["norm"])) for k in range(i, j)]
+        if prev_end is None and next_start is None:
+            i = j; continue   # nothing to anchor on -- leave rather than guess
+        if prev_end is None:
+            prev_end = max(0.0, next_start - sum(lens) * 0.075)
+        if next_start is None:
+            next_start = prev_end + sum(lens) * 0.075
+        if sil and next_start is not None:
+            for a, b in sil:
+                if b is None:
+                    continue
+                if prev_end <= a and b <= next_start and (b - a) >= SNAP_MIN_SIL:
+                    prev_end = max(prev_end, b)
+        span = max(next_start - prev_end, 0.02 * len(lens))
+        tot, cur = sum(lens), prev_end
+        for k, L in zip(range(i, j), lens):
+            nxt = cur + span * L / tot
+            words[k]["start"] = round(cur, 3); words[k]["end"] = round(nxt, 3)
+            # `how` is left as ASR reported it -- this repairs TIMING, not
+            # whether the ASR recognised the right WORD. Overwriting it to
+            # "interp" here once corrupted verify's alignment-coverage and
+            # end-drift gates, which exist to catch a take that drifted
+            # off-script and must keep measuring text match, not timing
+            # confidence -- a different question this pass has no opinion on.
+            cur = nxt
+        fixed += (j - i)
+        i = j
+    if fixed:
+        for x, y in zip(words, words[1:]):
+            if y["start"] < x["end"]:
+                y["start"] = x["end"]
+                y["end"] = max(y["end"], round(y["start"] + 0.02, 3))
+    for w in words:
+        w.pop("_snapped", None)
+    return fixed
+
+
 def load_blocks(require_asr=True):
     blocks = []
     for name, cids in BLOCKS:
@@ -525,6 +672,10 @@ def load_blocks(require_asr=True):
         snapped = snap_words_to_silence(words, sil_b)
         if snapped:
             print(f"  {name:8s} snapped {snapped} word boundary/ies to the measured silence")
+        repaired = repair_implausible_runs(words, sil_b) if words else 0
+        if repaired:
+            print(f"  {name:8s} re-timed {repaired} word(s) with an impossible speaking "
+                  f"rate (see repair_implausible_runs)")
         blocks.append({"name": name, "cids": cids, "wav": wav, "dur": dur(wav),
                        "sil": sil_b, "asr": asr, "words": words})
     return blocks
@@ -746,6 +897,18 @@ def cmd_verify(argv):
         cov = eq / max(1, len(ws))
         if cov < 0.90:
             bad.append(f"alignment coverage {cov:.0%} < 90%")
+        # Advisory, not a finding: repair_implausible_runs fixes what it can
+        # anchor confidently, but a residual case can be genuinely ambiguous
+        # from the waveform alone (a fast, unstressed phrase right after a
+        # real pause, where the pause boundary itself is uncertain) -- surface
+        # it for a human ear rather than silently guessing further or, worse,
+        # silently shipping it unlisted the way the original bug did.
+        residual = [w for w in ws if (w["end"] - w["start"])
+                    < max(MIN_WORD_S, max(1, len(w["norm"])) * MIN_MS_PER_CHAR / 1000)]
+        if residual:
+            print(f"  {b['name']:8s} ADVISORY: {len(residual)} word(s) still imply an "
+                  f"implausible speaking rate after repair -- listen: "
+                  + ", ".join(f"{w['text']!r}@{w['start']:.2f}s" for w in residual))
         for w in ws:
             if w["norm"] in KEY_TERMS and w["how"] != "equal":
                 bad.append(f"key term {w['text']!r} ({w['cid']}, ~{w['start']:.1f}s raw) not "

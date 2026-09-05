@@ -12,66 +12,66 @@
        ================================================================== -->
   
   <div id="root" data-composition-id="main" data-start="0"
-       data-duration="134.794" data-width="1920" data-height="1080"
+       data-duration="143.692" data-width="1920" data-height="1080"
        data-fps="30">
 
     <div id="scene-01-hook" class="scene clip" data-composition-id="01-hook"
          data-composition-src="compositions/frames/01-hook.html"
-         data-start="0.000" data-duration="5.812"
+         data-start="0.000" data-duration="5.521"
          data-track-index="0"></div>
     <div id="scene-02-promise" class="scene clip" data-composition-id="02-promise"
          data-composition-src="compositions/frames/02-promise.html"
-         data-start="5.262" data-duration="9.275"
+         data-start="4.971" data-duration="9.305"
          data-track-index="0"></div>
     <div id="scene-03-building" class="scene clip" data-composition-id="03-building"
          data-composition-src="compositions/frames/03-building.html"
-         data-start="13.987" data-duration="24.587"
+         data-start="13.726" data-duration="25.827"
          data-track-index="0"></div>
     <div id="scene-06-door" class="scene clip" data-composition-id="06-door"
          data-composition-src="compositions/frames/06-door.html"
-         data-start="38.024" data-duration="18.452"
+         data-start="39.003" data-duration="20.390"
          data-track-index="0"></div>
     <div id="scene-08-digestion" class="scene clip" data-composition-id="08-digestion"
          data-composition-src="compositions/frames/08-digestion.html"
-         data-start="55.926" data-duration="21.303"
+         data-start="58.843" data-duration="21.862"
          data-track-index="0"></div>
     <div id="scene-10-evidence" class="scene clip" data-composition-id="10-evidence"
          data-composition-src="compositions/frames/10-evidence.html"
-         data-start="76.629" data-duration="33.105"
+         data-start="80.105" data-duration="37.989"
          data-track-index="0"></div>
     <div id="scene-14-hierarchy" class="scene clip" data-composition-id="14-hierarchy"
          data-composition-src="compositions/frames/14-hierarchy.html"
-         data-start="109.134" data-duration="21.560"
+         data-start="117.494" data-duration="22.098"
          data-track-index="0"></div>
     <div id="scene-16-end" class="scene clip" data-composition-id="16-end"
          data-composition-src="compositions/frames/16-end.html"
-         data-start="129.794" data-duration="5.000"
+         data-start="138.692" data-duration="5.000"
          data-track-index="0"></div>
 
     <hf-audio-group id="voiceover" data-label="Voiceover" data-volume="1"
                     data-fx-chain='{"version":1,"nodes":[{"type":"highpass","id":"n1","label":"Remove Rumble","params":{"frequency":90,"q":0.707,"poles":"2"}},{"type":"peaking","id":"n2","label":"Add Weight","params":{"frequency":150,"gain":0.8,"q":1.2}},{"type":"compressor","id":"n3","label":"Even Out Loudness","params":{"threshold":-24,"ratio":4,"attack":5,"release":140,"knee":2,"makeup":3,"mix":1}},{"type":"peaking","id":"n4","label":"Add Clarity","params":{"frequency":3000,"gain":2.5,"q":1}},{"type":"peaking","id":"n5","label":"De-ess (fallback)","params":{"frequency":6500,"gain":-4,"q":3.5}},{"type":"limiter","id":"n6","label":"Peak Ceiling","params":{"limit":-9,"attack":0.05,"release":40,"level_out":0}}]}'>
       <audio id="vo-master" src="assets/voice/master.wav"
-             data-start="0.000" data-duration="129.935"
+             data-start="0.000" data-duration="138.905"
              data-track-index="10" data-volume="1.0"
              data-audio-group="voiceover"
-             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.06,"v":1.0},{"t":129.855,"v":1.0},{"t":129.935,"v":0}]}]}'></audio>
+             data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.06,"v":1.0},{"t":138.825,"v":1.0},{"t":138.905,"v":0}]}]}'></audio>
     </hf-audio-group>
 
     <!-- Music bed, carved against the voiceover GROUP. -->
-    <audio id="bgm" src="assets/bgm/bed.mp3" data-start="0" data-duration="134.794"
+    <audio id="bgm" src="assets/bgm/bed.mp3" data-start="0" data-duration="143.692"
            data-track-index="20" data-volume="0.12"
-           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.25,"v":0.12},{"t":133.294,"v":0.12},{"t":134.794,"v":0}]}]}'
+           data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.25,"v":0.12},{"t":142.192,"v":0.12},{"t":143.692,"v":0}]}]}'
            data-fx-carve='{"sources":["voiceover"],"strength":0.25}'></audio>
 
     <!-- one-shot SFX, own track, no carve -->
-    <audio id="sfx-0" src="assets/sfx/impact-bass-2.mp3" data-start="0.880" data-duration="2.592" data-track-index="21" data-volume="0.34"></audio>  <!-- molecule hits the barrier -->
-    <audio id="sfx-1" src="assets/sfx/slice.wav" data-start="26.240" data-duration="0.350" data-track-index="21" data-volume="0.3"></audio>  <!-- UV cuts a beam -->
-    <audio id="sfx-2" src="assets/sfx/impact-bass-2.mp3" data-start="47.377" data-duration="2.592" data-track-index="21" data-volume="0.22"></audio>  <!-- molecule rejected at the door -->
-    <audio id="sfx-3" src="assets/sfx/fragment.wav" data-start="58.977" data-duration="0.500" data-track-index="21" data-volume="0.28"></audio>  <!-- molecule fragments -->
-    <audio id="sfx-4" src="assets/sfx/citation-tick-trimmed.mp3" data-start="89.071" data-duration="0.500" data-track-index="21" data-volume="0.3"></audio>  <!-- 23 lands (the 2025 pooled n) -->
-    <audio id="sfx-5" src="assets/sfx/filter.wav" data-start="92.297" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- industry-funded tiles drop -->
-    <audio id="sfx-6" src="assets/sfx/filter.wav" data-start="97.312" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- low-quality tiles drop -->
-    <audio id="sfx-7" src="assets/sfx/lock.wav" data-start="111.424" data-duration="0.300" data-track-index="21" data-volume="0.3"></audio>  <!-- sunscreen locks into the foundation -->
+    <audio id="sfx-0" src="assets/sfx/impact-bass-2.mp3" data-start="0.892" data-duration="2.592" data-track-index="21" data-volume="0.34"></audio>  <!-- molecule hits the barrier -->
+    <audio id="sfx-1" src="assets/sfx/slice.wav" data-start="26.833" data-duration="0.350" data-track-index="21" data-volume="0.3"></audio>  <!-- UV cuts a beam -->
+    <audio id="sfx-2" src="assets/sfx/impact-bass-2.mp3" data-start="50.156" data-duration="2.592" data-track-index="21" data-volume="0.22"></audio>  <!-- molecule rejected at the door -->
+    <audio id="sfx-3" src="assets/sfx/fragment.wav" data-start="62.580" data-duration="0.500" data-track-index="21" data-volume="0.28"></audio>  <!-- molecule fragments -->
+    <audio id="sfx-4" src="assets/sfx/citation-tick-trimmed.mp3" data-start="91.381" data-duration="0.500" data-track-index="21" data-volume="0.3"></audio>  <!-- 23 lands (the 2025 pooled n) -->
+    <audio id="sfx-5" src="assets/sfx/filter.wav" data-start="95.225" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- industry-funded tiles drop -->
+    <audio id="sfx-6" src="assets/sfx/filter.wav" data-start="103.891" data-duration="0.450" data-track-index="21" data-volume="0.26"></audio>  <!-- low-quality tiles drop -->
+    <audio id="sfx-7" src="assets/sfx/lock.wav" data-start="120.302" data-duration="0.300" data-track-index="21" data-volume="0.3"></audio>  <!-- sunscreen locks into the foundation -->
   </div>
 
   <style>
@@ -86,20 +86,20 @@
     // No `defaults` on the root. Its only job is file handoff.
     var tl = gsap.timeline({ paused: true });
     tl.fromTo("#scene-02-promise", { clipPath:"circle(0px at 960px 561px)" },
-      { clipPath:"circle(2400px at 960px 561px)", duration:0.55, ease:"power2.inOut" }, 5.262);   // iris: 01-hook -> 02-promise
+      { clipPath:"circle(1211px at 960px 561px)", duration:0.55, ease:"power2.inOut" }, 4.971);   // iris: 01-hook -> 02-promise
     tl.fromTo("#scene-03-building", { clipPath:"circle(0px at 486px 500px)" },
-      { clipPath:"circle(2400px at 486px 500px)", duration:0.55, ease:"power2.inOut" }, 13.987);   // iris: 02-promise -> 03-building
+      { clipPath:"circle(2400px at 486px 500px)", duration:0.55, ease:"power2.inOut" }, 13.726);   // iris: 02-promise -> 03-building
     tl.fromTo("#scene-06-door", { clipPath:"circle(0px at 486px 657px)" },
-      { clipPath:"circle(2400px at 486px 657px)", duration:0.55, ease:"power2.inOut" }, 38.024);   // iris: 03-building -> 06-door
+      { clipPath:"circle(2400px at 486px 657px)", duration:0.55, ease:"power2.inOut" }, 39.003);   // iris: 03-building -> 06-door
     tl.fromTo("#scene-08-digestion", { clipPath:"circle(0px at 486px 586px)" },
-      { clipPath:"circle(2400px at 486px 586px)", duration:0.55, ease:"power2.inOut" }, 55.926);   // iris: 06-door -> 08-digestion
+      { clipPath:"circle(2400px at 486px 586px)", duration:0.55, ease:"power2.inOut" }, 58.843);   // iris: 06-door -> 08-digestion
     tl.fromTo("#scene-10-evidence", { clipPath:"inset(100% 0% 0% 0%)" },
-      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 76.629);   // invert: 08-digestion -> 10-evidence
+      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 80.105);   // invert: 08-digestion -> 10-evidence
     tl.fromTo("#scene-14-hierarchy", { clipPath:"inset(100% 0% 0% 0%)" },
-      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 109.134);   // invert: 10-evidence -> 14-hierarchy
+      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.60, ease:"power3.inOut" }, 117.494);   // invert: 10-evidence -> 14-hierarchy
     tl.fromTo("#scene-16-end", { clipPath:"inset(0% 0% 0% 100%)" },
-      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.90, ease:"power2.inOut" }, 129.794);   // curtain: 14-hierarchy -> 16-end
-    tl.to({}, { duration: 134.794 }, 0);   // anchor
+      { clipPath:"inset(-1% -1% -1% -1%)", duration:0.90, ease:"power2.inOut" }, 138.692);   // curtain: 14-hierarchy -> 16-end
+    tl.to({}, { duration: 143.692 }, 0);   // anchor
     window.__timelines["main"] = tl;
   </script>
 </body>

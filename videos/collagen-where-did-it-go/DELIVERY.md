@@ -1,6 +1,12 @@
 # DELIVERY — You Bought Collagen. Where Did It Actually Go?
 
-**1920×1080 landscape · 30fps · 2:14.79 (134.794s) · 8 composition files · 16 beat units · one narrator**
+**1920×1080 landscape · 30fps · 2:23.80 (143.800s) · 8 composition files · 16 beat units · one narrator**
+
+> Runtime updated 2026-09-05: the a11y-review pace-correction pass (see
+> "Known findings" below) added ~9s across several sentences to clear the
+> caption-speed hard ceiling. The retention-diagnosis table directly below
+> is a historical snapshot of the 2026-09-04 single-narrator decision and is
+> left at that cut's own numbers (2:14.79, 364 words) rather than restated.
 
 > The 3:09 two-character cut this project shipped on 2026-09-03 was withdrawn by
 > the operator on 2026-09-04. This document delivers its single-narrator
@@ -265,6 +271,24 @@ reserve is *required* to be clear so YouTube's overlay elements land on empty
 frame, so a checker looking for "carried content, then went empty" finds the
 design working. `--exempt-last` on the static-hold and motion-gap gates scopes
 them to the narrated body.
+
+**Caption reading speed: 55% of cues at or under the preferred 17 CPS, against
+a 95% target.** The hard requirement (zero cues over the 20 CPS ceiling, one
+reviewed exception at the opening hook) passes. Reaching 95% would need slowing
+roughly 20 more sentences scattered across nearly every unit — this narration
+just runs information-dense throughout (162 wpm average, well under any
+per-word ceiling, but high characters-per-second locally) — adding an estimated
+14s and pushing runtime from 2:23.8 toward 2:38, well past the recut's own
+~2:05 target for a comfort margin past a ceiling that already holds. Reviewed
+and accepted 2026-09-05 rather than spent. `scripts/check-captions.py` prints
+this as an advisory, not a gate failure; the one true exception (the opening
+hook's first sentence, "Collagen cream does not replace your collagen.")
+cannot clear 20 CPS without missing `build_frames.py`'s own curiosity-loop
+deadline (the "23 trials" / "remove the industry funded" teaser landing by
+9.0s/10.5s) — slowing it enough to pass CPS pushed both past their deadline,
+measured. Fixable per-sentence via `scripts/fix_sentence_pace.py`, which
+atempo-stretches one sentence in the already-cut master and shifts everything
+after it by a constant delta, with no re-roll.
 
 ---
 

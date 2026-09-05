@@ -59,9 +59,19 @@
            background:rgba(0,0,0,0.015); }
   .panel .actor { color:var(--ink); }
 
-  .split2.macro { grid-template-columns: 1fr 900px; gap:64px; }
+  /* [S7/R-2 safe-area] 900px first, on the render: s09's 4-row column (head +
+     body + cite + sub, the sub line alone nine words) wrapped its last line
+     ("VOLUME") into the reserved bottom zone -- real ink, caught only by
+     check-safe-area.py on the actual rendered pixels, not by `hyperframes
+     check`'s declared-container audit (0 errors on this scene throughout).
+     760px keeps every macro actor (max rendered width ~650px, including the
+     crosslink actor's 3D rotation) comfortably framed while giving .col the
+     140px it needed to wrap onto one fewer line. Applies to every macro
+     scene, not just s09 -- the same budget the busiest one needed is the
+     honest one, not a per-scene special case. */
+  .split2.macro { grid-template-columns: 1fr 760px; gap:64px; }
   .macro .panel { border:none; background:none; padding:0; }
-  .macro .panel .actor { height:720px; width:auto; }
+  .macro .panel .actor { height:660px; width:auto; }
   /* The one accent per scene the review allows: a decisive word, not a
      line. Colour + a BOUNDED bloom, tweened up and back down -- no
      ongoing wobble. Coral on PAPER measures 3.005:1, over the 3:1 floor

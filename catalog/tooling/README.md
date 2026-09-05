@@ -954,3 +954,76 @@ Harmless in the shipped master — nothing in that project consumes `@sent(i)`,
 every binding is word-driven — but `timing.py` exposes the binding, so the first
 scene to use it would silently bind to times that no longer exist. Ectoin is
 **not** wired onto this gate; that finding is recorded, not fixed here.
+
+---
+
+## Controls — `test-blank-frames-controls.py`, `test-sfx-durations-controls.py` — added 2026-09-05
+
+These two gates were harvested here byte-identical from the projects that had
+them, without fixtures, and were the last two in this directory with no control
+at all. Both are advisory (always exit 0), which makes an unnoticed break worse
+rather than better: a gate that exits 0 because it found nothing and a gate that
+exits 0 because it stopped looking are indistinguishable from the calling
+`package.json`.
+
+Both fixtures build a synthetic subject and drive the gate through **its own
+CLI**, so frame extraction, ffprobe, HTML parsing and the printed verdict are
+all exercised for real rather than stubbed.
+
+### test-blank-frames-controls.py (5 controls)
+
+Synthetic MP4s at the gate's own 15fps sample rate, encoded `-qp 0`. Lossless
+matters: at an ordinary CRF, x264 smears a hard-edged content frame enough to
+move its stddev, and a control whose fixture drifts with the encoder setting is
+not measuring the gate.
+
+**FIXTURE VALIDITY runs first and is stated as the fixture's failure, not the
+gate's.** It extracts the fixture's own frames and asserts the flat ones read
+near zero and the busy ones read far above the cutoff (measured: 0.00 and
+93.25, against a cutoff of 12.0). This directory has the scar that motivates
+it — `test-motion-gaps-controls.py`'s first fixture drew nothing at all, and
+its replacement was three times the intended size and made a working gate look
+broken.
+
+The other four: a 333ms flat run **must** be reported and a 67ms run in the
+**same render must not** (a one-sided control cannot distinguish a gate that
+flags everything from one that flags nothing); a clean render must report
+nothing; a render that opens flat must be reported **and carry the frame-zero
+tag**, since a blank poster frame is its own defect class and a gate that found
+the run but dropped the tag would still read as passing; and a render that
+**ends** flat must be reported, because the grouping loop closes a final open
+run in a separate branch from the mid-timeline one.
+
+### test-sfx-durations-controls.py (5 controls)
+
+Synthetic projects — an `index.html` plus real audio of known length.
+
+The one worth calling out is **FADE-OUT, EACH CONDITION**. The gate's escape
+hatch is three conditions ANDed: the last automation point lands at ~zero
+volume, at ~the clip's end, and is not the only point. A single happy-path
+fixture would keep passing with two of the three deleted, so each is checked by
+a near-miss that satisfies the other two — a ramp to 0.5, a ramp reaching zero
+a second early, and a lone point at zero (a flat silent clip, not a ramp). All
+three must flag.
+
+**ATTRIBUTE ORDER** is the other one that earns its place: the same tag written
+with `data-hf-id` injected first, which is exactly what this repo's preview
+server does to every tag it serves. CLAUDE.md records a parser here that
+silently stopped matching for precisely this reason, and "found nothing" reads
+identical to "nothing is wrong". Confirmed live by mutation: anchoring the tag
+regex to `<audio id=` fails this control and only this one.
+
+**Mutation-tested, nine breakages, all caught.** Blank-frames: cutoff to 0,
+duration floor to 0, trailing-run branch removed, frame-zero tag removed.
+SFX: threshold to 0.5s, and each of the three fade-out conditions dropped
+individually, plus the attribute-order anchor. Each mutant fails the control
+aimed at it and the restored gate passes clean.
+
+**Status: 12 fixtures, all passing, none reaching outside `catalog/tooling/`.**
+One gate here still has no control: **`check-contrast-tokens.py`**. It is the
+source-side half of the contrast pair, and its ratio arithmetic is shared with
+`check-contrast-pixels.py` (which is covered), but its own JSON pair-loading and
+its `expected FAIL` inversion -- the feature that makes the gate fail when a
+documented-bad pair starts passing -- are untested. That inversion is the part
+worth a fixture: it is the one place in this directory where a PASS is the
+failure condition.

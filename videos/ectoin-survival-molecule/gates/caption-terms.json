@@ -1,0 +1,35 @@
+{
+ "required": [
+  "Ectoin",
+  "Halomonas elongata",
+  "extremolyte",
+  "humectants",
+  "preferential exclusion",
+  "glycerin",
+  "hyaluronic acid",
+  "keratin",
+  "atopic dermatitis",
+  "bitop",
+  "Merck",
+  "Kao",
+  "Paula's Choice",
+  "The Ordinary",
+  "Abib",
+  "panthenol",
+  "squalane",
+  "ceramides",
+  "bacteria-made survival molecule"
+ ],
+ "forbidden": [
+  "Bitop",
+  "BTOP",
+  "Cow.",
+  "Abbey",
+  "ectoene",
+  "Ecton",
+  "ectoy",
+  "bacteria made survival",
+  "double blind",
+  "K beauty"
+ ]
+}

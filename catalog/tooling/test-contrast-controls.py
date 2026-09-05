@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained controls for check-contrast.py (collagen-where-did-it-go).
+"""Self-contained controls for check-contrast-pixels.py.
 
 Run after any change to its ratio math or its Otsu-cluster pixel measurement:
 
@@ -44,12 +44,16 @@ except ImportError:
     print("test-contrast-controls: needs `python3 -m pip install pillow numpy` -- skipping (exit 0).")
     sys.exit(0)
 
-TOOL = (Path(__file__).resolve().parents[1].parent /
-        "videos" / "collagen-where-did-it-go" / "scripts" / "check-contrast.py")
+# The gate lives BESIDE this fixture. It used to be loaded from
+# `videos/collagen-where-did-it-go/scripts/check-contrast.py` -- a catalogued
+# control reaching back into one named project, which is exactly the coupling
+# this directory exists to remove, and which broke the moment that project's
+# copy drifted.
+TOOL = Path(__file__).resolve().parent / "check-contrast-pixels.py"
 
 
 def load_tool():
-    spec = importlib.util.spec_from_file_location("check_contrast", TOOL)
+    spec = importlib.util.spec_from_file_location("check_contrast_pixels", TOOL)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -78,7 +82,7 @@ def main():
 
     print("\n  POSITIVE -- light-grey glyphs on near-identical light-grey ground (must FAIL):")
     frame = glyph_frame(fg=(170, 170, 170), bg=(190, 190, 190))
-    result = mod.measure(frame, (0, 0, 300, 80), "control: near-identical greys", mod.TEXT_FLOOR)
+    result = mod.measure(frame, (0, 0, 300, 80), "control: near-identical greys", mod.NORMAL_FLOOR)
     good = result == False
     ok &= good
     print(f"    measure() returned {result!r}   "
@@ -86,7 +90,7 @@ def main():
 
     print("\n  NEGATIVE -- black glyphs on white ground (must PASS):")
     frame = glyph_frame(fg=(10, 10, 10), bg=(245, 245, 245))
-    result = mod.measure(frame, (0, 0, 300, 80), "control: black on white", mod.TEXT_FLOOR)
+    result = mod.measure(frame, (0, 0, 300, 80), "control: black on white", mod.NORMAL_FLOOR)
     good = result == True
     ok &= good
     print(f"    measure() returned {result!r}   "

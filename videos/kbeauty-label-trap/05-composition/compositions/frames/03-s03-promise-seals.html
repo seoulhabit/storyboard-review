@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,34 +30,37 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--ink); color:var(--paper); }
 
   .promise-stage { position:relative; height:100%; width:100%;
     background: radial-gradient(120% 90% at 50% 15%, #1B1E1F 0%, var(--ink) 55%, #0A0B0B 100%); }
-  .bottle-pair-sm { position:absolute; left:50%; top:44%; transform:translate(-50%,-50%);
-    display:flex; gap:260px; opacity:1; }
-  .seal-ring { position:absolute; left:50%; top:44%; width:900px; height:520px;
-    transform:translate(-50%,-50%); }
-  .seal-slot { position:absolute; opacity:0; transform:scale(0.4) rotate(-30deg); }
+  .bottle-pair-sm { position:absolute; left:50%; top:66%; transform:translate(-50%,-50%);
+    display:flex; gap:220px; opacity:0.55; }
+  .q-progress { position:absolute; left:50%; top:38%; transform:translate(-50%,-50%); }
   .promise-head { position:absolute; left:0; right:0; top:calc(var(--safe-top) + 20px); text-align:center; opacity:0; }
   .scanner-line { position:absolute; left:0; right:0; top:0; height:4px; background:var(--celadon);
     box-shadow:0 0 30px 6px var(--celadon); opacity:0; }
@@ -57,106 +73,116 @@
     <div class="promise-stage">
       <div class="scanner-line" id="s03-scanner"></div>
       <div class="bottle-pair-sm" id="s03-bottles">
-        <svg class="bottle" id="s03-bottle-a" viewBox="0 0 190 320" width="190" height="320"
-     style="overflow:visible" aria-hidden="true">
+        <svg class="package-shell package-a" id="s03-bottle-a" viewBox="0 0 140 280"
+     width="140" height="280" style="overflow:visible" aria-hidden="true">
   <defs>
     <linearGradient id="s03-bottle-a-glass" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
-      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="0%" stop-color="#F1F2ED" stop-opacity="0.12"/>
+      <stop offset="46%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="54%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#F1F2ED" stop-opacity="0.12"/>
     </linearGradient>
-    <linearGradient id="s03-bottle-a-liquid" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    <linearGradient id="s03-bottle-a-liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7F9D88" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#426B50" stop-opacity="0.72"/>
     </linearGradient>
   </defs>
-  <rect x="-75.0" y="66.0" width="150" height="234.0" rx="21.000000000000004"
-        fill="url(#s03-bottle-a-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
-  <clipPath id="s03-bottle-a-clip"><rect x="-69.0" y="72.0" width="138" height="222.0" rx="18.0"/></clipPath>
-        <g clip-path="url(#s03-bottle-a-clip)">
-          <rect x="-75.0" y="66.0" width="150" height="234.0" fill="url(#s03-bottle-a-liquid)" opacity="0.55"/>
-        </g>
-  <rect x="-24.0" y="0" width="48.0" height="66.0" rx="6"
+  <rect x="47.599999999999994" y="0" width="44.800000000000004" height="56.0" rx="8"
         fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
-  <rect x="-7.5" y="94.08" width="21.000000000000004" height="128.70000000000002" rx="9.0"
-        fill="#FFFFFF" opacity="0.18"/>
+  <rect x="5.599999999999994" y="61.6" width="128.8" height="218.4" rx="22.400000000000002"
+        fill="url(#s03-bottle-a-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.92"/>
+  <rect x="11.200000000000003" y="69.6" width="117.6" height="202.4" rx="15.68" fill="url(#s03-bottle-a-liq)" opacity="0.5"/>
+  <rect x="28.0" y="83.44" width="14.0" height="109.2"
+        rx="7.0" fill="#FFFFFF" opacity="0.16"/>
 </svg>
-        <svg class="bottle" id="s03-bottle-b" viewBox="0 0 190 320" width="190" height="320"
-     style="overflow:visible" aria-hidden="true">
+        <svg class="package-shell package-b" id="s03-bottle-b" viewBox="0 0 140 280"
+     width="140" height="280" style="overflow:visible" aria-hidden="true">
   <defs>
     <linearGradient id="s03-bottle-b-glass" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#DDE6E4" stop-opacity="0.14"/>
-      <stop offset="45%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="55%" stop-color="#EAF2F0" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#DDE6E4" stop-opacity="0.14"/>
+      <stop offset="0%" stop-color="#F1F2ED" stop-opacity="0.12"/>
+      <stop offset="46%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="54%" stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#F1F2ED" stop-opacity="0.12"/>
     </linearGradient>
-    <linearGradient id="s03-bottle-b-liquid" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--celadon)" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="var(--moss)" stop-opacity="0.7"/>
+    <linearGradient id="s03-bottle-b-liq" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7F9D88" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#426B50" stop-opacity="0.72"/>
     </linearGradient>
   </defs>
-  <rect x="-75.0" y="66.0" width="150" height="234.0" rx="21.000000000000004"
-        fill="url(#s03-bottle-b-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.9"/>
-  <clipPath id="s03-bottle-b-clip"><rect x="-69.0" y="72.0" width="138" height="222.0" rx="18.0"/></clipPath>
-        <g clip-path="url(#s03-bottle-b-clip)">
-          <rect x="-75.0" y="66.0" width="150" height="234.0" fill="url(#s03-bottle-b-liquid)" opacity="0.55"/>
-        </g>
-  <rect x="-24.0" y="0" width="48.0" height="66.0" rx="6"
+  <rect x="47.599999999999994" y="0" width="44.800000000000004" height="56.0" rx="4"
         fill="#8A9498" stroke="#5C6568" stroke-width="2"/>
-  <rect x="-7.5" y="94.08" width="21.000000000000004" height="128.70000000000002" rx="9.0"
-        fill="#FFFFFF" opacity="0.18"/>
+  <rect x="5.599999999999994" y="61.6" width="128.8" height="218.4" rx="9.8"
+        fill="url(#s03-bottle-b-glass)" stroke="#C7D2CF" stroke-width="2.5" opacity="0.92"/>
+  <rect x="11.200000000000003" y="69.6" width="117.6" height="202.4" rx="6.86" fill="url(#s03-bottle-b-liq)" opacity="0.5"/>
+  <rect x="28.0" y="83.44" width="14.0" height="109.2"
+        rx="7.0" fill="#FFFFFF" opacity="0.16"/>
 </svg>
       </div>
-      <div class="seal-ring">
-        <div class="seal-slot" id="s03-seal-0" style="left:calc(50% + -380px); top:calc(44% + -170px);"><svg class="stamp" id="s03-seal-svg-0" viewBox="0 0 110 110" width="110" height="110"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 55.0 55.0)">
-    <circle cx="55.0" cy="55.0" r="49.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="55.0" cy="55.0" r="33.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="55.0" y="64.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="18" fill="var(--vermilion)" letter-spacing="1">1</text>
-  </g>
-</svg></div>
-<div class="seal-slot" id="s03-seal-1" style="left:calc(50% + -190px); top:calc(44% + 220px);"><svg class="stamp" id="s03-seal-svg-1" viewBox="0 0 110 110" width="110" height="110"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 55.0 55.0)">
-    <circle cx="55.0" cy="55.0" r="49.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="55.0" cy="55.0" r="33.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="55.0" y="64.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="18" fill="var(--vermilion)" letter-spacing="1">2</text>
-  </g>
-</svg></div>
-<div class="seal-slot" id="s03-seal-2" style="left:calc(50% + 0px); top:calc(44% + -260px);"><svg class="stamp" id="s03-seal-svg-2" viewBox="0 0 110 110" width="110" height="110"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 55.0 55.0)">
-    <circle cx="55.0" cy="55.0" r="49.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="55.0" cy="55.0" r="33.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="55.0" y="64.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="18" fill="var(--vermilion)" letter-spacing="1">3</text>
-  </g>
-</svg></div>
-<div class="seal-slot" id="s03-seal-3" style="left:calc(50% + 190px); top:calc(44% + 220px);"><svg class="stamp" id="s03-seal-svg-3" viewBox="0 0 110 110" width="110" height="110"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 55.0 55.0)">
-    <circle cx="55.0" cy="55.0" r="49.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="55.0" cy="55.0" r="33.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="55.0" y="64.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="18" fill="var(--vermilion)" letter-spacing="1">4</text>
-  </g>
-</svg></div>
-<div class="seal-slot" id="s03-seal-4" style="left:calc(50% + 380px); top:calc(44% + -170px);"><svg class="stamp" id="s03-seal-svg-4" viewBox="0 0 110 110" width="110" height="110"
-     style="overflow:visible" aria-hidden="true">
-  <g transform="rotate(-6 55.0 55.0)">
-    <circle cx="55.0" cy="55.0" r="49.0" stroke="var(--vermilion)" stroke-width="5" fill="none"/>
-    <circle cx="55.0" cy="55.0" r="33.0" stroke="var(--vermilion)" stroke-width="2.5" fill="none"/>
-    <text x="55.0" y="64.0" text-anchor="middle" font-family="var(--font-mono)"
-          font-weight="700" font-size="18" fill="var(--vermilion)" letter-spacing="1">5</text>
-  </g>
-</svg></div>
-      </div>
+      <div class="q-progress" id="s03-seal-wrap" style="position:relative;display:flex;gap:54px;align-items:center;"><div class="q-rail" id="s03-seal-rail" style="position:absolute;left:75.0px;right:75.0px;top:50%;height:2px;background:var(--line);z-index:-1;"></div><div class="q-seal" id="s03-seal-0" style="position:relative;width:150px;height:150px;flex:none;">
+  <svg width="150" height="150" viewBox="0 0 150 150" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s03-seal-0-ring" cx="75.0" cy="75.0" r="71.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s03-seal-0-keyline" cx="75.0" cy="75.0" r="55.5" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-quantity" id="s03-seal-0-glyph" viewBox="0 0 96 96" width="63.0" height="63.0" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Rank ticks descending toward a dashed cutoff -- "position is visible, dose is not." -->
+  <line x1="30" y1="34" x2="62" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="44" x2="54" y2="44" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="62" x2="42" y2="62" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+  <line x1="26" y1="53" x2="66" y2="53" stroke="#C5944D" stroke-width="2.2" stroke-dasharray="3 4"/></svg></div>
+</div><div class="q-seal" id="s03-seal-1" style="position:relative;width:150px;height:150px;flex:none;">
+  <svg width="150" height="150" viewBox="0 0 150 150" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s03-seal-1-ring" cx="75.0" cy="75.0" r="71.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s03-seal-1-keyline" cx="75.0" cy="75.0" r="55.5" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-identity-version" id="s03-seal-1-glyph" viewBox="0 0 96 96" width="63.0" height="63.0" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+</div><div class="q-seal" id="s03-seal-2" style="position:relative;width:150px;height:150px;flex:none;">
+  <svg width="150" height="150" viewBox="0 0 150 150" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s03-seal-2-ring" cx="75.0" cy="75.0" r="71.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s03-seal-2-keyline" cx="75.0" cy="75.0" r="55.5" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-formula-vehicle" id="s03-seal-2-glyph" viewBox="0 0 96 96" width="63.0" height="63.0" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Vessel carrying a passenger droplet -- the ingredient never travels alone. -->
+  <path d="M42 26H54V38L62 60C64 65 61 69 56 69H40C35 69 32 65 34 60L42 38V26Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="39" y1="26" x2="57" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="56" r="6" fill="#5F9294"/></svg></div>
+</div><div class="q-seal" id="s03-seal-3" style="position:relative;width:150px;height:150px;flex:none;">
+  <svg width="150" height="150" viewBox="0 0 150 150" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s03-seal-3-ring" cx="75.0" cy="75.0" r="71.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s03-seal-3-keyline" cx="75.0" cy="75.0" r="55.5" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-evidence" id="s03-seal-3-glyph" viewBox="0 0 96 96" width="63.0" height="63.0" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Chain of evidence with a visible, honest gap near the product end. -->
+  <circle cx="27" cy="52" r="5.5" fill="currentColor"/>
+  <line x1="32" y1="49" x2="43" y2="43" stroke="currentColor" stroke-width="2.4"/>
+  <circle cx="47" cy="41" r="5.5" fill="currentColor"/>
+  <line x1="52" y1="40" x2="61" y2="38" stroke="#6358A7" stroke-width="2.4" stroke-dasharray="2.5 4"/>
+  <circle cx="66" cy="37" r="5.5" fill="none" stroke="#6358A7" stroke-width="2.4"/></svg></div>
+</div><div class="q-seal" id="s03-seal-4" style="position:relative;width:150px;height:150px;flex:none;">
+  <svg width="150" height="150" viewBox="0 0 150 150" style="position:absolute;inset:0;overflow:visible">
+    <circle id="s03-seal-4-ring" cx="75.0" cy="75.0" r="71.0" fill="rgba(255,255,255,0.05)" stroke="#8B95A3" stroke-width="3"/>
+    <circle id="s03-seal-4-keyline" cx="75.0" cy="75.0" r="55.5" fill="none" stroke="#8B95A3" stroke-width="1.5"
+            stroke-dasharray="3 5" opacity="0.5"/>
+  </svg>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><svg class="icon icon-boundary" id="s03-seal-4-glyph" viewBox="0 0 96 96" width="63.0" height="63.0" style="overflow:visible;color:#8B95A3;opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Supported arc stopping cleanly at a marked line -- the boundary is part of the answer. -->
+  <path d="M27 56C31 39 38 30 48 30C58 30 65 39 69 56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="48" y1="24" x2="48" y2="68" stroke="#D95F52" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="24" r="3" fill="#D95F52"/></svg></div>
+</div></div>
       <div class="promise-head" id="s03-head">
-        <div class="head" style="color:var(--paper); font-size:80px;">FIVE QUESTIONS. ONE VERDICT.</div>
+        <div class="head" style="color:var(--paper); font-size:78px;">FIVE QUESTIONS. ONE VERDICT.</div>
       </div>
     </div>
 
@@ -166,7 +192,7 @@
 (function () {
 
   gsap.set('#s03-scanner', { opacity: 0, y: -10 });
-  gsap.set('#s03-bottles', { opacity: 0.9, scale: 1 });
+  gsap.set('#s03-bottles', { scale: 1 });
   gsap.set('#s03-head', { opacity: 0, y: 16 });
   gsap.set('#s03-seal-0', { opacity: 0, scale: 0.4, rotation: -30 });
   gsap.set('#s03-seal-1', { opacity: 0, scale: 0.4, rotation: -30 });
@@ -176,15 +202,29 @@
   var tl = gsap.timeline({ paused: true });
   tl.fromTo('#s03-scanner', { opacity: 1, y: -10 }, { opacity: 1, y: 1090, duration: 3.0, ease: 'power1.inOut' }, 0.0);
   tl.to('#s03-scanner', { opacity: 0, duration: 0.3 }, 3.0);
-  tl.to('#s03-seal-0', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 6.50);
-  tl.to('#s03-seal-1', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 6.72);
-  tl.to('#s03-seal-2', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 6.94);
-  tl.to('#s03-seal-3', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 7.16);
-  tl.to('#s03-seal-4', { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: 'back.out(2)' }, 7.38);
+  tl.to('#s03-seal-0', { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: 'back.out(2)' }, 3.00);
+  tl.to('#s03-seal-1', { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: 'back.out(2)' }, 3.50);
+  tl.to('#s03-seal-2', { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: 'back.out(2)' }, 4.00);
+  tl.to('#s03-seal-3', { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: 'back.out(2)' }, 4.50);
+  tl.to('#s03-seal-4', { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: 'back.out(2)' }, 5.00);
   tl.to('#s03-bottles', { scale: 1.02, duration: 2.98, ease: 'sine.inOut' }, 2.6);
   tl.to('#s03-bottles', { scale: 1.0, duration: 2.7, ease: 'sine.inOut' }, 5.62);
 
+  tl.to('#s03-seal-0', { scale: 1.16, duration: 0.13, ease: 'power2.out' }, 6.50);
+  tl.to('#s03-seal-0', { scale: 1.0, duration: 0.13, ease: 'power2.in' }, 6.63);
+  tl.to('#s03-seal-1', { scale: 1.16, duration: 0.13, ease: 'power2.out' }, 6.80);
+  tl.to('#s03-seal-1', { scale: 1.0, duration: 0.13, ease: 'power2.in' }, 6.93);
+  tl.to('#s03-seal-2', { scale: 1.16, duration: 0.13, ease: 'power2.out' }, 7.10);
+  tl.to('#s03-seal-2', { scale: 1.0, duration: 0.13, ease: 'power2.in' }, 7.23);
+  tl.to('#s03-seal-3', { scale: 1.16, duration: 0.13, ease: 'power2.out' }, 7.40);
+  tl.to('#s03-seal-3', { scale: 1.0, duration: 0.13, ease: 'power2.in' }, 7.53);
+  tl.to('#s03-seal-4', { scale: 1.16, duration: 0.13, ease: 'power2.out' }, 7.70);
+  tl.to('#s03-seal-4', { scale: 1.0, duration: 0.13, ease: 'power2.in' }, 7.83);
   tl.to('#s03-head', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 8.5);
+  // half-second silence, then Question 1 (quantity) goes active -- not answered.
+  tl.to('#s03-seal-0-ring', { attr: { stroke: '#6358A7' }, duration: 0.4, ease: 'power2.out' }, 14.6);
+  tl.to('#s03-seal-0-keyline', { attr: { stroke: '#6358A7' }, duration: 0.4, ease: 'power2.out' }, 14.6);
+  tl.to('#s03-seal-0 .icon', { color: '#6358A7', scale: 1.08, duration: 0.4, ease: 'back.out(2)' }, 14.6);
   tl.to({}, { duration: 15.136, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s03-promise-seals'] = tl;

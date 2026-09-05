@@ -1,6 +1,48 @@
 #!/usr/bin/env python3
 """Scenes s04-s07: Q1 (order/dose) and Q2 (extract standardization)."""
 from build_composition import write, stamp_svg
+from catalog_components import (
+    ingredient_actor_svg, evidence_state_chip, citation_chip, illustrative_disclosure, icon_svg,
+)
+
+
+def spv_station(uid, role, icon_name, title, copy, state, variables=None, actor=False):
+    """One station in the Source / Process / Version-in-formula map (s06/s07's
+    shared component). `actor=True` swaps the generic icon for the persistent
+    ingredient actor itself -- used at the Source station so the same leaf
+    that opened the scene visibly becomes "the source", not a redrawn icon."""
+    glyph = ingredient_actor_svg(f"{uid}-icon", size=64) if actor else icon_svg(f"{uid}-icon", icon_name, size=48, color="var(--ink)")
+    var_html = ""
+    if variables:
+        chips = "".join(
+            f'<span class="spv-var {"unknown" if st != "known" else ""}" style="border:1px solid var(--line);'
+            f'border-radius:999px;padding:5px 14px;font-family:var(--font-mono);font-size:20px;'
+            f'color:{"var(--signal)" if st != "known" else "var(--ink-soft)"};'
+            f'{"border-style:dashed;" if st != "known" else ""}margin-right:8px;">{name}</span>'
+            for name, st in variables
+        )
+        var_html = f'<div style="margin-top:14px;">{chips}</div>'
+    return f'''<div class="spv-station" id="{uid}" style="position:relative;flex:1;min-width:0;
+      padding:28px 30px;border:1px solid var(--line);border-radius:22px;
+      background:rgba(255,255,255,0.55);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <span class="label" style="color:var(--ink-soft);font-size:24px;">{role}</span>
+      {evidence_state_chip(f"{uid}-state", state)}
+    </div>
+    <div style="width:68px;height:68px;border-radius:50%;border:1px solid var(--line);
+      background:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">{glyph}</div>
+    <div style="font-weight:800;font-size:36px;letter-spacing:-.02em;margin-bottom:8px;">{title}</div>
+    <div style="color:var(--ink-soft);font-size:22px;line-height:1.4;max-width:30ch;">{copy}</div>
+    {var_html}
+  </div>'''
+
+
+def spv_connector(uid):
+    return (f'<div class="spv-connector" id="{uid}" style="flex:0 0 74px;display:flex;align-items:center;'
+            f'justify-content:center;position:relative;">'
+            f'<div style="width:100%;height:1px;background:var(--ink);"></div>'
+            f'<div style="position:absolute;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);'
+            f'background:var(--paper);"></div></div>')
 
 # ---------------------------------------------------------------- s04 -----
 # Adapts catalog/visual-components/threshold-list (ranked list + cutoff rule
@@ -11,7 +53,7 @@ style = """
   .canyon-list { margin:30px auto 0; width:1100px; }
   .canyon-row { font-family:var(--font-mono); font-size:40px; padding:14px 0;
     border-bottom:1px solid var(--rule-strong); opacity:0; }
-  .canyon-row.below { color:rgb(146,142,132); } /* check's own suggestedColor for the 0.55-opacity below-cutoff row, replacing var(--ink-3) which measured 2.67:1 against 3:1 */
+  .canyon-row.below { color:rgb(143,139,129); } /* check's own re-suggested color after the token repalette shifted --paper slightly darker */
   .cutoff-rule { width:100%; height:6px; margin:6px 0 12px; background:var(--vermilion);
     transform:scaleX(0); transform-origin:left center; }
   .cutoff-label { font-family:var(--font-mono); font-size:28px; color:var(--vermilion);
@@ -202,80 +244,80 @@ script = """
 write("s05-q1-dose", style, body, script, bg="paper")
 
 # ---------------------------------------------------------------- s06 -----
-# Adapts catalog/visual-components/material-triptych (N materials, one celadon rail)
+# Catalog source: source-process-version-map, single_path variant. Opens on
+# the same ingredient actor from s01/s03, which becomes the Source station
+# itself -- not a redrawn icon -- then Process and Version stations reveal
+# what the familiar name does and does not disclose.
 style = """
-  .leaf-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
-  .leaf-head { text-align:center; margin-bottom:40px; opacity:0; }
-  .chambers { display:flex; justify-content:center; gap:64px; }
-  .chamber { width:420px; border:2px solid var(--rule-strong); border-radius:20px; padding:32px;
-    text-align:center; opacity:0; }
-  .chamber-vial { width:120px; height:180px; margin:0 auto 20px; border-radius:16px;
-    border:3px solid var(--ink-3); position:relative; overflow:hidden; }
-  .chamber-fill { position:absolute; left:0; right:0; bottom:0; transform-origin:bottom center; }
-  .chamber-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); letter-spacing:.06em; }
-  .collapse-label { text-align:center; margin-top:44px; opacity:0; }
-  .collapse-label .head { font-size:64px; }
-  .rail { position:absolute; left:50%; bottom:calc(var(--safe-bottom) + 30px); width:0; height:5px;
-    background:var(--celadon); transform:translateX(-50%); }
+  .spv-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .spv-open { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); opacity:1; }
+  .spv-map { display:flex; align-items:stretch; gap:0; opacity:0; }
+  .not-equal { text-align:center; margin-top:28px; opacity:0; color:var(--ink-soft); font-size:26px; }
+  .not-equal b { color:var(--signal); margin-right:10px; }
 """
-chambers = [
-    ("WATER EXTRACT", "#93B896", 0.55),
-    ("SOLVENT EXTRACT", "#4F6B52", 0.72),
-    ("PURIFIED COMPOUND", "#131516", 0.30),
-]
-chamber_html = "\n".join(
-    f'''<div class="chamber" id="s06-chamber-{i}">
-      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-{i}" style="height:{h*100:.0f}%; background:{c};"></div></div>
-      <div class="chamber-label">{label}</div>
-    </div>''' for i, (label, c, h) in enumerate(chambers)
-)
+station_source = spv_station("s06-source", "SOURCE", "ingredient-source",
+    "Centella asiatica", "The botanical source can be named without proving the extract specification.",
+    "known", actor=True)
+station_process = spv_station("s06-process", "PROCESS", "formula-vehicle",
+    "Extraction process", "Solvent, ratio and standardization are not disclosed by the familiar name.",
+    "not_disclosed")
+station_version = spv_station("s06-version", "VERSION IN FORMULA", "identity-version",
+    "Centella Asiatica Extract", "The exact declaration identifies the ingredient, not every process variable.",
+    "requires_context",
+    variables=[("botanical", "known"), ("solvent", "unknown"), ("standardization", "unknown")])
 body = f'''
-    <div class="leaf-stage" id="s06-camera" style="transform-origin:50% 45%;">
-      <div class="leaf-head" id="s06-head"><div class="kicker">CENTELLA ASIATICA EXTRACT — ONE NAME, THREE PROCESSES</div></div>
-      <div class="chambers">
-        {chamber_html}
+    <div class="spv-stage" id="s06-camera" style="transform-origin:50% 45%;">
+      <div class="spv-open" id="s06-open">{ingredient_actor_svg("s06-open-actor", size=280)}</div>
+      <div class="spv-map" id="s06-map" style="width:1560px; margin:0 auto;">
+        {station_source}
+        {spv_connector("s06-conn-1")}
+        {station_process}
+        {spv_connector("s06-conn-2")}
+        {station_version}
       </div>
-      <div class="rail" id="s06-rail"></div>
-      <div class="collapse-label" id="s06-collapse">
-        <div class="head">CENTELLA ASIATICA EXTRACT</div>
-        <div class="cite" id="s06-cite" style="margin:20px auto 0;">J Cosmet Sci · 2020</div>
-      </div>
+      <div class="not-equal" id="s06-noteq"><b>&ne;</b>Same familiar name does not guarantee the same preparation.</div>
+      <div style="text-align:center;margin-top:18px;opacity:0;" id="s06-cite-wrap">{citation_chip("s06-cite", "J Cosmet Sci &middot; 2020")}</div>
     </div>
 '''
-chamber_tweens = "\n".join(
-    f"  tl.to('#s06-chamber-{i}', {{ opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }}, {2.0+i*0.5:.2f});"
-    for i in range(3)
-)
-# Idle ambient: each vial's fill breathes very slowly, staggered per chamber
-# so the three don't move in lockstep -- fills the long hold between the
-# chambers landing and the rail/collapse beat near the end.
-_fill_idle = []
-_FILL_SEG, _FILL_GAP = 2.58, 0.02  # tiny gap so consecutive segments never touch at t
-for _i in range(3):
-    _t0 = 4.2 + _i * 0.6
-    for _j, _scale in enumerate((1.035, 1.0, 1.03, 1.0)):
-        _fill_idle.append(
-            f"  tl.to('#s06-fill-{_i}', {{ scaleY: {_scale}, duration: {_FILL_SEG}, ease: 'sine.inOut' }}, {_t0 + _j*(_FILL_SEG+_FILL_GAP):.2f});"
-        )
-fill_idle_tweens = "\n".join(_fill_idle)
+# Idle ambient: each station keeps a very slow scale breathe once landed, so
+# the long stretch between the process/version reveals and the final slam
+# never sits fully static.
+_station_idle = []
+_IDLE_SEG, _IDLE_GAP = 2.6, 0.02
+# #s06-version deliberately excluded: it gets its own dedicated emphasis
+# pulse at 16.0-16.9 for the "collapse into one name" beat, and an idle
+# tween landing in that window would overlap the same property (scale).
+for _i, (_sel, _t0, _t_end) in enumerate([("#s06-source", 4.4, 20.0), ("#s06-process", 8.4, 15.8)]):
+    for _j, _scale in enumerate((1.012, 1.0, 1.01, 1.0)):
+        _t = _t0 + _j * (_IDLE_SEG + _IDLE_GAP)
+        if _t < _t_end:
+            _station_idle.append(f"  tl.to('{_sel}', {{ scale: {_scale}, duration: {_IDLE_SEG}, ease: 'sine.inOut' }}, {_t:.2f});")
+station_idle_tweens = "\n".join(_station_idle)
 script = f"""
-  gsap.set('.chamber', {{ opacity: 0, y: 30 }});
-  gsap.set('.chamber-fill', {{ scaleY: 1 }});
-  gsap.set('#s06-head', {{ opacity: 0, y: -10 }});
-  gsap.set('#s06-camera', {{ scale: 1.10, y: -30 }});
-  gsap.set('#s06-rail', {{ width: 0 }});
-  gsap.set('#s06-collapse', {{ opacity: 0, scale: 0.9 }});
-  gsap.set('#s06-cite', {{ opacity: 0 }});
+  gsap.set('#s06-open', {{ opacity: 1, scale: 1 }});
+  gsap.set('#s06-map', {{ opacity: 0, y: 20 }});
+  gsap.set('.spv-station', {{ transformOrigin: '50% 50%' }});
+  gsap.set('#s06-process', {{ opacity: 0.15 }});
+  gsap.set('#s06-version', {{ opacity: 0.15 }});
+  gsap.set('#s06-noteq', {{ opacity: 0 }});
+  gsap.set('#s06-cite-wrap', {{ opacity: 0 }});
+  gsap.set('#s06-camera', {{ scale: 1.08, y: -24 }});
 
   var tl = gsap.timeline({{ paused: true }});
   tl.to('#s06-camera', {{ scale: 1.0, y: 0, duration: 1.1, ease: 'power2.out' }}, 0.0);
-  tl.to('#s06-head', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 0.3);
-{chamber_tweens}
-{fill_idle_tweens}
-  tl.to('#s06-rail', {{ width: 900, duration: 0.9, ease: 'power2.inOut' }}, 14.5);
-  tl.to('.chamber', {{ opacity: 0.25, duration: 0.6, ease: 'power2.inOut' }}, 15.6);
-  tl.to('#s06-collapse', {{ opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }}, 16.2);
-  tl.to('#s06-cite', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, 17.4);
+  // leaf actor opens the scene, veins glowing, before the map assembles.
+  tl.fromTo('#s06-open-actor', {{ scale: 0.85 }}, {{ scale: 1.05, duration: 1.6, ease: 'sine.inOut' }}, 0.0);
+  tl.to('#s06-open', {{ scale: 0.4, x: -640, y: -70, duration: 1.0, ease: 'power2.inOut' }}, 3.2);
+  tl.to('#s06-open', {{ opacity: 0, duration: 0.3 }}, 4.0);
+  // the leaf settles as the Source station's own icon -- same element idiom, not a rebuild.
+  tl.to('#s06-map', {{ opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }}, 4.0);
+  tl.to('#s06-process', {{ opacity: 1, duration: 0.7, ease: 'power2.out' }}, 6.2);
+  tl.to('#s06-version', {{ opacity: 1, duration: 0.7, ease: 'power2.out' }}, 11.0);
+{station_idle_tweens}
+  tl.to('#s06-noteq', {{ opacity: 1, duration: 0.6, ease: 'power2.out' }}, 16.4);
+  tl.fromTo('#s06-version', {{ scale: 1 }}, {{ scale: 1.03, duration: 0.4, ease: 'power2.out' }}, 16.0);
+  tl.to('#s06-version', {{ scale: 1.0, duration: 0.5, ease: 'power2.inOut' }}, 16.4);
+  tl.to('#s06-cite-wrap', {{ opacity: 1, duration: 0.5, ease: 'power2.out' }}, 17.6);
   tl.to({{}}, {{ duration: 20.554, ease: 'none' }}, 0);
   window.__timelines = window.__timelines || {{}};
   window.__timelines['s06-q2-leaf-chambers'] = tl;

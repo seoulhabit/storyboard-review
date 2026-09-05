@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Formula vehicle">
+  <circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Vessel carrying a passenger droplet -- the ingredient never travels alone. -->
+  <path d="M42 26H54V38L62 60C64 65 61 69 56 69H40C35 69 32 65 34 60L42 38V26Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="39" y1="26" x2="57" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="56" r="6" fill="#5F9294"/>
+</svg>

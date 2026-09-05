@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Scenes s08-s11: Q3 (vehicle journey), Q4 (evidence tunnel), Q5 (boundary)."""
 from build_composition import write, stamp_svg
+from catalog_components import evidence_state_chip, illustrative_disclosure, icon_svg
 
 
 def chain_tweens(sel, start, end, seg, keyframes, ease="sine.inOut"):
@@ -161,34 +162,49 @@ script = f"""
 write("s09-q3-transit", style, body, script, bg="paper")
 
 # ---------------------------------------------------------------- s10 -----
-# Second travel-corridor instance: petri dish -> isolated ingredient -> human
-# study -> finished product. Camera pulls sideways at the end to reveal gaps.
+# Catalog source: evidence-distance-map. Same four stages the original
+# tunnel used, now built as a proper evidence chain -- each node states its
+# relation to the finished-product target, connectors are dashed (no
+# automatic transfer), and the sideways camera pull exposes the full chain
+# plus the forensic question cards.
 style = """
   .tunnel { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
-  .tunnel-head { text-align:center; opacity:0; margin-bottom:10px; }
-  .tunnel-row { display:flex; justify-content:center; align-items:flex-end; gap:0; position:relative; }
-  .tstage { width:380px; text-align:center; opacity:0; position:relative; }
-  .tstage-icon { width:110px; height:110px; margin:0 auto 18px; }
-  .tstage-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); }
-  .tgap { width:60px; height:3px; background:var(--rule-strong); align-self:center; opacity:0; }
-  .cards { display:flex; justify-content:center; gap:40px; margin-top:56px; }
+  .tunnel-head { text-align:center; opacity:0; margin-bottom:34px; }
+  .tunnel-row { display:flex; justify-content:center; align-items:stretch; gap:0; position:relative; width:1740px; margin:0 auto; }
+  .tstage { width:360px; text-align:left; opacity:0; position:relative; padding:26px 26px;
+    border:1px solid var(--line); border-radius:20px; background:rgba(255,255,255,0.55); }
+  .tstage-icon-wrap { width:70px; height:70px; border-radius:50%; border:1px solid var(--line);
+    background:rgba(255,255,255,0.7); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+  .tstage-label { font-family:var(--font-mono); font-size:20px; color:var(--ink-soft); letter-spacing:.05em; }
+  .tstage-title { font-weight:800; font-size:30px; letter-spacing:-.02em; margin-top:6px; }
+  .tgap { flex:0 0 58px; position:relative; align-self:center; opacity:0; }
+  .tgap .line { position:absolute; left:0; right:0; top:50%; height:0; border-top:2px dashed var(--ink-soft); }
+  .cards { display:flex; justify-content:center; gap:40px; margin-top:52px; }
   .card { font-family:var(--font-mono); font-size:30px; color:var(--ink); border:2px solid var(--ink);
     border-radius:10px; padding:14px 22px; opacity:0; }
 """
 tstages = [
-    ("PETRI DISH", '<svg class="tstage-icon" viewBox="0 0 110 110"><ellipse cx="55" cy="55" rx="45" ry="45" fill="none" stroke="currentColor" stroke-width="4"/><ellipse id="s10-stage-0-fill" cx="55" cy="55" rx="35" ry="35" fill="var(--celadon)" opacity="0.25"/></svg>'),
-    ("ISOLATED INGREDIENT", '<svg class="tstage-icon" viewBox="0 0 110 110"><circle id="s10-stage-1-fill" cx="55" cy="55" r="18" fill="var(--celadon)"/><circle cx="55" cy="55" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/></svg>'),
-    ("HUMAN SKIN STUDY", '<svg class="tstage-icon" viewBox="0 0 110 110"><path d="M20 70 Q55 20 90 70" fill="none" stroke="currentColor" stroke-width="4"/><circle id="s10-stage-2-fill" cx="55" cy="55" r="8" fill="var(--celadon)"/></svg>'),
-    ("FINISHED PRODUCT TEST", '<svg class="tstage-icon" viewBox="0 0 110 110"><rect x="35" y="20" width="40" height="70" rx="8" fill="none" stroke="currentColor" stroke-width="4"/><rect id="s10-stage-3-fill" x="42" y="30" width="26" height="45" fill="var(--celadon)" opacity="0.4"/></svg>'),
+    ("STAGE 1", "Cell study", "ingredient-source", "different"),
+    ("STAGE 2", "Isolated ingredient, human", "quantity", "requires_context"),
+    ("STAGE 3", "Human ingredient study", "identity-version", "requires_context"),
+    ("STAGE 4", "Finished product test", "boundary", "known"),
 ]
 stages_html = []
-for i, (label, icon) in enumerate(tstages):
-    stages_html.append(f'<div class="tstage" id="s10-stage-{i}">{icon}<div class="tstage-label">{label}</div></div>')
+for i, (role, title, icon_name, state) in enumerate(tstages):
+    icon = icon_svg(f"s10-stage-{i}-icon", icon_name, size=38, color="var(--ink)")
+    chip = evidence_state_chip(f"s10-stage-{i}-chip", state,
+                                text={"different": "Furthest", "requires_context": "Context required", "known": "Target"}[state])
+    stages_html.append(f'''<div class="tstage" id="s10-stage-{i}">
+      <div class="tstage-icon-wrap" id="s10-stage-{i}-fill">{icon}</div>
+      <div class="tstage-label">{role}</div>
+      <div class="tstage-title">{title}</div>
+      <div style="margin-top:14px;">{chip}</div>
+    </div>''')
     if i < len(tstages) - 1:
-        stages_html.append(f'<div class="tgap" id="s10-gap-{i}"></div>')
+        stages_html.append(f'<div class="tgap" id="s10-gap-{i}"><div class="line"></div></div>')
 body = f'''
     <div class="tunnel">
-      <div class="tunnel-head" id="s10-head"><div class="kicker">THE EVIDENCE TUNNEL</div></div>
+      <div class="tunnel-head" id="s10-head"><div class="kicker">EVIDENCE DISTANCE — HOW FAR FROM THE FINISHED PRODUCT</div></div>
       <div class="tunnel-row" id="s10-row">
         {"".join(stages_html)}
       </div>
@@ -211,20 +227,19 @@ card_tweens = "\n".join(
     for i in range(4)
 )
 # Cadence gate: this is the longest dead window in the video (30s) -- the four
-# stages land 8s apart and then just sit there. Give each stage's filled
-# icon shape a slow pulse once it lands, continuing well past the last stage
-# reveal (up to just before the sideways camera pull at t=30) so there is
-# always something small still moving between the main beats. Does not touch
-# the forensic cards or their timing.
+# stages land 8s apart and then just sit there. Give each stage's icon medal
+# a slow pulse once it lands, continuing well past the last stage reveal (up
+# to just before the sideways camera pull at t=30). Does not touch the
+# forensic cards or their timing.
 _s10_land = [2.0, 4.0, 6.0, 8.0]
 stage_fill_tweens = "\n".join(
     chain_tweens(f"#s10-stage-{i}-fill", _s10_land[i] + 1.0, 35.0, 4.0,
-                 [{"scale": 1.12}, {"scale": 0.94}])
+                 [{"scale": 1.08}, {"scale": 0.96}])
     for i in range(4)
 )
 script = f"""
   gsap.set('#s10-head', {{ opacity: 0, y: -10 }});
-  gsap.set('.tstage', {{ opacity: 0, y: 20 }});
+  gsap.set('.tstage', {{ opacity: 0, y: 20, transformOrigin: '50% 50%' }});
   gsap.set('.tgap', {{ opacity: 0 }});
   gsap.set('.card', {{ opacity: 0, y: 14 }});
 

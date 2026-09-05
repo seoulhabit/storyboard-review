@@ -1,13 +1,26 @@
 <template>
 <style>
 
+  @font-face {
+    font-family: "Noto Sans KR Video";
+    src: url("assets/fonts/NotoSansKR-500-subset.woff2") format("woff2");
+    font-weight: 500; font-display: block;
+  }
   *, *::before, *::after { box-sizing: border-box; }
   #root {
     --safe-top:54px; --safe-bottom:108px; --safe-left:96px; --safe-right:96px;
-    --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1;
-    --celadon:#93B896; --moss:#4F6B52; --coral:#C97A5C; --vermilion:#E34234;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --rule-strong:#D9D3C6; --rule-dark:#333333;
-    --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+    /* Editorial-laboratory palette per the Catalog V2 Label Literacy system --
+       identical to catalog-v2/story-systems/label-literacy/system-tokens.css. */
+    --paper:#F1F2ED; --paper-deep:#DCE2DC; --ink:#172332; --ink-soft:#526071;
+    --celadon:#7F9D88; --celadon-deep:#426B50; --assay:#6358A7; --aqua:#5F9294;
+    --amber:#C5944D; --signal:#D95F52;
+    --brand-coral:#C97A5C; /* brand touchpoints only -- never a content-state color */
+    --line:rgba(23,35,50,.16); --glass:rgba(255,255,255,.6);
+    /* Back-compat aliases so not-yet-migrated scene CSS keeps resolving sanely. */
+    --ink-2:var(--ink-soft); --ink-3:#8B95A3; --mist:var(--paper-deep);
+    --moss:var(--celadon-deep); --coral:var(--brand-coral); --vermilion:var(--signal);
+    --rule-strong:var(--line); --rule-dark:var(--ink);
+    --font-display:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-body:"Inter",system-ui,-apple-system,Helvetica,Arial,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
     position:relative; width:1920px; height:1080px; overflow:hidden;
@@ -17,67 +30,132 @@
   .stage { padding: calc(var(--safe-top) + 40px) calc(var(--safe-right) + 40px)
                     calc(var(--safe-bottom) + 40px) calc(var(--safe-left) + 40px);
            height:100%; }
-  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
-  .head  { font-family:var(--font-display); font-weight:600; font-size:104px;
-           line-height:1.06; letter-spacing:-.016em; margin:0; }
-  .head-lg { font-family:var(--font-display); font-weight:600; font-size:132px;
-           line-height:1.02; letter-spacing:-.018em; margin:0; }
-  .sub   { font-weight:700; font-size:46px; letter-spacing:.09em; text-transform:uppercase; }
-  .body  { font-weight:600; font-size:52px; line-height:1.28; }
-  .kicker{ font-weight:700; font-size:36px; letter-spacing:.16em; text-transform:uppercase; }
+  /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor.
+     Editorial-lab type: Inter only for display/body (tight tracking, heavy
+     weight); JetBrains Mono reserved for citations, declarations, quantities
+     and evidence metadata -- never for headlines or section eyebrows. */
+  .head  { font-family:var(--font-display); font-weight:800; font-size:100px;
+           line-height:1.02; letter-spacing:-.03em; margin:0; }
+  .head-lg { font-family:var(--font-display); font-weight:800; font-size:128px;
+           line-height:0.96; letter-spacing:-.035em; margin:0; }
+  .sub   { font-family:var(--font-display); font-weight:800; font-size:44px;
+           letter-spacing:-.01em; text-transform:uppercase; }
+  .body  { font-weight:600; font-size:50px; line-height:1.3; letter-spacing:-.005em; }
+  .kicker{ font-weight:700; font-size:34px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
   .label { font-family:var(--font-mono); font-weight:500; font-size:34px; letter-spacing:.03em; }
   .cite  { font-family:var(--font-mono); font-weight:500; font-size:32px; letter-spacing:.04em;
-           border:2px solid var(--rule-strong); border-radius:999px; padding:10px 26px;
+           border:2px solid var(--line); border-radius:999px; padding:10px 26px;
            width:max-content; display:inline-block; }
   .uf-badge { display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:32px;
-           border:1px solid rgba(19,21,22,0.28); border-radius:999px; padding:12px 28px;
-           background:rgba(19,21,22,0.05); width:max-content; }
+           font-family:var(--font-mono);
+           border:2px solid var(--signal); border-radius:999px; padding:12px 28px;
+           color:#B23D2C; background:rgba(217,95,82,0.08); width:max-content; }
   .illus-tag { font-family:var(--font-mono); font-weight:500; font-size:28px; letter-spacing:.03em;
-           color:var(--ink-3); font-style:italic; }
+           color:var(--ink-soft); font-style:italic; }
   #root.debug-layout * { outline:1px solid rgba(255,0,0,.6) !important; }
 
   #root { background:var(--paper); color:var(--ink); }
 
-  .leaf-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
-  .leaf-head { text-align:center; margin-bottom:40px; opacity:0; }
-  .chambers { display:flex; justify-content:center; gap:64px; }
-  .chamber { width:420px; border:2px solid var(--rule-strong); border-radius:20px; padding:32px;
-    text-align:center; opacity:0; }
-  .chamber-vial { width:120px; height:180px; margin:0 auto 20px; border-radius:16px;
-    border:3px solid var(--ink-3); position:relative; overflow:hidden; }
-  .chamber-fill { position:absolute; left:0; right:0; bottom:0; transform-origin:bottom center; }
-  .chamber-label { font-family:var(--font-mono); font-size:26px; color:var(--ink-2); letter-spacing:.06em; }
-  .collapse-label { text-align:center; margin-top:44px; opacity:0; }
-  .collapse-label .head { font-size:64px; }
-  .rail { position:absolute; left:50%; bottom:calc(var(--safe-bottom) + 30px); width:0; height:5px;
-    background:var(--celadon); transform:translateX(-50%); }
+  .spv-stage { position:relative; height:100%; width:100%; display:flex; flex-direction:column; justify-content:center; }
+  .spv-open { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); opacity:1; }
+  .spv-map { display:flex; align-items:stretch; gap:0; opacity:0; }
+  .not-equal { text-align:center; margin-top:28px; opacity:0; color:var(--ink-soft); font-size:26px; }
+  .not-equal b { color:var(--signal); margin-right:10px; }
 
 </style>
 
 <div id="root" data-composition-id="s06-q2-leaf-chambers" data-width="1920" data-height="1080" data-duration="21.004">
   <div class="clip stage" id="s06-q2-leaf-chambers-stage" data-start="0" data-duration="21.004">
 
-    <div class="leaf-stage" id="s06-camera" style="transform-origin:50% 45%;">
-      <div class="leaf-head" id="s06-head"><div class="kicker">CENTELLA ASIATICA EXTRACT — ONE NAME, THREE PROCESSES</div></div>
-      <div class="chambers">
-        <div class="chamber" id="s06-chamber-0">
-      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-0" style="height:55%; background:#93B896;"></div></div>
-      <div class="chamber-label">WATER EXTRACT</div>
+    <div class="spv-stage" id="s06-camera" style="transform-origin:50% 45%;">
+      <div class="spv-open" id="s06-open"><svg class="ingredient-actor" id="s06-open-actor" viewBox="0 0 200 200" width="280" height="280"
+     style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s06-open-actor-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#B7CDBD"/>
+      <stop offset="100%" stop-color="#3F6B4E"/>
+    </linearGradient>
+  </defs>
+  <path id="s06-open-actor-body" d="M100 164C86 140 63 125 50 98C35 65 58 34 94 42C108 22 143 32 149 62
+    C172 74 165 113 138 125C127 137 113 151 100 164Z"
+    fill="url(#s06-open-actor-leaf)" stroke="#426B50" stroke-width="2.6"/>
+  <g fill="none" stroke="#F1F2ED" stroke-opacity=".85" stroke-width="1.8">
+    <path d="M100 162V49M100 92L62 66M100 110L140 68M100 128L61 103M100 140L138 112"/>
+  </g>
+  <circle cx="100" cy="49" r="5" fill="#F1F2ED" stroke="#426B50" stroke-width="1.6"/>
+</svg></div>
+      <div class="spv-map" id="s06-map" style="width:1560px; margin:0 auto;">
+        <div class="spv-station" id="s06-source" style="position:relative;flex:1;min-width:0;
+      padding:28px 30px;border:1px solid var(--line);border-radius:22px;
+      background:rgba(255,255,255,0.55);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <span class="label" style="color:var(--ink-soft);font-size:24px;">SOURCE</span>
+      <span class="ev-chip" id="s06-source-state" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #426B50;border-radius:999px;padding:8px 22px;color:#426B50;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#426B50" stroke-width="1.6" style=""/></svg>Known</span>
     </div>
-<div class="chamber" id="s06-chamber-1">
-      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-1" style="height:72%; background:#4F6B52;"></div></div>
-      <div class="chamber-label">SOLVENT EXTRACT</div>
+    <div style="width:68px;height:68px;border-radius:50%;border:1px solid var(--line);
+      background:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg class="ingredient-actor" id="s06-source-icon" viewBox="0 0 200 200" width="64" height="64"
+     style="overflow:visible" aria-hidden="true">
+  <defs>
+    <linearGradient id="s06-source-icon-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#B7CDBD"/>
+      <stop offset="100%" stop-color="#3F6B4E"/>
+    </linearGradient>
+  </defs>
+  <path id="s06-source-icon-body" d="M100 164C86 140 63 125 50 98C35 65 58 34 94 42C108 22 143 32 149 62
+    C172 74 165 113 138 125C127 137 113 151 100 164Z"
+    fill="url(#s06-source-icon-leaf)" stroke="#426B50" stroke-width="2.6"/>
+  <g fill="none" stroke="#F1F2ED" stroke-opacity=".85" stroke-width="1.8">
+    <path d="M100 162V49M100 92L62 66M100 110L140 68M100 128L61 103M100 140L138 112"/>
+  </g>
+  <circle cx="100" cy="49" r="5" fill="#F1F2ED" stroke="#426B50" stroke-width="1.6"/>
+</svg></div>
+    <div style="font-weight:800;font-size:36px;letter-spacing:-.02em;margin-bottom:8px;">Centella asiatica</div>
+    <div style="color:var(--ink-soft);font-size:22px;line-height:1.4;max-width:30ch;">The botanical source can be named without proving the extract specification.</div>
+    
+  </div>
+        <div class="spv-connector" id="s06-conn-1" style="flex:0 0 74px;display:flex;align-items:center;justify-content:center;position:relative;"><div style="width:100%;height:1px;background:var(--ink);"></div><div style="position:absolute;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--paper);"></div></div>
+        <div class="spv-station" id="s06-process" style="position:relative;flex:1;min-width:0;
+      padding:28px 30px;border:1px solid var(--line);border-radius:22px;
+      background:rgba(255,255,255,0.55);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <span class="label" style="color:var(--ink-soft);font-size:24px;">PROCESS</span>
+      <span class="ev-chip" id="s06-process-state" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #D95F52;border-radius:999px;padding:8px 22px;color:#D95F52;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#D95F52" stroke-width="1.6" style="stroke-dasharray:3 4;"/></svg>Not disclosed</span>
     </div>
-<div class="chamber" id="s06-chamber-2">
-      <div class="chamber-vial"><div class="chamber-fill" id="s06-fill-2" style="height:30%; background:#131516;"></div></div>
-      <div class="chamber-label">PURIFIED COMPOUND</div>
+    <div style="width:68px;height:68px;border-radius:50%;border:1px solid var(--line);
+      background:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg class="icon icon-formula-vehicle" id="s06-process-icon" viewBox="0 0 96 96" width="48" height="48" style="overflow:visible;color:var(--ink);opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Vessel carrying a passenger droplet -- the ingredient never travels alone. -->
+  <path d="M42 26H54V38L62 60C64 65 61 69 56 69H40C35 69 32 65 34 60L42 38V26Z"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="39" y1="26" x2="57" y2="26" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="48" cy="56" r="6" fill="#5F9294"/></svg></div>
+    <div style="font-weight:800;font-size:36px;letter-spacing:-.02em;margin-bottom:8px;">Extraction process</div>
+    <div style="color:var(--ink-soft);font-size:22px;line-height:1.4;max-width:30ch;">Solvent, ratio and standardization are not disclosed by the familiar name.</div>
+    
+  </div>
+        <div class="spv-connector" id="s06-conn-2" style="flex:0 0 74px;display:flex;align-items:center;justify-content:center;position:relative;"><div style="width:100%;height:1px;background:var(--ink);"></div><div style="position:absolute;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--paper);"></div></div>
+        <div class="spv-station" id="s06-version" style="position:relative;flex:1;min-width:0;
+      padding:28px 30px;border:1px solid var(--line);border-radius:22px;
+      background:rgba(255,255,255,0.55);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <span class="label" style="color:var(--ink-soft);font-size:24px;">VERSION IN FORMULA</span>
+      <span class="ev-chip" id="s06-version-state" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #6358A7;border-radius:999px;padding:8px 22px;color:#6358A7;font-family:var(--font-mono);font-weight:600;font-size:28px;letter-spacing:.02em;width:max-content;"><svg width="12" height="12" style="flex:none"><circle cx="6" cy="6" r="5" fill="none" stroke="#6358A7" stroke-width="1.6" style=""/></svg>Context required</span>
     </div>
+    <div style="width:68px;height:68px;border-radius:50%;border:1px solid var(--line);
+      background:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg class="icon icon-identity-version" id="s06-version-icon" viewBox="0 0 96 96" width="48" height="48" style="overflow:visible;color:var(--ink);opacity:1" aria-hidden="true"><circle cx="48" cy="48" r="43" fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- ID tag: one name, one small hole -- but the tag can be reprinted for a
+       different preparation, which the second dashed tag behind it signals. -->
+  <rect x="38" y="30" width="22" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.4" stroke-dasharray="2 3"/>
+  <rect x="32" y="38" width="32" height="22" rx="5" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="49" r="2.6" fill="currentColor"/>
+  <line x1="47" y1="45" x2="58" y2="45" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="47" y1="53" x2="54" y2="53" stroke="#6358A7" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+    <div style="font-weight:800;font-size:36px;letter-spacing:-.02em;margin-bottom:8px;">Centella Asiatica Extract</div>
+    <div style="color:var(--ink-soft);font-size:22px;line-height:1.4;max-width:30ch;">The exact declaration identifies the ingredient, not every process variable.</div>
+    <div style="margin-top:14px;"><span class="spv-var " style="border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-family:var(--font-mono);font-size:20px;color:var(--ink-soft);margin-right:8px;">botanical</span><span class="spv-var unknown" style="border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-family:var(--font-mono);font-size:20px;color:var(--signal);border-style:dashed;margin-right:8px;">solvent</span><span class="spv-var unknown" style="border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-family:var(--font-mono);font-size:20px;color:var(--signal);border-style:dashed;margin-right:8px;">standardization</span></div>
+  </div>
       </div>
-      <div class="rail" id="s06-rail"></div>
-      <div class="collapse-label" id="s06-collapse">
-        <div class="head">CENTELLA ASIATICA EXTRACT</div>
-        <div class="cite" id="s06-cite" style="margin:20px auto 0;">J Cosmet Sci · 2020</div>
-      </div>
+      <div class="not-equal" id="s06-noteq"><b>&ne;</b>Same familiar name does not guarantee the same preparation.</div>
+      <div style="text-align:center;margin-top:18px;opacity:0;" id="s06-cite-wrap"><div class="cite" id="s06-cite">J Cosmet Sci &middot; 2020</div></div>
     </div>
 
   </div>
@@ -85,36 +163,36 @@
 <script>
 (function () {
 
-  gsap.set('.chamber', { opacity: 0, y: 30 });
-  gsap.set('.chamber-fill', { scaleY: 1 });
-  gsap.set('#s06-head', { opacity: 0, y: -10 });
-  gsap.set('#s06-camera', { scale: 1.10, y: -30 });
-  gsap.set('#s06-rail', { width: 0 });
-  gsap.set('#s06-collapse', { opacity: 0, scale: 0.9 });
-  gsap.set('#s06-cite', { opacity: 0 });
+  gsap.set('#s06-open', { opacity: 1, scale: 1 });
+  gsap.set('#s06-map', { opacity: 0, y: 20 });
+  gsap.set('.spv-station', { transformOrigin: '50% 50%' });
+  gsap.set('#s06-process', { opacity: 0.15 });
+  gsap.set('#s06-version', { opacity: 0.15 });
+  gsap.set('#s06-noteq', { opacity: 0 });
+  gsap.set('#s06-cite-wrap', { opacity: 0 });
+  gsap.set('#s06-camera', { scale: 1.08, y: -24 });
 
   var tl = gsap.timeline({ paused: true });
   tl.to('#s06-camera', { scale: 1.0, y: 0, duration: 1.1, ease: 'power2.out' }, 0.0);
-  tl.to('#s06-head', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
-  tl.to('#s06-chamber-0', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.00);
-  tl.to('#s06-chamber-1', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 2.50);
-  tl.to('#s06-chamber-2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 3.00);
-  tl.to('#s06-fill-0', { scaleY: 1.035, duration: 2.58, ease: 'sine.inOut' }, 4.20);
-  tl.to('#s06-fill-0', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 6.80);
-  tl.to('#s06-fill-0', { scaleY: 1.03, duration: 2.58, ease: 'sine.inOut' }, 9.40);
-  tl.to('#s06-fill-0', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 12.00);
-  tl.to('#s06-fill-1', { scaleY: 1.035, duration: 2.58, ease: 'sine.inOut' }, 4.80);
-  tl.to('#s06-fill-1', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 7.40);
-  tl.to('#s06-fill-1', { scaleY: 1.03, duration: 2.58, ease: 'sine.inOut' }, 10.00);
-  tl.to('#s06-fill-1', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 12.60);
-  tl.to('#s06-fill-2', { scaleY: 1.035, duration: 2.58, ease: 'sine.inOut' }, 5.40);
-  tl.to('#s06-fill-2', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 8.00);
-  tl.to('#s06-fill-2', { scaleY: 1.03, duration: 2.58, ease: 'sine.inOut' }, 10.60);
-  tl.to('#s06-fill-2', { scaleY: 1.0, duration: 2.58, ease: 'sine.inOut' }, 13.20);
-  tl.to('#s06-rail', { width: 900, duration: 0.9, ease: 'power2.inOut' }, 14.5);
-  tl.to('.chamber', { opacity: 0.25, duration: 0.6, ease: 'power2.inOut' }, 15.6);
-  tl.to('#s06-collapse', { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }, 16.2);
-  tl.to('#s06-cite', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 17.4);
+  // leaf actor opens the scene, veins glowing, before the map assembles.
+  tl.fromTo('#s06-open-actor', { scale: 0.85 }, { scale: 1.05, duration: 1.6, ease: 'sine.inOut' }, 0.0);
+  tl.to('#s06-open', { scale: 0.4, x: -640, y: -70, duration: 1.0, ease: 'power2.inOut' }, 3.2);
+  tl.to('#s06-open', { opacity: 0, duration: 0.3 }, 4.0);
+  // the leaf settles as the Source station's own icon -- same element idiom, not a rebuild.
+  tl.to('#s06-map', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 4.0);
+  tl.to('#s06-process', { opacity: 1, duration: 0.7, ease: 'power2.out' }, 6.2);
+  tl.to('#s06-version', { opacity: 1, duration: 0.7, ease: 'power2.out' }, 11.0);
+  tl.to('#s06-source', { scale: 1.012, duration: 2.6, ease: 'sine.inOut' }, 4.40);
+  tl.to('#s06-source', { scale: 1.0, duration: 2.6, ease: 'sine.inOut' }, 7.02);
+  tl.to('#s06-source', { scale: 1.01, duration: 2.6, ease: 'sine.inOut' }, 9.64);
+  tl.to('#s06-source', { scale: 1.0, duration: 2.6, ease: 'sine.inOut' }, 12.26);
+  tl.to('#s06-process', { scale: 1.012, duration: 2.6, ease: 'sine.inOut' }, 8.40);
+  tl.to('#s06-process', { scale: 1.0, duration: 2.6, ease: 'sine.inOut' }, 11.02);
+  tl.to('#s06-process', { scale: 1.01, duration: 2.6, ease: 'sine.inOut' }, 13.64);
+  tl.to('#s06-noteq', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 16.4);
+  tl.fromTo('#s06-version', { scale: 1 }, { scale: 1.03, duration: 0.4, ease: 'power2.out' }, 16.0);
+  tl.to('#s06-version', { scale: 1.0, duration: 0.5, ease: 'power2.inOut' }, 16.4);
+  tl.to('#s06-cite-wrap', { opacity: 1, duration: 0.5, ease: 'power2.out' }, 17.6);
   tl.to({}, { duration: 20.554, ease: 'none' }, 0);
   window.__timelines = window.__timelines || {};
   window.__timelines['s06-q2-leaf-chambers'] = tl;

@@ -149,73 +149,106 @@
     }
 
 
-    #root { background:var(--paper); color:var(--ink); }
-    .g13 { display:grid; grid-template-columns:46fr 54fr; gap:var(--s-8);
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
+
+    .g13 { display:grid; grid-template-columns:50fr 50fr; gap:var(--s-8);
            align-items:center; height:100%; }
+    .g13 .kicker { color:rgba(247,245,240,.7); }
+    .g13 .p-body { color:rgba(247,245,240,.82); }
+    .g13 .fig em { font-style:normal; color:var(--aqua); }
 
     </style>
+    <div class="plate" id="pl-a"><img id="pi-a" data-layout-allow-overflow src="assets/plates/I16-barrier-calm.jpg" alt=""></div>
+    <div class="plate" id="pl-b"><video class="clip" id="pv-b" data-layout-allow-overflow src="assets/plates/V11-stabilise.mp4" data-start="9.000" data-duration="8.400" muted playsinline></video></div>
+    <div class="scrim l"></div>
     <div class="stage">
       <div class="g13">
         <div class="col">
           <p class="kicker">What the lab work shows</p>
-          <p class="fig" id="k-h">One study found ectoin changed how
-            <em style="font-style:normal;color:var(--moss)">keratin</em> behaves
-            with water.</p>
-          <p class="p-body" id="k-s" style="margin-top:20px">Keratin is the main protein
+          <p class="fig" id="k-h0">Lab research suggests ectoin can help <em>stabilise</em>
+            structures and improve hydration in that outer layer.</p>
+          <p class="fig" id="k-h" style="opacity:0;margin-top:28px">One study found ectoin changed how
+            <em>keratin</em> behaves with water.</p>
+          <p class="p-body" id="k-s" style="margin-top:20px;opacity:0">Keratin is the main protein
             in our outer skin cells.</p>
-          <div style="margin-top:28px"><span class="cite" id="k-cite">Biochem Biophys Rep &middot; 2021</span></div>
+          <div style="margin-top:28px"><span class="cite on-plate" id="k-cite" style="opacity:0">Biochem Biophys Rep &middot; 2021</span></div>
         </div>
-        <svg viewBox="0 0 620 520" width="100%" height="100%" aria-hidden="true">
-          <g id="k-strands"></g>
-        </svg>
+        <div></div>
       </div>
     </div>
+    <p class="cv" id="cv">Conceptual visualization</p>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  tl.fromTo('#pi-a', { scale:1.0, x:0, y:0 }, { scale:1.1, x:20, y:-24, duration:9.600, ease:'none' }, 0);
+  tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 0.3);
 
-  // The whole strand field re-arranges from bundled to dispersed. Every strand
-  // moves at once -- a large-area transformation, not a label change.
-  var g = document.getElementById('k-strands');
-  var N = 22;
-  for (var i = 0; i < N; i++) {
-    var p = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    p.setAttribute('x', 250 + (i%4)*22); p.setAttribute('y', 90 + Math.floor(i/4)*54);
-    p.setAttribute('width', 16); p.setAttribute('height', 44);
-    p.setAttribute('rx', 8); p.setAttribute('fill', '#4F6B52');
-    p.id = 'ks-' + i; g.appendChild(p);
-    tl.set('#ks-' + i, { opacity:0 }, 0);
-    tl.to('#ks-' + i, { opacity:1, duration:0.30 }, 0.60 + i*0.035);
-    // disperse: spread across the full width of the figure
-    tl.to('#ks-' + i, { x:(i%6)*84 - 210, y:(Math.floor(i/6)%4)*26 - 30,
-                        rotation:(i%5-2)*14, transformOrigin:'50% 50%',
-                        duration:1.9, ease:'power2.inOut' }, 6.30 + (i%6)*0.07);
-    // Second large-area beat, back half of the scene: the field itself is
-    // what "keratin, the main protein" refers to on screen, so it pulses on
-    // that word rather than sitting inert while the sentence keeps going.
-    tl.to('#ks-' + i, { scale:1.14, duration:0.40, ease:'power2.out',
-                        transformOrigin:'50% 50%' }, 11.561 + i*0.02);
-    tl.to('#ks-' + i, { scale:1, duration:0.55, ease:'power2.inOut' },
-                        11.561 + i*0.02 + 0.40);
-  }
-  tl.fromTo('#k-h', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, 0.20);
-  tl.fromTo('#k-s', { opacity:0 }, { opacity:1, duration:0.45 }, 4.60);
-  // The strand field arrives as one bundle before it disperses, so the first
-  // half of the scene carries a large-area beat too.
-  tl.fromTo('#k-strands', { scale:0.55, opacity:0.35, transformOrigin:'310px 260px' },
-                          { scale:1, opacity:1, duration:1.60,
-                            ease:'power3.out' }, 2.30);
-  tl.fromTo('#k-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 8.60);
-  // Third beat, spans "behaves with water": the whole field tints toward
-  // hydrated blue-green and back, a real colour change across every strand
-  // rather than a caption update, carrying the otherwise-dead close of a
-  // scene this take reads much slower than the copy was first blocked for.
-  tl.to('#k-strands', { filter:'saturate(1.6) hue-rotate(-12deg)',
-                        duration:0.55, ease:'power2.inOut' }, 16.302-0.35);
-  tl.to('#k-strands', { filter:'saturate(1) hue-rotate(0deg)',
-                        duration:0.80, ease:'power2.inOut' }, 16.302+0.20);
+  // "One study found": dissolve from the calm cross-section still to the
+  // moving barrier plate.
+  tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.45 }, 9.466-0.35);
+  tl.fromTo('#pv-b', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:8.400, ease:'none' }, 9.0);
+
+  tl.fromTo('#k-h0', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, 1.049-0.30);
+  tl.to('#k-h0', { opacity:0.45, duration:0.5 }, 9.466-0.2);
+  tl.fromTo('#k-h', { opacity:0, y:36 }, { opacity:1, y:0, duration:0.55 }, 9.466-0.10);
+  tl.fromTo('#k-s', { opacity:0 }, { opacity:1, duration:0.45 }, 12.570-0.20);
+  tl.fromTo('#k-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 15.256-0.20);
 
     tl.to({}, { duration: 17.283 }, 0);   // full-span anchor -- always last
     window.__timelines["13-keratin"] = tl;

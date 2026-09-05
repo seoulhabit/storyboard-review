@@ -149,67 +149,105 @@
     }
 
 
-    #root { background:var(--paper); color:var(--ink); }
-    .s5 { display:grid; grid-template-columns:56fr 44fr; gap:var(--s-8);
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
+
+    .s5 { display:grid; grid-template-columns:50fr 50fr; gap:var(--s-8);
           align-items:center; height:100%; }
     .s5-l { display:flex; flex-direction:column; gap:var(--s-4); min-height:0; }
-    .s5-k { font-family:var(--font-mono); font-size:var(--t-label);
-            letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
-            color:var(--ink-2); margin:0; }
     .s5-name { font-family:var(--font-display); font-style:italic;
                font-size:var(--t-hero); line-height:var(--lh-tight); margin:0; }
     .s5-note { font-family:var(--font-display); font-size:var(--t-figure);
-               line-height:var(--lh-snug); color:var(--ink); margin:0; }
-    .s5-note b { font-weight:400; color:var(--coral); }
-    .s5-cite-wrap { margin-top:var(--s-4); }
-    .s5-fig { position:relative; width:100%; aspect-ratio:1/1; max-height:100%;
-              justify-self:center; }
+               line-height:var(--lh-snug); margin:0; }
+    .s5-note b { font-weight:400; color:var(--aqua); }
+    .tint { position:absolute; inset:0; z-index:1; background:var(--aqua); opacity:0;
+            mix-blend-mode:screen; }
 
     </style>
+    <div class="plate" id="pl-a"><video class="clip" id="pv-a" data-layout-allow-overflow src="assets/plates/V06-colony.mp4" data-start="0.000" data-duration="11.100" muted playsinline></video></div>
+    <div class="tint" id="tint"></div>
+    <div class="scrim l"></div>
     <div class="stage">
       <div class="s5">
         <div class="s5-l flexmin">
-          <p class="s5-k" id="s5-k">Where it comes from</p>
+          <p class="kicker on-ink" id="s5-k">Where it comes from</p>
           <p class="s5-name" id="s5-name">Halomonas elongata</p>
           <p class="s5-note" id="s5-note">Lives in salt. When the outside gets
             punishing, it <b>floods itself with ectoin</b>.</p>
-          <div class="s5-cite-wrap"><span class="cite" id="s5-cite">Environ Microbiol &middot; 2010</span></div>
+          <div style="margin-top:20px"><span class="cite on-plate" id="s5-cite">Environ Microbiol &middot; 2010</span></div>
         </div>
-        <div class="s5-fig">
-          <svg viewBox="0 0 600 600" width="100%" height="100%" aria-hidden="true">
-            <g id="s5-crystals"></g>
-          </svg>
-        </div>
+        <div></div>
       </div>
     </div>
+    <p class="cv" id="cv">Conceptual visualization</p>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  tl.fromTo('#pv-a', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:11.100, ease:'none' }, 0);
+  tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 0.3);
 
-  // Deterministic crystal lattice -- index-derived, no randomness.
-  var cg = document.getElementById('s5-crystals');
-  for (var i = 0; i < 64; i++) {
-    var col = i % 8, row = Math.floor(i / 8);
-    var cx = 60 + col * 68, cy = 60 + row * 68;
-    var sz = 20 + ((i * 7) % 5) * 6;
-    var r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    r.setAttribute('x', (cx - sz/2).toFixed(1)); r.setAttribute('y', (cy - sz/2).toFixed(1));
-    r.setAttribute('width', sz); r.setAttribute('height', sz);
-    r.setAttribute('fill', (i % 5 === 0) ? '#59B8AE' : '#D9D3C6');
-    r.setAttribute('transform', 'rotate(45 ' + cx + ' ' + cy + ')');
-    r.id = 'x-' + i; cg.appendChild(r);
-    tl.set('#x-' + i, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, 0);
-    tl.to('#x-' + i, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' },
-          0.30 + (col + row) * 0.16);
-  }
   tl.fromTo('#s5-k',    { opacity:0, y:30 }, { opacity:1, y:0, duration:0.40 }, 0.20);
-  tl.fromTo('#s5-name', { opacity:0, y:46 }, { opacity:1, y:0, duration:0.55 }, 0.55);
+  tl.fromTo('#s5-name', { opacity:0, y:46 }, { opacity:1, y:0, duration:0.55 }, 3.510-0.30);
   tl.fromTo('#s5-note', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.55 }, 5.537-0.20);
   tl.fromTo('#s5-cite', { opacity:0 },       { opacity:1, duration:0.45 }, 10.597-1.4);
-  tl.to('#s5-crystals', { rotation:2.2, transformOrigin:'50% 50%',
-                          duration:5.0, ease:'none' }, 8.937-0.30);
+  // "floods itself with ectoin": the whole plate tints aqua for a beat.
+  tl.fromTo('#tint', { opacity:0 }, { opacity:0.22, duration:0.45, ease:'power2.out' }, 8.937-0.10);
+  tl.to('#tint', { opacity:0.08, duration:1.4, ease:'power1.inOut' }, 8.937+0.40);
 
     tl.to({}, { duration: 11.047 }, 0);   // full-span anchor -- always last
     window.__timelines["05-halomonas"] = tl;

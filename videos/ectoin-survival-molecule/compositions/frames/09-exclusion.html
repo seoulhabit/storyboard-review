@@ -149,32 +149,93 @@
     }
 
 
-    #root { background:var(--paper); color:var(--ink); }
-    .world.ink { background:var(--ink); color:var(--paper); clip-path:inset(0% 0% 0% 100%); }
+    #root { color:var(--paper); }
+    .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
+    .plate > video, .plate > img { position:absolute; left:0; top:0;
+             width:1920px; height:1080px; object-fit:cover; display:block;
+             transform-origin:50% 50%; }
+    .scrim { position:absolute; inset:0; z-index:1; pointer-events:none; }
+    .scrim.l { background:linear-gradient(90deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.r { background:linear-gradient(270deg, rgba(19,21,22,.88) 0%,
+               rgba(19,21,22,.72) 36%, rgba(19,21,22,.18) 60%, rgba(19,21,22,0) 74%); }
+    .scrim.b { background:linear-gradient(0deg, rgba(19,21,22,.90) 0%,
+               rgba(19,21,22,.62) 28%, rgba(19,21,22,.10) 52%, rgba(19,21,22,0) 66%); }
+    .scrim.t { background:linear-gradient(180deg, rgba(19,21,22,.70) 0%,
+               rgba(19,21,22,.20) 22%, rgba(19,21,22,0) 40%); }
+    .scrim.full { background:rgba(19,21,22,.58); }
+    .scrim.ink { background:rgba(19,21,22,.74); }
+    .scrim.paper { background:rgba(247,245,240,.82); }
+    .flash { position:absolute; inset:0; z-index:3; background:#DCEFEC; opacity:0;
+             pointer-events:none; }
+    .stage { position:relative; z-index:2; }
+    .chband { z-index:10; }
+    /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+          z-index:4; margin:0; width:max-content;
+          font-family:var(--font-mono); font-size:var(--t-caption);
+          letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
+          color:rgba(247,245,240,.82); background:rgba(19,21,22,.46);
+          border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
+          padding:8px 18px; opacity:0; }
+    /* lower-third block: translucent ink card */
+    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+          z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
+          border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
+          display:flex; flex-direction:column; gap:var(--s-3); }
+    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
+                line-height:var(--lh-snug); margin:0; color:var(--paper); }
+    .lt .line b { font-weight:400; color:var(--coral); }
+    .lt .line i { font-style:normal; color:var(--aqua); }
+    .pill { display:inline-flex; align-items:center; background:rgba(19,21,22,.78);
+            color:var(--paper); border-radius:var(--r-pill); padding:14px 30px;
+            font-family:var(--font-body); font-weight:800; font-size:var(--t-body);
+            white-space:nowrap; border:2px solid rgba(247,245,240,.16); }
+    .pill.coral { background:var(--coral); color:var(--ink); border-color:transparent; }
+    .pill.aqua { background:var(--aqua); color:var(--ink); border-color:transparent; }
+    .cite.on-plate { color:var(--paper); border-color:rgba(247,245,240,.45);
+                     background:rgba(19,21,22,.55); }
+    /* headline backing: copy over a bright plate needs a ground of its own */
+    .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
+          border-radius:var(--r-3); width:max-content; max-width:100%; }
+    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+            right:auto; width:max-content; margin:0; z-index:4;
+            font-family:var(--font-mono); font-size:var(--t-label);
+            letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
+
+    #root { background:var(--paper); }
+    .world.ink { background:var(--ink); color:var(--paper); clip-path:inset(0% 0% 0% 100%); z-index:5; }
+    .world.paper { z-index:2; }
     .g9 { display:grid; grid-template-columns:44fr 56fr; gap:var(--s-8);
           align-items:center; height:100%; }
     .g9 .stage { padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); }
+    .world.paper .col { color:var(--paper); }
+    .world.paper .kicker { color:rgba(247,245,240,.7); }
+    .world.paper .p-body { color:rgba(247,245,240,.82); }
+    .world.ink .ground { position:absolute; inset:0; z-index:0; overflow:hidden; }
+    .world.ink .ground img { position:absolute; left:0; top:0; width:1920px; height:1080px;
+                             object-fit:cover; opacity:.18; filter:blur(6px) saturate(.5);
+                             transform-origin:50% 50%; }
+    .world.ink .stage { position:relative; z-index:1; }
 
     </style>
-    <div class="world" id="w-paper">
+    <div class="plate" id="pl-a"><video class="clip" id="pv-a" data-layout-allow-overflow src="assets/plates/V08-hydration.mp4" data-start="0.000" data-duration="11.000" muted playsinline></video></div>
+    <div class="scrim l"></div>
+    <div class="world paper" id="w-paper">
       <div class="stage"><div class="g9">
         <div class="col">
           <p class="kicker">The mechanism</p>
           <p class="hero" id="e-term">Preferential<br>exclusion</p>
-          <p class="p-body" id="e-sub" style="margin-top:20px">The tidy version.</p>
+          <p class="p-body" id="e-sub" style="margin-top:20px">The tidy version: ectoin
+            stays off the protein&rsquo;s surface, and the water around it stays organised.</p>
         </div>
-        <svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true">
-          <circle id="e-shell" cx="310" cy="310" r="190" fill="none"
-                  stroke="#59B8AE" stroke-width="46" opacity="0.30"/>
-          <circle id="e-prot" cx="310" cy="310" r="112" fill="#131516"/>
-          <g id="e-ring"></g>
-          <text id="e-lab" x="310" y="322" text-anchor="middle" fill="#F7F5F0"
-                font-family="Inter, sans-serif" font-weight="800" font-size="34"
-                opacity="0">PROTEIN</text>
-        </svg>
+        <div></div>
       </div></div>
     </div>
+    <p class="cv" id="cv">Conceptual visualization</p>
     <div class="world ink" id="w-ink">
+      <div class="ground"><img id="gi-ink" data-layout-allow-overflow src="assets/plates/I24-membrane.jpg" alt=""></div>
       <div class="stage"><div class="g9">
         <div class="col">
           <p class="kicker on-ink">The mechanism</p>
@@ -182,62 +243,45 @@
           <p class="p-body on-ink" id="m-note" style="margin-top:20px">In the simulations,
             ectoin also showed some attraction to that surface. And how far it stays back
             depends on how tightly the protein&rsquo;s own water is already arranged.</p>
+          <div style="margin-top:24px"><span class="cite on-ink">J Phys Chem B &middot; 2007</span></div>
         </div>
         <svg viewBox="0 0 620 620" width="100%" height="100%" aria-hidden="true">
           <circle cx="310" cy="310" r="190" fill="none" stroke="#59B8AE"
                   stroke-width="46" opacity="0.30"/>
           <circle cx="310" cy="310" r="112" fill="#F7F5F0"/>
           <g id="m-ring"></g>
+          <text x="310" y="322" text-anchor="middle" fill="#131516"
+                font-family="Inter, sans-serif" font-weight="800" font-size="34">PROTEIN</text>
         </svg>
       </div></div>
     </div>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  tl.fromTo('#pv-a', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:11.000, ease:'none' }, 0);
+  tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 0.3);
 
-  // ---- w-paper: the tidy version. Same three-layer diagram build as before. ----
+  // ---- tidy version, over the hydration-layer plate (ectoin hovering OFF the
+  // protein; never drawn attached). ----
   tl.fromTo('#e-term', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
-  tl.fromTo('#e-prot', { attr:{ r:0 } }, { attr:{ r:112 }, duration:0.75,
-                                           ease:'back.out(1.4)' }, 1.30);
-  tl.to('#e-lab', { opacity:1, duration:0.40 }, 1.90);
-  tl.fromTo('#e-shell', { attr:{ r:112 }, opacity:0 },
-                        { attr:{ r:190 }, opacity:0.30, duration:1.00,
-                          ease:'power2.out' }, 3.20);
-  var ring = document.getElementById('e-ring');
-  for (var i = 0; i < 18; i++) {
-    var a = i * 20 * Math.PI/180;
-    var d = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    var x = 310 + Math.cos(a)*268, y = 310 + Math.sin(a)*268;
-    d.setAttribute('x', x-13); d.setAttribute('y', y-13);
-    d.setAttribute('width', 26); d.setAttribute('height', 26);
-    d.setAttribute('fill', '#C97A5C'); d.setAttribute('opacity', 0);
-    d.setAttribute('transform', 'rotate(45 ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-    d.id = 'x-' + i; ring.appendChild(d);
-    tl.to('#x-' + i, { opacity:1, duration:0.35 }, 4.20 + i*0.05);
-  }
   tl.fromTo('#e-sub', { opacity:0 }, { opacity:1, duration:0.45 }, 3.627-0.30);
-  tl.to('#e-shell', { attr:{ 'stroke-width':78 }, opacity:0.55, duration:1.40,
-                      ease:'power2.inOut' }, 5.20);
 
-  // ---- ground inversion on "the honest version" -- the scene's single largest
-  // beat: a full-frame clip-path sweep, paired with a small child travel on
-  // the ring (pairs a clipPath-only tween with real motion, per this
-  // project's keepsMoving rule) and the headline settling in from y:24. ----
+  // ---- ground inversion on "the honest version" -- kept as authored: the
+  // diagram is the only honest way to draw "some attraction". ----
   var inv = 10.807-0.45;
   tl.fromTo('#w-ink', { clipPath:'inset(0% 0% 0% 100%)' },
                       { clipPath:'inset(0% 0% 0% 0%)', duration:0.60,
                         ease:'power3.inOut' }, inv);
   tl.fromTo('#m-ring', { rotation:0, transformOrigin:'310px 310px' },
-                       { rotation:6, transformOrigin:'310px 310px', duration:1.40,
-                         ease:'power2.out' }, inv);
+                       { rotation:42, transformOrigin:'310px 310px', duration:14.0,
+                         ease:'none' }, inv);
+  tl.fromTo('#gi-ink', { scale:1.0, x:0, y:0 }, { scale:1.16, x:-60, y:30, duration:14.0, ease:'none' }, inv);
   tl.fromTo('#m-h', { y:24, opacity:0.4 }, { y:0, opacity:1, duration:0.60,
                                              ease:'power2.out' }, inv);
-
-  // ---- w-ink: the honest correction, on the SAME diagram geometry. ----
-  // Ring rebuild timed to 13.156 -- that is the word that names
-  // the evidence backing the correction, not the ground-flip itself.
+  tl.to('#cv', { opacity:0, duration:0.2 }, inv);
   var sim = 13.156;
   var mring = document.getElementById('m-ring');
   for (var j = 0; j < 18; j++) {
@@ -250,17 +294,13 @@
     e.setAttribute('transform', 'rotate(45 ' + xj.toFixed(1) + ' ' + yj.toFixed(1) + ')');
     e.id = 'y-' + j; mring.appendChild(e);
     tl.to('#y-' + j, { opacity:1, duration:0.30 }, sim + j*0.03);
-    // a third break ranks toward the protein surface -- 15.586, the
-    // actual finding named in the VO, drawn as real motion, not decoration.
     if (j % 3 === 0) {
       tl.to('#y-' + j, { x:-Math.cos(aj)*140, y:-Math.sin(aj)*140, fill:'#E0A32B',
                          duration:1.4, ease:'power2.inOut' }, 15.586-0.8);
     }
   }
-  // "depends on how tightly ... already arranged" -- the shell itself
-  // destabilises, a full-annulus rotation timed to the closing clause.
-  tl.to('#m-ring', { rotation:14, transformOrigin:'310px 310px', duration:2.60,
-                     ease:'power1.inOut' }, 18.838);
+  tl.to('#m-ring', { scale:1.06, transformOrigin:'310px 310px', duration:1.2,
+                     ease:'power1.inOut', yoyo:true, repeat:1 }, 18.838);
   tl.to('#m-note', { opacity:0.75, duration:0.60 }, 22.818);
 
     tl.to({}, { duration: 24.218 }, 0);   // full-span anchor -- always last

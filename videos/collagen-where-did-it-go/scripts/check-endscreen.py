@@ -22,9 +22,31 @@ def frames(path, start, step):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("render"); ap.add_argument("--start", type=float, default=325.3)  # 324.37 + settle wipe duration (0.80s) + margin, so the previous scene's outgoing ground is never sampled mid-wipe
+    ap.add_argument("render")
+    # DERIVED, not carried over. This default was 325.3 -- a constant from the
+    # project this file came from. A hardcoded start on a different edit samples
+    # the wrong scene and reports a clean pass on frames the end screen never
+    # touches. The closing scene's own data-start is read from index.html, plus
+    # the curtain wipe so the outgoing ground is never sampled mid-transition.
+    ap.add_argument("--start", type=float, default=None)
+    ap.add_argument("--curtain", type=float, default=0.9,
+                    help="closing wipe duration, skipped before sampling")
     ap.add_argument("--step", type=float, default=0.5); ap.add_argument("--tol", type=int, default=28)
     a = ap.parse_args()
+    if a.start is None:
+        import re as _re
+        from pathlib import Path as _P
+        idx = _P(a.render).resolve().parent.parent / "index.html"
+        if not idx.exists():
+            print(f"check-endscreen: no index.html beside {a.render}; pass --start explicitly")
+            return 2
+        starts = [float(m) for tag in _re.findall(r'<div[^>]*class="[^"]*\bscene\b[^"]*"[^>]*>', idx.read_text())
+                  for m in _re.findall(r'data-start="([\d.]+)"', tag)]
+        if not starts:
+            print("check-endscreen: index.html has no scene clips; pass --start explicitly")
+            return 2
+        a.start = max(starts) + a.curtain + 0.2
+        print(f"  closing scene starts {max(starts):.2f}s; sampling the reserve from {a.start:.2f}s")
     fr = frames(a.render, a.start, a.step)
     bad = 0
     for i, f in enumerate(fr):

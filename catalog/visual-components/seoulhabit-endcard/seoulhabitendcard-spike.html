@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SeoulHabitEndCard — Brand Sign-off Spike</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+/* Latin faces: Google Fonts CDN, same URL convention as this catalog's other spikes
+   (routine-ladder, term-definition). Korean: self-hosted -- the channel's own video
+   subset, copied in from brand/channel/assets/fonts/ per this catalog's established
+   "self-hosted, copied per project that needs it" rule (see README §Fonts). */
+@font-face{font-family:"Noto Sans KR Video";src:url("assets/NotoSansKR-500-subset.woff2") format("woff2");font-weight:500;font-style:normal;font-display:block}
+
+:root{
+  /* ---- tokens/colors.css -- verbatim, from videos/seoulhabit-launch/assets/tokens/tokens.css,
+     the one design-system token file this catalog treats as the channel's own (RoutineLadder,
+     TermDefinition and others read the same source). ---- */
+  --paper:#F7F5F0;
+  --ink:#131516;
+  --coral:#C97A5C;
+  --aqua:#59B8AE;
+  --mist:#F0EBE1;
+  --ink-2:#6B6B6B;
+  --ink-3:#9C978D;
+  --rule-strong:#D9D3C6;
+
+  /* ---- tokens/typography.css -- verbatim ---- */
+  --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
+  --font-body:"Inter","Noto Sans KR Video","Noto Sans KR",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+  --font-kr:"Noto Sans KR Video","Noto Sans KR",sans-serif;
+  --tr-mono-wide:0.1em;
+  --tr-display:-0.018em;
+
+  /* ---- tokens/layout.css -- verbatim, short (9:16) lane: 16 of 17 public videos on this
+     channel are 1080x1920 (see README §Canvas for the 1920x1080 long-form variant). ---- */
+  --canvas-w:1080px; --canvas-h:1920px;
+  --safe-top:120px; --safe-bottom:360px; --safe-left:60px; --safe-right:162px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#000;}
+body{display:flex;align-items:flex-start;justify-content:center;font-family:var(--font-body);-webkit-font-smoothing:antialiased;}
+
+.canvas{position:relative;width:var(--canvas-w);height:var(--canvas-h);background:var(--paper);overflow:hidden;}
+
+/* ---- chrome: matches the wordmark / doc-tag convention already used by sibling catalog entries ---- */
+.chrome{position:absolute;left:var(--safe-left);right:var(--safe-right);top:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-mono);font-size:20px;font-weight:600;
+  letter-spacing:var(--tr-mono-wide);text-transform:uppercase;color:var(--ink-3);}
+.spike-tag{position:absolute;left:var(--safe-left);bottom:24px;
+  font-family:var(--font-mono);font-size:20px;font-weight:500;
+  letter-spacing:0.04em;color:var(--ink-3);}
+
+/* ================= THE COMPONENT ================= */
+.shc-endcard{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:0;
+  padding:var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);}
+
+.shc-mark{position:relative;width:220px;height:220px;border-radius:50%;
+  background:var(--mist);border:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(0.8);}
+.shc-glyph{font-family:var(--font-kr);font-weight:500;font-size:128px;line-height:1;
+  color:var(--ink);transform:translateY(4px);} /* Hangul syllable blocks sit high in the em box */
+
+/* --ink-2, not --coral: measured against --paper, --coral reads 3.0:1 here (WCAG's 3:1 large-text
+   floor, not this skill's own stricter 4.5:1 "contrast floor on rendered pixels" rule) -- confirmed
+   by the same luminance formula this repo's other brand assets use (brand/channel/README.md).
+   --ink-2 measures 4.89:1, clearing it. Coral stays reserved for the rule below, a graphical
+   element the text-contrast floor doesn't apply to. */
+.shc-word{margin-top:36px;font-family:var(--font-mono);font-weight:600;font-size:32px;
+  letter-spacing:var(--tr-mono-wide);text-transform:uppercase;color:var(--ink-2);
+  opacity:0;transform:translateY(14px);}
+
+.shc-headline{margin-top:20px;font-family:var(--font-display);font-weight:500;font-size:76px;
+  line-height:1.08;letter-spacing:var(--tr-display);color:var(--ink);text-align:center;
+  opacity:0;transform:translateY(22px);}
+
+.shc-rule{margin-top:32px;width:120px;height:4px;background:var(--coral);
+  transform:scaleX(0);transform-origin:50% 50%;}
+
+.shc-cta{margin-top:28px;font-family:var(--font-mono);font-weight:500;font-size:26px;
+  letter-spacing:0.04em;color:var(--ink-2);opacity:0;transform:translateY(16px);}
+
+/* ---- debug scrubber, ?debug=1 only ---- */
+.debug-bar{position:fixed;left:0;right:0;bottom:0;z-index:1000;background:rgba(19,21,22,.92);
+  color:var(--paper);font-family:var(--font-mono);font-size:13px;padding:10px 16px;
+  display:flex;align-items:center;gap:12px;}
+.debug-bar input[type="range"]{flex:1;}
+.debug-bar button{font-family:inherit;font-size:12px;padding:6px 12px;border-radius:6px;
+  border:1px solid var(--rule-strong);background:transparent;color:var(--paper);cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="canvas">
+  <div class="chrome"><span>SeoulHabit</span><span>End Card</span></div>
+
+  <div class="shc-endcard" id="shc-endcard">
+    <div class="shc-mark" id="shc-mark">
+      <div class="shc-glyph">습</div>
+    </div>
+    <p class="shc-word" id="shc-word">SeoulHabit</p>
+    <p class="shc-headline" id="shc-headline">Evidence,<br>not hype.</p>
+    <div class="shc-rule" id="shc-rule"></div>
+    <p class="shc-cta" id="shc-cta">Follow for more.</p>
+  </div>
+
+  <div class="spike-tag">visual-components/seoulhabit-endcard — SPIKE</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script>
+(function () {
+  // No `defaults:{ease}` -- every tween names its own (see catalog convention re: a shared
+  // default ease silently becoming the whole video's real entrance signature).
+  var tl = gsap.timeline({ paused: true });
+
+  tl.to("#shc-mark", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, 0.10);
+  tl.to("#shc-word", { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.35);
+  tl.to("#shc-headline", { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.55);
+  tl.to("#shc-rule", { scaleX: 1, duration: 0.40, ease: "power2.inOut" }, 1.15);
+  tl.to("#shc-cta", { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 1.35);
+  // motion calmed: one slow drift across the hold -- large enough that a 2fps static gate
+  // still sees a change, small enough to read as a sign-off rather than a beat.
+  tl.to("#shc-endcard", { y: -10, duration: 2.80, ease: "sine.inOut" }, 1.70);
+
+  tl.to({}, { duration: 4.50 }, 0); // full-span anchor -- always last
+
+  function renderFrame(t) {
+    if (t === 0) tl.progress(0);
+    else tl.time(t);
+  }
+  window.renderFrame = renderFrame;
+  window.__seoulHabitEndcardTimeline = tl; // reference only -- a real composition registers
+                                            // this on window.__timelines[<its own scene id>]
+  renderFrame(0);
+
+  if (/[?&]debug=1\b/.test(location.search)) {
+    var bar = document.createElement('div');
+    bar.className = 'debug-bar';
+    bar.innerHTML = '<button id="dbg-0">t=0</button><input id="dbg-range" type="range" min="0" max="' +
+      tl.duration() + '" step="0.01" value="0"><button id="dbg-end">t=end</button><span id="dbg-t">0.00</span>';
+    document.body.appendChild(bar);
+    var range = bar.querySelector('#dbg-range'), label = bar.querySelector('#dbg-t');
+    range.addEventListener('input', function () { renderFrame(parseFloat(range.value)); label.textContent = parseFloat(range.value).toFixed(2); });
+    bar.querySelector('#dbg-0').addEventListener('click', function () { range.value = 0; renderFrame(0); label.textContent = '0.00'; });
+    bar.querySelector('#dbg-end').addEventListener('click', function () { var d = tl.duration(); range.value = d; renderFrame(d); label.textContent = d.toFixed(2); });
+  }
+})();
+</script>
+</body>
+</html>

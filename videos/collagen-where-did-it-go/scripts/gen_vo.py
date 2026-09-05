@@ -240,12 +240,19 @@ def asr_path(block):
 # ---------------------------------------------------------------- transcribe
 
 def cmd_transcribe(argv):
+    """Transcribe every block that does not already have a transcript. Passing
+    --force re-does them all; whisper large-v3 is minutes per block on this
+    host, so re-running after fetching ONE new take should cost one block."""
     ok = True
+    force = "--force" in argv
     for block, _cids in BLOCKS:
         wav = raw_wav(block)
         if not wav.exists():
             print(f"  MISSING raw take for block {block}: {wav.relative_to(ROOT)}")
             ok = False; continue
+        if asr_path(block).exists() and not force:
+            print(f"  {block:8s} transcript already present -- skipping (--force to redo)")
+            continue
         model = argv[argv.index("--model") + 1] if "--model" in argv else ASR_MODEL
         print(f"  {block:8s} transcribing with whisper {model} (this is CPU-bound; "
               f"pass --model small.en to trade recognition for speed)")
@@ -730,15 +737,19 @@ def cmd_cut(argv):
     # A measurement can say the blocks match; only an ear can say the seam does
     # not sound like a second narrator.
     if len(blocks) > 1:
-        seam_at = next((w["start"] for w in master_words if w["cid"] == blocks[1]["cids"][0]), None)
-        if seam_at:
-            for m in meta:
-                m["master_seam"] = round(seam_at, 3)
-            qc = ROOT / "renders" / "qc"
-            qc.mkdir(parents=True, exist_ok=True)
+        qc = ROOT / "renders" / "qc"
+        qc.mkdir(parents=True, exist_ok=True)
+        for i in range(1, len(blocks)):
+            seam_at = next((w["start"] for w in master_words
+                            if w["cid"] == blocks[i]["cids"][0]), None)
+            if not seam_at:
+                continue
+            meta[i]["master_seam"] = round(seam_at, 3)
+            name = f"seam-{blocks[i-1]['name']}-{blocks[i]['name']}.wav"
             sh("ffmpeg", "-y", "-nostdin", "-v", "error", "-ss", f"{max(0, seam_at - 3):.3f}",
-               "-t", "6", "-i", str(MASTER), str(qc / "seam-AB.wav"))
-            print(f"  block seam at {seam_at:.3f}s -> renders/qc/seam-AB.wav (listen before shipping)")
+               "-t", "6", "-i", str(MASTER), str(qc / name))
+            print(f"  block seam {blocks[i-1]['name']} -> {blocks[i]['name']} at {seam_at:.3f}s "
+                  f"-> renders/qc/{name} (listen before shipping)")
     m = write_manifest(master_words, tempo, "blocks" if len(blocks) > 1 else "master", meta,
                        round(lufs, 1) if lufs is not None else None)
     _report(m, seq)

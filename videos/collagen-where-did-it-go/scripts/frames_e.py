@@ -104,6 +104,16 @@ def file_10_evidence(fspan, fctx):
     tl.fromTo("#res-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(trials) - 0.5);   // the result panel opens
     // NO count here: this unit's chip is Nutrients 2023 (26 RCTs). The 23 is the
     // 2025 pooled n and lands in unit 12, under its own chip.
+    // "Trials DO report modest improvements": the interval grows out of the
+    // no-effect line to the benefit side as the sentence says so. The meter is
+    // the claim, not a caption arriving after it -- and this is the only
+    // bounding-box motion between the panel opening and the outcome pills,
+    // which the motion checker found as 2.32s frozen.
+    gsap.set("#res-ci", { attr:{ x:235, width:0 } });
+    gsap.set("#res-pt", { opacity:0 });
+    tl.to("#res-ci", { attr:{ x:330, width:190 }, duration:0.75, ease:EASE.arrive }, @w(improvements) - 0.2);
+    tl.fromTo("#res-pt", { opacity:0, scale:0.4, transformOrigin:"50% 50%" },
+              { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(improvements) + 0.45);
     // one outcome per named outcome, each lighting the band of trials that measured it
     [["hydration", 0], ["elasticity", 8], ["wrinkles", 16]].forEach(function (o, k) {
       var at = [@w(hydration), @w(elasticity), @w(wrinkles)][k];
@@ -207,6 +217,7 @@ def file_10_evidence(fspan, fctx):
     MOTION["10-trials"]["beats"] = [
         {"name": "tile field settles", "at": "0.0", "area": 0.30, "dl": 60, "dur": 0.5},
         {"name": "result panel opens", "at": "@w(trials)-0.5", "area": 0.147, "dl": 65, "dur": 0.5},
+        {"name": "interval grows", "at": "@w(improvements)-0.2", "area": 0.147, "dl": 65, "dur": 0.75},
         {"name": "hydration band", "at": "@w(hydration)", "area": 0.064, "dl": 99, "dur": 0.34},
         {"name": "elasticity band", "at": "@w(elasticity)", "area": 0.064, "dl": 99, "dur": 0.34},
         {"name": "wrinkles band", "at": "@w(wrinkles)", "area": 0.064, "dl": 99, "dur": 0.34},

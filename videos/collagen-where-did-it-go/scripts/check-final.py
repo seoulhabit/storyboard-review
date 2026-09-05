@@ -157,11 +157,18 @@ def main():
     blocks = manifest.get("blocks") or []
     stats = [b for b in blocks if isinstance(b, dict) and b.get("stats")]
     if len(stats) >= 2:
-        a, b = stats[0]["stats"], stats[1]["stats"]
-        dl = abs((a.get("lufs") or 0) - (b.get("lufs") or 0))
-        dc = abs((a.get("centroid") or 0) - (b.get("centroid") or 0)) / max(1.0, a.get("centroid") or 1)
-        row("block seam continuity", f"dLUFS {dl:.2f}, dCentroid {dc*100:.1f}%",
-            dl <= 2.0 and dc <= 0.12, "<= 2.0 LU and <= 12%")
+        # EVERY adjacent pair. With four blocks there are three seams, and the one
+        # that separates is not necessarily the first.
+        worst, detail = 0.0, []
+        for i in range(len(stats) - 1):
+            a, b = stats[i]["stats"], stats[i + 1]["stats"]
+            dl = abs((a.get("lufs") or 0) - (b.get("lufs") or 0))
+            ca, cb = a.get("centroid") or 0, b.get("centroid") or 0
+            dc = abs(ca - cb) / max(1.0, ca)
+            detail.append(f"{stats[i]['name']}->{stats[i+1]['name']} {dl:.2f}LU/{dc*100:.0f}%")
+            worst = max(worst, dl / 2.0, dc / 0.12)
+        row("block seam continuity", "; ".join(detail), worst <= 1.0,
+            "every seam <= 2.0 LU and <= 12% centroid")
     else:
         rows.append(("block seam continuity", f"{len(blocks)} block(s), no stats recorded", "n/a", "gen_vo verify"))
 

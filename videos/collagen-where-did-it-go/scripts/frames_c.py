@@ -81,6 +81,11 @@ def file_06_door(fspan, fctx):
     // limit, not collagen's mass (BRIEF C3 / C3b)
     tl.fromTo("#cite-da", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(daltons,1) + 0.4);
     // three tries at the door, three recoils
+    // The viewer leans in with the molecule for the attempts and is pushed back
+    // out by the refusal -- 14s otherwise separated the iris into this file from
+    // the dermis drop, against the brief's 8-12s reset budget.
+    tl.to("#world", { scale:1.10, x:60, y:-40, duration:0.8, ease:EASE.camera }, @w(not) - 0.9);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }, @w(door) + 0.35);
     // three tries that actually REACH the door: contact at y:168 puts the
     // molecule's lower edge on the brick course, and the two bricks flanking the
     // door gap flash on each hit
@@ -139,7 +144,9 @@ def file_06_door(fspan, fctx):
         {"name": "size card A", "at": "@w(daltons,1)-0.5", "area": 0.066, "dl": 94, "dur": 0.4},
         {"name": "size card B", "at": "@w(thousand)-0.6", "area": 0.066, "dl": 103, "dur": 0.4},
         {"name": "molecule grows", "at": "@w(collagen)-0.2", "area": 0.055, "dl": 72, "dur": 0.7},
+        {"name": "camera leans in", "at": "@w(not)-0.9", "area": 0.5, "dl": 60, "dur": 0.8},
         {"name": "rejected flash", "at": "@w(door)-0.05", "area": 0.117, "dl": 103, "dur": 0.36},
+        {"name": "camera pushed back", "at": "@w(door)+0.35", "area": 0.5, "dl": 60, "dur": 0.7},
     ]
     MOTION["07-film"]["beats"] = [
         {"name": "film wash", "at": "@w(film)-0.2", "area": 0.117, "dl": 81, "dur": 0.5},

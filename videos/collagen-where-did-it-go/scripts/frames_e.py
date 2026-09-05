@@ -126,6 +126,10 @@ def file_10_evidence(fspan, fctx):
     tl.fromTo("#res-v1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @we(wrinkles) + 0.3);
 
     // ---- unit 11: the caveat lands on the tiles as it is spoken --------------
+    // the field is examined, not just labelled: the caveat pushes the camera in
+    // on the trials themselves and it comes back out for the pooled result
+    tl.to("#world", { scale:1.07, y:-30, duration:0.8, ease:EASE.camera }, @w(small) - 0.3);
+    tl.to("#world", { scale:1, y:0, duration:0.7, ease:EASE.camera }, @w(pooled) - 0.9);
     tl.to("#caveat-panel", { opacity:1, duration:0.1 }, @w(small) - 0.10);
     tl.fromTo("#caveat-panel-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(small) - 0.10);
     kineticWords(tl, "#caveat", @w(small), 0.0, "slam");
@@ -223,7 +227,9 @@ def file_10_evidence(fspan, fctx):
         {"name": "wrinkles band", "at": "@w(wrinkles)", "area": 0.064, "dl": 99, "dur": 0.34},
     ]
     MOTION["11-caveat"]["beats"] = [
+        {"name": "camera examines", "at": "@w(small)-0.3", "area": 0.5, "dl": 60, "dur": 0.8},
         {"name": "caveat dim wash", "at": "@w(small)-0.10", "area": 0.080, "dl": 120, "dur": 0.5},
+        {"name": "camera back out", "at": "@w(pooled)-0.9", "area": 0.5, "dl": 60, "dur": 0.7},
         {"name": "industry coral", "at": "@w(industry)", "area": 0.096, "dl": 72, "dur": 0.45},
     ]
     MOTION["12-filter"]["beats"] = [

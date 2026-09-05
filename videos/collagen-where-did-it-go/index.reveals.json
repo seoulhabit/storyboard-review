@@ -822,6 +822,24 @@
   "file": "06-door",
   "unit": "06-door",
   "kind": "w",
+  "word": "door",
+  "occurrence": 1,
+  "seconds": 9.529,
+  "abs": 47.553
+ },
+ {
+  "file": "06-door",
+  "unit": "06-door",
+  "kind": "w",
+  "word": "not",
+  "occurrence": 1,
+  "seconds": 8.378,
+  "abs": 46.402
+ },
+ {
+  "file": "06-door",
+  "unit": "06-door",
+  "kind": "w",
   "word": "not",
   "occurrence": 1,
   "seconds": 8.378,
@@ -1339,6 +1357,24 @@
   "occurrence": 1,
   "seconds": 6.591,
   "abs": 83.22
+ },
+ {
+  "file": "10-evidence",
+  "unit": "11-caveat",
+  "kind": "w",
+  "word": "small",
+  "occurrence": 1,
+  "seconds": 7.562,
+  "abs": 84.191
+ },
+ {
+  "file": "10-evidence",
+  "unit": "12-filter",
+  "kind": "w",
+  "word": "pooled",
+  "occurrence": 1,
+  "seconds": 11.801,
+  "abs": 88.43
  },
  {
   "file": "10-evidence",

@@ -1,6 +1,6 @@
 # DELIVERY — You Bought Collagen. Where Did It Actually Go?
 
-**1920×1080 landscape · 30fps · RUNTIME_PLACEHOLDER · 8 composition files · 16 beat units · one narrator**
+**1920×1080 landscape · 30fps · 2:14.79 (134.794s) · 8 composition files · 16 beat units · one narrator**
 
 > The 3:09 two-character cut this project shipped on 2026-09-03 was withdrawn by
 > the operator on 2026-09-04. This document delivers its single-narrator
@@ -17,10 +17,10 @@ question. Each row below is the question that actually mattered.
 
 | | Two-voice cut (2026-09-03) | This build | Why it matters |
 |---|---|---|---|
-| Runtime · words | 3:09.0 · 449 | RUNTIME_SHORT · 364 | 449 words of dialogue is a transcript with pictures |
+| Runtime · words | 3:09.0 · 449 | **2:14.79** · 364 | 449 words of dialogue is a transcript with pictures |
 | Voices · turns | 2 · 41 alternating | 1 · 15 spoken units | speaker switching was carrying the pacing; nothing else was |
-| First word | **4.92s** | **FIRSTWORD_PLACEHOLDER** | five near-static seconds before anyone speaks is the whole hook budget |
-| Curiosity loop opened | never (the twist arrives at 1:40 unannounced) | LOOP_PLACEHOLDER | the industry-funding reversal is the piece's best asset and was unadvertised |
+| First word | **4.92s** | ****0.100s**** | five near-static seconds before anyone speaks is the whole hook budget |
+| Curiosity loop opened | never (the twist arrives at 1:40 unannounced) | "Twenty three trials" at **6.73s**, "Remove the industry funded ones" at **8.41s** | the industry-funding reversal is the piece's best asset and was unadvertised |
 | Composition files | 6, averaging 31.5s | 8, carrying 16 units | a 31s page is four beats pretending to be one |
 | Longest quiet span | 5.62s (the gate's own measure) | see the gates table | measured on pixels, not on tween counts |
 | On-screen language | two-lane dialogue cards; every spoken sentence also printed | ≤10-word beats, ~10 kinetic phrases, one deliberate duplicate | printing what is being said gives the viewer nothing to do |

@@ -413,6 +413,10 @@
     tl.fromTo("#res-v1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, 6.591 + 0.3);
 
     // ---- unit 11: the caveat lands on the tiles as it is spoken --------------
+    // the field is examined, not just labelled: the caveat pushes the camera in
+    // on the trials themselves and it comes back out for the pooled result
+    tl.to("#world", { scale:1.07, y:-30, duration:0.8, ease:EASE.camera }, 7.562 - 0.3);
+    tl.to("#world", { scale:1, y:0, duration:0.7, ease:EASE.camera }, 11.801 - 0.9);
     tl.to("#caveat-panel", { opacity:1, duration:0.1 }, 7.562 - 0.10);
     tl.fromTo("#caveat-panel-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 7.562 - 0.10);
     kineticWords(tl, "#caveat", 7.562, 0.0, "slam");

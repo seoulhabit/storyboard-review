@@ -262,6 +262,31 @@ def load_file_fns(only=None):
         FILE_FNS.update(__import__(_mod).FILES)
 
 
+BEATS = []      # every authored beat, resolved to absolute seconds
+
+
+def _record_beats(fspan, fctx):
+    """Resolve each unit's beats to absolute time and keep them.
+
+    The registry only exists once a file function has run, so this is the one
+    place the numbers are available. Written to index.beats.json because
+    "a meaningful change every 2-4s" and "a reset every 8-12s" are acceptance
+    criteria, and a criterion nobody can measure after the fact is a wish."""
+    for u in fspan.units:
+        for b in MOTION[u.cid].get("beats", []):
+            at = b["at"]
+            if isinstance(at, str):
+                expr = bind(at, fctx, [])
+                if not re.fullmatch(r"[\d.\s()+\-*/]+", expr):
+                    continue
+                at = float(eval(expr, {"__builtins__": {}}, {}))
+            per_step = b["area"] * b["dl"] / (max(b["dur"], 0.05) * 8)
+            BEATS.append({"file": fspan.cid, "unit": u.cid, "name": b["name"],
+                          "abs": round(fspan.start + at, 3), "area": b["area"],
+                          "dl": b["dl"], "dur": b["dur"], "per_step": round(per_step, 2),
+                          "registers": per_step >= REGISTER})
+
+
 def emit(fspan, fctx, reveals, fake):
     fn = FILE_FNS.get(fspan.cid, _stub)
     body, css, tl = fn(fspan, fctx)
@@ -270,6 +295,7 @@ def emit(fspan, fctx, reveals, fake):
            + _camera_ok(tl, fspan) + _cadence_ok(fspan, fctx, reveals))
     if bad:
         raise SystemExit(f"{fspan.cid}:\n  " + "\n  ".join(bad))
+    _record_beats(fspan, fctx)
     if fake:
         body = "      <!-- VO MANIFEST: FAKE -- NOT FOR DELIVERY -->\n" + body
     OUT.mkdir(parents=True, exist_ok=True)
@@ -317,7 +343,13 @@ def main():
         print(f"  --only {only}: reveals not written; run the full build before build_index")
         return 0
     (ROOT / "index.reveals.json").write_text(json.dumps(reveals, indent=1) + "\n")
+    BEATS.sort(key=lambda b: b["abs"])
+    (ROOT / "index.beats.json").write_text(json.dumps(BEATS, indent=1) + "\n")
     stubs = [f.cid for f in files if f.cid not in FILE_FNS]
+    reg = [b for b in BEATS if b["registers"]]
+    gaps = [round(y["abs"] - x["abs"], 2) for x, y in zip(reg, reg[1:])]
+    print(f"  {len(BEATS)} beats ({len(reg)} registering) -> index.beats.json; "
+          f"longest gap between registering beats {max(gaps) if gaps else 0:.2f}s")
     print(f"  total {total:.3f}s  {len(reveals)} word markers -> index.reveals.json"
           f"{'  [VO MANIFEST: FAKE]' if fake else ''}")
     if stubs:

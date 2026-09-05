@@ -31,8 +31,8 @@ CHBAND_CSS = """
        (rounded-corner antialiasing/H.264 edge blur softening a couple of
        rows outward beyond the CSS-computed line) -- a small buffer absorbs
        that without being visible. */
-    .chband { position:absolute; top:calc(var(--safe-top) + 3px); left:var(--safe-left);
-              right:var(--safe-right); height:112px;
+    .chband { position:absolute; top:calc(var(--safe-top) + 3px); left:calc(var(--safe-left) + var(--safe-buffer));
+              right:calc(var(--safe-right) + var(--safe-buffer)); height:112px;
               display:flex; align-items:center; overflow:hidden;
               border-radius:var(--r-3); z-index:10; padding:0 var(--s-6); }
     .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
@@ -581,7 +581,7 @@ S17 = dict(css="""
        final split colours, held in the same screen quadrant it ended in --
        pixel-identical at t=0, no entrance fade -- then collapses into the
        ectoin arm on the word that names the finding. */
-    .carry16 { position:absolute; top:var(--safe-top); right:var(--safe-right);
+    .carry16 { position:absolute; top:calc(var(--safe-top) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
                width:40%; display:grid; grid-template-columns:repeat(13,1fr);
                gap:7px; z-index:5; }
     .carry16 i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%; }
@@ -812,7 +812,7 @@ S21 = dict(css="""
     /* CARRY from 20-twelve: the same hero "12", same size, same corner it
        held at t=0 -- pixel-identical, no entrance -- then shrinks into the
        kicker it becomes part of. */
-    .ghost12 { position:absolute; top:var(--safe-top); left:var(--safe-left);
+    .ghost12 { position:absolute; top:calc(var(--safe-top) + var(--safe-buffer)); left:calc(var(--safe-left) + var(--safe-buffer));
                font-family:var(--font-display); font-size:180px; line-height:1;
                color:var(--paper); margin:0; z-index:5; }
     /* VERDICT HALVES. "No." used to be inline coral, which lands at 5.03:1 on
@@ -979,12 +979,14 @@ S24 = dict(css="""
        needs, in the same row, so the row reads as one continuous lineup
        rather than a fresh scene. */
     /* The active card scales to 1.14 on its beat, and it now carries a 3px
-       border as well, so the row needs room for the overshoot -- otherwise the
-       right-hand card grows straight through the container's clip. */
-    .carry23 { position:absolute; top:var(--safe-top); left:var(--safe-left);
-               right:var(--safe-right); display:grid;
+       border as well, so the row needs room for the overshoot. The room is
+       PADDING, not a negative margin: pulling the box out past the safe lines
+       put the cards 18px into the top reserve and 44px into the right one, which
+       is exactly what the hard safe-area gate is for. */
+    .carry23 { position:absolute; top:calc(var(--safe-top) + var(--safe-buffer)); left:calc(var(--safe-left) + var(--safe-buffer));
+               right:calc(var(--safe-right) + var(--safe-buffer)); display:grid;
                grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5;
-               padding:18px 44px; margin:-18px -44px; }
+               padding:18px 44px; }
     /* CARRY ROW. The two superseded brands used to drop to opacity 0.30 --
        2.58:1 as authored, 1.08:1 as it actually shipped -- with the live one
        marked only by an aqua fill. Inactive is now 0.60 plus a dashed edge,

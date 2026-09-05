@@ -53,6 +53,13 @@
        because an inlined token block that omits a token used by any scene fails
        SILENTLY: the calc() is invalid and the whole declaration is dropped. */
     --endscreen-right:640px; --endscreen-bottom:200px;
+    /* EDGE BUFFER. An element anchored exactly ON a safe line still puts a
+       few rows of rounded-corner antialiasing and H.264 edge blur past it,
+       and the hard safe-area gate counts those: 22-whofor's ingredient pills
+       measured 4px into the bottom reserve at --t-label 36px. .chband has
+       carried a hand-written +3px for the same reason since 2026-09-02;
+       this is that number, named, for every block anchored on an edge. */
+    --safe-buffer:5px;
 }
 
     @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2");
@@ -189,12 +196,14 @@
        needs, in the same row, so the row reads as one continuous lineup
        rather than a fresh scene. */
     /* The active card scales to 1.14 on its beat, and it now carries a 3px
-       border as well, so the row needs room for the overshoot -- otherwise the
-       right-hand card grows straight through the container's clip. */
-    .carry23 { position:absolute; top:var(--safe-top); left:var(--safe-left);
-               right:var(--safe-right); display:grid;
+       border as well, so the row needs room for the overshoot. The room is
+       PADDING, not a negative margin: pulling the box out past the safe lines
+       put the cards 18px into the top reserve and 44px into the right one, which
+       is exactly what the hard safe-area gate is for. */
+    .carry23 { position:absolute; top:calc(var(--safe-top) + var(--safe-buffer)); left:calc(var(--safe-left) + var(--safe-buffer));
+               right:calc(var(--safe-right) + var(--safe-buffer)); display:grid;
                grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5;
-               padding:18px 44px; margin:-18px -44px; }
+               padding:18px 44px; }
     /* CARRY ROW. The two superseded brands used to drop to opacity 0.30 --
        2.58:1 as authored, 1.08:1 as it actually shipped -- with the live one
        marked only by an aqua fill. Inactive is now 0.60 plus a dashed edge,
@@ -286,7 +295,7 @@
     .stage { position:relative; z-index:2; }
     .chband { z-index:10; }
     /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
-    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:calc(var(--safe-right) + var(--safe-buffer));
           z-index:4; margin:0; width:max-content;
           font-family:var(--font-mono); font-size:var(--t-caption);
           letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
@@ -294,7 +303,7 @@
           border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
           padding:8px 18px; opacity:0; }
     /* lower-third block: translucent ink card */
-    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .lt { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
@@ -323,7 +332,7 @@
        is the only thing that holds regardless of what the plate does. */
     .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
             padding:var(--s-5) var(--s-6); }
-    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .mark { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
             letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }

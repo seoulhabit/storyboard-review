@@ -53,6 +53,13 @@
        because an inlined token block that omits a token used by any scene fails
        SILENTLY: the calc() is invalid and the whole declaration is dropped. */
     --endscreen-right:640px; --endscreen-bottom:200px;
+    /* EDGE BUFFER. An element anchored exactly ON a safe line still puts a
+       few rows of rounded-corner antialiasing and H.264 edge blur past it,
+       and the hard safe-area gate counts those: 22-whofor's ingredient pills
+       measured 4px into the bottom reserve at --t-label 36px. .chband has
+       carried a hand-written +3px for the same reason since 2026-09-02;
+       this is that number, named, for every block anchored on an edge. */
+    --safe-buffer:5px;
 }
 
     @font-face { font-family:"EB Garamond"; src:url("assets/fonts/eb-garamond-400.woff2") format("woff2");
@@ -240,7 +247,7 @@
     .stage { position:relative; z-index:2; }
     .chband { z-index:10; }
     /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
-    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:calc(var(--safe-right) + var(--safe-buffer));
           z-index:4; margin:0; width:max-content;
           font-family:var(--font-mono); font-size:var(--t-caption);
           letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
@@ -248,7 +255,7 @@
           border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
           padding:8px 18px; opacity:0; }
     /* lower-third block: translucent ink card */
-    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .lt { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
@@ -277,7 +284,7 @@
        is the only thing that holds regardless of what the plate does. */
     .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
             padding:var(--s-5) var(--s-6); }
-    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .mark { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
             letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }

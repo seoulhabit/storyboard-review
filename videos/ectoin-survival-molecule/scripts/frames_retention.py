@@ -67,7 +67,7 @@ PLATE_CSS = PLATE_ROOT_INK + """
     .stage { position:relative; z-index:2; }
     .chband { z-index:10; }
     /* CONCEPTUAL VISUALIZATION chip -- top-right, inside the safe box. */
-    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:var(--safe-right);
+    .cv { position:absolute; top:calc(var(--safe-top) + 6px); right:calc(var(--safe-right) + var(--safe-buffer));
           z-index:4; margin:0; width:max-content;
           font-family:var(--font-mono); font-size:var(--t-caption);
           letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
@@ -75,7 +75,7 @@ PLATE_CSS = PLATE_ROOT_INK + """
           border:1.5px solid rgba(247,245,240,.38); border-radius:var(--r-pill);
           padding:8px 18px; opacity:0; }
     /* lower-third block: translucent ink card */
-    .lt { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .lt { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
@@ -104,7 +104,7 @@ PLATE_CSS = PLATE_ROOT_INK + """
        is the only thing that holds regardless of what the plate does. */
     .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
             padding:var(--s-5) var(--s-6); }
-    .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .mark { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
             letter-spacing:0.42em; color:var(--aqua); text-transform:uppercase; }
@@ -258,10 +258,10 @@ S02 = dict(css=PLATE_CSS, body=(
 
 # ---------------------------------------------------------------- 03 now
 S03 = dict(css=PLATE_CSS + """
-    .s3-row { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 6px);
+    .s3-row { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); top:calc(var(--safe-top) + 6px);
               z-index:4; display:flex; gap:var(--s-4); }
-    .s3-lock { position:absolute; left:var(--safe-left); right:var(--safe-right);
-               bottom:var(--safe-bottom); z-index:4; overflow:hidden;
+    .s3-lock { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+               bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4; overflow:hidden;
                background:rgba(19,21,22,.84); border-radius:var(--r-3);
                padding:var(--s-6) var(--s-7); display:grid;
                grid-template-columns:auto 1fr; gap:var(--s-7); align-items:center; }
@@ -366,12 +366,12 @@ S05 = dict(css=PLATE_CSS + """
 
 # ---------------------------------------------------------------- 06 mechanism
 S06 = dict(css=PLATE_CSS + """
-    .s6-h { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 10px);
+    .s6-h { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); top:calc(var(--safe-top) + 10px);
             z-index:4; margin:0; font-family:var(--font-display); font-size:var(--t-figure);
             line-height:var(--lh-snug); max-width:1100px;
             text-shadow:0 2px 20px rgba(0,0,0,.45); }
-    .s6-row { position:absolute; left:var(--safe-left); right:var(--safe-right);
-              bottom:var(--safe-bottom); z-index:4; display:grid;
+    .s6-row { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+              bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4; display:grid;
               grid-template-columns:repeat(4,1fr); gap:var(--s-4); }
     .s6-step { position:relative; background:rgba(19,21,22,.80); border-radius:var(--r-3);
                padding:var(--s-4) var(--s-5); overflow:hidden; min-height:150px;
@@ -420,7 +420,7 @@ S06 = dict(css=PLATE_CSS + """
 
 # ---------------------------------------------------------------- 07 question
 S07 = dict(css=PLATE_CSS + """
-    .s7-q { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .s7-q { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
             z-index:4; max-width:1180px; margin:0;
             font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display);
@@ -457,13 +457,13 @@ S07 = dict(css=PLATE_CSS + """
 
 # ---------------------------------------------------------------- 08 humectant (chapter)
 S08 = dict(css=PLATE_CSS + CHBAND_CSS + """
-    .s8-h { position:absolute; left:var(--safe-left); right:var(--safe-right);
+    .s8-h { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
             top:230px; z-index:4; margin:0; font-family:var(--font-display);
             font-size:var(--t-hero); line-height:var(--lh-tight); max-width:1300px;
             text-shadow:0 2px 24px rgba(0,0,0,.45); }
     .s8-h em { font-style:normal; color:var(--coral); }
-    .g2 { position:absolute; left:var(--safe-left); right:var(--safe-right);
-          top:calc(var(--safe-top) + 130px); bottom:var(--safe-bottom); z-index:4;
+    .g2 { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+          top:calc(var(--safe-top) + 130px); bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4;
           display:grid; grid-template-columns:1fr 1fr; gap:var(--s-6); }
     .card { position:relative; border-radius:var(--r-3); overflow:hidden;
             background:var(--ink-soft); }
@@ -608,17 +608,17 @@ S09 = dict(css=PLATE_CSS + """
 
 # ---------------------------------------------------------------- 12 load (chapter)
 S12 = dict(css=PLATE_CSS + CHBAND_CSS + """
-    .l-h { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 150px);
+    .l-h { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); top:calc(var(--safe-top) + 150px);
            z-index:4; margin:0; max-width:1100px; font-family:var(--font-display);
            font-size:var(--t-figure); line-height:var(--lh-snug);
            text-shadow:0 2px 20px rgba(0,0,0,.45); }
-    .stressors { position:absolute; left:var(--safe-left); right:var(--safe-right);
-                 bottom:var(--safe-bottom); z-index:4; display:grid;
+    .stressors { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+                 bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4; display:grid;
                  grid-template-columns:repeat(5,1fr); gap:var(--s-4); }
     .st { background:rgba(19,21,22,.82); color:var(--paper); border-radius:var(--r-3);
           padding:var(--s-5) var(--s-4); text-align:center;
           font-family:var(--font-body); font-weight:800; font-size:var(--t-body); }
-    .l-note { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .l-note { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
               z-index:4; margin:0; max-width:1000px; background:rgba(19,21,22,.72);
               border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
               font-family:var(--font-display); font-size:var(--t-figure);
@@ -751,7 +751,7 @@ S23 = dict(css=PLATE_CSS + """
 
 # ---------------------------------------------------------------- 26 kbeauty (chapter)
 S26 = dict(css=PLATE_CSS + CHBAND_CSS + """
-    .g26 { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .g26 { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
            z-index:4; display:flex; flex-direction:column; gap:var(--s-5); max-width:1120px; }
     /* The negated card sits on a BRIGHT plate, so its own translucent ground
        composites near --mist, where the muted kicker token measures 4.1:1 on
@@ -800,8 +800,8 @@ S26 = dict(css=PLATE_CSS + CHBAND_CSS + """
 
 # ---------------------------------------------------------------- 27 resilience
 S27 = dict(css=PLATE_CSS + """
-    .shift { position:absolute; left:var(--safe-left); right:var(--safe-right);
-             bottom:var(--safe-bottom); z-index:4; display:grid;
+    .shift { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+             bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4; display:grid;
              grid-template-columns:1fr auto 1fr; gap:var(--s-6); align-items:center; }
     .sh { position:relative; border-radius:var(--r-3); padding:var(--s-6);
           text-align:center; overflow:hidden;
@@ -809,8 +809,8 @@ S27 = dict(css=PLATE_CSS + """
     .sh.from { background:rgba(240,235,225,.90); color:var(--ink-2); }
     .sh.to { background:rgba(19,21,22,.86); color:var(--paper); }
     .arrow { font-family:var(--font-mono); font-size:var(--t-hero); color:var(--paper); }
-    .where { position:absolute; left:var(--safe-left); right:var(--safe-right);
-             top:var(--safe-top); bottom:var(--safe-bottom); z-index:4;
+    .where { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+             top:calc(var(--safe-top) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4;
              display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-5);
              align-items:stretch; }
     .wh { position:relative; border-radius:var(--r-3); overflow:hidden; background:var(--ink-soft); }
@@ -820,10 +820,10 @@ S27 = dict(css=PLATE_CSS + """
                background:linear-gradient(0deg, rgba(19,21,22,.9), rgba(19,21,22,0));
                font-family:var(--font-mono); font-size:var(--t-label); color:var(--paper);
                text-align:center; }
-    .wh-h { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 8px);
+    .wh-h { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); top:calc(var(--safe-top) + 8px);
             z-index:5; margin:0; font-family:var(--font-display); font-size:var(--t-figure);
             text-shadow:0 2px 20px rgba(0,0,0,.5); }
-    .wh-note { position:absolute; right:var(--safe-right); top:calc(var(--safe-top) + 14px);
+    .wh-note { position:absolute; right:calc(var(--safe-right) + var(--safe-buffer)); top:calc(var(--safe-top) + 14px);
                z-index:5; margin:0; background:rgba(19,21,22,.8); border-radius:var(--r-pill);
                padding:12px 26px; font-family:var(--font-mono); font-size:var(--t-caption);
                letter-spacing:var(--tr-mono-wide); text-transform:uppercase; }
@@ -868,15 +868,15 @@ S28 = dict(css=PLATE_CSS + """
     #root { background:var(--ink); }
     .mont img { position:absolute; left:0; top:0; width:1920px; height:1080px;
                 object-fit:cover; opacity:0; transform-origin:50% 50%; }
-    .rm-h { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
+    .rm-h { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); bottom:calc(var(--safe-bottom) + var(--safe-buffer));
             z-index:4; margin:0; max-width:1100px; font-family:var(--font-display);
             font-size:var(--t-hero); line-height:var(--lh-tight); letter-spacing:var(--tr-display);
             text-shadow:0 2px 26px rgba(0,0,0,.5); }
     .rm-h em { font-style:normal; color:var(--aqua); }
-    .rm-k { position:absolute; left:var(--safe-left); top:calc(var(--safe-top) + 8px);
+    .rm-k { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); top:calc(var(--safe-top) + 8px);
             z-index:4; margin:0; }
-    .nots { position:absolute; right:var(--safe-right); top:var(--safe-top);
-            bottom:var(--safe-bottom); width:720px; z-index:4;
+    .nots { position:absolute; right:calc(var(--safe-right) + var(--safe-buffer)); top:calc(var(--safe-top) + var(--safe-buffer));
+            bottom:calc(var(--safe-bottom) + var(--safe-buffer)); width:720px; z-index:4;
             display:flex; flex-direction:column; gap:var(--s-5); justify-content:center; }
     .nt { position:relative; background:rgba(33,31,27,.92); border-radius:var(--r-3);
           padding:var(--s-5) var(--s-6); overflow:hidden;
@@ -931,8 +931,8 @@ S28 = dict(css=PLATE_CSS + """
 
 # ---------------------------------------------------------------- 22 whofor (chapter)
 S22 = dict(css=PLATE_CSS + CHBAND_CSS + """
-    .g22 { position:absolute; left:var(--safe-left); right:var(--safe-right);
-           bottom:var(--safe-bottom); z-index:4; display:flex; flex-direction:column;
+    .g22 { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+           bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4; display:flex; flex-direction:column;
            gap:var(--s-5); }
     .wf-h { margin:0; font-family:var(--font-display); font-size:var(--t-figure);
             text-shadow:0 2px 20px rgba(0,0,0,.5); }
@@ -989,8 +989,8 @@ S22 = dict(css=PLATE_CSS + CHBAND_CSS + """
 
 # ---------------------------------------------------------------- 25 formula (UNSOURCED)
 S25 = dict(css=PLATE_CSS + """
-    .g25 { position:absolute; left:var(--safe-left); right:var(--safe-right);
-           bottom:var(--safe-bottom); z-index:4; display:flex; flex-direction:column;
+    .g25 { position:absolute; left:calc(var(--safe-left) + var(--safe-buffer)); right:calc(var(--safe-right) + var(--safe-buffer));
+           bottom:calc(var(--safe-bottom) + var(--safe-buffer)); z-index:4; display:flex; flex-direction:column;
            gap:var(--s-5); }
     .uns { width:max-content; font-family:var(--font-mono); font-size:var(--t-caption);
            letter-spacing:var(--tr-mono-wide); text-transform:uppercase;

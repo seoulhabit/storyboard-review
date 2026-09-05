@@ -74,6 +74,13 @@ TOKENS = """
        because an inlined token block that omits a token used by any scene fails
        SILENTLY: the calc() is invalid and the whole declaration is dropped. */
     --endscreen-right:640px; --endscreen-bottom:200px;
+    /* EDGE BUFFER. An element anchored exactly ON a safe line still puts a
+       few rows of rounded-corner antialiasing and H.264 edge blur past it,
+       and the hard safe-area gate counts those: 22-whofor's ingredient pills
+       measured 4px into the bottom reserve at --t-label 36px. .chband has
+       carried a hand-written +3px for the same reason since 2026-09-02;
+       this is that number, named, for every block anchored on an edge. */
+    --safe-buffer:5px;
 """
 
 # `box-sizing` first rule in EVERY composition -- a project missing it passes

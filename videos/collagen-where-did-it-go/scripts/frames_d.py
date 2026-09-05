@@ -94,16 +94,21 @@ def file_08_digestion(fspan, fctx):
     tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, @we(delivery) + 0.15);
 
     // ---- unit 9: the body decides where the pieces go -----------------------------
+    // "some pieces may be absorbed / certain peptides act as signals" was cut
+    // from vo_lines.py (trim target: the middle of the piece, per the review);
+    // the unit now opens directly on "But your body decides...", so the
+    // stomach-to-branch dispatch anchors on the unit's own first/near-first
+    // words instead of the removed hedge sentence.
     dots.forEach(function (d, i) {
-      pathFollow(tl, d, tract, @w(absorbed) + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
+      pathFollow(tl, d, tract, @w(but) + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
     });   // this call owns each dot's frame-zero pose; the branches below pass set:false
-    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, @w(absorbed) + 0.3);
+    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, @w(but) + 0.3);
     // reframe onto the distribution map: the branches, not the gut, are the subject now
-    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, @w(signals));
-    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", @w(signals) + 0.2, 0.7, 0.12, EASE.wipe);
+    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, @w(body));
+    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", @w(body) + 0.2, 0.7, 0.12, EASE.wipe);
     ["skin", "joints", "tendons", "other"].forEach(function (k, i) {
       tl.fromTo("#d-" + k, { opacity:0, x:26 }, { opacity:1, x:0, duration:0.4, ease:EASE.arrive },
-                @w(signals) + 0.35 + i * 0.12);
+                @w(body) + 0.35 + i * 0.12);
     });
     reveal(tl, "#decides", @w(decides));
     tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(decides));
@@ -119,9 +124,11 @@ def file_08_digestion(fspan, fctx):
     tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, @w(scaffolding) - 0.3);
     reveal(tl, "#scaff", @w(scaffolding));
     tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(scaffolding));
-    reveal(tl, "#crate", @w(box));
-    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(box));
-    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, @w(box) + 0.1);
+    // "It got A BOX OF spare parts" -> "It got spare parts instead."; the
+    // crate payoff now lands on "parts" rather than the removed "box".
+    reveal(tl, "#crate", @w(parts));
+    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(parts));
+    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, @w(parts) + 0.1);
 """
     MOTION["08-digestion"]["beats"] = [
         {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 40, "dur": 0.9},
@@ -132,14 +139,14 @@ def file_08_digestion(fspan, fctx):
         {"name": "struck route leaves", "at": "@we(delivery)+0.15", "area": 0.06, "dl": 90, "dur": 1.1},
     ]
     MOTION["09-dispatch"]["beats"] = [
-        {"name": "stomach retract", "at": "@w(absorbed)+0.3", "area": 0.07, "dl": 81, "dur": 0.4},
-        {"name": "camera push", "at": "@w(signals)", "area": 0.5, "dl": 60, "dur": 0.9},
-        {"name": "destinations build", "at": "@w(signals)+0.35", "area": 0.13, "dl": 70, "dur": 0.76},
+        {"name": "stomach retract", "at": "@w(but)+0.3", "area": 0.07, "dl": 81, "dur": 0.4},
+        {"name": "camera push", "at": "@w(body)", "area": 0.5, "dl": 60, "dur": 0.9},
+        {"name": "destinations build", "at": "@w(body)+0.35", "area": 0.13, "dl": 70, "dur": 0.76},
         {"name": "decides wash", "at": "@w(decides)", "area": 0.044, "dl": 94, "dur": 0.4},
         {"name": "skin lands", "at": "@w(skin)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},
         {"name": "tendons land", "at": "@w(tendons)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},
         {"name": "camera home", "at": "@w(scaffolding)-0.3", "area": 0.5, "dl": 60, "dur": 0.8},
-        {"name": "crate wash", "at": "@w(box)", "area": 0.06, "dl": 103, "dur": 0.4},
+        {"name": "crate wash", "at": "@w(parts)", "area": 0.06, "dl": 103, "dur": 0.4},
     ]
     return body, css, tl
 

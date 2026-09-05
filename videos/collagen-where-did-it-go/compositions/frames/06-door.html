@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="06-door"
-       data-width="1920" data-height="1080" data-duration="18.774">
+       data-width="1920" data-height="1080" data-duration="23.889">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -455,90 +455,90 @@
     var dot = el("circle", { cx:120, cy:330, r:9, "class":"dot", id:"dot500" }, svg);
     // ---- unit 6: the door -----------------------------------------------------
     tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:0.9, ease:EASE.camera }, 0);
-    tl.fromTo(mol, { y:0 }, { y:60, duration:0.6, ease:EASE.arrive }, 0.717);
+    tl.fromTo(mol, { y:0 }, { y:60, duration:0.6, ease:EASE.arrive }, 1.056);
     // "through skin": the barrier lights up as the subject
-    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 2.189);
-    tl.to("#epi-wash", { scaleY:0, duration:0.4, ease:EASE.exit }, 2.189 + 1.4);
-    pathFollow(tl, dot, document.getElementById("dot-path"), 1.777, 1.6, "power1.inOut");
-    reveal(tl, "#sz-a", 5.495 - 0.5);
-    tl.fromTo("#sz-a-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.495 - 0.5);
-    count(tl, "n500", 0, 500, 5.495 - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
-    reveal(tl, "#sz-b", 7.476 - 0.6);
-    tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 7.476 - 0.6);
+    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 2.607);
+    tl.to("#epi-wash", { scaleY:0, duration:0.4, ease:EASE.exit }, 2.607 + 1.4);
+    pathFollow(tl, dot, document.getElementById("dot-path"), 1.912, 1.6, "power1.inOut");
+    reveal(tl, "#sz-a", 6.060 - 0.5);
+    tl.fromTo("#sz-a-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 6.060 - 0.5);
+    count(tl, "n500", 0, 500, 6.060 - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
+    reveal(tl, "#sz-b", 10.156 - 0.6);
+    tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 10.156 - 0.6);
     // the molecule GROWS against the 500-dalton dot while its own number counts:
     // the size comparison is made by the actors, not only by the two cards
-    tl.to(mol, { scale:1.16, y:74, transformOrigin:"50% 50%", duration:0.7, ease:EASE.arrive }, 6.237 - 0.2);
-    tl.to("#dot500", { scale:0.85, transformOrigin:"50% 50%", duration:0.4, ease:EASE.swap }, 6.237 + 0.2);
-    count(tl, "n300k", 0, 300000, 7.476 - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
-    tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, 7.476 + 0.6);
+    tl.to(mol, { scale:1.16, y:74, transformOrigin:"50% 50%", duration:0.7, ease:EASE.arrive }, 6.477 - 0.2);
+    tl.to("#dot500", { scale:0.85, transformOrigin:"50% 50%", duration:0.4, ease:EASE.swap }, 6.477 + 0.2);
+    count(tl, "n300k", 0, 300000, 10.156 - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
+    tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, 10.156 + 0.6);
     // the chip sits under the 500-DALTON card: Bos & Meinardi source the entry
     // limit, not collagen's mass (BRIEF C3 / C3b)
-    tl.fromTo("#cite-da", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 5.495 + 0.4);
+    tl.fromTo("#cite-da", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 6.060 + 0.4);
     // three tries at the door, three recoils
     // The viewer leans in with the molecule for the attempts and is pushed back
     // out by the refusal -- 14s otherwise separated the iris into this file from
     // the dermis drop, against the brief's 8-12s reset budget.
-    tl.to("#world", { scale:1.10, x:60, y:-40, duration:0.8, ease:EASE.camera }, 8.295 - 0.9);
-    tl.to("#world", { scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }, 9.447 + 0.35);
+    tl.to("#world", { scale:1.10, x:60, y:-40, duration:0.8, ease:EASE.camera }, 10.697 - 0.9);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }, 12.740 + 0.35);
     // three tries that actually REACH the door: contact at y:168 puts the
     // molecule's lower edge on the brick course, and the two bricks flanking the
     // door gap flash on each hit
     [0, 0.55, 1.10].forEach(function (d) {
-      tl.to(mol, { y:168, duration:0.20, ease:"power2.in" }, 8.295 - 0.6 + d);
-      tl.to(["#bar-b-0-1", "#bar-b-0-3"], { fill:"#C97A5C", duration:0.10, yoyo:true, repeat:1, ease:EASE.slam }, 8.295 - 0.42 + d);
-      tl.to(mol, { y:74, duration:0.28, ease:EASE.slam }, 8.295 - 0.4 + d);
+      tl.to(mol, { y:168, duration:0.20, ease:"power2.in" }, 10.697 - 0.6 + d);
+      tl.to(["#bar-b-0-1", "#bar-b-0-3"], { fill:"#C97A5C", duration:0.10, yoyo:true, repeat:1, ease:EASE.slam }, 10.697 - 0.42 + d);
+      tl.to(mol, { y:74, duration:0.28, ease:EASE.slam }, 10.697 - 0.4 + d);
     });
     // REJECTED: the epidermis flashes coral, the stamp slams, a micro-push
-    tl.to("#epi-wash", { backgroundColor:"#C97A5C", duration:0.1 }, 9.447 - 0.2);
-    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, 9.447 - 0.05);
-    tl.fromTo("#stamp", { opacity:0, scale:1.5, rotate:-9 }, { opacity:1, scale:1, rotate:-9, duration:0.42, ease:EASE.slam }, 9.447);
-    tl.to("#world", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 9.447);
+    tl.to("#epi-wash", { backgroundColor:"#C97A5C", duration:0.1 }, 12.740 - 0.2);
+    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, 12.740 - 0.05);
+    tl.fromTo("#stamp", { opacity:0, scale:1.5, rotate:-9 }, { opacity:1, scale:1, rotate:-9, duration:0.42, ease:EASE.slam }, 12.740);
+    tl.to("#world", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 12.740);
 
     // ---- unit 7: the film ---------------------------------------------------------
-    tl.to("#stamp", { opacity:0, duration:0.3, ease:EASE.exit }, 12.330 - 0.4);
+    tl.to("#stamp", { opacity:0, duration:0.3, ease:EASE.exit }, 14.663 - 0.4);
     // the molecule FLATTENS onto the surface (transform-only morph) and the film appears
-    tl.to(mol, { y:190, scaleY:0.15, scaleX:1.6, transformOrigin:"50% 50%", duration:0.7, ease:EASE.swap }, 12.330 - 0.3);
+    tl.to(mol, { y:190, scaleY:0.15, scaleX:1.6, transformOrigin:"50% 50%", duration:0.7, ease:EASE.swap }, 14.663 - 0.3);
     // the film SPREADS from where the molecule flattened, it does not fade up
     tl.fromTo("#film", { opacity:0.6, scaleX:0, transformOrigin:"50% 50%" },
-              { scaleX:1, duration:0.55, ease:EASE.wipe }, 12.330);
-    tl.to("#epi-wash", { backgroundColor:"#59B8AE", duration:0.1 }, 12.330 - 0.3);
-    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 12.330 - 0.2);
-    tl.to("#epi-wash", { scaleY:0.08, duration:0.5, ease:EASE.wipe }, 14.608 - 0.1);
-    tl.to("#bar-surface", { opacity:0, duration:0.4 }, 14.608);
-    tl.to("#surf-smooth", { opacity:0.7, duration:0.4 }, 14.608);
-    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, 14.608 - 0.5);
-    tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, 14.608 - 0.5);
-    tl.to(["#sz-a", "#sz-b", "#sz-note", "#cite-da"], { opacity:0, duration:0.3, ease:EASE.exit }, 14.608 - 0.1);
-    tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, 15.927);
+              { scaleX:1, duration:0.55, ease:EASE.wipe }, 14.663);
+    tl.to("#epi-wash", { backgroundColor:"#59B8AE", duration:0.1 }, 14.663 - 0.3);
+    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 14.663 - 0.2);
+    tl.to("#epi-wash", { scaleY:0.08, duration:0.5, ease:EASE.wipe }, 17.844 - 0.1);
+    tl.to("#bar-surface", { opacity:0, duration:0.4 }, 17.844);
+    tl.to("#surf-smooth", { opacity:0.7, duration:0.4 }, 17.844);
+    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, 17.844 - 0.5);
+    tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, 17.844 - 0.5);
+    tl.to(["#sz-a", "#sz-b", "#sz-note", "#cite-da"], { opacity:0, duration:0.3, ease:EASE.exit }, 17.844 - 0.1);
+    tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, 18.675);
     // "...replacing the beams": the dermis dims -- the hatch stays cut
     // "...is NOT replacing the beams": the dermis dims on "not", the verdict lands on "replacing" --
     // both finish before the iris opens on the next file (unit 7 ends 0.05s after its last word)
     // the camera DROPS BELOW the polished surface while "smoother" is still being
     // said: down there the cut hatch is still cut. The animation makes the
     // "not structural" case before the verdict card states it.
-    tl.to("#world", { scale:1.18, x:83, y:-76, duration:0.9, ease:EASE.camera }, 14.608 - 0.1);
+    tl.to("#world", { scale:1.18, x:83, y:-76, duration:0.9, ease:EASE.camera }, 17.844 - 0.1);
     // the dive crops 215px off each side, which sliced "EPIDERMIS" mid-word. The
     // labels leave instead: we have gone past the layer they name.
-    tl.to(".bar-label", { opacity:0, duration:0.45, ease:EASE.exit }, 14.608 - 0.1);
+    tl.to(".bar-label", { opacity:0, duration:0.45, ease:EASE.exit }, 17.844 - 0.1);
     tl.to(["#bar-h-1", "#bar-hb-1", "#bar-h-2", "#bar-hb-2", "#bar-h-4", "#bar-hb-4", "#bar-h-6", "#bar-hb-6"],
-          { stroke:"#9C978D", duration:0.45, ease:EASE.swap }, 15.927);
-    tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 16.768 - 0.1);
-    // The verdict card lands at 16.889, while this leg is still running.
+          { stroke:"#9C978D", duration:0.45, ease:EASE.swap }, 18.675);
+    tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 19.609 - 0.1);
+    // The verdict card lands at 19.813, while this leg is still running.
     // At x=60 its left edge mapped to -85px under the 1.18 push and was cropped
     // for about a second -- the exact defect DELIVERY.md records from ectoin,
     // where .worldclip removed the offending pixels BEFORE the safe-area gate
     // looked at them and the gate reported a clean pass. The card is inset to
     // x=264 so it survives every point of this leg; the leg itself still homes
     // fully before the file's span ends.
-    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 18.224 - 1.05);
-    tl.to(".bar-label", { opacity:1, duration:0.5, ease:EASE.arrive }, 18.224 - 1.05);
-    reveal(tl, "#verdict7", 16.889);
-    tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 16.889);
+    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 23.339 - 1.05);
+    tl.to(".bar-label", { opacity:1, duration:0.5, ease:EASE.arrive }, 23.339 - 1.05);
+    reveal(tl, "#verdict7", 19.813);
+    tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 19.813);
 
     // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 18.224);
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 23.339);
 
-    tl.to({}, { duration: 18.774 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 23.889 }, 0);   // full-span anchor -- always last
     window.__timelines["06-door"] = tl;
   </script>
 </template>

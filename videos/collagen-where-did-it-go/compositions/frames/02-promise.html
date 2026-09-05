@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="02-promise"
-       data-width="1920" data-height="1080" data-duration="9.931">
+       data-width="1920" data-height="1080" data-duration="9.305">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -225,9 +225,6 @@
     .tr.mini .tr-tag { font-family:var(--font-mono); font-size:44px; font-weight:500;
                        color:var(--ink); opacity:0; }
     #data .chip { position:relative; }
-    .shield-line { fill:none; stroke:var(--aqua); stroke-width:7; }
-    .shield-fill { fill:var(--aqua); opacity:0; }
-    #protect { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
 
     </style>
 
@@ -237,12 +234,9 @@
         <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <path class="qmark" id="qmark" d="M 1206 372 C 1206 316 1250 288 1290 300 C 1332 313 1338 362 1308 392 C 1282 418 1268 436 1268 470"/>
           <circle class="qmark" id="qmark-dot" cx="1268" cy="524" r="3"/>
-          <rect class="shield-fill" id="shield2-fill" x="104" y="286" width="600" height="320" rx="30"/>
-          <rect class="shield-line" id="shield2" x="104" y="286" width="600" height="320" rx="30"/>
         </svg>
         <p class="kt serif" id="promise-q"><span class="kt-word">Where</span> <span class="kt-word">does</span> <span class="kt-word">it</span> <span class="kt-word">actually</span> <span class="kt-word" id="promise-q-last">go?</span></p>
         <div class="panel late" id="data" style="position:absolute;left:1000px;top:0px;width:728px;height:918px;"><div class="wash ink" id="data-wash"></div><div class="mini-grid" id="mini-grid"></div><p class="chip on-ink" id="mini-cap" style="">23 trials</p><p class="chip on-ink" id="mini-leg" style="">$ = industry funded</p><p class="chip on-ink" id="mini-note" style="">tag pattern illustrative</p></div>
-        <div class="panel late" id="protect" style="position:absolute;left:64px;top:740px;width:820px;height:130px;"><div class="wash aqua" id="protect-wash"></div><p class="p-title">what protects it?</p></div>
        </div>
       </div>
       </div>
@@ -377,51 +371,40 @@
     gsap.set(".tr.mini", { y:70, opacity:0 });
     gsap.set(["#mini-cap", "#mini-leg", "#mini-note"], { y:16, opacity:0 });
     gsap.set("#data-wash", { scaleX:1, scaleY:0, transformOrigin:"50% 100%" });
-    kineticWords(tl, "#promise-q", 0.448 - 0.1, 0.09, "rise");
+    kineticWords(tl, "#promise-q", 1.683 - 0.1, 0.09, "rise");
     // the question is DRAWN around the molecule, not typeset beside it
-    drawIn(tl, "#qmark", 0.896 - 0.25, 0.55, 0, EASE.wipe);
-    tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, 1.019);
+    drawIn(tl, "#qmark", 1.976 - 0.25, 0.55, 0, EASE.wipe);
+    tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, 2.624);
 
     // ---- the data column rises and takes the frame -------------------------
-    reveal(tl, "#data", 1.234 - 0.45);
-    tl.to(["#qmark", "#qmark-dot"], { opacity:0, duration:0.25, ease:EASE.exit }, 1.234 - 0.55);
-    tl.to("#data-wash", { scaleY:1, duration:0.5, ease:EASE.wipe }, 1.234 - 0.45);
-    tl.to(mol, { x:-300, duration:0.6, ease:EASE.camera }, 1.234 - 0.35);
-    tl.to("#promise-q", { y:-26, opacity:0.5, duration:0.5, ease:EASE.exit }, 1.234 - 0.35);
-    tl.to(".tr.mini", { y:0, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, 1.478 - 0.1);
-    tl.to("#mini-cap", { y:0, opacity:1, duration:0.3, ease:EASE.arrive }, 1.478 + 0.3);
+    reveal(tl, "#data", 2.907 - 0.45);
+    tl.to(["#qmark", "#qmark-dot"], { opacity:0, duration:0.25, ease:EASE.exit }, 2.907 - 0.55);
+    tl.to("#data-wash", { scaleY:1, duration:0.5, ease:EASE.wipe }, 2.907 - 0.45);
+    tl.to(mol, { x:-300, duration:0.6, ease:EASE.camera }, 2.907 - 0.35);
+    tl.to("#promise-q", { y:-26, opacity:0.5, duration:0.5, ease:EASE.exit }, 2.907 - 0.35);
+    tl.to(".tr.mini", { y:0, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, 3.875 - 0.1);
+    tl.to("#mini-cap", { y:0, opacity:1, duration:0.3, ease:EASE.arrive }, 3.875 + 0.3);
     // TAG, then DROP: the loop's object is named and removed, and no result is
     // shown -- 12-filter is where the answer lands
     tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", borderColor:"#C97A5C",
-          duration:0.25, stagger:0.012, ease:EASE.swap }, 3.151);
-    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$" }, 3.151 + 0.1); });
+          duration:0.25, stagger:0.012, ease:EASE.swap }, 5.278);
+    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$" }, 5.278 + 0.1); });
     tl.fromTo(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-              { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, 3.151 + 0.1);
-    tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, 3.642);
+              { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, 5.278 + 0.1);
+    tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, 5.817);
     // the tags have done their work by the time the tiles leave; they fade with
     // the fall rather than riding it down over the row below and the caption
     tl.to(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, 5.031);
-    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, 5.031);
-
-    // ---- the column leaves; the molecule becomes the thing worth protecting --
-    tl.to("#data-wash", { scaleY:0, duration:0.5, ease:EASE.exit }, 6.569 - 0.1);
-    tl.to([".tr.mini", "#mini-cap", "#mini-leg", "#mini-note"],
-          { y:150, opacity:0, duration:0.35, stagger:0.008, ease:EASE.exit }, 6.569 - 0.1);
-    tl.to("#promise-q", { y:-70, opacity:0, duration:0.35, ease:EASE.exit }, 6.569 - 0.1);
-    tl.to(mol, { x:-460, y:-60, duration:0.8, ease:EASE.camera }, 6.569 + 0.1);
-    tl.to("#world", { scale:1.06, duration:0.6, ease:EASE.camera }, 7.021 - 0.1);
-    drawIn(tl, "#shield2", 7.021, 0.7, 0, EASE.wipe);
-    tl.to("#shield2-fill", { opacity:0.18, duration:0.5, ease:EASE.wipe }, 7.721);
-    reveal(tl, "#protect", 7.021 + 0.1);
-    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 7.021 + 0.1);
-    // home before the file's own span ends, so the iris opens on a settled frame
-    tl.to("#world", { scale:1, duration:0.7, ease:EASE.camera }, 9.381 - 0.75);
+          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, 7.835);
+    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, 7.835);
+    // ---- HOLD, unresolved: the loop is open and stays open into the iris ----
+    // review Animation item 4: at least 700ms of settled, unresolved state
+    // before the transition -- one curiosity loop, not answered here.
 
     // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 9.381);
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 8.755);
 
-    tl.to({}, { duration: 9.931 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 9.305 }, 0);   // full-span anchor -- always last
     window.__timelines["02-promise"] = tl;
   </script>
 </template>

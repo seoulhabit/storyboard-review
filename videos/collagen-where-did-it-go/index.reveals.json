@@ -2055,6 +2055,42 @@
   "file": "14-hierarchy",
   "unit": "14-hierarchy",
   "kind": "w",
+  "word": "smoking",
+  "occurrence": 1,
+  "seconds": 4.119,
+  "abs": 114.917
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
+  "word": "protein",
+  "occurrence": 1,
+  "seconds": 5.076,
+  "abs": 115.874
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
+  "word": "retinoids",
+  "occurrence": 1,
+  "seconds": 7.519,
+  "abs": 118.317
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
+  "word": "sunscreen",
+  "occurrence": 1,
+  "seconds": 2.229,
+  "abs": 113.027
+ },
+ {
+  "file": "14-hierarchy",
+  "unit": "14-hierarchy",
+  "kind": "w",
   "word": "sunscreen",
   "occurrence": 1,
   "seconds": 2.229,

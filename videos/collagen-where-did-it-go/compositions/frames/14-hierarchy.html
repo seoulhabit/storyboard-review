@@ -399,9 +399,17 @@
     gsap.set("#bwrap", { skewX:-1.4, y:9 });
     // camera settles in from the invert
     tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    // rows are authored in their final slots; frame zero shows them UNSORTED
+    // rows are authored in their final slots; frame zero shows them UNSORTED.
+    // Was all four sliding in together at 1.310 (the INTRO sentence,
+    // before any recommendation is named) -- exactly the review's complaint
+    // (Animation item 9): "asks viewers to track position changes while also
+    // listening to health guidance." Each row now arrives on its OWN named
+    // word instead, the same moment its wash-fill already anchors to, so a
+    // row lands in narrated order: sunscreen, not smoking, nutrition,
+    // retinoids -- never all four before the first one is even spoken.
+    var ROW_AT = [2.229, 4.119, 5.076, 7.519];
     ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
-      tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, 1.310 - 0.2 + i * 0.08);
+      tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
     tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 2.229);

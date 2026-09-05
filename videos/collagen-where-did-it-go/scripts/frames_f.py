@@ -67,9 +67,17 @@ def file_14_hierarchy(fspan, fctx):
     gsap.set("#bwrap", { skewX:-1.4, y:9 });
     // camera settles in from the invert
     tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    // rows are authored in their final slots; frame zero shows them UNSORTED
+    // rows are authored in their final slots; frame zero shows them UNSORTED.
+    // Was all four sliding in together at @w(supports) (the INTRO sentence,
+    // before any recommendation is named) -- exactly the review's complaint
+    // (Animation item 9): "asks viewers to track position changes while also
+    // listening to health guidance." Each row now arrives on its OWN named
+    // word instead, the same moment its wash-fill already anchors to, so a
+    // row lands in narrated order: sunscreen, not smoking, nutrition,
+    // retinoids -- never all four before the first one is even spoken.
+    var ROW_AT = [@w(sunscreen), @w(smoking), @w(protein), @w(retinoids)];
     ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
-      tl.fromTo(id, { y:SHUFFLE[i] }, { y:0, duration:0.7, ease:EASE.swap }, @w(supports) - 0.2 + i * 0.08);
+      tl.fromTo(id, { y:SHUFFLE[i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
     tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(sunscreen));
@@ -131,13 +139,12 @@ def file_14_hierarchy(fspan, fctx):
 """.replace("SHUFFLE", str(SHUFFLE))
     MOTION["14-hierarchy"]["beats"] = [
         {"name": "camera settle",  "at": "0.0",               "area": 0.5,   "dl": 60,  "dur": 1.2},
-        {"name": "rows sort in",   "at": "@w(supports)-0.2",  "area": 0.22,  "dl": 70,  "dur": 0.7},
-        {"name": "row 1 wash",     "at": "@w(sunscreen)",     "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "row 1 arrives+wash", "at": "@w(sunscreen)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},
         {"name": "foundation lock", "at": "@w(sunscreen)+0.1", "area": 0.05, "dl": 120, "dur": 0.38},
-        {"name": "row 2 wash",     "at": "@w(smoking)",       "area": 0.047, "dl": 91,  "dur": 0.4},
-        {"name": "row 3 wash",     "at": "@w(protein)",       "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "row 2 arrives+wash", "at": "@w(smoking)-0.3",   "area": 0.10, "dl": 91, "dur": 0.7},
+        {"name": "row 3 arrives+wash", "at": "@w(protein)-0.3",   "area": 0.10, "dl": 91, "dur": 0.7},
         {"name": "building straightens", "at": "@w(vitamin)", "area": 0.17,  "dl": 60,  "dur": 1.1},
-        {"name": "row 4 wash",     "at": "@w(retinoids)",     "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "row 4 arrives+wash", "at": "@w(retinoids)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},
         {"name": "retinoid beam",  "at": "@w(stronger)-0.1", "area": 0.5,  "dl": 60,  "dur": 0.8},
         {"name": "braces brighten", "at": "@w(production)-0.2",  "area": 0.17, "dl": 55,  "dur": 1.0},
     ]

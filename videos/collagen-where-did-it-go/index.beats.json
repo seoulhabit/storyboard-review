@@ -156,12 +156,23 @@
  {
   "file": "03-building",
   "unit": "03-building",
+  "name": "camera goes in",
+  "abs": 16.966,
+  "area": 0.5,
+  "dl": 60,
+  "dur": 1.0,
+  "per_step": 3.75,
+  "registers": true
+ },
+ {
+  "file": "03-building",
+  "unit": "03-building",
   "name": "firm settle",
   "abs": 19.148,
   "area": 0.5,
   "dl": 60,
-  "dur": 0.45,
-  "per_step": 8.33,
+  "dur": 0.6,
+  "per_step": 6.25,
   "registers": true
  },
  {

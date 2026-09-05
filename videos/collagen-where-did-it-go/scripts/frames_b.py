@@ -69,7 +69,12 @@ def file_03_building(fspan, fctx):
     tl.to(".beam", { strokeDashoffset:0, duration:0.55, stagger:{ each:0.10, from:"end" }, ease:EASE.wipe }, @w(structure) - 0.1);
     reveal(tl, "#chip-beams", @w(structure) + 0.2);
     tl.fromTo("#chip-beams-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(structure) + 0.2);
-    tl.fromTo("#world", { scale:1.05 }, { scale:1, duration:0.45, ease:EASE.camera }, @w(firm));
+    // "the structure INSIDE it": the camera goes in, and comes back out as the
+    // building is described holding. The beams drawing between these two words
+    // is a stroke-dashoffset reveal -- real motion that a bounding-box tracker
+    // cannot see at all, which is why 2.25s here read as frozen.
+    tl.to("#world", { scale:1.07, y:18, duration:1.0, ease:EASE.camera }, @w(inside) - 0.15);
+    tl.to("#world", { scale:1, y:0, duration:0.6, ease:EASE.camera }, @w(firm));
 
     // ---- unit 4: the demolition crew --------------------------------------------
     tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, @w(age));
@@ -132,7 +137,8 @@ def file_03_building(fspan, fctx):
         {"name": "camera settle",   "at": "0.0",              "area": 0.5,   "dl": 60,  "dur": 1.2},
         {"name": "storeys lay in",  "at": "@w(building)+0.15", "area": 0.17, "dl": 74,  "dur": 0.6},
         {"name": "beams chip wash", "at": "@w(structure)+0.2", "area": 0.048, "dl": 91, "dur": 0.4},
-        {"name": "firm settle",     "at": "@w(firm)",         "area": 0.5,   "dl": 60,  "dur": 0.45},
+        {"name": "camera goes in",  "at": "@w(inside)-0.15",  "area": 0.5,   "dl": 60,  "dur": 1.0},
+        {"name": "firm settle",     "at": "@w(firm)",         "area": 0.5,   "dl": 60,  "dur": 0.6},
     ]
     MOTION["04-demolition"]["beats"] = [
         {"name": "sky warm",     "at": "@w(ultraviolet)-0.1", "area": 0.119, "dl": 77,  "dur": 0.5},

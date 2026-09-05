@@ -400,7 +400,12 @@
     tl.to(".beam", { strokeDashoffset:0, duration:0.55, stagger:{ each:0.10, from:"end" }, ease:EASE.wipe }, 2.286 - 0.1);
     reveal(tl, "#chip-beams", 2.286 + 0.2);
     tl.fromTo("#chip-beams-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 2.286 + 0.2);
-    tl.fromTo("#world", { scale:1.05 }, { scale:1, duration:0.45, ease:EASE.camera }, 5.161);
+    // "the structure INSIDE it": the camera goes in, and comes back out as the
+    // building is described holding. The beams drawing between these two words
+    // is a stroke-dashoffset reveal -- real motion that a bounding-box tracker
+    // cannot see at all, which is why 2.25s here read as frozen.
+    tl.to("#world", { scale:1.07, y:18, duration:1.0, ease:EASE.camera }, 3.129 - 0.15);
+    tl.to("#world", { scale:1, y:0, duration:0.6, ease:EASE.camera }, 5.161);
 
     // ---- unit 4: the demolition crew --------------------------------------------
     tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, 6.303);

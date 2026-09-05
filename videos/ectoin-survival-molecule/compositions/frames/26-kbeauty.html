@@ -8,7 +8,15 @@
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
-    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
+    /* --coral is scoped to DARK grounds: 5.03:1 on --ink-soft, but only
+       3.00:1 on --paper and 2.72:1 on the light cards 26-kbeauty uses.
+       --coral-deep is the same hue for a light ground. It is deeper than the
+       4.5:1 arithmetic strictly needs, because the pixel gate measures a
+       30px mono glyph's Otsu median, and antialiasing on thin strokes pulls
+       that toward the ground -- #9E5236 computes 5.19:1 and MEASURES 4.10:1
+       on the render. The number that matters is the measured one. */
+    --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --coral-deep:#8E4228;
+    --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
     /* MEASURED against the grounds they actually land on, not against paper
        alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
@@ -126,9 +134,24 @@
     .wash.moss ~ *, .washed-dark  { color:var(--paper) !important; }
     .wash.dim ~ *  { color:var(--ink) !important; }
 
-    /* A panel-sized strike: covers the whole card, not a 5px line through a word. */
-    .void { position:absolute; inset:0; background:var(--coral); opacity:0;
-            border-radius:inherit; }
+    /* A panel-sized strike -- but a STRIKE, not a cover. This used to be a
+       full-card coral flood at inset:0. It is absolutely positioned and is not
+       a `.wash`, so the rule below that lifts washed siblings to z-index 1 never
+       applied to it, and at 0.85 it painted straight over the copy: measured
+       1.03:1 on 19-limits and unreadable on 26-kbeauty in the shipped master.
+       A bar through the middle of the card is the same panel-scale gesture and
+       leaves the words legible; the copy still has to be lifted above it. */
+    .void { position:absolute; left:-8px; right:-8px; top:50%;
+            height:10px; margin-top:-5px; background:var(--coral); opacity:0;
+            transform:scaleX(0); transform-origin:0% 50%; z-index:2; }
+    .void ~ * { position:relative; z-index:3; }
+    /* The label that says in WORDS what the strike says in colour. */
+    /* The strike is on a LIGHT card wherever .void is used, so the label takes
+       the light-ground coral: --coral would read 2.72:1 there. */
+    .void-tag { display:inline-block; margin-top:var(--s-3);
+                font-family:var(--font-mono); font-weight:500;
+                font-size:var(--t-caption); letter-spacing:var(--tr-mono-wide);
+                text-transform:uppercase; color:var(--coral-deep); opacity:0; }
     .p-title { font-family:var(--font-body); font-weight:800; font-size:var(--t-frame);
                line-height:var(--lh-snug); margin:0 0 var(--s-3); }
     .p-body { font-family:var(--font-display); font-size:var(--t-body);
@@ -252,8 +275,12 @@
 
     .g26 { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
            z-index:4; display:flex; flex-direction:column; gap:var(--s-5); max-width:1120px; }
-    .neg { position:relative; background:rgba(240,235,225,.92); color:var(--ink);
+    /* The negated card sits on a BRIGHT plate, so its own translucent ground
+       composites near --mist, where the muted kicker token measures 4.1:1 on
+       thin 30px mono. On this card the kicker is full --ink. */
+    .neg { position:relative; background:rgba(240,235,225,.94); color:var(--ink);
            border-radius:var(--r-3); padding:var(--s-6) var(--s-7); overflow:hidden; }
+    .neg .kicker { color:var(--ink); }
     .pos { position:relative; background:rgba(19,21,22,.86); color:var(--paper);
            border-radius:var(--r-3); padding:var(--s-6) var(--s-7); overflow:hidden; }
     .neg .hero, .pos .hero { font-size:var(--t-figure); margin-top:8px; }
@@ -271,6 +298,7 @@
         <div class="void" id="kb-void"></div>
         <p class="kicker">The easy story</p>
         <p class="hero">K-beauty invented ectoin.</p>
+        <span class="void-tag" id="kb-tag">Not true</span>
       </div>
       <div class="pos" id="kb-pos" style="opacity:0">
         <div class="wash moss" id="kb-wash"></div>
@@ -288,10 +316,15 @@
   tl.fromTo('#pv-a', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:5.400, ease:'none' }, 0.000);
 
   tl.fromTo('#kb-neg', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, 0.350);
-  tl.fromTo('#kb-void', { opacity:0 }, { opacity:0.85, duration:0.45 }, 1.410-0.05);
+  tl.fromTo('#kb-void', { opacity:0, scaleX:0 },
+                        { opacity:1, scaleX:1, duration:0.45, ease:'power2.inOut' }, 1.410-0.05);
+  tl.fromTo('#kb-tag', { opacity:0, y:10 }, { opacity:1, y:0, duration:0.30 }, 1.410+0.20);
   tl.fromTo('#kb-pos', { opacity:0, x:90 }, { opacity:1, x:0, duration:0.55 }, 3.726-0.20);
   tl.fromTo('#kb-wash', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 5.566-0.20);
-  tl.to('#kb-neg', { opacity:0.65, duration:0.70 }, 5.566-0.20);
+  // Not dimmed. The strike and the word "Not true" already say which of the two
+  // cards is the wrong one; dropping the card's alpha on top of that only makes
+  // it unreadable over the plate (measured on the shipped master).
+  tl.to('#kb-neg', { opacity:0.92, duration:0.70 }, 5.566-0.20);
   // texture change on "light wearable textures"
   tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.35 }, 5.1);
   tl.fromTo('#pv-b', { scale:1.0, x:0, y:0 }, { scale:1.08, x:0, y:0, duration:5.000, ease:'none' }, 5.100);

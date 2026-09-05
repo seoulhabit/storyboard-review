@@ -52,10 +52,10 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 22 | `23-numbers` | 4:28.70 | 15.51s | 11 | 0.71 |
 | 23 | `24-eleven` | 4:43.71 | 18.26s | 22 | 1.20 |
 | 24 | `25-formula` | 5:01.56 | 13.51s | 8 | 0.59 |
-| 25 | `26-kbeauty` | 5:14.48 | 9.95s | 12 | 1.21 |
+| 25 | `26-kbeauty` | 5:14.48 | 9.95s | 13 | 1.31 |
 | 26 | `27-resilience` | 5:24.02 | 16.15s | 17 | 1.05 |
 | 27 | `28-remember` | 5:39.47 | 15.65s | 13 | 0.83 |
 | 28 | `29-cta` | 5:54.32 | 14.47s | 5 | 0.35 |
 | 29 | `30-endcard` | 6:07.99 | 3.84s | 5 | 1.30 |
 
-**354 authored beats across 371.8s (0.95/s average).**
+**355 authored beats across 371.8s (0.95/s average).**

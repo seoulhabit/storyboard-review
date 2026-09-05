@@ -1220,6 +1220,13 @@
   {
     "scene": "26-kbeauty",
     "kind": "w",
+    "word": "not",
+    "occurrence": 1,
+    "seconds": 1.41
+  },
+  {
+    "scene": "26-kbeauty",
+    "kind": "w",
     "word": "Korean",
     "occurrence": 1,
     "seconds": 3.726

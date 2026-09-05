@@ -753,8 +753,12 @@ S23 = dict(css=PLATE_CSS + """
 S26 = dict(css=PLATE_CSS + CHBAND_CSS + """
     .g26 { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
            z-index:4; display:flex; flex-direction:column; gap:var(--s-5); max-width:1120px; }
-    .neg { position:relative; background:rgba(240,235,225,.92); color:var(--ink);
+    /* The negated card sits on a BRIGHT plate, so its own translucent ground
+       composites near --mist, where the muted kicker token measures 4.1:1 on
+       thin 30px mono. On this card the kicker is full --ink. */
+    .neg { position:relative; background:rgba(240,235,225,.94); color:var(--ink);
            border-radius:var(--r-3); padding:var(--s-6) var(--s-7); overflow:hidden; }
+    .neg .kicker { color:var(--ink); }
     .pos { position:relative; background:rgba(19,21,22,.86); color:var(--paper);
            border-radius:var(--r-3); padding:var(--s-6) var(--s-7); overflow:hidden; }
     .neg .hero, .pos .hero { font-size:var(--t-figure); margin-top:8px; }
@@ -769,6 +773,7 @@ S26 = dict(css=PLATE_CSS + CHBAND_CSS + """
         <div class="void" id="kb-void"></div>
         <p class="kicker">The easy story</p>
         <p class="hero">K-beauty invented ectoin.</p>
+        <span class="void-tag" id="kb-tag">Not true</span>
       </div>
       <div class="pos" id="kb-pos" style="opacity:0">
         <div class="wash moss" id="kb-wash"></div>
@@ -780,10 +785,15 @@ S26 = dict(css=PLATE_CSS + CHBAND_CSS + """
 """
 ), tl=kb('#pv-a', 0, 5.4, 1.0, 1.08) + """
   tl.fromTo('#kb-neg', { opacity:0, x:-90 }, { opacity:1, x:0, duration:0.55 }, @first);
-  tl.fromTo('#kb-void', { opacity:0 }, { opacity:0.85, duration:0.45 }, @w(not)-0.05);
+  tl.fromTo('#kb-void', { opacity:0, scaleX:0 },
+                        { opacity:1, scaleX:1, duration:0.45, ease:'power2.inOut' }, @w(not)-0.05);
+  tl.fromTo('#kb-tag', { opacity:0, y:10 }, { opacity:1, y:0, duration:0.30 }, @w(not)+0.20);
   tl.fromTo('#kb-pos', { opacity:0, x:90 }, { opacity:1, x:0, duration:0.55 }, @w(Korean)-0.20);
   tl.fromTo('#kb-wash', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, @w(pairing)-0.20);
-  tl.to('#kb-neg', { opacity:0.65, duration:0.70 }, @w(pairing)-0.20);
+  // Not dimmed. The strike and the word "Not true" already say which of the two
+  // cards is the wrong one; dropping the card's alpha on top of that only makes
+  // it unreadable over the plate (measured on the shipped master).
+  tl.to('#kb-neg', { opacity:0.92, duration:0.70 }, @w(pairing)-0.20);
   // texture change on "light wearable textures"
   tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.35 }, 5.1);
 """ + kb('#pv-b', 5.1, 5.0, 1.0, 1.08) + CHBAND_TL)

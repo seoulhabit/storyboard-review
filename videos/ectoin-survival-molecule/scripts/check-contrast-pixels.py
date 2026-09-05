@@ -126,6 +126,12 @@ TARGETS = [
     # banded to rows 3-10, so the two aqua-filled rows are not what Otsu
     # splits on -- the question is whether the DIMMED list is readable.
     ("24-eleven",    17.50, (990, 385, 1800, 700),  "24 ingredient list while dimmed",   AA_NORMAL),
+    # banded to the kicker + label rows: a box spanning the strike itself is
+    # split by Otsu into bar-vs-card and measures the wrong pair.
+    ("26-kbeauty",    7.50, (170, 400, 1180, 460),  "26 negated claim kicker",           AA_NORMAL),
+    ("26-kbeauty",    7.50, (170, 530, 1180, 590),  "26 NOT TRUE label",                 AA_NORMAL),
+    ("26-kbeauty",    9.00, (140, 700, 1180, 950),   "26 true claim on ink card",         AA_LARGE),
+    ("27-resilience", 14.00, (120, 800, 660, 990),   "27 'from' panel while dimmed",      AA_NORMAL),
     ("28-remember",  10.00, (96, 640, 1400, 980),   "28 closing line on montage",        AA_LARGE),
     ("30-endcard",    2.40, (96, 380, 1180, 700),   "30 end card handle",                AA_LARGE),
 ]

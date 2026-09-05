@@ -29,6 +29,22 @@ The "no generative imagery in the HyperFrames lane" note in
 `catalog/product-photography/README.md` is overridden for this master by
 the operator's brief; this section is that decision record.
 
+**Thumbnail.** `thumbnail/thumb-retention-1280x720.{html,png,jpg}` — a second
+primary, alongside the v2 `thumb-1280x720.*` (kept, not replaced). Same house
+idiom and the same three overlay words, "WHERE NOTHING LIVES", which still
+share no word with the title (`[S3/P-2]`); the art changes from a drawn
+salt-flat and a vector molecule to the video's **own** `I01-saltlake.jpg`
+plate with the ectoine ring over it. The v2 thumbnail had to imply the cold
+open because the video contained no photography; this cut opens on that lake,
+so the thumbnail now promises what the first frame delivers. Rendered from the
+HTML by headless Chrome at 1280x720, 150 KB JPEG (YouTube's ceiling is 2 MB).
+Headline contrast measured on the rendered pixels, sampling the ground ring
+3-11px out from the glyphs: **median 17.19:1, worst single pixel 12.43:1,
+nothing under 4.5:1**. Legibility confirmed at the 168px feed render, not just
+at full size. Not CTR-scored: `vidiq_score_thumbnail` still needs a published
+videoId or a hosted URL, and this is unpublished and local (`PUBLISH.md`,
+"Still open").
+
 **Content rules kept.** Ectoin is never drawn as a shield or attached to a
 protein: the hydration-layer plates (V08, I12, I24) show small molecules
 hovering *away* from the surface, the honest-version diagram in

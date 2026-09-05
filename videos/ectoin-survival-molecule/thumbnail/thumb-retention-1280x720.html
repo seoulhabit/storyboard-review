@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ectoin — retention thumbnail 1280x720</title>
+<style>
+  /* Retention-master thumbnail. Same house idiom as thumb-1280x720.html
+     (dark ground, Inter 900 uppercase, coral underline, aqua accent, three
+     overlay words sharing no word with the title) with ONE change: the art
+     is the video's own photoreal salt-lake plate instead of a drawn
+     landscape. The v2 thumbnail had to imply the cold open with a value
+     band because the video had no photography in it; this cut opens ON that
+     lake, so the thumbnail can promise the thing the first frame delivers.
+
+     The ectoine ring is kept, small and to the right, because the landscape
+     alone does not say "molecule" and the title's other half is barrier
+     repair. Landscape + ring is the video's whole thesis in one frame.
+
+     Legibility is sized for the 168px-wide feed render, not for this file:
+     three words, 118px type, and a scrim that is opaque under the copy
+     rather than a soft vignette that dissolves at small size. */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  @font-face { font-family:"Inter"; src:url("../assets/fonts/inter-800.woff2") format("woff2");
+               font-weight:800; font-display:block; }
+  body { width:1280px; height:720px; overflow:hidden; background:#0b0d0e;
+         font-family:'Inter','Helvetica Neue',Arial,sans-serif; }
+
+  .stage { position:relative; width:1280px; height:720px; overflow:hidden; }
+
+  /* The plate itself. Pushed right and scaled so the brine pools and the
+     horizon fall in the right two-thirds, clear of the copy. */
+  .plate { position:absolute; inset:0; }
+  .plate img { position:absolute; left:0; top:0; width:1280px; height:720px;
+               object-fit:cover; transform:scale(1.18) translate(64px, 10px);
+               transform-origin:50% 50%; }
+  /* Cool the plate toward the channel's aqua/ink palette -- the raw frame is
+     warm pink, which fights the coral accent at feed size. */
+  .grade { position:absolute; inset:0; background:#12303a; opacity:0.20;
+           mix-blend-mode:color; }
+  .deepen { position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,13,14,0.55) 0%, rgba(11,13,14,0.10) 34%, rgba(11,13,14,0.42) 100%); }
+
+  /* Copy scrim: hard on the left, gone by 62%. */
+  /* Hold to 40%, falloff done by 70%: the longest line ("NOTHING") ends at
+     x=610 (48%), the ring starts at x=862 (67%), so the copy sits entirely on
+     the held plateau and the ring on clear plate.
+     MEASURED on the rendered pixels, ground ring 3-11px out from the glyphs
+     (the first 3px are the letters' own anti-aliasing and are NOT background --
+     counting them reported a bogus 5.5% of the halo under 4.5:1, which sent an
+     earlier pass chasing a scrim problem that did not exist): median 17.19:1,
+     worst single pixel 12.43:1, nothing under 4.5:1. */
+  .scrim { position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(11,13,14,0.95) 0%, rgba(11,13,14,0.93) 40%,
+               rgba(11,13,14,0.66) 54%, rgba(11,13,14,0.00) 70%); }
+
+  .copy { position:absolute; left:74px; top:150px; z-index:4; }
+  .h1 { font-weight:800; font-size:118px; line-height:0.94; letter-spacing:-0.025em;
+        color:#F7F5F0; text-transform:uppercase;
+        text-shadow:0 4px 34px rgba(0,0,0,0.7); }
+  .accent-wrap { position:relative; display:inline-block; }
+  .underline { position:absolute; left:0; right:0; bottom:-14px; height:14px;
+               background:#C97A5C; border-radius:6px; }
+
+  /* Ectoine ring, carried over from the v2 thumbnail's art so the two read as
+     one channel. Smaller here: the photograph is doing the attention work. */
+  .art { position:absolute; right:58px; top:150px; width:360px; height:360px; z-index:3;
+    filter: drop-shadow(0 0 16px rgba(89,184,174,0.95))
+            drop-shadow(0 0 54px rgba(89,184,174,0.60))
+            drop-shadow(0 0 90px rgba(11,13,14,0.95))
+            drop-shadow(0 0 160px rgba(11,13,14,0.85)); }
+
+  .grain { position:absolute; inset:0; opacity:0.05; mix-blend-mode:screen; z-index:5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="plate"><img src="../assets/plates/I01-saltlake.jpg" alt=""></div>
+  <div class="grade"></div>
+  <div class="deepen"></div>
+  <div class="scrim"></div>
+
+  <svg class="art" viewBox="0 0 520 520" aria-hidden="true">
+    <defs>
+      <radialGradient id="core" cx="42%" cy="38%" r="68%">
+        <stop offset="0%"  stop-color="#EAF6F3"/>
+        <stop offset="52%" stop-color="#9FE0D6"/>
+        <stop offset="100%" stop-color="#59B8AE"/>
+      </radialGradient>
+      <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#9FE0D6"/><stop offset="100%" stop-color="#59B8AE"/>
+      </linearGradient>
+    </defs>
+    <g fill="#9FE0D6">
+      <g opacity="0.95">
+        <circle cx="260" cy="104" r="13"/><circle cx="372" cy="148" r="13"/>
+        <circle cx="416" cy="260" r="13"/><circle cx="372" cy="372" r="13"/>
+        <circle cx="260" cy="416" r="13"/><circle cx="148" cy="372" r="13"/>
+        <circle cx="104" cy="260" r="13"/><circle cx="148" cy="148" r="13"/>
+      </g>
+    </g>
+    <circle cx="260" cy="260" r="156" fill="none" stroke="url(#ring)" stroke-width="3.5" opacity="0.55"/>
+    <g transform="translate(260,260)">
+      <path d="M0,-96 L83,-48 L83,48 L0,96 L-83,48 L-83,-48 Z"
+            fill="rgba(11,13,14,0.42)" stroke="url(#ring)" stroke-width="9"
+            stroke-linejoin="round"/>
+      <circle cx="0" cy="0" r="23" fill="url(#core)"/>
+    </g>
+  </svg>
+
+  <div class="copy">
+    <div class="h1">Where<br>nothing<br><span class="accent-wrap">lives<span class="underline"></span></span></div>
+  </div>
+
+  <div class="grain"></div>
+</div>
+</body>
+</html>

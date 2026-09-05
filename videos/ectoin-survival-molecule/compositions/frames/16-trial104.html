@@ -4,21 +4,30 @@
 <body>
 <template>
   <div id="root" data-composition-id="16-trial104"
-       data-width="1920" data-height="1080" data-duration="12.658">
+       data-width="1920" data-height="1080" data-duration="15.664">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -128,7 +137,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -153,8 +162,10 @@
     .g16 { display:grid; grid-template-columns:42fr 58fr; gap:var(--s-8);
            align-items:center; height:100%; }
     .cohort { display:grid; grid-template-columns:repeat(13,1fr); gap:7px; }
+    /* 104 dots ARE the datum here, so they are a meaningful graphic and owe
+       3:1, not decoration. --ink-3 read 2.67:1 on paper. */
     .cohort i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%;
-                background:var(--ink-3); }
+                background:var(--ink-2); }
 
     /* top/left/right are offset from #root's own edge (the chband div is a
        sibling of .stage, not nested inside it), so the safe-area tokens are
@@ -172,7 +183,6 @@
     .chband .kicker { position:relative; z-index:1; font-size:var(--t-frame);
                        letter-spacing:var(--tr-mono); }
 
-    #root { color:var(--paper); }
     .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
     .plate > video, .plate > img { position:absolute; left:0; top:0;
              width:1920px; height:1080px; object-fit:cover; display:block;
@@ -206,7 +216,7 @@
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
-    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .kicker { color:var(--ink-2-dark); }
     .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
                 line-height:var(--lh-snug); margin:0; color:var(--paper); }
     .lt .line b { font-weight:400; color:var(--coral); }
@@ -222,6 +232,15 @@
     /* headline backing: copy over a bright plate needs a ground of its own */
     .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
           border-radius:var(--r-3); width:max-content; max-width:100%; }
+    /* COLUMN backing, for a block of copy rather than one line. MEASURED on
+       the shipped master with an Otsu split of the text region: a directional
+       .scrim plus a 20-26px text-shadow left 05's 60px note at 2.31:1, 09's
+       body at 3.78:1 and 28's 96px headline at 1.91:1 -- a soft halo under a
+       400-weight serif is not a contrast floor, and 05's aqua screen-blend
+       tint actively BRIGHTENS the plate under its own type. A stated ground
+       is the only thing that holds regardless of what the plate does. */
+    .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
+            padding:var(--s-5) var(--s-6); }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -231,8 +250,6 @@
     .ground img { position:absolute; left:0; top:0; width:1920px; height:1080px;
                   object-fit:cover; transform-origin:50% 50%; }
 
-    #root { color:inherit; }
-    
     </style>
     <div class="ground" id="gnd"><img id="gi" src="assets/plates/C-baseskin.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
       <div class="chband" id="ch-band">
@@ -262,36 +279,51 @@
   // beat bound to 0.350. Count-up ENDS on the word that names the number, so
   // the counter never finishes before or after "a hundred and four" is said.
   var grid = document.getElementById('t-grid');
+  // The stagger RIDES the count-up rather than running at a fixed 22ms. With a
+  // fixed step the grid finished in 2.3s while the counter took 9.7s after the
+  // re-pace, leaving 7.5s in which the only thing changing was the tail of a
+  // power1.out number crawl -- under the motion gate's threshold, and a genuine
+  // dead shot. Tied to the count, the grid fills for exactly as long as the
+  // number climbs, which is what the beat was always meant to be.
+  var fillStep = (9.722 - 0.350) / 104;
   for (var i = 0; i < 104; i++) {
     var d = document.createElement('i'); d.id = 'ct-' + i; grid.appendChild(d);
     tl.set('#ct-' + i, { opacity:0, scale:0.3, transformOrigin:'50% 50%' }, 0);
-    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, 0.350 + i*0.022);
+    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, 0.350 + i*fillStep);
   }
   var counter = { v:0 }, el = document.getElementById('t-n');
   tl.set('#t-n', { opacity:0 }, 0);   // restates the CSS default, never the sole source
   tl.to('#t-n', { opacity:1, duration:0.30 }, 0.350);
-  tl.to(counter, { v:104, duration:(7.570 - 0.350), ease:'power1.out',
+  tl.to(counter, { v:104, duration:(9.722 - 0.350), ease:'power1.out',
                    onUpdate:function(){ el.textContent = Math.round(counter.v); } }, 0.350);
-  tl.fromTo('#t-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 7.570+0.70);
+  tl.fromTo('#t-h', { opacity:0, y:34 }, { opacity:1, y:0, duration:0.55 }, 9.722+0.70);
   // split the cohort into the two arms -- a whole-grid recolour, on the word
   // that introduces the comparison arm ("against the same cream without it").
   for (var j = 0; j < 104; j++) {
     tl.to('#ct-' + j, { backgroundColor: (j % 2 ? '#59B8AE' : '#9C978D'),
-                        duration:0.50 }, 9.920 + (j % 13) * 0.05);
+                        duration:0.50 }, 12.683 + (j % 13) * 0.05);
   }
-  tl.fromTo('#t-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 9.920+1.50);
+  tl.fromTo('#t-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 12.683+1.50);
   // The grid physically SPLITS into its two arms -- a whole-column move, where
   // recolouring 104 small dots measured as nothing.
   tl.to('#t-grid', { scaleX:0.92, x:-26, transformOrigin:'50% 50%', duration:1.50,
-                     ease:'power2.inOut' }, 9.920+2.70);
-  tl.to('#t-grid', { scaleY:1.10, duration:1.80, ease:'power2.inOut' }, 9.920+5.70);
+                     ease:'power2.inOut' }, 12.683+2.70);
+  tl.to('#t-grid', { scaleY:1.10, duration:1.80, ease:'power2.inOut' }, 12.683+5.70);
 
   // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
   tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
-  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
-  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:12.700, ease:'none' }, 0);
+  // The band WIPES out, it does not dissolve. A dissolve necessarily spends its
+  // whole exit at a contrast the band never has when it is being read: measured
+  // 5.42:1 at 1.0s and 1.29:1 at 1.94s, mid-fade, on the same element. Wiping
+  // the container (it already has overflow:hidden) removes the band without
+  // ever putting translucent type on screen -- and it echoes the wash that
+  // brought it in.
+  tl.to('#ch-band', { clipPath:'inset(0% 0% 0% 100%)', duration:0.45,
+                      ease:'power2.inOut' }, 1.6);
+  tl.set('#ch-band', { opacity:0 }, 2.10);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:15.664, ease:'none' }, 0.000);
 
-    tl.to({}, { duration: 12.658 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 15.664 }, 0);   // full-span anchor -- always last
     window.__timelines["16-trial104"] = tl;
   </script>
 </template>

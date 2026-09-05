@@ -1,0 +1,215 @@
+{
+  "scene": "24-eleven",
+  "block": "24-eleven",
+  "cut": {
+    "start": 0.08,
+    "end": 17.323
+  },
+  "gain_db": 2.3,
+  "lufs": -20.0,
+  "wpm": 150.0,
+  "words": [
+    {
+      "text": "The",
+      "start": 0.1,
+      "end": 0.95
+    },
+    {
+      "text": "brand",
+      "start": 0.95,
+      "end": 2.61
+    },
+    {
+      "text": "Abib",
+      "start": 2.7,
+      "end": 2.76
+    },
+    {
+      "text": "promotes",
+      "start": 2.76,
+      "end": 2.93
+    },
+    {
+      "text": "Ectoin",
+      "start": 2.93,
+      "end": 3.05
+    },
+    {
+      "text": "Panthenol",
+      "start": 3.05,
+      "end": 3.25
+    },
+    {
+      "text": "11%,",
+      "start": 3.39,
+      "end": 4.24
+    },
+    {
+      "text": "but",
+      "start": 4.48,
+      "end": 4.61
+    },
+    {
+      "text": "that",
+      "start": 4.61,
+      "end": 4.98
+    },
+    {
+      "text": "11%",
+      "start": 4.98,
+      "end": 5.61
+    },
+    {
+      "text": "combines",
+      "start": 5.78,
+      "end": 6.18
+    },
+    {
+      "text": "the",
+      "start": 6.18,
+      "end": 6.36
+    },
+    {
+      "text": "two",
+      "start": 6.36,
+      "end": 6.56
+    },
+    {
+      "text": "ingredients.",
+      "start": 6.56,
+      "end": 7.2
+    },
+    {
+      "text": "Panthenol",
+      "start": 7.491,
+      "end": 7.491
+    },
+    {
+      "text": "is",
+      "start": 7.53,
+      "end": 7.54
+    },
+    {
+      "text": "second",
+      "start": 7.54,
+      "end": 8.04
+    },
+    {
+      "text": "on",
+      "start": 8.04,
+      "end": 8.19
+    },
+    {
+      "text": "the",
+      "start": 8.21,
+      "end": 8.45
+    },
+    {
+      "text": "ingredient",
+      "start": 8.45,
+      "end": 9.29
+    },
+    {
+      "text": "list.",
+      "start": 9.29,
+      "end": 9.92
+    },
+    {
+      "text": "Ectoin",
+      "start": 9.92,
+      "end": 10.195
+    },
+    {
+      "text": "is",
+      "start": 10.264,
+      "end": 10.454
+    },
+    {
+      "text": "11th.",
+      "start": 10.454,
+      "end": 11.594
+    },
+    {
+      "text": "The",
+      "start": 11.594,
+      "end": 11.939
+    },
+    {
+      "text": "big",
+      "start": 11.939,
+      "end": 11.939
+    },
+    {
+      "text": "number",
+      "start": 11.939,
+      "end": 11.939
+    },
+    {
+      "text": "on",
+      "start": 11.939,
+      "end": 11.942
+    },
+    {
+      "text": "the",
+      "start": 11.942,
+      "end": 12.212
+    },
+    {
+      "text": "front",
+      "start": 12.212,
+      "end": 12.662
+    },
+    {
+      "text": "is",
+      "start": 12.662,
+      "end": 12.842
+    },
+    {
+      "text": "not",
+      "start": 12.842,
+      "end": 12.892
+    },
+    {
+      "text": "always",
+      "start": 13.152,
+      "end": 13.652
+    },
+    {
+      "text": "the",
+      "start": 13.652,
+      "end": 13.922
+    },
+    {
+      "text": "Ectoin",
+      "start": 13.922,
+      "end": 14.432
+    },
+    {
+      "text": "number.",
+      "start": 14.502,
+      "end": 15.082
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 7.2,
+      "text": "The brand Abib promotes Ectoin Panthenol 11%, but that 11% combines the two ingredients."
+    },
+    {
+      "start": 7.491,
+      "end": 9.92,
+      "text": "Panthenol is second on the ingredient list."
+    },
+    {
+      "start": 9.92,
+      "end": 11.594,
+      "text": "Ectoin is 11th."
+    },
+    {
+      "start": 11.594,
+      "end": 15.082,
+      "text": "The big number on the front is not always the Ectoin number."
+    }
+  ]
+}

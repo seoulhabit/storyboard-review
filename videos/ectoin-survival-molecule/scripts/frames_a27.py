@@ -50,7 +50,15 @@ def chband_body(cid):
 CHBAND_TL = """
   // Chapter band: washes in over the wipe, recedes at 1.6s -- see CHBAND_CSS.
   tl.fromTo('#ch-wash', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.inOut' }, 0.05);
-  tl.to('#ch-band', { opacity:0, y:-26, duration:0.50, ease:'power2.inOut' }, 1.6);
+  // The band WIPES out, it does not dissolve. A dissolve necessarily spends its
+  // whole exit at a contrast the band never has when it is being read: measured
+  // 5.42:1 at 1.0s and 1.29:1 at 1.94s, mid-fade, on the same element. Wiping
+  // the container (it already has overflow:hidden) removes the band without
+  // ever putting translucent type on screen -- and it echoes the wash that
+  // brought it in.
+  tl.to('#ch-band', { clipPath:'inset(0% 0% 0% 100%)', duration:0.45,
+                      ease:'power2.inOut' }, 1.6);
+  tl.set('#ch-band', { opacity:0 }, 2.10);
 """
 
 # NOTE (2026-09-02): copy inside a washed container is ALWAYS wrapped in an
@@ -157,7 +165,7 @@ S09 = dict(css="""
           <circle id="e-prot" cx="310" cy="310" r="112" fill="#131516"/>
           <g id="e-ring"></g>
           <text id="e-lab" x="310" y="322" text-anchor="middle" fill="#F7F5F0"
-                font-family="Inter, sans-serif" font-weight="800" font-size="34"
+                font-family="Inter, sans-serif" font-weight="800" font-size="36"
                 opacity="0">PROTEIN</text>
         </svg>
       </div></div>
@@ -504,8 +512,10 @@ S16 = dict(css="""
     .g16 { display:grid; grid-template-columns:42fr 58fr; gap:var(--s-8);
            align-items:center; height:100%; }
     .cohort { display:grid; grid-template-columns:repeat(13,1fr); gap:7px; }
+    /* 104 dots ARE the datum here, so they are a meaningful graphic and owe
+       3:1, not decoration. --ink-3 read 2.67:1 on paper. */
     .cohort i { display:block; width:100%; aspect-ratio:1/1; border-radius:50%;
-                background:var(--ink-3); }
+                background:var(--ink-2); }
 """ + CHBAND_CSS, body=chband_body("16-trial104") + """
     <div class="stage">
       <div class="g16">
@@ -524,10 +534,17 @@ S16 = dict(css="""
   // beat bound to @first. Count-up ENDS on the word that names the number, so
   // the counter never finishes before or after "a hundred and four" is said.
   var grid = document.getElementById('t-grid');
+  // The stagger RIDES the count-up rather than running at a fixed 22ms. With a
+  // fixed step the grid finished in 2.3s while the counter took 9.7s after the
+  // re-pace, leaving 7.5s in which the only thing changing was the tail of a
+  // power1.out number crawl -- under the motion gate's threshold, and a genuine
+  // dead shot. Tied to the count, the grid fills for exactly as long as the
+  // number climbs, which is what the beat was always meant to be.
+  var fillStep = (@we(104) - @first) / 104;
   for (var i = 0; i < 104; i++) {
     var d = document.createElement('i'); d.id = 'ct-' + i; grid.appendChild(d);
     tl.set('#ct-' + i, { opacity:0, scale:0.3, transformOrigin:'50% 50%' }, 0);
-    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, @first + i*0.022);
+    tl.to('#ct-' + i, { opacity:1, scale:1, duration:0.30 }, @first + i*fillStep);
   }
   var counter = { v:0 }, el = document.getElementById('t-n');
   tl.set('#t-n', { opacity:0 }, 0);   // restates the CSS default, never the sole source
@@ -597,9 +614,14 @@ S17 = dict(css="""
   tl.fromTo('#pr-a', { opacity:0, y:50 }, { opacity:1, y:0, duration:0.50 }, 0.15);
   tl.fromTo('#pr-b', { opacity:0, y:50 }, { opacity:1, y:0, duration:0.50 }, 0.35);
   tl.fromTo('#pr-h', { opacity:0 }, { opacity:1, duration:0.50 }, 1.20);
+  // BOUND TO WORDS, not to literal seconds. These three beats were authored at
+  // 3.00 / 3.20 / 5.90 against an 11.5s read; re-paced to 130 wpm the scene runs
+  // 13.1s and the last beat landed at 6.6s, leaving 6.5s in which only a 0.16-
+  // opacity blurred ground moved -- a dead shot the motion gate caught. A beat
+  // pinned to the word it illustrates follows the read wherever the read goes.
   // the winning arm floods with colour -- a whole half-width panel, ~20% of frame
-  tl.fromTo('#pr-wa', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, 3.00);
-  tl.to('#pr-b', { opacity:0.40, duration:0.70 }, 3.20);
+  tl.fromTo('#pr-wa', { scaleX:0 }, { scaleX:1, duration:0.90, ease:'power2.inOut' }, @w(women));
+  tl.to('#pr-b', { opacity:0.65, duration:0.70 }, @w(themselves));
   // The carried grid COLLAPSES into the ectoin arm on "preferred" -- the word
   // that states the finding the grid was standing in for.
   tl.to('#carry-grid', { scale:0.18, x:-360, y:60, opacity:0,
@@ -607,7 +629,10 @@ S17 = dict(css="""
                          ease:'power2.inOut' }, @w(preferred));
   // the qualifier slides up over the result -- the honest beat, and a big one
   tl.set('#pr-q', { opacity:0, y:90 }, 0);
-  tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, 5.90);
+  tl.to('#pr-q', { opacity:1, y:0, duration:0.65, ease:'power3.out' }, @w(preference)-0.35);
+  // and it settles across the rest of the line rather than stopping dead on it
+  tl.to('#pr-q', { y:-10, duration:@dur-(@w(preference)+0.30), ease:'none' },
+        @w(preference)+0.30);
 """)
 
 # ---------------------------------------------------------------- 18 eczema trial
@@ -659,14 +684,21 @@ S18 = dict(css="""
   // which is the finding stated invisibly.
   tl.fromTo('#ez-f1', { scaleY:0 }, { scaleY:0.94, duration:2.90, ease:'power1.inOut' }, 2.80);
   tl.fromTo('#ez-f2', { scaleY:0 }, { scaleY:0.52, duration:2.90, ease:'power1.inOut' }, 2.80);
-  tl.fromTo('#ez-n', { opacity:0 }, { opacity:1, duration:0.50 }, 8.20);
-  tl.fromTo('#ez-cite', { opacity:0 }, { opacity:1, duration:0.45 }, 10.40);
+  // BOUND TO WORDS. Authored at 7.10 / 8.20 / 10.40 against a 15.1s read; at
+  // 130 wpm the scene runs 17.6s and every beat had finished by 12.5s, leaving
+  // the last five seconds with nothing moving but a blurred 0.16-opacity ground.
+  tl.fromTo('#ez-n', { opacity:0 }, { opacity:1, duration:0.50 }, @w(weeks)+0.30);
+  tl.fromTo('#ez-cite', { opacity:0 }, { opacity:1, duration:0.45 }, @w(barrier));
   // Both bars converge to exactly level -- the finding, made visible as a
-  // large-area move rather than two static columns.
+  // large-area move rather than two static columns -- on the words that state it.
   tl.to('#ez-f1', { scaleY:0.76, backgroundColor:'#59B8AE', duration:2.10,
-                    ease:'power2.inOut' }, 7.10);
+                    ease:'power2.inOut' }, @w(performed)-0.40);
   tl.to('#ez-f2', { scaleY:0.76, backgroundColor:'#59B8AE', duration:2.10,
-                    ease:'power2.inOut' }, 7.10);
+                    ease:'power2.inOut' }, @w(performed)-0.40);
+  // and the pair settles across "and was well tolerated" rather than stopping
+  // dead on "tested against".
+  tl.to(['#ez-f1','#ez-f2'], { scaleY:0.80, duration:@dur-@w(against), ease:'none' },
+        @w(against));
   tl.to('#ez-prog', { backgroundColor:'#4F6B52', duration:1.20 }, 10.60);
 """)
 
@@ -676,28 +708,47 @@ S19 = dict(css="""
     .g19 { display:flex; flex-direction:column; justify-content:center;
            gap:var(--s-6); height:100%; }
     .claims { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-5); }
+    /* NOT-SUPPORTED CARD. The predecessor voided each claim with a full-card
+       coral flood at opacity 0.88. `.x` is absolutely positioned and is NOT a
+       `.wash`, so the _preamble rule that lifts washed siblings to z-index 1
+       never applied and the flood painted OVER the copy -- measured 1.03:1 on
+       the render, i.e. the claim was erased rather than struck. It also carried
+       the whole meaning in one colour. Three cues now, none of them colour
+       alone: an explicit `NOT SUPPORTED` label, a rule struck through the
+       claim, and a coral edge. The copy stays --paper on --ink-soft, 15.1:1,
+       readable for the whole scene. */
     .cl { position:relative; background:var(--ink-soft); border-radius:var(--r-3);
           padding:var(--s-6); text-align:center; overflow:hidden;
+          border-left:10px solid var(--ink-soft);
           font-family:var(--font-body); font-weight:800; font-size:var(--t-frame);
-          min-height:230px; display:flex; align-items:center; justify-content:center; }
-    .cl .x { position:absolute; inset:0; background:var(--coral); opacity:0; }
+          min-height:230px; display:flex; flex-direction:column; gap:var(--s-4);
+          align-items:center; justify-content:center; }
+    .cl .claim { position:relative; z-index:1; display:inline-block; }
+    .cl .strike { position:absolute; left:-6px; right:-6px; top:50%; height:6px;
+                  background:var(--coral); transform:scaleX(0);
+                  transform-origin:0% 50%; z-index:2; }
+    .cl .tag { font-family:var(--font-mono); font-weight:500;
+               font-size:var(--t-caption); letter-spacing:var(--tr-mono-wide);
+               text-transform:uppercase; color:var(--coral); opacity:0; }
 """, body="""    <div class="stage">
       <div class="g19">
         <p class="hero" id="li-h">Encouraging. Not proof.</p>
         <div class="claims">
-          <div class="cl" id="cl-0"><div class="x" id="x-0"></div><span>Cures eczema</span></div>
-          <div class="cl" id="cl-1"><div class="x" id="x-1"></div><span>Reverses ageing</span></div>
-          <div class="cl" id="cl-2"><div class="x" id="x-2"></div><span>Replaces a prescription</span></div>
+          <div class="cl" id="cl-0"><span class="claim">Cures eczema<span class="strike" id="x-0"></span></span><span class="tag" id="tg-0">Not supported</span></div>
+          <div class="cl" id="cl-1"><span class="claim">Reverses ageing<span class="strike" id="x-1"></span></span><span class="tag" id="tg-1">Not supported</span></div>
+          <div class="cl" id="cl-2"><span class="claim">Replaces a prescription<span class="strike" id="x-2"></span></span><span class="tag" id="tg-2">Not supported</span></div>
         </div>
       </div>
     </div>""", tl="""
-  // Three full cards, each ~10% of the frame, and each is VOIDED by a full-card
-  // colour flood -- the panel-scale version of a strike-through. This is exactly
-  // the beat that read as nothing at 5px in Act 1.
+  // Three full cards, each ~10% of the frame, each REFUSED on the beat: a coral
+  // rule drawn through the claim, a coral edge, and the words "Not supported".
+  // Motion still carries it at 5px; meaning no longer depends on the colour.
   tl.fromTo('#li-h', { opacity:0, y:40 }, { opacity:1, y:0, duration:0.55 }, 0.15);
   for (var i = 0; i < 3; i++) {
     tl.fromTo('#cl-' + i, { opacity:0, y:56 }, { opacity:1, y:0, duration:0.45 }, 0.80 + i*0.22);
-    tl.fromTo('#x-' + i, { opacity:0 }, { opacity:0.88, duration:0.35 }, 2.90 + i*0.75);
+    tl.fromTo('#x-' + i, { scaleX:0 }, { scaleX:1, duration:0.35, ease:'power2.inOut' }, 2.90 + i*0.75);
+    tl.to('#cl-' + i, { borderLeftColor:'#C97A5C', duration:0.35 }, 2.90 + i*0.75);
+    tl.fromTo('#tg-' + i, { opacity:0, y:10 }, { opacity:1, y:0, duration:0.30 }, 3.05 + i*0.75);
   }
 """)
 
@@ -749,9 +800,13 @@ S21 = dict(css="""
     .g21 { display:flex; flex-direction:column; justify-content:center;
            gap:var(--s-6); height:100%; }
     .makers { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-5); }
-    .mk { background:var(--ink-soft); border-radius:var(--r-3); padding:var(--s-6);
-          text-align:center; font-family:var(--font-body); font-weight:800;
-          font-size:var(--t-frame); }
+    /* Colour stated, never inherited. These three tiles shipped BLACK on
+       near-black (1.28:1 measured at t=229.6s) because a wrapper's trailing
+       `#root { color:inherit }` outranked the scene's own root rule. An
+       explicit colour here cannot be reached by that class of bug. */
+    .mk { background:var(--ink-soft); color:var(--paper); border-radius:var(--r-3);
+          padding:var(--s-6); text-align:center; font-family:var(--font-body);
+          font-weight:800; font-size:var(--t-frame); }
     .verdict { position:relative; border-radius:var(--r-3); padding:var(--s-7);
                overflow:hidden; background:var(--ink-soft); text-align:center; }
     /* CARRY from 20-twelve: the same hero "12", same size, same corner it
@@ -760,8 +815,25 @@ S21 = dict(css="""
     .ghost12 { position:absolute; top:var(--safe-top); left:var(--safe-left);
                font-family:var(--font-display); font-size:180px; line-height:1;
                color:var(--paper); margin:0; z-index:5; }
-    .void-flash { position:absolute; inset:-8px -16px; background:var(--coral);
-                  opacity:0; border-radius:var(--r-2); z-index:-1; }
+    /* VERDICT HALVES. "No." used to be inline coral, which lands at 5.03:1 on
+       --ink-soft but collapses to 1.72:1 once the moss wash sweeps under it,
+       and it carried the whole yes/no distinction in hue alone. Both halves
+       now read in --paper (15.1:1 / 5.4:1 on the wash) and are distinguished
+       by a drawn underline AND a word: moss + SUPPORTED, coral + NOT
+       SUPPORTED. The colour is confirmation, not the message. */
+    .v-line { margin:0; }
+    /* The panel washes MOSS mid-scene, so a moss or coral marker on it is a
+       1.1-1.7:1 mark that simply disappears -- which is what the original
+       moss "Yes." underline and coral "No." flash both did. The verdict is
+       carried instead by a glyph plus a word inside a currentColor pill, and
+       both underlines are --paper so they read on ink-soft AND on the wash. */
+    .v-tag { display:inline-block; margin:10px 0 var(--s-5);
+             font-family:var(--font-mono); font-weight:500;
+             font-size:var(--t-caption); letter-spacing:var(--tr-mono-wide);
+             text-transform:uppercase; color:var(--paper); opacity:0;
+             border:2px solid currentColor; border-radius:var(--r-pill);
+             padding:6px 22px; }
+    .v-tag .g { margin-right:12px; font-size:1.1em; vertical-align:-0.04em; }
 """, body="""    <div class="stage">
       <div class="ghost12" id="ghost-12">12</div>
       <div class="g21">
@@ -773,10 +845,12 @@ S21 = dict(css="""
         </div>
         <div class="verdict" id="v-box">
           <div class="wash moss" id="v-wash"></div>
-          <p class="hero" id="v-h">Promising supporting ingredient. <span id="v-yes"
-            style="position:relative">Yes.</span><br>
-            Miracle molecule. <span id="v-no" style="position:relative;color:var(--coral)">
-            <span class="void-flash" id="v-no-flash"></span>No.</span></p>
+          <p class="hero v-line" id="v-h">Promising supporting ingredient. <span id="v-yes"
+            style="position:relative">Yes.</span></p>
+          <span class="v-tag yes" id="v-tag-yes"><span class="g">&#10003;</span>Supported by the trials</span>
+          <p class="hero v-line">Miracle molecule. <span id="v-no"
+            style="position:relative">No.</span></p>
+          <span class="v-tag no" id="v-tag-no"><span class="g">&#10005;</span>Not supported</span>
         </div>
       </div>
     </div>""", tl="""
@@ -785,27 +859,35 @@ S21 = dict(css="""
   tl.fromTo('#v-k', { opacity:0 }, { opacity:1, duration:0.40 }, @w(Some));
   tl.to('#ghost-12', { scale:0.16, x:40, y:-30, opacity:0, transformOrigin:'0% 0%',
                        duration:0.55, ease:'power2.inOut' }, @w(Some));
-  // ASR on this take mis-hears the three brand names ("Bitop, Merck, Kao")
-  // as "BTOP Merk Cow." -- bound to what is actually in the manifest, same
-  // as any other scene; a human listen confirms the SPOKEN audio still says
-  // the real names correctly, this is a whisper/small.en transcription miss
-  // on unfamiliar proper nouns, not a TTS defect.
+  // ASR on this take still mis-hears two of the three brand names ("Bitop"
+  // as "BTOP", "Kao" as "Cow"); Merck now comes back correctly. Markers bind
+  // to what is in the manifest, same as any other scene. The SPOKEN audio is
+  // right -- verified on whisper large-v3, which reads all three -- so this is
+  // a small.en miss on proper nouns, not a TTS defect. vo_words.CORRECTIONS
+  // maps them back for the captions.
   tl.fromTo('#mk-0', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(BTOP));
-  tl.fromTo('#mk-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(Merk));
+  tl.fromTo('#mk-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(Merck));
   tl.fromTo('#mk-2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, @w(Cow));
   // The verdict panel enters full-width and then washes -- two large beats on the
   // line the whole act has been building to.
   tl.set('#v-box', { opacity:0, y:70 }, 0);
   tl.to('#v-box', { opacity:1, y:0, duration:0.60, ease:'power3.out' }, @w(Promising));
   // "yes" gets an underline highlight -- the affirming half of the verdict.
-  tl.fromTo('#v-yes', { backgroundImage:'linear-gradient(#4F6B52,#4F6B52)',
+  tl.fromTo('#v-yes', { backgroundImage:'linear-gradient(#F7F5F0,#F7F5F0)',
       backgroundRepeat:'no-repeat', backgroundSize:'0% 4px',
       backgroundPosition:'0% 100%' },
     { backgroundSize:'100% 4px', duration:0.45, ease:'power2.inOut' }, @w(yes));
   // "Miracle" is where the panel washes moss -- the coral line + wash beat.
   tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, @w(Miracle));
-  // "no" gets a coral void flash -- the negating half of the verdict.
-  tl.fromTo('#v-no-flash', { opacity:0 }, { opacity:0.85, duration:0.30 }, @w(no));
+  tl.fromTo('#v-tag-yes', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.30 }, @w(yes)+0.25);
+  // "no" is underlined in coral -- the same gesture as "yes", opposite hue --
+  // and the two words SUPPORTED / NOT SUPPORTED land under the halves they
+  // label, so the verdict survives without colour vision.
+  tl.fromTo('#v-no', { backgroundImage:'linear-gradient(#F7F5F0,#F7F5F0)',
+      backgroundRepeat:'no-repeat', backgroundSize:'0% 4px',
+      backgroundPosition:'0% 100%' },
+    { backgroundSize:'100% 4px', duration:0.45, ease:'power2.inOut' }, @w(no));
+  tl.fromTo('#v-tag-no', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.30 }, @w(no)+0.25);
 """)
 
 # ---------------------------------------------------------------- 22 who it suits
@@ -863,7 +945,7 @@ S23 = dict(css="""
     .bd .pc { font-family:var(--font-display); font-size:120px; line-height:1;
               color:var(--aqua); }
     .bd .nm { font-family:var(--font-mono); font-size:var(--t-label);
-              letter-spacing:var(--tr-mono-wide); color:var(--ink-3-dark);
+              letter-spacing:var(--tr-mono-wide); color:var(--ink-2-dark);
               margin-top:var(--s-3); }
 """, body="""    <div class="stage">
       <div class="g23">
@@ -896,31 +978,57 @@ S24 = dict(css="""
        styling, pixel-identical at t=0 -- PLUS the 11% card the act's payoff
        needs, in the same row, so the row reads as one continuous lineup
        rather than a fresh scene. */
+    /* The active card scales to 1.14 on its beat, and it now carries a 3px
+       border as well, so the row needs room for the overshoot -- otherwise the
+       right-hand card grows straight through the container's clip. */
     .carry23 { position:absolute; top:var(--safe-top); left:var(--safe-left);
                right:var(--safe-right); display:grid;
-               grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5; }
-    .c23-card { background:var(--ink-soft); border-radius:var(--r-3);
+               grid-template-columns:1fr 1fr 1fr; gap:var(--s-5); z-index:5;
+               padding:18px 44px; margin:-18px -44px; }
+    /* CARRY ROW. The two superseded brands used to drop to opacity 0.30 --
+       2.58:1 as authored, 1.08:1 as it actually shipped -- with the live one
+       marked only by an aqua fill. Inactive is now 0.60 plus a dashed edge,
+       active is a solid aqua edge plus a marker glyph, so "which one are we
+       talking about" survives greyscale and a 5px thumbnail alike. */
+    .c23-card { position:relative; background:var(--ink-soft); color:var(--paper);
+                border:3px dashed rgba(247,245,240,.38); border-radius:var(--r-3);
                 padding:var(--s-5); text-align:center; }
+    .c23-card .mark { position:absolute; top:8px; left:14px; opacity:0;
+                      font-family:var(--font-mono); font-size:var(--t-caption);
+                      color:var(--ink); }
     .c23-card .pc { font-family:var(--font-display); font-size:64px; line-height:1;
                      color:var(--aqua); }
     .c23-card .nm { font-family:var(--font-mono); font-size:var(--t-caption);
-                     letter-spacing:var(--tr-mono-wide); color:var(--ink-3-dark);
+                     letter-spacing:var(--tr-mono-wide); color:var(--ink-2-dark);
                      margin-top:var(--s-2); }
-    .c23-card.eleven { background:var(--aqua); color:var(--ink); }
+    .c23-card.eleven { background:var(--aqua); color:var(--ink);
+                       border:3px solid var(--ink); }
     .c23-card.eleven .pc { color:var(--ink); }
-    .c23-card.eleven .nm { color:var(--ink); opacity:0.7; }
+    .c23-card.eleven .nm { color:var(--ink); }
+    .c23-card.eleven .mark { opacity:1; }
     .split { display:flex; gap:var(--s-4); }
     .half { position:relative; flex:1 1 0; min-width:0; border-radius:var(--r-3);
             padding:var(--s-6); text-align:center; }
-    .half.p { background:var(--ink-soft); } .half.e { background:var(--aqua); color:var(--ink); }
+    .half.p { background:var(--ink-soft); color:var(--paper); }
+    .half.e { background:var(--aqua); color:var(--ink); }
     .half .v { font-family:var(--font-display); font-size:78px; line-height:1; }
     .half .k { font-family:var(--font-mono); font-size:var(--t-caption);
                letter-spacing:var(--tr-mono-wide); margin-top:var(--s-2); }
-    .inci { font-family:var(--font-mono); font-size:26px; line-height:2.0;
-            color:var(--ink-3-dark); }
+    /* 26px was the smallest type in the piece, under the project's own 32px
+       "meant to be read" floor, in --ink-3-dark (4.13:1 on --ink-soft) -- and
+       the whole list then dimmed to opacity 0.40, i.e. 1.75:1. Bigger, in the
+       colour that clears AA, and dimmed only to 0.75. The full list is also in
+       the description, per the accessible source list in PUBLISH.md. */
+    .inci { font-family:var(--font-mono); font-size:32px; line-height:1.75;
+            color:var(--ink-2-dark); white-space:nowrap; }
     .inci b { color:var(--paper); font-weight:500; background:var(--ink-soft);
-              padding:3px 10px; border-radius:var(--r-2); }
-    .inci b.hit { background:var(--aqua); color:var(--ink); }
+              padding:3px 10px; border-radius:var(--r-2);
+              border:2px solid transparent; }
+    /* Active INCI entries get weight + a border + a marker glyph on top of the
+       aqua fill; the fill alone was a colour-only state signal. */
+    .inci b.hit { background:var(--aqua); color:var(--ink); font-weight:700;
+                  border-color:var(--ink); }
+    .inci b .mk { opacity:0; }
     /* The 10:1 split drawn TO SCALE across the full column -- the scene's
        largest beat, and a clearer statement of the point than two chips. */
     /* 260px, not 74px: at 74 the bar was 2.9% of the frame and its draw measured
@@ -935,9 +1043,9 @@ S24 = dict(css="""
     .prop-e { flex:1 1 0; background:var(--aqua); color:var(--ink); }
 """, body="""    <div class="stage">
       <div class="carry23" id="carry-row">
-        <div class="c23-card" id="c23-0"><div class="pc">7%</div><div class="nm">PAULA&rsquo;S CHOICE</div></div>
-        <div class="c23-card" id="c23-1"><div class="pc">2%</div><div class="nm">THE ORDINARY</div></div>
-        <div class="c23-card eleven" id="c23-2"><div class="pc">11%</div><div class="nm">ABIB</div></div>
+        <div class="c23-card" id="c23-0"><span class="mark">&#9656;</span><div class="pc">7%</div><div class="nm">PAULA&rsquo;S CHOICE</div></div>
+        <div class="c23-card" id="c23-1"><span class="mark">&#9656;</span><div class="pc">2%</div><div class="nm">THE ORDINARY</div></div>
+        <div class="c23-card eleven" id="c23-2"><span class="mark">&#9656;</span><div class="pc">11%</div><div class="nm">ABIB</div></div>
       </div>
       <div class="g24">
         <div class="col">
@@ -957,11 +1065,14 @@ S24 = dict(css="""
         <div class="col">
           <p class="kicker on-ink" style="margin-bottom:14px">On the ingredient list</p>
           <div class="inci" id="el-inci">
-            1. Water &nbsp; <b id="in-p">2. Panthenol</b> &nbsp; 3. Propanediol<br>
-            4. Cetyl Ethylhexanoate &nbsp; 5. Squalane<br>
-            6. Diisobutyl Adipate &nbsp; 7. Vinyl Dimethicone<br>
-            8. Propylheptyl Caprylate &nbsp; 9. Cetearyl Alcohol<br>
-            10. Glyceryl Glucoside &nbsp; <b id="in-e">11. Ectoin</b>
+            1. Water &nbsp; <b id="in-p"><span class="mk" id="mk-p">&#9656;</span> 2. Panthenol</b><br>
+            3. Propanediol &nbsp; 4. Cetyl Ethylhexanoate<br>
+            5. Squalane &nbsp; 6. Diisobutyl Adipate<br>
+            7. Vinyl Dimethicone<br>
+            8. Propylheptyl Caprylate<br>
+            9. Cetearyl Alcohol<br>
+            10. Glyceryl Glucoside<br>
+            <b id="in-e"><span class="mk" id="mk-e">&#9656;</span> 11. Ectoin</b>
           </div>
         </div>
       </div>
@@ -970,27 +1081,33 @@ S24 = dict(css="""
   // ended (plus the 11% card). On "eleven" the two brand cards dim and the
   // 11% card scales up into the hero position -- the hand-off beat.
   tl.set(['#c23-0','#c23-1','#c23-2'], { opacity:1, y:0, scale:1 }, 0);
-  tl.to(['#c23-0','#c23-1'], { opacity:0.30, duration:0.50 }, @w(11));
+  tl.to(['#c23-0','#c23-1'], { opacity:0.60, duration:0.50 }, @w(11));
   tl.to('#c23-2', { scale:1.14, duration:0.45, ease:'power2.out' }, @w(11));
   tl.to('#c23-2', { opacity:0, scale:1.6, duration:0.45, ease:'power2.in' }, @w(11)+0.55);
   tl.fromTo('#el-n', { opacity:0, scale:0.7, transformOrigin:'0% 50%' },
                      { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, @w(11)+0.55);
   tl.to('#carry-row', { opacity:0, duration:0.01 }, @w(11)+1.05);
-  tl.to('#el-n', { opacity:0.25, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, @w(11)+2.85);
+  tl.to('#el-n', { opacity:0.60, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, @w(11)+2.85);
   // "That eleven is the two of them added together" -- the split reveals on "added".
-  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, @w(added));
-  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, @w(added)+2.20);
+  tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, @w(combines));
+  tl.fromTo('#el-inci', { opacity:0, x:60 }, { opacity:1, x:0, duration:0.60 }, @w(combines)+2.20);
   // "panthenol is second" / "Ectoin is eleventh" -- each highlight lands on its own word.
+  // Fill + weight + border + marker, all on the same beat. The fill alone was
+  // a colour-only signal for "this is the entry we are talking about".
   tl.fromTo('#in-p', { backgroundColor:'#211F1B' },
                      { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, @w(second));
+  tl.to('#in-p', { fontWeight:700, borderColor:'#131516', duration:0.45 }, @w(second));
+  tl.to('#mk-p', { opacity:1, duration:0.30 }, @w(second));
   tl.fromTo('#in-e', { backgroundColor:'#211F1B' },
-                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, @w(eleventh));
+                     { backgroundColor:'#59B8AE', color:'#131516', duration:0.45 }, @w(11th));
+  tl.to('#in-e', { fontWeight:700, borderColor:'#131516', duration:0.45 }, @w(11th));
+  tl.to('#mk-e', { opacity:1, duration:0.30 }, @w(11th));
   tl.fromTo('#el-note', { opacity:0, y:30 }, { opacity:1, y:0, duration:0.55 }, @w(big)-0.20);
   // The two halves of the 11% resolve at panel scale in the back half.
   tl.to('#el-prop', { opacity:1, duration:0.30 }, @w(big)+0.80);
   tl.fromTo('#el-pp', { scaleX:0 }, { scaleX:1, duration:1.05, ease:'power2.out' }, @w(big)+0.90);
   tl.fromTo('#el-pe', { scaleX:0 }, { scaleX:1, duration:0.45, ease:'power2.out' }, @w(big)+2.00);
-  tl.to('#el-inci', { opacity:0.40, duration:1.10 }, @w(big)+3.00);
+  tl.to('#el-inci', { opacity:0.75, duration:1.10 }, @w(big)+3.00);
 """)
 
 # ---------------------------------------------------------------- 25 formula (UNSOURCED)
@@ -1081,7 +1198,7 @@ S27 = dict(css="""
           font-family:var(--font-body); font-weight:800; font-size:var(--t-frame); }
     .sh.from { background:var(--mist); color:var(--ink-2); }
     .sh.to { background:var(--moss); color:var(--paper); }
-    .arrow { font-family:var(--font-mono); font-size:var(--t-hero); color:var(--ink-3); }
+    .arrow { font-family:var(--font-mono); font-size:var(--t-hero); color:var(--ink-2); }
     .where { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-5); }
     .wh { background:var(--ink); color:var(--paper); border-radius:var(--r-3);
           padding:var(--s-5); text-align:center;

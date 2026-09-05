@@ -1,0 +1,130 @@
+{
+  "scene": "26-kbeauty",
+  "block": "act6",
+  "cut": {
+    "start": 0.0,
+    "end": 9.91
+  },
+  "gain_db": 7.9,
+  "lufs": -20.0,
+  "wpm": 147.9,
+  "words": [
+    {
+      "text": "K-beauty",
+      "start": 0.0,
+      "end": 0.77
+    },
+    {
+      "text": "did",
+      "start": 0.77,
+      "end": 1.06
+    },
+    {
+      "text": "not",
+      "start": 1.06,
+      "end": 1.35
+    },
+    {
+      "text": "invent",
+      "start": 1.35,
+      "end": 1.94
+    },
+    {
+      "text": "ectoin.",
+      "start": 1.94,
+      "end": 3.056
+    },
+    {
+      "text": "What",
+      "start": 3.056,
+      "end": 3.376
+    },
+    {
+      "text": "Korean",
+      "start": 3.376,
+      "end": 3.666
+    },
+    {
+      "text": "formulators",
+      "start": 3.666,
+      "end": 4.336
+    },
+    {
+      "text": "are",
+      "start": 4.336,
+      "end": 4.516
+    },
+    {
+      "text": "doing",
+      "start": 4.516,
+      "end": 4.816
+    },
+    {
+      "text": "well",
+      "start": 4.816,
+      "end": 5.016
+    },
+    {
+      "text": "is",
+      "start": 5.146,
+      "end": 5.216
+    },
+    {
+      "text": "pairing",
+      "start": 5.216,
+      "end": 5.646
+    },
+    {
+      "text": "it",
+      "start": 5.646,
+      "end": 5.736
+    },
+    {
+      "text": "with",
+      "start": 5.736,
+      "end": 5.896
+    },
+    {
+      "text": "barrier",
+      "start": 5.896,
+      "end": 6.356
+    },
+    {
+      "text": "ingredients",
+      "start": 6.936,
+      "end": 7.096
+    },
+    {
+      "text": "in",
+      "start": 7.136,
+      "end": 7.256
+    },
+    {
+      "text": "light",
+      "start": 7.256,
+      "end": 7.616
+    },
+    {
+      "text": "wearable",
+      "start": 7.936,
+      "end": 8.186
+    },
+    {
+      "text": "textures.",
+      "start": 8.186,
+      "end": 9.146
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 3.056,
+      "text": "K-beauty did not invent ectoin."
+    },
+    {
+      "start": 3.056,
+      "end": 9.146,
+      "text": "What Korean formulators are doing well is pairing it with barrier ingredients in light wearable textures."
+    }
+  ]
+}

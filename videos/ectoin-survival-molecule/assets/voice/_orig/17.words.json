@@ -1,0 +1,170 @@
+{
+  "scene": "17-preference",
+  "block": "act4+retime(0.7712)",
+  "cut": {
+    "start": 12.13,
+    "end": 29.37
+  },
+  "gain_db": 6.6,
+  "lufs": -20.0,
+  "wpm": 149.4,
+  "words": [
+    {
+      "text": "On",
+      "start": 0.0,
+      "end": 0.091
+    },
+    {
+      "text": "the",
+      "start": 0.091,
+      "end": 0.337
+    },
+    {
+      "text": "study's",
+      "start": 0.337,
+      "end": 0.895
+    },
+    {
+      "text": "own",
+      "start": 0.895,
+      "end": 1.141
+    },
+    {
+      "text": "measure,",
+      "start": 1.141,
+      "end": 1.867
+    },
+    {
+      "text": "the",
+      "start": 1.867,
+      "end": 2.165
+    },
+    {
+      "text": "women",
+      "start": 2.165,
+      "end": 2.516
+    },
+    {
+      "text": "themselves",
+      "start": 2.516,
+      "end": 3.332
+    },
+    {
+      "text": "preferred",
+      "start": 3.332,
+      "end": 4.059
+    },
+    {
+      "text": "the",
+      "start": 4.059,
+      "end": 4.318
+    },
+    {
+      "text": "ectoin",
+      "start": 4.318,
+      "end": 4.981
+    },
+    {
+      "text": "version.",
+      "start": 4.981,
+      "end": 5.15
+    },
+    {
+      "text": "That",
+      "start": 6.749,
+      "end": 6.749
+    },
+    {
+      "text": "is",
+      "start": 6.749,
+      "end": 6.749
+    },
+    {
+      "text": "a",
+      "start": 6.749,
+      "end": 6.749
+    },
+    {
+      "text": "real",
+      "start": 6.749,
+      "end": 6.749
+    },
+    {
+      "text": "result.",
+      "start": 6.749,
+      "end": 6.962
+    },
+    {
+      "text": "And",
+      "start": 6.962,
+      "end": 7.208
+    },
+    {
+      "text": "it",
+      "start": 7.208,
+      "end": 7.377
+    },
+    {
+      "text": "is",
+      "start": 7.377,
+      "end": 7.545
+    },
+    {
+      "text": "a",
+      "start": 7.545,
+      "end": 7.623
+    },
+    {
+      "text": "preference,",
+      "start": 7.623,
+      "end": 8.648
+    },
+    {
+      "text": "not",
+      "start": 8.648,
+      "end": 8.894
+    },
+    {
+      "text": "a",
+      "start": 8.894,
+      "end": 9.192
+    },
+    {
+      "text": "machine",
+      "start": 9.192,
+      "end": 9.568
+    },
+    {
+      "text": "reading",
+      "start": 9.568,
+      "end": 10.152
+    },
+    {
+      "text": "their",
+      "start": 10.23,
+      "end": 10.593
+    },
+    {
+      "text": "skin.",
+      "start": 10.593,
+      "end": 11.487
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.0,
+      "end": 5.15,
+      "text": "On the study's own measure, the women themselves preferred the ectoin version."
+    },
+    {
+      "start": 6.749,
+      "end": 6.962,
+      "text": "That is a real result."
+    },
+    {
+      "start": 6.962,
+      "end": 11.487,
+      "text": "And it is a preference, not a machine reading their skin."
+    }
+  ]
+}

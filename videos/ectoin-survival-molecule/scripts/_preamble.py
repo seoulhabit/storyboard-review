@@ -31,15 +31,24 @@ TOKENS = """
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -145,7 +154,7 @@ BASE = """
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);

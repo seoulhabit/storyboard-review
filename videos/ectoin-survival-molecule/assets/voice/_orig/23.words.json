@@ -1,0 +1,190 @@
+{
+  "scene": "23-numbers",
+  "block": "23-numbers",
+  "cut": {
+    "start": 0.0,
+    "end": 12.538
+  },
+  "gain_db": 4.3,
+  "lufs": -20.0,
+  "wpm": 169.0,
+  "words": [
+    {
+      "text": "But",
+      "start": 0.08,
+      "end": 0.25
+    },
+    {
+      "text": "do",
+      "start": 0.25,
+      "end": 0.42
+    },
+    {
+      "text": "not",
+      "start": 0.63,
+      "end": 0.67
+    },
+    {
+      "text": "buy",
+      "start": 0.67,
+      "end": 0.92
+    },
+    {
+      "text": "it",
+      "start": 0.92,
+      "end": 1.02
+    },
+    {
+      "text": "off",
+      "start": 1.15,
+      "end": 1.34
+    },
+    {
+      "text": "the",
+      "start": 1.34,
+      "end": 1.59
+    },
+    {
+      "text": "front",
+      "start": 1.59,
+      "end": 1.9
+    },
+    {
+      "text": "of",
+      "start": 2.03,
+      "end": 2.18
+    },
+    {
+      "text": "the",
+      "start": 2.18,
+      "end": 2.43
+    },
+    {
+      "text": "bottle.",
+      "start": 2.43,
+      "end": 3.08
+    },
+    {
+      "text": "Turn",
+      "start": 3.08,
+      "end": 3.44
+    },
+    {
+      "text": "it",
+      "start": 3.44,
+      "end": 3.71
+    },
+    {
+      "text": "around.",
+      "start": 3.71,
+      "end": 4.154
+    },
+    {
+      "text": "Plenty",
+      "start": 4.154,
+      "end": 4.632
+    },
+    {
+      "text": "of",
+      "start": 4.772,
+      "end": 4.792
+    },
+    {
+      "text": "brands",
+      "start": 4.792,
+      "end": 5.162
+    },
+    {
+      "text": "do",
+      "start": 5.292,
+      "end": 5.442
+    },
+    {
+      "text": "print",
+      "start": 5.442,
+      "end": 5.852
+    },
+    {
+      "text": "a",
+      "start": 5.852,
+      "end": 5.872
+    },
+    {
+      "text": "number.",
+      "start": 6.022,
+      "end": 6.274
+    },
+    {
+      "text": "Paula's",
+      "start": 6.836,
+      "end": 7.056
+    },
+    {
+      "text": "Choice",
+      "start": 7.056,
+      "end": 7.696
+    },
+    {
+      "text": "says",
+      "start": 7.816,
+      "end": 8.156
+    },
+    {
+      "text": "7%.",
+      "start": 8.296,
+      "end": 8.668
+    },
+    {
+      "text": "The",
+      "start": 8.701,
+      "end": 8.961
+    },
+    {
+      "text": "Ordinary",
+      "start": 9.261,
+      "end": 9.691
+    },
+    {
+      "text": "lists",
+      "start": 9.811,
+      "end": 10.261
+    },
+    {
+      "text": "2%",
+      "start": 10.261,
+      "end": 10.601
+    },
+    {
+      "text": "Ectoin.",
+      "start": 10.691,
+      "end": 11.579
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.08,
+      "end": 3.08,
+      "text": "But do not buy it off the front of the bottle."
+    },
+    {
+      "start": 3.08,
+      "end": 4.154,
+      "text": "Turn it around."
+    },
+    {
+      "start": 4.154,
+      "end": 6.274,
+      "text": "Plenty of brands do print a number."
+    },
+    {
+      "start": 6.836,
+      "end": 8.668,
+      "text": "Paula's Choice says 7%."
+    },
+    {
+      "start": 8.701,
+      "end": 11.579,
+      "text": "The Ordinary lists 2% Ectoin."
+    }
+  ]
+}

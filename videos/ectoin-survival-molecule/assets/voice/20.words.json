@@ -1,125 +1,125 @@
 {
-  "scene": "20-twelve",
-  "block": "act4",
-  "cut": {
-    "start": 51.49,
-    "end": 61.71
+ "scene": "20-twelve",
+ "block": "act4",
+ "cut": {
+  "start": 51.49,
+  "end": 61.71
+ },
+ "gain_db": 8.8,
+ "lufs": -20.1,
+ "wpm": 135.5,
+ "words": [
+  {
+   "text": "And",
+   "start": 0.0,
+   "end": 0.18
   },
-  "gain_db": 8.8,
-  "lufs": -20.1,
-  "wpm": 143.1,
-  "words": [
-    {
-      "text": "And",
-      "start": 0.0,
-      "end": 0.18
-    },
-    {
-      "text": "the",
-      "start": 0.18,
-      "end": 0.41
-    },
-    {
-      "text": "evidence",
-      "start": 0.41,
-      "end": 1.04
-    },
-    {
-      "text": "base",
-      "start": 1.04,
-      "end": 1.35
-    },
-    {
-      "text": "is",
-      "start": 1.35,
-      "end": 1.67
-    },
-    {
-      "text": "genuinely",
-      "start": 1.67,
-      "end": 2.422
-    },
-    {
-      "text": "small.",
-      "start": 2.422,
-      "end": 2.422
-    },
-    {
-      "text": "Search",
-      "start": 2.423,
-      "end": 3.053
-    },
-    {
-      "text": "PubMed",
-      "start": 3.053,
-      "end": 3.683
-    },
-    {
-      "text": "today",
-      "start": 4.143,
-      "end": 4.213
-    },
-    {
-      "text": "and",
-      "start": 4.213,
-      "end": 4.443
-    },
-    {
-      "text": "you",
-      "start": 4.583,
-      "end": 4.853
-    },
-    {
-      "text": "will",
-      "start": 4.853,
-      "end": 5.253
-    },
-    {
-      "text": "find",
-      "start": 5.303,
-      "end": 5.633
-    },
-    {
-      "text": "12",
-      "start": 5.683,
-      "end": 6.313
-    },
-    {
-      "text": "ectoin",
-      "start": 6.543,
-      "end": 7.152
-    },
-    {
-      "text": "clinical",
-      "start": 7.152,
-      "end": 7.152
-    },
-    {
-      "text": "trials.",
-      "start": 7.152,
-      "end": 7.443
-    },
-    {
-      "text": "12.",
-      "start": 7.927,
-      "end": 8.416
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.0,
-      "end": 2.422,
-      "text": "And the evidence base is genuinely small."
-    },
-    {
-      "start": 2.423,
-      "end": 7.443,
-      "text": "Search PubMed today and you will find 12 ectoin clinical trials."
-    },
-    {
-      "start": 7.927,
-      "end": 8.416,
-      "text": "12."
-    }
-  ]
+  {
+   "text": "the",
+   "start": 0.18,
+   "end": 0.41
+  },
+  {
+   "text": "evidence",
+   "start": 0.41,
+   "end": 1.04
+  },
+  {
+   "text": "base",
+   "start": 1.04,
+   "end": 1.35
+  },
+  {
+   "text": "is",
+   "start": 1.35,
+   "end": 1.67
+  },
+  {
+   "text": "genuinely",
+   "start": 1.67,
+   "end": 2.422
+  },
+  {
+   "text": "small.",
+   "start": 2.422,
+   "end": 2.422
+  },
+  {
+   "text": "Search",
+   "start": 2.423,
+   "end": 3.053
+  },
+  {
+   "text": "PubMed",
+   "start": 3.053,
+   "end": 3.683
+  },
+  {
+   "text": "today",
+   "start": 4.143,
+   "end": 4.213
+  },
+  {
+   "text": "and",
+   "start": 4.213,
+   "end": 4.443
+  },
+  {
+   "text": "you",
+   "start": 4.583,
+   "end": 4.853
+  },
+  {
+   "text": "will",
+   "start": 4.853,
+   "end": 5.253
+  },
+  {
+   "text": "find",
+   "start": 5.303,
+   "end": 5.633
+  },
+  {
+   "text": "12",
+   "start": 5.683,
+   "end": 6.313
+  },
+  {
+   "text": "ectoin",
+   "start": 6.543,
+   "end": 7.152
+  },
+  {
+   "text": "clinical",
+   "start": 7.152,
+   "end": 7.152
+  },
+  {
+   "text": "trials.",
+   "start": 7.152,
+   "end": 7.443
+  },
+  {
+   "text": "12.",
+   "start": 7.927,
+   "end": 8.416
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.0,
+   "end": 2.422,
+   "text": "And the evidence base is genuinely small."
+  },
+  {
+   "start": 2.423,
+   "end": 7.443,
+   "text": "Search PubMed today and you will find 12 ectoin clinical trials."
+  },
+  {
+   "start": 7.927,
+   "end": 8.416,
+   "text": "12."
+  }
+ ]
 }

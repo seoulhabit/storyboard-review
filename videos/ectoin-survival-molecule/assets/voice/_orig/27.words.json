@@ -1,0 +1,210 @@
+{
+  "scene": "27-resilience",
+  "block": "single:27-resilience",
+  "cut": {
+    "start": 0.314,
+    "end": 15.765
+  },
+  "gain_db": 4.9,
+  "lufs": -20.2,
+  "wpm": 146.1,
+  "words": [
+    {
+      "text": "That",
+      "start": 0.1,
+      "end": 0.179
+    },
+    {
+      "text": "fits",
+      "start": 0.179,
+      "end": 0.484
+    },
+    {
+      "text": "the",
+      "start": 0.632,
+      "end": 0.721
+    },
+    {
+      "text": "wider",
+      "start": 0.849,
+      "end": 1.351
+    },
+    {
+      "text": "move",
+      "start": 1.351,
+      "end": 1.765
+    },
+    {
+      "text": "away",
+      "start": 1.765,
+      "end": 2.179
+    },
+    {
+      "text": "from",
+      "start": 2.179,
+      "end": 2.642
+    },
+    {
+      "text": "aggressive",
+      "start": 2.642,
+      "end": 3.253
+    },
+    {
+      "text": "transformation,",
+      "start": 3.253,
+      "end": 4.248
+    },
+    {
+      "text": "and",
+      "start": 4.248,
+      "end": 4.465
+    },
+    {
+      "text": "towards",
+      "start": 4.465,
+      "end": 4.918
+    },
+    {
+      "text": "skin",
+      "start": 4.918,
+      "end": 5.559
+    },
+    {
+      "text": "that",
+      "start": 5.559,
+      "end": 5.834
+    },
+    {
+      "text": "simply",
+      "start": 5.834,
+      "end": 6.268
+    },
+    {
+      "text": "stays",
+      "start": 6.268,
+      "end": 6.672
+    },
+    {
+      "text": "comfortable.",
+      "start": 6.672,
+      "end": 7.716
+    },
+    {
+      "text": "You",
+      "start": 7.716,
+      "end": 7.716
+    },
+    {
+      "text": "will",
+      "start": 7.809,
+      "end": 7.849
+    },
+    {
+      "text": "already",
+      "start": 7.878,
+      "end": 8.381
+    },
+    {
+      "text": "find",
+      "start": 8.479,
+      "end": 8.558
+    },
+    {
+      "text": "it",
+      "start": 8.726,
+      "end": 8.834
+    },
+    {
+      "text": "in",
+      "start": 8.834,
+      "end": 8.982
+    },
+    {
+      "text": "Korean",
+      "start": 8.982,
+      "end": 9.396
+    },
+    {
+      "text": "barrier",
+      "start": 9.484,
+      "end": 9.977
+    },
+    {
+      "text": "serums,",
+      "start": 9.977,
+      "end": 10.568
+    },
+    {
+      "text": "toners,",
+      "start": 10.647,
+      "end": 11.258
+    },
+    {
+      "text": "and",
+      "start": 11.258,
+      "end": 11.366
+    },
+    {
+      "text": "sun",
+      "start": 11.406,
+      "end": 11.613
+    },
+    {
+      "text": "products,",
+      "start": 11.613,
+      "end": 12.214
+    },
+    {
+      "text": "often",
+      "start": 12.293,
+      "end": 12.549
+    },
+    {
+      "text": "in",
+      "start": 12.549,
+      "end": 13.032
+    },
+    {
+      "text": "smaller",
+      "start": 13.032,
+      "end": 13.317
+    },
+    {
+      "text": "type",
+      "start": 13.317,
+      "end": 13.495
+    },
+    {
+      "text": "than",
+      "start": 13.662,
+      "end": 13.928
+    },
+    {
+      "text": "the",
+      "start": 13.928,
+      "end": 13.987
+    },
+    {
+      "text": "trend",
+      "start": 14.175,
+      "end": 14.519
+    },
+    {
+      "text": "suggests.",
+      "start": 14.519,
+      "end": 15.199
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 7.716,
+      "text": "That fits the wider move away from aggressive transformation, and towards skin that simply stays comfortable."
+    },
+    {
+      "start": 7.716,
+      "end": 15.199,
+      "text": "You will already find it in Korean barrier serums, toners, and sun products, often in smaller type than the trend suggests."
+    }
+  ]
+}

@@ -4,21 +4,30 @@
 <body>
 <template>
   <div id="root" data-composition-id="28-remember"
-       data-width="1920" data-height="1080" data-duration="15.246">
+       data-width="1920" data-height="1080" data-duration="15.646">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -128,7 +137,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -150,6 +159,7 @@
 
 
     #root { color:var(--paper); }
+
     .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
     .plate > video, .plate > img { position:absolute; left:0; top:0;
              width:1920px; height:1080px; object-fit:cover; display:block;
@@ -183,7 +193,7 @@
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
-    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .kicker { color:var(--ink-2-dark); }
     .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
                 line-height:var(--lh-snug); margin:0; color:var(--paper); }
     .lt .line b { font-weight:400; color:var(--coral); }
@@ -199,6 +209,15 @@
     /* headline backing: copy over a bright plate needs a ground of its own */
     .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
           border-radius:var(--r-3); width:max-content; max-width:100%; }
+    /* COLUMN backing, for a block of copy rather than one line. MEASURED on
+       the shipped master with an Otsu split of the text region: a directional
+       .scrim plus a 20-26px text-shadow left 05's 60px note at 2.31:1, 09's
+       body at 3.78:1 and 28's 96px headline at 1.91:1 -- a soft halo under a
+       400-weight serif is not a contrast floor, and 05's aqua screen-blend
+       tint actively BRIGHTENS the plate under its own type. A stated ground
+       is the only thing that holds regardless of what the plate does. */
+    .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
+            padding:var(--s-5) var(--s-6); }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -236,7 +255,7 @@
     <div class="scrim ink" id="sc-ink" style="opacity:0"></div>
     <div class="stage"></div>
     <p class="kicker on-ink rm-k hd" id="rm-k">What you are actually looking at</p>
-    <p class="rm-h" id="rm-h" style="opacity:0">A survival strategy,<br>borrowed from
+    <p class="rm-h deck" id="rm-h" style="opacity:0">A survival strategy,<br>borrowed from
       <em>bacteria.</em></p>
     <div class="nots">
       <div class="nt" id="nt-0" style="opacity:0"><div class="x" id="nx-0"></div>The new hyaluronic acid</div>
@@ -264,7 +283,7 @@
   // (serum droplet) stays under them.
   tl.to('#sc-ink', { opacity:0.72, duration:0.5 }, 8.532-0.35);
   for (var k = 0; k < 3; k++)
-    tl.fromTo('#nt-' + k, { opacity:0, x:70 }, { opacity:0.55, x:0, duration:0.45 }, 8.532-0.35+k*0.25);
+    tl.fromTo('#nt-' + k, { opacity:0, x:70 }, { opacity:0.78, x:0, duration:0.45 }, 8.532-0.35+k*0.25);
   tl.fromTo('#nx-0', { opacity:0 }, { opacity:0.85, duration:0.38 }, 8.532);
   tl.to('#nt-0', { opacity:1, duration:0.30 }, "<");
   tl.fromTo('#nx-1', { opacity:0 }, { opacity:0.85, duration:0.38 }, 10.426);
@@ -272,7 +291,7 @@
   tl.fromTo('#nx-2', { scaleX:0 }, { scaleX:1, duration:0.75, ease:'power2.inOut' }, 11.466);
   tl.to('#nt-2', { opacity:1, duration:0.30 }, "<");
 
-    tl.to({}, { duration: 15.246 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 15.646 }, 0);   // full-span anchor -- always last
     window.__timelines["28-remember"] = tl;
   </script>
 </template>

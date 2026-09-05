@@ -4,21 +4,30 @@
 <body>
 <template>
   <div id="root" data-composition-id="07-question"
-       data-width="1920" data-height="1080" data-duration="10.324">
+       data-width="1920" data-height="1080" data-duration="10.774">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -128,7 +137,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -150,6 +159,7 @@
 
 
     #root { color:var(--paper); }
+
     .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
     .plate > video, .plate > img { position:absolute; left:0; top:0;
              width:1920px; height:1080px; object-fit:cover; display:block;
@@ -183,7 +193,7 @@
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
-    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .kicker { color:var(--ink-2-dark); }
     .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
                 line-height:var(--lh-snug); margin:0; color:var(--paper); }
     .lt .line b { font-weight:400; color:var(--coral); }
@@ -199,6 +209,15 @@
     /* headline backing: copy over a bright plate needs a ground of its own */
     .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
           border-radius:var(--r-3); width:max-content; max-width:100%; }
+    /* COLUMN backing, for a block of copy rather than one line. MEASURED on
+       the shipped master with an Otsu split of the text region: a directional
+       .scrim plus a 20-26px text-shadow left 05's 60px note at 2.31:1, 09's
+       body at 3.78:1 and 28's 96px headline at 1.91:1 -- a soft halo under a
+       400-weight serif is not a contrast floor, and 05's aqua screen-blend
+       tint actively BRIGHTENS the plate under its own type. A stated ground
+       is the only thing that holds regardless of what the plate does. */
+    .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
+            padding:var(--s-5) var(--s-6); }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -213,7 +232,7 @@
     .s7-under { display:inline-block; }
 
     </style>
-    <div class="plate" id="pl-a"><video class="clip" id="pv-a" data-layout-allow-overflow src="assets/plates/V08-hydration.mp4" data-start="0.000" data-duration="6.600" muted playsinline></video></div>
+    <div class="plate" id="pl-a"><video class="clip" id="pv-a" data-layout-allow-overflow src="assets/plates/V08-hydration.mp4" data-start="0.000" data-duration="6.888" muted playsinline></video></div>
     <div class="plate" id="pl-b" style="opacity:0"><img id="pi-b" data-layout-allow-overflow src="assets/plates/C-baseskin.jpg" alt=""></div>
     <div class="scrim b" id="sc-b"></div>
     <div class="stage"></div>
@@ -222,7 +241,7 @@
       <p class="line" id="s7-line">Keeps the space around fragile
         structures <i>survivable</i>.</p>
     </div>
-    <p class="s7-q" id="s7-q" style="opacity:0">So could it do the same for
+    <p class="s7-q deck" id="s7-q" style="opacity:0">So could it do the same for
       <em>stressed <span class="s7-under" id="s7-under">human skin?</span></em></p>
     <p class="cv" id="cv">Conceptual visualization</p>
 
@@ -231,7 +250,7 @@
   <script>
     window.__timelines = window.__timelines || {};
     var tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
-  tl.fromTo('#pv-a', { scale:1.06, x:0, y:0 }, { scale:1.0, x:0, y:0, duration:6.600, ease:'none' }, 0);
+  tl.fromTo('#pv-a', { scale:1.06, x:0, y:0 }, { scale:1.0, x:0, y:0, duration:6.888, ease:'none' }, 0.000);
   tl.fromTo('#cv', { opacity:0 }, { opacity:1, duration:0.35 }, 0.3);
 
   tl.fromTo('#lt', { opacity:0, y:24 }, { opacity:1, y:0, duration:0.45 }, 0.25);
@@ -239,7 +258,7 @@
   tl.to('#lt', { opacity:0, y:-10, duration:0.30 }, 6.824-0.55);
   tl.to('#cv', { opacity:0, duration:0.25 }, 6.824-0.55);
   tl.fromTo('#pl-b', { opacity:0 }, { opacity:1, duration:0.30 }, 6.824-0.35);
-  tl.fromTo('#pi-b', { scale:1.0, x:0, y:0 }, { scale:1.1, x:-40, y:0, duration:4.500, ease:'none' }, 6.824-0.35);
+  tl.fromTo('#pi-b', { scale:1.0, x:0, y:0 }, { scale:1.1, x:-40, y:0, duration:4.696, ease:'none' }, 6.824-0.35);
 
   tl.fromTo('#s7-q', { opacity:0, y:58 }, { opacity:1, y:0, duration:0.70 }, 6.824-0.05);
   tl.fromTo('#s7-under', { backgroundImage:
@@ -247,7 +266,7 @@
       backgroundSize:'0% 5px', backgroundPosition:'0% 100%' },
     { backgroundSize:'100% 5px', duration:0.55, ease:'power2.inOut' }, 8.154);
 
-    tl.to({}, { duration: 10.324 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 10.774 }, 0);   // full-span anchor -- always last
     window.__timelines["07-question"] = tl;
   </script>
 </template>

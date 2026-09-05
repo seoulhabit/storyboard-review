@@ -1,215 +1,235 @@
 {
-  "scene": "11-analogy",
-  "block": "act2",
-  "cut": {
-    "start": 44.21,
-    "end": 58.74
+ "scene": "11-analogy",
+ "block": "act2",
+ "cut": {
+  "start": 44.21,
+  "end": 58.74
+ },
+ "gain_db": 5.4,
+ "lufs": -20.1,
+ "wpm": 130.0,
+ "words": [
+  {
+   "text": "Think",
+   "start": 0.0,
+   "end": 0.333
   },
-  "gain_db": 5.4,
-  "lufs": -20.1,
-  "wpm": 161.3,
-  "words": [
-    {
-      "text": "Think",
-      "start": 0.0,
-      "end": 0.3
-    },
-    {
-      "text": "of",
-      "start": 0.3,
-      "end": 0.46
-    },
-    {
-      "text": "a",
-      "start": 0.46,
-      "end": 0.51
-    },
-    {
-      "text": "celebrity",
-      "start": 0.51,
-      "end": 1.03
-    },
-    {
-      "text": "inside",
-      "start": 1.17,
-      "end": 1.47
-    },
-    {
-      "text": "a",
-      "start": 1.47,
-      "end": 1.66
-    },
-    {
-      "text": "ring",
-      "start": 1.66,
-      "end": 1.8
-    },
-    {
-      "text": "of",
-      "start": 2.02,
-      "end": 2.06
-    },
-    {
-      "text": "security.",
-      "start": 2.06,
-      "end": 2.87
-    },
-    {
-      "text": "Ectoin",
-      "start": 2.89,
-      "end": 3.33
-    },
-    {
-      "text": "is",
-      "start": 3.38,
-      "end": 3.49
-    },
-    {
-      "text": "not",
-      "start": 3.49,
-      "end": 3.73
-    },
-    {
-      "text": "hugging",
-      "start": 3.73,
-      "end": 4.28
-    },
-    {
-      "text": "the",
-      "start": 4.28,
-      "end": 4.39
-    },
-    {
-      "text": "celebrity.",
-      "start": 4.58,
-      "end": 5.47
-    },
-    {
-      "text": "It",
-      "start": 5.53,
-      "end": 5.71
-    },
-    {
-      "text": "hangs",
-      "start": 6.01,
-      "end": 6.22
-    },
-    {
-      "text": "back",
-      "start": 6.22,
-      "end": 6.59
-    },
-    {
-      "text": "and",
-      "start": 6.73,
-      "end": 6.93
-    },
-    {
-      "text": "helps",
-      "start": 6.93,
-      "end": 7.36
-    },
-    {
-      "text": "the",
-      "start": 7.58,
-      "end": 7.74
-    },
-    {
-      "text": "ring",
-      "start": 7.74,
-      "end": 8.09
-    },
-    {
-      "text": "hold",
-      "start": 8.21,
-      "end": 8.56
-    },
-    {
-      "text": "its",
-      "start": 8.56,
-      "end": 8.791
-    },
-    {
-      "text": "shape,",
-      "start": 8.791,
-      "end": 8.841
-    },
-    {
-      "text": "which",
-      "start": 8.851,
-      "end": 9.061
-    },
-    {
-      "text": "is",
-      "start": 9.061,
-      "end": 9.451
-    },
-    {
-      "text": "why",
-      "start": 9.451,
-      "end": 9.481
-    },
-    {
-      "text": "calling",
-      "start": 9.481,
-      "end": 9.911
-    },
-    {
-      "text": "it",
-      "start": 9.911,
-      "end": 10.031
-    },
-    {
-      "text": "another",
-      "start": 10.031,
-      "end": 10.461
-    },
-    {
-      "text": "hydrating",
-      "start": 10.461,
-      "end": 11.011
-    },
-    {
-      "text": "ingredient",
-      "start": 11.551,
-      "end": 11.801
-    },
-    {
-      "text": "misses",
-      "start": 11.861,
-      "end": 12.131
-    },
-    {
-      "text": "the",
-      "start": 12.271,
-      "end": 12.511
-    },
-    {
-      "text": "interesting",
-      "start": 12.511,
-      "end": 13.361
-    },
-    {
-      "text": "part.",
-      "start": 13.361,
-      "end": 13.771
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.0,
-      "end": 2.87,
-      "text": "Think of a celebrity inside a ring of security."
-    },
-    {
-      "start": 2.89,
-      "end": 5.47,
-      "text": "Ectoin is not hugging the celebrity."
-    },
-    {
-      "start": 5.53,
-      "end": 13.771,
-      "text": "It hangs back and helps the ring hold its shape, which is why calling it another hydrating ingredient misses the interesting part."
-    }
+  {
+   "text": "of",
+   "start": 0.333,
+   "end": 0.511
+  },
+  {
+   "text": "a",
+   "start": 0.511,
+   "end": 0.567
+  },
+  {
+   "text": "celebrity",
+   "start": 0.567,
+   "end": 1.144
+  },
+  {
+   "text": "inside",
+   "start": 1.3,
+   "end": 1.633
+  },
+  {
+   "text": "a",
+   "start": 1.633,
+   "end": 1.844
+  },
+  {
+   "text": "ring",
+   "start": 1.844,
+   "end": 2.0
+  },
+  {
+   "text": "of",
+   "start": 2.244,
+   "end": 2.289
+  },
+  {
+   "text": "security.",
+   "start": 2.289,
+   "end": 3.189
+  },
+  {
+   "text": "Ectoin",
+   "start": 3.761,
+   "end": 4.25
+  },
+  {
+   "text": "is",
+   "start": 4.306,
+   "end": 4.428
+  },
+  {
+   "text": "not",
+   "start": 4.428,
+   "end": 4.694
+  },
+  {
+   "text": "hugging",
+   "start": 4.694,
+   "end": 5.306
+  },
+  {
+   "text": "the",
+   "start": 5.306,
+   "end": 5.428
+  },
+  {
+   "text": "celebrity.",
+   "start": 5.639,
+   "end": 6.628
+  },
+  {
+   "text": "It",
+   "start": 7.294,
+   "end": 7.494
+  },
+  {
+   "text": "hangs",
+   "start": 7.828,
+   "end": 8.061
+  },
+  {
+   "text": "back",
+   "start": 8.061,
+   "end": 8.472
+  },
+  {
+   "text": "and",
+   "start": 8.628,
+   "end": 8.85
+  },
+  {
+   "text": "helps",
+   "start": 8.85,
+   "end": 9.328
+  },
+  {
+   "text": "the",
+   "start": 9.572,
+   "end": 9.75
+  },
+  {
+   "text": "ring",
+   "start": 9.75,
+   "end": 10.139
+  },
+  {
+   "text": "hold",
+   "start": 10.272,
+   "end": 10.661
+  },
+  {
+   "text": "its",
+   "start": 10.661,
+   "end": 10.918
+  },
+  {
+   "text": "shape,",
+   "start": 10.918,
+   "end": 10.973
+  },
+  {
+   "text": "which",
+   "start": 10.979,
+   "end": 11.848
+  },
+  {
+   "text": "is",
+   "start": 11.848,
+   "end": 12.281
+  },
+  {
+   "text": "why",
+   "start": 12.281,
+   "end": 12.314
+  },
+  {
+   "text": "calling",
+   "start": 12.314,
+   "end": 12.792
+  },
+  {
+   "text": "it",
+   "start": 12.792,
+   "end": 12.926
+  },
+  {
+   "text": "another",
+   "start": 12.926,
+   "end": 13.403
+  },
+  {
+   "text": "hydrating",
+   "start": 13.403,
+   "end": 14.014
+  },
+  {
+   "text": "ingredient",
+   "start": 14.614,
+   "end": 14.892
+  },
+  {
+   "text": "misses",
+   "start": 14.959,
+   "end": 15.259
+  },
+  {
+   "text": "the",
+   "start": 15.414,
+   "end": 15.681
+  },
+  {
+   "text": "interesting",
+   "start": 15.681,
+   "end": 16.626
+  },
+  {
+   "text": "part.",
+   "start": 16.626,
+   "end": 17.081
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.0,
+   "end": 2.87,
+   "text": "Think of a celebrity inside a ring of security."
+  },
+  {
+   "start": 2.89,
+   "end": 5.47,
+   "text": "Ectoin is not hugging the celebrity."
+  },
+  {
+   "start": 5.53,
+   "end": 13.771,
+   "text": "It hangs back and helps the ring hold its shape, which is why calling it another hydrating ingredient misses the interesting part."
+  }
+ ],
+ "repaced": {
+  "tempo": 0.9,
+  "rests": [
+   [
+    8,
+    "security.",
+    0.55
+   ],
+   [
+    14,
+    "celebrity.",
+    0.6
+   ],
+   [
+    24,
+    "shape,",
+    0.63
+   ]
   ]
+ }
 }

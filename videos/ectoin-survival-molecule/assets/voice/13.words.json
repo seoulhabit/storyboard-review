@@ -1,195 +1,195 @@
 {
-  "scene": "13-keratin",
-  "block": "act3",
-  "cut": {
-    "start": 19.377,
-    "end": 36.131
+ "scene": "13-keratin",
+ "block": "act3",
+ "cut": {
+  "start": 19.377,
+  "end": 36.131
+ },
+ "gain_db": 6.5,
+ "lufs": -20.1,
+ "wpm": 121.9,
+ "words": [
+  {
+   "text": "Lab",
+   "start": 0.0,
+   "end": 0.241
   },
-  "gain_db": 6.5,
-  "lufs": -20.1,
-  "wpm": 123.5,
-  "words": [
-    {
-      "text": "Lab",
-      "start": 0.0,
-      "end": 0.241
-    },
-    {
-      "text": "research",
-      "start": 0.551,
-      "end": 0.949
-    },
-    {
-      "text": "suggests",
-      "start": 0.949,
-      "end": 1.657
-    },
-    {
-      "text": "Ectoin",
-      "start": 1.657,
-      "end": 2.181
-    },
-    {
-      "text": "can",
-      "start": 2.181,
-      "end": 2.442
-    },
-    {
-      "text": "help",
-      "start": 2.442,
-      "end": 2.724
-    },
-    {
-      "text": "stabilize",
-      "start": 2.879,
-      "end": 3.49
-    },
-    {
-      "text": "biological",
-      "start": 4.459,
-      "end": 4.469
-    },
-    {
-      "text": "structures",
-      "start": 4.469,
-      "end": 5.264
-    },
-    {
-      "text": "and",
-      "start": 5.536,
-      "end": 5.613
-    },
-    {
-      "text": "improve",
-      "start": 5.613,
-      "end": 6.234
-    },
-    {
-      "text": "hydration",
-      "start": 6.234,
-      "end": 7.078
-    },
-    {
-      "text": "in",
-      "start": 7.078,
-      "end": 7.31
-    },
-    {
-      "text": "that",
-      "start": 7.65,
-      "end": 7.786
-    },
-    {
-      "text": "outer",
-      "start": 7.786,
-      "end": 8.387
-    },
-    {
-      "text": "layer.",
-      "start": 8.387,
-      "end": 9.366
-    },
-    {
-      "text": "One",
-      "start": 9.366,
-      "end": 9.618
-    },
-    {
-      "text": "study",
-      "start": 9.938,
-      "end": 10.035
-    },
-    {
-      "text": "found",
-      "start": 10.035,
-      "end": 10.404
-    },
-    {
-      "text": "it",
-      "start": 10.52,
-      "end": 10.617
-    },
-    {
-      "text": "changed",
-      "start": 10.627,
-      "end": 11.209
-    },
-    {
-      "text": "how",
-      "start": 11.209,
-      "end": 11.461
-    },
-    {
-      "text": "keratin,",
-      "start": 11.461,
-      "end": 12.082
-    },
-    {
-      "text": "the",
-      "start": 12.256,
-      "end": 12.47
-    },
-    {
-      "text": "main",
-      "start": 12.47,
-      "end": 12.809
-    },
-    {
-      "text": "protein",
-      "start": 12.809,
-      "end": 12.945
-    },
-    {
-      "text": "in",
-      "start": 12.945,
-      "end": 13.565
-    },
-    {
-      "text": "our",
-      "start": 13.565,
-      "end": 13.847
-    },
-    {
-      "text": "outer",
-      "start": 13.847,
-      "end": 14.157
-    },
-    {
-      "text": "skin",
-      "start": 14.234,
-      "end": 14.574
-    },
-    {
-      "text": "cells,",
-      "start": 14.574,
-      "end": 15.156
-    },
-    {
-      "text": "behaves",
-      "start": 15.156,
-      "end": 15.738
-    },
-    {
-      "text": "with",
-      "start": 15.844,
-      "end": 16.202
-    },
-    {
-      "text": "water.",
-      "start": 16.202,
-      "end": 16.733
-    }
-  ],
-  "sentences": [
-    {
-      "start": 0.0,
-      "end": 9.366,
-      "text": "Lab research suggests Ectoin can help stabilize biological structures and improve hydration in that outer layer."
-    },
-    {
-      "start": 9.366,
-      "end": 16.733,
-      "text": "One study found it changed how keratin, the main protein in our outer skin cells, behaves with water."
-    }
-  ]
+  {
+   "text": "research",
+   "start": 0.551,
+   "end": 0.949
+  },
+  {
+   "text": "suggests",
+   "start": 0.949,
+   "end": 1.657
+  },
+  {
+   "text": "Ectoin",
+   "start": 1.657,
+   "end": 2.181
+  },
+  {
+   "text": "can",
+   "start": 2.181,
+   "end": 2.442
+  },
+  {
+   "text": "help",
+   "start": 2.442,
+   "end": 2.724
+  },
+  {
+   "text": "stabilize",
+   "start": 2.879,
+   "end": 3.49
+  },
+  {
+   "text": "biological",
+   "start": 4.459,
+   "end": 4.469
+  },
+  {
+   "text": "structures",
+   "start": 4.469,
+   "end": 5.264
+  },
+  {
+   "text": "and",
+   "start": 5.536,
+   "end": 5.613
+  },
+  {
+   "text": "improve",
+   "start": 5.613,
+   "end": 6.234
+  },
+  {
+   "text": "hydration",
+   "start": 6.234,
+   "end": 7.078
+  },
+  {
+   "text": "in",
+   "start": 7.078,
+   "end": 7.31
+  },
+  {
+   "text": "that",
+   "start": 7.65,
+   "end": 7.786
+  },
+  {
+   "text": "outer",
+   "start": 7.786,
+   "end": 8.387
+  },
+  {
+   "text": "layer.",
+   "start": 8.387,
+   "end": 9.366
+  },
+  {
+   "text": "One",
+   "start": 9.366,
+   "end": 9.618
+  },
+  {
+   "text": "study",
+   "start": 9.938,
+   "end": 10.035
+  },
+  {
+   "text": "found",
+   "start": 10.035,
+   "end": 10.404
+  },
+  {
+   "text": "it",
+   "start": 10.52,
+   "end": 10.617
+  },
+  {
+   "text": "changed",
+   "start": 10.627,
+   "end": 11.209
+  },
+  {
+   "text": "how",
+   "start": 11.209,
+   "end": 11.461
+  },
+  {
+   "text": "keratin,",
+   "start": 11.461,
+   "end": 12.082
+  },
+  {
+   "text": "the",
+   "start": 12.256,
+   "end": 12.47
+  },
+  {
+   "text": "main",
+   "start": 12.47,
+   "end": 12.809
+  },
+  {
+   "text": "protein",
+   "start": 12.809,
+   "end": 12.945
+  },
+  {
+   "text": "in",
+   "start": 12.945,
+   "end": 13.565
+  },
+  {
+   "text": "our",
+   "start": 13.565,
+   "end": 13.847
+  },
+  {
+   "text": "outer",
+   "start": 13.847,
+   "end": 14.157
+  },
+  {
+   "text": "skin",
+   "start": 14.234,
+   "end": 14.574
+  },
+  {
+   "text": "cells,",
+   "start": 14.574,
+   "end": 15.156
+  },
+  {
+   "text": "behaves",
+   "start": 15.156,
+   "end": 15.738
+  },
+  {
+   "text": "with",
+   "start": 15.844,
+   "end": 16.202
+  },
+  {
+   "text": "water.",
+   "start": 16.202,
+   "end": 16.733
+  }
+ ],
+ "sentences": [
+  {
+   "start": 0.0,
+   "end": 9.366,
+   "text": "Lab research suggests Ectoin can help stabilize biological structures and improve hydration in that outer layer."
+  },
+  {
+   "start": 9.366,
+   "end": 16.733,
+   "text": "One study found it changed how keratin, the main protein in our outer skin cells, behaves with water."
+  }
+ ]
 }

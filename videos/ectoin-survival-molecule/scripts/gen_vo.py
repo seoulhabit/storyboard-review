@@ -55,7 +55,11 @@ INTRA_GAP = 0.22   # authored pause between sentences inside a scene, after comp
 INTRA_GAP_OVERRIDES = {"20-twelve": 0.45, "21-verdict": 0.40, "19-limits": 0.35}
 INTERNAL_SILENCE_MIN = 0.45   # an internal gap has to beat this to be compressed at all
 VO_TARGET_LUFS = -20.0
-GAIN_CAP, GAIN_WARN = 5.0, 3.0
+# Raised from 5.0 on 2026-09-05. The shipped manifests carry gain_db up to
+# 9.7 -- they were cut under a looser cap -- so a 5.0 clamp lands a fresh
+# take 3-5 LU under its neighbours and breaks check-seams.py LU_SPREAD_MAX.
+# The cap is a sanity bound on a broken take, not a level policy.
+GAIN_CAP, GAIN_WARN = 10.0, 3.0
 NOISE = "-45dB"
 EXPECT_ECTOIN = {"ectoin", "ectoins"}
 RARE = re.compile(r"\b[Ee]ct[a-z]*\b|\b[a-z]*ecto[a-z]*\b")
@@ -121,15 +125,43 @@ def integrated_lufs(p):
 
 # ---------------------------------------------------------------- addressing
 
+def only_filter():
+    """--only 21-verdict,23-numbers -> just those blocks.
+
+    Without this, re-voicing one reworded line means re-cutting every scene in
+    the piece, and a re-cut is not free: GAIN_CAP has moved since the shipped
+    manifests were written, so a blanket re-run silently re-levels 24 scenes
+    that nobody asked to touch."""
+    if "--only" not in sys.argv:
+        return None
+    raw = sys.argv[sys.argv.index("--only") + 1]
+    want = {c.strip() for c in raw.split(",") if c.strip()}
+    known = {cid for cid, _ in LINES}
+    bad = want - known
+    if bad:
+        raise SystemExit(f"--only: unknown scene id(s) {sorted(bad)}")
+    return want
+
+
 def blocks_for(from_takes):
     """[(block_name, [scene_cid, ...])]. --from-takes: one pseudo-block per
     scene, so `cut` never has to split across scenes except for 09-exclusion."""
-    if from_takes:
-        return [(cid, [cid]) for cid, _ in LINES]
-    return BLOCKS
+    blocks = [(cid, [cid]) for cid, _ in LINES] if from_takes else BLOCKS
+    want = only_filter()
+    if want is None:
+        return blocks
+    return [(name, cids) for name, cids in blocks if want & set(cids)]
 
 
 def _concat_takes(cid, nums):
+    # A STAGED take wins over the scene's own output slot, always. `cut` writes
+    # assets/voice/NN.wav, so for a single-take scene the source and the
+    # destination are the same path -- a re-run would then re-cut its own
+    # output. Staging a fresh take at _takes/<cid>.wav is also how a single
+    # reworded line is re-voiced without re-cutting its whole act.
+    staged = TAKES_STAGE / f"{cid}.wav"
+    if staged.exists():
+        return staged
     if len(nums) == 1:
         return VOICE / f"{nums[0]:02d}.wav"
     # Cached: once staged, reused even after `cut` has overwritten the scene's
@@ -440,7 +472,12 @@ def cmd_cut(from_takes):
             words_rel = remap_words(words, a0, a1, segs, gap_target)
             sents = sentences_from(words_rel)
             L = dur(out_wav)
-            speech = max(0.01, L - TAIL)
+            # SPOKEN SPAN, first word to last. This used to be `clip - TAIL`,
+            # which also counts the lead-in and every millisecond of padding,
+            # so the stored number disagreed with the one check-vo.py and
+            # repace_vo.py compute by up to 4 wpm -- enough to put a scene on
+            # the wrong side of a band depending on which tool you asked.
+            speech = max(0.01, words_rel[-1]["end"] - words_rel[0]["start"])
             wpm = round(len(TEXT[cid].split()) / (speech / 60), 1)
             manifest = {
                 "scene": cid, "block": block_name,

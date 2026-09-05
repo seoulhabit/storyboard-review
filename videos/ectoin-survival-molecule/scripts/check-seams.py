@@ -23,12 +23,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 from timing import walk, END_TAIL, LEAD_KEEP
-from vo_lines import EVIDENCE
+from transitions import rest_after
+from vo_lines import EVIDENCE, SLOWED
+from repace_vo import EXEMPT as SLOWED_EXEMPT, SHORT as WPM_SHORT
 
 CONTINUE_CARRY_GAP = (0.15, 0.35)
 CHAPTER_ARRIVE_SETTLE_GAP = (0.40, 0.65)
+# The 2026-09-05 pass re-paced the technical and evidence sections. Their
+# scenes are measured against the review's own band, not the narrative one --
+# a scene deliberately read at 130 wpm is not a defect to be flagged at 140.
 WPM_BAND = (140, 170)
 WPM_BAND_EVIDENCE = (120, 170)
+WPM_BAND_SLOWED = (123, 137)
 LU_SPREAD_MAX = 2.0
 
 
@@ -45,6 +51,11 @@ def check_gaps_source(scenes):
                     (s.vo_start + s.words[-1]["end"]), 3)
         band = CONTINUE_CARRY_GAP if nxt.kind_in in ("continue", "carry") \
             else CHAPTER_ARRIVE_SETTLE_GAP
+        # An authored rest widens the band by exactly its own length: the
+        # boundary is still the grammar's, with air held on top of it.
+        rest = rest_after(s.cid)
+        if rest:
+            band = (round(band[0] + rest, 3), round(band[1] + rest, 3))
         ok = band[0] <= gap <= band[1]
         if not ok:
             hard.append((s.cid, nxt.cid, gap, band))
@@ -66,7 +77,15 @@ def check_wpm(scenes):
         mp = ROOT / "assets" / "voice" / f"{s.n:02d}.words.json"
         m = json.loads(mp.read_text())
         wpm = m.get("wpm")
-        lo, hi = WPM_BAND_EVIDENCE if s.cid in EVIDENCE else WPM_BAND
+        if s.cid in SLOWED_EXEMPT or s.cid in WPM_SHORT:
+            print(f"    {s.cid:16s} wpm={wpm}  EXEMPT (see repace_vo.py)")
+            continue
+        if s.cid in SLOWED:
+            lo, hi = WPM_BAND_SLOWED
+        elif s.cid in EVIDENCE:
+            lo, hi = WPM_BAND_EVIDENCE
+        else:
+            lo, hi = WPM_BAND
         ok = wpm is not None and lo <= wpm <= hi
         if not ok:
             hard.append((s.cid, wpm, (lo, hi)))

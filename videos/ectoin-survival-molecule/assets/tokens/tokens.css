@@ -45,9 +45,9 @@
   --celadon: #93B896;
 
   /* ---- secondary inks ---- */
-  --ink-2: #6B6B6B;
+  --ink-2: #666666;
   --ink-3: #9C978D;
-  --ink-2-dark: #878B8C;
+  --ink-2-dark: #8E9293;
   --ink-3-dark: #7C8082;
 
   /* ---- rules / empty states ---- */
@@ -225,14 +225,19 @@
   --t-hero: 96px;
   --t-figure: 60px;
   --t-frame: 50px;
-  --t-body: 40px;    /* raised from 32 — faceless-video-craft SKILL.md's 2026-08-31 update
+  --t-body: 48px;    /* raised to 48 on 2026-09-05 (accessibility feedback: essential
+                         informational text at ~48-60px in the 1080p master). Was 40,
+                         raised from 32 — faceless-video-craft SKILL.md's 2026-08-31 update
                          sets 40px as the reading-type floor for phone viewing; this
                          project's own frame.md § Type had already argued the same 40px
                          reading floor independently before the skill codified it. */
-  --t-caption: 24px;
-  --t-label: 32px;   /* raised from 24 — skill's new label/chrome floor is 26-32px, with
+  --t-caption: 30px; /* raised from 24 on 2026-09-05 — 24px source tags and mono labels
+                         were called out as unreadable at inline phone width. Supplementary
+                         citations may sit here, but they must ALSO appear in the video
+                         description (PUBLISH.md § Accessible source list). */
+  --t-label: 36px;   /* 36 since 2026-09-05; raised from 24 — skill's new label/chrome floor is 26-32px, with
                          32px absolute for anything a viewer is meant to actually read. */
-  --t-chip: 32px;    /* raised from 22 — this project's citation pills were converted from
+  --t-chip: 36px;    /* 36 since 2026-09-05; raised from 22 — this project's citation pills were converted from
                          raw catalog/lookup IDs (PMID nnn) to human-readable "Journal ·
                          Year" text this round (see What must never reach a rendered frame),
                          which makes them something a viewer IS meant to read, not a

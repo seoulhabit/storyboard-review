@@ -4,21 +4,30 @@
 <body>
 <template>
   <div id="root" data-composition-id="21-verdict"
-       data-width="1920" data-height="1080" data-duration="9.653">
+       data-width="1920" data-height="1080" data-duration="14.476">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
-    --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
+    /* MEASURED against the grounds they actually land on, not against paper
+       alone. --ink-2 was 4.49:1 on --mist (the .cite chip, .sh.from) and
+       --ink-2-dark 4.78:1 on --ink-soft with no headroom for the retention
+       plates behind it; both now clear 4.5:1 with room. --ink-3-dark (4.13:1
+       on --ink-soft) is kept for non-text use only -- no text binds to it. */
+    --ink-2:#666666; --ink-3:#9C978D; --ink-2-dark:#8E9293; --ink-3-dark:#7C8082;
     --rule:#E3E3E3; --rule-strong:#D9D3C6; --rule-dark:#333333;
 
     --font-display:"EB Garamond",Georgia,"Times New Roman",serif;
     --font-body:"Inter",system-ui,-apple-system,sans-serif;
     --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
 
-    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:40px;
-    --t-caption:24px; --t-label:32px; --t-chip:32px; --t-floor:20px;
+    /* Raised for the 2026-09-05 accessibility pass: essential informational
+       text sits at 48px+ in the 1080p master, chrome and labels at 36px, and
+       nothing a viewer is expected to read is under 30px. The display sizes
+       (hero/figure/frame) are unchanged -- they were never the problem. */
+    --t-hero:96px; --t-figure:60px; --t-frame:50px; --t-body:48px;
+    --t-caption:30px; --t-label:36px; --t-chip:36px; --t-floor:20px;
     --lh-tight:1.06; --lh-snug:1.2; --lh-body:1.45;
     --tr-display:-0.018em; --tr-body:0em; --tr-mono:0.04em; --tr-mono-wide:0.1em;
 
@@ -128,7 +137,7 @@
     .kicker { font-family:var(--font-mono); font-size:var(--t-label);
               letter-spacing:var(--tr-mono-wide); text-transform:uppercase;
               color:var(--ink-2); margin:0; }
-    .kicker.on-ink { color:var(--ink-3-dark); }
+    .kicker.on-ink { color:var(--ink-2-dark); }
     .hero { font-family:var(--font-display); font-size:var(--t-hero);
             line-height:var(--lh-tight); letter-spacing:var(--tr-display); margin:0; }
     .fig { font-family:var(--font-display); font-size:var(--t-figure);
@@ -153,9 +162,13 @@
     .g21 { display:flex; flex-direction:column; justify-content:center;
            gap:var(--s-6); height:100%; }
     .makers { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--s-5); }
-    .mk { background:var(--ink-soft); border-radius:var(--r-3); padding:var(--s-6);
-          text-align:center; font-family:var(--font-body); font-weight:800;
-          font-size:var(--t-frame); }
+    /* Colour stated, never inherited. These three tiles shipped BLACK on
+       near-black (1.28:1 measured at t=229.6s) because a wrapper's trailing
+       `#root { color:inherit }` outranked the scene's own root rule. An
+       explicit colour here cannot be reached by that class of bug. */
+    .mk { background:var(--ink-soft); color:var(--paper); border-radius:var(--r-3);
+          padding:var(--s-6); text-align:center; font-family:var(--font-body);
+          font-weight:800; font-size:var(--t-frame); }
     .verdict { position:relative; border-radius:var(--r-3); padding:var(--s-7);
                overflow:hidden; background:var(--ink-soft); text-align:center; }
     /* CARRY from 20-twelve: the same hero "12", same size, same corner it
@@ -164,10 +177,26 @@
     .ghost12 { position:absolute; top:var(--safe-top); left:var(--safe-left);
                font-family:var(--font-display); font-size:180px; line-height:1;
                color:var(--paper); margin:0; z-index:5; }
-    .void-flash { position:absolute; inset:-8px -16px; background:var(--coral);
-                  opacity:0; border-radius:var(--r-2); z-index:-1; }
+    /* VERDICT HALVES. "No." used to be inline coral, which lands at 5.03:1 on
+       --ink-soft but collapses to 1.72:1 once the moss wash sweeps under it,
+       and it carried the whole yes/no distinction in hue alone. Both halves
+       now read in --paper (15.1:1 / 5.4:1 on the wash) and are distinguished
+       by a drawn underline AND a word: moss + SUPPORTED, coral + NOT
+       SUPPORTED. The colour is confirmation, not the message. */
+    .v-line { margin:0; }
+    /* The panel washes MOSS mid-scene, so a moss or coral marker on it is a
+       1.1-1.7:1 mark that simply disappears -- which is what the original
+       moss "Yes." underline and coral "No." flash both did. The verdict is
+       carried instead by a glyph plus a word inside a currentColor pill, and
+       both underlines are --paper so they read on ink-soft AND on the wash. */
+    .v-tag { display:inline-block; margin:10px 0 var(--s-5);
+             font-family:var(--font-mono); font-weight:500;
+             font-size:var(--t-caption); letter-spacing:var(--tr-mono-wide);
+             text-transform:uppercase; color:var(--paper); opacity:0;
+             border:2px solid currentColor; border-radius:var(--r-pill);
+             padding:6px 22px; }
+    .v-tag .g { margin-right:12px; font-size:1.1em; vertical-align:-0.04em; }
 
-    #root { color:var(--paper); }
     .plate { position:absolute; inset:0; overflow:hidden; z-index:0; }
     .plate > video, .plate > img { position:absolute; left:0; top:0;
              width:1920px; height:1080px; object-fit:cover; display:block;
@@ -201,7 +230,7 @@
           z-index:4; max-width:1040px; background:rgba(19,21,22,.70);
           border-radius:var(--r-3); padding:var(--s-5) var(--s-6);
           display:flex; flex-direction:column; gap:var(--s-3); }
-    .lt .kicker { color:var(--ink-3-dark); }
+    .lt .kicker { color:var(--ink-2-dark); }
     .lt .line { font-family:var(--font-display); font-size:var(--t-figure);
                 line-height:var(--lh-snug); margin:0; color:var(--paper); }
     .lt .line b { font-weight:400; color:var(--coral); }
@@ -217,6 +246,15 @@
     /* headline backing: copy over a bright plate needs a ground of its own */
     .hd { background:rgba(19,21,22,.74); padding:var(--s-4) var(--s-5);
           border-radius:var(--r-3); width:max-content; max-width:100%; }
+    /* COLUMN backing, for a block of copy rather than one line. MEASURED on
+       the shipped master with an Otsu split of the text region: a directional
+       .scrim plus a 20-26px text-shadow left 05's 60px note at 2.31:1, 09's
+       body at 3.78:1 and 28's 96px headline at 1.91:1 -- a soft halo under a
+       400-weight serif is not a contrast floor, and 05's aqua screen-blend
+       tint actively BRIGHTENS the plate under its own type. A stated ground
+       is the only thing that holds regardless of what the plate does. */
+    .deck { background:rgba(19,21,22,.78); border-radius:var(--r-3);
+            padding:var(--s-5) var(--s-6); }
     .mark { position:absolute; left:var(--safe-left); bottom:var(--safe-bottom);
             right:auto; width:max-content; margin:0; z-index:4;
             font-family:var(--font-mono); font-size:var(--t-label);
@@ -226,8 +264,6 @@
     .ground img { position:absolute; left:0; top:0; width:1920px; height:1080px;
                   object-fit:cover; transform-origin:50% 50%; }
 
-    #root { color:inherit; }
-    
     </style>
     <div class="ground" id="gnd"><img id="gi" src="assets/plates/I14-pinkpond.jpg" alt="" style="opacity:0.16; filter:blur(8px) saturate(.6)"></div>
     <div class="stage">
@@ -241,10 +277,12 @@
         </div>
         <div class="verdict" id="v-box">
           <div class="wash moss" id="v-wash"></div>
-          <p class="hero" id="v-h">Promising supporting ingredient. <span id="v-yes"
-            style="position:relative">Yes.</span><br>
-            Miracle molecule. <span id="v-no" style="position:relative;color:var(--coral)">
-            <span class="void-flash" id="v-no-flash"></span>No.</span></p>
+          <p class="hero v-line" id="v-h">Promising supporting ingredient. <span id="v-yes"
+            style="position:relative">Yes.</span></p>
+          <span class="v-tag yes" id="v-tag-yes"><span class="g">&#10003;</span>Supported by the trials</span>
+          <p class="hero v-line">Miracle molecule. <span id="v-no"
+            style="position:relative">No.</span></p>
+          <span class="v-tag no" id="v-tag-no"><span class="g">&#10005;</span>Not supported</span>
         </div>
       </div>
     </div>
@@ -256,33 +294,41 @@
 
   // CARRY: the ghost 12 shrinks into the kicker it becomes part of, on "Some".
   tl.set('#ghost-12', { opacity:1, scale:1, x:0, y:0 }, 0);
-  tl.fromTo('#v-k', { opacity:0 }, { opacity:1, duration:0.40 }, 0.150);
+  tl.fromTo('#v-k', { opacity:0 }, { opacity:1, duration:0.40 }, 0.250);
   tl.to('#ghost-12', { scale:0.16, x:40, y:-30, opacity:0, transformOrigin:'0% 0%',
-                       duration:0.55, ease:'power2.inOut' }, 0.150);
-  // ASR on this take mis-hears the three brand names ("Bitop, Merck, Kao")
-  // as "BTOP Merk Cow." -- bound to what is actually in the manifest, same
-  // as any other scene; a human listen confirms the SPOKEN audio still says
-  // the real names correctly, this is a whisper/small.en transcription miss
-  // on unfamiliar proper nouns, not a TTS defect.
-  tl.fromTo('#mk-0', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 3.920);
-  tl.fromTo('#mk-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 4.220);
-  tl.fromTo('#mk-2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 4.430);
+                       duration:0.55, ease:'power2.inOut' }, 0.250);
+  // ASR on this take still mis-hears two of the three brand names ("Bitop"
+  // as "BTOP", "Kao" as "Cow"); Merck now comes back correctly. Markers bind
+  // to what is in the manifest, same as any other scene. The SPOKEN audio is
+  // right -- verified on whisper large-v3, which reads all three -- so this is
+  // a small.en miss on proper nouns, not a TTS defect. vo_words.CORRECTIONS
+  // maps them back for the captions.
+  tl.fromTo('#mk-0', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 4.878);
+  tl.fromTo('#mk-1', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 6.151);
+  tl.fromTo('#mk-2', { opacity:0, y:52 }, { opacity:1, y:0, duration:0.42 }, 8.011);
   // The verdict panel enters full-width and then washes -- two large beats on the
   // line the whole act has been building to.
   tl.set('#v-box', { opacity:0, y:70 }, 0);
-  tl.to('#v-box', { opacity:1, y:0, duration:0.60, ease:'power3.out' }, 5.265);
+  tl.to('#v-box', { opacity:1, y:0, duration:0.60, ease:'power3.out' }, 8.861);
   // "yes" gets an underline highlight -- the affirming half of the verdict.
-  tl.fromTo('#v-yes', { backgroundImage:'linear-gradient(#4F6B52,#4F6B52)',
+  tl.fromTo('#v-yes', { backgroundImage:'linear-gradient(#F7F5F0,#F7F5F0)',
       backgroundRepeat:'no-repeat', backgroundSize:'0% 4px',
       backgroundPosition:'0% 100%' },
-    { backgroundSize:'100% 4px', duration:0.45, ease:'power2.inOut' }, 6.843);
+    { backgroundSize:'100% 4px', duration:0.45, ease:'power2.inOut' }, 11.031);
   // "Miracle" is where the panel washes moss -- the coral line + wash beat.
-  tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, 7.313);
-  // "no" gets a coral void flash -- the negating half of the verdict.
-  tl.fromTo('#v-no-flash', { opacity:0 }, { opacity:0.85, duration:0.30 }, 8.563);
-  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:9.700, ease:'none' }, 0);
+  tl.fromTo('#v-wash', { scaleX:0 }, { scaleX:1, duration:1.00, ease:'power2.inOut' }, 12.266);
+  tl.fromTo('#v-tag-yes', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.30 }, 11.031+0.25);
+  // "no" is underlined in coral -- the same gesture as "yes", opposite hue --
+  // and the two words SUPPORTED / NOT SUPPORTED land under the halves they
+  // label, so the verdict survives without colour vision.
+  tl.fromTo('#v-no', { backgroundImage:'linear-gradient(#F7F5F0,#F7F5F0)',
+      backgroundRepeat:'no-repeat', backgroundSize:'0% 4px',
+      backgroundPosition:'0% 100%' },
+    { backgroundSize:'100% 4px', duration:0.45, ease:'power2.inOut' }, 13.426);
+  tl.fromTo('#v-tag-no', { opacity:0, y:14 }, { opacity:1, y:0, duration:0.30 }, 13.426+0.25);
+  tl.fromTo('#gi', { scale:1.16, x:80, y:0 }, { scale:1.0, x:-80, y:40, duration:14.476, ease:'none' }, 0.000);
 
-    tl.to({}, { duration: 9.653 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 14.476 }, 0);   // full-span anchor -- always last
     window.__timelines["21-verdict"] = tl;
   </script>
 </template>

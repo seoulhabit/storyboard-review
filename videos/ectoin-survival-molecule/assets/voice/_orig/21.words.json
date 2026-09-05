@@ -1,0 +1,150 @@
+{
+  "scene": "21-verdict",
+  "block": "21-verdict",
+  "cut": {
+    "start": 0.2,
+    "end": 18.584
+  },
+  "gain_db": 4.8,
+  "lufs": -20.0,
+  "wpm": 100.9,
+  "words": [
+    {
+      "text": "Some",
+      "start": 0.1,
+      "end": 0.13
+    },
+    {
+      "text": "of",
+      "start": 0.13,
+      "end": 0.29
+    },
+    {
+      "text": "that",
+      "start": 0.29,
+      "end": 0.58
+    },
+    {
+      "text": "research",
+      "start": 0.67,
+      "end": 1.27
+    },
+    {
+      "text": "comes",
+      "start": 1.27,
+      "end": 1.69
+    },
+    {
+      "text": "from",
+      "start": 1.69,
+      "end": 2.02
+    },
+    {
+      "text": "companies",
+      "start": 2.02,
+      "end": 2.4
+    },
+    {
+      "text": "that",
+      "start": 2.89,
+      "end": 3.07
+    },
+    {
+      "text": "sell",
+      "start": 3.27,
+      "end": 3.5
+    },
+    {
+      "text": "the",
+      "start": 3.5,
+      "end": 3.7
+    },
+    {
+      "text": "ingredient.",
+      "start": 3.7,
+      "end": 4.728
+    },
+    {
+      "text": "BTOP,",
+      "start": 4.728,
+      "end": 6.001
+    },
+    {
+      "text": "Merck,",
+      "start": 6.001,
+      "end": 7.073
+    },
+    {
+      "text": "and",
+      "start": 7.073,
+      "end": 7.861
+    },
+    {
+      "text": "Cow.",
+      "start": 7.861,
+      "end": 7.861
+    },
+    {
+      "text": "So,",
+      "start": 8.039,
+      "end": 8.693
+    },
+    {
+      "text": "promising",
+      "start": 8.711,
+      "end": 9.251
+    },
+    {
+      "text": "supporting",
+      "start": 9.751,
+      "end": 9.941
+    },
+    {
+      "text": "ingredient,",
+      "start": 10.131,
+      "end": 10.881
+    },
+    {
+      "text": "yes.",
+      "start": 10.881,
+      "end": 11.837
+    },
+    {
+      "text": "Miracle",
+      "start": 12.116,
+      "end": 12.346
+    },
+    {
+      "text": "molecule,",
+      "start": 12.426,
+      "end": 13.176
+    },
+    {
+      "text": "no.",
+      "start": 13.276,
+      "end": 13.626
+    }
+  ],
+  "sentences": [
+    {
+      "start": 0.1,
+      "end": 4.728,
+      "text": "Some of that research comes from companies that sell the ingredient."
+    },
+    {
+      "start": 4.728,
+      "end": 7.861,
+      "text": "BTOP, Merck, and Cow."
+    },
+    {
+      "start": 8.039,
+      "end": 11.837,
+      "text": "So, promising supporting ingredient, yes."
+    },
+    {
+      "start": 12.116,
+      "end": 13.626,
+      "text": "Miracle molecule, no."
+    }
+  ]
+}

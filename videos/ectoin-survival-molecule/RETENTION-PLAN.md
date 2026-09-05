@@ -51,3 +51,15 @@ assembly to 22:08, sound/captions to 22:28, final export by 22:28, done 22:58.
               then the negation cards
 29-cta        keep layout (right third + lower-right clear); I19 bottle-back
               still in the left column only
+
+## Status (21:33 EDT)
+- Plates: 13 clips + 26 stills generated/reused; every planned plate landed
+  (no 2.5D fallback needed). V12 turntable regenerated once (the start+end
+  image take morphed its background; the start-image-only take is used).
+  V07 osmosis: vidIQ take used (the Higgsfield take shrank in reverse).
+  I26 (recovered cell with a bead ring ON the membrane) rejected: shield read.
+- Two full renders. Pass 2 fixed the one real cadence defect pass 1 found
+  (09-exclusion's honest half sat still for 13s) and widened the editorial
+  pushes. Final: renders/ectoin-survival-molecule_retention-master.mp4,
+  mastered from _retention-raw2.mp4 (kept untracked; LFS-tracked master only).
+- Measurements and gate results: DELIVERY.md, "2026-09-04 — retention master".

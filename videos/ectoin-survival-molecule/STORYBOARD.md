@@ -36,7 +36,7 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 06 | `06-mechanism` | 0:50.71 | 9.62s | 16 | 1.66 |
 | 07 | `07-question` | 0:59.93 | 10.32s | 10 | 0.97 |
 | 08 | `08-humectant` | 1:09.66 | 14.57s | 12 | 0.82 |
-| 09 | `09-exclusion` | 1:23.82 | 24.22s | 13 | 0.54 |
+| 09 | `09-exclusion` | 1:23.82 | 24.22s | 14 | 0.58 |
 | 10 | `11-analogy` | 1:47.64 | 14.57s | 8 | 0.55 |
 | 11 | `12-load` | 2:01.61 | 13.52s | 20 | 1.48 |
 | 12 | `13-keratin` | 2:14.73 | 17.28s | 10 | 0.58 |
@@ -57,4 +57,4 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 27 | `28-remember` | 5:09.92 | 15.25s | 13 | 0.85 |
 | 28 | `29-cta` | 5:24.37 | 13.78s | 5 | 0.36 |
 
-**331 authored beats across 338.1s (0.98/s average).**
+**332 authored beats across 338.1s (0.98/s average).**

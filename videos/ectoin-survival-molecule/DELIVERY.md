@@ -54,7 +54,59 @@ priority shots the brief lists cover 229 s (68 %) by themselves; the
 editorial evidence chapter (16–21), 11, 15 and the end screen are kept as
 authored.
 
-MEASUREMENTS_PLACEHOLDER
+**Final file, measured (decoded back, not asserted):**
+`renders/ectoin-survival-molecule_retention-master.mp4` — H.264 High,
+BT.709 (primaries/transfer/matrix all tagged), 1920x1080, 30 fps, video
+9.58 Mbps (`hyperframes render --video-bitrate 10M`, 8–12 Mbps spec),
+AAC-LC stereo 48 kHz 192 kbps, **5:38.20 (338.200 s)** vs v2's 338.145 s
+composition (same walk; container rounding only). Loudness **−14.90 LUFS /
+−3.60 dBTP** after the two-pass `loudnorm` in `scripts/master-retention.py`
+(same −14 / −4.0 targets as v2). Captions: `scripts/build_captions.py` on the
+retention build produced a byte-identical `.srt`/`.vtt` (timing is the same
+walk), so the shipped captions are unchanged and stay in sync. Originals:
+all five pre-existing renders match their session-start md5s in both the
+shared checkout and this worktree (`692a2fe7…`, `416347c9…`, `a0360226…`,
+`636f3795…`, `a40bfb07…`); `git diff master -- assets/voice assets/music
+assets/sfx captions scripts/vo_lines.py scripts/timing.py
+scripts/transitions.py` is empty.
+
+**Retention rules, measured on the rendered pixels** (`scripts/check-motion-gaps.py`,
+4 fps, frame-mean |Δluma| < 0.35 = static; ≤2.0 s allowed inside the first
+31 s, ≤4.0 s after) and the project's own cadence gate (`check-cadence.py
+--longform`, 8 fps, 6.0 s quiet ceiling):
+
+| Metric | v2 final | Retention master |
+|---|---|---|
+| Static runs over the limit | **22** | **2** — 188.25–193.75 s (18-eczema tail) and 331.75–338.25 s (29-cta) |
+| Steps carrying a visible beat | 13.9 % (372/2680) | **48.0 %** (1292/2692) |
+| Scenes over the 6.0 s quiet ceiling | 9 | **4** |
+| First meaningful image | text card at 0 s | photoreal salt lake in motion at frame 0 |
+
+The two remaining static runs and three of the four remaining quiet
+scenes are the *same windows* v2 already carried — 14-notforce
+155.4–161.6 s (v2: 155.25–161.75), 18-eczema 202.4–208.8 s (identical),
+29-cta 331.9–338.0 s (identical; the end-card is calm by design so
+YouTube's end-screen elements are not fighting motion underneath, and it is
+untouched from v2). The fourth, 09-exclusion, is the one this pass genuinely
+caused and then fixed: pass 1 froze its honest half for 13.0 s (the plate
+video ran out under the 24 s scene, and the ink world on top has only
+sparse diagram beats); pass 2 adds a drifting dim ground under the ink
+world and a continuous ring rotation, which cut it to 8.25 s (99.5–107.6 s,
+inside v2's own 12.9 s hold at 94.9–107.6 s). Not re-rendered a third
+time: the brief's completion-over-perfection rule, and the residual is the
+authored honest-version diagram, which is kept deliberately.
+
+**Gates**
+
+| Gate | Result |
+|---|---|
+| End-screen clearance (`scripts/check-endscreen.py`, right third + lower-right, 325.3 s → end, every 0.5 s) | **PASS**, 0 zone hits. Sampling from 324.37 s (the seam itself) flags the *outgoing* scene 28 mid-wipe on the first frame — same on v2 — so the checker starts after the 0.80 s settle wipe. |
+| `check-seams.py --render` | Same 8 findings as v2 (03→04, 04→05, 06→07, 09→11, 18→19, 22→23, 24→25, 27→28), each already diagnosed above as a soft-narration / ASR-timing / intentional-SFX non-defect. Audio is unchanged, so this is the expected reproduction. |
+| Safe-area (`check-safe-area.py --landscape`) | **FAIL by construction, N/A**: the gate estimates a flat page ground from the border ring and reads everything else as ink; a full-bleed photograph fills all four margins with "ink" on every plate frame (worst cases sit exactly on plate scenes: 26.25 s / 26.5 s in 03-now, 42–44 s in 05-halomonas). Text and UI stay inside the 54/108/96/96 safe box on every scene — verified by frame extraction (32-frame audit) — and the only reserve the brief names, the end screen, is gated separately above. Recorded before the render in `RETENTION-PLAN.md`. |
+| `hyperframes check --samples 30` | 0 runtime errors, 0 motion errors. Layout: the one error (27-resilience caption vs note overlap) fixed before pass 1; remaining info items are the intentional Ken-Burns overflow (marked `data-layout-allow-overflow`) and clip-path wipe overlaps at seams (see the 2026-09-02 note on `content_overlap` under wipes). Contrast: the 08 card kicker raised from .65 to .88 alpha. |
+| Static-hold (`check-static-hold.py --landscape`, region-aware) | Content-void flags on the ground-inversion in 09 (paper world with a plate swept away by the ink world — a design beat), the end-screen reserve in 29 (empty by design), and the plate area of 22 after the cards leave (photograph, not vanished UI). Whole-frame: no findings. |
+| Visual audit (32 frames, every ~10 s + every chapter seam + the closing 3) | Opening pays the premise inside 30 s (salt lake 0 s → droplet 5.6 s → dive 11.3 s → bacterium losing water 14.6 s → ectoin/hydration 20 s → droplet-to-bottle match cut 23.6 s → ECTOIN lockup 26.8 s). Chapter seams 08/12/16/22/26 each open on their plate with the band. Closing 29 keeps the right third and lower-right clear in every sampled frame. |
+
 
 ---
 

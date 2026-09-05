@@ -1,5 +1,9 @@
 # Publish envelope — paste-ready
 
+> Chapters below are **regenerated from `STORYBOARD.md`** on every build, which
+> parses the real `data-start` values. Re-paste them after the final build; a
+> chapter list is the one deliverable nothing in the render pipeline validates.
+
 ## Title
 
 **You Bought Collagen. Where Did It Actually Go?**
@@ -16,7 +20,7 @@ Alternates, if the primary underperforms:
 ## Description
 
 ```
-Collagen is the scaffolding holding your skin up. So what happens to the collagen
+Collagen is the structure holding your skin up. So what happens to the collagen
 you buy — the cream, and the powder?
 
 Short version: the cream is too big a molecule to get in, your stomach doesn't do
@@ -26,12 +30,7 @@ trials, the benefit stopped showing up.
 This is not "collagen is a scam." It's a question of how it reaches you, and what
 the evidence survives.
 
-0:00 Your face is a building
-0:17 The sun runs a demolition crew
-0:36 Why collagen cream can't get in
-1:04 Your stomach doesn't do facial delivery
-1:40 The evidence plot twist
-2:16 What actually protects it
+CHAPTERS_GO_HERE
 
 SOURCES
 • Fisher GJ, Voorhees JJ. J Investig Dermatol Symp Proc. 1998;3(1):61-8. PMID 9732061
@@ -58,16 +57,25 @@ industry-funded and lower-quality studies from the rest.
 That's not the same as "it doesn't work." It's "we don't have clean evidence that
 it does." Which is a genuinely different, and more annoying, answer.
 
+One thing the video shows but doesn't say out loud: the paper reports the
+subgroup RESULTS, not how many trials fell in each subgroup. The tiles you see
+drop out are a pattern, not a count — which is why they carry a label saying so.
+
 What would you want us to run this same treatment on next?
 ```
 
 ## End screen
 
-Final 5–20s: the closing scene reserves the right third (640px) and the
-lower-right, and its motion is calmed to a single slow drift — so the overlay
-elements land on a clear frame rather than over live content.
+The closing scene (`16-end`) holds for 5.0s with the right third (640px) and the
+lower-right (200px) kept clear by the `--endscreen-right` / `--endscreen-bottom`
+tokens, and its only motion is a single slow settle — so the overlay elements
+land on a clear, calm frame. `scripts/check-endscreen.py` measures that on the
+rendered pixels rather than trusting the tokens.
+
+The `curtain` transition into it wipes LEFT, revealing the empty right third
+first: the reserve is clear before the card has finished arriving.
 
 - **Next video:** the strongest related piece in the catalog is
-  `videos/retinal-clinical-dossier` — the end card's own action line names
-  retinoids, so the handoff is content-led rather than arbitrary.
+  `videos/retinal-clinical-dossier` — the hierarchy's fourth row names retinoids,
+  so the handoff is content-led rather than arbitrary.
 - **Subscribe element:** lower-left of the reserved band.

@@ -255,6 +255,15 @@
   "file": "02-promise",
   "unit": "02-promise",
   "kind": "w",
+  "word": "watch",
+  "occurrence": 1,
+  "seconds": 6.526,
+  "abs": 12.323
+ },
+ {
+  "file": "02-promise",
+  "unit": "02-promise",
+  "kind": "w",
   "word": "first",
   "occurrence": 1,
   "seconds": 8.081,
@@ -624,10 +633,10 @@
   "file": "03-building",
   "unit": "05-boundary",
   "kind": "w",
-  "word": "replacing",
+  "word": "preserving",
   "occurrence": 1,
-  "seconds": 23.543,
-  "abs": 40.278
+  "seconds": 21.371,
+  "abs": 38.106
  },
  {
   "file": "03-building",
@@ -655,6 +664,24 @@
   "occurrence": 1,
   "seconds": 23.543,
   "abs": 40.278
+ },
+ {
+  "file": "03-building",
+  "unit": "05-boundary",
+  "kind": "w",
+  "word": "replacing",
+  "occurrence": 1,
+  "seconds": 23.543,
+  "abs": 40.278
+ },
+ {
+  "file": "03-building",
+  "unit": "05-boundary",
+  "kind": "w",
+  "word": "later",
+  "occurrence": 1,
+  "seconds": 24.223,
+  "abs": 40.958
  },
  {
   "file": "06-door",

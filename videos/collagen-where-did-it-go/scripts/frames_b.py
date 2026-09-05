@@ -113,14 +113,20 @@ def file_03_building(fspan, fctx):
     reveal(tl, "#preserve", @w(preserving));
     tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(preserving));
     tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, @w(preserving));
-    // PRESERVING holds: the shield takes one pulse as it is named.
+    // PRESERVING holds: the shield takes one pulse as it is named, and the camera
+    // pulls back to take in the whole protected building -- the reframe the line
+    // asks for, and the only bounding-box motion in a stretch whose other beats
+    // are all stroke-dashoffset (invisible to the motion checker, which found
+    // 2.32s frozen here before this leg existed).
     tl.to("#shield-fill", { opacity:0.42, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }, @w(preserving) + 0.1);
+    tl.to("#world", { scale:0.955, duration:1.0, ease:EASE.camera }, @w(preserving) + 0.4);
     // REPLACING is tried, and fails: a cut beam starts to redraw and falls back.
     // The tail of the file is this attempt, not an idle drift.
     tl.fromTo("#beam-4a", { strokeDashoffset:640 }, { strokeDashoffset:430, duration:0.45, ease:EASE.arrive }, @w(replacing) - 0.1);
-    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, @w(replacing) + 0.4);
-    tl.to("#bwrap", { y:14, duration:0.5, ease:EASE.swap }, @w(replacing) + 0.4);
-    tl.to("#bwrap", { y:9, duration:0.5, ease:EASE.arrive }, @w(replacing) + 0.95);
+    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, @w(replacing) + 0.3);
+    tl.to("#bwrap", { y:14, duration:0.45, ease:EASE.swap }, @w(replacing) + 0.3);
+    tl.to("#world", { scale:1, duration:0.55, ease:EASE.camera }, @w(replacing) + 0.4);
+    tl.to("#bwrap", { y:9, duration:0.4, ease:EASE.arrive }, @w(later));
 """
     MOTION["03-building"]["beats"] = [
         {"name": "camera settle",   "at": "0.0",              "area": 0.5,   "dl": 60,  "dur": 1.2},
@@ -138,8 +144,10 @@ def file_03_building(fspan, fctx):
         {"name": "camera home",    "at": "@w(sunscreen)-0.1", "area": 0.5,   "dl": 60, "dur": 1.0},
         {"name": "sky cools",      "at": "@w(draws)-0.1",     "area": 0.119, "dl": 77, "dur": 0.6},
         {"name": "shield fills",   "at": "@w(boundary)",      "area": 0.19,  "dl": 44, "dur": 0.7},
-        {"name": "preserve wash",  "at": "@w(preserving)",    "area": 0.048, "dl": 91, "dur": 0.45},
-        {"name": "building sinks", "at": "@w(replacing)+0.4", "area": 0.17,  "dl": 60, "dur": 0.5},
+        {"name": "preserve wash",  "at": "@w(preserving)",     "area": 0.048, "dl": 91, "dur": 0.45},
+        {"name": "camera pulls back", "at": "@w(preserving)+0.4", "area": 0.5, "dl": 60, "dur": 1.0},
+        {"name": "building sinks", "at": "@w(replacing)+0.3",  "area": 0.17,  "dl": 60, "dur": 0.45},
+        {"name": "camera home",    "at": "@w(replacing)+0.4",  "area": 0.5,   "dl": 60, "dur": 0.55},
     ]
     return body, css, tl
 

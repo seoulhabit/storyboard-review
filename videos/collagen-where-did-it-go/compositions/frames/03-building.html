@@ -445,14 +445,20 @@
     reveal(tl, "#preserve", 21.371);
     tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 21.371);
     tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 21.371);
-    // PRESERVING holds: the shield takes one pulse as it is named.
+    // PRESERVING holds: the shield takes one pulse as it is named, and the camera
+    // pulls back to take in the whole protected building -- the reframe the line
+    // asks for, and the only bounding-box motion in a stretch whose other beats
+    // are all stroke-dashoffset (invisible to the motion checker, which found
+    // 2.32s frozen here before this leg existed).
     tl.to("#shield-fill", { opacity:0.42, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }, 21.371 + 0.1);
+    tl.to("#world", { scale:0.955, duration:1.0, ease:EASE.camera }, 21.371 + 0.4);
     // REPLACING is tried, and fails: a cut beam starts to redraw and falls back.
     // The tail of the file is this attempt, not an idle drift.
     tl.fromTo("#beam-4a", { strokeDashoffset:640 }, { strokeDashoffset:430, duration:0.45, ease:EASE.arrive }, 23.543 - 0.1);
-    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, 23.543 + 0.4);
-    tl.to("#bwrap", { y:14, duration:0.5, ease:EASE.swap }, 23.543 + 0.4);
-    tl.to("#bwrap", { y:9, duration:0.5, ease:EASE.arrive }, 23.543 + 0.95);
+    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, 23.543 + 0.3);
+    tl.to("#bwrap", { y:14, duration:0.45, ease:EASE.swap }, 23.543 + 0.3);
+    tl.to("#world", { scale:1, duration:0.55, ease:EASE.camera }, 23.543 + 0.4);
+    tl.to("#bwrap", { y:9, duration:0.4, ease:EASE.arrive }, 24.223);
 
     // departure: push under the iris wipe into the next file
     tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 24.597);

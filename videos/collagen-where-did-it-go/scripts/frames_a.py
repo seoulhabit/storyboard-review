@@ -179,7 +179,11 @@ def file_02_promise(fspan, fctx):
     tl.fromTo(TAGS.industry.map(function (i) { return "#tag-" + i; }),
               { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, @w(remove) + 0.1);
     tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, @w(industry));
-    tl.to(tiles(TAGS.industry), { y:110, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, @w(watch));
+    // the tags have done their work by the time the tiles leave; they fade with
+    // the fall rather than riding it down over the row below and the caption
+    tl.to(TAGS.industry.map(function (i) { return "#tag-" + i; }),
+          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, @w(watch));
+    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, @w(watch));
 
     // ---- the column leaves; the molecule becomes the thing worth protecting --
     tl.to("#data-wash", { scaleY:0, duration:0.5, ease:EASE.exit }, @w(first) - 0.1);

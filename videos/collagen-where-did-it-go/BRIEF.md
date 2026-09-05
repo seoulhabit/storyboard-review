@@ -1,21 +1,20 @@
 # You Bought Collagen. Where Did It Actually Go?
 
-Long-form (~3:00), 1920×1080 landscape, 30fps. Two-character dialogue explainer.
+Long-form, 1920×1080 landscape, 30fps. **One narrator.** 16 beat units in 8
+composition files, clocked entirely by the measured narration.
 
 ---
 
 ## Format override — recorded, not assumed
 
-This project is **first-of-kind on three axes at once**, so each is written down
-here rather than inferred later from the files.
+This project is **first-of-kind on two axes**, so each is written down here
+rather than inferred later from the files.
 
 | Axis | Precedent in this repo | Decision |
 |---|---|---|
 | Landscape 16:9 | 1 of 31 projects (`ectoin-survival-molecule`) | follow it |
-| Long-form (~3 min) | same 1 project | follow it |
-| **Two named speakers in dialogue** | **none — zero** | build it, then harvest it |
-
-Operator confirmed all three, plus a prepended cold open, before the build began.
+| Long-form | same 1 project | follow it |
+| ~~Two named speakers in dialogue~~ | **built, shipped 2026-09-03, then withdrawn** | see below |
 
 **Landscape is the engine's native canvas, not a port.** HyperFrames'
 `CANVAS_DIMENSIONS` defines `landscape: {1920,1080}`, `init --help` calls it the
@@ -27,99 +26,140 @@ the deviation.
 the short edge. Layout gets an explicit landscape variant; type does not. Scaling
 by 0.5625 or 1.78 is the named error in both directions.
 
+### The two-hander was overridden by the operator on 2026-09-04
+
+The 3:09 cut this project shipped on 2026-09-03 ran a two-character dialogue
+(SoulHabit/Kimberly + Jay/Dylan, 41 alternating turns). **The operator withdrew
+that decision** and asked for a single narrator, a 2:00–2:30 runtime, and a
+retention-first rebuild with continuous visual actors. That is what this build
+is. The dialogue version is not a fallback; it is history, kept in git and
+diagnosed in DELIVERY.md.
+
+What the override costs, and what it buys, measured rather than argued:
+
+| | Two-voice cut (2026-09-03) | This build |
+|---|---|---|
+| Runtime · words | 3:09.0 · 449 | ~2:1x · 364 |
+| First word | 4.92s (wordless cold open) | 0.10s, by construction |
+| Composition files | 6 (avg 31.5s) | 8, carrying 16 beat units |
+| On-screen language | two-lane dialogue cards, every sentence duplicated | curated beats ≤ 10 words, ~10 kinetic phrases |
+
+The two-lane card system is not deleted knowledge: it was harvested to
+`catalog/visual-components/dialogue-lanes/` before removal.
+
 ---
 
-## Voice — a deliberate continuity break
+## Voice — back to one, and why the take is split in two
 
-The channel has run **one** voice across every project to date. This piece runs
-two, because a two-hander read by a single voice loses its timing.
+The channel has run **one** voice across every project
+(`videos/_channel/baseline.yaml`, policies `[S1/S-3]` one presenter,
+`[S1/S-4]` never rotate). The two-hander was this channel's second recorded
+voice-continuity break; withdrawing it returns the channel to its own rule.
 
-| | Voice | Engine | Measured |
+| | Voice | Engine | Blocks |
 |---|---|---|---|
-| SoulHabit | **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (element) | Higgsfield `seed_audio` | 184.1 wpm |
-| Jay | **Dylan** `b847bc29-f184-583a-8ad9-d1f1e16d1a60` (preset) | Higgsfield `seed_audio` | 163.4 wpm |
+| Narrator | **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (element) | Higgsfield `seed_audio` | A = units 01–13, B = units 14–15 |
 
-Dylan was chosen over Emmett on two measurements, not on taste: 163.4 wpm against
-150.3 (a comic foil wants the snappier read), and an opposite spectral tilt to
-Kimberly (low-band RMS −26.3 dB against her −34.9 dB), so the two separate by ear
-with no on-screen label doing the work.
+**Two TTS blocks, one narration master.** `seed_audio` rejects a prompt over
+2048 characters and the full script measures 2323, so the read is generated in
+two takes and `gen_vo.py cut` concatenates them into a single
+`assets/voice/master.wav` — one `<audio>` clip at root t=0, so master time IS
+root time and nothing downstream knows there were blocks.
 
-Both share the channel's canonical 6-node voice chain verbatim
-(md5 `555e4fb8cd83882d982816763cf3a12d`, byte-identical across six projects). One
-`<hf-audio-group id="voiceover">`, not two — a second group only if Dylan turns
-out to need different spectral treatment.
+**Where the seam falls is a decision, not a leftover.** Block A runs 1933
+characters and covers the entire hook-to-climax arc, so the piece's whole
+argument is one continuous performance. The seam lands between
+`13-uncertain` and `14-hierarchy`: under the second invert wipe, at the
+"what the evidence actually supports" chapter turn, where a change of register
+is what the edit is asking for anyway. `gen_vo.py verify` measures the two
+blocks against each other — integrated LUFS, pace, spectral centroid, band
+tilt and median F0 — and names the outlier block if any of them separate
+enough to read as a second speaker.
 
-This is the channel's **second** recorded voice-continuity break;
-`videos/ceramides-skin-barrier/BRIEF.md` documents the first.
+One `<hf-audio-group id="voiceover">` carries the channel's canonical 6-node
+voice chain verbatim (md5 `555e4fb8cd83882d982816763cf3a12d`, byte-identical
+across seven projects).
 
 ---
 
-## Architecture — flat, one level, VO-clocked
+## Architecture — flat, one level, narration-clocked
 
 ```
 index.html            GENERATED by scripts/build_index.py    — do not hand-edit
 compositions/frames/  GENERATED by scripts/build_frames.py   — do not hand-edit
+SCRIPT.md             GENERATED by scripts/build_script_md.py
+STORYBOARD.md         GENERATED by scripts/build_storyboard.py (parses index.html)
 ```
 
-Both emit a header comment saying so. **Grep the build scripts before editing any
+Every one emits a header saying so. **Grep the build scripts before editing any
 file here** — a change written into generated output survives a render, passes
-`check`, and is silently discarded by the next `npm run build`.
+`check`, and is discarded by the next `npm run build`.
 
 Root → frame only. No act or chapter grouping divs: nesting
 `data-composition-src` two levels deep silently breaks a scene's inner layout.
 
-**Scene durations are never authored.** `build_frames.scene_timing()` ffprobes
-each `assets/voice/NN-<who>.wav` and lays the lines end to end with the per-line
-`gap_after` from `vo_lines.py`. The VO is the master clock; changing a take
-re-derives every downstream number on the next build.
+**No duration is ever authored.** `scripts/timing.py:walk()` derives every
+unit's start, span and word anchor from the measured master
+(`assets/voice/master.words.json`). A unit's first word lands at
+`seam + d − j` by construction, and the walk raises if the manifest and the
+transition grammar disagree — so a re-cut take re-derives the entire piece and
+a drifted one fails loudly instead of quietly.
 
-### File split is by ACTOR, not by scene
+### Files are grouped by ACTOR, not by sentence
 
-| File | Script | Actor | Phases |
+A file boundary is exactly a visible transition; inside a file, consecutive
+units are phases on one set of DOM nodes, so the molecule, the building and the
+barrier are moved and re-framed, never redrawn.
+
+| File | Units | Actor | Phases |
 |---|---|---|---|
-| `00-cold-open` | new | molecule at a door | one |
-| `01-building` | S1 + S2 | **the building** | intact → beams cut |
-| `02-door` | S3 | the building's entrance | arrives → rejected → film |
-| `03-digestion` | S4 | the powder route | scoop → cut up → dispatch |
-| `04-evidence` | S5 | the evidence field | 23 tiles → filtered → null |
-| `05-verdict` | S6 + S7 | **the building returns** | tools → verdict → end card |
+| `01-hook` | 1 | the molecule | races → hits the barrier → splits into the powder route |
+| `02-promise` | 2 | the molecule + the trial field | question → data column tags and drops → shielded |
+| `03-building` | 3–5 | **the building** | assembles ground-up → beams cut, shards fall → boundary drawn |
+| `06-door` | 6–7 | the barrier | scale → three rejected tries → flattens to a film |
+| `08-digestion` | 8–9 | the powder route | scoop → tract → fragments → four branches |
+| `10-evidence` | 10–13 | the evidence field | 23 tiles → tagged → filtered twice → the effect stops showing up |
+| `14-hierarchy` | 14–15 | **the building returns** | sorts and locks → partial repair → optional column → verdict |
+| `16-end` | 16 | — | calm end card, end-screen reserve clear |
 
-Six files for seven scripted scenes. `01` and `05` are multi-phase merges on one
-set of DOM nodes: the beams `01` cuts are the same `<line>` elements `05` partly
-restores, drawn by one shared builder. Ectoin split by narration sentence and
-ended up with two files drawing byte-identical geometry — one actor drawn twice
-instead of moved. That is the defect this split exists to avoid.
+`03-building` and `14-hierarchy` share one builder and one set of `beam-*`
+ids: the beams `04` cuts are the same `<line>` elements `14` partly restores,
+carrying the lean with them. Ectoin split by narration sentence and ended up
+with two files drawing byte-identical geometry — one actor drawn twice instead
+of moved. That is the defect this split exists to avoid.
 
-### Camera path — decided at beat-sheet time
+### Camera — one space, re-framed
 
-One `.world` wrapper, one camera state per scene, so consecutive scenes read as
-framings of one space:
+One `.world` wrapper inside a `.worldclip`, one camera state per phase, so
+consecutive files read as framings of one space. Every camera leg settles at
+scale 1 / x 0 / y 0 before its file's span ends; `build_frames.py` asserts it.
+A camera that ENDS zoomed leaves the scene permanently cropped and the hard
+safe-area gate cannot see it, because `.worldclip` removes the offending pixels
+before the gate looks (DELIVERY.md records the frame where that shipped).
 
-`00` tight on the door → `01` wide, slow push → `02` back at the door, closer
-(the cold open's rhyme) → `03` leaves the building entirely → `04` abstract, no
-building → `05` wide again, the return.
+### Transition grammar
 
-### Transition system
+Clip-path only. Nothing translates and opacity is never touched.
 
-Clip-path wipes. Nothing translates, opacity is never touched.
-
-- **chapter opener** — wipe UP, 0.60s (×3)
-- **within chapter** — wipe LEFT, 0.45s (×1)
-- **deliberate hard cut** — `03 → 04` (×1), plus frame 0. Leaving the body for
-  the abstract evidence space is a register change that earns a cut.
+- **iris** — PRIMARY, ×4. A circle expanding from the outgoing file's declared
+  actor position: the molecule, the door, the film. This is "following the
+  molecule / moving through a layer", made literal.
+- **invert** — SECONDARY, ×2. Wipe up into and out of the ink-ground evidence
+  mode: the one register change in the piece.
+- **curtain** — CLOSING, ×1. A slow wipe left into the end card that reveals
+  the empty right third first, so the end-screen reserve is calm by
+  construction.
 
 Not a push. A translating push was built on the ectoin project and rejected: it
 failed the hard safe-area gate on **99 frames**, because a push drags real text
 through the reserved zones on its way in and out while a wipe only reveals
-content already at its resting position. Both render fine and both pass `check`.
+content already at its resting position.
 
 **Expect `check` to report `content_overlap` / `text_occluded` at each wipe.**
-The layout pass tests bounding boxes and does not model `clip-path`, so a clipped
-incoming wrapper still presents a full-canvas opaque box. Its severity moves with
-`--samples`, not with the composition. Confirm on an extracted frame; do not
+The layout pass tests bounding boxes and does not model `clip-path`, so a
+clipped incoming wrapper still presents a full-canvas opaque box. Confirm on an
+extracted frame (`scripts/check-seams.py --render` writes one per seam); do not
 restructure to satisfy it.
-
----
 
 ## §Sourcing — the claim table
 
@@ -132,6 +172,7 @@ PubMed *before* the beats were written.
 | C1 | Collagen is a main structural protein of skin | definitional | — | none |
 | C2 | UV exposure activates enzymes that break collagen down | sourced | Fisher & Voorhees, *J Investig Dermatol Symp Proc* 1998;3(1):61-8 · PMID 9732061; companion Fisher et al., *Photochem Photobiol* 1999;69(2):154-7 · doi 10.1562/0031-8655(1999)069<0154:mmopih>2.3.co;2 | `J Invest Dermatol · 1998` |
 | C3 | Collagen is too large to cross the skin barrier | sourced | Bos & Meinardi, *Exp Dermatol* 2000;9(3):165-9 · doi 10.1034/j.1600-0625.2000.009003165.x — the "500 Dalton rule" | `Exp Dermatol · 2000` |
+| C3b | Type I collagen is around 300,000 daltons | definitional — textbook, no efficacy claim | tropocollagen ≈ 300 kDa (three ~95 kDa α-chains). Stated so the 500-dalton limit has a scale to be compared against; Bos & Meinardi source the LIMIT, not the mass | none — the `Exp Dermatol · 2000` chip sits under the **500** card, not this one |
 | C4 | Topical collagen can still form a moisturising film | nominal-editorial | mechanism follows from C3; no efficacy claim made | none |
 | C5 | Digestion breaks collagen into peptides and amino acids | definitional | — | none |
 | C6 | Trials report modest hydration/elasticity/wrinkle gains | sourced | Pu et al., *Nutrients* 2023;15(9):2080 · doi 10.3390/nu15092080 — 26 RCTs, n=1721 | `Nutrients · 2023` |
@@ -142,8 +183,23 @@ PubMed *before* the beats were written.
 
 **C10 carries no citation pill on purpose.** It is general dietary advice, not a
 claim that a supplement does something, and giving it a pill it cannot support
-would be worse than leaving it bare. It rides inside line 32's plain-language
-nutrition sentence alongside the sourced smoking claim, which does carry C8.
+would be worse than leaving it bare. It rides in `14-hierarchy`'s nutrition
+sentence alongside the sourced smoking claim, which does carry C8 — and the C8
+chip steps back to 35% opacity as that sentence starts, so it cannot be read as
+sourcing the protein and vitamin C line.
+
+**The trial tags are labelled illustrative, on screen.** Myung & Park report 23
+RCTs and subgroup RESULTS by funding source and study quality; they do not
+publish per-subgroup trial counts. The tile field therefore uses fixed tag sets
+(the same indices in the `02-promise` foreshadow and the `12-filter` payoff, so
+the trials that drop are the ones that were flagged), and a permanent
+`tag pattern illustrative` note sits beside the grid. No survivor count is ever
+displayed, for the same reason: the source gives none.
+
+**The count-up to 23 belongs to unit 12, not unit 10.** Unit 10's claim is C6
+(Pu 2023, which pooled **26** RCTs) and carries the `Nutrients · 2023` chip; the
+23 is C7's pooled n and now lands under `Am J Med · 2025`. In the 3:09 cut the
+numeral and the 2023 chip shared a frame.
 
 ### The script's central claim is accurate, and understated
 
@@ -152,16 +208,28 @@ no clinical evidence to support the use of collagen supplements to prevent or
 treat skin aging."* The script says the benefits "were no longer statistically
 significant," which is the more conservative reading. No correction needed.
 
-### Plain-language corrections applied (gate 9b)
+### Wording held to the sourced strength (2026-09-04 audit)
 
-The claim sentence has to stand alone without clinical vocabulary. Three fixes,
-all in `vo_lines.DISPLAY` — the on-screen copy, not the VO:
+The single-narrator rewrite is a compression, and compression drifts toward
+confidence. Six lines were pulled back to what the table actually supports:
 
-1. "hydrolyzed collagen" → *the broken-down kind in powders* (dropped from the
-   card entirely; the VO keeps the technical term)
-2. "statistically significant" → **"the effect stops showing up"**, which is the
-   whole payoff of scene 04 and is now the verdict bar's own text
-3. "dermal collagen" → *deep-layer collagen*
+| Unit | Drafted | Shipped | Why |
+|---|---|---|---|
+| `03-building` | "Collagen is the structure inside it." | "the **main** structure" | C1 is "a main structural protein", not the only one |
+| `05-boundary` | "usually **far** easier than replacing it" | "usually easier than replacing it **later**" | the two-voice cut's own wording |
+| `07-film` | "Skin **feels** smoother." | "Skin **may** feel smoother." | C4 makes no efficacy claim |
+| `14-hierarchy` | "**far stronger** evidence **for collagen**" | "**considerably stronger** evidence for **encouraging collagen production**" | C9's own phrasing; the claim is about production, not about collagen generally |
+| `15-verdict` | "Collagen cream **is** a pleasant moisturiser." | "**can be** a pleasant moisturiser." | C4 again |
+| `02-promise` | "Stay for the twist." | *(cut)* | it was spoken AND printed — the one thing the brief forbids — and the loop itself is the better tease |
+
+**One duplicate is kept deliberately.** "The effect stops showing up" is spoken
+and set at 132px at the same moment. The brief asks for no full sentence to
+appear twice *and* names this phrase as the strongest typographic beat; the
+operator chose the phrase. It is the only instance in the piece.
+
+The spoken form still says "no longer statistically significant" immediately
+before it, so the plain-language line pays off a qualification the viewer has
+just heard rather than replacing it.
 
 ---
 

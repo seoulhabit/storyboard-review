@@ -1,0 +1,36 @@
+{
+  "catalog_version": "2.0.0-alpha.1",
+  "updated": "2026-09-05",
+  "policy": "harvest_first",
+  "ingredient_packs": [
+    {
+      "ingredient_id": "snail-mucin",
+      "display_name": "Snail Mucin",
+      "version": "1.0.0",
+      "status": "production_ready",
+      "pack": "catalog-v2/ingredients/snail-mucin/pack.json",
+      "manifest": "catalog-v2/ingredients/snail-mucin/manifest.json",
+      "approved_asset_count": 5,
+      "restricted_asset_count": 1,
+      "highest_priority_gap": "collection-method comparison component"
+    },
+    {
+      "ingredient_id": "pdrn",
+      "display_name": "PDRN",
+      "version": "1.0.0",
+      "status": "production_ready_with_restrictions",
+      "pack": "catalog-v2/ingredients/pdrn/pack.json",
+      "manifest": "catalog-v2/ingredients/pdrn/manifest.json",
+      "approved_asset_count": 2,
+      "restricted_asset_count": 0,
+      "highest_priority_gap": "route-comparison component"
+    }
+  ],
+  "global_rules": [
+    "A format consumes an ingredient pack; it must not copy a complete story.",
+    "Every visual must have provenance, status, approved uses, and avoid rules.",
+    "Every efficacy claim must resolve to a traceable evidence record.",
+    "Medical injection evidence cannot support an intact-skin topical claim.",
+    "No new generation during the initial harvest phase."
+  ]
+}

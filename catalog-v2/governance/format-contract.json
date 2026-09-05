@@ -1,0 +1,35 @@
+{
+  "contract_version": "1.0",
+  "purpose": "The only ingredient-facing interface a story format should need.",
+  "required_inputs": {
+    "ingredient_id": "Stable pack identifier",
+    "hero_media": "One opening visual; format decides crop and timing",
+    "identity_card": "Ingredient name and label-reading boundary",
+    "product_container": "Unbranded bottle, jar, tube, ampoule, or null",
+    "citation_ids": "Evidence records actually used by the script",
+    "boundary_card": "The one limitation viewers must retain"
+  },
+  "optional_inputs": {
+    "source_media": "Origin or process visual",
+    "texture_media": "Tactile visual",
+    "application_media": "Usage visual that does not imply an outcome",
+    "mechanism_actor": "Only when an approved evidence record supports it",
+    "evidence_cards": "One or more scoped evidence summaries"
+  },
+  "format_owned_fields": [
+    "hook_wording",
+    "story_order",
+    "shot_duration",
+    "camera_move",
+    "typography",
+    "transition",
+    "music_and_sfx",
+    "cta"
+  ],
+  "guardrails": [
+    "A format must never silently substitute an injected-route claim into a topical story.",
+    "A generated or reenacted image must never serve as proof.",
+    "If a requested claim id is quarantined or missing, render the boundary card instead of inventing a claim.",
+    "Use at most three recurring ingredient assets in one video; repetition across videos creates recognition, while variation inside the format preserves freshness."
+  ]
+}

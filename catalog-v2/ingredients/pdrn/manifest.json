@@ -1,0 +1,35 @@
+{
+  "ingredient_id": "pdrn",
+  "manifest_version": "1.0.0",
+  "assets": [
+    {
+      "id": "pdrn-serum-square",
+      "file": "assets/pdrn-serum-square.png",
+      "source": "catalog/ingredient-photography/sh-pdrn.png",
+      "origin": "harvested_existing_repo",
+      "status": "approved",
+      "dimensions": "2048x2048",
+      "has_alpha": true,
+      "sha256": "f1caa8872c89d77bd14ad769f690d85d64f6dcdfc7b06f74caf5fcaa99ea184b"
+    },
+    {
+      "id": "pdrn-dropper-packshot",
+      "file": "assets/pdrn-dropper-packshot-cream.png",
+      "source": "existing ingredient-pack pilot output created 2026-09-05",
+      "origin": "harvested_existing_pilot_output",
+      "status": "approved",
+      "dimensions": "1086x1448",
+      "has_alpha": false,
+      "sha256": "db5fee8d11fbf0a5b7410d8730f9018ad709f169eda9eac042a838fb203d3255"
+    },
+    {
+      "id": "pdrn-identity-card",
+      "file": "identity-card.svg",
+      "source": "existing ingredient-pack pilot output created 2026-09-05",
+      "origin": "harvested_existing_pilot_output",
+      "status": "approved",
+      "dimensions": "1080x600",
+      "has_alpha": false
+    }
+  ]
+}

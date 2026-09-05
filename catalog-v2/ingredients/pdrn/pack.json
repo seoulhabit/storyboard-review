@@ -1,0 +1,278 @@
+{
+  "schema_version": "1.0",
+  "ingredient_id": "pdrn",
+  "version": "1.0.0",
+  "status": "production_ready",
+  "updated": "2026-09-05",
+  "identity": {
+    "display_name": "PDRN",
+    "consumer_term": "PDRN",
+    "definition": "Polydeoxyribonucleotide: preparations made from DNA fragments. Source, fragment-size profile, formulation, and delivery route can differ materially between products and studies.",
+    "source_type": "DNA-fragment preparation; animal-derived and plant-described variants exist",
+    "label_terms": {
+      "preferred": ["Use the exact ingredient-list wording photographed on the product"],
+      "possible_variants": ["PDRN", "Polydeoxyribonucleotide", "Polynucleotide", "Hydrolyzed DNA", "Sodium DNA", "Phyto-PDRN"],
+      "rule": "Treat these as possible market or label terms, not automatic synonyms. Never infer source, fragment size, concentration, or equivalence from the front label alone."
+    },
+    "identity_boundaries": [
+      "PDRN and PN are not interchangeable by default.",
+      "Evidence from injection does not transfer automatically to an intact-skin topical serum.",
+      "Evidence for one defined preparation such as PDRN-850K does not prove every product marketed as PDRN.",
+      "Salmon-derived is common in studied preparations, but not every marketed PDRN product should be called salmon DNA without product-specific evidence."
+    ]
+  },
+  "visual_system": {
+    "actor": "Short DNA-fragment ribbons or paired nucleotide segments, never a giant rotating genome helix.",
+    "tactile_signature": "Nearly clear, faintly opalescent serum with precise glass and restrained clinical light.",
+    "palette": ["warm cream", "ink", "muted celadon", "restrained aqua", "clear glass"],
+    "motion_grammar": [
+      "Fragment first: show short segments assembling into a dossier, not a spinning hero helix.",
+      "Use route transitions as the main explanatory motion: bottle, skin surface, needle/clinic are separate states.",
+      "Let evidence markers land after the route and study population are visible."
+    ],
+    "assets": [
+      {
+        "id": "pdrn-serum-square",
+        "path": "catalog-v2/ingredients/pdrn/assets/pdrn-serum-square.png",
+        "kind": "square ingredient photograph",
+        "status": "approved",
+        "approved_uses": ["identity", "texture", "neutral opening", "recap"],
+        "avoid": ["claiming the liquid proves purity or a biological effect", "calling it injectable"]
+      },
+      {
+        "id": "pdrn-dropper-packshot",
+        "path": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+        "kind": "vertical unbranded product packshot",
+        "status": "approved",
+        "approved_uses": ["topical product archetype", "label explanation", "comparison", "CTA"],
+        "avoid": ["representing a real commercial product", "adding a fake concentration", "using it for injectable-route claims"],
+        "notes": "New pilot asset. Fixed cream background; not a transparent cutout."
+      },
+      {
+        "id": "pdrn-poster-helix",
+        "path": "catalog/ingredients/pdrn/pdrn-poster-helix.png",
+        "kind": "legacy poster motif",
+        "status": "reference_only",
+        "approved_uses": ["historical mood reference"],
+        "avoid": ["production use", "rotating full helix", "medical-aesthetics branding", "benefit counts"]
+      },
+      {
+        "id": "pdrn-poster-bubbles",
+        "path": "catalog/ingredients/pdrn/pdrn-poster-bubbles.png",
+        "kind": "legacy poster motif",
+        "status": "reference_only",
+        "approved_uses": ["shape-language reference"],
+        "avoid": ["production use", "branded clinic identity", "4-step/7-benefit claims"]
+      }
+    ],
+    "components": [
+      {
+        "id": "pdrn-identity-card",
+        "type": "editable SVG identity card",
+        "status": "approved",
+        "purpose": "Name the ingredient while making source, preparation, and route variables visible.",
+        "path": "catalog-v2/ingredients/pdrn/identity-card.svg"
+      },
+      {
+        "id": "pdrn-fragment-actor",
+        "type": "browser-drawn short DNA-fragment actor",
+        "status": "approved",
+        "purpose": "Provide ingredient recognition without the generic spinning-helix cliché.",
+        "path": "videos/pdrn-cellular-science/compositions/frames/02-identity.html"
+      },
+      {
+        "id": "route-comparison",
+        "type": "topical versus procedure versus injected comparison",
+        "status": "planned",
+        "purpose": "Prevent route borrowing, the biggest accuracy risk in PDRN content."
+      },
+      {
+        "id": "split-face-protocol",
+        "type": "clinical-design diagram",
+        "status": "quarantined",
+        "purpose": "Show split-face study design after its current legacy source mapping is replaced with a traceable publication.",
+        "path": "catalog/visual-components/split-face-protocol/splitfaceprotocol-spike.html"
+      },
+      {
+        "id": "evidence-meter",
+        "type": "shared evidence component",
+        "status": "restricted",
+        "purpose": "Use only after replacing old internal PDRN source IDs with traceable citations.",
+        "path": "catalog/visual-components/evidence-meter/evidencemeter-spike.html"
+      }
+    ]
+  },
+  "evidence_records": [
+    {
+      "id": "PDRN-SCI-2014-DIABETIC-ULCER",
+      "claim": "In a randomized double-blind placebo-controlled trial, intramuscular and perilesional PDRN improved healing outcomes in people with hard-to-heal diabetic foot ulcers.",
+      "status": "restricted",
+      "evidence_level": "randomized_human",
+      "route": "intramuscular plus perilesional injection",
+      "scope": "diabetic foot ulcers; 216 randomized; 192 completed; eight weeks",
+      "limits": ["medical injection", "not facial skin", "not a cosmetic serum", "does not establish benefits for intact-skin topical products"],
+      "citation": {
+        "title": "The effect of PDRN, an adenosine receptor A2A agonist, on the healing of chronic diabetic foot ulcers: results of a clinical trial",
+        "year": 2014,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/24483158/",
+        "doi": "10.1210/jc.2013-3569",
+        "pmid": "24483158"
+      }
+    },
+    {
+      "id": "PDRN-SCI-2026-TOPICAL-850K",
+      "claim": "A randomized double-blind split-face study found greater 28-day improvements in several periocular measurements with a specific 0.1% PDRN-850K eye cream than with an identically based 0.1% retinol eye cream.",
+      "status": "restricted",
+      "evidence_level": "randomized_human",
+      "route": "topical",
+      "scope": "31 healthy Chinese women aged 35–55; one PDRN-850K eye cream; 28 days",
+      "limits": ["small and short study", "single defined preparation and eye-cream formula", "company-affiliated authors and supplier-provided material", "early changes may partly reflect hydration or plumping", "not evidence for every PDRN product"],
+      "citation": {
+        "title": "Topical medium-length PDRN enhances dermal extracellular matrix repair in photodamaged skin via PI3K–Akt/TGF-β–regulated pathways",
+        "year": 2026,
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0350905",
+        "doi": "10.1371/journal.pone.0350905"
+      }
+    },
+    {
+      "id": "PDRN-SCI-2026-MECHANISM-850K",
+      "claim": "The same PDRN-850K paper reported pathway and extracellular-matrix findings in cultured fibroblasts and UV-damaged ex vivo skin models.",
+      "status": "restricted",
+      "evidence_level": "laboratory",
+      "route": "cell, reconstructed-skin, ex vivo, and exploratory penetration models",
+      "scope": "defined medium-length salmon-derived PDRN-850K preparation",
+      "limits": ["laboratory mechanism is not a consumer outcome", "do not convert pathway activation into instant repair language", "vehicle and fragment profile matter", "not a generic A2A-receptor proof card"],
+      "citation": {
+        "title": "Topical medium-length PDRN enhances dermal extracellular matrix repair in photodamaged skin via PI3K–Akt/TGF-β–regulated pathways",
+        "year": 2026,
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0350905",
+        "doi": "10.1371/journal.pone.0350905"
+      }
+    },
+    {
+      "id": "PDRN-GAP-GENERIC-TOPICAL",
+      "claim": "Evidence for one topical PDRN preparation cannot be generalized to products with unknown source, size distribution, concentration, or vehicle.",
+      "status": "approved",
+      "evidence_level": "evidence_gap",
+      "route": "topical",
+      "scope": "category-level boundary",
+      "limits": ["use as an editorial evidence boundary, not as proof that all other products fail"],
+      "citation": {
+        "title": "Scope and limitations stated by Ye et al.",
+        "year": 2026,
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0350905",
+        "doi": "10.1371/journal.pone.0350905"
+      }
+    }
+  ],
+  "claim_rules": {
+    "safe_default": [
+      "PDRN refers to DNA-fragment preparations, but products can differ in source, fragment profile, formulation, and route.",
+      "Injected medical evidence and topical cosmetic evidence must be shown separately.",
+      "One small 2026 trial provides promising evidence for one defined topical eye cream, not the whole category.",
+      "Read the exact label rather than relying on a large PDRN claim on the front of the package."
+    ],
+    "requires_context": [
+      "Salmon DNA — use only when the actual studied preparation or product source is documented.",
+      "Wound healing — state diabetic foot ulcer, injection route, and medical setting.",
+      "Wrinkle or dermal improvement — state PDRN-850K, 0.1% eye cream, n=31, 28 days, retinol comparator, and limitations.",
+      "Mechanism language — attach it to the defined preparation and label it cell or ex vivo evidence."
+    ],
+    "prohibited_default": [
+      "won't trigger an allergic response", "instantly shuts down inflammation", "hacks your cells", "repair at record speed", "facelift in a bottle", "clinically proven PDRN", "hospital proven serum", "all PDRN is salmon DNA"
+    ]
+  },
+  "story_slots": [
+    {
+      "slot": "hook",
+      "purpose": "Open on the category tension: medical evidence versus cosmetic product.",
+      "preferred_inputs": ["pdrn-dropper-packshot", "pdrn-fragment-actor"],
+      "claim_ids": [],
+      "avoid": ["medical breakthrough claim", "fish-DNA shock without source context"]
+    },
+    {
+      "slot": "identity-and-label",
+      "purpose": "Define PDRN and teach label ambiguity.",
+      "preferred_inputs": ["pdrn-identity-card", "pdrn-serum-square"],
+      "claim_ids": [],
+      "avoid": ["equating PDRN, PN, Hydrolyzed DNA, and Sodium DNA automatically"]
+    },
+    {
+      "slot": "route-separation",
+      "purpose": "Make the delivery route visible before discussing evidence.",
+      "preferred_inputs": ["route-comparison", "pdrn-dropper-packshot"],
+      "claim_ids": ["PDRN-SCI-2014-DIABETIC-ULCER", "PDRN-SCI-2026-TOPICAL-850K"],
+      "avoid": ["borrowing injection results for a topical bottle"]
+    },
+    {
+      "slot": "topical-evidence",
+      "purpose": "Present the strongest currently located topical human evidence with limitations.",
+      "preferred_inputs": ["evidence-meter"],
+      "claim_ids": ["PDRN-SCI-2026-TOPICAL-850K", "PDRN-GAP-GENERIC-TOPICAL"],
+      "avoid": ["category-wide proof", "long-term remodeling claim"]
+    },
+    {
+      "slot": "mechanism",
+      "purpose": "Use mechanism only as a clearly labeled model or laboratory finding.",
+      "preferred_inputs": ["pdrn-fragment-actor"],
+      "claim_ids": ["PDRN-SCI-2026-MECHANISM-850K"],
+      "avoid": ["instant repair", "generic A2A lock-and-key certainty", "full spinning helix"]
+    }
+  ],
+  "format_input": {
+    "hero_media": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+    "identity_card": "catalog-v2/ingredients/pdrn/identity-card.svg",
+    "source_media": null,
+    "texture_media": "catalog-v2/ingredients/pdrn/assets/pdrn-serum-square.png",
+    "application_media": null,
+    "product_container": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
+    "mechanism_actor": "videos/pdrn-cellular-science/compositions/frames/02-identity.html",
+    "evidence_cards": ["PDRN-SCI-2014-DIABETIC-ULCER", "PDRN-SCI-2026-TOPICAL-850K", "PDRN-SCI-2026-MECHANISM-850K"],
+    "boundary_card": "Route, preparation, and formula matter: injection evidence is not serum evidence.",
+    "citation_ids": ["PDRN-SCI-2014-DIABETIC-ULCER", "PDRN-SCI-2026-TOPICAL-850K"]
+  },
+  "legacy_quarantine": [
+    {
+      "item": "ING-pdrn-S001",
+      "reason": "The current visual components use this internal ID without a traceable full citation in the sampled catalog. Replace before reuse."
+    },
+    {
+      "item": "ING-pdrn-S003",
+      "reason": "The underlying injected diabetic-foot-ulcer study is traceable, but the internal mapping should be replaced by PDRN-SCI-2014-DIABETIC-ULCER."
+    },
+    {
+      "item": "ING-pdrn-S004",
+      "reason": "The sampled catalog describes an N=32 topical split-face record but does not expose a traceable primary publication. Do not reuse as scientific proof."
+    },
+    {
+      "item": "catalog/ingredients/pdrn poster spikes",
+      "reason": "Visually useful references, but clinic branding, full-helix imagery, and broad benefit counts make them unsuitable as governed production assets."
+    }
+  ],
+  "gaps": [
+    {
+      "priority": "now",
+      "item": "route-comparison component",
+      "reason": "Route borrowing is the central editorial risk and the strongest recurring PDRN story device.",
+      "build_when": "before the next PDRN evidence video"
+    },
+    {
+      "priority": "next",
+      "item": "transparent PDRN dropper cutout",
+      "reason": "The generated design is good, but two extraction attempts failed alpha validation; the included cream plate is safe but less composable.",
+      "build_when": "a format needs the bottle to cross different backgrounds"
+    },
+    {
+      "priority": "next",
+      "item": "real-product label macro",
+      "reason": "PDRN front-label language is too ambiguous to teach without the exact back-label term.",
+      "build_when": "a specific product is selected"
+    },
+    {
+      "priority": "do_not_build",
+      "item": "generic receptor switch or instant fibroblast factory",
+      "reason": "It turns preparation-specific laboratory findings into broad consumer certainty.",
+      "build_when": "never as a category default"
+    }
+  ]
+}

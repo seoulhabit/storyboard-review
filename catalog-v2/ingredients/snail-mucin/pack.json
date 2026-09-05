@@ -1,0 +1,280 @@
+{
+  "schema_version": "1.0",
+  "ingredient_id": "snail-mucin",
+  "version": "1.0.0",
+  "status": "production_ready",
+  "updated": "2026-09-05",
+  "identity": {
+    "display_name": "Snail Mucin",
+    "consumer_term": "snail mucin",
+    "definition": "A cosmetic ingredient made from filtered snail secretion. Its composition varies with source and collection or extraction method.",
+    "source_type": "animal-derived secretion filtrate",
+    "label_terms": {
+      "preferred": ["Snail Secretion Filtrate"],
+      "possible_variants": ["Snail Mucin", "Snail Secretion"],
+      "rule": "Teach viewers to read the exact product ingredient list. Do not assume every snail-derived formula is the same extract, concentration, or evidence-backed preparation."
+    },
+    "identity_boundaries": [
+      "The consumer category is broader than the specific SCA extracts used in the small human trials.",
+      "A source-snail image explains origin; it does not prove collection conditions or animal welfare.",
+      "Named components such as allantoin or glycolic acid do not justify assigning the finished filtrate a specific medical mechanism."
+    ]
+  },
+  "visual_system": {
+    "actor": "A clear, elastic gel strand that stretches, gathers, and settles slowly.",
+    "tactile_signature": "Long stringy pull, small trapped bubbles, glass-like highlights, controlled viscosity.",
+    "palette": ["cream", "deep forest green", "warm amber", "clear glass"],
+    "motion_grammar": [
+      "Use one slow stretch or pour as the recurring recognition cue.",
+      "Prefer macro pushes, refraction, and controlled settling over bouncing droplets.",
+      "Keep the snail, filtrate, formula, and skin application as separate visual states."
+    ],
+    "assets": [
+      {
+        "id": "snail-texture-square",
+        "path": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-texture-square.png",
+        "kind": "square ingredient photograph",
+        "status": "approved",
+        "approved_uses": ["identity", "texture", "label explainer background", "recap"],
+        "avoid": ["claiming this is a standardized chemical sample", "using as collection evidence"],
+        "notes": "Strong canonical clean-ground image with generous negative space."
+      },
+      {
+        "id": "snail-source-square",
+        "path": "catalog-v2/ingredients/snail-mucin/assets/snail-source-square.png",
+        "kind": "square source photograph",
+        "status": "approved",
+        "approved_uses": ["animal origin", "source reveal", "category distinction"],
+        "avoid": ["cruelty-free claim", "collection-method claim", "medical proof"]
+      },
+      {
+        "id": "snail-tactile-vertical",
+        "path": "catalog-v2/ingredients/snail-mucin/assets/snail-tactile-vertical.png",
+        "kind": "vertical tactile plate",
+        "status": "approved",
+        "approved_uses": ["hook", "chapter transition", "closing callback"],
+        "avoid": ["presenting the image as microscopy", "adding benefit labels directly onto the strands"]
+      },
+      {
+        "id": "snail-collection-mesh",
+        "path": "catalog-v2/ingredients/snail-mucin/assets/snail-collection-mesh-illustrative.png",
+        "kind": "authored process reenactment",
+        "status": "restricted",
+        "approved_uses": ["illustrating that collection methods exist", "opening a welfare question"],
+        "avoid": ["documentary attribution", "zero-harm claim", "cruelty-free badge"],
+        "notes": "Label on-screen as an authored reenactment or illustrative process plate."
+      },
+      {
+        "id": "snail-application-cheek",
+        "path": "catalog-v2/ingredients/snail-mucin/assets/snail-application-cheek-vertical.png",
+        "kind": "vertical application photograph",
+        "status": "approved",
+        "approved_uses": ["how-to apply", "texture on skin", "routine placement"],
+        "avoid": ["before-after implication", "glass-skin outcome", "medical treatment framing"]
+      },
+      {
+        "id": "snail-airless-pump",
+        "path": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
+        "kind": "transparent modular bottle cutout",
+        "status": "approved",
+        "approved_uses": ["product archetype", "label card composition", "comparison", "CTA"],
+        "avoid": ["representing a real commercial product", "adding a fake percentage without a photographed label"],
+        "notes": "New pilot asset; generated with the built-in image tool and validated to contain a real alpha channel."
+      }
+    ],
+    "components": [
+      {
+        "id": "snail-identity-card",
+        "type": "editable SVG identity card",
+        "status": "approved",
+        "purpose": "Name the consumer term, show the preferred label term, and make formula specificity explicit.",
+        "path": "catalog-v2/ingredients/snail-mucin/identity-card.svg"
+      },
+      {
+        "id": "evidence-meter",
+        "type": "shared evidence component",
+        "status": "approved",
+        "purpose": "Show study type and scope without converting a small trial into a verdict.",
+        "path": "catalog/visual-components/evidence-meter/evidencemeter-spike.html"
+      },
+      {
+        "id": "collection-method-compare",
+        "type": "process comparison",
+        "status": "planned",
+        "purpose": "Show that measured composition changes with collection or extraction method."
+      }
+    ]
+  },
+  "evidence_records": [
+    {
+      "id": "SNAIL-SCI-1999-RADIODERMATITIS",
+      "claim": "One controlled 1999 trial reported improvement in erythema, itching, and burning pain in acute radiodermatitis with a specific Cryptomphalus aspersa secretion preparation.",
+      "status": "restricted",
+      "evidence_level": "controlled_human",
+      "route": "topical medical preparation",
+      "scope": "acute radiodermatitis; n=100; one older trial",
+      "limits": ["not general skincare", "not a cure claim", "no long-term efficacy conclusion", "not evidence for every snail-mucin formula"],
+      "citation": {
+        "title": "Treatment of acute radiodermatitis with Cryptomphalus aspersa secretion",
+        "year": 1999,
+        "url": "https://www.radioprotection.org/articles/radiopro/abs/1999/04/radiopro1999234p34/radiopro1999234p34.html"
+      }
+    },
+    {
+      "id": "SNAIL-SCI-2013-PHOTOAGING",
+      "claim": "A small randomized split-face trial found improvement in periocular rhytides after 12 weeks with one specific branded snail-secretion filtrate regimen.",
+      "status": "restricted",
+      "evidence_level": "randomized_human",
+      "route": "topical",
+      "scope": "photoaged skin; n=25; specific SCA products",
+      "limits": ["small sample", "specific branded extract and regimen", "participants did not report a significant skin-quality difference", "not generic snail mucin"],
+      "citation": {
+        "title": "The Effects of Filtrate of the Secretion of the Cryptomphalus Aspersa on Photoaged Skin",
+        "year": 2013,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23652894/",
+        "pmid": "23652894"
+      }
+    },
+    {
+      "id": "SNAIL-SCI-2020-AGING-REGIMEN",
+      "claim": "A randomized vehicle-controlled trial found both groups improved in fine lines and wrinkles; the active snail-filtrate plus snail-egg regimen showed additional changes in several secondary measures.",
+      "status": "restricted",
+      "evidence_level": "randomized_human",
+      "route": "topical",
+      "scope": "women aged 45–65; n=50; combination regimen",
+      "limits": ["combination regimen", "vehicle also improved key outcomes", "manufacturer-affiliated coauthor", "authors called for larger randomized studies"],
+      "citation": {
+        "title": "Efficacy and Safety of a New Cosmeceutical Regimen Based on the Combination of Snail Secretion Filtrate and Snail Egg Extract to Improve Signs of Skin Aging",
+        "year": 2020,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32308795/",
+        "pmid": "32308795"
+      }
+    },
+    {
+      "id": "SNAIL-SCI-2024-COMPOSITION",
+      "claim": "Four commercial snail secretion filtrates measured 97.5–99.2% water, and their measured composition differed with extraction method.",
+      "status": "approved",
+      "evidence_level": "laboratory",
+      "route": "ingredient characterization",
+      "scope": "four commercial filtrates from three Italian retailers",
+      "limits": ["in vitro characterization", "does not establish a consumer skin benefit", "does not independently verify animal welfare"],
+      "citation": {
+        "title": "Influence of the extraction method on functional properties of commercial snail secretion filtrates",
+        "year": 2024,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39333225/",
+        "doi": "10.1038/s41598-024-72733-0",
+        "pmid": "39333225"
+      }
+    },
+    {
+      "id": "SNAIL-GAP-HYDRATION-MYTH",
+      "claim": "No supporting study was located for the warning that applying a humectant to dry skin pulls hydration from deeper layers.",
+      "status": "approved",
+      "evidence_level": "evidence_gap",
+      "route": "topical",
+      "scope": "myth correction",
+      "limits": ["absence-of-evidence statement based on the documented search", "do not reverse it into a new efficacy claim"],
+      "citation": {
+        "title": "Project claim ledger and explicit evidence search",
+        "year": 2026,
+        "url": "videos/snail-mucin-medical-secret-v2/CLAIM-LEDGER.md"
+      }
+    }
+  ],
+  "claim_rules": {
+    "safe_default": [
+      "Snail mucin is a consumer term for filtered snail secretion used in cosmetics.",
+      "The measured composition can vary with collection and extraction method.",
+      "A few small studies tested specific preparations; that is not proof for every product.",
+      "Follow the directions and ingredient list on the actual product."
+    ],
+    "requires_context": [
+      "Over 97% water — show the four-filtrate 2024 scope.",
+      "Fine-line improvement — name the specific trial, size, duration, and extract limitation.",
+      "Cruelty-free — attribute the claim to the company; do not present it as independently verified.",
+      "Damp-skin application — present only as a texture preference, not a proven hydration mechanism."
+    ],
+    "prohibited_default": [
+      "miracle", "cure", "instant healing", "massive doses", "allantoin heals wounds", "zero harm", "zero stress", "pulls hydration from deep skin"
+    ]
+  },
+  "story_slots": [
+    {
+      "slot": "hook",
+      "purpose": "Create tactile curiosity before explanation.",
+      "preferred_inputs": ["snail-tactile-vertical", "snail-airless-pump"],
+      "claim_ids": [],
+      "avoid": ["miracle language", "disgust-only framing"]
+    },
+    {
+      "slot": "identity-and-label",
+      "purpose": "Connect the familiar name to the product label.",
+      "preferred_inputs": ["snail-identity-card", "snail-texture-square"],
+      "claim_ids": [],
+      "avoid": ["implying all filtrates are standardized"]
+    },
+    {
+      "slot": "source-and-process",
+      "purpose": "Explain animal origin and why method matters.",
+      "preferred_inputs": ["snail-source-square", "snail-collection-mesh", "collection-method-compare"],
+      "claim_ids": ["SNAIL-SCI-2024-COMPOSITION"],
+      "avoid": ["unverified welfare verdict"]
+    },
+    {
+      "slot": "evidence",
+      "purpose": "Show promising but formula-specific human evidence.",
+      "preferred_inputs": ["evidence-meter"],
+      "claim_ids": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN"],
+      "avoid": ["generalizing to every snail-mucin product"]
+    },
+    {
+      "slot": "use-and-boundary",
+      "purpose": "Show application while preserving the evidence boundary.",
+      "preferred_inputs": ["snail-application-cheek", "snail-airless-pump"],
+      "claim_ids": ["SNAIL-GAP-HYDRATION-MYTH"],
+      "avoid": ["before-after implication", "damp-skin mechanism claim"]
+    }
+  ],
+  "format_input": {
+    "hero_media": "catalog-v2/ingredients/snail-mucin/assets/snail-tactile-vertical.png",
+    "identity_card": "catalog-v2/ingredients/snail-mucin/identity-card.svg",
+    "source_media": "catalog-v2/ingredients/snail-mucin/assets/snail-source-square.png",
+    "texture_media": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-texture-square.png",
+    "application_media": "catalog-v2/ingredients/snail-mucin/assets/snail-application-cheek-vertical.png",
+    "product_container": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
+    "mechanism_actor": null,
+    "evidence_cards": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN", "SNAIL-SCI-2024-COMPOSITION"],
+    "boundary_card": "Specific extracts have limited human data; do not treat every snail-mucin formula as equivalent.",
+    "citation_ids": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN", "SNAIL-SCI-2024-COMPOSITION"]
+  },
+  "legacy_quarantine": [
+    {
+      "item": "catalog/ingredients/snail-mucin/snail-mucin-poster-spike.html",
+      "reason": "Reference layout only. Its simplified component and benefit claims should not become pack defaults without claim-by-claim sourcing."
+    },
+    {
+      "item": "catalog/ingredient-photography/12c-snail-mucin-dropper.png through 12f",
+      "reason": "Marked as superseded concept alternates in the existing catalog."
+    }
+  ],
+  "gaps": [
+    {
+      "priority": "next",
+      "item": "collection-method comparison component",
+      "reason": "This is the ingredient's most distinctive evidence-backed teaching visual.",
+      "build_when": "the next source/process story enters production"
+    },
+    {
+      "priority": "later",
+      "item": "real-product label macro template",
+      "reason": "Needed for label-reading episodes; must use an actual photographed ingredient list.",
+      "build_when": "a specific product is selected"
+    },
+    {
+      "priority": "do_not_build",
+      "item": "generic wound-healing animation",
+      "reason": "It encourages medical overgeneralization from narrow evidence.",
+      "build_when": "never as a generic ingredient default"
+    }
+  ]
+}

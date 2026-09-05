@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seoulhabit.example/schemas/ingredient-pack.schema.json",
+  "title": "SeoulHabit Ingredient Pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ingredient_id",
+    "version",
+    "status",
+    "identity",
+    "visual_system",
+    "evidence_records",
+    "claim_rules",
+    "story_slots",
+    "format_input",
+    "gaps"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "ingredient_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "status": { "enum": ["draft", "production_ready", "retired"] },
+    "updated": { "type": "string", "format": "date" },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display_name", "consumer_term", "definition", "source_type", "label_terms", "identity_boundaries"],
+      "properties": {
+        "display_name": { "type": "string" },
+        "consumer_term": { "type": "string" },
+        "definition": { "type": "string" },
+        "source_type": { "type": "string" },
+        "label_terms": {
+          "type": "object",
+          "required": ["preferred", "possible_variants", "rule"],
+          "properties": {
+            "preferred": { "type": "array", "items": { "type": "string" } },
+            "possible_variants": { "type": "array", "items": { "type": "string" } },
+            "rule": { "type": "string" }
+          }
+        },
+        "identity_boundaries": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "visual_system": {
+      "type": "object",
+      "required": ["actor", "tactile_signature", "palette", "motion_grammar", "assets", "components"],
+      "properties": {
+        "actor": { "type": "string" },
+        "tactile_signature": { "type": "string" },
+        "palette": { "type": "array", "items": { "type": "string" } },
+        "motion_grammar": { "type": "array", "items": { "type": "string" } },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "path", "kind", "status", "approved_uses", "avoid"],
+            "properties": {
+              "id": { "type": "string" },
+              "path": { "type": "string" },
+              "kind": { "type": "string" },
+              "status": { "enum": ["approved", "restricted", "reference_only", "quarantined", "planned"] },
+              "approved_uses": { "type": "array", "items": { "type": "string" } },
+              "avoid": { "type": "array", "items": { "type": "string" } },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "status", "purpose"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "type": "string" },
+              "status": { "enum": ["approved", "restricted", "reference_only", "quarantined", "planned"] },
+              "purpose": { "type": "string" },
+              "path": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "evidence_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "claim", "status", "evidence_level", "route", "scope", "limits", "citation"],
+        "properties": {
+          "id": { "type": "string" },
+          "claim": { "type": "string" },
+          "status": { "enum": ["approved", "restricted", "quarantined"] },
+          "evidence_level": { "enum": ["identity", "laboratory", "controlled_human", "randomized_human", "evidence_gap", "editorial"] },
+          "route": { "type": "string" },
+          "scope": { "type": "string" },
+          "limits": { "type": "array", "items": { "type": "string" } },
+          "citation": {
+            "type": "object",
+            "required": ["title", "year", "url"],
+            "properties": {
+              "title": { "type": "string" },
+              "year": { "type": "integer" },
+              "url": { "type": "string" },
+              "doi": { "type": "string" },
+              "pmid": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "claim_rules": {
+      "type": "object",
+      "required": ["safe_default", "requires_context", "prohibited_default"],
+      "properties": {
+        "safe_default": { "type": "array", "items": { "type": "string" } },
+        "requires_context": { "type": "array", "items": { "type": "string" } },
+        "prohibited_default": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "story_slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slot", "purpose", "preferred_inputs", "claim_ids", "avoid"],
+        "properties": {
+          "slot": { "type": "string" },
+          "purpose": { "type": "string" },
+          "preferred_inputs": { "type": "array", "items": { "type": "string" } },
+          "claim_ids": { "type": "array", "items": { "type": "string" } },
+          "avoid": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "format_input": {
+      "type": "object",
+      "required": ["hero_media", "identity_card", "source_media", "texture_media", "product_container", "mechanism_actor", "evidence_cards", "boundary_card", "citation_ids"],
+      "properties": {
+        "hero_media": { "type": ["string", "null"] },
+        "identity_card": { "type": ["string", "null"] },
+        "source_media": { "type": ["string", "null"] },
+        "texture_media": { "type": ["string", "null"] },
+        "application_media": { "type": ["string", "null"] },
+        "product_container": { "type": ["string", "null"] },
+        "mechanism_actor": { "type": ["string", "null"] },
+        "evidence_cards": { "type": "array", "items": { "type": "string" } },
+        "boundary_card": { "type": ["string", "null"] },
+        "citation_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "legacy_quarantine": { "type": "array", "items": { "type": "object" } },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["priority", "item", "reason", "build_when"],
+        "properties": {
+          "priority": { "enum": ["now", "next", "later", "do_not_build"] },
+          "item": { "type": "string" },
+          "reason": { "type": "string" },
+          "build_when": { "type": "string" }
+        }
+      }
+    }
+  }
+}

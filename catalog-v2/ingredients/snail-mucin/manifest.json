@@ -1,0 +1,75 @@
+{
+  "ingredient_id": "snail-mucin",
+  "manifest_version": "1.0.0",
+  "assets": [
+    {
+      "id": "snail-texture-square",
+      "file": "assets/snail-mucin-texture-square.png",
+      "source": "catalog/ingredient-photography/12-snail-mucin.png",
+      "origin": "harvested_existing_repo",
+      "status": "approved",
+      "dimensions": "2048x2048",
+      "has_alpha": false,
+      "sha256": "6215225d9cc58d58af8f3f07d132b59c711731c25d282588e05d36d7c65c7199"
+    },
+    {
+      "id": "snail-source-square",
+      "file": "assets/snail-source-square.png",
+      "source": "catalog/ingredient-photography/12b-snail-mucin-source.png",
+      "origin": "harvested_existing_repo",
+      "status": "approved",
+      "dimensions": "2048x2048",
+      "has_alpha": false,
+      "sha256": "7fcc8031fc67b7fba96f380c47b2b484452727f46085574d7ef2e945e88e2584"
+    },
+    {
+      "id": "snail-tactile-vertical",
+      "file": "assets/snail-tactile-vertical.png",
+      "source": "videos/snail-mucin-medical-secret-v2/public/01b-macro-slime-spatula.png",
+      "origin": "harvested_existing_repo",
+      "status": "approved",
+      "dimensions": "1152x2048",
+      "has_alpha": false,
+      "sha256": "7d1ea596fa6db8a68444e26bd2595975db28b8047cdb0f5de3f834d9a2681686"
+    },
+    {
+      "id": "snail-collection-mesh",
+      "file": "assets/snail-collection-mesh-illustrative.png",
+      "source": "videos/snail-mucin-medical-secret-v2/public/04-snail-mesh.png",
+      "origin": "harvested_existing_repo",
+      "status": "restricted",
+      "dimensions": "1152x2048",
+      "has_alpha": false,
+      "sha256": "d9610b1db3f69f0b16a9741ced224e265db6eb8cc5431e68714493f2010647c7"
+    },
+    {
+      "id": "snail-application-cheek",
+      "file": "assets/snail-application-cheek-vertical.png",
+      "source": "videos/snail-mucin-medical-secret-v2/public/06-application-cheek.png",
+      "origin": "harvested_existing_repo",
+      "status": "approved",
+      "dimensions": "1536x2752",
+      "has_alpha": false,
+      "sha256": "f6dc39e84b174cc177e676d3fc8244543a62d3f8652db48fd0de54052aeed8a6"
+    },
+    {
+      "id": "snail-airless-pump",
+      "file": "assets/snail-mucin-airless-pump-transparent.png",
+      "source": "existing ingredient-pack pilot output created 2026-09-05",
+      "origin": "harvested_existing_pilot_output",
+      "status": "approved",
+      "dimensions": "1086x1448",
+      "has_alpha": true,
+      "sha256": "3d469e85a2b2bd9c9948527ebd7fe83eda7144bfbd6ffd11547d19e805f4802d"
+    },
+    {
+      "id": "snail-identity-card",
+      "file": "identity-card.svg",
+      "source": "existing ingredient-pack pilot output created 2026-09-05",
+      "origin": "harvested_existing_pilot_output",
+      "status": "approved",
+      "dimensions": "1080x600",
+      "has_alpha": false
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="600" viewBox="0 0 1080 600" role="img" aria-labelledby="title desc">
+  <title id="title">Snail Mucin identity card</title>
+  <desc id="desc">Editorial identity card connecting the consumer term Snail Mucin to the preferred label term Snail Secretion Filtrate.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#0f2016" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="gel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.92"/>
+      <stop offset="0.48" stop-color="#d8e2db" stop-opacity="0.48"/>
+      <stop offset="1" stop-color="#b9835a" stop-opacity="0.18"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="600" fill="#F7F5F0"/>
+  <rect x="56" y="50" width="968" height="500" rx="36" fill="#FBFAF4" stroke="#0F2016" stroke-opacity="0.15" filter="url(#shadow)"/>
+  <path d="M830 98 C890 142 835 191 906 236 C953 267 934 329 865 348 C800 366 762 430 824 495" fill="none" stroke="url(#gel)" stroke-width="38" stroke-linecap="round"/>
+  <circle cx="895" cy="158" r="9" fill="#B9835A" fill-opacity="0.45"/>
+  <circle cx="845" cy="407" r="6" fill="#6F8F72" fill-opacity="0.5"/>
+  <text x="112" y="132" fill="#6F8F72" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="5">INGREDIENT IDENTITY</text>
+  <text x="108" y="255" fill="#131516" font-family="Georgia, 'Times New Roman', serif" font-size="92">Snail Mucin</text>
+  <line x1="112" y1="292" x2="676" y2="292" stroke="#B9835A" stroke-width="5"/>
+  <text x="112" y="358" fill="#131516" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="2">LOOK FOR ON THE LABEL</text>
+  <text x="112" y="411" fill="#0F2016" font-family="Arial, Helvetica, sans-serif" font-size="38">Snail Secretion Filtrate</text>
+  <text x="112" y="482" fill="#59605C" font-family="Arial, Helvetica, sans-serif" font-size="24">Formula-specific · extraction method matters</text>
+</svg>

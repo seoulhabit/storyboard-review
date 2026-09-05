@@ -638,7 +638,9 @@ S17 = dict(css="""
    // thresholds the frame-average |luma delta| at 0.35, so a drift has to move
    // enough per 0.25s STEP -- a travel that reads fine at 0.5s intervals is half
    // that per step and lands under the floor.
-  tl.to('.arms', { y:-40, scale:1.028, transformOrigin:'50% 50%',
+  // SHRINKS, never grows: .g17 is a child of .stage, which clips, so a 1.028
+  // scale takes 24px off each arm's outer edge instead of showing it.
+  tl.to('.arms', { y:-40, scale:0.972, transformOrigin:'50% 50%',
                    duration:@w(preference)-@w(preferred)-0.35, ease:'none' },
         @w(preferred)+0.30);
   // and the qualifier settles across the rest of the line rather than stopping
@@ -1069,7 +1071,7 @@ S24 = dict(css="""
       </div>
       <div class="g24">
         <div class="col">
-          <p class="kicker on-ink">Abib &middot; Ectoin Panthenol 11%</p>
+          <p class="kicker on-ink" id="el-k1" style="opacity:0">Abib &middot; Ectoin Panthenol 11%</p>
           <p class="hero" id="el-n" style="opacity:0">11%</p>
           <div class="split" id="el-split" style="margin-top:24px;opacity:0">
             <div class="half p"><div class="v">10%</div><div class="k">PANTHENOL</div></div>
@@ -1083,7 +1085,7 @@ S24 = dict(css="""
             The big number on the front is not always the ectoin number.</p>
         </div>
         <div class="col">
-          <p class="kicker on-ink" style="margin-bottom:14px">On the ingredient list</p>
+          <p class="kicker on-ink" id="el-k2" style="margin-bottom:14px;opacity:0">On the ingredient list</p>
           <div class="inci" id="el-inci">
             1. Water &nbsp; <b id="in-p"><span class="mk" id="mk-p">&#9656;</span> 2. Panthenol</b><br>
             3. Propanediol &nbsp; 4. Cetyl Ethylhexanoate<br>
@@ -1107,6 +1109,12 @@ S24 = dict(css="""
   tl.fromTo('#el-n', { opacity:0, scale:0.7, transformOrigin:'0% 50%' },
                      { opacity:1, scale:1, duration:0.60, ease:'back.out(1.4)' }, @w(11)+0.55);
   tl.to('#carry-row', { opacity:0, duration:0.01 }, @w(11)+1.05);
+  // The scene's own chrome waits for the carry row to leave. Both sit at the top
+  // of the stage, the row is z-index 5, and at --t-label 36px they collided:
+  // the row's cards sat straight on top of "Abib - Ectoin Panthenol 11%" and cut
+  // "On the ingredient list" in half. A carry is a handover, so the incoming
+  // scene's own labels arrive when the handover finishes.
+  tl.to(['#el-k1','#el-k2'], { opacity:1, duration:0.35 }, @w(11)+1.10);
   tl.to('#el-n', { opacity:0.60, scale:0.72, transformOrigin:'0% 50%', duration:0.55 }, @w(11)+2.85);
   // "That eleven is the two of them added together" -- the split reveals on "added".
   tl.fromTo('#el-split', { opacity:0, y:44 }, { opacity:1, y:0, duration:0.60 }, @w(combines));

@@ -36,6 +36,7 @@ WPM_BAND = (140, 170)
 WPM_BAND_EVIDENCE = (120, 170)
 WPM_BAND_SLOWED = (123, 137)
 LU_SPREAD_MAX = 2.0
+WORD_END_BIAS = 0.15   # aligner slop at a boundary; see check_gaps_render()
 
 
 def sh(*a):
@@ -147,13 +148,32 @@ def check_gaps_render(scenes, mp4):
         s, nxt = scenes[i], scenes[i + 1]
         gap_start = round(s.vo_start + s.words[-1]["end"], 3)
         gap_end = round(nxt.vo_start + nxt.words[0]["start"] - LEAD_KEEP, 3)
-        L = max(0.05, gap_end - gap_start)
-        r = sh("ffmpeg", "-nostdin", "-ss", f"{gap_start:.3f}", "-t", f"{L:.3f}",
-               "-i", str(mp4), "-af",
-               "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
-               "-f", "null", "-")
-        m = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r.stderr)
-        gap_db = float(m.group(1)) if m and m.group(1) != "-inf" else -99.0
+        # TWO readings, and the quieter one is the answer. The aligner's word
+        # boundaries are approximate in both directions: whisper reports a
+        # word's end early (the gap window then opens inside the word's release
+        # -- 21-verdict -> 22-whofor reads -28.1 dB whole and -36.5 dB with the
+        # first 0.15s dropped), and on a 0.25s `continue` gap dropping that lead
+        # instead walks the window into the NEXT word's onset. Neither offset is
+        # right for every boundary; a gap that is quiet under EITHER reading has
+        # a quiet moment in it, which is what this check is asking.
+        def window(a, b):
+            if b - a < 0.05:
+                return None
+            r = sh("ffmpeg", "-nostdin", "-ss", f"{a:.3f}", "-t", f"{b - a:.3f}",
+                   "-i", str(mp4), "-af",
+                   "highpass=f=200,lowpass=f=4000,astats=measure_overall=RMS_level",
+                   "-f", "null", "-")
+            m = re.search(r"RMS level dB:\s*(-?[\d.]+|-inf)", r.stderr)
+            if not m:
+                return None
+            return -99.0 if m.group(1) == "-inf" else float(m.group(1))
+
+        vals = [v for v in (window(gap_start, gap_end),
+                            window(gap_start + WORD_END_BIAS, gap_end),
+                            window(gap_start, max(gap_start + 0.05,
+                                                  gap_end - WORD_END_BIAS)))
+                if v is not None]
+        gap_db = min(vals) if vals else -99.0
         # REPRESENTATIVE narration, not "the second before the gap". That window
         # is only narration if the scene ends on a run of speech, and after the
         # 2026-09-05 pass authored rests inside scenes it often lands in one:

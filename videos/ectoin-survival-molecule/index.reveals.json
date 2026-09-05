@@ -1136,6 +1136,13 @@
   {
     "scene": "24-eleven",
     "kind": "w",
+    "word": "11",
+    "occurrence": 1,
+    "seconds": 3.917
+  },
+  {
+    "scene": "24-eleven",
+    "kind": "w",
     "word": "combines",
     "occurrence": 1,
     "seconds": 6.572

@@ -345,7 +345,9 @@
    // thresholds the frame-average |luma delta| at 0.35, so a drift has to move
    // enough per 0.25s STEP -- a travel that reads fine at 0.5s intervals is half
    // that per step and lands under the floor.
-  tl.to('.arms', { y:-40, scale:1.028, transformOrigin:'50% 50%',
+  // SHRINKS, never grows: .g17 is a child of .stage, which clips, so a 1.028
+  // scale takes 24px off each arm's outer edge instead of showing it.
+  tl.to('.arms', { y:-40, scale:0.972, transformOrigin:'50% 50%',
                    duration:8.770-3.852-0.35, ease:'none' },
         3.852+0.30);
   // and the qualifier settles across the rest of the line rather than stopping

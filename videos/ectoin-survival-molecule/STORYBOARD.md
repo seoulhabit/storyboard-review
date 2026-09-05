@@ -50,7 +50,7 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 20 | `21-verdict` | 4:03.46 | 14.48s | 15 | 1.04 |
 | 21 | `22-whofor` | 4:17.34 | 11.76s | 20 | 1.70 |
 | 22 | `23-numbers` | 4:28.70 | 15.51s | 11 | 0.71 |
-| 23 | `24-eleven` | 4:43.71 | 18.26s | 22 | 1.20 |
+| 23 | `24-eleven` | 4:43.71 | 18.26s | 23 | 1.26 |
 | 24 | `25-formula` | 5:01.56 | 13.51s | 8 | 0.59 |
 | 25 | `26-kbeauty` | 5:14.48 | 9.95s | 13 | 1.31 |
 | 26 | `27-resilience` | 5:24.02 | 16.15s | 17 | 1.05 |
@@ -58,4 +58,4 @@ that gap directly. `scripts/check-cadence.py` on the render is the answer.
 | 28 | `29-cta` | 5:54.32 | 14.47s | 5 | 0.35 |
 | 29 | `30-endcard` | 6:07.99 | 3.84s | 5 | 1.30 |
 
-**358 authored beats across 371.8s (0.96/s average).**
+**359 authored beats across 371.8s (0.97/s average).**

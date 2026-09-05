@@ -98,7 +98,23 @@ The loop the opening opens is paid off in `12-filter`, and only there.
 ### Gates that were not gating
 - `--ceiling`, `--exempt-last` and `--gate` were passed by `package.json` and **silently ignored** by both cadence checks: the argument filter kept only the profile flag, so `--ceiling` became the project root and the ceiling stayed at its default. Worse, `check-static-hold` set its ceiling *before* the landscape profile that overwrites it. Both now parse the flags, apply them after the profile, and exit non-zero under `--gate`.
 - `package.json` named three gate scripts that **did not exist on any branch** — the chain died at the sixth command. `check-sfx-durations.py`, `check-motion-gaps.py` and `check-endscreen.py` are ported from `ectoin-survival-molecule`; `check-seams.py` and `check-final.py` are written for this project's shape.
-- `build_frames.py` now refuses infinite repeats, cycled yoyos and `Math.random`, and asserts on the real manifest that the curiosity loop lands inside the first ten seconds.
+- `build_frames.py` now refuses infinite repeats, cycled yoyos and `Math.random`, and asserts on the real manifest that the curiosity loop lands inside the first ten seconds. It also writes `index.beats.json` — every authored beat resolved to absolute seconds — because two of the brief's acceptance criteria are cadence numbers, and a criterion nobody can measure after the fact is a wish.
+- `check-endscreen.py` arrived with `--start` defaulting to **325.3**, a constant from the project it came from. On a 2:14 piece that samples the wrong scene entirely and reports a clean pass on frames the end screen never touches. It reads the closing scene's own start from `index.html` now.
+- `check-seams.py`'s audio test was wrong in the flattering direction: it averaged the whole seam window and called anything above −45 dBFS a failure. A seam window is the outgoing word's tail, then silence, then the incoming word's lead — averaging it measures the words on either side of the pause, and it failed four of seven healthy seams. It measures the longest genuinely quiet stretch inside the window now.
+
+### The narration pipeline, which was quietly wrong in four ways
+
+None of these were visible in any output. Each was found by comparing a number the pipeline asserted against the same number measured on the file.
+
+1. **The aligner disagrees with the audio.** Whisper reports a word's *end* inside the following silence — measured at up to 0.69s on these takes — and once placed a word (`Think`) a full second early, entirely inside a silence. Every downstream number is derived from these times. Word boundaries are now snapped to measured silence before anything reads them.
+2. **The cutter reclaimed almost nothing.** Its pause test required the detected silence to *start* after the ASR's word end, which (1) made rare. It found 7s of 33s of dead air, and the piece projected at **2:53** against a 2:30 ceiling — a gap that would otherwise have been paid for with `atempo` across the whole read, or with a third TTS round.
+3. **Seam gaps were estimated, not constructed.** The edit was laid out in raw time and words mapped through it afterwards, so a seam came out at whatever the arithmetic produced: 0.285s against a 0.35s grammar at the first iris, and 0.000s at two others where the outgoing cut ran past the incoming word. The cutter now walks a *master-time* cursor and places each unit's first word at exactly `previous last word + gap`, inserting whatever silence makes that true.
+4. **`atempo` drift.** Its output is not exactly input ÷ rate; across 61 segments the rounding accumulated to **440ms** by the end of the master. Every word time, caption cue and `@w()` anchor comes from the plan, so the back half of the piece was sliding out of sync with its own narration — silently, because nothing compared the plan to the file. Each segment is pinned to its planned duration now; measured drift is **1ms**.
+
+### Two TTS failures, and what they cost
+
+- **seed_audio drifts off-script well under its documented limit.** A 1933-character block (the limit is 2048) came back faithful for 241 of 310 words and then abandoned the script, improvising ~25 seconds of generic skincare copy in the narrator's voice over live audio. The entire climax was missing. `verify` scores it 77.7% against its 90% alignment floor, which is exactly what that floor is for. The read is now four blocks of 389–688 characters, each seam on a visible transition.
+- **Whisper hallucinates into digital silence.** Block B's speech ends at 25.24s and the transcript carried "Thanks for watching!" at 30.0–31.5s, inside 6.09s of measured silence. The first guard against this looked for a silence running to EOF and missed it, because that file has a click on its final 60ms. A trailing silence is one that reaches the *end of the file*, not the last sample.
 
 ---
 

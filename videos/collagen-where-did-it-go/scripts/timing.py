@@ -40,7 +40,9 @@ from transitions import KIND, kind_into, is_file_boundary
 
 LEAD_KEEP = 0.10      # master audio kept before word 1; word 1 starts HERE
 TAIL = 0.25           # digital silence after the last word of the master
-INTRA_GAP = 0.22      # a sentence pause inside a unit, after compression
+INTRA_GAP = 0.16      # a sentence pause inside a unit, after compression.
+                      # 77 of these in the cut master, so every 10ms here is
+                      # 0.8s of runtime; 0.16 still reads as a breath at pace.
 END_CARD_HOLD = 5.0   # the wordless end card's own span (brief: a 3-5s calm end screen)
 FADE_IN = 0.06        # master clip volume lane; ends before word 1 at 0.10
 FADE_OUT = 0.08       # sits inside TAIL

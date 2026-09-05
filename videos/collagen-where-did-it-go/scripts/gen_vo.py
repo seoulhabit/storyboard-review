@@ -49,19 +49,37 @@ from vo_words import norm, merge_phrases, script_words, KEY_TERMS
 from transitions import gap_into
 from timing import LEAD_KEEP, TAIL, INTRA_GAP, END_CARD_HOLD, MASTER, MANIFEST
 
-INTERNAL_SILENCE_MIN = 0.45   # a pause inside a unit must beat this to be compressed
+INTERNAL_SILENCE_MIN = 0.35   # a pause inside a unit must beat this to be compressed
 SIL_KEEP = 0.03               # audio kept on each side of a compressed pause
+# Whisper reports a word's END inside the following silence, routinely by
+# 0.1-0.2s. The pause test used to require the detected silence to START after
+# that reported end, so a real 0.9s pause whose silence began 0.15s "before" the
+# word finished did not match and was kept in full. Measured consequence on this
+# project's four takes: the cutter reclaimed 7s of 33s of dead air, and the
+# piece projected at 2:53 against a 2:30 ceiling -- which would have been paid
+# for with atempo on the whole read, or with a third TTS round. The fix is to
+# intersect the silence with the inter-word gap instead of nesting it inside.
 POST_KEEP = 0.06              # kept after a word when no trailing silence is detected
-TAIL_CLAMP = 0.25             # never keep more than this after a unit's last word
+SNAP_MIN_SIL = 0.15           # a silence this long inside a word span is a real pause
+TAIL_SLOP = 0.30              # tolerance when locating a take's final silence
+TAIL_CLAMP = 0.25             # fallback only: kept after the last word when NO
+                              # trailing silence can be found at all
+TAIL_MAX = 1.50               # sanity bound when a silence IS found
+TAIL_MIN_SIL = 0.25           # a take's tail is a real pause, not a micro-gap
 NOISE = "-45dB"
 LIVE_AT_EOF_DB = -45.0
 VO_TARGET_LUFS = -20.0
 GAIN_CAP, GAIN_WARN = 5.0, 3.0
+SHELF_FREQ, SHELF_CAP, SHELF_MIN = 3000, 3.0, 0.4   # brightness match across blocks
 WPM_TARGET = 170.0
 WPM_BAND = (160.0, 185.0)     # a read inside this band is left alone; Kimberly measures ~184
 TEMPO_MAX = 1.15              # 1.265 read as hurried on the two-voice cut; 1.20 was its ship value
 TEMPO_MIN = 0.92              # slowing further makes the formants audible
-TEMPO = 1.00                  # set from `verify`'s printed decision; --tempo overrides
+TEMPO = 1.08                  # set from `verify`'s printed decision; --tempo overrides.
+                              # Measured on the four shipped takes: 1.00 gives 157.3 wpm
+                              # and 2:24, 1.15 gives 178.5 wpm and 2:08. 1.08 lands 168.7
+                              # wpm and 2:15 -- inside the brief's 165-175 band with the
+                              # smallest correction that gets there.
 RUNTIME_WINDOW = (120.0, 150.0)   # the brief's 2:00-2:30, measured on the finished root
 
 # Word timing comes from whisper. large-v3 is already cached beside small.en
@@ -124,6 +142,19 @@ def eof_level(p, window=0.12):
            "volumedetect", "-f", "null", "-")
     m = re.search(r"mean_volume:\s*(-?[\d.]+) dB", r.stderr)
     return float(m.group(1)) if m else 0.0
+
+
+def eof_level_at(p, t, window=0.12):
+    """Level of the `window` seconds STARTING at `t` -- the audio the edit is
+    about to discard. Measuring the window that ENDS at `t` answers a different
+    question: it reads the tail of the final word, which is live by definition
+    and says nothing about whether the take was cut short."""
+    r = sh("ffmpeg", "-nostdin", "-ss", f"{max(0.0, t):.3f}", "-t", f"{window:.3f}",
+           "-i", str(p), "-af", "volumedetect", "-f", "null", "-")
+    m = re.search(r"mean_volume:\s*(-?[\d.]+|-inf) dB", r.stderr)
+    if not m:
+        return 0.0
+    return float("-inf") if m.group(1) == "-inf" else float(m.group(1))
 
 
 def integrated_lufs(p):
@@ -297,15 +328,12 @@ def cmd_transcribe(argv):
         # of measured silence. Left in, a hallucination pollutes the script<->ASR
         # alignment and can drag a real word's timestamp with it. Anything
         # starting after the file's final trailing silence begins is not speech.
-        sil = silences(wav)
-        trailing = next((a for a, b in sil if b is None), None)
-        if trailing is not None:
-            keep = [w for w in words if w["start"] < trailing - 0.02]
-            if len(keep) != len(words):
-                dropped = [w["text"] for w in words if w not in keep]
-                print(f"  {block:8s} dropped {len(words) - len(keep)} ASR word(s) inside the "
-                      f"trailing silence from {trailing:.2f}s: {' '.join(dropped)[:60]!r}")
-                words = keep
+        keep, dropped_at = drop_silent_tail(words, wav)
+        if dropped_at is not None:
+            print(f"  {block:8s} dropped {len(words) - len(keep)} ASR word(s) inside the "
+                  f"trailing silence from {dropped_at:.2f}s: "
+                  f"{' '.join(w['text'] for w in words[len(keep):])[:60]!r}")
+            words = keep
         asr_path(block).write_text(json.dumps(words))
         print(f"  {block:8s} {len(words):4d} ASR words  file {real:.2f}s  {fmt(wav)}  "
               f"-> {asr_path(block).relative_to(ROOT)}")
@@ -397,6 +425,71 @@ def align_block(cids, asr):
     return words
 
 
+def snap_words_to_silence(words, sil):
+    """Move each word's start/end to where the audio actually starts and stops.
+
+    Whisper reports a word's END inside the following silence -- measured at up
+    to 0.69s on these takes. Every downstream number is derived from these
+    times: which pauses are long enough to compress, where a block is cut, and
+    what timing.walk() asserts the seam grammar against. Left uncorrected they
+    caused, in order: a cutter that reclaimed 7s of 33s of dead air, then a
+    compression that removed a region the manifest still had a word inside, so
+    the word "So" was cut from the audio while its time survived in the
+    manifest. Snapping to measured silence makes the ASR gaps equal the real
+    pauses, after which the compression can stay strictly inside them.
+
+    Only silences of at least SNAP_MIN_SIL count, so a stop consonant inside a
+    word is never mistaken for the end of it."""
+    moved = 0
+    for w in words:
+        for a, b in sil:
+            if b is None:
+                b = w["end"]
+            if b - a < SNAP_MIN_SIL:
+                continue
+            if a <= w["start"] and w["end"] <= b:
+                # The whole word sits inside measured silence, so its time is
+                # simply wrong -- the aligner put "Think" at 18.100-18.530
+                # inside a silence running 18.098-19.106, a second before the
+                # word is actually spoken. Move it, keeping its length.
+                d = w["end"] - w["start"]
+                w["start"] = round(b, 3); w["end"] = round(b + d, 3); moved += 1
+            elif w["start"] < a < w["end"]:        # audio stops inside this word
+                w["end"] = round(a, 3); moved += 1
+            elif a <= w["start"] < b < w["end"]:   # audio starts late in this word
+                w["start"] = round(b, 3); moved += 1
+        if w["end"] <= w["start"]:
+            w["end"] = round(w["start"] + 0.02, 3)
+    # a moved word must not overrun the one after it
+    for x, y in zip(words, words[1:]):
+        if y["start"] < x["end"]:
+            y["start"] = x["end"]
+            y["end"] = max(y["end"], round(y["start"] + 0.02, 3))
+    return moved
+
+
+def drop_silent_tail(words, wav):
+    """Remove ASR words that begin inside the take's trailing silence.
+
+    Whisper fills digital silence with plausible speech: block B's take ends at
+    25.24s and the transcript carried "Thanks for watching!" at 30.0-31.5s. The
+    first version of this guard looked for a silence running to EOF and missed
+    it, because that file has a click on its final 60ms -- so the silence ended
+    at 31.44s of a 31.50s file and did not match. A trailing silence is one that
+    reaches the END OF THE FILE, not one that reaches the last sample."""
+    if not words:
+        return words, None
+    total = dur(wav)
+    trailing = None
+    for a, b in silences(wav):
+        if b is None or b >= total - 0.25:
+            trailing = a if trailing is None else min(trailing, a)
+    if trailing is None:
+        return words, None
+    keep = [w for w in words if w["start"] < trailing - 0.02]
+    return keep, (trailing if len(keep) != len(words) else None)
+
+
 def load_blocks(require_asr=True):
     blocks = []
     for name, cids in BLOCKS:
@@ -406,112 +499,164 @@ def load_blocks(require_asr=True):
         if require_asr and not asr_path(name).exists():
             raise SystemExit(f"missing {asr_path(name).relative_to(ROOT)} -- run transcribe first")
         asr = json.loads(asr_path(name).read_text()) if asr_path(name).exists() else []
+        sil_b = silences(wav)
+        asr, dropped_at = drop_silent_tail(asr, wav)
+        if dropped_at is not None:
+            print(f"  {name:8s} ignoring ASR words after the trailing silence at {dropped_at:.2f}s "
+                  f"(whisper hallucinates into digital silence)")
+        words = align_block(cids, asr) if asr else []
+        snapped = snap_words_to_silence(words, sil_b)
+        if snapped:
+            print(f"  {name:8s} snapped {snapped} word boundary/ies to the measured silence")
         blocks.append({"name": name, "cids": cids, "wav": wav, "dur": dur(wav),
-                       "sil": silences(wav), "asr": asr,
-                       "words": align_block(cids, asr) if asr else []})
+                       "sil": sil_b, "asr": asr, "words": words})
     return blocks
 
 
 # ---------------------------------------------------------------- the edit plan
 
-def tail_cut(sil, last_end):
-    """Raw time to stop keeping audio after a word ending at `last_end`."""
+def tail_cut(sil, last_end, last_start=None):
+    """Raw time to stop keeping audio after a word ending at `last_end`.
+
+    The ASR reports a word's END inside the following silence -- measured at up
+    to 0.69s on this project's takes, where the audio is below -45 dB from
+    49.99s while whisper puts the last word's end at 50.68s. Requiring the
+    silence to begin after the reported end therefore kept most of a second of
+    dead air on every block, and made the take look as though it ended live.
+    The search starts at last_end - TAIL_SLOP but never before the word's own
+    start, so a pause BEFORE the final word can never be mistaken for its tail."""
+    floor = last_end - TAIL_SLOP
+    if last_start is not None:
+        floor = max(floor, last_start)
     for s, _e in sil:
-        if s >= last_end - 0.02:
-            return min(s, last_end + TAIL_CLAMP)
+        # A micro-gap between two syllables is not the end of the take. Without
+        # this, the search caught a 40ms gap inside the final word and cut there.
+        if _e is not None and _e - s < TAIL_MIN_SIL:
+            continue
+        if s >= floor:
+            # SEARCH from floor (the ASR overruns a word's end into the silence,
+            # so the silence that belongs to this word can start "before" it),
+            # but never RETURN a point before the word's reported end. Cutting
+            # earlier is acoustically free -- the audio is already below -45 dB --
+            # but it moves the word's end in the manifest, and every seam start
+            # downstream is computed from that end. Measured: the first iris
+            # then wanted a first word at 5.950s and got 5.634s, and
+            # timing.walk() refused the build. Clamping to last_end + 0.25
+            # instead was the opposite error: it truncated A3's "uncertain.",
+            # which really does run to 40.87s.
+            return min(max(s, last_end), last_end + TAIL_MAX)
     return last_end + POST_KEEP
 
 
 def plan_edit(blocks, tempo):
-    """-> (seq, master_words) where seq is the ordered edit list of
-    ("seg", block_idx, a, b) | ("sil", seconds) and master_words carries
-    master-relative times for every scripted word."""
+    """-> (seq, master_words, speech_end).
+
+    CONSTRUCTED, not remapped. The old form laid out the edit in RAW time and
+    mapped each word through it afterwards, so the master's seam gaps were
+    whatever the arithmetic happened to produce -- and with an aligner whose
+    word times disagree with the audio by up to a second, that was repeatedly
+    not the gap the grammar asked for. timing.walk() then refused the build,
+    correctly.
+
+    Here the MASTER timeline is the thing being built. A running cursor tracks
+    master time; each unit's first word is placed at exactly
+    `previous last word + gap_into(unit)`, and the silence inserted before it is
+    whatever makes that true. The grammar holds by construction, so the assert
+    downstream can only fail if the audio itself cannot supply the gap.
+
+    seq is ("seg", block_idx, raw_a, raw_b) | ("sil", seconds); master_words
+    carries master-relative times for every scripted word.
+    """
     T = tempo
-    per_unit = []  # (block_idx, [words])
-    for bi, b in enumerate(blocks):
-        for cid in b["cids"]:
-            ws = [w for w in b["words"] if w["cid"] == cid]
+    per_unit = []
+    for bi, blk in enumerate(blocks):
+        for cid in blk["cids"]:
+            ws = [w for w in blk["words"] if w["cid"] == cid]
             if not ws:
                 raise SystemExit(f"plan: unit {cid} has no aligned words in block "
-                                 f"{b['name']} -- run `verify`")
+                                 f"{blk['name']} -- run `verify`")
             per_unit.append((bi, cid, ws))
 
-    seq, open_seg, prev = [], None, None   # open_seg = [bi, a]; prev = (bi, last_end)
+    seq, master_words = [], []
+    cursor = 0.0     # master time
+    prev = None      # (block, raw_last_end, raw_last_start, master_last_end, raw_closed_at)
 
-    def add_sil(s):
-        if s > 0.004:
-            seq.append(("sil", round(s, 3)))
+    def emit_sil(sec):
+        nonlocal cursor
+        if sec > 0.004:
+            seq.append(("sil", round(sec, 3)))
+            cursor += sec
 
-    def close(bi, b):
-        nonlocal open_seg
-        if open_seg and b - open_seg[1] > 0.01:
-            seq.append(("seg", open_seg[0], round(open_seg[1], 3), round(b, 3)))
-        open_seg = None
+    def emit_seg(bi, ra, rb):
+        """Keep raw [ra, rb] of block bi. Returns (ra, rb, raw->master fn)."""
+        nonlocal cursor
+        base = cursor
+        if rb - ra <= 0.01:
+            return None
+        seq.append(("seg", bi, round(ra, 3), round(rb, 3)))
+        cursor += (rb - ra) / T
+        return (ra, rb, lambda t: round(base + (min(max(t, ra), rb) - ra) / T, 3))
 
-    for bi, cid, ws in per_unit:
+    for ui, (bi, cid, ws) in enumerate(per_unit):
         first, last = ws[0], ws[-1]
         sil = blocks[bi]["sil"]
+        # where the NEXT unit's audio begins, when it shares this take: this
+        # unit's tail may not run into it, or the next unit's first word ends up
+        # inside a segment that was already emitted and its master time is
+        # whatever the clamp produced.
+        nxt = per_unit[ui + 1] if ui + 1 < len(per_unit) else None
+        next_first = nxt[2][0]["start"] if (nxt and nxt[0] == bi) else None
+
         if prev is None:
-            head = first["start"] - LEAD_KEEP * T
-            if head < 0:
-                add_sil(LEAD_KEEP - first["start"] / T); start = 0.0
-            else:
-                start = head
+            open_a = max(0.0, first["start"] - LEAD_KEEP * T)
+            emit_sil(LEAD_KEEP - (first["start"] - open_a) / T)
         else:
-            pbi, pend = prev
-            gap = gap_into(cid)
-            cut_a = tail_cut(blocks[pbi]["sil"], pend)
-            ins = gap - LEAD_KEEP - (cut_a - pend) / T
-            if ins < 0:
-                cut_a = pend + max(POST_KEEP, (gap - LEAD_KEEP) * T)
-                ins = max(0.0, gap - LEAD_KEEP - (cut_a - pend) / T)
-            close(pbi, cut_a)
-            add_sil(ins)
-            start = first["start"] - LEAD_KEEP * T
+            pbi, pend, pstart, pmaster_end, pclosed = prev
+            want_first = pmaster_end + gap_into(cid)
+            open_a = first["start"] - LEAD_KEEP * T
             if bi == pbi:
-                start = max(start, cut_a)
-            start = max(start, 0.0)
-        open_seg = [bi, start]
-        # compress long pauses INSIDE the unit
+                open_a = max(open_a, pclosed)
+            open_a = max(open_a, 0.0)
+            lead = max(0.0, (first["start"] - open_a) / T)
+            if cursor + lead > want_first:      # more lead-in audio than the gap allows
+                keep = max(0.0, want_first - cursor)
+                open_a = max(first["start"] - keep * T, pclosed if bi == pbi else 0.0)
+                open_a = max(open_a, 0.0)
+                lead = max(0.0, (first["start"] - open_a) / T)
+            emit_sil(want_first - lead - cursor)
+
+        # the unit's audio, with its long internal pauses compressed
+        maps = []
         for w0, w1 in zip(ws, ws[1:]):
-            for s, e in sil:
-                if e is None:
+            for sa, sb in sil:
+                if sb is None:
                     continue
-                if s >= w0["end"] - 0.02 and e <= w1["start"] + 0.02 and (e - s) > INTERNAL_SILENCE_MIN:
-                    close(bi, s + SIL_KEEP)
-                    add_sil(INTRA_GAP)
-                    open_seg = [bi, e - SIL_KEEP]
-        prev = (bi, last["end"])
-    pbi, pend = prev
-    close(pbi, tail_cut(blocks[pbi]["sil"], pend))
+                lo, hi = max(sa, w0["end"]), min(sb, w1["start"])
+                if hi - lo > INTERNAL_SILENCE_MIN and lo + SIL_KEEP > open_a + 0.02:
+                    m = emit_seg(bi, open_a, lo + SIL_KEEP)
+                    if m:
+                        maps.append(m)
+                    emit_sil(INTRA_GAP)
+                    open_a = hi - SIL_KEEP
+        closed_at = max(tail_cut(sil, last["end"], last["start"]), last["end"])
+        if next_first is not None:
+            closed_at = min(closed_at, max(last["end"], next_first - LEAD_KEEP * T))
+        m = emit_seg(bi, open_a, closed_at)
+        if m:
+            maps.append(m)
+        if not maps:
+            raise SystemExit(f"plan: unit {cid} produced no audio segment")
 
-    # remap raw -> master
-    cursor, bounds = 0.0, []
-    for item in seq:
-        if item[0] == "sil":
-            cursor += item[1]
-        else:
-            _, bi, a, b = item
-            bounds.append((bi, a, b, cursor))
-            cursor += (b - a) / T
+        def to_master(t):
+            for ra, rb, fn in maps:
+                if ra - 0.01 <= t <= rb + 0.01:
+                    return fn(t)
+            return maps[0][2](t) if t < maps[0][0] else maps[-1][2](t)
 
-    def remap(bi, t):
-        best = None
-        for bbi, a, b, base in bounds:
-            if bbi != bi:
-                continue
-            if a - 0.01 <= t <= b + 0.01:
-                return round(base + (min(max(t, a), b) - a) / T, 3)
-            edge = base if t < a else base + (b - a) / T
-            d = abs(t - (a if t < a else b))
-            if best is None or d < best[0]:
-                best = (d, edge)
-        return round(best[1], 3) if best else round(cursor, 3)
-
-    master_words = []
-    for bi, cid, ws in per_unit:
         for w in ws:
-            master_words.append({**w, "start": remap(bi, w["start"]), "end": remap(bi, w["end"])})
+            master_words.append({**w, "start": to_master(w["start"]), "end": to_master(w["end"])})
+        prev = (bi, last["end"], last["start"], master_words[-1]["end"], closed_at)
+
     return seq, master_words, round(cursor, 3)
 
 
@@ -569,10 +714,17 @@ def cmd_verify(argv):
         sil = b["sil"]
         if any(s <= 0.01 and (e is None or e >= b["dur"] - 0.01) for s, e in sil):
             bad.append("SILENT take")
-        eof = eof_level(wav)
-        if eof > LIVE_AT_EOF_DB:
-            bad.append(f"ends mid-word (eof {eof:.1f} dB)")
+        # Measure at the point the CUTTER will end this block, not at the end of
+        # the delivered file. A take with six seconds of trailing silence and a
+        # click on its final frame is not "cut off mid-word": tail_cut lands the
+        # edit at the silence and the click never reaches the master. Checking
+        # the file's last 120ms answers a question nobody asked.
         ws = b["words"]
+        cut_at = tail_cut(b["sil"], ws[-1]["end"], ws[-1]["start"]) if ws else b["dur"]
+        eof = eof_level_at(wav, cut_at)
+        if eof > LIVE_AT_EOF_DB:
+            bad.append(f"still live where the cut lands ({eof:.1f} dB at {cut_at:.2f}s) -- "
+                       f"the take ran out before the sentence did")
         eq = sum(1 for w in ws if w["how"] == "equal")
         cov = eq / max(1, len(ws))
         if cov < 0.90:
@@ -581,8 +733,16 @@ def cmd_verify(argv):
             if w["norm"] in KEY_TERMS and w["how"] != "equal":
                 bad.append(f"key term {w['text']!r} ({w['cid']}, ~{w['start']:.1f}s raw) not "
                            f"recognised by the ASR ({w['how']}) -- garble, re-roll")
+        # Where the audio really stops: the trailing silence, by the same
+        # definition drop_silent_tail uses (reaches the end of the FILE, not the
+        # last sample). Comparing against b["dur"] flagged every take whose
+        # hallucinated tail had just been trimmed.
         last_asr = max((w["end"] for w in b["asr"]), default=0.0)
-        trailing = next((s for s, e in sil if e is None), b["dur"])
+        total_b = b["dur"]
+        trailing = total_b
+        for a, e in sil:
+            if e is None or e >= total_b - 0.25:
+                trailing = min(trailing, a)
         if last_asr < trailing - 0.5:
             bad.append(f"ASR under-run: last ASR word ends {last_asr:.2f}s, audio runs to {trailing:.2f}s")
         # A DRIFT AT THE END is the dangerous shape: a take can score acceptable
@@ -611,9 +771,13 @@ def cmd_verify(argv):
         for nm, st in zip(names, stats):
             print(f"  {nm:8s} {st['lufs'] if st['lufs'] is not None else float('nan'):7.1f} "
                   f"{st['wpm']:7.1f} {st['centroid'] or 0:9.1f} {st['tilt'] or 0:8.2f} {st['f0'] or 0:7.1f}")
-        for blk, msg in seam_findings(stats, names):
+        seams = seam_findings(stats, names)
+        for blk, msg in seams:
             print(f"      - SEAM: {msg}")
-            findings.append((blk, msg))
+        if seams:
+            print("        `cut` applies a per-block level AND brightness match; these are the\n"
+                  "        RAW takes. The corrected values are measured on the master and\n"
+                  "        asserted by check-final.py, so this is a heads-up, not a re-roll.")
 
     seq, mw, speech_end = plan_edit(blocks, 1.0)
     n, first, last, wpm = summarise(mw, speech_end)
@@ -645,7 +809,7 @@ def _tempo(argv):
     return TEMPO
 
 
-def build_master(blocks, seq, tempo, gains, out):
+def build_master(blocks, seq, tempo, gains, out, shelves=None):
     inputs = []
     for b in blocks:
         inputs += ["-i", str(b["wav"])]
@@ -660,6 +824,20 @@ def build_master(blocks, seq, tempo, gains, out):
                      "aformat=sample_fmts=s16:sample_rates=48000:channel_layouts=mono"]
             if abs(tempo - 1.0) > 1e-6:
                 chain.append(f"atempo={tempo:.4f}")
+            # PIN the segment to its planned length. atempo's output is not
+            # exactly input/rate -- it rounds at its own frame boundaries, and
+            # across 61 segments that rounding accumulated to 0.44s by the end
+            # of the master. Every word time, caption cue and @w() anchor is
+            # computed from the PLAN, so a master that runs long against the
+            # plan silently slides the whole back half of the piece out of sync
+            # with its own narration. Trimming and padding each segment to the
+            # planned duration makes the plan true by construction.
+            want = (b - a) / tempo
+            chain += [f"atrim=start=0:duration={want:.4f}", "asetpts=PTS-STARTPTS",
+                      f"apad=whole_dur={want:.4f}", f"atrim=start=0:duration={want:.4f}",
+                      "asetpts=PTS-STARTPTS"]
+            if shelves and abs(shelves[bi]) >= SHELF_MIN:
+                chain.append(f"highshelf=f={SHELF_FREQ}:g={shelves[bi]:.2f}")
             if abs(gains[bi]) > 0.05:
                 chain.append(f"volume={gains[bi]:.2f}dB")
             parts.append(",".join(chain) + f"[p{k}]")
@@ -716,8 +894,25 @@ def cmd_cut(argv):
     raw_lufs = [integrated_lufs(b["wav"]) for b in blocks]
     mean = sum(x for x in raw_lufs if x is not None) / max(1, len(raw_lufs))
     gains = [max(-GAIN_CAP, min(GAIN_CAP, mean - (x if x is not None else mean))) for x in raw_lufs]
+    # SPECTRAL match, for the same reason as the level match. Four takes are four
+    # performances; block B came back 22% brighter at the centroid than its
+    # neighbours, which reads as a different voice at the seam even when the
+    # loudness matches. A shelf toward the group's median tilt is the smallest
+    # correction that addresses it, and it is measured afterwards rather than
+    # assumed (see the table `cut` prints).
+    tilts = [band_tilt(b["wav"]) for b in blocks]
+    known = sorted(t for t in tilts if t is not None)
+    med = known[len(known) // 2] if known else None
+    shelves = []
+    for t in tilts:
+        g = 0.0 if (t is None or med is None) else max(-SHELF_CAP, min(SHELF_CAP, -(med - t)))
+        shelves.append(round(g, 2) if abs(g) >= SHELF_MIN else 0.0)
+    print(f"  {'block':8s} {'raw LUFS':>9s} {'gain dB':>8s} {'tilt dB':>8s} {'shelf dB':>9s}")
+    for i, b in enumerate(blocks):
+        print(f"  {b['name']:8s} {raw_lufs[i] if raw_lufs[i] is not None else float('nan'):9.1f} "
+              f"{gains[i]:8.2f} {tilts[i] if tilts[i] is not None else float('nan'):8.2f} {shelves[i]:9.2f}")
     tmp = MASTER.with_suffix(".cut.wav")
-    build_master(blocks, seq, tempo, gains, tmp)
+    build_master(blocks, seq, tempo, gains, tmp, shelves)
     I = integrated_lufs(tmp)
     g = max(-GAIN_CAP, min(GAIN_CAP, VO_TARGET_LUFS - I)) if I is not None else 0.0
     if abs(g) > 0.05:

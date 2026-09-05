@@ -38,7 +38,8 @@ from transitions import KIND                          # noqa: E402
 W, H = 1920, 1080
 SAFE = (96, 54, 1920 - 96, 1080 - 108)     # left, top, right, bottom
 GRAMMAR_TOL = 0.02
-SEAM_QUIET_DBFS = -45.0        # inserted silence, measured
+SEAM_QUIET_DBFS = -40.0        # what counts as a pause inside the seam window
+SEAM_QUIET_MIN_S = 0.10        # how much of the window has to be that quiet
 MID_PSNR_MAX = 30.0            # above this the midpoint IS one of its neighbours
 MID_STDDEV_MIN = 12.0          # below this the midpoint is blank
 EXPECT_KINDS = {"iris": 4, "invert": 2, "curtain": 1}
@@ -48,18 +49,29 @@ def sh(*a):
     return subprocess.run(a, capture_output=True, text=True)
 
 
-def rms_dbfs(path, start, dur):
-    """Mean level of a window, via volumedetect. astats with
-    measure_overall=RMS_level prints nothing at all on some builds -- and a
-    parser that finds nothing looks exactly like a window that is not quiet."""
+def quiet_span(path, start, dur):
+    """The longest continuous quiet stretch inside a seam window, in seconds.
+
+    A seam window is NOT all silence and was never meant to be: it is the
+    outgoing word's tail, then inserted digital silence, then the incoming
+    word's lead-in. Averaging the whole window therefore measures the words on
+    either side of the pause and reports every healthy seam as a failure --
+    which is exactly what it did, on four of seven. What the viewer needs is a
+    real pause somewhere in there, so that is what gets measured."""
     r = sh("ffmpeg", "-nostdin", "-v", "info", "-ss", f"{start:.3f}", "-t", f"{dur:.3f}",
-           "-i", str(path), "-af", "volumedetect", "-f", "null", "-")
-    m = re.search(r"mean_volume:\s*(-?[\d.]+|-inf) dB", r.stderr)
-    if not m:
-        raise SystemExit(f"check-seams: volumedetect produced no mean_volume for "
-                         f"{path.name} at {start:.2f}s -- refusing to report a pass "
-                         f"from an unparsed measurement")
-    return float("-inf") if m.group(1) == "-inf" else float(m.group(1))
+           "-i", str(path), "-af", f"silencedetect=noise={SEAM_QUIET_DBFS}dB:d=0.03",
+           "-f", "null", "-")
+    spans, cur = [], None
+    for line in r.stderr.splitlines():
+        m = re.search(r"silence_start:\s*(-?[\d.]+)", line)
+        if m:
+            cur = float(m.group(1)); continue
+        m = re.search(r"silence_end:\s*([\d.]+)", line)
+        if m and cur is not None:
+            spans.append(float(m.group(1)) - cur); cur = None
+    if cur is not None:
+        spans.append(max(0.0, start + dur - cur))
+    return max(spans) if spans else 0.0
 
 
 def frame(render, t):
@@ -104,11 +116,13 @@ def check_source(seams, files):
             prev_end = by_cid[s["from"]].units[-1].last_word_abs
             win = max(0.05, got - LEAD_KEEP - prev_end)
             if MASTER.exists():
-                lvl = rms_dbfs(MASTER, prev_end, win)
-                quiet = f"{lvl:7.1f} dB"
-                if lvl > SEAM_QUIET_DBFS:
+                q = quiet_span(MASTER, prev_end, win)
+                quiet = f"{q:5.2f}s quiet"
+                if q < SEAM_QUIET_MIN_S:
                     bad.append(f"{s['from']} -> {s['into']}: seam window {prev_end:.2f}-"
-                               f"{prev_end + win:.2f}s measures {lvl:.1f} dBFS, not silence")
+                               f"{prev_end + win:.2f}s has only {q:.2f}s below "
+                               f"{SEAM_QUIET_DBFS} dBFS (want >= {SEAM_QUIET_MIN_S}s) -- "
+                               f"no audible pause at the transition")
         if s["kind"] == "iris":
             x, y = s["iris_at"] or (None, None)
             if x is None:

@@ -33,7 +33,7 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="84.88" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="89.38" data-width="1080" data-height="1920">
 
       <!-- ══════════════════════════ scenes — every boundary a hard CUT ══════════════════════════
            Timings are the MEASURED VO clock (assets/voice/0N.wav durations), not estimates. -->
@@ -58,17 +58,21 @@
       <div id="el-06-verdict" class="scene" data-composition-id="06-verdict" data-composition-src="compositions/frames/06-verdict.html" data-start="72.48" data-duration="12.40" data-track-index="1"></div>
       <audio id="el-06-verdict-voice" src="assets/voice/07.wav" data-start="72.48" data-duration="12.40" data-track-index="10" data-volume="1"></audio>
 
-      <!-- BGM — quiet forest-editorial bed, no swell (this video's register is measured) -->
-      <audio id="el-bgm" src="assets/bgm/track.loop.mp3" data-start="0" data-duration="84.88" data-track-index="11" data-volume="0.10"></audio>
+      <!-- end card — silent brand sign-off (06-verdict already delivers the spoken CTA) -->
+      <div id="el-07-endcard" class="scene" data-composition-id="07-endcard" data-composition-src="compositions/frames/07-endcard.html" data-start="84.88" data-duration="4.50" data-track-index="0"></div>
 
-      <!-- captions — single global karaoke system -->
+      <!-- BGM — quiet forest-editorial bed, no swell (this video's register is measured) -->
+      <audio id="el-bgm" src="assets/bgm/track.loop.mp3" data-start="0" data-duration="89.38" data-track-index="11" data-volume="0.10"></audio>
+
+      <!-- captions — single global karaoke system (ends with the spoken content; the end card is silent) -->
       <div id="el-captions" class="scene" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="84.88" data-track-index="2"></div>
 
-      <!-- SFX — fewer, more meaningful motifs (4 cues total; v1 shipped ~26) -->
+      <!-- SFX — fewer, more meaningful motifs (5 cues total; v1 shipped ~26) -->
       <audio id="el-sfx-cut1" src="assets/sfx/whoosh-soft-scene-1-2-hard-cut.mp3" data-start="1.60" data-duration="1.42" data-track-index="20" data-volume="0.32"></audio>
       <audio id="el-sfx-title" src="assets/sfx/click-soft-title-lands.mp3" data-start="7.27" data-duration="0.26" data-track-index="21" data-volume="0.35"></audio>
       <audio id="el-sfx-variable" src="assets/sfx/sparkle-payoff-word.mp3" data-start="28.16" data-duration="3.33" data-track-index="22" data-volume="0.28"></audio>
       <audio id="el-sfx-cta" src="assets/sfx/sparkle-subscribe-text-lands.mp3" data-start="78.58" data-duration="3.33" data-track-index="23" data-volume="0.30"></audio>
+      <audio id="el-sfx-endcard" src="assets/sfx/click-soft-title-lands.mp3" data-start="85.38" data-duration="0.26" data-track-index="24" data-volume="0.35"></audio>
     </div>
 
     <script>
@@ -76,9 +80,9 @@
       window.__timelines["main"] = gsap.timeline({ paused: true });
       // ── Every scene boundary is a HARD CUT (Short, per [S6/A-8]). Visibility is keyed off
       //    data-start/data-duration, which are contiguous, so no cut needs a tween at all —
-      //    the only entry is the full-span anchor so main.duration() == 84.88 (Studio master). ──
+      //    the only entry is the full-span anchor so main.duration() == 89.38 (Studio master). ──
       (function () { var tl = window.__timelines["main"];
-        tl.to({}, { duration: 84.88 }, 0);
+        tl.to({}, { duration: 89.38 }, 0);
       })();
     </script>
   </body>

@@ -165,3 +165,58 @@ minimized. Accepted without a 7th render:
    variable-driven-content limitation) — its reliability as a fast proxy for a real render is lower
    than assumed even for static content mid-debugging; a real render remained the only fully
    trustworthy check throughout this run.
+
+## Post-build addition — 2026-09-05 (SeoulHabit end card)
+
+Scope: explicit request to add a SeoulHabit-branded end card and re-render — not a full S0–S9
+pipeline run. `00-environment.md`/`09-run-report.md` were not regenerated for this pass; this entry
+is the audit trail for it instead, matching how this project's two prior post-build edits (the
+scene-3 rebuild, its re-render) were handled.
+
+New scene: `compositions/frames/07-endcard.html`, `data-start="84.88" data-duration="4.50"`,
+appended after `06-verdict`. Root `#root`, the BGM bed, and the root GSAP anchor tween all bumped
+`84.88` → `89.38`; `el-captions` left at `84.88` (silent card, no VO, no captions, per Mandatory
+Rule 7). One SFX cue added (`click-soft-title-lands.mp3`, reused, not a new asset) timed to the
+kicker's landing at 85.38s.
+
+Content/pattern precedent: no shared end-card component exists anywhere in this repo (checked —
+no `hyperframes.lock.json` component install, no `catalog/` entry, in any sibling project). The
+only video that has ever put "SeoulHabit" on screen is `collagen-where-did-it-go`'s
+`16-end.html` (plain-text kicker/headline/rule/subline) — followed as the pattern here, but with
+*this* project's own local tokens (`--paper`/`--ink`/`--pink`, Bricolage Grotesque + JetBrains
+Mono), not collagen's different landscape palette. The channel's real logo (the 습 glyph in
+`brand/channel/`) has never shipped on any video; user chose to keep matching the proven
+text-wordmark pattern rather than be the first to ship it here.
+
+Three choices locked with the user before writing markup: text wordmark (not the 습 glyph image);
+light/paper ground matching `06-verdict` (not a reversed dark bookend); copy = "Evidence, not
+hype." (reused verbatim from collagen's card, as a consistent channel line) + "Follow for more."
+(Shorts-appropriate CTA verb, not "subscribe").
+
+COMPANION-RESOLVED:frontend-design (skill-tool, invoked on the drafted markup before check/render).
+One real finding from that pass: the kicker was drafted in `--muted` gray, which this project has
+never actually used as *text* (only ever as a decorative border, `06-verdict`'s `.v6-row-mark.is-no`)
+— switched to `--pink`, which *does* have proven text precedent here (`06-verdict`'s `.v6-cta-sub`,
+28px) and reads as a more deliberate system (pink frames the brand/action elements — kicker, rule,
+subline — around the one `--ink` statement).
+
+[S7/R-1] check → pass, `hyperframes@0.8.27`, 0 errors. Contrast 49/49 AA (up from the prior 39/39 —
+this scene's kicker/headline/subline all measured, not assumed; the `--pink`-on-`--paper` pairing at
+≥24px follows the same WCAG large-text allowance already shipped in `06-verdict`'s CTA subline).
+`index.motion.json`'s top-level `duration` field bumped `84.88` → `89.38` for consistency; no new
+motion assertions added for the new scene (check passed clean without them, and this project's own
+Halts section above already documents motion-sidecar assertions as an easy-to-under-scope area —
+not compounding that here without a concrete need).
+
+Render: `renders/snail-mucin-medical-secret-v2.mp4`, 89.40s (target 89.38s, Δ0.02s — same rounding
+as the original 84.90s-vs-84.88s build). Verified on pixels extracted from the actual rendered MP4
+(never the manifest), at the hard-cut-in (t=84.9s, correctly blank pre-animation), mid-entrance
+(t=85.5s), full settle (t=87.0s), and near the card's end (t=89.3s) — all four frames correct, no
+clipping, no overlap; `01-open` and `06-verdict` frames spot-checked unaffected.
+
+COMPANION-RESOLVED:design-critique (skill-tool, on the four extracted frames above). One minor,
+accepted finding: the card's block (top:840px) leaves a large empty upper two-thirds of the 1920px
+frame — legitimate taste note, not a defect (check/contrast both pass regardless, and it matches
+`collagen`'s own precedent of not centering its end card in the full frame). Not re-edited — per
+this skill's own anti-pattern list, one measurement per fork, not endless re-scoring of a subjective
+call once the mandatory gates are clean.

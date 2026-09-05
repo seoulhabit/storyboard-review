@@ -1,0 +1,95 @@
+<template data-composition-id="07-endcard" data-duration="4.50">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper: #fbfaf4;
+    --ink: #0f2016;
+    --pink: #b9835a;
+    --font-display: "Bricolage Grotesque", system-ui, serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #root {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: var(--font-display);
+  }
+
+  #ec-wrap {
+    position: absolute;
+    left: 72px; right: 162px; top: 840px;
+  }
+  .ec-kicker {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin: 0 0 28px;
+    opacity: 0;
+  }
+  .ec-headline {
+    font-weight: 500;
+    font-size: 92px;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 32px;
+    opacity: 0;
+  }
+  .ec-rule {
+    width: 140px;
+    height: 5px;
+    background: var(--pink);
+    margin: 0 0 32px;
+    opacity: 0;
+    transform-origin: 0% 50%;
+  }
+  .ec-sub {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.04em;
+    color: var(--pink);
+    margin: 0;
+    opacity: 0;
+  }
+</style>
+
+<div id="root" data-composition-id="07-endcard" data-width="1080" data-height="1920" data-duration="4.50">
+  <div id="ec-wrap">
+    <p class="ec-kicker" id="ec-kicker">SeoulHabit</p>
+    <p class="ec-headline" id="ec-headline">Evidence,<br>not hype.</p>
+    <div class="ec-rule" id="ec-rule"></div>
+    <p class="ec-sub" id="ec-sub">Follow for more.</p>
+  </div>
+</div>
+
+<script>
+  (function () {
+    gsap.set(["#ec-kicker", "#ec-headline", "#ec-sub"], { opacity: 0, y: 20 });
+    gsap.set("#ec-rule", { opacity: 0, scaleX: 0 });
+
+    var tl = gsap.timeline({ paused: true });
+    window.__timelines = window.__timelines || {};
+    window.__timelines["07-endcard"] = tl;
+
+    // 0.10-0.80: hard cut in (owned by index.html). Kicker, then headline, staggered rise
+    tl.fromTo("#ec-kicker", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0.10);
+    tl.fromTo("#ec-headline", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.30);
+
+    // 1.00-1.65: rule draws, sub-line rises in
+    tl.fromTo("#ec-rule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.45, ease: "power2.inOut" }, 1.00);
+    tl.fromTo("#ec-sub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 1.25);
+
+    // 1.20-4.50: calm hold — a very slight settle-drift on the whole block, seek-safe
+    tl.to("#ec-wrap", { y: -10, duration: 3.30, ease: "sine.inOut" }, 1.20);
+
+    tl.to({}, { duration: 4.50 }, 0);   // full-span anchor — always last
+  })();
+</script>
+</template>

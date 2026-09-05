@@ -17,6 +17,36 @@ Alternates, if the primary underperforms:
 > so a score is worth logging and not worth obeying. These are chosen on the
 > curiosity gap the script itself opens, not on a number.
 
+## Thumbnail
+
+**Upload:** `assets/thumbnail/thumbnail-final.png` — 1280×720, 185 KB, RGB with no alpha channel.
+
+The climax frame at 101.60s: **THE EFFECT / STOPS / SHOWING UP** in 132px black
+caps on the paper flood, against the ink ground, with `NOT SIGNIFICANT` and the
+meter beside it and the `Am J Med · 2025` chip bottom-right.
+
+**It answers the title rather than repeating it.** The title asks where the
+collagen went; the thumbnail states what the evidence found. The two sit side by
+side in every surface, so a thumbnail that restates the question spends its one
+frame on something the viewer has already read — that rule picked this frame over
+four alternatives, all of which are kept in `assets/thumbnail/` with the
+reasoning in its README.
+
+**Chosen at 120×67, not at full size.** At 256×144 four of the five candidates
+still read. At the size a thumbnail is actually browsed at, only this one does —
+everything else collapses into colour blocks. `feed-check-contact.png` and
+`grid-check-contact.png` are the two contact sheets the call was made on.
+
+**Do not re-cut the frame by hand.** The timestamp is pinned inside a 0.8s window
+(101.15–101.95): before 101.10 the word "UP" is still grey mid-transition, and
+from 101.95 the word "works?" fades in underneath. Regenerate with
+`python3 scripts/make-thumbnail.py`, which writes `thumbnail-final.png` from the
+`WINNER` constant so the uploaded file cannot drift from the decision.
+
+**A/B alternate, if it underperforms:** `candidate-c-rejected-1280.png` — the
+REJECTED stamp over the coral barrier. It is the only other candidate that holds
+a readable word at feed scale, though both size numbers are lost there.
+
 ## Description
 
 ```

@@ -14,10 +14,21 @@
     font-family:var(--font-body); background:#F7F5F0; color:#131516;
   }
   .clip { position:absolute; inset:0; }
+  /* The stage is the CAMERA HOUSING: it is full-frame, padded to the drift
+     budget, and it clips. It carries no transform of its own -- a transform
+     on a full-frame box maps its edges outside the frame by definition, and
+     that is what produced 13 container_overflow warnings in the v3 check.
+     Two nested layers inside the padding do the moving instead [S7/R-2]. */
   .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
                    calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
-           height:100%; display:flex; }
+           height:100%; display:flex; overflow:hidden; }
   .stage > * { min-width:0; }
+  /* .cam owns the SETTLE (the title punch); .cam-in owns the DRIFT. One
+     transform channel has exactly one owner, so no two tweens can write
+     scale/y on the same element at the same time -- the overlapping_gsap_tweens
+     warning on #s13-badges-stage was precisely that collision. */
+  .cam, .cam-in { flex:1 1 auto; min-width:0; display:flex; width:100%;
+                  transform-origin:50% 50%; }
   /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
   .head { font-family:var(--font-display); font-weight:600; font-size:104px;
           line-height:1.04; letter-spacing:-.018em; margin:0; }
@@ -65,8 +76,9 @@
 </style>
 
 <div id="root" data-composition-id="s13-badges" data-width="1920" data-height="1080"
-     data-duration="12.658">
-  <div class="clip stage" id="s13-badges-stage" data-start="0" data-duration="12.658">
+     data-duration="13.708">
+  <div class="clip stage" id="s13-badges-stage" data-start="0" data-duration="13.708">
+    <div class="cam" id="s13-badges-cam"><div class="cam-in" id="s13-badges-cam-in">
     <div class="col-wrap">
       <h1 class="head beat" id="s13-badges-b0">Same ingredient family</h1>
       <div class="lanes">
@@ -288,6 +300,7 @@
         <div class="kicker beat is-entering" id="s13-badges-b2">Different size, different structure, different location</div>
       </div>
     </div>
+    </div></div>
   </div>
 </div>
 <script>
@@ -302,8 +315,8 @@
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s13-badges-stage', { scale: 1.014, y: -7, duration: 1.500, ease: 'sine.inOut' }, 0.150);
-  tl.to('#s13-badges-stage', { scale: 1.0, y: 0, duration: 1.200, ease: 'sine.inOut' }, 1.700);
+  tl.to('#s13-badges-cam', { scale: 1.014, y: -7, duration: 1.500, ease: 'sine.inOut' }, 0.150);
+  tl.to('#s13-badges-cam', { scale: 1.0, y: 0, duration: 1.200, ease: 'sine.inOut' }, 1.700);
   tl.to('#s13-badges-lane0', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 6.853);
   tl.to('#s13-badges-b4', { opacity: 1, y: 0, duration: 1.300, ease: 'power3.out' }, 6.853);
   tl.to('#s13-badges-lane1', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 9.423);
@@ -311,9 +324,9 @@
   tl.to('#s13-badges-lane2', { opacity: 1, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 11.650);
   tl.to('#s13-badges-b6', { opacity: 1, y: 0, duration: 1.008, ease: 'power3.out' }, 11.650);
   tl.to('#s13-badges-b2', { opacity: 1, y: 0, duration: 1.400, ease: 'power2.inOut' }, 3.084);
-  tl.to('#s13-badges-stage', { x: 8, y: -6, scale: 1.012, duration: 0.900, ease: 'sine.inOut' }, 1.900);
-  tl.to('#s13-badges-stage', { x: -7, y: 5, scale: 1.004, duration: 0.469, ease: 'sine.inOut' }, 6.384);
-  tl.to({}, { duration: 12.658, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s13-badges-cam-in', { x: 8, y: -6, scale: 1.012, duration: 0.900, ease: 'sine.inOut' }, 1.900);
+  tl.to('#s13-badges-cam-in', { x: -7, y: 5, scale: 1.004, duration: 0.469, ease: 'sine.inOut' }, 6.384);
+  tl.to({}, { duration: 13.708, ease: 'none' }, 0);   <!-- fix_transition_hold: 13.708 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s13-badges'] = tl;
 })();

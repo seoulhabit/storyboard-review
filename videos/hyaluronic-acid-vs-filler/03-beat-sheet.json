@@ -71,6 +71,15 @@
       "beats": [
         {
           "offset": 0.0,
+          "dur": 0.7,
+          "idiom": "slam",
+          "role": "sub",
+          "text": "SERUM \u2260 FILLER",
+          "actor": "lineup",
+          "intent": "SERUM \u2260 FILLER"
+        },
+        {
+          "offset": 1.569,
           "dur": 1.1,
           "idiom": "arrive",
           "role": "kicker",
@@ -79,22 +88,13 @@
           "intent": "Same name"
         },
         {
-          "offset": 1.894,
+          "offset": 2.976,
           "dur": 1.4,
           "idiom": "wipe",
           "role": "head",
           "text": "Two completely different jobs",
           "actor": "lineup",
           "intent": "Two completely different jobs"
-        },
-        {
-          "offset": 4.058,
-          "dur": 1.0,
-          "idiom": "slam",
-          "role": "sub",
-          "text": "SERUM \u2260 FILLER",
-          "actor": "lineup",
-          "intent": "SERUM \u2260 FILLER"
         }
       ]
     },
@@ -134,7 +134,10 @@
           "actor": "lineup",
           "intent": "The kind a doctor injects"
         }
-      ]
+      ],
+      "transition": {
+        "type": "crossfade"
+      }
     },
     {
       "id": "s03-not-filler",
@@ -189,7 +192,10 @@
           "actor": "misconception",
           "intent": "A serum is not filler in a bottle"
         }
-      ]
+      ],
+      "transition": {
+        "type": "cut"
+      }
     },
     {
       "id": "s04-split",
@@ -235,7 +241,11 @@
           "actor": "ha-split",
           "intent": "The other gets locked into a rigid mesh"
         }
-      ]
+      ],
+      "transition": {
+        "type": "wipe-up",
+        "duration": 0.45
+      }
     },
     {
       "id": "s05-size",
@@ -298,7 +308,11 @@
           "actor": "ha-serum",
           "intent": "Skin Res Technol \u00b7 2015"
         }
-      ]
+      ],
+      "transition": {
+        "type": "zoom-through",
+        "duration": 0.5
+      }
     },
     {
       "id": "s06-plumping",
@@ -446,7 +460,11 @@
           "actor": "ha-body",
           "intent": "So it doesn't evaporate away"
         }
-      ]
+      ],
+      "transition": {
+        "type": "crossfade",
+        "duration": 0.6
+      }
     },
     {
       "id": "s09-crosslink",
@@ -585,7 +603,7 @@
           "intent": "Not even close."
         },
         {
-          "offset": 3.23,
+          "offset": 2.995,
           "dur": 1.1,
           "idiom": "slam",
           "role": "head",
@@ -602,7 +620,10 @@
           "actor": "warning",
           "intent": "FDA \u00b7 Dermal Fillers"
         }
-      ]
+      ],
+      "transition": {
+        "type": "cut"
+      }
     },
     {
       "id": "s12-risks",
@@ -657,7 +678,10 @@
           "actor": "risks",
           "intent": "Choose a provider trained to perform the injection"
         }
-      ]
+      ],
+      "transition": {
+        "type": "cut"
+      }
     },
     {
       "id": "s13-badges",

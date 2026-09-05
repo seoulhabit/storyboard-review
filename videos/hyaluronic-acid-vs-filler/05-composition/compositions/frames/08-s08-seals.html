@@ -14,10 +14,21 @@
     font-family:var(--font-body); background:#F0EBE1; color:#131516;
   }
   .clip { position:absolute; inset:0; }
+  /* The stage is the CAMERA HOUSING: it is full-frame, padded to the drift
+     budget, and it clips. It carries no transform of its own -- a transform
+     on a full-frame box maps its edges outside the frame by definition, and
+     that is what produced 13 container_overflow warnings in the v3 check.
+     Two nested layers inside the padding do the moving instead [S7/R-2]. */
   .stage { padding: calc(var(--safe-top) + 60px) calc(var(--safe-right) + 60px)
                    calc(var(--safe-bottom) + 60px) calc(var(--safe-left) + 60px);
-           height:100%; display:flex; }
+           height:100%; display:flex; overflow:hidden; }
   .stage > * { min-width:0; }
+  /* .cam owns the SETTLE (the title punch); .cam-in owns the DRIFT. One
+     transform channel has exactly one owner, so no two tweens can write
+     scale/y on the same element at the same time -- the overlapping_gsap_tweens
+     warning on #s13-badges-stage was precisely that collision. */
+  .cam, .cam-in { flex:1 1 auto; min-width:0; display:flex; width:100%;
+                  transform-origin:50% 50%; }
   /* Type floors [S6/A-6]: hero 96-160, body 40 min, labels 32 absolute floor. */
   .head { font-family:var(--font-display); font-weight:600; font-size:104px;
           line-height:1.04; letter-spacing:-.018em; margin:0; }
@@ -48,15 +59,35 @@
            background:rgba(0,0,0,0.015); }
   .panel .actor { color:var(--ink); }
 
+  /* [S7/R-2 safe-area] 900px first, on the render: s09's 4-row column (head +
+     body + cite + sub, the sub line alone nine words) wrapped its last line
+     ("VOLUME") into the reserved bottom zone -- real ink, caught only by
+     check-safe-area.py on the actual rendered pixels, not by `hyperframes
+     check`'s declared-container audit (0 errors on this scene throughout).
+     760px keeps every macro actor (max rendered width ~650px, including the
+     crosslink actor's 3D rotation) comfortably framed while giving .col the
+     140px it needed to wrap onto one fewer line. Applies to every macro
+     scene, not just s09 -- the same budget the busiest one needed is the
+     honest one, not a per-scene special case. */
+  .split2.macro { grid-template-columns: 1fr 760px; gap:64px; }
+  .macro .panel { border:none; background:none; padding:0; }
+  .macro .panel .actor { height:660px; width:auto; }
+  /* The one accent per scene the review allows: a decisive word, not a
+     line. Colour + a BOUNDED bloom, tweened up and back down -- no
+     ongoing wobble. Coral on PAPER measures 3.005:1, over the 3:1 floor
+     for text this size; aqua is used on INK. */
+  .kw { display:inline; font-weight:inherit; }
+
 </style>
 
 <div id="root" data-composition-id="s08-seals" data-width="1920" data-height="1080"
-     data-duration="7.821">
-  <div class="clip stage" id="s08-seals-stage" data-start="0" data-duration="7.821">
-    <div class="split2">
+     data-duration="8.871">
+  <div class="clip stage" id="s08-seals-stage" data-start="0" data-duration="8.871">
+    <div class="cam" id="s08-seals-cam"><div class="cam-in" id="s08-seals-cam-in">
+    <div class="split2 macro">
       <div class="col" id="s08-seals-col">
         <div class="head beat is-entering" id="s08-seals-b0">A complete formula still needs something else</div>
-        <div class="body beat is-entering" id="s08-seals-b1">An ingredient that seals that water in</div>
+        <div class="body beat is-entering" id="s08-seals-b1">An ingredient that <span class="kw" id="s08-seals-kw0">seals</span> that water in</div>
         <div class="cite beat is-entering" id="s08-seals-b2">ChemRxiv · 2023</div>
         <div class="sub beat is-entering" id="s08-seals-b3">So it doesn't evaporate away</div>
       </div>
@@ -74,11 +105,12 @@
     </svg>
       </div>
     </div>
+    </div></div>
   </div>
 </div>
 <script>
 (function () {
-  gsap.set('#s08-seals-panel', { opacity: 0, x: 60, scale: 0.94 });
+  gsap.set('#s08-seals-panel', { opacity: 1, x: 0, scale: 1 });
   gsap.set('#s08-seals-drop0', { opacity: 1 });
   gsap.set('#s08-seals-drop1', { opacity: 1 });
   gsap.set('#s08-seals-drop2', { opacity: 1 });
@@ -91,10 +123,10 @@
   gsap.set('#s08-seals-b1', { clipPath: 'inset(0 100% 0 0)', opacity: 1, y: 22 });
   gsap.set('#s08-seals-b2', { opacity: 0, y: 30 });
   gsap.set('#s08-seals-b3', { opacity: 0, scale: 0.86 });
+  gsap.set('#s08-seals-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)' });
   // No timeline `defaults: { ease }` — an inherited ease is an uncounted
   // one, and that is how a project ships a single entrance signature.
   var tl = gsap.timeline({ paused: true });
-  tl.to('#s08-seals-panel', { opacity: 1, x: 0, scale: 1, duration: 1.300, ease: 'power2.inOut' }, 0.001);
   tl.to('#s08-seals-drop0', { x: -40, y: -120, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 6.843);
   tl.to('#s08-seals-drop3', { x: 90, y: -210, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 6.963);
   tl.to('#s08-seals-drop6', { x: 270, y: -120, opacity: 0, scale: 0.6, duration: 1.500, ease: 'power1.in' }, 7.083);
@@ -102,7 +134,9 @@
   tl.to('#s08-seals-b1', { clipPath: 'inset(0 0% 0 0)', y: 0, duration: 1.600, ease: 'power2.inOut' }, 3.334);
   tl.to('#s08-seals-b2', { opacity: 1, y: 0, duration: 1.000, ease: 'power3.out' }, 5.726);
   tl.to('#s08-seals-b3', { opacity: 1, scale: 1, duration: 0.978, ease: 'back.out(1.6)' }, 6.843);
-  tl.to({}, { duration: 7.821, ease: 'none' }, 0);   // anchor — last, at 0
+  tl.to('#s08-seals-kw0', { color: '#C97A5C', textShadow: '0 0 22px rgba(201,122,92,0.5)', duration: 0.420, ease: 'power2.out' }, 4.774);
+  tl.to('#s08-seals-kw0', { textShadow: '0 0 0px rgba(201,122,92,0)', duration: 0.900, ease: 'power2.inOut' }, 5.194);
+  tl.to({}, { duration: 8.871, ease: 'none' }, 0);   <!-- fix_transition_hold: 8.871 -->   // anchor — last, at 0
   window.__timelines = window.__timelines || {};
   window.__timelines['s08-seals'] = tl;
 })();

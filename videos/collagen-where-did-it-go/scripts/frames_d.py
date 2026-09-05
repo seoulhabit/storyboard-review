@@ -51,7 +51,7 @@ def file_08_digestion(fspan, fctx):
     var tract = document.getElementById("tract"), L = tract.getTotalLength();
     // the tract and branches are hidden until drawn
     ["#tract", "#br-skin", "#br-joints", "#br-tendons", "#br-other"].forEach(function (id) {
-      var p = document.querryelector ? null : document.querySelector(id); var len = p.getTotalLength();
+      var p = document.querySelector(id); var len = p.getTotalLength();
       p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
     });
     var mol = drawHelix(svg, { id:"mol", x:254, y:530, w:300, h:84, strokeW:12, segs:6 });
@@ -72,7 +72,9 @@ def file_08_digestion(fspan, fctx):
       tl.fromTo("#mol-seg-" + s, { x:0, y:0, rotation:0 }, { x:(s % 2 ? 1 : -1) * (20 + 8 * s), y:-40 + 14 * s,
                 rotation:(s % 2 ? 35 : -35), duration:0.45, ease:EASE.slam }, @w(breaks) + s * 0.05);
       tl.to("#mol-seg-" + s, { scale:0.25, opacity:0, duration:0.3, ease:EASE.swap }, @w(peptides) + s * 0.06);
-      tl.to("#fr-" + s, { opacity:1, duration:0.3, ease:EASE.arrive }, @w(peptides) + s * 0.06 + 0.1);
+      // the fragment CONDENSES out of the segment that just flew apart
+      tl.fromTo("#fr-" + s, { opacity:1, scale:0, transformOrigin:"50% 50%" },
+                { scale:1, duration:0.3, ease:EASE.slam }, @w(peptides) + s * 0.06 + 0.1);
     }
     tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, @w(stomach) - 0.3);
     tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(stomach) - 0.2);
@@ -81,9 +83,10 @@ def file_08_digestion(fspan, fctx):
     // ---- unit 9: the body decides where the pieces go -----------------------------
     dots.forEach(function (d, i) {
       pathFollow(tl, d, tract, @w(absorbed) + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
-    });
+    });   // this call owns each dot's frame-zero pose; the branches below pass set:false
     tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, @w(absorbed) + 0.3);
-    tl.to("#world", { scale:1.05, x:-40, duration:0.8, ease:EASE.camera }, @w(signals));
+    // reframe onto the distribution map: the branches, not the gut, are the subject now
+    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, @w(signals));
     drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", @w(signals) + 0.2, 0.7, 0.12, EASE.wipe);
     reveal(tl, "#decides", @w(decides));
     tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(decides));
@@ -91,16 +94,18 @@ def file_08_digestion(fspan, fctx):
     var GO = [["skin", [0], @w(skin)], ["joints", [1, 2], @w(joints)], ["tendons", [3, 4], @w(tendons)], ["other", [5], @w(wherever)]];
     GO.forEach(function (g) {
       var br = document.getElementById("br-" + g[0]);
-      g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.7, "power1.inOut", { ox:q62.x, oy:q62.y }); });
+      g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.7, "power1.inOut", { ox:q62.x, oy:q62.y, set:false }); });
       tl.fromTo("#d-" + g[0] + "-wash", { scaleX:0 }, { scaleX:1, duration:0.25, ease:EASE.wipe }, g[2] + 0.55);
+      // the panel is knocked as the dot lands -- delivery is felt, not labelled
+      tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.6);
     });
-    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, @w(scaffolding) - 0.3);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, @w(scaffolding) - 0.3);
     reveal(tl, "#scaff", @w(scaffolding));
     tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(scaffolding));
     reveal(tl, "#crate", @w(box));
     tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(box));
     tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, @w(box) + 0.1);
-""".replace("document.querryelector ? null : ", "")
+"""
     MOTION["08-digestion"]["beats"] = [
         {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 40, "dur": 0.9},
         {"name": "stomach wash", "at": "@w(breaks)-0.1", "area": 0.07, "dl": 81, "dur": 0.5},
@@ -109,7 +114,7 @@ def file_08_digestion(fspan, fctx):
     ]
     MOTION["09-dispatch"]["beats"] = [
         {"name": "stomach retract", "at": "@w(absorbed)+0.3", "area": 0.07, "dl": 81, "dur": 0.4},
-        {"name": "camera push", "at": "@w(signals)", "area": 0.5, "dl": 60, "dur": 0.8},
+        {"name": "camera push", "at": "@w(signals)", "area": 0.5, "dl": 60, "dur": 0.9},
         {"name": "decides wash", "at": "@w(decides)", "area": 0.044, "dl": 94, "dur": 0.4},
         {"name": "skin lands", "at": "@w(skin)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},
         {"name": "tendons land", "at": "@w(tendons)+0.55", "area": 0.0275, "dl": 81, "dur": 0.25},

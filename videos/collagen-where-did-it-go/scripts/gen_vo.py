@@ -47,7 +47,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vo_lines import BLOCKS, TEXT, ORDER, WORDLESS
 from vo_words import norm, merge_phrases, script_words, KEY_TERMS
 from transitions import gap_into
-from timing import LEAD_KEEP, TAIL, INTRA_GAP, MASTER, MANIFEST
+from timing import LEAD_KEEP, TAIL, INTRA_GAP, END_CARD_HOLD, MASTER, MANIFEST
 
 INTERNAL_SILENCE_MIN = 0.45   # a pause inside a unit must beat this to be compressed
 SIL_KEEP = 0.03               # audio kept on each side of a compressed pause
@@ -58,8 +58,29 @@ LIVE_AT_EOF_DB = -45.0
 VO_TARGET_LUFS = -20.0
 GAIN_CAP, GAIN_WARN = 5.0, 3.0
 WPM_TARGET = 170.0
+WPM_BAND = (160.0, 185.0)     # a read inside this band is left alone; Kimberly measures ~184
 TEMPO_MAX = 1.15              # 1.265 read as hurried on the two-voice cut; 1.20 was its ship value
+TEMPO_MIN = 0.92              # slowing further makes the formants audible
 TEMPO = 1.00                  # set from `verify`'s printed decision; --tempo overrides
+RUNTIME_WINDOW = (120.0, 150.0)   # the brief's 2:00-2:30, measured on the finished root
+
+# Word timing comes from whisper. large-v3 is already cached beside small.en
+# (~/.cache/hyperframes/whisper/models) and its recognition is what matters
+# here: `verify` REFUSES a take whose KEY_TERMS did not come back as
+# themselves, so a model that mishears "daltons" costs a whole re-roll, not a
+# caption fix. Timing quality between the two is comparable; recognition is not.
+ASR_MODEL = "large-v3"
+ASR_LANG = "en"
+ASR_TIMEOUT_MS = "1800000"
+
+# Two blocks are two performances. These are the differences an ear hears at the
+# seam, in the order they are audible; `verify` measures each and names the
+# outlier block rather than leaving the seam to a listening pass alone.
+SEAM_MAX_DLUFS = 2.0          # LU, raw (before per-block gain)
+SEAM_MAX_DWPM = 0.12          # fraction
+SEAM_MAX_DCENTROID = 0.12     # fraction -- brightness
+SEAM_MAX_DTILT = 3.0          # dB, low-band minus high-band
+SEAM_MAX_DF0 = 0.08           # fraction -- ~1.3 semitones
 SPOKEN = [c for c in ORDER if c not in WORDLESS]
 
 
@@ -112,6 +133,100 @@ def integrated_lufs(p):
     return float(m.group(1)) if m else None
 
 
+def spectral_centroid(p):
+    """Mean spectral centroid in Hz -- the single number that tracks how bright
+    a take reads. A block recorded brighter than its neighbour is the seam a
+    listener notices first, before either level or pace."""
+    r = sh("ffmpeg", "-nostdin", "-v", "info", "-i", str(p), "-af",
+           "aspectralstats=measure=centroid,ametadata=print:key=lavfi.aspectralstats.1.centroid",
+           "-f", "null", "-")
+    vals = [float(m) for m in re.findall(r"lavfi\.aspectralstats\.1\.centroid=([\d.]+)", r.stderr)]
+    return round(sum(vals) / len(vals), 1) if vals else None
+
+
+def band_tilt(p):
+    """Low-band minus high-band RMS, in dB. Two takes at the same loudness can
+    still sit differently in the mix; this is what that difference measures."""
+    def rms(af):
+        r = sh("ffmpeg", "-nostdin", "-v", "info", "-i", str(p), "-af", af + ",volumedetect",
+               "-f", "null", "-")
+        m = re.search(r"mean_volume:\s*(-?[\d.]+|-inf) dB", r.stderr)
+        return None if not m or m.group(1) == "-inf" else float(m.group(1))
+    lo, hi = rms("highpass=f=200,lowpass=f=1000"), rms("highpass=f=2000,lowpass=f=6000")
+    return None if lo is None or hi is None else round(lo - hi, 2)
+
+
+def median_f0(p):
+    """Median voiced pitch, by autocorrelation over 40ms frames. numpy only --
+    librosa is not installed on this host and one number does not justify it."""
+    try:
+        import numpy as np
+    except ImportError:
+        return None
+    r = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-i", str(p), "-f", "s16le",
+                        "-ac", "1", "-ar", "16000", "-"], capture_output=True)
+    x = np.frombuffer(r.stdout, dtype=np.int16).astype(np.float64) / 32768.0
+    if x.size < 16000:
+        return None
+    N, sr = 640, 16000                       # 40ms frames
+    lo, hi = int(sr / 400), int(sr / 70)     # 70-400 Hz search
+    f0 = []
+    for i in range(0, x.size - N, N):
+        fr = x[i:i + N]
+        if 20 * np.log10(max(1e-9, float(np.sqrt((fr ** 2).mean())))) < -35:
+            continue                          # unvoiced or silent
+        fr = fr - fr.mean()
+        ac = np.correlate(fr, fr, mode="full")[N - 1:]
+        if ac[0] <= 0:
+            continue
+        seg = ac[lo:hi]
+        if seg.size == 0:
+            continue
+        lag = lo + int(np.argmax(seg))
+        if ac[lag] / ac[0] > 0.3:
+            f0.append(sr / lag)
+    return round(float(np.median(f0)), 1) if f0 else None
+
+
+def block_stats(wav, words):
+    n = len(words)
+    span = (words[-1]["end"] - words[0]["start"]) if n > 1 else 0.0
+    return {"lufs": integrated_lufs(wav), "wpm": round(n / max(0.01, span) * 60, 1),
+            "centroid": spectral_centroid(wav), "tilt": band_tilt(wav), "f0": median_f0(wav),
+            "duration": round(dur(wav), 3)}
+
+
+def seam_findings(stats, names):
+    """Adjacent-block differences that would be audible as a change of speaker
+    rather than a change of subject. Returns [(block, message)]."""
+    out = []
+    for i in range(len(stats) - 1):
+        a, b = stats[i], stats[i + 1]
+        pair = f"{names[i]}->{names[i+1]}"
+
+        def rel(k):
+            va, vb = a.get(k), b.get(k)
+            if va in (None, 0) or vb is None:
+                return None
+            return abs(va - vb) / abs(va)
+
+        far = names[i] if abs(a.get("wpm", 0)) < abs(b.get("wpm", 0)) else names[i + 1]
+        if a.get("lufs") is not None and b.get("lufs") is not None:
+            d = abs(a["lufs"] - b["lufs"])
+            if d > SEAM_MAX_DLUFS:
+                out.append((far, f"{pair}: {d:.2f} LU apart before gain (max {SEAM_MAX_DLUFS})"))
+        for key, cap, label in (("wpm", SEAM_MAX_DWPM, "pace"), ("centroid", SEAM_MAX_DCENTROID, "brightness"),
+                                ("f0", SEAM_MAX_DF0, "pitch")):
+            d = rel(key)
+            if d is not None and d > cap:
+                out.append((far, f"{pair}: {label} differs by {d*100:.1f}% (max {cap*100:.0f}%)"))
+        if a.get("tilt") is not None and b.get("tilt") is not None:
+            d = abs(a["tilt"] - b["tilt"])
+            if d > SEAM_MAX_DTILT:
+                out.append((far, f"{pair}: spectral tilt {d:.2f} dB apart (max {SEAM_MAX_DTILT})"))
+    return out
+
+
 # ---------------------------------------------------------------- addressing
 
 def raw_wav(block):
@@ -131,8 +246,12 @@ def cmd_transcribe(argv):
         if not wav.exists():
             print(f"  MISSING raw take for block {block}: {wav.relative_to(ROOT)}")
             ok = False; continue
+        model = argv[argv.index("--model") + 1] if "--model" in argv else ASR_MODEL
+        print(f"  {block:8s} transcribing with whisper {model} (this is CPU-bound; "
+              f"pass --model small.en to trade recognition for speed)")
         r = sh("hyperframes", "transcribe", str(wav), "--engine", "whisper",
-               "--model", "small.en", "--json", "--timeout", "300000", "-d", str(ROOT))
+               "--model", model, "--language", ASR_LANG, "--json",
+               "--timeout", ASR_TIMEOUT_MS, "-d", str(ROOT))
         if r.returncode != 0:
             print(f"  transcribe FAILED for {block}: {(r.stderr or r.stdout).strip()[:400]}")
             ok = False; continue
@@ -381,17 +500,39 @@ def summarise(master_words, speech_end):
     return n, first, last, round(wpm, 1)
 
 
-def rate_decision(wpm):
+def rate_decision(wpm, projected_total=None):
+    """Pace AND runtime. A take inside the natural band is left alone even when
+    a nominal target would nudge it, because atempo on a good read costs more
+    than the seconds it buys -- but a projected runtime outside the brief's
+    window overrides that, since the window is the deliverable."""
+    lo, hi = WPM_BAND
+    runtime_ok = projected_total is None or RUNTIME_WINDOW[0] <= projected_total <= RUNTIME_WINDOW[1]
+    note = "" if projected_total is None else f" projected runtime {projected_total:.1f}s"
+    if lo <= wpm <= hi and runtime_ok:
+        return 1.00, f"TEMPO = 1.00 ({wpm:.1f} wpm inside the {lo:.0f}-{hi:.0f} band;{note})"
+    if not runtime_ok and projected_total is not None:
+        want = RUNTIME_WINDOW[1] if projected_total > RUNTIME_WINDOW[1] else RUNTIME_WINDOW[0]
+        need = projected_total / want
+        if TEMPO_MIN <= need <= TEMPO_MAX:
+            return round(need, 3), (f"TEMPO = {need:.3f} to land {projected_total:.1f}s inside "
+                                    f"{RUNTIME_WINDOW[0]:.0f}-{RUNTIME_WINDOW[1]:.0f}s ({wpm:.1f} wpm)")
     need = WPM_TARGET / max(1.0, wpm)
-    if 0.97 <= need <= 1.03:
-        return 1.00, f"TEMPO = 1.00 (need {need:.3f}; inside the +-3% dead band)"
-    if need < 0.94:
-        return round(need, 2), f"TEMPO = {need:.2f} (slowing a hurried take is transparent)"
+    if need < TEMPO_MIN:
+        return None, (f"need {need:.3f} < {TEMPO_MIN}: the take is far too fast to slow "
+                      f"transparently. Round 2: regenerate with a negative speech_rate.")
     if need <= TEMPO_MAX:
         return round(need, 2), f"TEMPO = {need:.2f} (atempo; inside the {TEMPO_MAX} cap)"
     sr = int(min(40, max(5, round((need - 1) * 100))))
     return None, (f"need {need:.3f} > {TEMPO_MAX}: do NOT stretch this far. Round 2: regenerate "
-                  f"with speech_rate={sr} (linear assumption; re-measure), then TEMPO in [0.92, {TEMPO_MAX}].")
+                  f"with speech_rate={sr} (linear assumption; re-measure), then TEMPO in "
+                  f"[{TEMPO_MIN}, {TEMPO_MAX}].")
+
+
+def projected_runtime(speech_end, tempo=1.0):
+    """What the ROOT will measure once this master is cut: the last word, plus
+    the tail, plus the curtain's own seam gap, plus the end card."""
+    from transitions import KIND
+    return speech_end + TAIL + KIND["curtain"][1] + END_CARD_HOLD
 
 
 # ---------------------------------------------------------------- verify
@@ -428,16 +569,32 @@ def cmd_verify(argv):
         for msg in bad:
             print(f"      - {msg}")
             findings.append((b["name"], msg))
+    # SEAM CONTINUITY. Two blocks are two performances; these are the four
+    # differences an ear reads as a change of speaker rather than of subject.
+    if len(blocks) > 1:
+        stats = [block_stats(b["wav"], b["words"]) for b in blocks]
+        names = [b["name"] for b in blocks]
+        print(f"\n  {'block':8s} {'LUFS':>7s} {'wpm':>7s} {'centroid':>9s} {'tilt dB':>8s} {'F0 Hz':>7s}")
+        for nm, st in zip(names, stats):
+            print(f"  {nm:8s} {st['lufs'] if st['lufs'] is not None else float('nan'):7.1f} "
+                  f"{st['wpm']:7.1f} {st['centroid'] or 0:9.1f} {st['tilt'] or 0:8.2f} {st['f0'] or 0:7.1f}")
+        for blk, msg in seam_findings(stats, names):
+            print(f"      - SEAM: {msg}")
+            findings.append((blk, msg))
+
     seq, mw, speech_end = plan_edit(blocks, 1.0)
     n, first, last, wpm = summarise(mw, speech_end)
+    proj = projected_runtime(speech_end)
     print(f"\n  dry run at TEMPO 1.00: {n} words, first {first:.3f}s, last {last:.3f}s, "
-          f"master ~{speech_end + TAIL:.1f}s, {wpm} wpm")
-    t, msg = rate_decision(wpm)
+          f"master ~{speech_end + TAIL:.1f}s, {wpm} wpm, projected runtime {proj:.1f}s "
+          f"({int(proj // 60)}:{proj % 60:05.2f})")
+    t, msg = rate_decision(wpm, proj)
     print(f"  rate decision: {msg}")
     if tempo != 1.0:
         seq, mw, speech_end = plan_edit(blocks, tempo)
         n, first, last, wpm2 = summarise(mw, speech_end)
-        print(f"  at --tempo {tempo}: last {last:.3f}s, master ~{speech_end + TAIL:.1f}s, {wpm2} wpm")
+        print(f"  at --tempo {tempo}: last {last:.3f}s, master ~{speech_end + TAIL:.1f}s, {wpm2} wpm, "
+              f"projected runtime {projected_runtime(speech_end):.1f}s")
     if findings:
         print(f"\n  {len(findings)} finding(s) -- re-roll the flagged block(s):")
         for b, m in findings:
@@ -541,7 +698,21 @@ def cmd_cut(argv):
     lufs = integrated_lufs(MASTER)
     meta = [{"name": b["name"], "raw": str(b["wav"].relative_to(ROOT)), "cids": b["cids"],
              "raw_lufs": raw_lufs[i], "gain_db": round(gains[i] + g, 2),
-             "asr_words": len(b["asr"])} for i, b in enumerate(blocks)]
+             "asr_words": len(b["asr"]),
+             "stats": block_stats(b["wav"], b["words"])} for i, b in enumerate(blocks)]
+    # where the two performances meet, in MASTER time, plus a listening excerpt.
+    # A measurement can say the blocks match; only an ear can say the seam does
+    # not sound like a second narrator.
+    if len(blocks) > 1:
+        seam_at = next((w["start"] for w in master_words if w["cid"] == blocks[1]["cids"][0]), None)
+        if seam_at:
+            for m in meta:
+                m["master_seam"] = round(seam_at, 3)
+            qc = ROOT / "renders" / "qc"
+            qc.mkdir(parents=True, exist_ok=True)
+            sh("ffmpeg", "-y", "-nostdin", "-v", "error", "-ss", f"{max(0, seam_at - 3):.3f}",
+               "-t", "6", "-i", str(MASTER), str(qc / "seam-AB.wav"))
+            print(f"  block seam at {seam_at:.3f}s -> renders/qc/seam-AB.wav (listen before shipping)")
     m = write_manifest(master_words, tempo, "blocks" if len(blocks) > 1 else "master", meta,
                        round(lufs, 1) if lufs is not None else None)
     _report(m, seq)

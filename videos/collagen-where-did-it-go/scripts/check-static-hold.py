@@ -499,10 +499,36 @@ def region_check(render_path, project_root):
     return findings
 
 
+def _flags(argv):
+    """--ceiling <s>, --exempt-last and --gate, stripped from argv.
+
+    These were passed by package.json and SILENTLY IGNORED: the old filter kept
+    only the profile flag, so `--ceiling` landed in argv[0] and became the
+    project root while the ceiling stayed at its profile default. A gate that
+    is handed a stricter number and quietly uses a looser one is worse than no
+    gate, because its PASS line names the number it was given."""
+    out, ceiling, exempt_last, gate = [], None, False, False
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "--ceiling":
+            ceiling = float(argv[i + 1]); i += 2; continue
+        if a == "--exempt-last":
+            exempt_last = True; i += 1; continue
+        if a == "--gate":
+            gate = True; i += 1; continue
+        out.append(a); i += 1
+    return out, ceiling, exempt_last, gate
+
+
 def main():
+    global CADENCE_CEILING_S
     argv = [a for a in sys.argv[1:] if a != "--landscape"]
     if "--landscape" in sys.argv:
         apply_landscape_profile()
+    argv, ceiling, exempt_last, gate = _flags(argv)
+    if ceiling is not None:
+        CADENCE_CEILING_S = ceiling   # AFTER apply_landscape_profile(), which resets it
 
     project_root = Path(argv[0] if len(argv) > 0 else ".").resolve()
     _assert_caption_band_is_this_projects(project_root)
@@ -528,6 +554,16 @@ def main():
         return 2
 
     whole_findings = whole_frame_check(render_path)
+    if exempt_last and whole_findings:
+        # the wordless end card is a deliberate calm hold, not a stall
+        scenes = scene_boundaries(project_root)
+        if scenes:
+            last_start = scenes[-1][0]   # scene_boundaries yields (start, end)
+            dropped = [f for f in whole_findings if f[0] >= last_start - 0.01]
+            whole_findings = [f for f in whole_findings if f[0] < last_start - 0.01]
+            if dropped:
+                print(f"  --exempt-last: {len(dropped)} finding(s) inside the closing "
+                      f"scene (from {last_start:.2f}s) treated as the authored end-card hold")
     region_findings = region_check(render_path, project_root)
 
     # Scope the summary to what was actually TESTED. "Overall: clean" reads as a
@@ -547,7 +583,11 @@ def main():
         print("\n  Result: no findings in the two checks above.")
     else:
         print("\n  Verify each: does this scene need a beat, or is it a deliberate hold?")
-    return 0
+    # --gate fails on WHOLE-FRAME findings only. The region pass has two
+    # documented false-positive classes in this project (the end-screen reserve
+    # is REQUIRED to be clear, and 06-door's negative space), so gating on it
+    # would fail the build for the design working.
+    return 1 if (whole_findings and gate) else 0
 
 
 if __name__ == "__main__":

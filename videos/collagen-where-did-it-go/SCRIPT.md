@@ -4,8 +4,8 @@
 
 > **VO MANIFEST: FAKE** — synthetic 170 wpm timing; not for delivery.
 
-Single narrator — **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (element), Higgsfield `seed_audio`, one master take (master).  
-367 words · 163.8 wpm overall · tempo 1.0 · first word at 0.10s · runtime 2:20.23 (140.229s).
+Single narrator — **Kimberly** `674b71b8-1d2e-4087-8567-d1f53c0b9f3c` (element), Higgsfield `seed_audio`, one master take (A, B).  
+364 words · 163.8 wpm overall · tempo 1.0 · first word at 0.10s · runtime 2:18.67 (138.671s).
 
 TTS-safe copy: no em-dashes, no colons, numbers spelled out. The spoken text below is the exact TTS input; on-screen beats are curated (≤ 10 words), never a transcript.
 
@@ -17,130 +17,130 @@ TTS-safe copy: no em-dashes, no colons, numbers spelled out. The spoken text bel
 **On screen:** does NOT replace · CREAM · POWDER  
 **Motion:** path-follow race, barrier impact, cream/powder split, kinetic slam  
 
-## 02 · `02-promise` — 0:05.80 → 0:19.56 (13.76s · in: iris · file `02-promise`)
+## 02 · `02-promise` — 0:05.80 → 0:16.73 (10.94s · in: iris · file `02-promise`)
 
-> So where does it actually go? Stay for the twist. Twenty three trials seem to say the powder works. Remove the industry funded ones, and watch what happens. But first, what actually protects the collagen you already have?
+> So where does it go? Twenty three trials say the powder works. Remove the industry funded ones, and watch what happens. But first, what protects the collagen you already have?
 
-*38 words · first word 0:06.10 · last word 0:19.51*  
-**On screen:** Where does it actually go? · stay for the twist · 23 trials · …and what protects it?  
-**Motion:** kinetic question, tile foreshadow, industry dim, protect wash  
+*30 words · first word 0:06.10 · last word 0:16.68*  
+**On screen:** Where does it actually go? · 23 trials · $ = industry funded · what protects it?  
+**Motion:** kinetic question, data column rise, $ tag + drop, shield teaser  
 
-## 03 · `03-building` — 0:19.56 → 0:26.87 (7.31s · in: iris · file `03-building`)
+## 03 · `03-building` — 0:16.73 → 0:24.39 (7.66s · in: iris · file `03-building`)
 
-> Think of your skin as a building. Collagen is the structure inside it. It keeps everything firm and upright.
+> Think of your skin as a building. Collagen is the main structure inside it. It keeps everything firm and upright.
 
-*19 words · first word 0:19.86 · last word 0:26.57*  
+*20 words · first word 0:17.04 · last word 0:24.09*  
 **On screen:** collagen = the beams  
-**Motion:** structural assembly, beam draw-in, camera settle  
+**Motion:** ground-up assembly, beam draw-in, camera settle  
 **Claims:** C1  
 
-## 04 · `04-demolition` — 0:26.86 → 0:35.99 (9.12s · in: phase · file `03-building`)
+## 04 · `04-demolition` — 0:24.39 → 0:33.52 (9.12s · in: phase · file `03-building`)
 
 > As we age, collagen production slows. And ultraviolet light switches on enzymes that cut collagen apart. The sun runs a demolition crew. It works weekends.
 
-*25 words · first word 0:26.86 · last word 0:35.69*  
+*25 words · first word 0:24.39 · last word 0:33.22*  
 **On screen:** UV cuts collagen · works weekends  
-**Motion:** sky warm, ray draw, beam cuts, camera push  
+**Motion:** sky warm, ray draw, beam cuts + shards fall, camera push  
 **Claims:** C2 · **chips:** J Invest Dermatol · 1998  
 
-## 05 · `05-boundary` — 0:35.99 → 0:43.80 (7.82s · in: phase · file `03-building`)
+## 05 · `05-boundary` — 0:33.52 → 0:41.33 (7.81s · in: phase · file `03-building`)
 
-> Sunscreen is not just about sunburn. It draws a boundary around the building. Preserving collagen is usually far easier than replacing it.
+> Sunscreen is not just about sunburn. It draws a boundary around the building. Preserving collagen is usually easier than replacing it later.
 
-*22 words · first word 0:35.99 · last word 0:43.75*  
+*22 words · first word 0:33.52 · last word 0:41.28*  
 **On screen:** preserve > replace  
-**Motion:** camera pull-back, shield draw, preserve wash, molecule handoff  
+**Motion:** camera pull-back, shield draw, ghost repair fails, preserve pulse  
 
-## 06 · `06-door` — 0:43.80 → 0:55.34 (11.54s · in: iris · file `06-door`)
+## 06 · `06-door` — 0:41.33 → 0:52.87 (11.54s · in: iris · file `06-door`)
 
 > Now, the cream. To pass through skin, a molecule generally needs to be under about five hundred daltons. Collagen is around three hundred thousand. It is not getting through that door.
 
-*31 words · first word 0:44.10 · last word 0:55.04*  
+*31 words · first word 0:41.63 · last word 0:52.57*  
 **On screen:** ~500 daltons · the size limit · ~300,000 daltons · one collagen molecule · labelled, not to scale · REJECTED  
-**Motion:** scale cards + count-ups, door nudges, rejected stamp  
+**Motion:** scale cards + count-ups, molecule grows vs the dot, door hits, rejected stamp  
 **Claims:** C3 · **chips:** Exp Dermatol · 2000  
 
-## 07 · `07-film` — 0:55.34 → 1:03.16 (7.82s · in: phase · file `06-door`)
+## 07 · `07-film` — 0:52.87 → 1:01.04 (8.17s · in: phase · file `06-door`)
 
-> It may still form a moisturising film on the surface. Skin feels smoother. But polishing the windows is not replacing the beams.
+> It may still form a moisturising film on the surface. Skin may feel smoother. But polishing the windows is not replacing the beams.
 
-*22 words · first word 0:55.34 · last word 1:03.11*  
+*23 words · first word 0:52.87 · last word 1:00.99*  
 **On screen:** surface smoothing ≠ structural replacement  
-**Motion:** film morph, surface smooth, dermis dim, verdict wash  
+**Motion:** film spreads, surface smooth, dermis push, verdict wash  
 **Claims:** C4  
 
-## 08 · `08-digestion` — 1:03.16 → 1:11.17 (8.01s · in: iris · file `08-digestion`)
+## 08 · `08-digestion` — 1:01.04 → 1:09.05 (8.01s · in: iris · file `08-digestion`)
 
 > Now, the powder. Swallow collagen, and digestion breaks it into peptides and amino acids. Your stomach does not offer facial delivery.
 
-*21 words · first word 1:03.46 · last word 1:10.87*  
+*21 words · first word 1:01.34 · last word 1:08.75*  
 **On screen:** peptides + amino acids · no facial delivery  
 **Motion:** scoop match cut, tract path-follow, fragmentation, no-delivery void  
 **Claims:** C5  
 
-## 09 · `09-dispatch` — 1:11.17 → 1:24.68 (13.51s · in: phase · file `08-digestion`)
+## 09 · `09-dispatch` — 1:09.05 → 1:22.56 (13.51s · in: phase · file `08-digestion`)
 
 > Some pieces may be absorbed. Certain peptides may even act as signals. But your body decides where they go. Skin, joints, tendons, wherever repairs are most urgent. Your face ordered scaffolding. It got a box of spare parts.
 
-*38 words · first word 1:11.17 · last word 1:24.58*  
+*38 words · first word 1:09.05 · last word 1:22.47*  
 **On screen:** your body decides · skin · joints · tendons · other · scaffolding · spare parts  
 **Motion:** camera pan, branch draw, dot dispatch, spare-parts crate  
 **Claims:** C5  
 
-## 10 · `10-trials` — 1:24.68 → 1:30.37 (5.69s · in: invert · file `10-evidence`)
+## 10 · `10-trials` — 1:22.56 → 1:28.26 (5.69s · in: invert · file `10-evidence`)
 
 > Does the powder work? Trials do report modest improvements in hydration, elasticity, or wrinkles.
 
-*14 words · first word 1:25.13 · last word 1:30.07*  
-**On screen:** 23 · randomised trials · hydration · elasticity · wrinkles · BENEFIT  
-**Motion:** ground inversion, count-up 23, outcome bands, result meter  
+*14 words · first word 1:23.02 · last word 1:27.96*  
+**On screen:** hydration · elasticity · wrinkles · BENEFIT  
+**Motion:** ground inversion, outcome bands, result meter  
 **Claims:** C6 · **chips:** Nutrients · 2023  
 
-## 11 · `11-caveat` — 1:30.37 → 1:33.50 (3.12s · in: phase · file `10-evidence`)
+## 11 · `11-caveat` — 1:28.26 → 1:31.38 (3.12s · in: phase · file `10-evidence`)
 
 > But many were small, short, and industry funded.
 
-*8 words · first word 1:30.37 · last word 1:33.20*  
+*8 words · first word 1:28.26 · last word 1:31.08*  
 **On screen:** small · short · industry funded  
 **Motion:** head dim wash, tag shrink, industry recolour  
 **Claims:** C7  
 
-## 12 · `12-filter` — 1:33.50 → 1:48.27 (14.77s · in: phase · file `10-evidence`)
+## 12 · `12-filter` — 1:31.38 → 1:46.15 (14.77s · in: phase · file `10-evidence`)
 
 > In twenty twenty five, researchers pooled twenty three randomised trials. All together, a benefit. Keep only the studies without industry funding, and it is no longer statistically significant. Keep only the higher quality studies. Same result. The effect stops showing up.
 
-*41 words · first word 1:33.50 · last word 1:47.97*  
-**On screen:** keep only: independent · keep only: higher quality · NOT SIGNIFICANT · THE EFFECT · STOPS SHOWING UP  
-**Motion:** pooled celadon, filter drop ×2, meter crosses zero, stops band  
+*41 words · first word 1:31.38 · last word 1:45.85*  
+**On screen:** 23 · randomised trials · pooled 2025 · keep only: independent · keep only: higher quality · NOT SIGNIFICANT · THE EFFECT · STOPS SHOWING UP  
+**Motion:** count-up 23 + pooled celadon, tiles fall + meter moves, camera lean, STOPS flood  
 **Claims:** C7 · **chips:** Am J Med · 2025  
 
-## 13 · `13-uncertain` — 1:48.27 → 1:55.78 (7.51s · in: phase · file `10-evidence`)
+## 13 · `13-uncertain` — 1:46.15 → 1:53.66 (7.51s · in: phase · file `10-evidence`)
 
 > Do supplements definitely work? We cannot say that. Definitely fail? We cannot confidently say that either. The independent evidence is uncertain.
 
-*21 words · first word 1:48.27 · last word 1:55.68*  
-**On screen:** definitely works? · definitely fails? · UNCERTAIN  
-**Motion:** question strikes, band retract, meter settles  
+*21 words · first word 1:46.15 · last word 1:53.56*  
+**On screen:** works? · fails? · UNCERTAIN  
+**Motion:** question strikes, flood retract, meter settles  
 **Claims:** C7  
 
-## 14 · `14-hierarchy` — 1:55.78 → 2:07.82 (12.04s · in: invert · file `14-hierarchy`)
+## 14 · `14-hierarchy` — 1:53.66 → 2:06.41 (12.75s · in: invert · file `14-hierarchy`)
 
-> What the evidence actually supports. Broad spectrum sunscreen, every day. Not smoking. Enough protein and vitamin C. And for suitable users, topical retinoids have far stronger evidence for collagen than collagen cream.
+> What the evidence actually supports. Broad spectrum sunscreen, every day. Not smoking. Enough protein and vitamin C. And for suitable users, topical retinoids have considerably stronger evidence for encouraging collagen production than collagen cream.
 
-*32 words · first word 1:56.23 · last word 2:07.52*  
-**On screen:** 1 sunscreen · 2 no smoking · 3 protein + vitamin C · 4 retinoids · suitable users  
-**Motion:** building return, rank sort, foundation lock, beam repair  
+*34 words · first word 1:54.11 · last word 2:06.11*  
+**On screen:** 1 daily sunscreen · 2 not smoking · 3 protein + vitamin C · 4 retinoids, if suitable  
+**Motion:** building return, rank sort, foundation lock, protein repairs beams  
 **Claims:** C8, C9, C10 · **chips:** J Dermatol Sci · 2007 / Arch Dermatol · 2007  
 
-## 15 · `15-verdict` — 2:07.82 → 2:14.73 (6.91s · in: phase · file `14-hierarchy`)
+## 15 · `15-verdict` — 2:06.41 → 2:13.67 (7.26s · in: phase · file `14-hierarchy`)
 
-> Collagen cream is a pleasant moisturiser. Collagen powder is optional. Protect the building before you buy expensive powdered bricks.
+> Collagen cream can be a pleasant moisturiser. Collagen powder is optional. Protect the building before you buy expensive powdered bricks.
 
-*19 words · first word 2:07.82 · last word 2:14.53*  
+*20 words · first word 2:06.41 · last word 2:13.47*  
 **On screen:** optional · collagen cream · collagen powder · Protect the building first.  
-**Motion:** optional divider, final wash, bricks exit  
+**Motion:** optional pan, final band, bricks exit  
 
-## 16 · `16-end` — 2:14.73 → 2:20.23 (5.50s · in: curtain · file `16-end`)
+## 16 · `16-end` — 2:13.67 → 2:18.67 (5.00s · in: curtain · file `16-end`)
 
 *(no narration — end card)*  
 **On screen:** SeoulHabit · Evidence, not hype. · sources in the description  

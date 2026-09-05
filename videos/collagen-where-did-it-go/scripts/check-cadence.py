@@ -103,11 +103,36 @@ def active(r):
     return r["mean"] >= MEAN_ACTIVE and r["max"] >= MIN_MAXPIX
 
 
+def _flags(argv):
+    """--ceiling <s>, --exempt-last and --gate, stripped from argv.
+
+    These were passed by package.json and SILENTLY IGNORED: the old filter kept
+    only the profile flag, so `--ceiling` landed in argv[0] and became the
+    project root while the ceiling stayed at its profile default. A gate that
+    is handed a stricter number and quietly uses a looser one is worse than no
+    gate, because its PASS line names the number it was given."""
+    out, ceiling, exempt_last, gate = [], None, False, False
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "--ceiling":
+            ceiling = float(argv[i + 1]); i += 2; continue
+        if a == "--exempt-last":
+            exempt_last = True; i += 1; continue
+        if a == "--gate":
+            gate = True; i += 1; continue
+        out.append(a); i += 1
+    return out, ceiling, exempt_last, gate
+
+
 def main():
     global QUIET_CEILING_S
     argv = [a for a in sys.argv[1:] if a not in LONGFORM_FLAGS]
     if any(f in sys.argv for f in LONGFORM_FLAGS):
         QUIET_CEILING_S = 6.0
+    argv, ceiling, exempt_last, gate = _flags(argv)
+    if ceiling is not None:
+        QUIET_CEILING_S = ceiling   # AFTER the profile, or the profile wins
 
     project_root = Path(argv[0] if len(argv) > 0 else ".").resolve()
     if len(argv) > 1:
@@ -157,7 +182,8 @@ def main():
                 else:
                     run, rs = 0, None
             quiet = best / SAMPLE_FPS
-            bad = quiet > QUIET_CEILING_S
+            last = (i == len(scenes))
+            bad = quiet > QUIET_CEILING_S and not (exempt_last and last)
             if bad:
                 findings.append((i, s, e, quiet, brs, bre))
             print(f"  {i:>6}  {s:6.2f}-{e:5.2f}  {len(a):>3}/{len(seg):<3} "
@@ -188,8 +214,9 @@ def main():
                   f"beat, {a:.2f}-{b:.2f}s")
         print("  Verify each: does it need a beat, or is it a deliberate hold?")
     else:
-        print(f"\n  Result: no scene exceeds the {QUIET_CEILING_S}s quiet ceiling.")
-    return 0
+        print(f"\n  Result: no scene exceeds the {QUIET_CEILING_S}s quiet ceiling"
+              f"{' (last scene exempt)' if exempt_last else ''}.")
+    return 1 if (findings and gate) else 0
 
 
 if __name__ == "__main__":

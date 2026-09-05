@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="16-end"
-       data-width="1920" data-height="1080" data-duration="5.500">
+       data-width="1920" data-height="1080" data-duration="5.000">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -250,9 +250,9 @@
 
     // motion calmed: one slow drift across the whole hold, large enough that
     // the 2fps static gate still sees a change, small enough to read as calm
-    tl.fromTo("#endcard", { y:36 }, { y:0, duration:5.500, ease:"power1.out" }, 0);
+    tl.fromTo("#endcard", { y:36 }, { y:0, duration:5.000, ease:"power1.out" }, 0);
 
-    tl.to({}, { duration: 5.500 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 5.000 }, 0);   // full-span anchor -- always last
     window.__timelines["16-end"] = tl;
   </script>
 </template>

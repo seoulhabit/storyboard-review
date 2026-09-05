@@ -5,7 +5,7 @@
 
 > **VO MANIFEST: FAKE** — synthetic 170 wpm timing; not for delivery.
 
-**Canvas** 1920×1080 landscape · **fps** 30 · **duration** 2:20.23 (140.229s) · **files** 8 · **units** 16 · **narrator** one (Kimberly) · **first word** 0.10s
+**Canvas** 1920×1080 landscape · **fps** 30 · **duration** 2:18.67 (138.671s) · **files** 8 · **units** 16 · **narrator** one (Kimberly) · **first word** 0.10s
 
 ## Chapters
 
@@ -13,11 +13,11 @@ Paste-ready. Re-derived from the walk on every build.
 
 ```
 0:00 Where does it actually go?
-0:20 Your skin is a building
-0:44 Why the cream can't get in
-1:03 Your stomach doesn't do facial delivery
-1:25 The evidence plot twist
-1:56 What actually protects it
+0:17 Your skin is a building
+0:41 Why the cream can't get in
+1:01 Your stomach doesn't do facial delivery
+1:23 The evidence plot twist
+1:54 What actually protects it
 ```
 
 *6 chapters, first at 0:00, all ≥10s.*
@@ -28,12 +28,12 @@ Paste-ready. Re-derived from the walk on every build.
 |---|---|---:|---:|
 | `01-hook` | start | 0.000 | — |
 | `02-promise` | iris | 5.797 | iris |
-| `03-building` | iris | 19.559 | iris |
-| `06-door` | iris | 43.803 | iris |
-| `08-digestion` | iris | 63.159 | iris |
-| `10-evidence` | invert | 84.682 | invert |
-| `14-hierarchy` | invert | 115.779 | invert |
-| `16-end` | curtain | 134.729 | curtain |
+| `03-building` | iris | 16.735 | iris |
+| `06-door` | iris | 41.332 | iris |
+| `08-digestion` | iris | 61.041 | iris |
+| `10-evidence` | invert | 82.565 | invert |
+| `14-hierarchy` | invert | 113.662 | invert |
+| `16-end` | curtain | 133.671 | curtain |
 
 **start** ×1 · **iris** ×4 · **invert** ×2 · **curtain** ×1
 
@@ -41,35 +41,35 @@ Paste-ready. Re-derived from the walk on every build.
 
 | # | file | start | dur | units | tweens |
 |---|---|---:|---:|---|---:|
-| 1 | `01-hook` | 0.000 | 6.347 | 01-hook | 7 |
-| 2 | `02-promise` | 5.797 | 14.312 | 02-promise | 11 |
-| 3 | `03-building` | 19.559 | 24.794 | 03-building, 04-demolition, 05-boundary | 19 |
-| 4 | `06-door` | 43.803 | 19.906 | 06-door, 07-film | 15 |
-| 5 | `08-digestion` | 63.159 | 22.123 | 08-digestion, 09-dispatch | 16 |
-| 6 | `10-evidence` | 84.682 | 31.697 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 23 |
-| 7 | `14-hierarchy` | 115.779 | 19.850 | 14-hierarchy, 15-verdict | 15 |
-| 8 | `16-end` | 134.729 | 5.500 | 16-end | 3 |
+| 1 | `01-hook` | 0.000 | 6.347 | 01-hook | 21 |
+| 2 | `02-promise` | 5.797 | 11.488 | 02-promise | 29 |
+| 3 | `03-building` | 16.735 | 25.147 | 03-building, 04-demolition, 05-boundary | 42 |
+| 4 | `06-door` | 41.332 | 20.259 | 06-door, 07-film | 42 |
+| 5 | `08-digestion` | 61.041 | 22.124 | 08-digestion, 09-dispatch | 28 |
+| 6 | `10-evidence` | 82.565 | 31.697 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 73 |
+| 7 | `14-hierarchy` | 113.662 | 20.909 | 14-hierarchy, 15-verdict | 34 |
+| 8 | `16-end` | 133.671 | 5.000 | 16-end | 2 |
 
 ## Beat units
 
 | # | unit | file | start | own | first word | words | on screen | motion | cite |
 |---|---|---|---:|---:|---:|---:|---|---|---|
 | 1 | `01-hook` | `01-hook` | 0.000 | 5.797 | 0.10 | 16 | does NOT replace · CREAM · POWDER | path-follow race, barrier impact, cream/powder split, kinetic slam | — |
-| 2 | `02-promise` | `02-promise` | 5.797 | 13.762 | 6.10 | 38 | Where does it actually go? · stay for the twist · 23 trials · …and what protects it? | kinetic question, tile foreshadow, industry dim, protect wash | — |
-| 3 | `03-building` | `03-building` | 19.559 | 7.306 | 19.86 | 19 | collagen = the beams | structural assembly, beam draw-in, camera settle | — |
-| 4 | `04-demolition` | `03-building` | 26.865 | 9.123 | 26.86 | 25 | UV cuts collagen · works weekends | sky warm, ray draw, beam cuts, camera push | J Invest Dermatol · 1998 |
-| 5 | `05-boundary` | `03-building` | 35.988 | 7.815 | 35.99 | 22 | preserve > replace | camera pull-back, shield draw, preserve wash, molecule handoff | — |
-| 6 | `06-door` | `06-door` | 43.803 | 11.541 | 44.10 | 31 | ~500 daltons · the size limit · ~300,000 daltons · one collagen molecule · labelled, not to scale · REJECTED | scale cards + count-ups, door nudges, rejected stamp | Exp Dermatol · 2000 |
-| 7 | `07-film` | `06-door` | 55.344 | 7.815 | 55.34 | 22 | surface smoothing ≠ structural replacement | film morph, surface smooth, dermis dim, verdict wash | — |
-| 8 | `08-digestion` | `08-digestion` | 63.159 | 8.012 | 63.46 | 21 | peptides + amino acids · no facial delivery | scoop match cut, tract path-follow, fragmentation, no-delivery void | — |
-| 9 | `09-dispatch` | `08-digestion` | 71.171 | 13.511 | 71.17 | 38 | your body decides · skin · joints · tendons · other · scaffolding · spare parts | camera pan, branch draw, dot dispatch, spare-parts crate | — |
-| 10 | `10-trials` | `10-evidence` | 84.682 | 5.692 | 85.13 | 14 | 23 · randomised trials · hydration · elasticity · wrinkles · BENEFIT | ground inversion, count-up 23, outcome bands, result meter | Nutrients · 2023 |
-| 11 | `11-caveat` | `10-evidence` | 90.374 | 3.123 | 90.37 | 8 | small · short · industry funded | head dim wash, tag shrink, industry recolour | — |
-| 12 | `12-filter` | `10-evidence` | 93.497 | 14.771 | 93.50 | 41 | keep only: independent · keep only: higher quality · NOT SIGNIFICANT · THE EFFECT · STOPS SHOWING UP | pooled celadon, filter drop ×2, meter crosses zero, stops band | Am J Med · 2025 |
-| 13 | `13-uncertain` | `10-evidence` | 108.268 | 7.511 | 108.27 | 21 | definitely works? · definitely fails? · UNCERTAIN | question strikes, band retract, meter settles | — |
-| 14 | `14-hierarchy` | `14-hierarchy` | 115.779 | 12.045 | 116.23 | 32 | 1 sunscreen · 2 no smoking · 3 protein + vitamin C · 4 retinoids · suitable users | building return, rank sort, foundation lock, beam repair | J Dermatol Sci · 2007 / Arch Dermatol · 2007 |
-| 15 | `15-verdict` | `14-hierarchy` | 127.824 | 6.905 | 127.82 | 19 | optional · collagen cream · collagen powder · Protect the building first. | optional divider, final wash, bricks exit | — |
-| 16 | `16-end` | `16-end` | 134.729 | 5.500 | — | 0 | SeoulHabit · Evidence, not hype. · sources in the description | curtain, calm drift | — |
+| 2 | `02-promise` | `02-promise` | 5.797 | 10.938 | 6.10 | 30 | Where does it actually go? · 23 trials · $ = industry funded · what protects it? | kinetic question, data column rise, $ tag + drop, shield teaser | — |
+| 3 | `03-building` | `03-building` | 16.735 | 7.659 | 17.04 | 20 | collagen = the beams | ground-up assembly, beam draw-in, camera settle | — |
+| 4 | `04-demolition` | `03-building` | 24.394 | 9.124 | 24.39 | 25 | UV cuts collagen · works weekends | sky warm, ray draw, beam cuts + shards fall, camera push | J Invest Dermatol · 1998 |
+| 5 | `05-boundary` | `03-building` | 33.518 | 7.814 | 33.52 | 22 | preserve > replace | camera pull-back, shield draw, ghost repair fails, preserve pulse | — |
+| 6 | `06-door` | `06-door` | 41.332 | 11.542 | 41.63 | 31 | ~500 daltons · the size limit · ~300,000 daltons · one collagen molecule · labelled, not to scale · REJECTED | scale cards + count-ups, molecule grows vs the dot, door hits, rejected stamp | Exp Dermatol · 2000 |
+| 7 | `07-film` | `06-door` | 52.874 | 8.167 | 52.87 | 23 | surface smoothing ≠ structural replacement | film spreads, surface smooth, dermis push, verdict wash | — |
+| 8 | `08-digestion` | `08-digestion` | 61.041 | 8.012 | 61.34 | 21 | peptides + amino acids · no facial delivery | scoop match cut, tract path-follow, fragmentation, no-delivery void | — |
+| 9 | `09-dispatch` | `08-digestion` | 69.053 | 13.512 | 69.05 | 38 | your body decides · skin · joints · tendons · other · scaffolding · spare parts | camera pan, branch draw, dot dispatch, spare-parts crate | — |
+| 10 | `10-trials` | `10-evidence` | 82.565 | 5.691 | 83.02 | 14 | hydration · elasticity · wrinkles · BENEFIT | ground inversion, outcome bands, result meter | Nutrients · 2023 |
+| 11 | `11-caveat` | `10-evidence` | 88.256 | 3.123 | 88.26 | 8 | small · short · industry funded | head dim wash, tag shrink, industry recolour | — |
+| 12 | `12-filter` | `10-evidence` | 91.379 | 14.771 | 91.38 | 41 | 23 · randomised trials · pooled 2025 · keep only: independent · keep only: higher quality · NOT SIGNIFICANT · THE EFFECT · STOPS SHOWING UP | count-up 23 + pooled celadon, tiles fall + meter moves, camera lean, STOPS flood | Am J Med · 2025 |
+| 13 | `13-uncertain` | `10-evidence` | 106.150 | 7.512 | 106.15 | 21 | works? · fails? · UNCERTAIN | question strikes, flood retract, meter settles | — |
+| 14 | `14-hierarchy` | `14-hierarchy` | 113.662 | 12.750 | 114.11 | 34 | 1 daily sunscreen · 2 not smoking · 3 protein + vitamin C · 4 retinoids, if suitable | building return, rank sort, foundation lock, protein repairs beams | J Dermatol Sci · 2007 / Arch Dermatol · 2007 |
+| 15 | `15-verdict` | `14-hierarchy` | 126.412 | 7.259 | 126.41 | 20 | optional · collagen cream · collagen powder · Protect the building first. | optional pan, final band, bricks exit | — |
+| 16 | `16-end` | `16-end` | 133.671 | 5.000 | — | 0 | SeoulHabit · Evidence, not hype. · sources in the description | curtain, calm drift | — |
 
-**109 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
+**271 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
 

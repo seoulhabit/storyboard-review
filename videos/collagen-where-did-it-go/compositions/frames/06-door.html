@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="06-door"
-       data-width="1920" data-height="1080" data-duration="19.906">
+       data-width="1920" data-height="1080" data-duration="20.259">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -257,10 +257,10 @@
           <line class="surf-smooth" id="surf-smooth" x1="0" y1="560" x2="1728" y2="560"/>
           <g id="shines"><line class="shine" x1="140" y1="546" x2="200" y2="546"/><line class="shine" x1="330" y1="546" x2="410" y2="546"/><line class="shine" x1="560" y1="546" x2="620" y2="546"/></g>
         </svg>
-        <div class="panel sz late" id="sz-a" style="position:absolute;left:900px;top:40px;width:760px;height:180px;"><div class="wash dim" id="sz-a-wash"></div><p class="sz-n" id="n500">~0</p><p class="sz-l">daltons · the size limit</p></div>
-        <div class="panel sz late" id="sz-b" style="position:absolute;left:900px;top:250px;width:760px;height:180px;"><div class="wash coral" id="sz-b-wash"></div><p class="sz-n" id="n300k">~0</p><p class="sz-l">daltons · one collagen molecule</p></div>
-        <p class="chip note" id="sz-note" style="position:absolute;left:900px;top:448px;">labelled, not to scale</p>
-        <div class="cite" id="cite-da" style="position:absolute;left:900px;top:500px;">Exp Dermatol &middot; 2000</div>
+        <div class="panel sz late" id="sz-a" style="position:absolute;left:900px;top:40px;width:760px;height:170px;"><div class="wash dim" id="sz-a-wash"></div><p class="sz-n" id="n500">~0</p><p class="sz-l">daltons · the size limit</p></div>
+        <div class="panel sz late" id="sz-b" style="position:absolute;left:900px;top:300px;width:760px;height:170px;"><div class="wash coral" id="sz-b-wash"></div><p class="sz-n" id="n300k">~0</p><p class="sz-l">daltons · one collagen molecule</p></div>
+        <div class="cite" id="cite-da" style="position:absolute;left:900px;top:222px;">Exp Dermatol &middot; 2000</div>
+        <p class="chip note" id="sz-note" style="position:absolute;left:900px;top:486px;">labelled, not to scale</p>
         <div class="stamp" id="stamp">REJECTED</div>
         <div class="panel late" id="verdict7" style="position:absolute;left:60px;top:740px;width:1200px;height:130px;"><div class="wash ink" id="verdict7-wash"></div><p class="p-title">surface smoothing &ne; structural replacement</p></div>
        </div>
@@ -305,7 +305,12 @@
         return r;
       }
       var start = pose(from);
-      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      // frame zero, and any cold seek before `at`. A node that is walked by TWO
+      // pathFollows (tract, then a branch) must pass { set:false } on the second:
+      // two zero-duration sets at t=0 render in insertion order and the LATER
+      // one wins every frame before `at` (measured: dispatch dots drawn at the
+      // tract exit before "absorbed").
+      if (o.set !== false) tl.set(node, start, 0);
       var prev = start;
       for (var i = 1; i <= N; i++) {
         var p = from + (to - from) * ef(i / N), nxt = pose(p);
@@ -453,25 +458,31 @@
     tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:0.9, ease:EASE.camera }, 0);
     tl.fromTo(mol, { y:0 }, { y:60, duration:0.6, ease:EASE.arrive }, 0.843);
     // "through skin": the barrier lights up as the subject
-    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 2.352);
-    tl.to("#epi-wash", { scaleY:0, duration:0.4, ease:EASE.exit }, 2.352 + 1.4);
+    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 2.353);
+    tl.to("#epi-wash", { scaleY:0, duration:0.4, ease:EASE.exit }, 2.353 + 1.4);
     pathFollow(tl, dot, document.getElementById("dot-path"), 1.640, 1.6, "power1.inOut");
     reveal(tl, "#sz-a", 5.983 - 0.5);
     tl.fromTo("#sz-a-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.983 - 0.5);
     count(tl, "n500", 0, 500, 5.983 - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
-    reveal(tl, "#sz-b", 8.408 - 0.6);
-    tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.408 - 0.6);
-    // the molecule shifts while the size comparison is read out -- the cards
-    // themselves are wash reveals inside a fixed panel (no outer bbox change,
-    // invisible to a geometry-based motion tracker), so this fills the stretch
-    tl.to(mol, { y:80, duration:0.6, ease:EASE.hold }, 6.610 - 0.2);
-    count(tl, "n300k", 0, 300000, 8.408 - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
-    tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.408 + 0.6);
-    tl.to("#cite-da", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.408 + 0.8);
+    reveal(tl, "#sz-b", 8.409 - 0.6);
+    tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.409 - 0.6);
+    // the molecule GROWS against the 500-dalton dot while its own number counts:
+    // the size comparison is made by the actors, not only by the two cards
+    tl.to(mol, { scale:1.16, y:74, transformOrigin:"50% 50%", duration:0.7, ease:EASE.arrive }, 6.610 - 0.2);
+    tl.to("#dot500", { scale:0.85, transformOrigin:"50% 50%", duration:0.4, ease:EASE.swap }, 6.610 + 0.2);
+    count(tl, "n300k", 0, 300000, 8.409 - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
+    tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.409 + 0.6);
+    // the chip sits under the 500-DALTON card: Bos & Meinardi source the entry
+    // limit, not collagen's mass (BRIEF C3 / C3b)
+    tl.fromTo("#cite-da", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 5.983 + 0.4);
     // three tries at the door, three recoils
+    // three tries that actually REACH the door: contact at y:168 puts the
+    // molecule's lower edge on the brick course, and the two bricks flanking the
+    // door gap flash on each hit
     [0, 0.55, 1.10].forEach(function (d) {
-      tl.to(mol, { y:150, duration:0.20, ease:"power2.in" }, 9.545 - 0.6 + d);
-      tl.to(mol, { y:60, duration:0.28, ease:EASE.slam }, 9.545 - 0.4 + d);
+      tl.to(mol, { y:168, duration:0.20, ease:"power2.in" }, 9.545 - 0.6 + d);
+      tl.to(["#bar-b-0-1", "#bar-b-0-3"], { fill:"#C97A5C", duration:0.10, yoyo:true, repeat:1, ease:EASE.slam }, 9.545 - 0.42 + d);
+      tl.to(mol, { y:74, duration:0.28, ease:EASE.slam }, 9.545 - 0.4 + d);
     });
     // REJECTED: the epidermis flashes coral, the stamp slams, a micro-push
     tl.to("#epi-wash", { backgroundColor:"#C97A5C", duration:0.1 }, 10.936 - 0.2);
@@ -480,29 +491,38 @@
     tl.to("#world", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 10.936);
 
     // ---- unit 7: the film ---------------------------------------------------------
-    tl.to("#stamp", { opacity:0, duration:0.3, ease:EASE.exit }, 13.492 - 0.4);
+    tl.to("#stamp", { opacity:0, duration:0.3, ease:EASE.exit }, 13.522 - 0.4);
     // the molecule FLATTENS onto the surface (transform-only morph) and the film appears
-    tl.to(mol, { y:190, scaleY:0.15, scaleX:1.6, transformOrigin:"50% 50%", duration:0.7, ease:EASE.swap }, 13.492 - 0.3);
-    tl.to("#film", { opacity:0.6, duration:0.5, ease:EASE.arrive }, 13.492);
-    tl.to("#epi-wash", { backgroundColor:"#59B8AE", duration:0.1 }, 13.492 - 0.3);
-    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 13.492 - 0.2);
-    tl.to("#epi-wash", { scaleY:0.08, duration:0.5, ease:EASE.wipe }, 15.595 - 0.1);
-    tl.to("#bar-surface", { opacity:0, duration:0.4 }, 15.595);
-    tl.to("#surf-smooth", { opacity:0.7, duration:0.4 }, 15.595);
-    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, 15.595);
-    tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, 15.595);
-    tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, 16.533);
+    tl.to(mol, { y:190, scaleY:0.15, scaleX:1.6, transformOrigin:"50% 50%", duration:0.7, ease:EASE.swap }, 13.522 - 0.3);
+    // the film SPREADS from where the molecule flattened, it does not fade up
+    tl.fromTo("#film", { opacity:0.6, scaleX:0, transformOrigin:"50% 50%" },
+              { scaleX:1, duration:0.55, ease:EASE.wipe }, 13.522);
+    tl.to("#epi-wash", { backgroundColor:"#59B8AE", duration:0.1 }, 13.522 - 0.3);
+    tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 13.522 - 0.2);
+    tl.to("#epi-wash", { scaleY:0.08, duration:0.5, ease:EASE.wipe }, 15.896 - 0.1);
+    tl.to("#bar-surface", { opacity:0, duration:0.4 }, 15.896);
+    tl.to("#surf-smooth", { opacity:0.7, duration:0.4 }, 15.896);
+    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, 15.896);
+    tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, 15.896);
+    tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, 16.845);
     // "...replacing the beams": the dermis dims -- the hatch stays cut
     // "...is NOT replacing the beams": the dermis dims on "not", the verdict lands on "replacing" --
     // both finish before the iris opens on the next file (unit 7 ends 0.05s after its last word)
-    tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 17.937 - 0.1);
-    reveal(tl, "#verdict7", 18.211);
-    tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 18.211);
+    // the camera DROPS BELOW the polished surface while "smoother" is still being
+    // said: down there the cut hatch is still cut. The animation makes the
+    // "not structural" case before the verdict card states it.
+    tl.to("#world", { scale:1.18, x:83, y:-76, duration:0.9, ease:EASE.camera }, 15.896 - 0.1);
+    tl.to(["#bar-h-1", "#bar-hb-1", "#bar-h-2", "#bar-hb-2", "#bar-h-4", "#bar-hb-4", "#bar-h-6", "#bar-hb-6"],
+          { stroke:"#9C978D", duration:0.45, ease:EASE.swap }, 16.845);
+    tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, 18.270 - 0.1);
+    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 19.709 - 1.05);
+    reveal(tl, "#verdict7", 18.547);
+    tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 18.547);
 
     // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 19.356);
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 19.709);
 
-    tl.to({}, { duration: 19.906 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 20.259 }, 0);   // full-span anchor -- always last
     window.__timelines["06-door"] = tl;
   </script>
 </template>

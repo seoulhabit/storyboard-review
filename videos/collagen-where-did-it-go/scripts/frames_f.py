@@ -27,7 +27,8 @@ def file_14_hierarchy(fspan, fctx):
     .pk-cap  { fill:var(--ink); }
     .w-t { font-family:var(--font-body); font-weight:800; font-size:var(--t-chip); color:var(--ink); margin:0; }
     .brick { fill:var(--coral); stroke:var(--paper); stroke-width:3; }
-    #final { padding:var(--s-4) var(--s-5); display:flex; align-items:center; opacity:0; }
+    #final { padding:var(--s-4) var(--s-6); display:flex; align-items:center; opacity:0; }
+    #final-kt { font-size:var(--t-hero); }
     .cite { opacity:0; position:absolute; }
 """
     rows = "".join(panel(rid, "aqua", f'<p class="p-title">{label}</p>',
@@ -51,9 +52,9 @@ def file_14_hierarchy(fspan, fctx):
           <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
           <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
         </svg>
-        {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(740, 800))}
-        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1200, 800))}
-        {panel("final", "moss", '<p class="p-title">Protect the building first.</p>', abs_(0, 760, 700, 130))}
+        {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(740, 735))}
+        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1200, 735))}
+        {panel("final", "moss", kt("final-kt", "Protect the building first."), abs_(0, 796, 1728, 122))}
        </div>
       </div>
 """
@@ -72,40 +73,60 @@ def file_14_hierarchy(fspan, fctx):
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
     tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(sunscreen));
-    tl.to("#slab-lock", { opacity:1, duration:0.3, ease:EASE.slam }, @w(sunscreen) + 0.10);
+    // sunscreen LOCKS ACROSS the foundation, left to right, as it is named
+    tl.fromTo("#slab-lock", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
+              { scaleX:1, duration:0.38, ease:EASE.slam }, @w(sunscreen) + 0.10);
     tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, @w(sunscreen) + 0.10);
     tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(smoking));
-    tl.to("#cite-smoke", { opacity:1, duration:0.3, ease:EASE.arrive }, @w(smoking) + 0.3);
-    // the repair: SOME beams come back and the building straightens -- protecting
-    // beats replacing; the damage is not undone
-    ["4a", "3a", "1a"].forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, @w(smoking) + 0.4 + i * 0.3);
-    });
-    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, @w(smoking) + 0.6);
+    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(smoking) + 0.3);
     tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(protein));
+    // PROTEIN is the building material, so the partial repair rides that line:
+    // three of six beams come back and the lean comes out. The damage is not undone.
+    ["4a", "3a", "1a"].forEach(function (k, i) {
+      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, @w(protein) + 0.25 + i * 0.3);
+    });
+    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, @w(vitamin));
+    // the smoking chip steps back so it is not read as sourcing the nutrition line
+    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, @w(protein) + 0.2);
     tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(retinoids));
-    tl.to("#cite-ret", { opacity:1, duration:0.3, ease:EASE.arrive }, @w(retinoids) + 0.4);
+    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(retinoids) + 0.4);
+    // "encouraging collagen production": ONE more beam draws in, and the camera
+    // leans toward the building to watch it. One beam, not six -- the claim is
+    // stronger evidence for production, not a rebuilt structure.
+    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(encouraging) - 0.3);
+    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, @w(encouraging));
 
     // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
+    // the optional column ARRIVES: the camera pans right so cream and powder
+    // enter the frame from outside the first-line actions, never sharing their row
+    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, @w(cream,2) - 0.5);
     tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(cream,2) - 0.2);
     tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(cream,2));
     tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(powder));
     tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(optional));
+    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, @w(protect) - 0.9);
     tl.to("#final", { opacity:1, duration:0.1 }, @w(protect) - 0.1);
     tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, @w(protect) - 0.1);
+    kineticWords(tl, "#final-kt", @w(protect) + 0.15, 0.08, "rise");
     tl.to("#bricks", { x:420, duration:0.6, ease:EASE.exit }, @w(bricks));
 """.replace("SHUFFLE", str(SHUFFLE))
     MOTION["14-hierarchy"]["beats"] = [
-        {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 60, "dur": 1.2},
-        {"name": "row 1 wash", "at": "@w(sunscreen)", "area": 0.047, "dl": 91, "dur": 0.4},
-        {"name": "row 2 wash", "at": "@w(smoking)", "area": 0.047, "dl": 91, "dur": 0.4},
-        {"name": "row 3 wash", "at": "@w(protein)", "area": 0.047, "dl": 91, "dur": 0.4},
-        {"name": "row 4 wash", "at": "@w(retinoids)", "area": 0.047, "dl": 91, "dur": 0.4},
+        {"name": "camera settle",  "at": "0.0",               "area": 0.5,   "dl": 60,  "dur": 1.2},
+        {"name": "rows sort in",   "at": "@w(supports)-0.2",  "area": 0.22,  "dl": 70,  "dur": 0.7},
+        {"name": "row 1 wash",     "at": "@w(sunscreen)",     "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "foundation lock", "at": "@w(sunscreen)+0.1", "area": 0.05, "dl": 120, "dur": 0.38},
+        {"name": "row 2 wash",     "at": "@w(smoking)",       "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "row 3 wash",     "at": "@w(protein)",       "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "building straightens", "at": "@w(vitamin)", "area": 0.17,  "dl": 60,  "dur": 1.1},
+        {"name": "row 4 wash",     "at": "@w(retinoids)",     "area": 0.047, "dl": 91,  "dur": 0.4},
+        {"name": "retinoid beam",  "at": "@w(encouraging)-0.3", "area": 0.5,  "dl": 60,  "dur": 0.8},
     ]
     MOTION["15-verdict"]["beats"] = [
-        {"name": "optional dim", "at": "@w(cream,2)-0.2", "area": 0.05, "dl": 94, "dur": 0.4},
-        {"name": "final moss", "at": "@w(protect)-0.1", "area": 0.044, "dl": 149, "dur": 0.6},
-        {"name": "bricks exit", "at": "@w(bricks)", "area": 0.064, "dl": 103, "dur": 0.6},
+        {"name": "camera pans right", "at": "@w(cream,2)-0.5", "area": 0.5,   "dl": 60,  "dur": 0.9},
+        {"name": "optional dim",      "at": "@w(cream,2)-0.2", "area": 0.05,  "dl": 94,  "dur": 0.4},
+        {"name": "camera home",       "at": "@w(protect)-0.9", "area": 0.5,   "dl": 60,  "dur": 0.8},
+        {"name": "final moss band",   "at": "@w(protect)-0.1", "area": 0.108, "dl": 149, "dur": 0.6},
+        {"name": "bricks exit",       "at": "@w(bricks)",      "area": 0.064, "dl": 103, "dur": 0.6},
     ]
     return body, css, tl
 

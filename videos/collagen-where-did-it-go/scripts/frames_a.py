@@ -72,7 +72,9 @@ def file_01_hook(fspan, fctx):
     // THE SPLIT: the powder route opens below
     tl.fromTo("#powder-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(powder) - 0.10);
     tl.fromTo("#lab-powder", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(powder));
-    tl.to(molb, { opacity:1, duration:0.2, ease:EASE.arrive }, @w(powder));
+    // the powder route is the SAME actor splitting off, not a new one fading in
+    tl.fromTo(molb, { opacity:1, scale:0.2, transformOrigin:"50% 50%" },
+              { scale:1, duration:0.32, ease:EASE.slam }, @w(powder));
     pathFollow(tl, molb, drop, @w(travel), 0.7, "power2.in");
     drawIn(tl, "#arrow-face", @w(travel) + 0.25, 0.5, 0, EASE.wipe);
     // "...to your face": the route is struck out, the panel retracts
@@ -98,65 +100,110 @@ FILES = {"01-hook": file_01_hook}
 # ---------------------------------------------------------------- File A2 -- 02-promise
 
 def file_02_promise(fspan, fctx):
+    """The promise, and the curiosity loop the evidence act pays off.
+
+    Three compositions on one set of nodes: the question drawn AROUND the
+    parked molecule; an ink data column that rises and shoves it aside, tags
+    the industry-funded trials and drops them WITHOUT showing a result (the
+    loop stays open); the column leaves and the molecule is shielded -- the
+    promise, stated in 05-boundary's own vocabulary.
+
+    The tile TAG PATTERN is illustrative: Myung & Park 2025 report 23 RCTs and
+    subgroup results by funding source and quality, but no per-subgroup trial
+    counts, so a chip says so on screen rather than letting 12 dropped tiles
+    assert a number the source does not give.
+    """
     css = HELIX_CSS + """
     .abs { position:absolute; }
     #stageB { position:absolute; left:0; top:0; }
-    #promise-q { position:absolute; left:0; top:60px; width:1000px; }
-    .qmark { font-family:var(--font-display); font-size:200px; line-height:1; fill:var(--ink-3); }
-    #twist { padding:var(--s-3) var(--s-5); display:flex; align-items:center; }
-    #twist .kicker { margin:0; }
-    #minitiles { background:var(--mist); padding:var(--s-4); }
-    .mini-grid { display:grid; grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(3, 1fr);
-                 gap:10px; height:210px; }
-    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459; }
-    .mini-cap { position:absolute; left:20px; bottom:14px; }
+    #promise-q { position:absolute; left:0; top:70px; width:940px; }
+    .qmark { fill:none; stroke:var(--ink-3); stroke-width:16; stroke-linecap:round; }
+    #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
+            justify-content:center; gap:var(--s-4); }
+    .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }
+    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459;
+               display:flex; align-items:center; justify-content:center; }
+    .tr.mini .tr-tag { font-family:var(--font-mono); font-size:44px; font-weight:500;
+                       color:var(--ink); opacity:0; }
+    #data .chip { position:relative; }
+    .shield-line { fill:none; stroke:var(--aqua); stroke-width:7; }
+    .shield-fill { fill:var(--aqua); opacity:0; }
     #protect { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
 """
     body = f"""
       <div class="stage">
        <div class="world" id="world">
-        {kt("promise-q", "Where does it actually go?", "serif")}
         <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
-          <text class="qmark" x="1000" y="640">?</text>
+          <path class="qmark" id="qmark" d="M 1206 372 C 1206 316 1250 288 1290 300 C 1332 313 1338 362 1308 392 C 1282 418 1268 436 1268 470"/>
+          <circle class="qmark" id="qmark-dot" cx="1268" cy="524" r="3"/>
+          <rect class="shield-fill" id="shield2-fill" x="104" y="286" width="600" height="320" rx="30"/>
+          <rect class="shield-line" id="shield2" x="104" y="286" width="600" height="320" rx="30"/>
         </svg>
-        {panel("twist", "coral", '<p class="kicker">stay for the twist</p>', abs_(1100, 60, 628, 100), "late")}
-        {panel("minitiles", "ink", '<div class="mini-grid" id="mini-grid"></div>' + chip("mini-cap", "23 trials", "on-ink mini-cap"), abs_(1100, 190, 628, 330), "late")}
-        {panel("protect", "aqua", '<p class="p-title">&hellip;and what protects it?</p>', abs_(0, 720, 1000, 140), "late")}
+        {kt("promise-q", "Where does it actually go?", "serif")}
+        {panel("data", "ink", '<div class="mini-grid" id="mini-grid"></div>'
+               + chip("mini-cap", "23 trials", "on-ink")
+               + chip("mini-leg", "$ = industry funded", "on-ink")
+               + chip("mini-note", "tag pattern illustrative", "on-ink"),
+               abs_(1000, 0, 728, 918), "late")}
+        {panel("protect", "aqua", '<p class="p-title">what protects it?</p>', abs_(0, 740, 820, 130), "late")}
        </div>
       </div>
 """
     tl = EASE_JS + HELPERS_JS + HELIX_JS + TILES_JS + """
     var svg = document.getElementById("stageB");
-    // the molecule is parked at the frame centre -- exactly where the iris opened
-    drawHelix(svg, { id:"mol", x:654, y:506, w:420, h:110, strokeW:14 });
+    // the SAME helix 01-hook parked here: identical geometry, so the iris hands
+    // off one actor rather than two lookalikes
+    var mol = drawHelix(svg, { id:"mol", x:584, y:506, w:560, h:140, strokeW:16 });
     drawTiles(document.getElementById("mini-grid"), 23, { size:"mini" });
-    gsap.set(".tr.mini", { scaleY:0.6, opacity:0 });
+    gsap.set(".tr.mini", { y:70, opacity:0 });
+    gsap.set(["#mini-cap", "#mini-leg", "#mini-note"], { y:16, opacity:0 });
+    gsap.set("#data-wash", { scaleX:1, scaleY:0, transformOrigin:"50% 100%" });
     kineticWords(tl, "#promise-q", @w(where) - 0.1, 0.09, "rise");
-    reveal(tl, "#twist", @w(twist) - 0.2);
-    tl.fromTo("#twist-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(twist) - 0.2);
-    // the FORESHADOW: 23 mini tiles, about half of them flagged
-    reveal(tl, "#minitiles", @w(trials) - 0.4);
-    tl.fromTo("#minitiles-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(trials) - 0.4);
-    tl.to(".tr.mini", { scaleY:1, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, @w(trials) - 0.1);
-    tl.fromTo("#mini-cap", { opacity:0 }, { opacity:1, duration:0.3, ease:EASE.arrive }, @w(trials) + 0.3);
-    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", duration:0.25, yoyo:true, repeat:5, stagger:0.01, ease:EASE.swap }, @w(remove));
-    tl.to(tiles(TAGS.industry), { opacity:0.12, duration:0.5, stagger:0.01, ease:EASE.exit }, @w(industry) + 0.4);
-    tl.to("#minitiles-wash", { backgroundColor:"#9C978D", duration:0.5, ease:EASE.swap }, @w(industry) + 0.4);
-    tl.to("#mini-cap", { color:"#131516", backgroundColor:"#F0EBE1", duration:0.4 }, @w(industry) + 0.4);
-    reveal(tl, "#protect", @w(first) - 0.1);
-    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(first) - 0.1);
-    // a slow drift fills the quiet stretch between the tile field settling and
-    // the "what protects it" payoff -- geometric motion (transform), not just
-    // the small colour-only flicker/dim on the tile field, which a bbox-based
-    // motion tracker cannot see at all
-    tl.to("#mol", { y:-22, duration:1.0, yoyo:true, repeat:6, ease:EASE.hold }, @w(remove));
+    // the question is DRAWN around the molecule, not typeset beside it
+    drawIn(tl, "#qmark", @w(go) - 0.25, 0.55, 0, EASE.wipe);
+    tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, @we(go));
+
+    // ---- the data column rises and takes the frame -------------------------
+    reveal(tl, "#data", @w(twenty) - 0.45);
+    tl.to(["#qmark", "#qmark-dot"], { opacity:0, duration:0.25, ease:EASE.exit }, @w(twenty) - 0.55);
+    tl.to("#data-wash", { scaleY:1, duration:0.5, ease:EASE.wipe }, @w(twenty) - 0.45);
+    tl.to(mol, { x:-300, duration:0.6, ease:EASE.camera }, @w(twenty) - 0.35);
+    tl.to("#promise-q", { y:-26, opacity:0.5, duration:0.5, ease:EASE.exit }, @w(twenty) - 0.35);
+    tl.to(".tr.mini", { y:0, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, @w(trials) - 0.1);
+    tl.to("#mini-cap", { y:0, opacity:1, duration:0.3, ease:EASE.arrive }, @w(trials) + 0.3);
+    // TAG, then DROP: the loop's object is named and removed, and no result is
+    // shown -- 12-filter is where the answer lands
+    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", borderColor:"#C97A5C",
+          duration:0.25, stagger:0.012, ease:EASE.swap }, @w(remove));
+    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$" }, @w(remove) + 0.1); });
+    tl.fromTo(TAGS.industry.map(function (i) { return "#tag-" + i; }),
+              { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, @w(remove) + 0.1);
+    tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, @w(industry));
+    tl.to(tiles(TAGS.industry), { y:110, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, @w(watch));
+
+    // ---- the column leaves; the molecule becomes the thing worth protecting --
+    tl.to("#data-wash", { scaleY:0, duration:0.5, ease:EASE.exit }, @w(first) - 0.1);
+    tl.to([".tr.mini", "#mini-cap", "#mini-leg", "#mini-note"],
+          { y:150, opacity:0, duration:0.35, stagger:0.008, ease:EASE.exit }, @w(first) - 0.1);
+    tl.to("#promise-q", { y:-70, opacity:0, duration:0.35, ease:EASE.exit }, @w(first) - 0.1);
+    tl.to(mol, { x:-460, y:-60, duration:0.8, ease:EASE.camera }, @w(first) + 0.1);
+    tl.to("#world", { scale:1.06, duration:0.6, ease:EASE.camera }, @w(protects) - 0.1);
+    drawIn(tl, "#shield2", @w(protects), 0.7, 0, EASE.wipe);
+    tl.to("#shield2-fill", { opacity:0.18, duration:0.5, ease:EASE.wipe }, @w(collagen));
+    reveal(tl, "#protect", @w(protects) + 0.1);
+    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(protects) + 0.1);
+    // home before the file's own span ends, so the iris opens on a settled frame
+    tl.to("#world", { scale:1, duration:0.7, ease:EASE.camera }, @uend(02-promise) - 0.75);
 """
     MOTION["02-promise"]["beats"] = [
-        {"name": "hero rise", "at": "@w(where)-0.1", "area": 0.065, "dl": 224, "dur": 0.34},
-        {"name": "twist coral", "at": "@w(twist)-0.2", "area": 0.033, "dl": 103, "dur": 0.45},
-        {"name": "mini tiles ink", "at": "@w(trials)-0.4", "area": 0.10, "dl": 224, "dur": 0.5},
-        {"name": "industry dim", "at": "@w(industry)+0.4", "area": 0.10, "dl": 131, "dur": 0.5},
-        {"name": "protect wash", "at": "@w(first)-0.1", "area": 0.068, "dl": 91, "dur": 0.5},
+        {"name": "hero rise",      "at": "@w(where)-0.1",   "area": 0.065, "dl": 224, "dur": 0.34},
+        {"name": "data column up", "at": "@w(twenty)-0.45", "area": 0.32,  "dl": 224, "dur": 0.5},
+        {"name": "tiles rise",     "at": "@w(trials)-0.1",  "area": 0.10,  "dl": 100, "dur": 0.46},
+        {"name": "industry tags",  "at": "@w(remove)",      "area": 0.05,  "dl": 72,  "dur": 0.25},
+        {"name": "tiles fall",     "at": "@w(watch)",       "area": 0.10,  "dl": 131, "dur": 0.45},
+        {"name": "column retract", "at": "@w(first)-0.1",   "area": 0.32,  "dl": 224, "dur": 0.5},
+        {"name": "camera push",    "at": "@w(protects)-0.1", "area": 0.5,  "dl": 60,  "dur": 0.6},
+        {"name": "camera home",    "at": "@uend(02-promise)-0.75", "area": 0.5, "dl": 60, "dur": 0.7},
     ]
     return body, css, tl
 

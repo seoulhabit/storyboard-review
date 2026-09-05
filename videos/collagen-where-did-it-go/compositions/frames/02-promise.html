@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="02-promise"
-       data-width="1920" data-height="1080" data-duration="14.312">
+       data-width="1920" data-height="1080" data-duration="11.488">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -215,15 +215,18 @@
 
     .abs { position:absolute; }
     #stageB { position:absolute; left:0; top:0; }
-    #promise-q { position:absolute; left:0; top:60px; width:1000px; }
-    .qmark { font-family:var(--font-display); font-size:200px; line-height:1; fill:var(--ink-3); }
-    #twist { padding:var(--s-3) var(--s-5); display:flex; align-items:center; }
-    #twist .kicker { margin:0; }
-    #minitiles { background:var(--mist); padding:var(--s-4); }
-    .mini-grid { display:grid; grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(3, 1fr);
-                 gap:10px; height:210px; }
-    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459; }
-    .mini-cap { position:absolute; left:20px; bottom:14px; }
+    #promise-q { position:absolute; left:0; top:70px; width:940px; }
+    .qmark { fill:none; stroke:var(--ink-3); stroke-width:16; stroke-linecap:round; }
+    #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
+            justify-content:center; gap:var(--s-4); }
+    .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }
+    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459;
+               display:flex; align-items:center; justify-content:center; }
+    .tr.mini .tr-tag { font-family:var(--font-mono); font-size:44px; font-weight:500;
+                       color:var(--ink); opacity:0; }
+    #data .chip { position:relative; }
+    .shield-line { fill:none; stroke:var(--aqua); stroke-width:7; }
+    .shield-fill { fill:var(--aqua); opacity:0; }
     #protect { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
 
     </style>
@@ -232,13 +235,15 @@
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <p class="kt serif" id="promise-q"><span class="kt-word">Where</span> <span class="kt-word">does</span> <span class="kt-word">it</span> <span class="kt-word">actually</span> <span class="kt-word" id="promise-q-last">go?</span></p>
         <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
-          <text class="qmark" x="1000" y="640">?</text>
+          <path class="qmark" id="qmark" d="M 1206 372 C 1206 316 1250 288 1290 300 C 1332 313 1338 362 1308 392 C 1282 418 1268 436 1268 470"/>
+          <circle class="qmark" id="qmark-dot" cx="1268" cy="524" r="3"/>
+          <rect class="shield-fill" id="shield2-fill" x="104" y="286" width="600" height="320" rx="30"/>
+          <rect class="shield-line" id="shield2" x="104" y="286" width="600" height="320" rx="30"/>
         </svg>
-        <div class="panel late" id="twist" style="position:absolute;left:1100px;top:60px;width:628px;height:100px;"><div class="wash coral" id="twist-wash"></div><p class="kicker">stay for the twist</p></div>
-        <div class="panel late" id="minitiles" style="position:absolute;left:1100px;top:190px;width:628px;height:330px;"><div class="wash ink" id="minitiles-wash"></div><div class="mini-grid" id="mini-grid"></div><p class="chip on-ink mini-cap" id="mini-cap" style="">23 trials</p></div>
-        <div class="panel late" id="protect" style="position:absolute;left:0px;top:720px;width:1000px;height:140px;"><div class="wash aqua" id="protect-wash"></div><p class="p-title">&hellip;and what protects it?</p></div>
+        <p class="kt serif" id="promise-q"><span class="kt-word">Where</span> <span class="kt-word">does</span> <span class="kt-word">it</span> <span class="kt-word">actually</span> <span class="kt-word" id="promise-q-last">go?</span></p>
+        <div class="panel late" id="data" style="position:absolute;left:1000px;top:0px;width:728px;height:918px;"><div class="wash ink" id="data-wash"></div><div class="mini-grid" id="mini-grid"></div><p class="chip on-ink" id="mini-cap" style="">23 trials</p><p class="chip on-ink" id="mini-leg" style="">$ = industry funded</p><p class="chip on-ink" id="mini-note" style="">tag pattern illustrative</p></div>
+        <div class="panel late" id="protect" style="position:absolute;left:0px;top:740px;width:820px;height:130px;"><div class="wash aqua" id="protect-wash"></div><p class="p-title">what protects it?</p></div>
        </div>
       </div>
       </div>
@@ -281,7 +286,12 @@
         return r;
       }
       var start = pose(from);
-      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      // frame zero, and any cold seek before `at`. A node that is walked by TWO
+      // pathFollows (tract, then a branch) must pass { set:false } on the second:
+      // two zero-duration sets at t=0 render in insertion order and the LATER
+      // one wins every frame before `at` (measured: dispatch dots drawn at the
+      // tract exit before "absorbed").
+      if (o.set !== false) tl.set(node, start, 0);
       var prev = start;
       for (var i = 1; i <= N; i++) {
         var p = from + (to - from) * ef(i / N), nxt = pose(p);
@@ -361,34 +371,54 @@
     function tiles(ids) { return ids.map(function (i) { return "#tr-" + i; }); }
 
     var svg = document.getElementById("stageB");
-    // the molecule is parked at the frame centre -- exactly where the iris opened
-    drawHelix(svg, { id:"mol", x:654, y:506, w:420, h:110, strokeW:14 });
+    // the SAME helix 01-hook parked here: identical geometry, so the iris hands
+    // off one actor rather than two lookalikes
+    var mol = drawHelix(svg, { id:"mol", x:584, y:506, w:560, h:140, strokeW:16 });
     drawTiles(document.getElementById("mini-grid"), 23, { size:"mini" });
-    gsap.set(".tr.mini", { scaleY:0.6, opacity:0 });
-    kineticWords(tl, "#promise-q", 0.539 - 0.1, 0.09, "rise");
-    reveal(tl, "#twist", 3.183 - 0.2);
-    tl.fromTo("#twist-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 3.183 - 0.2);
-    // the FORESHADOW: 23 mini tiles, about half of them flagged
-    reveal(tl, "#minitiles", 4.462 - 0.4);
-    tl.fromTo("#minitiles-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 4.462 - 0.4);
-    tl.to(".tr.mini", { scaleY:1, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, 4.462 - 0.1);
-    tl.fromTo("#mini-cap", { opacity:0 }, { opacity:1, duration:0.3, ease:EASE.arrive }, 4.462 + 0.3);
-    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", duration:0.25, yoyo:true, repeat:5, stagger:0.01, ease:EASE.swap }, 6.867);
-    tl.to(tiles(TAGS.industry), { opacity:0.12, duration:0.5, stagger:0.01, ease:EASE.exit }, 7.516 + 0.4);
-    tl.to("#minitiles-wash", { backgroundColor:"#9C978D", duration:0.5, ease:EASE.swap }, 7.516 + 0.4);
-    tl.to("#mini-cap", { color:"#131516", backgroundColor:"#F0EBE1", duration:0.4 }, 7.516 + 0.4);
-    reveal(tl, "#protect", 10.468 - 0.1);
-    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 10.468 - 0.1);
-    // a slow drift fills the quiet stretch between the tile field settling and
-    // the "what protects it" payoff -- geometric motion (transform), not just
-    // the small colour-only flicker/dim on the tile field, which a bbox-based
-    // motion tracker cannot see at all
-    tl.to("#mol", { y:-22, duration:1.0, yoyo:true, repeat:6, ease:EASE.hold }, 6.867);
+    gsap.set(".tr.mini", { y:70, opacity:0 });
+    gsap.set(["#mini-cap", "#mini-leg", "#mini-note"], { y:16, opacity:0 });
+    gsap.set("#data-wash", { scaleX:1, scaleY:0, transformOrigin:"50% 100%" });
+    kineticWords(tl, "#promise-q", 0.540 - 0.1, 0.09, "rise");
+    // the question is DRAWN around the molecule, not typeset beside it
+    drawIn(tl, "#qmark", 1.430 - 0.25, 0.55, 0, EASE.wipe);
+    tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, 1.669);
+
+    // ---- the data column rises and takes the frame -------------------------
+    reveal(tl, "#data", 1.889 - 0.45);
+    tl.to(["#qmark", "#qmark-dot"], { opacity:0, duration:0.25, ease:EASE.exit }, 1.889 - 0.55);
+    tl.to("#data-wash", { scaleY:1, duration:0.5, ease:EASE.wipe }, 1.889 - 0.45);
+    tl.to(mol, { x:-300, duration:0.6, ease:EASE.camera }, 1.889 - 0.35);
+    tl.to("#promise-q", { y:-26, opacity:0.5, duration:0.5, ease:EASE.exit }, 1.889 - 0.35);
+    tl.to(".tr.mini", { y:0, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, 2.608 - 0.1);
+    tl.to("#mini-cap", { y:0, opacity:1, duration:0.3, ease:EASE.arrive }, 2.608 + 0.3);
+    // TAG, then DROP: the loop's object is named and removed, and no result is
+    // shown -- 12-filter is where the answer lands
+    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", borderColor:"#C97A5C",
+          duration:0.25, stagger:0.012, ease:EASE.swap }, 4.472);
+    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$" }, 4.472 + 0.1); });
+    tl.fromTo(TAGS.industry.map(function (i) { return "#tag-" + i; }),
+              { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, 4.472 + 0.1);
+    tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, 5.122);
+    tl.to(tiles(TAGS.industry), { y:110, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, 6.526);
+
+    // ---- the column leaves; the molecule becomes the thing worth protecting --
+    tl.to("#data-wash", { scaleY:0, duration:0.5, ease:EASE.exit }, 8.081 - 0.1);
+    tl.to([".tr.mini", "#mini-cap", "#mini-leg", "#mini-note"],
+          { y:150, opacity:0, duration:0.35, stagger:0.008, ease:EASE.exit }, 8.081 - 0.1);
+    tl.to("#promise-q", { y:-70, opacity:0, duration:0.35, ease:EASE.exit }, 8.081 - 0.1);
+    tl.to(mol, { x:-460, y:-60, duration:0.8, ease:EASE.camera }, 8.081 + 0.1);
+    tl.to("#world", { scale:1.06, duration:0.6, ease:EASE.camera }, 8.731 - 0.1);
+    drawIn(tl, "#shield2", 8.731, 0.7, 0, EASE.wipe);
+    tl.to("#shield2-fill", { opacity:0.18, duration:0.5, ease:EASE.wipe }, 9.450);
+    reveal(tl, "#protect", 8.731 + 0.1);
+    tl.fromTo("#protect-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 8.731 + 0.1);
+    // home before the file's own span ends, so the iris opens on a settled frame
+    tl.to("#world", { scale:1, duration:0.7, ease:EASE.camera }, 10.938 - 0.75);
 
     // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 13.762);
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 10.938);
 
-    tl.to({}, { duration: 14.312 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 11.488 }, 0);   // full-span anchor -- always last
     window.__timelines["02-promise"] = tl;
   </script>
 </template>

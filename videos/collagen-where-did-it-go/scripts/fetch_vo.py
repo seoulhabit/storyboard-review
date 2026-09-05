@@ -27,6 +27,28 @@ def probe(p):
     return out
 
 
+def normalise(dst):
+    """The cutter's atrim/atempo times are taken from what was TRANSCRIBED, so
+    the take on disk must be the take that gets cut: 48 kHz mono PCM. A 24 kHz
+    or stereo delivery is transcoded here, once, with the original kept beside
+    it -- never re-derived later, where a second resample would move every word
+    time by a few milliseconds against a manifest already written."""
+    fmt = subprocess.run(
+        ["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries",
+         "stream=codec_name,sample_rate,channels", "-of", "csv=p=0", str(dst)],
+        capture_output=True, text=True).stdout.strip()
+    if fmt == "pcm_s16le,48000,1":
+        return
+    orig = dst.with_suffix(".orig.wav")
+    dst.replace(orig)
+    r = subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(orig), "-ac", "1",
+                        "-ar", "48000", "-c:a", "pcm_s16le", str(dst)], capture_output=True, text=True)
+    if r.returncode or not dst.exists():
+        orig.replace(dst)
+        raise SystemExit(f"could not normalise {dst.name} (was {fmt}): {r.stderr[:300]}")
+    print(f"  {dst.name}: {fmt} -> pcm_s16le,48000,1 (original kept as {orig.name})")
+
+
 def main(argv):
     force = "--force" in argv
     args = [a for a in argv if a != "--force"]
@@ -43,6 +65,7 @@ def main(argv):
         r = subprocess.run(["curl", "-sSL", "-o", str(dst), url])
         if r.returncode or not dst.exists() or dst.stat().st_size < 1000:
             raise SystemExit(f"download failed for {name}")
+        normalise(dst)
         print(f"  {dst.relative_to(ROOT)}  {probe(dst)}  (sample_rate,channels,duration)")
     return 0
 

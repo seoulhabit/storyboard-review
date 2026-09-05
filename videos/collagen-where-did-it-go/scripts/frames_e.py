@@ -20,7 +20,7 @@ def file_10_evidence(fspan, fctx):
     #root { background:var(--ink); }
     .abs { position:absolute; }
     .ev-n { font-family:var(--font-display); font-size:96px; line-height:0.95;
-            color:var(--paper); margin:0; min-width:160px; }
+            color:var(--paper); margin:0; min-width:160px; opacity:0; }
     .ev-n-l { font-family:var(--font-mono); font-size:var(--t-label); letter-spacing:var(--tr-mono-wide);
               text-transform:uppercase; color:#93989A; margin:0; opacity:0; }   /* 5.64:1 on ink */
     #caveat-panel { background:var(--ink-soft); padding:var(--s-4) var(--s-5); display:flex; align-items:center; opacity:0; }
@@ -61,6 +61,7 @@ def file_10_evidence(fspan, fctx):
         <div class="abs" style="{abs_(0, 0, 600, 150)}">
           <p class="ev-n" id="ev-n">0</p>
           <p class="ev-n-l" id="ev-n-l" style="position:absolute;left:200px;top:34px;">randomised trials<br>pooled in 2025</p>
+          <p class="ev-n-l" id="tag-note" style="position:absolute;left:0;top:132px;opacity:.85;">tag pattern illustrative</p>
         </div>
         {panel("caveat-panel", "dim", kt("caveat", "small · short · industry funded", "on-ink"), abs_(620, 0, 1108, 150))}
         <div class="grid abs" id="grid" style="{abs_(0, 176, 1040, 464)}">{tags}</div>
@@ -85,9 +86,8 @@ def file_10_evidence(fspan, fctx):
         {cite("c1", "Nutrients &middot; 2023", True, abs_(0, 830))}
         {cite("c2", "Am J Med &middot; 2025", True, "position:absolute;right:0;top:830px;")}
         {panel("stops", "paper", kt("stops-1", "THE EFFECT", "", ) + kt("stops-2", "STOPS", "") + kt("stops-3", "SHOWING UP", "") +
-               '<div class="q-void" id="q1-void" style="top:474px;"></div>' + kt("q1", "definitely works?", "q") .replace('class="kt q"', 'class="kt q" style="top:500px;"') +
-               '<div class="q-void" id="q2-void" style="top:574px;"></div>' + kt("q2", "definitely fails?", "q").replace('class="kt q"', 'class="kt q" style="top:600px;"') +
-               chip("uncertain", "UNCERTAIN", "warn", "position:absolute;left:560px;top:608px;opacity:0;"),
+               '<div class="q-void" id="q1-void" style="top:474px;"></div>' + kt("q1", "works?", "q") .replace('class="kt q"', 'class="kt q" style="top:500px;"') +
+               '<div class="q-void" id="q2-void" style="top:574px;"></div>' + kt("q2", "fails?", "q").replace('class="kt q"', 'class="kt q" style="top:600px;"'),
                abs_(0, 176, 1040, 742))}
        </div>
       </div>
@@ -102,8 +102,8 @@ def file_10_evidence(fspan, fctx):
     tl.fromTo(".tr", { scaleY:0.62 }, { scaleY:1, duration:0.26, stagger:0.026, ease:EASE.arrive }, 0.0);
     // the result panel opens (dim), then the numeral counts to the study's own n
     tl.fromTo("#res-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(trials) - 0.5);   // the result panel opens
-    count(tl, "ev-n", 0, 23, @w(trials) - 0.2, 1.3);
-    tl.to("#ev-n-l", { opacity:1, duration:0.35, ease:EASE.arrive }, @w(trials) + 0.3);
+    // NO count here: this unit's chip is Nutrients 2023 (26 RCTs). The 23 is the
+    // 2025 pooled n and lands in unit 12, under its own chip.
     // one outcome per named outcome, each lighting the band of trials that measured it
     [["hydration", 0], ["elasticity", 8], ["wrinkles", 16]].forEach(function (o, k) {
       var at = [@w(hydration), @w(elasticity), @w(wrinkles)][k];
@@ -111,9 +111,9 @@ def file_10_evidence(fspan, fctx):
       for (var i = o[1]; i < Math.min(o[1] + 8, 23); i++)
         tl.to("#tr-" + i, { backgroundColor:"CELADON", duration:0.34, yoyo:true, repeat:1, ease:EASE.swap }, at + (i % 8) * 0.018);
     });
-    tl.to("#c1", { opacity:1, duration:0.35, ease:EASE.arrive }, @we(wrinkles) - 0.4);
+    tl.fromTo("#c1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @we(wrinkles) - 0.4);
     // the pooled result: the meter goes moss (a benefit is on the table)
-    tl.to("#res-v1", { opacity:1, duration:0.3, ease:EASE.arrive }, @we(wrinkles) + 0.3);
+    tl.fromTo("#res-v1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @we(wrinkles) + 0.3);
 
     // ---- unit 11: the caveat lands on the tiles as it is spoken --------------
     tl.to("#caveat-panel", { opacity:1, duration:0.1 }, @w(small) - 0.10);
@@ -129,23 +129,32 @@ def file_10_evidence(fspan, fctx):
     tl.to(".tr", { backgroundColor:"CELADON", borderColor:"CELADON_EDGE", scale:1, scaleX:1, duration:0.5,
                    stagger:0.012, ease:EASE.swap }, @w(pooled));
     tl.set(".tr-tag", { opacity:0 }, @w(pooled) + 0.2);
-    tl.to("#c2", { opacity:1, duration:0.35, ease:EASE.arrive }, @w(pooled) + 0.4);
+    tl.fromTo("#c2", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(pooled) - 0.2);
+    // the pooled n, under the chip that sources it
+    tl.fromTo("#ev-n", { opacity:0, y:20 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(three) - 0.3);
+    count(tl, "ev-n", 0, 23, @w(three) - 0.2, 1.0);
+    tl.fromTo("#ev-n-l", { opacity:0, y:14 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(three) + 0.3);
+    tl.fromTo("#tag-note", { opacity:0 }, { opacity:0.85, duration:0.3, ease:EASE.arrive }, @w(three) + 0.7);
     // "a benefit": the result panel flashes celadon -- the pooled claim, at panel scale
     tl.to("#res-wash", { backgroundColor:"CELADON", duration:0.3, yoyo:true, repeat:1, ease:EASE.swap }, @w(benefit));
     tl.to("#res", { scale:1.03, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(benefit));
     // filter 1: independent only
+    // lean in for the filter: the trial field is what is being examined
+    tl.to("#world", { scale:1.08, duration:0.9, ease:EASE.camera }, @w(keep,1));
     tl.fromTo("#f1", { opacity:0, x:40 }, { opacity:1, x:0, duration:0.3, ease:EASE.arrive }, @w(keep,1));
     tl.to(IND, { backgroundColor:"CORAL", duration:0.2, ease:EASE.swap }, @w(without));
     TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$", opacity:1 }, @w(without)); });
-    tl.to(IND, { opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, @w(without) + 0.25);
+    // the tiles FALL OUT of the field, and the result starts moving with them --
+    // the meter is not a caption arriving after the fact
+    tl.to(IND, { y:64, opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, @w(without) + 0.25);
+    tl.to("#res-ci", { attr:{ x:175, width:235 }, duration:1.8, ease:EASE.swap }, @w(without) + 0.25);
+    tl.to("#res-pt", { x:292 - 425, duration:1.8, ease:EASE.swap }, @w(without) + 0.25);
     tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.wipe }, @w(longer));
     tl.to("#res-v1", { opacity:0, duration:0.25, ease:EASE.exit }, @w(longer));
-    tl.to("#res-v2", { opacity:1, duration:0.3, ease:EASE.slam }, @w(longer) + 0.2);
-    tl.to("#res-ci", { attr:{ x:175, width:235 }, duration:0.9, ease:EASE.swap }, @w(longer));
-    tl.to("#res-pt", { x:292 - 425, duration:0.9, ease:EASE.swap }, @w(longer));
+    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(longer) + 0.2);
     tl.to("#res-zero", { attr:{ "stroke-width":9 }, stroke:"CORAL", duration:0.5, ease:EASE.swap }, @w(longer) + 0.3);
     // restore, then filter 2: higher quality only
-    tl.to(IND, { opacity:1, scale:1, backgroundColor:"CELADON", duration:0.4, stagger:0.01, ease:EASE.swap }, @w(keep,2) - 0.30);
+    tl.to(IND, { y:0, opacity:1, scale:1, backgroundColor:"CELADON", duration:0.4, stagger:0.01, ease:EASE.swap }, @w(keep,2) - 0.30);
     tl.fromTo("#res-wash", { scaleX:0, transformOrigin:"0% 50%" }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(keep,2) - 0.30);
     tl.to("#res-v2", { opacity:0, duration:0.2, ease:EASE.exit }, @w(keep,2) - 0.3);
     tl.to("#res-v1", { opacity:1, duration:0.2, ease:EASE.arrive }, @w(keep,2) - 0.1);
@@ -156,23 +165,31 @@ def file_10_evidence(fspan, fctx):
     tl.fromTo("#f2", { opacity:0, x:40 }, { opacity:1, x:0, duration:0.3, ease:EASE.arrive }, @w(keep,2));
     tl.to(LOWQ, { backgroundColor:"CORAL_DEEP", duration:0.2, ease:EASE.swap }, @w(quality));
     TAGS.lowq.forEach(function (i) { tl.set("#tag-" + i, { innerText:"?", opacity:1 }, @w(quality)); });
-    tl.to(LOWQ, { opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, @w(quality) + 0.25);
+    tl.to(LOWQ, { y:64, opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, @w(quality) + 0.25);
+    tl.to("#res-ci", { attr:{ x:160, width:225 }, duration:1.4, ease:EASE.swap }, @w(quality) + 0.25);
+    tl.to("#res-pt", { x:272 - 425, duration:1.4, ease:EASE.swap }, @w(quality) + 0.25);
     tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.wipe }, @w(quality) + 0.5);
     tl.to("#res-v1", { opacity:0, duration:0.2, ease:EASE.exit }, @w(quality) + 0.5);
-    tl.to("#res-v2", { opacity:1, duration:0.3, ease:EASE.slam }, @w(quality) + 0.7);
-    tl.to("#res-ci", { attr:{ x:160, width:225 }, duration:0.6, ease:EASE.swap }, @w(same));
-    tl.to("#res-pt", { x:272 - 425, duration:0.6, ease:EASE.swap }, @w(same));
+    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.slam }, @w(quality) + 0.7);
     tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(same) + 0.1);
+    // home before the flood: the biggest beat lands on a settled frame
+    tl.to("#world", { scale:1, duration:0.8, ease:EASE.camera }, @w(same));
     // THE PAYOFF: the biggest beat in the piece -- a paper flood, then three slams
     tl.to(["#f1", "#f2"], { opacity:0, duration:0.3, ease:EASE.exit }, @w(effect) - 0.35);
     tl.fromTo("#stops-wash", { scaleX:0 }, { scaleX:1, duration:0.8, ease:EASE.wipe }, @w(effect) - 0.15);
     tl.to("#caveat-panel", { opacity:0.35, duration:0.5, ease:EASE.exit }, @w(effect) - 0.15);
     kineticWords(tl, "#stops-1", @w(effect), 0.06, "slam");
     kineticWords(tl, "#stops-2", @w(stops), 0.0, "slam");
+    tl.to("#world", { scale:1.03, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, @w(stops));
     kineticWords(tl, "#stops-3", @w(showing), 0.10, "slam");
 
     // ---- unit 13: two questions, two refusals, one honest word ----------------
     kineticWords(tl, "#q1", @w(definitely,1) - 0.1, 0.08, "rise");
+    // "the independent evidence" is literally what is left standing: the paper
+    // flood retracts to the survivor field with the low-quality tiles still down
+    tl.to("#stops-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.wipe }, @w(independent) - 0.2);
+    tl.to(["#stops-1 .kt-word", "#stops-2 .kt-word", "#stops-3 .kt-word", ".q-void", "#q1 .kt-word", "#q2 .kt-word"],
+          { y:-24, opacity:0, duration:0.3, stagger:0.01, ease:EASE.exit }, @w(independent) - 0.1);
     tl.to("#q1-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, @w(cannot,1));
     tl.to("#q1 .kt-word", { color:"#F7F5F0", duration:0.2 }, @w(cannot,1));
     kineticWords(tl, "#q2", @w(definitely,2) - 0.1, 0.08, "rise");
@@ -181,9 +198,9 @@ def file_10_evidence(fspan, fctx):
     tl.to("#res-v2", { opacity:0, duration:0.25, ease:EASE.exit }, @w(uncertain));
     tl.to("#res-v3", { opacity:1, duration:0.3, ease:EASE.slam }, @w(uncertain) + 0.3);
     tl.to("#res-ci", { attr:{ x:150, width:245 }, duration:0.6, ease:EASE.swap }, @w(uncertain));
-    tl.fromTo("#uncertain", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.32, ease:EASE.slam }, @w(uncertain));
 """.replace("CELADON_EDGE", CELADON_EDGE).replace("CELADON", CELADON).replace("CORAL_DEEP", CORAL_DEEP).replace("CORAL", CORAL)
     MOTION["10-trials"]["beats"] = [
+        {"name": "tile field settles", "at": "0.0", "area": 0.30, "dl": 60, "dur": 0.5},
         {"name": "result panel opens", "at": "@w(trials)-0.5", "area": 0.147, "dl": 65, "dur": 0.5},
         {"name": "hydration band", "at": "@w(hydration)", "area": 0.064, "dl": 99, "dur": 0.34},
         {"name": "elasticity band", "at": "@w(elasticity)", "area": 0.064, "dl": 99, "dur": 0.34},
@@ -194,19 +211,23 @@ def file_10_evidence(fspan, fctx):
         {"name": "industry coral", "at": "@w(industry)", "area": 0.096, "dl": 72, "dur": 0.45},
     ]
     MOTION["12-filter"]["beats"] = [
-        {"name": "pooled celadon", "at": "@w(pooled)", "area": 0.18, "dl": 99, "dur": 0.5},
-        {"name": "benefit flash", "at": "@w(benefit)", "area": 0.147, "dl": 73, "dur": 0.3},
-        {"name": "industry drop", "at": "@w(without)+0.25", "area": 0.096, "dl": 134, "dur": 0.45},
-        {"name": "meter retract", "at": "@w(longer)", "area": 0.147, "dl": 65, "dur": 0.5},
-        {"name": "industry restore", "at": "@w(keep,2)-0.30", "area": 0.096, "dl": 134, "dur": 0.4},
-        {"name": "low-quality drop", "at": "@w(quality)+0.25", "area": 0.104, "dl": 134, "dur": 0.45},
-        {"name": "meter retract 2", "at": "@w(quality)+0.5", "area": 0.147, "dl": 65, "dur": 0.4},
-        {"name": "STOPS paper flood", "at": "@w(effect)-0.15", "area": 0.46, "dl": 224, "dur": 0.8},
-        {"name": "stops slam 3", "at": "@w(showing)", "area": 0.067, "dl": 224, "dur": 0.32},
+        {"name": "pooled celadon",    "at": "@w(pooled)",        "area": 0.18,  "dl": 99,  "dur": 0.5},
+        {"name": "count to 23",       "at": "@w(three)-0.3",     "area": 0.05,  "dl": 200, "dur": 0.3},
+        {"name": "benefit flash",     "at": "@w(benefit)",       "area": 0.147, "dl": 73,  "dur": 0.3},
+        {"name": "camera lean-in",    "at": "@w(keep,1)",        "area": 0.5,   "dl": 60,  "dur": 0.9},
+        {"name": "industry falls",    "at": "@w(without)+0.25",  "area": 0.096, "dl": 134, "dur": 0.45},
+        {"name": "meter retract",     "at": "@w(longer)",        "area": 0.147, "dl": 65,  "dur": 0.5},
+        {"name": "industry restore",  "at": "@w(keep,2)-0.30",   "area": 0.096, "dl": 134, "dur": 0.4},
+        {"name": "low-quality falls", "at": "@w(quality)+0.25",  "area": 0.104, "dl": 134, "dur": 0.45},
+        {"name": "meter retract 2",   "at": "@w(quality)+0.5",   "area": 0.147, "dl": 65,  "dur": 0.4},
+        {"name": "camera home",       "at": "@w(same)",          "area": 0.5,   "dl": 60,  "dur": 0.8},
+        {"name": "STOPS paper flood", "at": "@w(effect)-0.15",   "area": 0.46,  "dl": 224, "dur": 0.8},
+        {"name": "stops slam 3",      "at": "@w(showing)",       "area": 0.067, "dl": 224, "dur": 0.32},
     ]
     MOTION["13-uncertain"]["beats"] = [
-        {"name": "q1 void", "at": "@w(cannot,1)", "area": 0.05, "dl": 103, "dur": 0.3},
-        {"name": "q2 void", "at": "@w(cannot,2)", "area": 0.05, "dl": 103, "dur": 0.3},
+        {"name": "q1 void",       "at": "@w(cannot,1)",        "area": 0.05, "dl": 103, "dur": 0.3},
+        {"name": "q2 void",       "at": "@w(cannot,2)",        "area": 0.05, "dl": 103, "dur": 0.3},
+        {"name": "flood retract", "at": "@w(independent)-0.2", "area": 0.46, "dl": 224, "dur": 0.6},
     ]
     return body, css, tl
 

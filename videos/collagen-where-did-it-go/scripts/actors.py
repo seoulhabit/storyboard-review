@@ -51,7 +51,12 @@ HELPERS_JS = r"""
         return r;
       }
       var start = pose(from);
-      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      // frame zero, and any cold seek before `at`. A node that is walked by TWO
+      // pathFollows (tract, then a branch) must pass { set:false } on the second:
+      // two zero-duration sets at t=0 render in insertion order and the LATER
+      // one wins every frame before `at` (measured: dispatch dots drawn at the
+      // tract exit before "absorbed").
+      if (o.set !== false) tl.set(node, start, 0);
       var prev = start;
       for (var i = 1; i <= N; i++) {
         var p = from + (to - from) * ef(i / N), nxt = pose(p);
@@ -138,10 +143,21 @@ BUILDING_JS = r"""
         el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
         el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
         el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
+        // one hidden 70px shard along each beam's midpoint: the piece the UV cut
+        // knocks loose (04-demolition tweens it away; it never draws otherwise)
+        shard(P, "shard-"+s+"a", X0+16, yb-6, X1-16, y+6);
+        shard(P, "shard-"+s+"b", X1-16, yb-6, X0+16, y+6);
         for (var w = 0; w < 3; w++)
           el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
       }
       if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+    }
+    function shard(P, id, x1, y1, x2, y2) {
+      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2, L = Math.hypot(x2 - x1, y2 - y1),
+          ux = (x2 - x1) / L, uy = (y2 - y1) / L;
+      el("line", { x1:(mx - 35 * ux).toFixed(1), y1:(my - 35 * uy).toFixed(1),
+                   x2:(mx + 35 * ux).toFixed(1), y2:(my + 35 * uy).toFixed(1),
+                   "class":"shard", id:id }, P);
     }
     // the same six beams the demolition cuts, in the order it cuts them
     var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
@@ -162,6 +178,7 @@ BUILDING_CSS = """
     .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
     .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
                stroke-dasharray:640; stroke-dashoffset:0; }
+    .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
 """
 
 # ---------------------------------------------------------------- BARRIER

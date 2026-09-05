@@ -42,10 +42,10 @@ def file_06_door(fspan, fctx):
           <line class="surf-smooth" id="surf-smooth" x1="0" y1="560" x2="1728" y2="560"/>
           <g id="shines"><line class="shine" x1="140" y1="546" x2="200" y2="546"/><line class="shine" x1="330" y1="546" x2="410" y2="546"/><line class="shine" x1="560" y1="546" x2="620" y2="546"/></g>
         </svg>
-        {panel("sz-a", "dim", '<p class="sz-n" id="n500">~0</p><p class="sz-l">daltons · the size limit</p>', abs_(900, 40, 760, 180), "sz late")}
-        {panel("sz-b", "coral", '<p class="sz-n" id="n300k">~0</p><p class="sz-l">daltons · one collagen molecule</p>', abs_(900, 250, 760, 180), "sz late")}
-        {chip("sz-note", "labelled, not to scale", "note", abs_(900, 448))}
-        {cite("cite-da", "Exp Dermatol &middot; 2000", False, abs_(900, 500))}
+        {panel("sz-a", "dim", '<p class="sz-n" id="n500">~0</p><p class="sz-l">daltons · the size limit</p>', abs_(900, 40, 760, 170), "sz late")}
+        {panel("sz-b", "coral", '<p class="sz-n" id="n300k">~0</p><p class="sz-l">daltons · one collagen molecule</p>', abs_(900, 300, 760, 170), "sz late")}
+        {cite("cite-da", "Exp Dermatol &middot; 2000", False, abs_(900, 222))}
+        {chip("sz-note", "labelled, not to scale", "note", abs_(900, 486))}
         <div class="stamp" id="stamp">REJECTED</div>
         {panel("verdict7", "ink", '<p class="p-title">surface smoothing &ne; structural replacement</p>', abs_(60, 740, 1200, 130), "late")}
        </div>
@@ -71,17 +71,23 @@ def file_06_door(fspan, fctx):
     count(tl, "n500", 0, 500, @w(daltons,1) - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
     reveal(tl, "#sz-b", @w(thousand) - 0.6);
     tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(thousand) - 0.6);
-    // the molecule shifts while the size comparison is read out -- the cards
-    // themselves are wash reveals inside a fixed panel (no outer bbox change,
-    // invisible to a geometry-based motion tracker), so this fills the stretch
-    tl.to(mol, { y:80, duration:0.6, ease:EASE.hold }, @w(collagen) - 0.2);
+    // the molecule GROWS against the 500-dalton dot while its own number counts:
+    // the size comparison is made by the actors, not only by the two cards
+    tl.to(mol, { scale:1.16, y:74, transformOrigin:"50% 50%", duration:0.7, ease:EASE.arrive }, @w(collagen) - 0.2);
+    tl.to("#dot500", { scale:0.85, transformOrigin:"50% 50%", duration:0.4, ease:EASE.swap }, @w(collagen) + 0.2);
     count(tl, "n300k", 0, 300000, @w(thousand) - 0.5, 1.1, function (n) { return "~" + n.toLocaleString("en-GB"); });
     tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, @w(thousand) + 0.6);
-    tl.to("#cite-da", { opacity:1, duration:0.3, ease:EASE.arrive }, @w(thousand) + 0.8);
+    // the chip sits under the 500-DALTON card: Bos & Meinardi source the entry
+    // limit, not collagen's mass (BRIEF C3 / C3b)
+    tl.fromTo("#cite-da", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(daltons,1) + 0.4);
     // three tries at the door, three recoils
+    // three tries that actually REACH the door: contact at y:168 puts the
+    // molecule's lower edge on the brick course, and the two bricks flanking the
+    // door gap flash on each hit
     [0, 0.55, 1.10].forEach(function (d) {
-      tl.to(mol, { y:150, duration:0.20, ease:"power2.in" }, @w(not) - 0.6 + d);
-      tl.to(mol, { y:60, duration:0.28, ease:EASE.slam }, @w(not) - 0.4 + d);
+      tl.to(mol, { y:168, duration:0.20, ease:"power2.in" }, @w(not) - 0.6 + d);
+      tl.to(["#bar-b-0-1", "#bar-b-0-3"], { fill:"#C97A5C", duration:0.10, yoyo:true, repeat:1, ease:EASE.slam }, @w(not) - 0.42 + d);
+      tl.to(mol, { y:74, duration:0.28, ease:EASE.slam }, @w(not) - 0.4 + d);
     });
     // REJECTED: the epidermis flashes coral, the stamp slams, a micro-push
     tl.to("#epi-wash", { backgroundColor:"#C97A5C", duration:0.1 }, @w(door) - 0.2);
@@ -93,7 +99,9 @@ def file_06_door(fspan, fctx):
     tl.to("#stamp", { opacity:0, duration:0.3, ease:EASE.exit }, @w(film) - 0.4);
     // the molecule FLATTENS onto the surface (transform-only morph) and the film appears
     tl.to(mol, { y:190, scaleY:0.15, scaleX:1.6, transformOrigin:"50% 50%", duration:0.7, ease:EASE.swap }, @w(film) - 0.3);
-    tl.to("#film", { opacity:0.6, duration:0.5, ease:EASE.arrive }, @w(film));
+    // the film SPREADS from where the molecule flattened, it does not fade up
+    tl.fromTo("#film", { opacity:0.6, scaleX:0, transformOrigin:"50% 50%" },
+              { scaleX:1, duration:0.55, ease:EASE.wipe }, @w(film));
     tl.to("#epi-wash", { backgroundColor:"#59B8AE", duration:0.1 }, @w(film) - 0.3);
     tl.fromTo("#epi-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, @w(film) - 0.2);
     tl.to("#epi-wash", { scaleY:0.08, duration:0.5, ease:EASE.wipe }, @w(smoother) - 0.1);
@@ -105,7 +113,14 @@ def file_06_door(fspan, fctx):
     // "...replacing the beams": the dermis dims -- the hatch stays cut
     // "...is NOT replacing the beams": the dermis dims on "not", the verdict lands on "replacing" --
     // both finish before the iris opens on the next file (unit 7 ends 0.05s after its last word)
+    // the camera DROPS BELOW the polished surface while "smoother" is still being
+    // said: down there the cut hatch is still cut. The animation makes the
+    // "not structural" case before the verdict card states it.
+    tl.to("#world", { scale:1.18, x:83, y:-76, duration:0.9, ease:EASE.camera }, @w(smoother) - 0.1);
+    tl.to(["#bar-h-1", "#bar-hb-1", "#bar-h-2", "#bar-hb-2", "#bar-h-4", "#bar-hb-4", "#bar-h-6", "#bar-hb-6"],
+          { stroke:"#9C978D", duration:0.45, ease:EASE.swap }, @w(polishing));
     tl.fromTo("#derm-wash", { scaleY:0 }, { scaleY:1, duration:0.5, ease:EASE.wipe }, @w(not,2) - 0.1);
+    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, @uend(07-film) - 1.05);
     reveal(tl, "#verdict7", @w(replacing));
     tl.fromTo("#verdict7-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, @w(replacing));
 """
@@ -115,11 +130,13 @@ def file_06_door(fspan, fctx):
         {"name": "barrier aqua out", "at": "@w(skin)+1.4", "area": 0.117, "dl": 81, "dur": 0.4},
         {"name": "size card A", "at": "@w(daltons,1)-0.5", "area": 0.066, "dl": 94, "dur": 0.4},
         {"name": "size card B", "at": "@w(thousand)-0.6", "area": 0.066, "dl": 103, "dur": 0.4},
-        {"name": "mol shift", "at": "@w(collagen)-0.2", "area": 0.03, "dl": 60, "dur": 0.6},
+        {"name": "molecule grows", "at": "@w(collagen)-0.2", "area": 0.055, "dl": 72, "dur": 0.7},
         {"name": "rejected flash", "at": "@w(door)-0.05", "area": 0.117, "dl": 103, "dur": 0.36},
     ]
     MOTION["07-film"]["beats"] = [
         {"name": "film wash", "at": "@w(film)-0.2", "area": 0.117, "dl": 81, "dur": 0.5},
+        {"name": "dermis push", "at": "@w(smoother)-0.1", "area": 0.5, "dl": 60, "dur": 0.9},
+        {"name": "camera home", "at": "@uend(07-film)-1.05", "area": 0.5, "dl": 60, "dur": 1.0},
         {"name": "cards retract", "at": "@w(smoother)", "area": 0.13, "dl": 98, "dur": 0.48},
         {"name": "dermis dim", "at": "@w(not,2)-0.1", "area": 0.18, "dl": 84, "dur": 0.5},
         {"name": "verdict ink", "at": "@w(replacing)", "area": 0.075, "dl": 215, "dur": 0.45},

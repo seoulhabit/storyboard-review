@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """The SFX cue table, anchored on WORDS (never on seconds), consumed by
-build_index.py. Restrained by design: six physical events only -- impact,
-slice, fragmentation, the 23 landing, two filter drops, one lock-in. The
+build_index.py. Restrained by design: eight physical events only -- impact,
+slice, the door rejection, fragmentation, the 23 landing, two filter drops,
+one lock-in. The
 peak of each file lands on its word (offsets from assets/sfx/peaks.json,
 written by make_sfx.py), so a hit never trails the thing it punctuates.
 """
@@ -18,8 +19,9 @@ from timing import Ctx
 CUES = [
     ("01-hook",       "w",  "replace",   1,  0.00, "impact-bass-2.mp3",         0.34, "molecule hits the barrier"),
     ("04-demolition", "w",  "apart",     1, -0.05, "slice.wav",                 0.30, "UV cuts a beam"),
+    ("06-door",       "w",  "door",      1, -0.05, "impact-bass-2.mp3",         0.22, "molecule rejected at the door"),
     ("08-digestion",  "w",  "breaks",    1,  0.00, "fragment.wav",              0.28, "molecule fragments"),
-    ("10-trials",     "we", "trials",    1, -0.10, "citation-tick-trimmed.mp3", 0.30, "23 lands"),
+    ("12-filter",     "w",  "three",     1,  0.00, "citation-tick-trimmed.mp3", 0.30, "23 lands (the 2025 pooled n)"),
     ("12-filter",     "w",  "keep",      1,  0.00, "filter.wav",                0.26, "industry-funded tiles drop"),
     ("12-filter",     "w",  "keep",      2,  0.00, "filter.wav",                0.26, "low-quality tiles drop"),
     ("14-hierarchy",  "w",  "sunscreen", 1,  0.10, "lock.wav",                  0.30, "sunscreen locks into the foundation"),

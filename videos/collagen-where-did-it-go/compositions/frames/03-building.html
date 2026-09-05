@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="03-building"
-       data-width="1920" data-height="1080" data-duration="24.794">
+       data-width="1920" data-height="1080" data-duration="25.147">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -218,6 +218,7 @@
     .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
     .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
                stroke-dasharray:640; stroke-dashoffset:0; }
+    .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
 
     .abs { position:absolute; }
     #stageC { position:absolute; left:0; top:0; }
@@ -297,7 +298,12 @@
         return r;
       }
       var start = pose(from);
-      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      // frame zero, and any cold seek before `at`. A node that is walked by TWO
+      // pathFollows (tract, then a branch) must pass { set:false } on the second:
+      // two zero-duration sets at t=0 render in insertion order and the LATER
+      // one wins every frame before `at` (measured: dispatch dots drawn at the
+      // tract exit before "absorbed").
+      if (o.set !== false) tl.set(node, start, 0);
       var prev = start;
       for (var i = 1; i <= N; i++) {
         var p = from + (to - from) * ef(i / N), nxt = pose(p);
@@ -349,10 +355,21 @@
         el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
         el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
         el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
+        // one hidden 70px shard along each beam's midpoint: the piece the UV cut
+        // knocks loose (04-demolition tweens it away; it never draws otherwise)
+        shard(P, "shard-"+s+"a", X0+16, yb-6, X1-16, y+6);
+        shard(P, "shard-"+s+"b", X1-16, yb-6, X0+16, y+6);
         for (var w = 0; w < 3; w++)
           el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
       }
       if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+    }
+    function shard(P, id, x1, y1, x2, y2) {
+      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2, L = Math.hypot(x2 - x1, y2 - y1),
+          ux = (x2 - x1) / L, uy = (y2 - y1) / L;
+      el("line", { x1:(mx - 35 * ux).toFixed(1), y1:(my - 35 * uy).toFixed(1),
+                   x2:(mx + 35 * ux).toFixed(1), y2:(my + 35 * uy).toFixed(1),
+                   "class":"shard", id:id }, P);
     }
     // the same six beams the demolition cuts, in the order it cuts them
     var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
@@ -371,61 +388,76 @@
     gsap.set(["#b-door", ".b-floor", ".b-win"], { opacity:0 });
     gsap.set(".beam", { strokeDashoffset:640 });
     // frame zero already shows the slab and the shell: the iris opens on a site, not a void
-    tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, 1.952 - 0.2);
-    tl.to(".b-floor", { opacity:0.55, duration:0.3, stagger:0.06, ease:EASE.arrive }, 1.952 + 0.3);
-    tl.fromTo(".b-win", { opacity:0, scale:0.6 }, { opacity:1, scale:1, duration:0.3, stagger:0.03, ease:EASE.arrive }, 1.952 + 0.5);
-    tl.to("#b-door", { opacity:1, duration:0.3, ease:EASE.arrive }, 1.952 + 0.9);
+    tl.fromTo("#b-shell", { scaleY:0.94, transformOrigin:"50% 100%" }, { scaleY:1, duration:0.6, ease:EASE.arrive }, 1.964 - 0.2);
+    // GROUND UP: floors are laid bottom-first (stagger from:"end" -- DOM order is
+    // top-down), each drawn across rather than faded in; the door is hung last
+    tl.fromTo(".b-floor", { scaleX:0, transformOrigin:"0% 50%" },
+              { scaleX:1, opacity:0.55, duration:0.32, stagger:{ each:0.07, from:"end" }, ease:EASE.arrive }, 1.964 + 0.15);
+    tl.fromTo(".b-win", { opacity:0, scale:0.6 }, { opacity:1, scale:1, duration:0.3,
+              stagger:{ each:0.03, from:"end" }, ease:EASE.arrive }, 1.964 + 0.45);
+    tl.fromTo("#b-door", { scaleY:0, opacity:1, transformOrigin:"50% 100%" },
+              { scaleY:1, duration:0.35, ease:EASE.arrive }, 1.964 + 0.9);
     // the collagen: beams DRAW in with the word
-    tl.to(".beam", { strokeDashoffset:0, duration:0.55, stagger:0.10, ease:EASE.wipe }, 3.584 - 0.1);
-    reveal(tl, "#chip-beams", 3.584 + 0.2);
-    tl.fromTo("#chip-beams-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 3.584 + 0.2);
-    tl.fromTo("#world", { scale:1.05 }, { scale:1, duration:0.45, ease:EASE.camera }, 6.007);
+    tl.to(".beam", { strokeDashoffset:0, duration:0.55, stagger:{ each:0.10, from:"end" }, ease:EASE.wipe }, 3.916 - 0.1);
+    reveal(tl, "#chip-beams", 3.916 + 0.2);
+    tl.fromTo("#chip-beams-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 3.916 + 0.2);
+    tl.fromTo("#world", { scale:1.05 }, { scale:1, duration:0.45, ease:EASE.camera }, 6.354);
 
     // ---- unit 4: the demolition crew --------------------------------------------
-    tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, 7.761);
-    tl.fromTo("#sun", { scale:0.5, opacity:0, transformOrigin:"50% 50%" }, { scale:1, opacity:1, duration:0.5, ease:EASE.slam }, 9.737 - 0.1);
-    tl.fromTo("#sky-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 9.737 - 0.1);
-    tl.to("#rays", { opacity:1, duration:0.1 }, 11.233);
-    drawIn(tl, ".ray", 11.233, 0.5, 0.10, EASE.wipe);
+    tl.to(".beam", { opacity:0.6, duration:0.5, ease:EASE.hold }, 8.114);
+    tl.fromTo("#sun", { scale:0.5, opacity:0, transformOrigin:"50% 50%" }, { scale:1, opacity:1, duration:0.5, ease:EASE.slam }, 10.091 - 0.1);
+    tl.fromTo("#sky-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 10.091 - 0.1);
+    tl.to("#rays", { opacity:1, duration:0.1 }, 11.587);
+    drawIn(tl, ".ray", 11.587, 0.5, 0.10, EASE.wipe);
     // camera pushes INTO the storeys being cut, then comes home on "sunscreen"
-    tl.to("#world", { scale:1.18, x:83, y:23, duration:1.1, ease:EASE.camera }, 11.916 - 0.2);
+    tl.to("#world", { scale:1.18, x:83, y:23, duration:1.1, ease:EASE.camera }, 12.270 - 0.2);
+    // each cut: the beam flashes at the cut point, retracts, and a SHARD of it
+    // falls away -- UV is a cutting force, not an eraser
     CUT_ORDER.forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:640, opacity:0.25, duration:0.42, ease:EASE.wipe }, 11.916 + i * 0.34);
+      var at = 12.270 + i * 0.34;
+      tl.to("#beam-" + k, { stroke:"#C97A5C", duration:0.10, ease:EASE.slam }, at);
+      tl.to("#beam-" + k, { strokeDashoffset:640, opacity:0.25, duration:0.42, ease:EASE.wipe }, at + 0.04);
+      tl.fromTo("#shard-" + k, { opacity:1, y:0, rotation:0 },
+                { y:110, rotation:(i % 2 ? 26 : -22), opacity:0, duration:0.6,
+                  transformOrigin:"50% 50%", ease:EASE.exit }, at + 0.08);
     });
-    tl.to("#bwrap", { skewX:-1.4, y:9, duration:0.6, ease:EASE.swap }, 12.599 + 0.3);
-    reveal(tl, "#uv", 14.153 - 0.1);
-    tl.fromTo("#uv-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 14.153 - 0.1);
-    kineticWords(tl, "#uv-1", 14.153, 0.08, "slam");
-    kineticWords(tl, "#uv-2", 15.706, 0.08, "slam");
-    tl.to("#sun", { scale:1.12, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 15.706);
-    tl.to("#cite-uv", { opacity:1, duration:0.3, ease:EASE.arrive }, 11.233 + 0.3);
+    tl.to("#bwrap", { skewX:-1.4, y:9, duration:0.6, ease:EASE.swap }, 12.953 + 0.3);
+    reveal(tl, "#uv", 14.506 - 0.1);
+    tl.fromTo("#uv-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 14.506 - 0.1);
+    kineticWords(tl, "#uv-1", 14.506, 0.08, "slam");
+    kineticWords(tl, "#uv-2", 16.060, 0.08, "slam");
+    tl.to("#sun", { scale:1.12, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 16.060);
+    tl.fromTo("#cite-uv", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 11.587 + 0.3);
 
     // ---- unit 5: the boundary ----------------------------------------------------
-    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 16.429 - 0.1);
-    drawIn(tl, "#shield", 18.840 - 0.1, 0.9, 0, EASE.wipe);
-    tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, 19.363);
+    tl.to("#world", { scale:1, x:0, y:0, duration:1.0, ease:EASE.camera }, 16.783 - 0.1);
+    drawIn(tl, "#shield", 19.174 - 0.1, 0.9, 0, EASE.wipe);
+    tl.to("#shield-fill", { opacity:0.30, duration:0.7, ease:EASE.wipe }, 19.693);
     // the rays STOP at the boundary; the sun band cools
     gsap.utils.toArray(".ray").forEach(function (r) {
       var L = r.getTotalLength();
-      tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, 19.363 + 0.1);
+      tl.to(r, { strokeDashoffset:L * 0.45, duration:0.6, ease:EASE.swap }, 19.693 + 0.1);
     });
-    // pulled forward to close the geometric-motion gap between the camera
-    // settling and the shield/rays beats (both those are stroke-dashoffset
-    // reveals -- invisible to a bounding-box motion tracker, so this scaleX
-    // retract is the only transform in this stretch)
-    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.exit }, 18.840 - 0.1);
-    tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, 19.363 + 0.1);
-    reveal(tl, "#preserve", 21.055);
-    tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 21.055);
-    tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 21.055);
-    // a small geometric hold fills the tail before the outgoing push -- the
-    // preceding beats (preserve wash, chip fade) are all opacity/colour only
-    tl.to("#world", { y:-6, duration:1.2, yoyo:true, repeat:1, ease:EASE.hold }, 21.055 + 0.3);
+    // the sky cools as the boundary is drawn (the only transform in a stretch of
+    // stroke-dashoffset reveals, which a bounding-box motion tracker cannot see)
+    tl.to("#sky-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.exit }, 19.174 - 0.1);
+    tl.to("#uv", { opacity:0.35, duration:0.5, ease:EASE.exit }, 19.693 + 0.1);
+    reveal(tl, "#preserve", 21.371);
+    tl.fromTo("#preserve-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 21.371);
+    tl.to("#chip-beams", { opacity:0.35, duration:0.4, ease:EASE.exit }, 21.371);
+    // PRESERVING holds: the shield takes one pulse as it is named.
+    tl.to("#shield-fill", { opacity:0.42, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }, 21.371 + 0.1);
+    // REPLACING is tried, and fails: a cut beam starts to redraw and falls back.
+    // The tail of the file is this attempt, not an idle drift.
+    tl.fromTo("#beam-4a", { strokeDashoffset:640 }, { strokeDashoffset:430, duration:0.45, ease:EASE.arrive }, 23.543 - 0.1);
+    tl.to("#beam-4a", { strokeDashoffset:640, duration:0.35, ease:EASE.exit }, 23.543 + 0.4);
+    tl.to("#bwrap", { y:14, duration:0.5, ease:EASE.swap }, 23.543 + 0.4);
+    tl.to("#bwrap", { y:9, duration:0.5, ease:EASE.arrive }, 23.543 + 0.95);
 
     // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 24.244);
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 24.597);
 
-    tl.to({}, { duration: 24.794 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 25.147 }, 0);   // full-span anchor -- always last
     window.__timelines["03-building"] = tl;
   </script>
 </template>

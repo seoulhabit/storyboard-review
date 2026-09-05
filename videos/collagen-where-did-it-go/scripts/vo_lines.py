@@ -33,12 +33,11 @@ SCENES = [
      "Collagen cream does not replace your collagen. "
      "Collagen powder does not travel straight to your face."),
     ("02-promise",
-     "So where does it actually go? Stay for the twist. "
-     "Twenty three trials seem to say the powder works. "
+     "So where does it go? Twenty three trials say the powder works. "
      "Remove the industry funded ones, and watch what happens. "
-     "But first, what actually protects the collagen you already have?"),
+     "But first, what protects the collagen you already have?"),
     ("03-building",
-     "Think of your skin as a building. Collagen is the structure inside it. "
+     "Think of your skin as a building. Collagen is the main structure inside it. "
      "It keeps everything firm and upright."),
     ("04-demolition",
      "As we age, collagen production slows. "
@@ -46,13 +45,13 @@ SCENES = [
      "The sun runs a demolition crew. It works weekends."),
     ("05-boundary",
      "Sunscreen is not just about sunburn. It draws a boundary around the building. "
-     "Preserving collagen is usually far easier than replacing it."),
+     "Preserving collagen is usually easier than replacing it later."),
     ("06-door",
      "Now, the cream. To pass through skin, a molecule generally needs to be "
      "under about five hundred daltons. Collagen is around three hundred thousand. "
      "It is not getting through that door."),
     ("07-film",
-     "It may still form a moisturising film on the surface. Skin feels smoother. "
+     "It may still form a moisturising film on the surface. Skin may feel smoother. "
      "But polishing the windows is not replacing the beams."),
     ("08-digestion",
      "Now, the powder. Swallow collagen, and digestion breaks it into peptides "
@@ -80,10 +79,10 @@ SCENES = [
     ("14-hierarchy",
      "What the evidence actually supports. Broad spectrum sunscreen, every day. "
      "Not smoking. Enough protein and vitamin C. "
-     "And for suitable users, topical retinoids have far stronger evidence "
-     "for collagen than collagen cream."),
+     "And for suitable users, topical retinoids have considerably stronger evidence "
+     "for encouraging collagen production than collagen cream."),
     ("15-verdict",
-     "Collagen cream is a pleasant moisturiser. Collagen powder is optional. "
+     "Collagen cream can be a pleasant moisturiser. Collagen powder is optional. "
      "Protect the building before you buy expensive powdered bricks."),
 ]
 
@@ -97,12 +96,16 @@ ORDER = [cid for cid, _ in SCENES] + ["16-end"]
 # service rejects the full prompt or `gen_vo.py verify` fails on the master
 # (round 2 of the channel's two-round cap, [S4/V-2]).
 BLOCKS_ONE = [("master", ORDER[0:15])]
-BLOCKS_TWO = [("A", ORDER[0:9]), ("B", ORDER[9:15])]
+BLOCKS_TWO = [("A", ORDER[0:13]), ("B", ORDER[13:15])]
+BLOCKS_TWO_EARLY = [("A", ORDER[0:9]), ("B", ORDER[9:15])]   # fallback split
 # seed_audio rejects prompts over 2048 chars (measured: our 15-unit master is
 # 2323). BLOCKS_ONE is kept for a shorter future script; this build uses the
-# two-block split -- the seam falls at 09-dispatch -> 10-trials, which is
-# already the "invert" ground-change boundary, so the natural register reset
-# absorbs any block-seam prosody difference.
+# two-block split with the seam at 13-uncertain -> 14-hierarchy: the whole
+# hook-to-climax run (units 1-13) is ONE continuous performance, and the seam
+# falls under the second invert wipe at the "what the evidence supports"
+# chapter turn, where a register reset reads as intended. Block A must stay
+# under 2048 chars (python3 scripts/vo_lines.py prints it); if the service
+# rejects it, fall back to BLOCKS_TWO_EARLY (seam at the first invert).
 BLOCKS = BLOCKS_TWO
 SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
 

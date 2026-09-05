@@ -297,7 +297,12 @@
         return r;
       }
       var start = pose(from);
-      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      // frame zero, and any cold seek before `at`. A node that is walked by TWO
+      // pathFollows (tract, then a branch) must pass { set:false } on the second:
+      // two zero-duration sets at t=0 render in insertion order and the LATER
+      // one wins every frame before `at` (measured: dispatch dots drawn at the
+      // tract exit before "absorbed").
+      if (o.set !== false) tl.set(node, start, 0);
       var prev = start;
       for (var i = 1; i <= N; i++) {
         var p = from + (to - from) * ef(i / N), nxt = pose(p);
@@ -459,7 +464,9 @@
     // THE SPLIT: the powder route opens below
     tl.fromTo("#powder-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 3.199 - 0.10);
     tl.fromTo("#lab-powder", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 3.199);
-    tl.to(molb, { opacity:1, duration:0.2, ease:EASE.arrive }, 3.199);
+    // the powder route is the SAME actor splitting off, not a new one fading in
+    tl.fromTo(molb, { opacity:1, scale:0.2, transformOrigin:"50% 50%" },
+              { scale:1, duration:0.32, ease:EASE.slam }, 3.199);
     pathFollow(tl, molb, drop, 4.126, 0.7, "power2.in");
     drawIn(tl, "#arrow-face", 4.126 + 0.25, 0.5, 0, EASE.wipe);
     // "...to your face": the route is struck out, the panel retracts

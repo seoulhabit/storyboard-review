@@ -4,7 +4,7 @@
 <body>
 <template>
   <div id="root" data-composition-id="14-hierarchy"
-       data-width="1920" data-height="1080" data-duration="19.850">
+       data-width="1920" data-height="1080" data-duration="20.909">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -218,6 +218,7 @@
     .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
     .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
                stroke-dasharray:640; stroke-dashoffset:0; }
+    .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
 
     .abs { position:absolute; }
     #bldg { position:absolute; left:0; top:0; }
@@ -233,7 +234,8 @@
     .pk-cap  { fill:var(--ink); }
     .w-t { font-family:var(--font-body); font-weight:800; font-size:var(--t-chip); color:var(--ink); margin:0; }
     .brick { fill:var(--coral); stroke:var(--paper); stroke-width:3; }
-    #final { padding:var(--s-4) var(--s-5); display:flex; align-items:center; opacity:0; }
+    #final { padding:var(--s-4) var(--s-6); display:flex; align-items:center; opacity:0; }
+    #final-kt { font-size:var(--t-hero); }
     .cite { opacity:0; position:absolute; }
 
     </style>
@@ -255,9 +257,9 @@
           <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
           <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
         </svg>
-        <div class="cite" id="cite-smoke" style="position:absolute;left:740px;top:800px;">J Dermatol Sci &middot; 2007</div>
-        <div class="cite" id="cite-ret" style="position:absolute;left:1200px;top:800px;">Arch Dermatol &middot; 2007</div>
-        <div class="panel " id="final" style="position:absolute;left:0px;top:760px;width:700px;height:130px;"><div class="wash moss" id="final-wash"></div><p class="p-title">Protect the building first.</p></div>
+        <div class="cite" id="cite-smoke" style="position:absolute;left:740px;top:735px;">J Dermatol Sci &middot; 2007</div>
+        <div class="cite" id="cite-ret" style="position:absolute;left:1200px;top:735px;">Arch Dermatol &middot; 2007</div>
+        <div class="panel " id="final" style="position:absolute;left:0px;top:796px;width:1728px;height:122px;"><div class="wash moss" id="final-wash"></div><p class="kt " id="final-kt"><span class="kt-word">Protect</span> <span class="kt-word">the</span> <span class="kt-word">building</span> <span class="kt-word" id="final-kt-last">first.</span></p></div>
        </div>
       </div>
       </div>
@@ -300,7 +302,12 @@
         return r;
       }
       var start = pose(from);
-      tl.set(node, start, 0);                          // frame zero, and any cold seek before `at`
+      // frame zero, and any cold seek before `at`. A node that is walked by TWO
+      // pathFollows (tract, then a branch) must pass { set:false } on the second:
+      // two zero-duration sets at t=0 render in insertion order and the LATER
+      // one wins every frame before `at` (measured: dispatch dots drawn at the
+      // tract exit before "absorbed").
+      if (o.set !== false) tl.set(node, start, 0);
       var prev = start;
       for (var i = 1; i <= N; i++) {
         var p = from + (to - from) * ef(i / N), nxt = pose(p);
@@ -352,10 +359,21 @@
         el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
         el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
         el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
+        // one hidden 70px shard along each beam's midpoint: the piece the UV cut
+        // knocks loose (04-demolition tweens it away; it never draws otherwise)
+        shard(P, "shard-"+s+"a", X0+16, yb-6, X1-16, y+6);
+        shard(P, "shard-"+s+"b", X1-16, yb-6, X0+16, y+6);
         for (var w = 0; w < 3; w++)
           el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
       }
       if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+    }
+    function shard(P, id, x1, y1, x2, y2) {
+      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2, L = Math.hypot(x2 - x1, y2 - y1),
+          ux = (x2 - x1) / L, uy = (y2 - y1) / L;
+      el("line", { x1:(mx - 35 * ux).toFixed(1), y1:(my - 35 * uy).toFixed(1),
+                   x2:(mx + 35 * ux).toFixed(1), y2:(my + 35 * uy).toFixed(1),
+                   "class":"shard", id:id }, P);
     }
     // the same six beams the demolition cuts, in the order it cuts them
     var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
@@ -377,37 +395,51 @@
     tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
     // rows are authored in their final slots; frame zero shows them UNSORTED
     ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
-      tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, 1.764 - 0.2 + i * 0.08);
+      tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, 1.705 - 0.2 + i * 0.08);
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
-    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 3.083);
-    tl.to("#slab-lock", { opacity:1, duration:0.3, ease:EASE.slam }, 3.083 + 0.10);
-    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 3.083 + 0.10);
-    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.525);
-    tl.to("#cite-smoke", { opacity:1, duration:0.3, ease:EASE.arrive }, 4.525 + 0.3);
-    // the repair: SOME beams come back and the building straightens -- protecting
-    // beats replacing; the damage is not undone
+    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 2.975);
+    // sunscreen LOCKS ACROSS the foundation, left to right, as it is named
+    tl.fromTo("#slab-lock", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
+              { scaleX:1, duration:0.38, ease:EASE.slam }, 2.975 + 0.10);
+    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 2.975 + 0.10);
+    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.363);
+    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 4.363 + 0.3);
+    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.254);
+    // PROTEIN is the building material, so the partial repair rides that line:
+    // three of six beams come back and the lean comes out. The damage is not undone.
     ["4a", "3a", "1a"].forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 4.525 + 0.4 + i * 0.3);
+      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 5.254 + 0.25 + i * 0.3);
     });
-    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 4.525 + 0.6);
-    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.447);
-    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.385);
-    tl.to("#cite-ret", { opacity:1, duration:0.3, ease:EASE.arrive }, 8.385 + 0.4);
+    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 5.838);
+    // the smoking chip steps back so it is not read as sourcing the nutrition line
+    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 5.254 + 0.2);
+    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.072);
+    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 8.072 + 0.4);
+    // "encouraging collagen production": ONE more beam draws in, and the camera
+    // leans toward the building to watch it. One beam, not six -- the claim is
+    // stronger evidence for production, not a rebuilt structure.
+    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 10.232 - 0.3);
+    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 10.232);
 
     // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
-    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 12.438 - 0.2);
-    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 12.438);
-    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.626);
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 15.170);
-    tl.to("#final", { opacity:1, duration:0.1 }, 15.784 - 0.1);
-    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 15.784 - 0.1);
-    tl.to("#bricks", { x:420, duration:0.6, ease:EASE.exit }, 18.417);
+    // the optional column ARRIVES: the camera pans right so cream and powder
+    // enter the frame from outside the first-line actions, never sharing their row
+    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, 13.150 - 0.5);
+    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 13.150 - 0.2);
+    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 13.150);
+    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 15.617);
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 16.171);
+    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 16.792 - 0.9);
+    tl.to("#final", { opacity:1, duration:0.1 }, 16.792 - 0.1);
+    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 16.792 - 0.1);
+    kineticWords(tl, "#final-kt", 16.792 + 0.15, 0.08, "rise");
+    tl.to("#bricks", { x:420, duration:0.6, ease:EASE.exit }, 19.470);
 
     // departure: push under the curtain wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 18.950);
+    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 20.009);
 
-    tl.to({}, { duration: 19.850 }, 0);   // full-span anchor -- always last
+    tl.to({}, { duration: 20.909 }, 0);   // full-span anchor -- always last
     window.__timelines["14-hierarchy"] = tl;
   </script>
 </template>

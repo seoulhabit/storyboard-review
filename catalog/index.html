@@ -272,6 +272,10 @@ const ITEMS = {
       contract: null,
       warn: "Runs on autoplaying CSS <span class=\"mono\">@keyframes … infinite</span>, not a paused/seekable GSAP timeline — it violates this project's own render-determinism rule (see faceless-video-craft skill). Fine to look at; not yet safe to drop into a real render.",
       desc: "Day/night sky motif — dashed sunrise-to-sunset arc with a traveling color-shift dot, pulsing sun, crescent moon + twinkling stars. Extracted from Dawn to Dusk Skincare's hero backdrop." },
+    { title: "SeoulHabitEndCard", file: "seoulhabitendcard-spike.html", src: "visual-components/seoulhabit-endcard/seoulhabitendcard-spike.html",
+      status: "spike", control: "clock", scrubber: "debug", duration: 4.5,
+      contract: "<span class=\"k\">{ wordmark, tagline, cta, duration }</span> — swap the four strings, keep the mark",
+      desc: "The channel's brand sign-off scene: the actual 습 mark (built for the channel avatar/watermark in brand/channel/, never used in a video before this) plus \"SeoulHabit,\" a tagline, a rule, and a CTA. Two videos (collagen-where-did-it-go, snail-mucin-medical-secret-v2) each built a wordmark-only version from scratch, because decision-policy.md's C-3 end-screen rule covers YouTube's overlay reserve, not a brand moment, and only ever applied long-form — this catalog had no shared version for either format. Reference implementation for the new C-3a rule." },
   ],
   "grid-static": [
     { title: "PDRN Renewal", file: "pdrn-poster-spike.html", src: "ingredients/pdrn/pdrn-poster-spike.html",

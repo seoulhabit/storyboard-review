@@ -1,0 +1,31 @@
+{
+  "id": "T1",
+  "slug": "ingredient-explainer",
+  "name": "Ingredient Explainer",
+  "purpose": "What an ingredient is",
+  "artboard": "templates/reference/T1-ingredient-explainer.dc.html",
+  "artboard_sha256": "c38d3db5f4066174e19c05c0c08bee628f9bc358ed09298ca7e8d28e0a0d9fd7",
+  "default_canvas": "9x16",
+  "sequence": [
+    { "section": "hook",        "component": "ShHook",       "anchor": false, "chip_default": "SEOULHABIT.COM" },
+    { "section": "define",      "component": "ShIngredient", "anchor": false },
+    { "section": "mechanism",   "component": "ShRows",       "anchor": false },
+    { "section": "evidence",    "component": "ShEvidence",   "anchor": true  },
+    { "section": "cta",         "component": "ShEndcard",    "anchor": true  }
+  ],
+  "clay_slot_by_component": {
+    "ShHook": "accentWord", "ShIngredient": "accent",
+    "ShRows": "active", "ShEvidence": "figure", "ShEndcard": null
+  },
+  "reference_timings_s": {
+    "note": "As authored in the artboard, at the artboard's own durations. NOT prescriptive for the compiler's own timing rule (COMPILER.md sec 2) -- shown so a reviewer can compare compiler output to the design system's own worked example.",
+    "scenes": [
+      {"section": "hook",      "start": 0.0,  "duration": 2.2},
+      {"section": "define",    "start": 2.2,  "duration": 2.4},
+      {"section": "mechanism", "start": 4.6,  "duration": 5.0},
+      {"section": "evidence",  "start": 9.6,  "duration": 2.0},
+      {"section": "cta",       "start": 11.6, "duration": 2.4}
+    ],
+    "total_s": 14.0
+  }
+}

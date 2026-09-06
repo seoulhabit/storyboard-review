@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "strict": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 2
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 4,
+    "samples": [
+      0,
+      0.05,
+      0.15,
+      0.25,
+      0.35,
+      0.45,
+      0.55,
+      0.65,
+      0.75,
+      0.85,
+      0.95,
+      1,
+      1.05,
+      1.15,
+      1.25,
+      1.35,
+      1.45,
+      1.55,
+      1.65,
+      1.75,
+      1.85,
+      1.95,
+      2,
+      2.05,
+      2.15,
+      2.25,
+      2.35,
+      2.45,
+      2.55,
+      2.65,
+      2.75,
+      2.85,
+      2.95,
+      3,
+      3.05,
+      3.15,
+      3.25,
+      3.35,
+      3.45,
+      3.55,
+      3.65,
+      3.75,
+      3.85,
+      3.95,
+      4
+    ],
+    "transitionSamples": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "specPath": "/private/tmp/claude-501/-Users-sumitchoudhary-Desktop-Story-Board/d6a8185c-8b5c-4110-9fec-0d59622d92ce/scratchpad/ingredient-overflow/06-render/9x16/index.motion.json",
+    "samples": 81
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "checked": 16,
+    "passed": 16
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "_meta": {
+    "version": "0.8.30",
+    "latestVersion": "0.8.30",
+    "updateAvailable": false
+  }
+}

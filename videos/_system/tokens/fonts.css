@@ -1,0 +1,16 @@
+/* SeoulHabit webfonts — frozen, root-relative, this compiler's default.
+   Source project's tokens/fonts.css loaded these four faces (five files:
+   DejaVu Serif has two Korean weights layered onto it) from the jsdelivr
+   Fontsource CDN, and said so in its own comment ("no font binaries were
+   supplied with the brief"). WO-FVC-005 T2 fetched and froze them once —
+   see fonts/SOURCES.md for the exact pinned URL and sha256 per file.
+   Never re-point these at a CDN: an unpinned or moving URL is an expiring
+   host, which this WO's asset rules forbid regardless of base64 status. */
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:400;font-display:block;src:url("../fonts/dejavu-serif-400.woff2") format("woff2")}
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:700;font-display:block;src:url("../fonts/dejavu-serif-700.woff2") format("woff2")}
+@font-face{font-family:"Archivo";font-style:normal;font-weight:100 900;font-display:block;src:url("../fonts/archivo-variable.woff2") format("woff2-variations")}
+/* Hangul coverage for 서울의 습관 — the DejaVu Serif latin subset has none.
+   Noto Serif KR 700/400 attached to the same family under a hangul-only
+   unicode-range, so var(--font-subject) covers both scripts. */
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:700;font-display:block;unicode-range:U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7AF,U+D7B0-D7FF;src:url("../fonts/noto-serif-kr-700.woff2") format("woff2")}
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:400;font-display:block;unicode-range:U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7AF,U+D7B0-D7FF;src:url("../fonts/noto-serif-kr-400.woff2") format("woff2")}

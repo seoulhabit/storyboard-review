@@ -1,0 +1,23 @@
+{
+  "slug": "ingredient-overflow-fixture",
+  "format": "short",
+  "fps": 30,
+  "canvas": {"w": 1080, "h": 1920},
+  "vo_duration_s": 2.2,
+  "presenter": "kinetic-type",
+  "scenes": [
+    {
+      "id": "define",
+      "section": "define",
+      "component": "ShIngredient",
+      "vo_duration_s": 2.2,
+      "slot_word_count": 10,
+      "slots": {
+        "name": "Polymethylsilsesquioxane",
+        "inci": "Polymethylsilsesquioxane",
+        "function": "A silicone powder that softens the after-feel of heavy actives."
+      },
+      "chip": "CIR 2015"
+    }
+  ]
+}

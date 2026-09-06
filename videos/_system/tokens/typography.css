@@ -1,0 +1,34 @@
+:root{
+  /* the subject: names, titles, end card */
+  --font-subject:"DejaVu Serif",Georgia,serif; /* @kind font */
+  /* the work: labels, figures, chips */
+  --font-work:"Archivo","Helvetica Neue",Arial,sans-serif; /* @kind font */
+
+  /* steps — 9:16, authored on a 1080px-wide stage */
+  --t-display:132px; /* @kind font */
+  --t-hook:96px; /* @kind font */
+  --t-label:72px; /* @kind font */
+  --t-body:64px; /* @kind font */
+  --t-meta:40px; /* @kind font */
+  --t-chip:28px; /* @kind font */
+
+  --w-display:700; /* @kind font */
+  --w-hook:800; /* @kind font */
+  --w-label:800; /* @kind font */
+  --w-body:600; /* @kind font */
+  --w-meta:600; /* @kind font */
+  --w-chip:600; /* @kind font */
+  --track-upper:0.08em; /* @kind font */
+  --lh-display:1.06; /* @kind font */
+  --lh-tight:1.1; /* @kind font */
+  --lh-body:1.3; /* @kind font */
+}
+/* 16:9 — authored on a 1920px-wide stage. DejaVu Serif 700 Title Case for display; Archivo 800 UPPER for hook and label; Archivo 600 for body, meta and chip. */
+[data-canvas="16x9"]{
+  --t-display:96px; /* @kind font */
+  --t-hook:72px; /* @kind font */
+  --t-label:56px; /* @kind font */
+  --t-body:48px; /* @kind font */
+  --t-meta:32px; /* @kind font */
+  --t-chip:24px; /* @kind font */
+}

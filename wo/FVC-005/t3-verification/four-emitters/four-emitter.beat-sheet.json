@@ -1,0 +1,90 @@
+{
+  "slug": "four-emitter-fixture",
+  "format": "short",
+  "fps": 30,
+  "canvas": {"w": 1080, "h": 1920},
+  "vo_duration_s": 19.3,
+  "presenter": "kinetic-type",
+  "scenes": [
+    {
+      "id": "hook",
+      "section": "hook",
+      "component": "ShHook",
+      "vo_duration_s": 2.0,
+      "slot_word_count": 6,
+      "slots": {"line": "Which vitamin C survives?", "accentWord": "survives"}
+    },
+    {
+      "id": "compare",
+      "section": "compare",
+      "component": "ShCompare",
+      "vo_duration_s": 5.0,
+      "slot_word_count": 10,
+      "slots": {
+        "a": "Ascorbic acid", "b": "THD ascorbate",
+        "attributes": [
+          {"label": "Stability", "aValue": "Low", "bValue": "High", "favours": "b"},
+          {"label": "Evidence", "aValue": "Deep", "bValue": "Thin", "favours": "a"}
+        ]
+      },
+      "chip": "Int. J. Cosmet. Sci. 2017"
+    },
+    {
+      "id": "quote",
+      "section": "verdict",
+      "component": "ShQuote",
+      "vo_duration_s": 2.5,
+      "slot_word_count": 8,
+      "slots": {"line": "Stability decides it, not strength.", "attribution": "Int. J. Cosmet. Sci. 2017"},
+      "chip": "Int. J. Cosmet. Sci. 2017"
+    },
+    {
+      "id": "myth",
+      "section": "myth",
+      "component": "ShMyth",
+      "vo_duration_s": 3.0,
+      "slot_word_count": 10,
+      "slots": {
+        "claim": "Vitamin C and niacinamide cancel out.",
+        "correction": "They don't at cosmetic pH",
+        "accentWord": "don't"
+      },
+      "chip": "J. Cosmet. Sci. 2010"
+    },
+    {
+      "id": "steps",
+      "section": "steps",
+      "component": "ShSteps",
+      "vo_duration_s": 3.5,
+      "slot_word_count": 10,
+      "slots": {
+        "steps": [
+          {"n": 1, "action": "Cleanse", "note": "Lukewarm water only."},
+          {"n": 2, "action": "Apply damp"},
+          {"n": 3, "action": "Seal"}
+        ]
+      },
+      "chip": "SEOULHABIT.COM"
+    },
+    {
+      "id": "evidence",
+      "section": "evidence",
+      "component": "ShEvidence",
+      "vo_duration_s": 1.8,
+      "slot_word_count": 6,
+      "slots": {
+        "figure": "72h", "caption": "How long the unstable form held its assay.",
+        "source": "Int. J. Cosmet. Sci. 2017"
+      },
+      "chip": "Int. J. Cosmet. Sci. 2017"
+    },
+    {
+      "id": "cta",
+      "section": "cta",
+      "component": "ShEndcard",
+      "vo_duration_s": 1.5,
+      "slot_word_count": 4,
+      "slots": {"cta": "More at seoulhabit.com"}
+    }
+  ]
+}

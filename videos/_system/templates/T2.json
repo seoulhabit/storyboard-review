@@ -1,0 +1,31 @@
+{
+  "id": "T2",
+  "slug": "how-to-use",
+  "name": "How To Use",
+  "purpose": "Application and order",
+  "artboard": "templates/reference/T2-how-to-use.dc.html",
+  "artboard_sha256": "8acd0e02160443d20d9176fd17a70b44ffeb74ca5d1a8cde85a9ae3ccd64e119",
+  "default_canvas": "9x16",
+  "sequence": [
+    { "section": "hook",      "component": "ShHook",       "anchor": false, "chip_default": "SEOULHABIT.COM" },
+    { "section": "define",    "component": "ShIngredient", "anchor": false },
+    { "section": "steps",     "component": "ShSteps",      "anchor": false },
+    { "section": "pairs",     "component": "ShRows",       "anchor": true  },
+    { "section": "cta",       "component": "ShEndcard",    "anchor": true  }
+  ],
+  "clay_slot_by_component": {
+    "ShHook": "accentWord", "ShIngredient": "accent",
+    "ShSteps": null, "ShRows": "active", "ShEndcard": null
+  },
+  "reference_timings_s": {
+    "note": "As authored in the artboard. NOT prescriptive -- see T1.json's note.",
+    "scenes": [
+      {"section": "hook",   "start": 0.0,  "duration": 2.2},
+      {"section": "define", "start": 2.2,  "duration": 2.2},
+      {"section": "steps",  "start": 4.4,  "duration": 4.6},
+      {"section": "pairs",  "start": 9.0,  "duration": 2.6},
+      {"section": "cta",    "start": 11.6, "duration": 2.4}
+    ],
+    "total_s": 14.0
+  }
+}

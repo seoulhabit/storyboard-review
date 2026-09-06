@@ -1,0 +1,59 @@
+{
+  "slug": "d5-adversarial-fixture",
+  "format": "long",
+  "fps": 30,
+  "canvas": {"w": 1080, "h": 1920},
+  "vo_duration_s": 15.0,
+  "presenter": "kinetic-type",
+  "scenes": [
+    {
+      "id": "mechanism",
+      "section": "mechanism",
+      "component": "ShRows",
+      "vo_duration_s": 6.0,
+      "slot_word_count": 8,
+      "beats": [
+        {"offset": 0.0, "text": "Sebum down"},
+        {"offset": 2.0, "text": "Barrier repaired"},
+        {"offset": 4.0, "text": "Pigment blocked"}
+      ],
+      "slots": {
+        "rows": [
+          {"left": "Polymethylsilsesquioxane", "right": "Down"},
+          {"left": "Barrier", "right": "Polymethylsilsesquioxanated"},
+          {"left": "Pigment", "right": "Blocked"}
+        ],
+        "active": 2
+      },
+      "chip": "J. Cosmet. Dermatol. 2019"
+    },
+    {
+      "id": "steps",
+      "section": "steps",
+      "component": "ShSteps",
+      "vo_duration_s": 6.0,
+      "slot_word_count": 8,
+      "beats": [
+        {"offset": 0.0, "text": "Cleanse"},
+        {"offset": 2.0, "text": "Apply"},
+        {"offset": 4.0, "text": "Seal"}
+      ],
+      "slots": {
+        "steps": [
+          {"n": 1, "action": "Polymethylsilsesquioxane", "note": "Applied first, before anything else in the routine."},
+          {"n": 2, "action": "Apply damp"},
+          {"n": 3, "action": "Seal with an occlusive."}
+        ]
+      },
+      "chip": "SEOULHABIT.COM"
+    },
+    {
+      "id": "cta",
+      "section": "cta",
+      "component": "ShEndcard",
+      "vo_duration_s": 1.5,
+      "slot_word_count": 4,
+      "slots": {"cta": "More at seoulhabit.com"}
+    }
+  ]
+}

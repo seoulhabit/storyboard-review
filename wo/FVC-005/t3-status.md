@@ -1,4 +1,4 @@
-# T3 — Compiler build — DONE, including the D5 split path; end-to-end proven with real local renders
+# T3 — Compiler build — DONE, all nine scene emitters exercised and the D5 split path proven; end-to-end with real local renders
 Commits: claude-skills branch `fvc-005/makemeavideo` (compiler); Story Board branch `session/fvc-005` (this status + verification evidence). Back to Sonnet/medium tier per the WO's own flag, T2 being the Opus/High task.
 
 ## What shipped
@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Seven real bugs found by actually running the engine, not assumed away
+## Nine real bugs found by actually running the engine, not assumed away
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -119,6 +119,27 @@ before moving on — not discovered later and patched around:
    Every other component refuses to split rather than guess at a division
    with no defined meaning.
 
+8. **`ShCompare`'s two-column grid let a wide header overflow the canvas.**
+   `check` found a real `canvas_overflow` warning: `"THD ascorbate"`
+   extending 94.6px past the right edge, held across the scene's full
+   visible window (16 occurrences). Root cause: `grid-template-columns:1fr
+   1fr` still respects each grid child's default `min-width:auto`,
+   refusing to shrink below the unwrapped text's own width — a standard
+   CSS grid trap, and one the source JSX has too (this is not a porting
+   error, it's a real defect the design system's own component would hit
+   on a real render). Fixed by adding `min-width:0` and
+   `overflow-wrap:break-word` to every grid child.
+9. **The continuous-motion fallback trusted one-shot markers it shouldn't
+   have.** `ShQuote`'s 3.2s scene tripped `motion_frozen` — the fallback
+   (from this WO's earlier D5 session) treated `sweep`/`count` as
+   equally sufficient to `float`, but both are one-shot: they play once
+   and stop, saying nothing about whether motion continues for the rest
+   of an arbitrarily long scene. The bug had been latent since it was
+   written — it happened to pass on `ShHook`'s shorter 2.4s scene by
+   coincidence of duration, not because the check was actually correct.
+   Fixed by trusting only `float` (which spans the full scene duration by
+   construction) to suppress the fallback.
+
 ## Accept check — what's verified and what isn't
 
 **Verified:**
@@ -143,12 +164,9 @@ before moving on — not discovered later and patched around:
 - ~~The D5 split path has not been exercised against a real render.~~
   **Now verified** — see the two new bugs (6, 7) below and
   `wo/FVC-005/t3-verification/d5-split/`.
-- **`ShCompare`, `ShMyth`, `ShQuote`, `ShSteps` have not been exercised
-  through a real compile.** The synthetic fixture only uses `ShHook`,
-  `ShIngredient`, `ShRows`, `ShEvidence`, `ShEndcard` (T1's own sequence).
-  The other four emitters were written to the same pattern and pass a
-  Python syntax check, but have not been proven against `hyperframes
-  check` the way these five have.
+- ~~`ShCompare`, `ShMyth`, `ShQuote`, `ShSteps` have not been exercised
+  through a real compile.~~ **Now verified, all nine of nine emitters** —
+  see bugs 8–9 below and `wo/FVC-005/t3-verification/four-emitters/`.
 - **Neither of the two real beat sheets in this repo
   (`videos/kbeauty-label-trap/03-beat-sheet.json`,
   `videos/hyaluronic-acid-vs-filler/03-beat-sheet.json`) can be compiled

@@ -33,6 +33,17 @@ account, `d5-split/check-9x16.json` for the clean gate result, and the two
 extracted frames showing visually distinct, correctly-content-sliced
 output.
 
+## The remaining four emitters
+
+`four-emitters/` proves the last gap: `ShCompare`, `ShMyth`, `ShQuote`, and
+`ShSteps` — the four of nine scene components no earlier fixture had
+exercised. Two more real bugs were found and fixed (a grid-overflow on
+`ShCompare` and a motion-freeze gap the earlier D5 fallback fix didn't
+fully close for longer one-shot-sweep scenes) — see
+`four-emitters/README.md`, `four-emitters/check-9x16.json`, and four
+extracted frames confirming visually correct, on-canvas output for all
+four.
+
 ## Reproduce from scratch
 
 ```

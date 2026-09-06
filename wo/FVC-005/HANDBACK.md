@@ -10,7 +10,7 @@ session boundary, per the WO's own §5 session plan.
 Two things happened outside the numbered tasks that matter as much as any
 of them: this session found and corrected **seven factual errors in the WO's
 own text** before building anything on top of them (§8 of
-`docs/wo/WO-FVC-005.md`), and the compiler build surfaced **seven real engine
+`docs/wo/WO-FVC-005.md`), and the compiler build surfaced **nine real engine
 bugs** that a plan built from documentation alone would not have caught —
 each found by actually running `hyperframes lint`/`check` against a
 first-draft compile, diagnosed from the engine's own error message, and
@@ -89,7 +89,7 @@ $ python3 -c "import hashlib,json; m=json.load(open('videos/_system/MANIFEST.jso
 - Nine of `seoulhabit-learn`'s 21 published passports carry zero citations and zero findings. A pilot or queue entry landing on one fails `K-2b` on the *website's* content — a finding to report, never a rule to loosen.
 - WO-FVC-004 §7's unshipped **1.0.0** retarget (with `faceless-video-craft` archived) is still open; that skill is now at an unreleased **2.2.0 with five uncommitted files**, not "frozen at 2.1.0" as its own changelog claims.
 - Three of `makemeavideo`'s five documented modes (`build`/`package`/`readout`) cannot pass `validate_request.py`'s front door, which accepts only `new`/`improve`. `T7`'s own instruction to re-run the pilot in `build` mode collides with this directly.
-- ~~The D5 split path… not yet exercised against a real render.~~ **Verified after this handback was first written**: a fixture exercising D5 found two more real bugs (the split algorithm not accounting for the scene's own trailing hold, and split timing not carrying split content with it), both fixed and re-verified clean (`hyperframes check --at-transitions`, both fixtures, no regression) — see `wo/FVC-005/t3-verification/d5-split/`. Still open: four of the nine component emitters (`ShCompare`/`ShMyth`/`ShQuote`/`ShSteps`) are implemented but not yet exercised against a real render, and only `ShRows`/`ShSteps` can D5-split content — every other component refuses rather than guess.
+- ~~The D5 split path… not yet exercised against a real render.~~ **Verified after this handback was first written**: a fixture exercising D5 found two more real bugs (the split algorithm not accounting for the scene's own trailing hold, and split timing not carrying split content with it), both fixed and re-verified clean (`hyperframes check --at-transitions`, both fixtures, no regression) — see `wo/FVC-005/t3-verification/d5-split/`. ~~Still open: four of the nine component emitters… not yet exercised against a real render~~ **Also now verified** — all nine of nine emitters proven against real compiles, checks, and renders, surfacing two more real bugs (a grid-overflow on `ShCompare`, a motion-freeze gap in the D5-session's own continuous-motion fallback) — see `wo/FVC-005/t3-verification/four-emitters/`. Only `ShRows`/`ShSteps` can D5-split content; every other component still refuses rather than guess.
 - Neither of the two real beat sheets already in this repo can compile without a schema migration (they predate `component`/`slots`).
 
 ---

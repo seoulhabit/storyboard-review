@@ -206,7 +206,7 @@ def _static_asserts(body, css, cid):
         bad.append("transform on .stage/.worldclip (moves the padded edge outward)")
     if "position:fixed" in css.replace(" ", ""):
         bad.append("position:fixed")
-    if cid == "10-evidence":
+    if cid == "05-evidence":
         for n in re.findall(r"\b(\d+)\s*(?:trials|studies)\b", re.sub(r"<[^>]+>", " ", body)):
             if n != "23":
                 bad.append(f"evidence file names a trial count ({n}) the source does not give")
@@ -254,9 +254,14 @@ def _stub(fspan, fctx):
 
 
 FILE_FNS = {}   # file cid -> fn(fspan, fctx) -> (body, css, tl); missing -> stub
-FILE_MODULES = {"01-hook": "frames_a", "02-promise": "frames_a", "03-building": "frames_b",
-                "06-door": "frames_c", "08-digestion": "frames_d", "10-evidence": "frames_e",
-                "14-hierarchy": "frames_f", "16-end": "frames_g"}
+# 2026-09-05 editorial redesign: 7 files / 13 units (was 8/16). File names
+# default to their first unit's cid (timing.FILE_NAMES only overrides the
+# evidence file, "named for the mode, not its first beat" -- unchanged
+# convention). frames_b.py (the standalone building) is retired along with
+# BUILDING_JS; its module slot is not reused elsewhere so it is simply gone.
+FILE_MODULES = {"01-hook": "frames_a", "02-mesh": "frames_a", "04-barrier": "frames_c",
+                "06-swallow": "frames_d", "05-evidence": "frames_e",
+                "12-recs": "frames_f", "14-end": "frames_g"}
 
 
 def load_file_fns(only=None):
@@ -312,20 +317,13 @@ def emit(fspan, fctx, reveals, fake):
     return f"  {fspan.cid:14s} {fspan.dur:7.3f}s  units {', '.join(u.cid for u in fspan.units)}"
 
 
-LOOP_TRIALS_BY, LOOP_REMOVE_BY = 9.0, 10.5   # the curiosity loop opens inside the first 10s
-
-
-def _loop_ok(units, fake):
-    """The brief: the industry-funding curiosity loop opens in the first 10s. On
-    the real manifest this is a hard assert; on the fake it is advisory."""
-    u = next(x for x in units if x.cid == "02-promise")
-    ctx = Ctx(u)
-    t_trials, t_remove = ctx.w_abs("trials"), ctx.w_abs("remove")
-    msg = f"  curiosity loop: 'trials' at {t_trials:.2f}s (<= {LOOP_TRIALS_BY}), 'remove' at {t_remove:.2f}s (<= {LOOP_REMOVE_BY})"
-    ok = t_trials <= LOOP_TRIALS_BY and t_remove <= LOOP_REMOVE_BY
-    if not ok and not fake:
-        raise SystemExit(msg + "\n  the take runs slow -- trim the hook or raise the tempo before round 2")
-    print(msg + ("" if ok else "  [fake manifest -- advisory]"))
+# 2026-09-05 editorial redesign: the old _loop_ok() curiosity-loop assert
+# (industry-funding teaser due inside the first 10s, planted in the retired
+# "02-promise" unit) is REMOVED, not adapted -- the brief explicitly cuts that
+# foreshadowing from the opening ("Use only one prominent question... The
+# visual action should communicate the premise before additional text
+# appears"). The evidence twist now lands once, in 05-evidence, with nothing
+# to pay off from unit 1.
 
 
 def main():
@@ -338,7 +336,6 @@ def main():
         raise SystemExit("\n".join(bad))
     units, files, total, manifest = walk()
     fake = manifest.get("source") == "fake"
-    _loop_ok(units, fake)
     reveals = []
     if only is None:
         for f in OUT.glob("*.html"):

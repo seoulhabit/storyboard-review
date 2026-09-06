@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>08-digestion</title></head>
+<head><meta charset="UTF-8"><title>06-swallow</title></head>
 <body>
 <template>
-  <div id="root" data-composition-id="08-digestion"
-       data-width="1920" data-height="1080" data-duration="21.862">
+  <div id="root" data-composition-id="06-swallow"
+       data-width="1920" data-height="1080" data-duration="14.758">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -223,29 +223,14 @@
     .tract { fill:none; stroke:var(--ink); stroke-width:6; stroke-linecap:round; opacity:.8; }
     .branch { fill:none; stroke:var(--ink-2); stroke-width:5; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper, fails 3:1 graphic floor); --ink-2 measures 4.89:1 */
 
-    .b-slab  { fill:var(--ink); }
-    .b-shell { fill:none; stroke:var(--ink); stroke-width:5; }
-    .b-floor { stroke:var(--ink); stroke-width:2.5; opacity:.55; }
-    .b-win   { fill:var(--mist); stroke:var(--ink); stroke-width:2; }
-    .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
-    .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
-               stroke-dasharray:640; stroke-dashoffset:0; }
-    .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
-
-    .abs { position:absolute; }
-    #stageE { position:absolute; left:0; top:0; }
+    .abs { position:absolute; left:0; top:0; }
     .scoop { fill:var(--mist); stroke:var(--ink); stroke-width:5; }
     .fr { fill:var(--coral); opacity:0; }
-    .card { padding:var(--s-4); display:flex; align-items:center; gap:var(--s-4); }
-    .card .chip { position:relative; }
     .face { fill:none; stroke:var(--ink); stroke-width:5; }
     .void { z-index:2; }
     .dest { padding:var(--s-3) var(--s-4); display:flex; align-items:center; }
     .dest .p-title { margin:0; font-size:var(--t-body); }
-    #decides { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
     #stomach-p { background:transparent; }
-    .slat { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
-    #bmini .beam { stroke-width:12; }
 
     </style>
 
@@ -256,12 +241,8 @@
         <svg id="stageE" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <g id="scoop"><path class="scoop" d="M 250 535 Q 250 640 404 640 Q 558 640 558 535 Z"/><path class="scoop" d="M 250 540 L 130 500" fill="none"/></g>
         </svg>
-        <div class="panel card" id="face" style="position:absolute;left:60px;top:60px;width:520px;height:240px;"><div class="wash dim" id="face-wash"></div><svg viewBox="0 0 200 200" width="180" height="180" aria-hidden="true"><path class="face" d="M 60 30 C 130 20 160 70 150 120 C 145 150 120 160 118 180 M 150 120 L 168 128 L 152 140"/><circle class="face" cx="110" cy="70" r="6"/></svg><p class="chip " id="face-chip" style="">no facial delivery</p><div class="void" id="face-void"></div></div>
-        <div class="panel late" id="decides" style="position:absolute;left:640px;top:40px;width:700px;height:130px;"><div class="wash dim" id="decides-wash"></div><p class="p-title">your body decides</p></div>
+        <div class="panel card late" id="face" style="position:absolute;left:60px;top:60px;width:520px;height:240px;"><div class="wash dim" id="face-wash"></div><svg viewBox="0 0 200 200" width="180" height="180" aria-hidden="true"><path class="face" d="M 60 30 C 130 20 160 70 150 120 C 145 150 120 160 118 180 M 150 120 L 168 128 L 152 140"/><circle class="face" cx="110" cy="70" r="6"/></svg><p class="chip " id="face-chip" style="">no guaranteed delivery</p><div class="void" id="face-void"></div></div>
         <div class="panel dest late" id="d-skin" style="position:absolute;left:1340px;top:120px;width:380px;height:150px;"><div class="wash aqua" id="d-skin-wash"></div><p class="p-title">skin</p></div><div class="panel dest late" id="d-joints" style="position:absolute;left:1340px;top:300px;width:380px;height:150px;"><div class="wash aqua" id="d-joints-wash"></div><p class="p-title">joints</p></div><div class="panel dest late" id="d-tendons" style="position:absolute;left:1340px;top:480px;width:380px;height:150px;"><div class="wash aqua" id="d-tendons-wash"></div><p class="p-title">tendons</p></div><div class="panel dest late" id="d-other" style="position:absolute;left:1340px;top:660px;width:380px;height:150px;"><div class="wash aqua" id="d-other-wash"></div><p class="p-title">other tissue</p></div>
-        <div class="panel card late" id="scaff" style="position:absolute;left:60px;top:380px;width:520px;height:220px;"><div class="wash aqua" id="scaff-wash"></div><svg id="bmini" viewBox="0 0 620 720" width="150" height="174" aria-hidden="true"></svg><p class="chip " id="scaff-chip" style="">scaffolding</p></div>
-        <div class="panel card late" id="crate" style="position:absolute;left:60px;top:640px;width:520px;height:240px;"><div class="wash coral" id="crate-wash"></div><svg viewBox="0 0 200 160" width="180" height="144" aria-hidden="true"><rect class="slat" x="10" y="40" width="180" height="110" rx="6"/><rect class="slat" id="slat-1" x="10" y="40" width="180" height="26"/><rect class="slat" id="slat-2" x="10" y="82" width="180" height="26"/><rect class="slat" id="slat-3" x="10" y="124" width="180" height="26"/></svg><p class="chip " id="crate-chip" style="">spare parts</p></div>
-        <div class="panel card late" id="benefit-teaser" style="position:absolute;left:640px;top:560px;width:520px;height:280px;"><div class="wash aqua" id="benefit-teaser-wash"></div><svg viewBox="0 0 200 110" width="160" height="88" aria-hidden="true"><path class="face" id="benefit-line" d="M 15 95 L 65 55 L 105 72 L 175 15" fill="none"/><path class="face" id="benefit-head" d="M 175 15 L 148 18 M 175 15 L 172 42" fill="none"/></svg><p class="chip " id="benefit-chip" style="">modest benefit</p></div>
        </div>
       </div>
       </div>
@@ -371,45 +352,6 @@
       return g;
     }
 
-    // The building: 5 storeys, an X-brace pair per storey (the collagen),
-    // stable ids so a later phase MOVES a beam instead of redrawing it.
-    // o.door adds the ground-floor door; o.into = parent group.
-    function drawBuilding(svg, o) {
-      o = o || {}; var P = o.into || svg;
-      var STOREYS = 5, X0 = 90, X1 = 530, TOP = 150, H = 108;
-      el("rect", { x:60, y:TOP+STOREYS*H+8, width:500, height:26, rx:4, "class":"b-slab", id:"b-slab" }, P);
-      el("rect", { x:X0, y:TOP, width:X1-X0, height:STOREYS*H, rx:6, "class":"b-shell", id:"b-shell" }, P);
-      for (var s = 0; s < STOREYS; s++) {
-        var y = TOP + s*H, yb = y + H;
-        el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
-        el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
-        el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
-        // one hidden 70px shard along each beam's midpoint: the piece the UV cut
-        // knocks loose (04-demolition tweens it away; it never draws otherwise)
-        shard(P, "shard-"+s+"a", X0+16, yb-6, X1-16, y+6);
-        shard(P, "shard-"+s+"b", X1-16, yb-6, X0+16, y+6);
-        for (var w = 0; w < 3; w++)
-          el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
-      }
-      if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
-    }
-    function shard(P, id, x1, y1, x2, y2) {
-      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2, L = Math.hypot(x2 - x1, y2 - y1),
-          ux = (x2 - x1) / L, uy = (y2 - y1) / L;
-      el("line", { x1:(mx - 35 * ux).toFixed(1), y1:(my - 35 * uy).toFixed(1),
-                   x2:(mx + 35 * ux).toFixed(1), y2:(my + 35 * uy).toFixed(1),
-                   "class":"shard", id:id }, P);
-    }
-    // the same six beams the demolition cuts, in the order it cuts them
-    var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
-    function setBeamsCut(tl, ids, offset) {
-      ids.forEach(function (k) {
-        var e = document.getElementById("beam-" + k);
-        e.style.strokeDashoffset = "640"; e.style.opacity = "0.25";
-        tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
-      });
-    }
-
     // The powder route: one path from the scoop tip through the mouth, down
     // the oesophagus, round the stomach and along the intestine to ORIGIN,
     // plus four branch paths from ORIGIN to the destination panels.
@@ -431,7 +373,6 @@
     var svg = document.getElementById("stageE");
     drawTract(svg);
     var tract = document.getElementById("tract"), L = tract.getTotalLength();
-    // the tract and branches are hidden until drawn
     ["#tract", "#br-skin", "#br-joints", "#br-tendons", "#br-other"].forEach(function (id) {
       var p = document.querySelector(id); var len = p.getTotalLength();
       p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
@@ -440,92 +381,66 @@
     var q62 = tract.getPointAtLength(0.62 * L);
     var OFF = [[-46,-30],[-20,-38],[10,-32],[34,-16],[-8,-6],[20,8]];
     var dots = OFF.map(function (o, i) { return el("circle", { cx:q62.x + o[0], cy:q62.y + o[1], r:10, "class":"fr", id:"fr-" + i }, svg); });
-    drawBuilding(svg, { into:document.getElementById("bmini") });
-    CUT_ORDER.forEach(function (k) { var e = document.getElementById("beam-" + k); e.style.strokeDashoffset = "640"; e.style.opacity = "0.25"; });
 
-    // ---- unit 8: swallow, fragment, no facial delivery ---------------------------
+    // ---- unit 06-swallow: swallow, fragment ----------------------------------
     tl.fromTo("#world", { scale:1.03 }, { scale:1, duration:0.9, ease:EASE.camera }, 0);
-    tl.to("#scoop", { rotation:-22, svgOrigin:"250 540", duration:0.5, ease:EASE.swap }, 0.381);
-    drawIn(tl, "#tract", 1.539 - 0.2, 1.6, 0, EASE.wipe);
-    pathFollow(tl, mol, tract, 1.539, 2.2, "power1.inOut", { to:0.62, rotate:true });
-    // the stomach: the molecule breaks into six segments, which become dots
-    tl.fromTo("#stomach-p-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 3.737 - 0.1);
+    // bridge between the tract drawing in and the fragmentation beat
+    tl.to("#scoop", { y:-6, duration:0.6, yoyo:true, repeat:1, ease:"sine.inOut" }, 2.1);
+    tl.to("#scoop", { rotation:-22, svgOrigin:"250 540", duration:0.5, ease:EASE.swap }, 0.550);
+    drawIn(tl, "#tract", 0.300 - 0.2, 1.5, 0, EASE.wipe);
+    pathFollow(tl, mol, tract, 0.300, 2.0, "power1.inOut", { to:0.62, rotate:true });
+    tl.fromTo("#stomach-p-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 1.757 - 0.1);
     for (var s = 0; s < 6; s++) {
       tl.fromTo("#mol-seg-" + s, { x:0, y:0, rotation:0 }, { x:(s % 2 ? 1 : -1) * (20 + 8 * s), y:-40 + 14 * s,
-                rotation:(s % 2 ? 35 : -35), duration:0.45, ease:EASE.slam }, 3.737 + s * 0.05);
-      tl.to("#mol-seg-" + s, { scale:0.25, opacity:0, duration:0.3, ease:EASE.swap }, 5.066 + s * 0.06);
-      // the fragment CONDENSES out of the segment that just flew apart
+                rotation:(s % 2 ? 35 : -35), duration:0.4, ease:EASE.slam }, 1.757 + s * 0.05);
+      tl.to("#mol-seg-" + s, { scale:0.25, opacity:0, duration:0.28, ease:EASE.swap }, 3.137 + s * 0.05);
       tl.fromTo("#fr-" + s, { opacity:1, scale:0, transformOrigin:"50% 50%" },
-                { scale:1, duration:0.3, ease:EASE.slam }, 5.066 + s * 0.06 + 0.1);
+                { scale:1, duration:0.28, ease:EASE.slam }, 3.137 + s * 0.05 + 0.1);
     }
-    // the fragments drift apart while "peptides and amino acids" is said: they
-    // are loose pieces now, and 2.3s of identical frames sat here otherwise
     var SPREAD = [[-34,-18],[-16,-26],[12,-22],[30,-10],[-6,10],[22,16]];
     dots.forEach(function (d, i) {
-      tl.to(d, { x:SPREAD[i][0], y:SPREAD[i][1], duration:1.4, ease:EASE.hold }, 5.853 - 0.5);
+      tl.to(d, { x:SPREAD[i][0], y:SPREAD[i][1], duration:1.0, ease:EASE.hold }, 4.198 - 0.3);
     });
-    tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 7.150 - 0.3);
-    tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 7.150 - 0.2);
-    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 8.581);
-    // the struck route leaves the frame: it is closed, and the 1.9s between
-    // the strike and the dots setting off held completely still
-    tl.to("#face", { x:-120, opacity:0.35, duration:1.1, ease:EASE.exit }, 9.203 + 0.15);
 
-    // ---- unit 9: the body decides where the pieces go -----------------------------
-    // "some pieces may be absorbed / certain peptides act as signals" was cut
-    // from vo_lines.py (trim target: the middle of the piece, per the review);
-    // the unit now opens directly on "But your body decides...", so the
-    // stomach-to-branch dispatch anchors on the unit's own first/near-first
-    // words instead of the removed hedge sentence.
+    // ---- unit 07-dispatch: the body decides where the pieces go --------------
+    // bridge between the fragments settling and the face-card reveal
+    tl.to(dots, { scale:1.06, duration:0.7, yoyo:true, repeat:1, stagger:0.03, ease:"sine.inOut" }, 5.508 + 0.6);
+    tl.fromTo("#face", { opacity:0, y:-30 }, { opacity:1, y:0, duration:0.4, ease:EASE.arrive }, 5.508 - 0.2);
+    tl.fromTo("#face-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.508 - 0.1);
     dots.forEach(function (d, i) {
-      pathFollow(tl, d, tract, 9.503 + i * 0.08, 1.1, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
-    });   // this call owns each dot's frame-zero pose; the branches below pass set:false
-    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 9.503 + 0.3);
-    // reframe onto the distribution map: the branches, not the gut, are the subject now
-    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 9.971);
-    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 9.971 + 0.2, 0.7, 0.12, EASE.wipe);
+      pathFollow(tl, d, tract, 5.646 + i * 0.08, 1.0, "power1.inOut", { from:0.62, to:1, ox:q62.x, oy:q62.y });
+    });   // owns each dot's frame-zero pose; the branches below pass set:false
+    tl.to("#stomach-p-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.exit }, 5.646 + 0.3);
+    // measured hole: "wherever the body decides they're needed most" carries
+    // nothing visual between the destination cards settling (~7.5s) and the
+    // first dispatch landing on "skin," (~10.0s) -- a ~2.5s gap otherwise
+    tl.to(dots, { scale:1.05, duration:0.7, yoyo:true, repeat:1, stagger:0.02, ease:"sine.inOut" }, 7.904 - 0.2);
+    tl.to("#world", { scale:1.12, x:-150, y:-30, duration:0.9, ease:EASE.camera }, 5.922);
+    drawIn(tl, "#br-skin,#br-joints,#br-tendons,#br-other", 5.922 + 0.2, 0.7, 0.12, EASE.wipe);
     ["skin", "joints", "tendons", "other"].forEach(function (k, i) {
       tl.fromTo("#d-" + k, { opacity:0, x:26 }, { opacity:1, x:0, duration:0.4, ease:EASE.arrive },
-                9.971 + 0.35 + i * 0.12);
+                5.922 + 0.35 + i * 0.12);
     });
-    reveal(tl, "#decides", 10.179);
-    tl.fromTo("#decides-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 10.179);
-    // dispatch: fixed assignment -- skin gets ONE dot, joints two, tendons two, other one
-    var GO = [["skin", [0], 12.280], ["joints", [1, 2], 12.304], ["tendons", [3, 4], 12.477], ["other", [5], 13.606]];
+    // no explicit word names the fourth ("other tissue") destination -- one
+    // possible destination among several, per the brief -- so it dispatches
+    // just after "tendons", where the sentence's own list runs out
+    var GO = [["skin", [0], 10.016], ["joints", [1, 2], 10.459], ["tendons", [3, 4], 10.763],
+              ["other", [5], 10.763 + 0.5]];
     GO.forEach(function (g) {
       var br = document.getElementById("br-" + g[0]);
-      g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.7, "power1.inOut", { ox:q62.x, oy:q62.y, set:false }); });
-      tl.fromTo("#d-" + g[0] + "-wash", { scaleX:0 }, { scaleX:1, duration:0.25, ease:EASE.wipe }, g[2] + 0.55);
-      // the panel is knocked as the dot lands -- delivery is felt, not labelled
-      tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.6);
+      g[1].forEach(function (i, k) { pathFollow(tl, dots[i], br, g[2] + k * 0.08, 0.65, "power1.inOut", { ox:q62.x, oy:q62.y, set:false }); });
+      tl.fromTo("#d-" + g[0] + "-wash", { scaleX:0 }, { scaleX:1, duration:0.25, ease:EASE.wipe }, g[2] + 0.5);
+      tl.to("#d-" + g[0], { x:-18, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, g[2] + 0.55);
     });
-    // was 16.952-0.3: the destination dots finish arriving by
-    // ~71.9s and "scaffolding." isn't said until 74.2s, leaving ~1.9s of
-    // true stillness (measured on the render: t=72.0-74.0s pixel-identical).
-    // Starting the camera-home leg on "urgent." fills that gap with the
-    // same motion, just earlier, rather than adding a new one.
-    tl.to("#world", { scale:1, x:0, y:0, duration:0.8, ease:EASE.camera }, 15.496 - 0.3);
-    reveal(tl, "#scaff", 16.952);
-    tl.fromTo("#scaff-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 16.952);
-    // "It got A BOX OF spare parts" -> "It got spare parts instead."; the
-    // crate payoff now lands on "parts" rather than the removed "box".
-    reveal(tl, "#crate", 18.296);
-    tl.fromTo("#crate-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 18.296);
-    tl.fromTo(["#slat-1", "#slat-2", "#slat-3"], { y:-40, opacity:0 }, { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.slam }, 18.296 + 0.1);
-    // "Trials do point to a modest benefit" -- the partial evidence payoff
-    // (added in the Phase 1 narration trim) had no visual event of its own,
-    // leaving 76.3-78.4s dead (measured: t=76.0-78.5s pixel-identical on the
-    // render). The freed-up stomach-p space hosts a small foreshadow of the
-    // evidence section this line sets up.
-    reveal(tl, "#benefit-teaser", 19.101);
-    tl.fromTo("#benefit-teaser-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 19.101);
-    drawIn(tl, "#benefit-line,#benefit-head", 19.101 + 0.15, 0.5, 0.1, EASE.wipe);
+    // "No guaranteed delivery to your face": the struck route is named at last
+    tl.to("#face-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 12.015);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }, 14.158 - 0.8);
 
     // departure: push under the invert wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 21.262);
+    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 14.158);
 
-    tl.to({}, { duration: 21.862 }, 0);   // full-span anchor -- always last
-    window.__timelines["08-digestion"] = tl;
+    tl.to({}, { duration: 14.758 }, 0);   // full-span anchor -- always last
+    window.__timelines["06-swallow"] = tl;
   </script>
 </template>
 </body>

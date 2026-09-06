@@ -47,7 +47,9 @@ MID_STDDEV_MIN = 6.0           # below this the midpoint is blank.
                                # an empty paper ground -- spare by design, and it
                                # measures 10.0. A genuinely blank frame is uniform
                                # ground and measures under 1.
-EXPECT_KINDS = {"iris": 4, "invert": 2, "curtain": 1}
+# 2026-09-05 redesign: 7 files / 6 boundaries (was 8/7) -- see
+# transitions.py's BOUNDARIES comment for why the split is 3/2/1 here.
+EXPECT_KINDS = {"iris": 3, "invert": 2, "curtain": 1}
 
 
 def sh(*a):

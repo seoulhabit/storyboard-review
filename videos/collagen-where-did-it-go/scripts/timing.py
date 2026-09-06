@@ -50,7 +50,7 @@ FADE_OUT = 0.08       # sits inside TAIL
 # Composition file that a unit lands in: a new file starts at every unit whose
 # incoming transition is visible. Names default to the first unit's cid; the
 # evidence file is named for the mode, not its first beat.
-FILE_NAMES = {"10-trials": "10-evidence"}
+FILE_NAMES = {"08-trials": "05-evidence"}
 
 
 def sh(*a):

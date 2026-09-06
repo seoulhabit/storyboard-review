@@ -1,95 +1,91 @@
 #!/usr/bin/env python3
-"""File A1 -- 01-hook (unit 1) and File A2 -- 02-promise (unit 2).
+"""File A -- 01-hook (unit 1). File B -- 02-mesh + 03-uv (units 2-3).
 
-Frame ZERO is the hook: the molecule is already racing at the barrier and
-the first word lands at 0.10s. Nothing fades in from black.
+2026-09-05 editorial redesign. 01-hook opens on real skin (a graded macro
+photo, CSS background-image -- never <img>, which build_frames.py's own
+_static_asserts bans for the clip-path/fast-capture hazard) with one collagen
+strand splitting into its two routes: cream stops at the photo's own surface
+edge, powder passes through it and starts to fragment. File B introduces the
+video's one persistent actor -- a horizontal skin cross-section, epidermis
+over dermis, a woven collagen mesh inside the dermis -- and immediately shows
+it weakening (age + UV). This same actor returns, camera-reframed and never
+redrawn, in 04-barrier and 12-recs (see actors.skin_opts_js).
 """
-from actors import (HELPERS_JS, HELIX_JS, HELIX_CSS, BARRIER_JS, BARRIER_CSS, TILES_JS,
-                    EASE_JS, kt, chip, panel, abs_)
+from actors import (HELPERS_JS, HELIX_JS, HELIX_CSS, BARRIER_JS, BARRIER_CSS,
+                    EASE_JS, kt, chip, panel, abs_, skin_opts_js, MESH_DAMAGED)
 from motion import MOTION
-
-# local safe-box coordinates (1728 x 918)
-MOL_PARK = (864, 506)          # where the molecule rests between files A1 and A2 (canvas 960,560)
 
 
 def file_01_hook(fspan, fctx):
-    css = HELIX_CSS + BARRIER_CSS + """
+    css = HELIX_CSS + """
     .abs { position:absolute; left:0; top:0; }
-    #hook-slam { position:absolute; left:120px; top:120px; width:820px; }
-    #hook-slam .kt-word.em { color:var(--coral); }
-    .lab { opacity:0; }
-    #powder { position:absolute; left:60px; top:560px; width:820px; height:320px;
-              background:var(--mist); padding:var(--s-4) var(--s-5); }
-    #powder .chip { position:relative; }
-    .glass { fill:none; stroke:var(--ink); stroke-width:5; }
-    .glass-fill { fill:var(--aqua); opacity:.35; }
-    .arrow { fill:none; stroke:var(--ink); stroke-width:5; stroke-dasharray:18 14; opacity:.8; }
-    .strike { fill:var(--coral); opacity:0; }
+    #photo { position:absolute; left:0; top:485px; width:1728px; height:433px;
+             background-image:url("assets/images/skin-base.png");
+             background-size:cover; background-position:center 30%;
+             background-color:#DCC9AE;
+             -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 14%);
+             mask-image:linear-gradient(to bottom, transparent 0%, black 14%); }
+    .surf { fill:none; stroke:var(--ink); stroke-width:4; opacity:.55; }
     .hidden-path { fill:none; stroke:none; }
-    #epi-wash { position:absolute; left:1067px; top:0; width:177px; height:918px; background:var(--coral); }
+    #hook-q { position:absolute; left:280px; top:700px; width:1160px; text-align:center; justify-content:center; }
+    .lab { opacity:0; }
 """
     body = f"""
       <div class="stage">
        <div class="world" id="world">
-        {panel("powder", "aqua", chip("lab-powder", "POWDER", "lab", "position:absolute;left:32px;top:24px;"), abs_(60, 560, 820, 320), "")}
+        <div id="photo"></div>
         <svg id="stageA" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
-          <path id="run" class="hidden-path" d="M 320 470 L 790 470"/>
-          <path id="drop" class="hidden-path" d="M 470 230 C 470 400 470 520 470 690"/>
-          <path class="glass" d="M 400 640 L 540 640 L 522 830 L 418 830 Z"/>
-          <rect class="glass-fill" x="412" y="760" width="116" height="66"/>
-          <path id="arrow-face" class="arrow" d="M 570 735 L 1000 735"/>
-          <rect id="arrow-x" class="strike" x="560" y="722" width="450" height="26" rx="6"/>
+          <path id="surf-line" class="surf" d="M 0 485 Q 220 465 440 485 T 880 485 T 1320 485 T 1728 485"/>
+          <path id="drop" class="hidden-path" d="M 780 470 C 820 620 860 760 900 900"/>
         </svg>
-        <div id="epi-wash"></div>
-        {kt("hook-slam", "does NOT replace", "", em=("NOT",))}
-        {chip("lab-cream", "CREAM", "lab", abs_(120, 330))}
+        {chip("lab-cream", "CREAM", "lab", abs_(560, 340))}
+        {chip("lab-powder", "POWDER", "lab", abs_(900, 560))}
+        {kt("hook-q", "Where does it actually go?", "serif")}
        </div>
       </div>
 """
-    tl = EASE_JS + HELPERS_JS + HELIX_JS + BARRIER_JS + """
+    tl = EASE_JS + HELPERS_JS + HELIX_JS + """
     var svg = document.getElementById("stageA");
-    gsap.set("#epi-wash", { scaleX:0, transformOrigin:"0% 50%" });
-    // the barrier stands on the right, surface facing the molecule
-    drawBarrier(svg, { id:"bar", w:918, h:691, surf:30, boundary:207, brickRows:2,
-                       orient:"left", x:1037, hatch:{ n:6 } });
-    var mol = drawHelix(svg, { id:"mol", x:40, y:470, w:560, h:140, strokeW:16 });
-    var molb = drawHelix(svg, { id:"mol-b", x:330, y:230, w:280, h:70, strokeW:11 });
+    var mol = drawHelix(svg, { id:"mol", x:520, y:280, w:340, h:90, strokeW:15 });
+    var molb = drawHelix(svg, { id:"mol-b", x:640, y:420, w:280, h:70, strokeW:11, segs:3 });
     molb.style.opacity = "0";
-    var run = document.getElementById("run"), drop = document.getElementById("drop");
+    var drop = document.getElementById("drop");
 
-    // THE RACE: frame zero already has the molecule moving; it reaches the
-    // surface exactly as "replace" is spoken.
-    var tR = @w(replace);
-    var end = pathFollow(tl, mol, run, 0.12, Math.max(0.6, tR - 0.30 - 0.12), "power2.in");
-    // IMPACT: the epidermis flashes coral, the wall flexes, the molecule recoils
-    tl.fromTo("#epi-wash", { scaleX:0 }, { scaleX:1, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, tR - 0.05);
-    tl.fromTo("#bar", { scaleX:1, transformOrigin:"100% 50%" },
-              { scaleX:0.97, duration:0.16, yoyo:true, repeat:1, ease:EASE.slam }, tR - 0.05);
-    tl.fromTo(mol, { x:end.x, y:end.y }, { x:end.x - 70, duration:0.45, ease:EASE.slam }, tR);
-    kineticWords(tl, "#hook-slam", @w(not,1) - 0.05, 0.08, "slam");
-    tl.fromTo("#lab-cream", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(cream));
+    // frame zero: the strand is already in frame, already moving -- nothing
+    // fades in from black
+    tl.fromTo(mol, { y:-40 }, { y:0, duration:1.0, ease:"power1.out" }, 0);
+    tl.fromTo("#lab-cream", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, @w(cream));
+    // CREAM: settles right at the photo's own surface edge and stops
+    tl.to(mol, { y:52, duration:0.6, ease:EASE.arrive }, @w(cream) + 0.1);
+    tl.to(mol, { scale:1.05, duration:0.16, yoyo:true, repeat:1, ease:EASE.slam }, @w(stops));
+    tl.to("#surf-line", { stroke:"#59B8AE", strokeWidth:6, duration:0.3, yoyo:true, repeat:1 }, @w(stops));
 
-    // THE SPLIT: the powder route opens below
-    tl.fromTo("#powder-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, @w(powder) - 0.10);
-    tl.fromTo("#lab-powder", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, @w(powder));
-    // the powder route is the SAME actor splitting off, not a new one fading in
+    // POWDER: the SAME actor splits off, not a new one fading in
+    tl.fromTo("#lab-powder", { opacity:0, y:10 }, { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, @w(powder));
     tl.fromTo(molb, { opacity:1, scale:0.2, transformOrigin:"50% 50%" },
-              { scale:1, duration:0.32, ease:EASE.slam }, @w(powder));
-    pathFollow(tl, molb, drop, @w(travel), 0.7, "power2.in");
-    drawIn(tl, "#arrow-face", @w(travel) + 0.25, 0.5, 0, EASE.wipe);
-    // "...to your face": the route is struck out, the panel retracts
-    tl.fromTo("#arrow-x", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
-              { scaleX:1, duration:0.25, ease:EASE.wipe }, @w(face));
-    tl.to("#powder-wash", { scaleX:0, duration:0.4, ease:EASE.exit }, @w(face) + 0.30);
-    tl.to(["#arrow-face", "#arrow-x", molb, "#lab-powder"], { opacity:0, duration:0.3, ease:EASE.exit }, @w(face) + 0.30);
-    // converge: the molecule parks at the frame centre, where the iris opens
-    tl.fromTo(mol, { x:end.x - 70, y:end.y }, { x:MOLX - 320, y:MOLY - 470, duration:0.55, ease:EASE.camera }, @we(face) - 0.20);
-    tl.to("#hook-slam", { opacity:0, duration:0.3, ease:EASE.exit }, @we(face) - 0.20);
-""".replace("MOLX", str(MOL_PARK[0])).replace("MOLY", str(MOL_PARK[1]))
+              { scale:1, duration:0.3, ease:EASE.slam }, @w(powder));
+    var end = pathFollow(tl, molb, drop, @w(different), 1.3, "power1.in");
+    // BREAKING APART: passes through the surface photo and starts to fragment --
+    // the foreshadow digestion pays off in full
+    for (var s = 0; s < 3; s++) {
+      tl.to("#mol-b-seg-" + s, { x:(s - 1) * (26 + 10 * s), y:14 * s, rotation:(s - 1) * 30,
+             opacity:0.75, duration:0.5, ease:EASE.slam }, @w(apart) + s * 0.08);
+    }
+    tl.to(molb, { opacity:0.35, duration:0.6, ease:EASE.exit }, @w(goes) - 0.1);
+
+    // ONE question, stated plainly once both routes have played out
+    kineticWords(tl, "#hook-q", @w(where) - 0.1, 0.08, "rise");
+    // converge: both actors settle where the next iris opens
+    tl.to(mol, { x:344, y:226, duration:0.6, ease:EASE.camera }, @we(go) - 0.5);
+    tl.to(molb, { opacity:0, duration:0.4, ease:EASE.exit }, @we(go) - 0.5);
+"""
     MOTION["01-hook"]["beats"] = [
-        {"name": "impact flash",  "at": "@w(replace)-0.05", "area": 0.092, "dl": 103, "dur": 0.36},
-        {"name": "powder wash",   "at": "@w(powder)-0.10",  "area": 0.127, "dl": 81,  "dur": 0.50},
-        {"name": "powder retract","at": "@w(face)+0.30",    "area": 0.127, "dl": 81,  "dur": 0.40},
+        {"name": "cream settles",   "at": "@w(cream)+0.1",   "area": 0.06,  "dl": 80,  "dur": 0.6},
+        {"name": "surface flash",   "at": "@w(stops)",       "area": 0.10,  "dl": 60,  "dur": 0.3},
+        {"name": "powder splits",   "at": "@w(powder)",      "area": 0.05,  "dl": 90,  "dur": 0.3},
+        {"name": "powder fragments","at": "@w(apart)",       "area": 0.06,  "dl": 90,  "dur": 0.5},
+        {"name": "question rises",  "at": "@w(where)-0.1",   "area": 0.09,  "dl": 224, "dur": 0.34},
+        {"name": "converge",        "at": "@we(go)-0.5",     "area": 0.06,  "dl": 60,  "dur": 0.6},
     ]
     return body, css, tl
 
@@ -97,110 +93,85 @@ def file_01_hook(fspan, fctx):
 FILES = {"01-hook": file_01_hook}
 
 
-# ---------------------------------------------------------------- File A2 -- 02-promise
+# ---------------------------------------------------------------- File B -- 02-mesh + 03-uv
 
-def file_02_promise(fspan, fctx):
-    """The promise, and the curiosity loop the evidence act pays off.
-
-    Two compositions on one set of nodes: the question drawn AROUND the
-    parked molecule; an ink data column that rises and shoves it aside, tags
-    the industry-funded trials and drops them WITHOUT showing a result (the
-    loop stays open) -- then HOLDS there, unresolved, into the iris. There is
-    no second curiosity loop here: the withdrawn draft's separate "what
-    protects it?" shield teaser is gone (review Animation item 4, and the
-    text that carried it -- "But first, what protects the collagen you
-    already have?" -- was cut from vo_lines.py for the same reason: one open
-    question, not two).
-
-    The tile TAG PATTERN is illustrative: Myung & Park 2025 report 23 RCTs and
-    subgroup results by funding source and quality, but no per-subgroup trial
-    counts, so a chip says so on screen rather than letting 12 dropped tiles
-    assert a number the source does not give.
-    """
-    css = HELIX_CSS + """
-    .abs { position:absolute; }
-    #stageB { position:absolute; left:0; top:0; }
-    #promise-q { position:absolute; left:0; top:70px; width:940px; }
-    .qmark { fill:none; stroke:var(--ink-2); stroke-width:16; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper); --ink-2 measures 4.89:1 */
-    #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
-            justify-content:center; gap:var(--s-4); }
-    .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }
-    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459;
-               display:flex; align-items:center; justify-content:center; }
-    .tr.mini .tr-tag { font-family:var(--font-mono); font-size:44px; font-weight:500;
-                       color:var(--ink); opacity:0; }
-    #data .chip { position:relative; }
+def file_02_mesh(fspan, fctx):
+    """The one persistent actor's first appearance -- introduced in full, then
+    immediately weakened. Labels appear ONCE, here; every later reframing of
+    this same actor (04-barrier, 12-recs) passes labels:false."""
+    css = BARRIER_CSS + """
+    .abs { position:absolute; left:0; top:0; }
+    .sun { fill:var(--highlighter); }
+    .ray { stroke:var(--highlighter); stroke-width:5; stroke-linecap:round; opacity:0; }
+    /* #mesh-kt had no explicit position and fell into normal document flow at
+       .world's top-left origin -- directly over the epidermis brick course
+       (confirmed on the rough-preview render: the kinetic text rendered
+       interleaved with the brick rects, illegible). Centered in the open
+       dermis space instead, where the mesh lines have room around them. */
+    #mesh-kt { position:absolute; left:0; top:520px; width:1728px;
+               text-align:center; justify-content:center; }
 """
-    # the "data" panel below was abs_(1000, 0, 728, 918): right edge landed at
-    # canvas x=1824 and bottom at y=972 -- EXACTLY the safe-area reserve
-    # boundary, zero margin. check-safe-area.py caught the panel's own ink a
-    # few px past both edges on one sampled frame mid-transition (t=14.00s,
-    # "162px masked in-zone" on the right and bottom) -- a hairline boundary
-    # that was always one render away from tripping this, not a defect tied
-    # to any one change. 10px margin added on each side.
     body = f"""
       <div class="stage">
        <div class="world" id="world">
-        <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
-          <path class="qmark" id="qmark" d="M 1206 372 C 1206 316 1250 288 1290 300 C 1332 313 1338 362 1308 392 C 1282 418 1268 436 1268 470"/>
-          <circle class="qmark" id="qmark-dot" cx="1268" cy="524" r="3"/>
+        <svg id="skinSvg" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
+          <circle class="sun" id="sun" cx="1560" cy="70" r="0"/>
+          <g id="rays">
+            <line class="ray" x1="1560" y1="20" x2="1560" y2="0"/>
+            <line class="ray" x1="1610" y1="45" x2="1630" y2="28"/>
+            <line class="ray" x1="1610" y1="95" x2="1630" y2="112"/>
+          </g>
         </svg>
-        {kt("promise-q", "Where does it actually go?", "serif")}
-        {panel("data", "ink", '<div class="mini-grid" id="mini-grid"></div>'
-               + chip("mini-cap", "23 trials", "on-ink")
-               + chip("mini-leg", "$ = industry funded", "on-ink")
-               + chip("mini-note", "tag pattern illustrative", "on-ink"),
-               abs_(1000, 0, 718, 908), "late")}
+        {kt("mesh-kt", "a support mesh", "serif")}
        </div>
       </div>
 """
-    tl = EASE_JS + HELPERS_JS + HELIX_JS + TILES_JS + """
-    var svg = document.getElementById("stageB");
-    // the SAME helix 01-hook parked here: identical geometry, so the iris hands
-    // off one actor rather than two lookalikes
-    var mol = drawHelix(svg, { id:"mol", x:584, y:506, w:560, h:140, strokeW:16 });
-    drawTiles(document.getElementById("mini-grid"), 23, { size:"mini" });
-    gsap.set(".tr.mini", { y:70, opacity:0 });
-    gsap.set(["#mini-cap", "#mini-leg", "#mini-note"], { y:16, opacity:0 });
-    gsap.set("#data-wash", { scaleX:1, scaleY:0, transformOrigin:"50% 100%" });
-    kineticWords(tl, "#promise-q", @w(where) - 0.1, 0.09, "rise");
-    // the question is DRAWN around the molecule, not typeset beside it
-    drawIn(tl, "#qmark", @w(go) - 0.25, 0.55, 0, EASE.wipe);
-    tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, @we(go));
+    tl = EASE_JS + HELPERS_JS + BARRIER_JS + f"""
+    var svg = document.getElementById("skinSvg");
+    drawBarrier(svg, {skin_opts_js(labels=True)});
+    // the whole mesh starts undrawn -- it draws IN as "support mesh" is said,
+    // never sitting pre-formed before the claim is made
+    var fibres = [];
+    for (var i = 0; i < 10; i++) {{ fibres.push("#skin-h-" + i); fibres.push("#skin-hb-" + i); }}
+    fibres.forEach(function (sel) {{
+      var L = document.querySelector(sel); L.style.strokeDashoffset = L.getAttribute("data-len");
+    }});
+    tl.fromTo("#world", {{ scale:1.05 }}, {{ scale:1, duration:1.0, ease:EASE.camera }}, 0);
+    drawIn(tl, "#skin-surface", 0.1, 0.7, 0, EASE.wipe);
+    // stratum-corneum brick course settles in behind the surface line
+    tl.fromTo("[id^=skin-b-]", {{ opacity:0, y:-10 }}, {{ opacity:1, y:0, duration:0.4, stagger:0.008, ease:EASE.arrive }}, 0.3);
+    drawIn(tl, fibres.join(","), @w(support) - 0.5, 0.7, 0.02, EASE.wipe);
+    kineticWords(tl, "#mesh-kt", @w(under) - 0.1, 0.08, "rise");
+    // a held beat between the brick course settling (~0.7s) and the mesh
+    // draw-in beginning (@w(support)-0.5, itself late in a short unit) -- a
+    // fixed early anchor, not word-relative, since the gap sits BEFORE
+    // "support" is even spoken. A bounded camera micro-drift keeps it alive.
+    tl.to("#world", {{ scale:1.035, duration:1.0, yoyo:true, repeat:1, ease:"sine.inOut" }}, 0.9);
+    tl.to("#mesh-kt", {{ opacity:0, duration:0.3, ease:EASE.exit }}, @uend(03-uv) - 2.4);
 
-    // ---- the data column rises and takes the frame -------------------------
-    reveal(tl, "#data", @w(twenty) - 0.45);
-    tl.to(["#qmark", "#qmark-dot"], { opacity:0, duration:0.25, ease:EASE.exit }, @w(twenty) - 0.55);
-    tl.to("#data-wash", { scaleY:1, duration:0.5, ease:EASE.wipe }, @w(twenty) - 0.45);
-    tl.to(mol, { x:-300, duration:0.6, ease:EASE.camera }, @w(twenty) - 0.35);
-    tl.to("#promise-q", { y:-26, opacity:0.5, duration:0.5, ease:EASE.exit }, @w(twenty) - 0.35);
-    tl.to(".tr.mini", { y:0, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, @w(trials) - 0.1);
-    tl.to("#mini-cap", { y:0, opacity:1, duration:0.3, ease:EASE.arrive }, @w(trials) + 0.3);
-    // TAG, then DROP: the loop's object is named and removed, and no result is
-    // shown -- 12-filter is where the answer lands
-    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", borderColor:"#C97A5C",
-          duration:0.25, stagger:0.012, ease:EASE.swap }, @w(remove));
-    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$" }, @w(remove) + 0.1); });
-    tl.fromTo(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-              { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, @w(remove) + 0.1);
-    tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, @w(industry));
-    // the tags have done their work by the time the tiles leave; they fade with
-    // the fall rather than riding it down over the row below and the caption
-    tl.to(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, @w(changes));
-    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, @w(changes));
-    // ---- HOLD, unresolved: the loop is open and stays open into the iris ----
-    // review Animation item 4: at least 700ms of settled, unresolved state
-    // before the transition -- one curiosity loop, not answered here.
+    // ---- 03-uv: age + ultraviolet weaken the mesh, live ------------------------
+    tl.fromTo("#sun", {{ attr:{{ r:0 }} }}, {{ attr:{{ r:34 }}, duration:0.6, ease:EASE.arrive }}, @w(age));
+    tl.to(".ray", {{ opacity:0.85, duration:0.4, stagger:0.06, ease:EASE.arrive }}, @w(age) + 0.2);
+    var DAMAGED = {MESH_DAMAGED};
+    DAMAGED.forEach(function (i, k) {{
+      snapMeshFibers("skin", [i], tl, @w(break) + k * 0.22, 0);
+    }});
+    tl.to(["#sun", "#rays"], {{ opacity:0.5, duration:0.5, ease:EASE.hold }}, @w(down) - 0.3);
+    // camera settles home before the next iris opens ON this actor's own state
+    tl.to("#world", {{ scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }}, @uend(03-uv) - 0.8);
 """
-    MOTION["02-promise"]["beats"] = [
-        {"name": "hero rise",      "at": "@w(where)-0.1",   "area": 0.065, "dl": 224, "dur": 0.34},
-        {"name": "data column up", "at": "@w(twenty)-0.45", "area": 0.32,  "dl": 224, "dur": 0.5},
-        {"name": "tiles rise",     "at": "@w(trials)-0.1",  "area": 0.10,  "dl": 100, "dur": 0.46},
-        {"name": "industry tags",  "at": "@w(remove)",      "area": 0.05,  "dl": 72,  "dur": 0.25},
-        {"name": "tiles fall",     "at": "@w(changes)",     "area": 0.10,  "dl": 131, "dur": 0.45},
+    MOTION["02-mesh"]["beats"] = [
+        {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 60, "dur": 1.0},
+        {"name": "surface draws", "at": "0.1", "area": 0.15, "dl": 70, "dur": 0.7},
+        {"name": "mesh draws in", "at": "@w(support)-0.5", "area": 0.20, "dl": 65, "dur": 0.7},
+    ]
+    MOTION["03-uv"]["beats"] = [
+        {"name": "sun rises",    "at": "@w(age)",       "area": 0.05, "dl": 90,  "dur": 0.6},
+        {"name": "fibre snap 1", "at": "@w(break)",     "area": 0.04, "dl": 103, "dur": 0.42},
+        {"name": "fibre snap 3", "at": "@w(break)+0.44","area": 0.04, "dl": 103, "dur": 0.42},
+        {"name": "camera home",  "at": "@uend(03-uv)-0.8", "area": 0.5, "dl": 60, "dur": 0.7},
     ]
     return body, css, tl
 
 
-FILES["02-promise"] = file_02_promise
+FILES["02-mesh"] = file_02_mesh

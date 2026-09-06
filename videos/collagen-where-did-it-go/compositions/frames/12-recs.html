@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>02-promise</title></head>
+<head><meta charset="UTF-8"><title>12-recs</title></head>
 <body>
 <template>
-  <div id="root" data-composition-id="02-promise"
-       data-width="1920" data-height="1080" data-duration="9.305">
+  <div id="root" data-composition-id="12-recs"
+       data-width="1920" data-height="1080" data-duration="23.893">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -218,32 +218,38 @@
     }
 
 
-    .mol-body { fill:none; stroke:var(--coral); stroke-linecap:round; }
+    .bar-band { fill:var(--mist); }
+    .bar-brick { fill:var(--paper); stroke:var(--ink); stroke-width:3; }
+    .bar-jamb { stroke:var(--ink); stroke-width:4; }
+    .bar-doorgap { fill:var(--paper); }
+    .bar-surface { fill:none; stroke:var(--ink); stroke-width:4; opacity:.7; }
+    .bar-boundary { stroke:var(--ink); stroke-width:4; stroke-dasharray:14 10; opacity:.55; }
+    .bar-h { stroke:var(--aqua); stroke-width:7; stroke-linecap:round; opacity:.55; }
+    .bar-label { font-family:var(--font-mono); font-size:32px; letter-spacing:.1em;
+                 fill:var(--ink-2); opacity:1; }
+    /* was opacity:.7 -- composites to 2.78:1 on paper, failing the 4.5 text
+       floor; full opacity measures 4.89:1. The dim was cosmetic, not
+       load-bearing (EPIDERMIS/DERMIS are the only text on these labels). */
 
-    .abs { position:absolute; }
-    #stageB { position:absolute; left:0; top:0; }
-    #promise-q { position:absolute; left:0; top:70px; width:940px; }
-    .qmark { fill:none; stroke:var(--ink-2); stroke-width:16; stroke-linecap:round; } /* was --ink-3 (2.67:1 on paper); --ink-2 measures 4.89:1 */
-    #data { background:transparent; padding:var(--s-5); display:flex; flex-direction:column;
-            justify-content:center; gap:var(--s-4); }
-    .mini-grid { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; height:392px; }
-    .tr.mini { border-radius:var(--r-2); background:#4A453E; border:2px solid #6A6459;
-               display:flex; align-items:center; justify-content:center; }
-    .tr.mini .tr-tag { font-family:var(--font-mono); font-size:44px; font-weight:500;
-                       color:var(--ink); opacity:0; }
-    #data .chip { position:relative; }
+    .abs { position:absolute; left:0; top:0; }
+    .shield { fill:var(--aqua); opacity:0; }
+    .film { fill:var(--aqua); opacity:0; }
+    #final { padding:var(--s-4) var(--s-6); display:flex; align-items:center; opacity:0; }
+    #final-kt { font-size:var(--t-hero); }
+    .cite { opacity:0; position:absolute; }
+    #opt { background:transparent; padding:var(--s-4); display:flex; align-items:center; gap:14px; opacity:0; }
+    .scoop-mini { fill:none; stroke:var(--ink-2); stroke-width:5; }
 
     </style>
 
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <svg id="stageB" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
-          <path class="qmark" id="qmark" d="M 1206 372 C 1206 316 1250 288 1290 300 C 1332 313 1338 362 1308 392 C 1282 418 1268 436 1268 470"/>
-          <circle class="qmark" id="qmark-dot" cx="1268" cy="524" r="3"/>
-        </svg>
-        <p class="kt serif" id="promise-q"><span class="kt-word">Where</span> <span class="kt-word">does</span> <span class="kt-word">it</span> <span class="kt-word">actually</span> <span class="kt-word" id="promise-q-last">go?</span></p>
-        <div class="panel late" id="data" style="position:absolute;left:1000px;top:0px;width:718px;height:908px;"><div class="wash ink" id="data-wash"></div><div class="mini-grid" id="mini-grid"></div><p class="chip on-ink" id="mini-cap" style="">23 trials</p><p class="chip on-ink" id="mini-leg" style="">$ = industry funded</p><p class="chip on-ink" id="mini-note" style="">tag pattern illustrative</p></div>
+        <svg id="skinSvg" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true"></svg>
+        <div class="cite" id="cite-smoke" style="position:absolute;left:60px;top:40px;">J Dermatol Sci &middot; 2007</div>
+        <div class="cite" id="cite-ret" style="position:absolute;left:1420px;top:40px;">Arch Dermatol &middot; 2007</div>
+        <div class="panel " id="opt" style="position:absolute;left:1360px;top:700px;width:320px;height:100px;"><div class="wash dim" id="opt-wash"></div><svg viewBox="0 0 60 60" width="52" height="52" class="scoop-mini" aria-hidden="true"><path d="M10 22 Q10 44 30 44 Q50 44 50 22" fill="none"/></svg><p class="chip " id="opt-chip" style="">optional</p></div>
+        <div class="panel " id="final" style="position:absolute;left:0px;top:796px;width:1728px;height:122px;"><div class="wash moss" id="final-wash"></div><p class="kt " id="final-kt"><span class="kt-word">Cream</span> <span class="kt-word">can</span> <span class="kt-word">moisturize.</span> <span class="kt-word">Powder</span> <span class="kt-word">is</span> <span class="kt-word">optional.</span> <span class="kt-word">Protect</span> <span class="kt-word" id="final-kt-last">first.</span></p></div>
        </div>
       </div>
       </div>
@@ -330,89 +336,182 @@
             stagger:step, ease:"power2.out" }, at);
     }
 
-    // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
-    // groups (#id-seg-i) so digestion can tween segments apart without a
-    // second drawing. o = { id, x, y, w, h, turns, strokeW, segs, cls }
-    function drawHelix(svg, o) {
-      var STEP = 8, N = Math.round(o.w / STEP), segs = o.segs || 1, turns = o.turns || 1.5;
-      var g = el("g", { id:o.id, "class":"mol" }, svg);
-      for (var s = 0; s < segs; s++) {
-        var sg = el("g", { id:o.id + "-seg-" + s }, g);
-        var i0 = Math.floor(N * s / segs), i1 = Math.min(N, Math.floor(N * (s + 1) / segs) + 1);
-        for (var k = 0; k < 3; k++) {
-          var d = "", ph = k * 2.0944;
-          for (var i = i0; i <= i1; i++) {
-            var x = i * STEP;
-            d += (i === i0 ? "M" : "L") + (o.x + x).toFixed(1) + " " +
-                 (o.y + Math.sin(x / o.w * turns * 6.2832 + ph) * o.h / 2).toFixed(2) + " ";
+    // Skin cross-section: wavy surface, a brick-course stratum corneum, a
+    // dashed epidermis/dermis boundary, an optional dermis hatch (aqua braces
+    // = the collagen under the surface) and 32px labels. Geometry is a pure
+    // function of o.w / o.h -- no PRNG. Adapted from catalog skin-band +
+    // barrier-wall.
+    //   o = { id, w, h, surf, boundary, brickRows, door:{col}, hatch:{n, cut:[i]},
+    //         orient:"top"|"left", x, y, labels:true }
+    // "left": drawn horizontally then rotated so the SURFACE faces left and the
+    // band stands vertically at o.x with width o.h and height o.w.
+    function drawBarrier(svg, o) {
+      var g = el("g", { id:o.id, "class":"barrier" }, svg);
+      var inner = g;
+      if (o.orient === "left") {
+        inner = el("g", { transform:"translate(" + o.x + " 0) rotate(-90) translate(-" + o.w + " 0)" }, g);
+      } else if (o.x || o.y) {
+        inner = el("g", { transform:"translate(" + (o.x||0) + " " + (o.y||0) + ")" }, g);
+      }
+      var w = o.w, h = o.h, surf = o.surf, bnd = o.boundary;
+      // washes FIRST so everything paints above them
+      el("rect", { x:0, y:surf, width:w, height:bnd - surf, "class":"bar-band", id:o.id + "-epi" }, inner);
+      el("rect", { x:0, y:bnd, width:w, height:h - bnd, "class":"bar-band", id:o.id + "-derm" }, inner);
+      // NO wash rects here: transform-scaling an SVG rect inside a translated group
+      // rendered around the SVG origin, not the rect's edge. Washes are HTML divs
+      // laid over the band by the file that owns it (see frames_c.py).
+      // dermis hatch
+      if (o.hatch) {
+        var n = o.hatch.n || Math.max(2, Math.round(w / 150)), hx = w / n;
+        for (var i = 0; i < n; i++) {
+          var x0 = i * hx + 14, x1 = (i + 1) * hx - 14;
+          var a = el("line", { x1:x0, y1:h - 14, x2:x1, y2:bnd + 14, "class":"bar-h", id:o.id + "-h-" + i }, inner);
+          var b = el("line", { x1:x1, y1:h - 14, x2:x0, y2:bnd + 14, "class":"bar-h", id:o.id + "-hb-" + i }, inner);
+          [a, b].forEach(function (L) { var len = Math.hypot(x1 - x0, h - bnd - 28);
+            L.style.strokeDasharray = len; L.style.strokeDashoffset = 0; L.setAttribute("data-len", len); });
+        }
+        (o.hatch.cut || []).forEach(function (i) {
+          ["-h-", "-hb-"].forEach(function (s) {
+            var L = document.getElementById(o.id + s + i);
+            L.style.strokeDashoffset = L.getAttribute("data-len"); L.style.opacity = "0.25"; });
+        });
+      }
+      // brick courses (running bond)
+      var BW = 130, BH = 58, J = 16, rows = o.brickRows == null ? 2 : o.brickRows;
+      for (var r = 0; r < rows; r++) {
+        var yb = surf + 10 + r * (BH + J), off = (r % 2) ? -73 : 0, c = 0;
+        for (var xb = off; xb < w; xb += BW + J, c++) {
+          if (o.door && r === 0 && c === o.door.col) {
+            el("line", { x1:xb + 20, y1:yb, x2:xb + 20, y2:yb + BH, "class":"bar-jamb" }, inner);
+            el("line", { x1:xb + BW - 20, y1:yb, x2:xb + BW - 20, y2:yb + BH, "class":"bar-jamb" }, inner);
+            el("rect", { x:xb + 20, y:yb, width:BW - 40, height:BH, "class":"bar-doorgap", id:o.id + "-door" }, inner);
+            continue;
           }
-          var p = el("path", { d:d, "class":o.cls || "mol-body", opacity:(0.45 + k * 0.27).toFixed(2) }, sg);
-          p.style.strokeWidth = (o.strokeW || 14) + "px";
+          el("rect", { x:Math.max(0, xb), y:yb, width:Math.min(w, xb + BW) - Math.max(0, xb), height:BH, rx:9,
+                       "class":"bar-brick", id:o.id + "-b-" + r + "-" + c }, inner);
+        }
+      }
+      // surface wave and boundary
+      var d = "";
+      for (var k = 0; k <= 24; k++) {
+        var x = w * k / 24, y = surf + 7 * Math.sin(2.2 * 6.2832 * x / w) + 3 * Math.sin(5.1 * 6.2832 * x / w);
+        d += (k ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+      }
+      el("path", { d:d, "class":"bar-surface", id:o.id + "-surface" }, inner);
+      el("line", { x1:0, y1:bnd, x2:w, y2:bnd, "class":"bar-boundary", id:o.id + "-boundary" }, inner);
+      if (o.labels !== false) {
+        if (o.orient === "left") {
+          txt(g, o.x + surf + 22, 52, "EPIDERMIS", "bar-label");
+          txt(g, o.x + h - 22, 52, "DERMIS", "bar-label", "end");
+        } else {
+          txt(inner, 22, surf - 16, "EPIDERMIS", "bar-label");
+          txt(inner, 22, h - 18, "DERMIS", "bar-label");
         }
       }
       return g;
     }
-
-    // 23 trial tiles. FIXED index sets, so the industry-tagged tiles that dim
-    // in the promise are the ones that fall out in the payoff. No survivor
-    // count is ever displayed -- the source gives none.
-    var TAGS = { industry:[0,2,3,5,8,9,11,13,14,16,19,21],
-                 lowq:    [1,2,4,5,7,9,10,12,15,16,18,20,22],
-                 small:   [1,4,7,10,12,15,18,20,22],
-                 short:   [3,5,9,13,14,16] };
-    function drawTiles(container, n, o) {
-      for (var i = 0; i < n; i++) {
-        var d = document.createElement("div"); d.className = "tr " + ((o && o.size) || "full"); d.id = "tr-" + i;
-        d.style.opacity = "1";
-        var t = document.createElement("span"); t.className = "tr-tag"; t.id = "tag-" + i;
-        d.appendChild(t); container.appendChild(d);
-      }
+    // Live UV damage / repair on the dermis hatch fibers drawBarrier already
+    // drew (each fiber's own length is on data-len, set when it was drawn).
+    // snapMeshFibers ANIMATES a fiber retracting + dimming -- "ultraviolet
+    // light helps break that mesh down", spoken live, not a build-time
+    // pre-cut. repairMeshFibers draws one back in, for the recommendations
+    // scene's "protein and vitamin C ... retinoids ... encouraging collagen
+    // production" -- one or two fibers, never the whole mesh at once: the
+    // claim is stronger evidence for PRODUCTION, not a rebuilt structure.
+    function snapMeshFibers(id, indices, tl, at, stagger) {
+      indices.forEach(function (i, k) {
+        ["-h-", "-hb-"].forEach(function (s) {
+          var L = document.getElementById(id + s + i);
+          if (!L) return;
+          var len = parseFloat(L.getAttribute("data-len"));
+          tl.to(L, { strokeDashoffset: len, opacity: 0.18, duration: 0.42, ease: "power2.in" },
+                at + k * (stagger || 0));
+        });
+      });
     }
-    function tiles(ids) { return ids.map(function (i) { return "#tr-" + i; }); }
+    function repairMeshFibers(id, indices, tl, at, dur) {
+      indices.forEach(function (i) {
+        ["-h-", "-hb-"].forEach(function (s) {
+          var L = document.getElementById(id + s + i);
+          if (!L) return;
+          tl.to(L, { strokeDashoffset: 0, opacity: 0.55, duration: dur || 0.6, ease: "power2.out" }, at);
+        });
+      });
+    }
 
-    var svg = document.getElementById("stageB");
-    // the SAME helix 01-hook parked here: identical geometry, so the iris hands
-    // off one actor rather than two lookalikes
-    var mol = drawHelix(svg, { id:"mol", x:584, y:506, w:560, h:140, strokeW:16 });
-    drawTiles(document.getElementById("mini-grid"), 23, { size:"mini" });
-    gsap.set(".tr.mini", { y:70, opacity:0 });
-    gsap.set(["#mini-cap", "#mini-leg", "#mini-note"], { y:16, opacity:0 });
-    gsap.set("#data-wash", { scaleX:1, scaleY:0, transformOrigin:"50% 100%" });
-    kineticWords(tl, "#promise-q", 1.683 - 0.1, 0.09, "rise");
-    // the question is DRAWN around the molecule, not typeset beside it
-    drawIn(tl, "#qmark", 2.403 - 0.25, 0.55, 0, EASE.wipe);
-    tl.fromTo("#qmark-dot", { attr:{ r:3 } }, { attr:{ r:9 }, duration:0.2, ease:EASE.slam }, 2.624);
+    var svg = document.getElementById("skinSvg");
+    drawBarrier(svg, { id:"skin", w:1728, h:918, surf:65, boundary:280, brickRows:2, hatch:{ n:10, cut:[2, 5, 8] }, labels:false });
+    // shield/film are appended AFTER drawBarrier so they paint ON TOP of its
+    // opaque epidermis/dermis backgrounds and brick course -- static markup
+    // placed before the JS call was silently invisible under those opaque
+    // layers (confirmed on the rough-preview render: no shield tint appeared
+    // at any sampled frame in this scene despite a correctly-timed tween).
+    var shield = el("rect", { "class":"shield", id:"shield", x:0, y:0, width:1728, height:280, rx:0 }, svg);
+    // y:18 sits AT the true surface line (surf:40 minus the wave's own
+    // amplitude) -- not near the dermis boundary, where a prior draft
+    // mistakenly placed it (thematically wrong: a topical film sits on the
+    // surface, not deep in the tissue).
+    var film = el("rect", { "class":"film", id:"film", x:700, y:48, width:260, height:16, rx:8 }, svg);
 
-    // ---- the data column rises and takes the frame -------------------------
-    reveal(tl, "#data", 2.907 - 0.45);
-    tl.to(["#qmark", "#qmark-dot"], { opacity:0, duration:0.25, ease:EASE.exit }, 2.907 - 0.55);
-    tl.to("#data-wash", { scaleY:1, duration:0.5, ease:EASE.wipe }, 2.907 - 0.45);
-    tl.to(mol, { x:-300, duration:0.6, ease:EASE.camera }, 2.907 - 0.35);
-    tl.to("#promise-q", { y:-26, opacity:0.5, duration:0.5, ease:EASE.exit }, 2.907 - 0.35);
-    tl.to(".tr.mini", { y:0, opacity:1, duration:0.3, stagger:0.02, ease:EASE.arrive }, 3.875 - 0.1);
-    tl.to("#mini-cap", { y:0, opacity:1, duration:0.3, ease:EASE.arrive }, 3.875 + 0.3);
-    // TAG, then DROP: the loop's object is named and removed, and no result is
-    // shown -- 12-filter is where the answer lands
-    tl.to(tiles(TAGS.industry), { backgroundColor:"#C97A5C", borderColor:"#C97A5C",
-          duration:0.25, stagger:0.012, ease:EASE.swap }, 5.278);
-    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$" }, 5.278 + 0.1); });
-    tl.fromTo(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-              { opacity:1, scale:0 }, { scale:1, duration:0.25, stagger:0.012, ease:EASE.slam }, 5.278 + 0.1);
-    tl.to(["#mini-leg", "#mini-note"], { y:0, opacity:1, duration:0.3, stagger:0.08, ease:EASE.arrive }, 5.817);
-    // the tags have done their work by the time the tiles leave; they fade with
-    // the fall rather than riding it down over the row below and the caption
-    tl.to(TAGS.industry.map(function (i) { return "#tag-" + i; }),
-          { opacity:0, duration:0.2, stagger:0.015, ease:EASE.exit }, 7.835);
-    tl.to(tiles(TAGS.industry), { y:88, opacity:0.12, duration:0.45, stagger:0.015, ease:EASE.exit }, 7.835);
-    // ---- HOLD, unresolved: the loop is open and stays open into the iris ----
-    // review Animation item 4: at least 700ms of settled, unresolved state
-    // before the transition -- one curiosity loop, not answered here.
+    // ---- 12-recs: each recommendation anchors to the actor itself ------------
+    tl.fromTo("#world", { scale:1.05 }, { scale:1, duration:1.0, ease:EASE.camera }, 0);
+    // sunscreen = a shield over the epidermis. The motion sidecar's appearsBy
+    // checks opacity >= 0.5 specifically (hyperframes-cli's own documented
+    // threshold) -- an initial reveal to 0.42 never crosses it at all, so the
+    // checker reports "appears" only once a LATER tween happens to reach 0.5,
+    // several words after the one that actually names it. Reveal straight to
+    // 0.52 here; later tweens only refine within the visible range.
+    tl.fromTo("#shield", { opacity:0, scaleY:0, transformOrigin:"50% 0%" },
+              { opacity:0.52, scaleY:1, duration:0.35, ease:EASE.arrive }, 1.715 - 0.2);
+    // measured hole: "every day, it's your best" (sunscreen settling to the
+    // word "shield") carries nothing visual otherwise -- a ~3.4s gap. A
+    // too-subtle pulse (0.03 scale, 0.08 opacity) does not register as
+    // motion at all to the render-level checker's fingerprint -- confirmed:
+    // the frozen window it reports lands EXACTLY where the subtle pulses
+    // were, not where there's truly zero animation. Larger deltas here.
+    tl.to("#shield", { scaleY:1.10, opacity:0.62, duration:0.7, yoyo:true, repeat:1, ease:"sine.inOut" }, 2.874);
+    tl.to("#shield", { opacity:0.68, duration:0.6, yoyo:true, repeat:1, ease:EASE.hold }, 5.036 + 0.2);
+    // not smoking: no new injury -- the shield simply holds, nothing repeats
+    tl.to("#shield", { opacity:0.6, duration:0.4, ease:EASE.arrive }, 6.188);
+    // bridge between the shield settling and the protein/vitamin-C repair
+    tl.to("[id^=skin-h-],[id^=skin-hb-]", { opacity:0.78, duration:0.7, yoyo:true, repeat:1, ease:"sine.inOut" }, 6.188 + 0.7);
+    // protein + vitamin C: one mesh fibre repairs
+    repairMeshFibers("skin", [5], tl, 7.150, 0.6);
+    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 7.150 - 0.3);
+    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 7.150 + 0.2);
+    // bridge across "for suitable users" -- the qualifier before the retinoid claim
+    tl.to("#shield", { opacity:0.82, duration:0.8, yoyo:true, repeat:1, ease:"sine.inOut" }, 7.150 + 1.2);
+    // camera leans toward the mesh as the retinoid claim lands
+    tl.to("#world", { scale:1.06, x:0, y:-40, duration:0.8, ease:EASE.camera }, 11.596 - 0.2);
+    repairMeshFibers("skin", [2], tl, 15.897, 0.7);
+    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 12.950);
+    // measured hole: "stronger evidence for" carries nothing visual before
+    // the fibre repair lands on "encouraging" -- a ~2.6s gap otherwise
+    tl.to("#cite-ret", { scale:1.14, duration:0.6, yoyo:true, repeat:1, ease:"sine.inOut" }, 14.463 + 0.3);
+    tl.to("[id^=skin-h-],[id^=skin-hb-]", { opacity:0.6, duration:1.0, ease:EASE.arrive }, 16.782 - 0.2);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }, 17.758 - 0.5);
+    // cream, named last: the surface film reappears
+    tl.fromTo("#film", { opacity:0.6, scaleX:0, transformOrigin:"50% 50%" },
+              { scaleX:1, duration:0.5, ease:EASE.wipe }, 18.392);
 
-    // departure: push under the iris wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 8.755);
+    // ---- 13-verdict --------------------------------------------------------
+    tl.to("#film", { scale:1.1, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }, 19.215);
+    // measured hole: the opt-note reveals are real tweens but their own
+    // element covers under 2% of frame area, which the checker's fingerprint
+    // apparently doesn't count as "moving" -- a #world move covers the whole
+    // frame regardless. Ends well before 22.993 (22.993).
+    tl.to("#world", { scale:1.03, duration:1.35, yoyo:true, repeat:1, ease:"sine.inOut" }, 19.215 + 0.2);
+    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 20.706 - 0.15);
+    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.arrive }, 21.085);
+    tl.to("#final", { opacity:1, duration:0.1 }, 21.925 - 0.15);
+    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 21.925 - 0.15);
+    kineticWords(tl, "#final-kt", 19.215 - 0.1, 0.05, "rise");
 
-    tl.to({}, { duration: 9.305 }, 0);   // full-span anchor -- always last
-    window.__timelines["02-promise"] = tl;
+    // departure: push under the curtain wipe into the next file
+    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 22.993);
+
+    tl.to({}, { duration: 23.893 }, 0);   // full-span anchor -- always last
+    window.__timelines["12-recs"] = tl;
   </script>
 </template>
 </body>

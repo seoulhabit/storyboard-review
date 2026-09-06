@@ -90,16 +90,26 @@ LIVE_AT_EOF_DB = -45.0
 VO_TARGET_LUFS = -20.0
 GAIN_CAP, GAIN_WARN = 5.0, 3.0
 SHELF_FREQ, SHELF_CAP, SHELF_MIN = 3000, 3.0, 0.4   # brightness match across blocks
-WPM_TARGET = 170.0
-WPM_BAND = (160.0, 185.0)     # a read inside this band is left alone; Kimberly measures ~184
+WPM_TARGET = 147.0            # 2026-09-05 redesign: brief asks 145-150 wpm, conversational,
+                              # not this channel's usual pace -- was 170.0.
+WPM_BAND = (145.0, 150.0)     # a read landing here needs no correction. Was (160, 185),
+                              # Kimberly's own natural range -- that band described her
+                              # comfortable cadence, not the target pace, and the brief
+                              # now wants noticeably slower than natural. Below TEMPO_MIN
+                              # (0.92) of her natural ~184 wpm still lands ~169 wpm, short
+                              # of this target -- request a negative speech_rate on the
+                              # generation itself rather than leaning on atempo alone.
 TEMPO_MAX = 1.15              # 1.265 read as hurried on the two-voice cut; 1.20 was its ship value
 TEMPO_MIN = 0.92              # slowing further makes the formants audible
-TEMPO = 1.08                  # set from `verify`'s printed decision; --tempo overrides.
-                              # Measured on the four shipped takes: 1.00 gives 157.3 wpm
-                              # and 2:24, 1.15 gives 178.5 wpm and 2:08. 1.08 lands 168.7
-                              # wpm and 2:15 -- inside the brief's 165-175 band with the
-                              # smallest correction that gets there.
-RUNTIME_WINDOW = (120.0, 150.0)   # the brief's 2:00-2:30, measured on the finished root
+TEMPO = 1.13                  # set from `verify`'s printed decision; --tempo overrides.
+                              # 2026-09-05 redesign, new single-block take (speech_rate=-20,
+                              # word-span 130.8 wpm raw): 1.00 projects 115.7s at 130.8 wpm,
+                              # 1.13 lands 146.2 wpm / 104.1s -- inside the brief's 145-150 wpm
+                              # and 90-105s windows with a comfortable ~1s margin, well under
+                              # the 1.15 formant-audible cap. Was 1.08 (a different take, a
+                              # different brief).
+RUNTIME_WINDOW = (90.0, 105.0)    # 2026-09-05 redesign brief's 90-105s, measured on the
+                                  # finished root. Was (120.0, 150.0).
 
 # Word timing comes from whisper. large-v3 is already cached beside small.en
 # (~/.cache/hyperframes/whisper/models) and its recognition is what matters

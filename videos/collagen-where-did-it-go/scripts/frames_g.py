@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
-"""File G -- 16-end: the calm end card. Right third and lower-right kept
-clear for YouTube's end-screen elements; one slow drift is the only motion."""
+"""File G -- 14-end: the calm end card. Right third and lower-right kept
+clear for YouTube's end-screen elements; one slow drift is the only motion.
+
+2026-09-05 redesign: UNCHANGED in substance. This is the same file the shared
+catalog end-card component (catalog/visual-components/seoulhabit-endcard/) was
+itself harvested FROM -- rebuilding it from that component would be pure
+churn for a file that already matches the pattern verbatim. Only the cid
+(16-end -> 14-end, this project now has 7 files not 8) and the MOTION key
+carry over."""
 from actors import EASE_JS
 from motion import MOTION
 
 
-def file_16_end(fspan, fctx):
+def file_14_end(fspan, fctx):
     css = """
     .endcard { position:absolute; inset:0; display:flex; flex-direction:column;
                justify-content:center; gap:var(--s-4);
@@ -37,8 +44,8 @@ def file_16_end(fspan, fctx):
     // the 2fps static gate still sees a change, small enough to read as calm
     tl.fromTo("#endcard", { y:36 }, { y:0, duration:@fown, ease:"power1.out" }, 0);
 """
-    MOTION["16-end"]["beats"] = []
+    MOTION["14-end"]["beats"] = []
     return body, css, tl
 
 
-FILES = {"16-end": file_16_end}
+FILES = {"14-end": file_14_end}

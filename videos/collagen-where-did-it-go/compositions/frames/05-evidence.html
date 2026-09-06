@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>10-evidence</title></head>
+<head><meta charset="UTF-8"><title>05-evidence</title></head>
 <body>
 <template>
-  <div id="root" data-composition-id="10-evidence"
-       data-width="1920" data-height="1080" data-duration="37.989">
+  <div id="root" data-composition-id="05-evidence"
+       data-width="1920" data-height="1080" data-duration="26.236">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -223,7 +223,7 @@
     .ev-n { font-family:var(--font-display); font-size:96px; line-height:0.95;
             color:var(--paper); margin:0; min-width:160px; opacity:0; }
     .ev-n-l { font-family:var(--font-mono); font-size:var(--t-label); letter-spacing:var(--tr-mono-wide);
-              text-transform:uppercase; color:#93989A; margin:0; opacity:0; }   /* 5.64:1 on ink */
+              text-transform:uppercase; color:#93989A; margin:0; opacity:0; }
     #caveat-panel { background:var(--ink-soft); padding:var(--s-4) var(--s-5); display:flex; align-items:center; opacity:0; }
     #caveat { font-size:var(--t-frame); color:var(--paper); }
     .grid { display:grid; gap:14px; grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(3, 1fr); }
@@ -233,18 +233,11 @@
     .out { font-family:var(--font-mono); font-size:var(--t-chip); letter-spacing:var(--tr-mono);
            color:var(--ink); background:var(--celadon); border-radius:var(--r-pill);
            padding:9px 24px; opacity:0; white-space:nowrap; }
-    .f-pill { font-family:var(--font-mono); font-size:var(--t-chip); letter-spacing:var(--tr-mono);
-              color:var(--paper); border:2px solid #93989A; border-radius:var(--r-pill);
-              padding:9px 24px; opacity:0; white-space:nowrap; }
     #res { background:var(--ink-soft); padding:var(--s-4) var(--s-5); }
     .res-v { position:absolute; left:32px; top:24px; margin:0; font-family:var(--font-body);
              font-weight:800; font-size:var(--t-frame); opacity:0; }
-
     .res-note { position:absolute; left:32px; bottom:14px; margin:0; font-family:var(--font-mono);
                 font-size:var(--t-chip); line-height:1.2; opacity:1; }
-    /* was opacity:.85 -- the wash-forced --paper text composites to 4.43:1 on
-       the moss wash, just under the 4.5 text floor; full opacity clears it.
-       This note is on screen, unanimated, for the whole 33s evidence file. */
     .m-axis { stroke:var(--paper); stroke-width:3; opacity:.6; }
     .m-zero { stroke:var(--paper); stroke-width:4; }
     .m-ci { fill:var(--celadon); stroke:var(--paper); stroke-width:2; }
@@ -265,8 +258,8 @@
        <div class="world" id="world">
         <div class="abs" style="position:absolute;left:0px;top:0px;width:600px;height:150px;">
           <p class="ev-n" id="ev-n">0</p>
-          <p class="ev-n-l" id="ev-n-l" style="position:absolute;left:200px;top:34px;">trials<br>pooled in 2025</p>
-          <p class="ev-n-l" id="tag-note" style="position:absolute;left:0;top:132px;opacity:.85;">tags illustrative</p>
+          <p class="ev-n-l" id="ev-n-l" style="position:absolute;left:200px;top:40px;">pooled trials</p>
+          <p class="ev-n-l" id="tag-note" style="position:absolute;left:0;top:96px;opacity:.85;">tags illustrative</p>
         </div>
         <div class="panel " id="caveat-panel" style="position:absolute;left:620px;top:0px;width:1108px;height:150px;"><div class="wash dim" id="caveat-panel-wash"></div><p class="kt on-ink" id="caveat"><span class="kt-word">small</span> <span class="kt-word">·</span> <span class="kt-word">short</span> <span class="kt-word">·</span> <span class="kt-word">industry</span> <span class="kt-word" id="caveat-last">funded</span></p></div>
         <div class="grid abs" id="grid" style="position:absolute;left:0px;top:176px;width:1040px;height:464px;"><div class="tr" id="tr-0"><span class="tr-tag" id="tag-0"></span></div><div class="tr" id="tr-1"><span class="tr-tag" id="tag-1"></span></div><div class="tr" id="tr-2"><span class="tr-tag" id="tag-2"></span></div><div class="tr" id="tr-3"><span class="tr-tag" id="tag-3"></span></div><div class="tr" id="tr-4"><span class="tr-tag" id="tag-4"></span></div><div class="tr" id="tr-5"><span class="tr-tag" id="tag-5"></span></div><div class="tr" id="tr-6"><span class="tr-tag" id="tag-6"></span></div><div class="tr" id="tr-7"><span class="tr-tag" id="tag-7"></span></div><div class="tr" id="tr-8"><span class="tr-tag" id="tag-8"></span></div><div class="tr" id="tr-9"><span class="tr-tag" id="tag-9"></span></div><div class="tr" id="tr-10"><span class="tr-tag" id="tag-10"></span></div><div class="tr" id="tr-11"><span class="tr-tag" id="tag-11"></span></div><div class="tr" id="tr-12"><span class="tr-tag" id="tag-12"></span></div><div class="tr" id="tr-13"><span class="tr-tag" id="tag-13"></span></div><div class="tr" id="tr-14"><span class="tr-tag" id="tag-14"></span></div><div class="tr" id="tr-15"><span class="tr-tag" id="tag-15"></span></div><div class="tr" id="tr-16"><span class="tr-tag" id="tag-16"></span></div><div class="tr" id="tr-17"><span class="tr-tag" id="tag-17"></span></div><div class="tr" id="tr-18"><span class="tr-tag" id="tag-18"></span></div><div class="tr" id="tr-19"><span class="tr-tag" id="tag-19"></span></div><div class="tr" id="tr-20"><span class="tr-tag" id="tag-20"></span></div><div class="tr" id="tr-21"><span class="tr-tag" id="tag-21"></span></div><div class="tr" id="tr-22"><span class="tr-tag" id="tag-22"></span></div></div>
@@ -282,14 +275,10 @@
             <text class="m-lab" x="500" y="266" text-anchor="middle">BENEFIT →</text>
           </svg>
           <p class="res-note">illustrative scale ·<br>not the paper's values</p></div>
-        <div class="abs" style="position:absolute;left:0px;top:664px;width:760px;height:60px;;display:flex;gap:16px;">
-          <div class="out" id="out-1">hydration</div><div class="out" id="out-2">elasticity</div><div class="out" id="out-3">wrinkles</div>
-        </div>
-        <div class="abs" style="position:absolute;left:0px;top:740px;width:1728px;height:60px;;display:flex;gap:16px;">
-          <div class="f-pill" id="f1">keep only: independent</div><div class="f-pill" id="f2">keep only: higher quality</div>
+        <div class="abs" style="position:absolute;left:0px;top:664px;width:520px;height:60px;;display:flex;gap:16px;">
+          <div class="out" id="out-1">hydration</div><div class="out" id="out-2">elasticity</div>
         </div>
         <div class="cite on-ink" id="c1" style="position:absolute;left:0px;top:830px;">Nutrients &middot; 2023</div>
-        <div class="cite on-ink" id="c2" style="position:absolute;right:0;top:830px;">Am J Med &middot; 2025</div>
         <div class="panel " id="stops" style="position:absolute;left:0px;top:176px;width:1040px;height:742px;"><div class="wash paper" id="stops-wash"></div><p class="kt stops-t" id="stops-1"><span class="kt-word">THE</span> <span class="kt-word" id="stops-1-last">EFFECT</span></p><p class="kt stops-t" id="stops-2"><span class="kt-word" id="stops-2-last">STOPS</span></p><p class="kt stops-t" id="stops-3"><span class="kt-word">SHOWING</span> <span class="kt-word" id="stops-3-last">UP</span></p><div class="q-void" id="q1-void" style="top:474px;"></div><p class="kt q" style="top:500px;" id="q1"><span class="kt-word" id="q1-last">works?</span></p><div class="q-void" id="q2-void" style="top:574px;"></div><p class="kt q" style="top:600px;" id="q2"><span class="kt-word" id="q2-last">fails?</span></p></div>
        </div>
       </div>
@@ -394,167 +383,105 @@
     }
     function tiles(ids) { return ids.map(function (i) { return "#tr-" + i; }); }
 
-    // tiles are PRESENT at frame zero (a cut into an empty frame is the one thing a cut must not do)
     var IND = tiles(TAGS.industry), LOWQ = tiles(TAGS.lowq), SMALL = tiles(TAGS.small), SHORT = tiles(TAGS.short);
     tl.fromTo(".tr", { scaleY:0.62 }, { scaleY:1, duration:0.26, stagger:0.026, ease:EASE.arrive }, 0.0);
-    // the result panel opens (dim), then the numeral counts to the study's own n
-    tl.fromTo("#res-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 1.064 - 0.5);   // the result panel opens
-    // NO count here: this unit's chip is Nutrients 2023 (26 RCTs). The 23 is the
-    // 2025 pooled n and lands in unit 12, under its own chip.
-    // "Trials DO report modest improvements": the interval grows out of the
-    // no-effect line to the benefit side as the sentence says so. The meter is
-    // the claim, not a caption arriving after it -- and this is the only
-    // bounding-box motion between the panel opening and the outcome pills,
-    // which the motion checker found as 2.32s frozen.
+    tl.fromTo("#res-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 0.668 - 0.3);
     gsap.set("#res-ci", { attr:{ x:235, width:0 } });
     gsap.set("#res-pt", { opacity:0 });
-    tl.to("#res-ci", { attr:{ x:330, width:190 }, duration:0.75, ease:EASE.arrive }, 2.518 - 0.2);
-    // the field acknowledges the claim: a wave across the tiles as "trials do
-    // report" is said, before the named outcomes light their own bands
-    tl.to(".tr", { scaleY:1.06, duration:0.28, yoyo:true, repeat:1, stagger:{ each:0.02 },
-                   ease:EASE.swap }, 1.399 - 0.1);
+
+    // ---- 08-trials: 23, pooled, a modest benefit shown across two outcomes ----
+    tl.fromTo("#ev-n", { opacity:0, y:20 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, 0.450 - 0.2);
+    count(tl, "ev-n", 0, 23, 0.450 - 0.1, 0.8, function (n) { return n; });
+    tl.fromTo("#ev-n-l", { opacity:0, y:14 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 0.668 + 0.2);
+    tl.to(".tr", { backgroundColor:"#93B896", borderColor:"#C3DCC5", duration:0.45,
+                   stagger:0.012, ease:EASE.swap }, 0.871);
+    tl.fromTo("#tag-note", { opacity:0 }, { opacity:0.85, duration:0.3, ease:EASE.arrive }, 1.305 + 0.3);
+    tl.to("#res-ci", { attr:{ x:330, width:190 }, duration:0.75, ease:EASE.arrive }, 2.331 - 0.1);
     tl.fromTo("#res-pt", { opacity:0, scale:0.4, transformOrigin:"50% 50%" },
-              { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 2.518 + 0.45);
-    // one outcome per named outcome, each lighting the band of trials that measured it
-    [["hydration", 0], ["elasticity", 8], ["wrinkles", 16]].forEach(function (o, k) {
-      var at = [3.434, 4.175, 5.416][k];
-      tl.fromTo("#out-" + (k + 1), { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.32, ease:EASE.slam }, at);
-      for (var i = o[1]; i < Math.min(o[1] + 8, 23); i++)
-        tl.to("#tr-" + i, { backgroundColor:"#93B896", duration:0.34, yoyo:true, repeat:1, ease:EASE.swap }, at + (i % 8) * 0.018);
+              { opacity:1, scale:1, duration:0.3, ease:EASE.slam }, 2.331 + 0.35);
+    tl.fromTo("#res-v1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, 2.992 + 0.1);
+    [["hydration", 0, 12], ["elasticity", 11, 23]].forEach(function (o) {
+      var at = o[0] === "hydration" ? 3.585 : 4.736;
+      tl.fromTo("#out-" + (o[0] === "hydration" ? 1 : 2), { opacity:0, scale:0.8 },
+                { opacity:1, scale:1, duration:0.32, ease:EASE.slam }, at);
+      for (var i = o[1]; i < o[2]; i++)
+        tl.to("#tr-" + i, { scaleY:1.06, duration:0.30, yoyo:true, repeat:1, ease:EASE.swap }, at + (i % 8) * 0.018);
     });
-    tl.fromTo("#c1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 5.731 - 0.4);
-    // the pooled result: the meter goes moss (a benefit is on the table)
-    tl.fromTo("#res-v1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, 5.731 + 0.3);
+    tl.fromTo("#c1", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 5.807 - 0.3);
 
-    // ---- unit 11: the caveat lands on the tiles as it is spoken --------------
-    // the field is examined, not just labelled: the grid lifts toward the caveat
-    // as it lands and settles back for the pooled result. This used to be a
-    // camera push; it is not, because this scene is laid out edge to edge and
-    // ANY world scale slices the count, the chips and both citation chips off
-    // the frame. Lifting the grid says the same thing and crops nothing.
-    tl.to("#grid", { y:-18, duration:0.8, ease:EASE.camera }, 7.092 - 0.3);
-    tl.to("#grid", { y:0, duration:0.7, ease:EASE.camera }, 10.743 - 0.9);
-    tl.to("#caveat-panel", { opacity:1, duration:0.1 }, 7.092 - 0.10);
-    tl.fromTo("#caveat-panel-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 7.092 - 0.10);
-    kineticWords(tl, "#caveat", 7.092, 0.0, "slam");
-    tl.to(".out", { opacity:0.25, duration:0.4, stagger:0.06, ease:EASE.exit }, 7.092);
-    tl.to(SMALL, { scale:0.8, duration:0.4, stagger:0.02, ease:EASE.swap }, 7.092);
-    tl.to(SHORT, { scaleX:0.7, transformOrigin:"0% 50%", duration:0.4, stagger:0.02, ease:EASE.swap }, 7.235);
-    tl.to(IND, { backgroundColor:"#C97A5C", borderColor:"#C97A5C", duration:0.45, stagger:0.02, ease:EASE.swap }, 7.948);
-    // the flagged tiles sink as they are named -- the field stops being uniform,
-    // and 2.8s of identical frames sat between the tag and the pooling
-    // the flagged tiles sink AS they are named, one after another, rather than
-    // all at once after the sentence: 12 tiles at 45ms apart carry the whole
-    // "and industry funded" span, which otherwise held 2.5s of still frames
-    tl.to(IND, { y:16, duration:0.9, stagger:{ each:0.045 }, ease:EASE.hold }, 7.948 + 0.25);
-    // "funded." sits for 1.4s before the next sentence starts. The caveat has
-    // done its work, so it steps back and hands the frame to the pooling.
+    // ---- 09-caveat: the field is examined, not just labelled ------------------
+    tl.to("#grid", { y:-10, duration:0.8, ease:EASE.camera }, 6.779 - 0.3);
+    tl.to("#caveat-panel", { opacity:1, duration:0.1 }, 7.242 - 0.10);
+    tl.fromTo("#caveat-panel-wash", { scaleX:0 }, { scaleX:1, duration:0.5, ease:EASE.wipe }, 7.242 - 0.10);
+    kineticWords(tl, "#caveat", 7.242, 0.0, "slam");
+    tl.to(".out", { opacity:0.25, duration:0.4, stagger:0.06, ease:EASE.exit }, 7.242);
+    tl.to(SMALL, { scale:0.8, duration:0.4, stagger:0.02, ease:EASE.swap }, 7.242);
+    tl.to(SHORT, { scaleX:0.7, transformOrigin:"0% 50%", duration:0.4, stagger:0.02, ease:EASE.swap }, 7.835);
+    tl.to(IND, { backgroundColor:"#C97A5C", borderColor:"#C97A5C", duration:0.45, stagger:0.02, ease:EASE.swap }, 9.184);
+    tl.to(IND, { y:16, duration:0.9, stagger:{ each:0.045 }, ease:EASE.hold }, 9.184 + 0.25);
+    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$", opacity:1 }, 9.184 + 0.2); });
     tl.to("#caveat-panel", { y:-26, scale:0.97, transformOrigin:"50% 0%", opacity:0.55,
-                             duration:1.0, ease:EASE.exit }, 9.179 + 0.15);
-    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$", opacity:1 }, 7.948 + 0.2); });
+                             duration:1.0, ease:EASE.exit }, 10.197 + 0.15);
+    tl.to("#grid", { y:0, duration:0.7, ease:EASE.camera }, 10.497 - 0.9);
 
-    // ---- unit 12: pooled -> filtered, twice; the meter tells the truth ---------
-    tl.to(".tr", { backgroundColor:"#93B896", borderColor:"#C3DCC5", scale:1, scaleX:1, duration:0.5,
-                   stagger:0.012, ease:EASE.swap }, 10.743);
-    tl.set(".tr-tag", { opacity:0 }, 10.743 + 0.2);
-    tl.fromTo("#c2", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 10.743 - 0.2);
-    // the pooled n, under the chip that sources it
-    tl.fromTo("#ev-n", { opacity:0, y:20 }, { opacity:1, y:0, duration:0.3, ease:EASE.slam }, 11.361 - 0.3);
-    count(tl, "ev-n", 0, 23, 11.361 - 0.2, 1.0);
-    tl.fromTo("#ev-n-l", { opacity:0, y:14 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 11.361 + 0.3);
-    // a wave across the field on "randomised trials" -- the tiles are what the
-    // numeral is counting, so they answer to it rather than sitting still
-    tl.to(".tr", { scaleY:1.08, duration:0.30, yoyo:true, repeat:1,
-                   stagger:{ each:0.012 }, ease:EASE.swap }, 11.623 + 0.1);
-    tl.fromTo("#tag-note", { opacity:0 }, { opacity:0.85, duration:0.3, ease:EASE.arrive }, 11.361 + 0.7);
-    // "a benefit": the result panel flashes celadon -- the pooled claim, at panel scale
-    tl.to("#res-wash", { backgroundColor:"#93B896", duration:0.3, yoyo:true, repeat:1, ease:EASE.swap }, 14.185);
-    // every tile rises back to level as they are pooled: "all together" is the
-    // field becoming one dataset again
-    tl.to(".tr", { y:0, duration:0.9, stagger:{ each:0.015 }, ease:EASE.arrive }, 13.864 - 0.3);
-    tl.to("#res", { scale:1.03, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.185);
-    // filter 1: independent only
-    // lean in for the filter -- on the RESULT panel, not the world. It grows from
-    // its own right edge, which is pinned to the canvas edge, so the swell reads
-    // as a push without moving a single pixel out of frame.
-    tl.to("#res", { scale:1.04, transformOrigin:"100% 50%", duration:0.9, ease:EASE.camera }, 15.121);
-    tl.fromTo("#f1", { opacity:0, x:40 }, { opacity:1, x:0, duration:0.3, ease:EASE.arrive }, 15.121);
-    tl.to(IND, { backgroundColor:"#C97A5C", duration:0.2, ease:EASE.swap }, 16.723);
-    TAGS.industry.forEach(function (i) { tl.set("#tag-" + i, { innerText:"$", opacity:1 }, 16.723); });
-    // the tiles FALL OUT of the field, and the result starts moving with them --
-    // the meter is not a caption arriving after the fact
-    tl.to(IND, { y:64, opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, 16.723 + 0.25);
-    tl.to("#res-ci", { attr:{ x:175, width:235 }, duration:1.8, ease:EASE.swap }, 16.723 + 0.25);
-    tl.to("#res-pt", { x:292 - 425, duration:1.8, ease:EASE.swap }, 16.723 + 0.25);
-    tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.wipe }, 18.765);
-    tl.to("#res-v1", { opacity:0, duration:0.25, ease:EASE.exit }, 18.765);
-    // EASE.arrive, not slam: this is the evidence-limitation label itself
-    // (Animation item 2 -- back.out's playful bounce is reserved for impacts
-    // and jokes, never a limitation, uncertainty, or guidance claim).
-    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, 18.765 + 0.2);
-    tl.to("#res-zero", { attr:{ "stroke-width":9 }, stroke:"#C97A5C", duration:0.5, ease:EASE.swap }, 18.765 + 0.3);
+    // ---- 10-filter: exclude industry funding, then low quality -- twice, the
+    // meter tells the truth each time -----------------------------------------
+    tl.to("#res", { scale:1.04, transformOrigin:"100% 50%", duration:0.9, ease:EASE.camera }, 10.497);
+    tl.to(IND, { backgroundColor:"#C97A5C", duration:0.2, ease:EASE.swap }, 10.497 + 0.15);
+    tl.to(IND, { y:64, opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, 10.497 + 0.4);
+    tl.to("#res-ci", { attr:{ x:175, width:235 }, duration:1.6, ease:EASE.swap }, 10.497 + 0.4);
+    tl.to("#res-pt", { x:292 - 425, duration:1.6, ease:EASE.swap }, 10.497 + 0.4);
+    tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.5, ease:EASE.wipe }, 13.273);
+    tl.to("#res-v1", { opacity:0, duration:0.25, ease:EASE.exit }, 13.273);
+    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, 13.273 + 0.2);
+    tl.to("#res-zero", { attr:{ "stroke-width":9 }, stroke:"#C97A5C", duration:0.5, ease:EASE.swap }, 13.273 + 0.3);
     // restore, then filter 2: higher quality only
-    tl.to(IND, { y:0, opacity:1, scale:1, backgroundColor:"#93B896", duration:0.4, stagger:0.01, ease:EASE.swap }, 23.787 - 0.30);
-    tl.fromTo("#res-wash", { scaleX:0, transformOrigin:"0% 50%" }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 23.787 - 0.30);
-    tl.to("#res-v2", { opacity:0, duration:0.2, ease:EASE.exit }, 23.787 - 0.3);
-    tl.to("#res-v1", { opacity:1, duration:0.2, ease:EASE.arrive }, 23.787 - 0.1);
-    tl.to("#res-ci", { attr:{ x:330, width:190 }, duration:0.4, ease:EASE.swap }, 23.787 - 0.3);
-    tl.to("#res-pt", { x:0, duration:0.4, ease:EASE.swap }, 23.787 - 0.3);
-    tl.set(".tr-tag", { opacity:0 }, 23.787 - 0.3);
-    tl.to("#f1", { opacity:0.35, duration:0.3, ease:EASE.exit }, 23.787);
-    tl.fromTo("#f2", { opacity:0, x:40 }, { opacity:1, x:0, duration:0.3, ease:EASE.arrive }, 23.787);
-    tl.to(LOWQ, { backgroundColor:"#A85A3C", duration:0.2, ease:EASE.swap }, 25.210);
-    TAGS.lowq.forEach(function (i) { tl.set("#tag-" + i, { innerText:"?", opacity:1 }, 25.210); });
-    tl.to(LOWQ, { y:64, opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, 25.210 + 0.25);
-    tl.to("#res-ci", { attr:{ x:160, width:225 }, duration:1.4, ease:EASE.swap }, 25.210 + 0.25);
-    tl.to("#res-pt", { x:272 - 425, duration:1.4, ease:EASE.swap }, 25.210 + 0.25);
-    tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.wipe }, 25.210 + 0.5);
-    tl.to("#res-v1", { opacity:0, duration:0.2, ease:EASE.exit }, 25.210 + 0.5);
-    // EASE.arrive here too, and for the pulse below -- same limitation label
-    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, 25.210 + 0.7);
-    tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.arrive }, 26.347 + 0.1);
-    // settle before the flood: the biggest beat lands on a settled frame
-    tl.to("#res", { scale:1, transformOrigin:"100% 50%", duration:0.8, ease:EASE.camera }, 26.347);
-    // THE PAYOFF: the biggest beat in the piece -- a paper flood, then three slams
-    tl.to(["#f1", "#f2"], { opacity:0, duration:0.3, ease:EASE.exit }, 27.177 - 0.35);
-    tl.fromTo("#stops-wash", { scaleX:0 }, { scaleX:1, duration:0.8, ease:EASE.wipe }, 27.177 - 0.15);
-    tl.to("#caveat-panel", { opacity:0.35, duration:0.5, ease:EASE.exit }, 27.177 - 0.15);
-    kineticWords(tl, "#stops-1", 27.177, 0.06, "slam");
-    kineticWords(tl, "#stops-2", 27.306, 0.0, "slam");
-    tl.to("#world", { scale:1.03, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, 27.306);
-    kineticWords(tl, "#stops-3", 27.621, 0.10, "slam");
+    tl.to(IND, { y:0, opacity:1, scale:1, backgroundColor:"#93B896", duration:0.4, stagger:0.01, ease:EASE.swap }, 15.600 - 0.30);
+    tl.fromTo("#res-wash", { scaleX:0, transformOrigin:"0% 50%" }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 15.600 - 0.30);
+    tl.to("#res-v2", { opacity:0, duration:0.2, ease:EASE.exit }, 15.600 - 0.3);
+    tl.to("#res-v1", { opacity:1, duration:0.2, ease:EASE.arrive }, 15.600 - 0.1);
+    tl.to("#res-ci", { attr:{ x:330, width:190 }, duration:0.4, ease:EASE.swap }, 15.600 - 0.3);
+    tl.to("#res-pt", { x:0, duration:0.4, ease:EASE.swap }, 15.600 - 0.3);
+    tl.set(".tr-tag", { opacity:0 }, 15.600 - 0.3);
+    tl.to(LOWQ, { backgroundColor:"#A85A3C", duration:0.2, ease:EASE.swap }, 17.073);
+    TAGS.lowq.forEach(function (i) { tl.set("#tag-" + i, { innerText:"?", opacity:1 }, 17.073); });
+    tl.to(LOWQ, { y:64, opacity:0.10, scale:0.86, duration:0.45, stagger:0.012, ease:EASE.wipe }, 17.073 + 0.25);
+    tl.to("#res-ci", { attr:{ x:160, width:225 }, duration:1.4, ease:EASE.swap }, 17.073 + 0.25);
+    tl.to("#res-pt", { x:272 - 425, duration:1.4, ease:EASE.swap }, 17.073 + 0.25);
+    tl.to("#res-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.4, ease:EASE.wipe }, 17.073 + 0.5);
+    tl.to("#res-v1", { opacity:0, duration:0.2, ease:EASE.exit }, 17.073 + 0.5);
+    tl.to("#res-v2", { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, 17.073 + 0.7);
+    tl.to("#res-v2", { scale:1.06, duration:0.25, yoyo:true, repeat:1, ease:EASE.arrive }, 17.719 + 0.1);
+    tl.to("#res", { scale:1, transformOrigin:"100% 50%", duration:0.8, ease:EASE.camera }, 17.719);
+    // THE PAYOFF
+    tl.fromTo("#stops-wash", { scaleX:0 }, { scaleX:1, duration:0.8, ease:EASE.wipe }, 19.053 - 0.15);
+    tl.to("#caveat-panel", { opacity:0.35, duration:0.5, ease:EASE.exit }, 19.053 - 0.15);
+    kineticWords(tl, "#stops-1", 19.053, 0.06, "slam");
+    kineticWords(tl, "#stops-2", 19.465, 0.0, "slam");
+    tl.to("#world", { scale:1.03, duration:0.18, yoyo:true, repeat:1, ease:EASE.slam }, 19.465);
+    kineticWords(tl, "#stops-3", 19.642, 0.10, "slam");
 
-    // ---- unit 13: two questions, two refusals, one honest word ----------------
-    // the payoff type settles while it is held, so the frame is not identical
-    // for the 2.3s between the last slam and the first question
+    // ---- 11-uncertain: two questions, two refusals -----------------------------
     tl.to("#stops-1 .kt-word, #stops-2 .kt-word, #stops-3 .kt-word",
-          { y:-14, duration:1.0, stagger:{ each:0.03 }, ease:EASE.hold }, 29.204 + 0.25);
-    kineticWords(tl, "#q1", 30.289 - 0.1, 0.08, "rise");
-    // "the independent evidence" is literally what is left standing: the paper
-    // flood retracts to the survivor field with the low-quality tiles still down
-    tl.to("#stops-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.wipe }, 35.679 - 0.2);
+          { y:-14, duration:1.0, stagger:{ each:0.03 }, ease:EASE.hold }, 20.796 + 0.25);
+    kineticWords(tl, "#q1", 22.150 - 0.4, 0.08, "rise");
+    tl.to("#stops-wash", { scaleX:0, transformOrigin:"100% 50%", duration:0.6, ease:EASE.wipe }, 22.150 - 0.5);
     tl.to(["#stops-1 .kt-word", "#stops-2 .kt-word", "#stops-3 .kt-word", ".q-void", "#q1 .kt-word", "#q2 .kt-word"],
-          { y:-24, opacity:0, duration:0.3, stagger:0.01, ease:EASE.exit }, 35.679 - 0.1);
-    tl.to("#q1-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 31.640);
-    tl.to("#q1 .kt-word", { color:"#F7F5F0", duration:0.2 }, 31.640);
-    kineticWords(tl, "#q2", 32.570 - 0.1, 0.08, "rise");
-    tl.to("#q2-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 33.134);
-    tl.to("#q2 .kt-word", { color:"#F7F5F0", duration:0.2 }, 33.134);
-    // The act's last word is UNCERTAIN, and it used to land 0.2s before the
-    // invert took the frame. The interval widens under "the independent
-    // evidence", so the meter has already told the truth by the time the word
-    // arrives -- and the word gets the whole tail of the unit rather than a
-    // sliver of it.
-    tl.to("#res-ci", { attr:{ x:150, width:245 }, duration:0.9, ease:EASE.swap }, 35.679);
-    tl.to("#res-v2", { opacity:0, duration:0.25, ease:EASE.exit }, 36.808 - 0.4);
-    // EASE.arrive: UNCERTAIN is the scene's own uncertainty label, not an impact
-    tl.fromTo("#res-v3", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, 36.808 - 0.1);
+          { y:-24, opacity:0, duration:0.3, stagger:0.01, ease:EASE.exit }, 22.150 - 0.4);
+    tl.to("#q1-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 21.220);
+    tl.to("#q1 .kt-word", { color:"#F7F5F0", duration:0.2 }, 21.220);
+    kineticWords(tl, "#q2", 23.928 - 0.1, 0.08, "rise");
+    tl.to("#q2-void", { opacity:0.85, duration:0.3, ease:EASE.wipe }, 23.377);
+    tl.to("#q2 .kt-word", { color:"#F7F5F0", duration:0.2 }, 23.377);
+    tl.to("#res-ci", { attr:{ x:150, width:245 }, duration:0.9, ease:EASE.swap }, 24.427 - 0.3);
+    tl.to("#res-v2", { opacity:0, duration:0.25, ease:EASE.exit }, 25.536 - 0.6);
+    tl.fromTo("#res-v3", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.3, ease:EASE.arrive }, 25.536 - 0.3);
 
     // departure: push under the invert wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 37.389);
+    tl.to("#world", { scale:1.06, duration:0.60, ease:"power2.inOut" }, 25.636);
 
-    tl.to({}, { duration: 37.989 }, 0);   // full-span anchor -- always last
-    window.__timelines["10-evidence"] = tl;
+    tl.to({}, { duration: 26.236 }, 0);   // full-span anchor -- always last
+    window.__timelines["05-evidence"] = tl;
   </script>
 </template>
 </body>

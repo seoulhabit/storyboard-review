@@ -127,61 +127,20 @@ HELIX_CSS = """
     .mol-body { fill:none; stroke:var(--coral); stroke-linecap:round; }
 """
 
-# ---------------------------------------------------------------- BLDG
-
-BUILDING_JS = r"""
-    // The building: 5 storeys, an X-brace pair per storey (the collagen),
-    // stable ids so a later phase MOVES a beam instead of redrawing it.
-    // o.door adds the ground-floor door; o.into = parent group.
-    function drawBuilding(svg, o) {
-      o = o || {}; var P = o.into || svg;
-      var STOREYS = 5, X0 = 90, X1 = 530, TOP = 150, H = 108;
-      el("rect", { x:60, y:TOP+STOREYS*H+8, width:500, height:26, rx:4, "class":"b-slab", id:"b-slab" }, P);
-      el("rect", { x:X0, y:TOP, width:X1-X0, height:STOREYS*H, rx:6, "class":"b-shell", id:"b-shell" }, P);
-      for (var s = 0; s < STOREYS; s++) {
-        var y = TOP + s*H, yb = y + H;
-        el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
-        el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
-        el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
-        // one hidden 70px shard along each beam's midpoint: the piece the UV cut
-        // knocks loose (04-demolition tweens it away; it never draws otherwise)
-        shard(P, "shard-"+s+"a", X0+16, yb-6, X1-16, y+6);
-        shard(P, "shard-"+s+"b", X1-16, yb-6, X0+16, y+6);
-        for (var w = 0; w < 3; w++)
-          el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
-      }
-      if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
-    }
-    function shard(P, id, x1, y1, x2, y2) {
-      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2, L = Math.hypot(x2 - x1, y2 - y1),
-          ux = (x2 - x1) / L, uy = (y2 - y1) / L;
-      el("line", { x1:(mx - 35 * ux).toFixed(1), y1:(my - 35 * uy).toFixed(1),
-                   x2:(mx + 35 * ux).toFixed(1), y2:(my + 35 * uy).toFixed(1),
-                   "class":"shard", id:id }, P);
-    }
-    // the same six beams the demolition cuts, in the order it cuts them
-    var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
-    function setBeamsCut(tl, ids, offset) {
-      ids.forEach(function (k) {
-        var e = document.getElementById("beam-" + k);
-        e.style.strokeDashoffset = "640"; e.style.opacity = "0.25";
-        tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
-      });
-    }
-"""
-
-BUILDING_CSS = """
-    .b-slab  { fill:var(--ink); }
-    .b-shell { fill:none; stroke:var(--ink); stroke-width:5; }
-    .b-floor { stroke:var(--ink); stroke-width:2.5; opacity:.55; }
-    .b-win   { fill:var(--mist); stroke:var(--ink); stroke-width:2; }
-    .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
-    .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
-               stroke-dasharray:640; stroke-dashoffset:0; }
-    .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
-"""
-
 # ---------------------------------------------------------------- BARRIER
+#
+# 2026-09-05 editorial redesign: the standalone building actor (BUILDING_JS)
+# is RETIRED -- it was a second visual system next to the skin barrier, and
+# the brief's whole point is one continuous model. drawBarrier() below is now
+# the video's single persistent actor, reused across four scenes (02-skin
+# introduces it, 03-cream / 06-recs reframe it -- never redrawn from
+# scratch, per [S6/A-9]). It already drew a full epidermis/dermis
+# cross-section with a stratum-corneum brick course and an aqua dermis hatch;
+# what changed is orientation (HORIZONTAL only now -- "left" mode, used to
+# stand it as a vertical wall in the old 01-hook/06-door, is unused by every
+# new caller and kept only so an old render diff isn't silently reinterpreted)
+# and two new animation entry points below for live UV damage / repair, where
+# the old hatch.cut option only ever set a STATIC pre-cut state at build time.
 
 BARRIER_JS = r"""
     // Skin cross-section: wavy surface, a brick-course stratum corneum, a
@@ -258,7 +217,58 @@ BARRIER_JS = r"""
       }
       return g;
     }
+    // Live UV damage / repair on the dermis hatch fibers drawBarrier already
+    // drew (each fiber's own length is on data-len, set when it was drawn).
+    // snapMeshFibers ANIMATES a fiber retracting + dimming -- "ultraviolet
+    // light helps break that mesh down", spoken live, not a build-time
+    // pre-cut. repairMeshFibers draws one back in, for the recommendations
+    // scene's "protein and vitamin C ... retinoids ... encouraging collagen
+    // production" -- one or two fibers, never the whole mesh at once: the
+    // claim is stronger evidence for PRODUCTION, not a rebuilt structure.
+    function snapMeshFibers(id, indices, tl, at, stagger) {
+      indices.forEach(function (i, k) {
+        ["-h-", "-hb-"].forEach(function (s) {
+          var L = document.getElementById(id + s + i);
+          if (!L) return;
+          var len = parseFloat(L.getAttribute("data-len"));
+          tl.to(L, { strokeDashoffset: len, opacity: 0.18, duration: 0.42, ease: "power2.in" },
+                at + k * (stagger || 0));
+        });
+      });
+    }
+    function repairMeshFibers(id, indices, tl, at, dur) {
+      indices.forEach(function (i) {
+        ["-h-", "-hb-"].forEach(function (s) {
+          var L = document.getElementById(id + s + i);
+          if (!L) return;
+          tl.to(L, { strokeDashoffset: 0, opacity: 0.55, duration: dur || 0.6, ease: "power2.out" }, at);
+        });
+      });
+    }
 """
+
+def skin_opts_js(labels=False, cut=None):
+    """The persistent skin-cross-section actor's drawBarrier() options, as a
+    literal JS object -- IDENTICAL geometry (w/h/surf/boundary/hatch count)
+    every time it is called, in 02-mesh, 04-barrier and 12-recs, per
+    [S6/A-9]: one actor, camera-reframed, never redrawn from a different
+    recipe. `labels` is true only on the actor's FIRST appearance (02-mesh);
+    `cut` restates already-damaged mesh fibres for a cold seek in a LATER
+    file, the same way the old BUILDING actor restated setBeamsCut(CUT_ORDER)
+    on every appearance after the demolition."""
+    hatch = "{ n:10" + (", cut:" + str(list(cut)) if cut else "") + " }"
+    # surf:65, not 40 -- drawBarrier's EPIDERMIS label sits at surf-16 (y:24
+    # at surf:40), and its ascenders clipped against the SVG's own top edge
+    # on the rendered frame (confirmed on the rough-preview render). y:49 at
+    # surf:65 clears it.
+    return ("{ id:\"skin\", w:1728, h:918, surf:65, boundary:280, brickRows:2, "
+            f"hatch:{hatch}, labels:{'true' if labels else 'false'} }}")
+
+
+# the three fibre indices 03-uv snaps live; restated via skin_opts_js(cut=...)
+# wherever the actor is redrawn afterward.
+MESH_DAMAGED = [2, 5, 8]
+
 
 BARRIER_CSS = """
     .bar-band { fill:var(--mist); }

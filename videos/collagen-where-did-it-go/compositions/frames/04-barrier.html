@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>14-hierarchy</title></head>
+<head><meta charset="UTF-8"><title>04-barrier</title></head>
 <body>
 <template>
-  <div id="root" data-composition-id="14-hierarchy"
-       data-width="1920" data-height="1080" data-duration="22.098">
+  <div id="root" data-composition-id="04-barrier"
+       data-width="1920" data-height="1080" data-duration="19.178">
     <style>
       #root {
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
@@ -218,54 +218,45 @@
     }
 
 
-    .b-slab  { fill:var(--ink); }
-    .b-shell { fill:none; stroke:var(--ink); stroke-width:5; }
-    .b-floor { stroke:var(--ink); stroke-width:2.5; opacity:.55; }
-    .b-win   { fill:var(--mist); stroke:var(--ink); stroke-width:2; }
-    .b-door  { fill:var(--paper); stroke:var(--ink); stroke-width:4; }
-    .beam    { stroke:var(--aqua); stroke-width:9; stroke-linecap:round;
-               stroke-dasharray:640; stroke-dashoffset:0; }
-    .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
+    .mol-body { fill:none; stroke:var(--coral); stroke-linecap:round; }
 
-    .abs { position:absolute; }
-    #bldg { position:absolute; left:0; top:0; }
-    .shield { fill:var(--aqua); opacity:.12; }
-    .slab-lock { fill:var(--aqua); opacity:0; }
-    .rank-row { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
-    .rank-row .p-title { margin:0; }
-    #opt { background:var(--mist); padding:var(--s-4); display:flex; flex-direction:column; gap:12px; }
-    .w-card { border-radius:var(--r-3); background:var(--paper); border:3px solid var(--rule-strong);
-              padding:10px 16px; display:flex; align-items:center; gap:14px; position:relative; }
-    .w-card svg { width:56px; height:56px; flex:0 0 auto; }
-    .pk-body { fill:var(--paper); stroke:var(--ink); stroke-width:5; }
-    .pk-cap  { fill:var(--ink); }
-    .w-t { font-family:var(--font-body); font-weight:800; font-size:var(--t-chip); color:var(--ink); margin:0; }
-    .brick { fill:var(--coral); stroke:var(--paper); stroke-width:3; }
-    #final { padding:var(--s-4) var(--s-6); display:flex; align-items:center; opacity:0; }
-    #final-kt { font-size:var(--t-hero); }
-    .cite { opacity:0; position:absolute; }
+    .bar-band { fill:var(--mist); }
+    .bar-brick { fill:var(--paper); stroke:var(--ink); stroke-width:3; }
+    .bar-jamb { stroke:var(--ink); stroke-width:4; }
+    .bar-doorgap { fill:var(--paper); }
+    .bar-surface { fill:none; stroke:var(--ink); stroke-width:4; opacity:.7; }
+    .bar-boundary { stroke:var(--ink); stroke-width:4; stroke-dasharray:14 10; opacity:.55; }
+    .bar-h { stroke:var(--aqua); stroke-width:7; stroke-linecap:round; opacity:.55; }
+    .bar-label { font-family:var(--font-mono); font-size:32px; letter-spacing:.1em;
+                 fill:var(--ink-2); opacity:1; }
+    /* was opacity:.7 -- composites to 2.78:1 on paper, failing the 4.5 text
+       floor; full opacity measures 4.89:1. The dim was cosmetic, not
+       load-bearing (EPIDERMIS/DERMIS are the only text on these labels). */
+
+    .abs { position:absolute; left:0; top:0; }
+    .dot { fill:var(--aqua); }
+    .film { fill:var(--aqua); opacity:0; }
+    .hidden-path { fill:none; stroke:none; }
+    .sz { padding:var(--s-4) var(--s-5); display:flex; flex-direction:column; justify-content:center; gap:6px; }
+    .sz-n { font-family:var(--font-display); font-size:var(--t-figure); line-height:1; margin:0; }
+    .sz-l { font-family:var(--font-mono); font-size:var(--t-chip); letter-spacing:var(--tr-mono); margin:0; }
+    #verdict5 { padding:var(--s-4) var(--s-5); display:flex; flex-direction:column; justify-content:center; gap:4px; }
+    .cite { position:absolute; opacity:0; }
+    .note { opacity:0; }
 
     </style>
 
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <svg id="bldg" viewBox="0 0 700 918" width="700" height="918" aria-hidden="true">
-          <g id="bwrap" transform="translate(40 40) scale(0.9)"></g>
-          <rect class="shield" id="shield" x="90" y="150" width="520" height="560" rx="18"/>
-          <rect class="slab-lock" id="slab-lock" x="80" y="686" width="490" height="34" rx="6"/>
+        <svg id="skinSvg" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
+          <path id="dot-path" class="hidden-path" d="M 700 60 C 700 140 700 200 700 260"/>
         </svg>
-        <div class="panel rank-row" id="rank-1" style="position:absolute;left:740px;top:120px;width:700px;height:130px;"><div class="wash aqua" id="rank-1-wash"></div><p class="p-title">1 · daily sunscreen</p></div><div class="panel rank-row" id="rank-2" style="position:absolute;left:740px;top:280px;width:700px;height:130px;"><div class="wash aqua" id="rank-2-wash"></div><p class="p-title">2 · not smoking</p></div><div class="panel rank-row" id="rank-3" style="position:absolute;left:740px;top:440px;width:700px;height:130px;"><div class="wash aqua" id="rank-3-wash"></div><p class="p-title">3 · protein + vitamin C</p></div><div class="panel rank-row" id="rank-4" style="position:absolute;left:740px;top:600px;width:700px;height:130px;"><div class="wash aqua" id="rank-4-wash"></div><p class="p-title">4 · retinoids, if suitable</p></div>
-        <div class="panel " id="opt" style="position:absolute;left:1440px;top:120px;width:288px;height:330px;"><div class="wash dim" id="opt-wash"></div><p class="chip " id="opt-chip" style="opacity:0;">optional</p><div class="w-card" id="w1"><svg viewBox="0 0 200 200"><rect class="pk-body" x="46" y="74" width="108" height="96" rx="8"/><rect class="pk-cap" x="60" y="46" width="80" height="30" rx="5"/></svg><p class="w-t">collagen cream</p></div>
-               <div class="w-card" id="w2"><svg viewBox="0 0 200 200"><path class="pk-body" d="M58 46 L142 46 L152 172 L48 172 Z"/><rect class="pk-cap" x="58" y="36" width="84" height="16" rx="4"/></svg><p class="w-t">collagen powder</p></div></div>
-        <svg id="bricks" class="abs" viewBox="0 0 300 220" width="300" height="220" style="position:absolute;left:1440px;top:560px;" aria-hidden="true">
-          <rect class="brick" x="0" y="150" width="140" height="60" rx="6"/><rect class="brick" x="150" y="150" width="140" height="60" rx="6"/>
-          <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
-          <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
-        </svg>
-        <div class="cite" id="cite-smoke" style="position:absolute;left:620px;top:735px;">J Dermatol Sci &middot; 2007</div>
-        <div class="cite" id="cite-ret" style="position:absolute;left:1120px;top:735px;">Arch Dermatol &middot; 2007</div>
-        <div class="panel " id="final" style="position:absolute;left:0px;top:796px;width:1728px;height:122px;"><div class="wash moss" id="final-wash"></div><p class="kt " id="final-kt"><span class="kt-word">Protect</span> <span class="kt-word">the</span> <span class="kt-word">building</span> <span class="kt-word" id="final-kt-last">first.</span></p></div>
+        <div class="panel sz late" id="sz-a" style="position:absolute;left:60px;top:60px;width:620px;height:160px;"><div class="wash dim" id="sz-a-wash"></div><p class="sz-n" id="n500">~0</p><p class="sz-l">daltons &middot; the entry limit</p></div>
+        <div class="panel sz late" id="sz-b" style="position:absolute;left:60px;top:300px;width:620px;height:160px;"><div class="wash coral" id="sz-b-wash"></div><p class="sz-n" id="n300k">~0</p><p class="sz-l">daltons &middot; one collagen molecule</p></div>
+        <div class="cite" id="cite-da" style="position:absolute;left:60px;top:480px;">Exp Dermatol &middot; 2000</div>
+        <p class="chip note" id="sz-note" style="position:absolute;left:60px;top:566px;">labelled, not to scale</p>
+        <div class="panel late" id="verdict5" style="position:absolute;left:1080px;top:620px;width:648px;height:220px;"><div class="wash ink" id="verdict5-wash"></div><p class="p-title">Moisturizes the surface.</p><p class="p-body on-ink">Does not replace collagen below.</p></div>
        </div>
       </div>
       </div>
@@ -352,131 +343,195 @@
             stagger:step, ease:"power2.out" }, at);
     }
 
-    // The building: 5 storeys, an X-brace pair per storey (the collagen),
-    // stable ids so a later phase MOVES a beam instead of redrawing it.
-    // o.door adds the ground-floor door; o.into = parent group.
-    function drawBuilding(svg, o) {
-      o = o || {}; var P = o.into || svg;
-      var STOREYS = 5, X0 = 90, X1 = 530, TOP = 150, H = 108;
-      el("rect", { x:60, y:TOP+STOREYS*H+8, width:500, height:26, rx:4, "class":"b-slab", id:"b-slab" }, P);
-      el("rect", { x:X0, y:TOP, width:X1-X0, height:STOREYS*H, rx:6, "class":"b-shell", id:"b-shell" }, P);
-      for (var s = 0; s < STOREYS; s++) {
-        var y = TOP + s*H, yb = y + H;
-        el("line", { x1:X0, y1:yb, x2:X1, y2:yb, "class":"b-floor", id:"floor-"+s }, P);
-        el("line", { x1:X0+16, y1:yb-6, x2:X1-16, y2:y+6, "class":"beam", id:"beam-"+s+"a" }, P);
-        el("line", { x1:X1-16, y1:yb-6, x2:X0+16, y2:y+6, "class":"beam", id:"beam-"+s+"b" }, P);
-        // one hidden 70px shard along each beam's midpoint: the piece the UV cut
-        // knocks loose (04-demolition tweens it away; it never draws otherwise)
-        shard(P, "shard-"+s+"a", X0+16, yb-6, X1-16, y+6);
-        shard(P, "shard-"+s+"b", X1-16, yb-6, X0+16, y+6);
-        for (var w = 0; w < 3; w++)
-          el("rect", { x:X0+34+w*140, y:y+30, width:74, height:46, rx:3, "class":"b-win", id:"win-"+s+"-"+w }, P);
+    // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
+    // groups (#id-seg-i) so digestion can tween segments apart without a
+    // second drawing. o = { id, x, y, w, h, turns, strokeW, segs, cls }
+    function drawHelix(svg, o) {
+      var STEP = 8, N = Math.round(o.w / STEP), segs = o.segs || 1, turns = o.turns || 1.5;
+      var g = el("g", { id:o.id, "class":"mol" }, svg);
+      for (var s = 0; s < segs; s++) {
+        var sg = el("g", { id:o.id + "-seg-" + s }, g);
+        var i0 = Math.floor(N * s / segs), i1 = Math.min(N, Math.floor(N * (s + 1) / segs) + 1);
+        for (var k = 0; k < 3; k++) {
+          var d = "", ph = k * 2.0944;
+          for (var i = i0; i <= i1; i++) {
+            var x = i * STEP;
+            d += (i === i0 ? "M" : "L") + (o.x + x).toFixed(1) + " " +
+                 (o.y + Math.sin(x / o.w * turns * 6.2832 + ph) * o.h / 2).toFixed(2) + " ";
+          }
+          var p = el("path", { d:d, "class":o.cls || "mol-body", opacity:(0.45 + k * 0.27).toFixed(2) }, sg);
+          p.style.strokeWidth = (o.strokeW || 14) + "px";
+        }
       }
-      if (o.door) el("rect", { x:280, y:620, width:60, height:70, rx:3, "class":"b-door", id:"b-door" }, P);
+      return g;
     }
-    function shard(P, id, x1, y1, x2, y2) {
-      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2, L = Math.hypot(x2 - x1, y2 - y1),
-          ux = (x2 - x1) / L, uy = (y2 - y1) / L;
-      el("line", { x1:(mx - 35 * ux).toFixed(1), y1:(my - 35 * uy).toFixed(1),
-                   x2:(mx + 35 * ux).toFixed(1), y2:(my + 35 * uy).toFixed(1),
-                   "class":"shard", id:id }, P);
+
+    // Skin cross-section: wavy surface, a brick-course stratum corneum, a
+    // dashed epidermis/dermis boundary, an optional dermis hatch (aqua braces
+    // = the collagen under the surface) and 32px labels. Geometry is a pure
+    // function of o.w / o.h -- no PRNG. Adapted from catalog skin-band +
+    // barrier-wall.
+    //   o = { id, w, h, surf, boundary, brickRows, door:{col}, hatch:{n, cut:[i]},
+    //         orient:"top"|"left", x, y, labels:true }
+    // "left": drawn horizontally then rotated so the SURFACE faces left and the
+    // band stands vertically at o.x with width o.h and height o.w.
+    function drawBarrier(svg, o) {
+      var g = el("g", { id:o.id, "class":"barrier" }, svg);
+      var inner = g;
+      if (o.orient === "left") {
+        inner = el("g", { transform:"translate(" + o.x + " 0) rotate(-90) translate(-" + o.w + " 0)" }, g);
+      } else if (o.x || o.y) {
+        inner = el("g", { transform:"translate(" + (o.x||0) + " " + (o.y||0) + ")" }, g);
+      }
+      var w = o.w, h = o.h, surf = o.surf, bnd = o.boundary;
+      // washes FIRST so everything paints above them
+      el("rect", { x:0, y:surf, width:w, height:bnd - surf, "class":"bar-band", id:o.id + "-epi" }, inner);
+      el("rect", { x:0, y:bnd, width:w, height:h - bnd, "class":"bar-band", id:o.id + "-derm" }, inner);
+      // NO wash rects here: transform-scaling an SVG rect inside a translated group
+      // rendered around the SVG origin, not the rect's edge. Washes are HTML divs
+      // laid over the band by the file that owns it (see frames_c.py).
+      // dermis hatch
+      if (o.hatch) {
+        var n = o.hatch.n || Math.max(2, Math.round(w / 150)), hx = w / n;
+        for (var i = 0; i < n; i++) {
+          var x0 = i * hx + 14, x1 = (i + 1) * hx - 14;
+          var a = el("line", { x1:x0, y1:h - 14, x2:x1, y2:bnd + 14, "class":"bar-h", id:o.id + "-h-" + i }, inner);
+          var b = el("line", { x1:x1, y1:h - 14, x2:x0, y2:bnd + 14, "class":"bar-h", id:o.id + "-hb-" + i }, inner);
+          [a, b].forEach(function (L) { var len = Math.hypot(x1 - x0, h - bnd - 28);
+            L.style.strokeDasharray = len; L.style.strokeDashoffset = 0; L.setAttribute("data-len", len); });
+        }
+        (o.hatch.cut || []).forEach(function (i) {
+          ["-h-", "-hb-"].forEach(function (s) {
+            var L = document.getElementById(o.id + s + i);
+            L.style.strokeDashoffset = L.getAttribute("data-len"); L.style.opacity = "0.25"; });
+        });
+      }
+      // brick courses (running bond)
+      var BW = 130, BH = 58, J = 16, rows = o.brickRows == null ? 2 : o.brickRows;
+      for (var r = 0; r < rows; r++) {
+        var yb = surf + 10 + r * (BH + J), off = (r % 2) ? -73 : 0, c = 0;
+        for (var xb = off; xb < w; xb += BW + J, c++) {
+          if (o.door && r === 0 && c === o.door.col) {
+            el("line", { x1:xb + 20, y1:yb, x2:xb + 20, y2:yb + BH, "class":"bar-jamb" }, inner);
+            el("line", { x1:xb + BW - 20, y1:yb, x2:xb + BW - 20, y2:yb + BH, "class":"bar-jamb" }, inner);
+            el("rect", { x:xb + 20, y:yb, width:BW - 40, height:BH, "class":"bar-doorgap", id:o.id + "-door" }, inner);
+            continue;
+          }
+          el("rect", { x:Math.max(0, xb), y:yb, width:Math.min(w, xb + BW) - Math.max(0, xb), height:BH, rx:9,
+                       "class":"bar-brick", id:o.id + "-b-" + r + "-" + c }, inner);
+        }
+      }
+      // surface wave and boundary
+      var d = "";
+      for (var k = 0; k <= 24; k++) {
+        var x = w * k / 24, y = surf + 7 * Math.sin(2.2 * 6.2832 * x / w) + 3 * Math.sin(5.1 * 6.2832 * x / w);
+        d += (k ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+      }
+      el("path", { d:d, "class":"bar-surface", id:o.id + "-surface" }, inner);
+      el("line", { x1:0, y1:bnd, x2:w, y2:bnd, "class":"bar-boundary", id:o.id + "-boundary" }, inner);
+      if (o.labels !== false) {
+        if (o.orient === "left") {
+          txt(g, o.x + surf + 22, 52, "EPIDERMIS", "bar-label");
+          txt(g, o.x + h - 22, 52, "DERMIS", "bar-label", "end");
+        } else {
+          txt(inner, 22, surf - 16, "EPIDERMIS", "bar-label");
+          txt(inner, 22, h - 18, "DERMIS", "bar-label");
+        }
+      }
+      return g;
     }
-    // the same six beams the demolition cuts, in the order it cuts them
-    var CUT_ORDER = ["4a","4b","3a","2b","3b","1a"];
-    function setBeamsCut(tl, ids, offset) {
-      ids.forEach(function (k) {
-        var e = document.getElementById("beam-" + k);
-        e.style.strokeDashoffset = "640"; e.style.opacity = "0.25";
-        tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
+    // Live UV damage / repair on the dermis hatch fibers drawBarrier already
+    // drew (each fiber's own length is on data-len, set when it was drawn).
+    // snapMeshFibers ANIMATES a fiber retracting + dimming -- "ultraviolet
+    // light helps break that mesh down", spoken live, not a build-time
+    // pre-cut. repairMeshFibers draws one back in, for the recommendations
+    // scene's "protein and vitamin C ... retinoids ... encouraging collagen
+    // production" -- one or two fibers, never the whole mesh at once: the
+    // claim is stronger evidence for PRODUCTION, not a rebuilt structure.
+    function snapMeshFibers(id, indices, tl, at, stagger) {
+      indices.forEach(function (i, k) {
+        ["-h-", "-hb-"].forEach(function (s) {
+          var L = document.getElementById(id + s + i);
+          if (!L) return;
+          var len = parseFloat(L.getAttribute("data-len"));
+          tl.to(L, { strokeDashoffset: len, opacity: 0.18, duration: 0.42, ease: "power2.in" },
+                at + k * (stagger || 0));
+        });
+      });
+    }
+    function repairMeshFibers(id, indices, tl, at, dur) {
+      indices.forEach(function (i) {
+        ["-h-", "-hb-"].forEach(function (s) {
+          var L = document.getElementById(id + s + i);
+          if (!L) return;
+          tl.to(L, { strokeDashoffset: 0, opacity: 0.55, duration: dur || 0.6, ease: "power2.out" }, at);
+        });
       });
     }
 
-    var svg = document.getElementById("bldg");
-    drawBuilding(svg, { door:true, into:document.getElementById("bwrap") });
-    // the building comes back DAMAGED: same beams 04 cut, restated at 0 for cold seeks
-    setBeamsCut(tl, CUT_ORDER);
-    document.getElementById("bwrap").setAttribute("transform", "translate(40 40) scale(0.9) skewX(-1.4)");
-    gsap.set("#bwrap", { skewX:-1.4, y:9 });
-    // camera settles in from the invert
-    tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    // rows are authored in their final slots; frame zero shows them UNSORTED.
-    // Was all four sliding in together at 1.653 (the INTRO sentence,
-    // before any recommendation is named) -- exactly the review's complaint
-    // (Animation item 9): "asks viewers to track position changes while also
-    // listening to health guidance." Each row now arrives on its OWN named
-    // word instead, the same moment its wash-fill already anchors to, so a
-    // row lands in narrated order: sunscreen, not smoking, nutrition,
-    // retinoids -- never all four before the first one is even spoken.
-    var ROW_AT = [2.709, 4.599, 5.556, 8.113];
-    ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
-      tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
-    });
-    // each action locks in as it is named; sunscreen locks into the FOUNDATION
-    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 2.709);
-    // sunscreen LOCKS ACROSS the foundation, left to right, as it is named
-    tl.fromTo("#slab-lock", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
-              { scaleX:1, duration:0.38, ease:EASE.slam }, 2.709 + 0.10);
-    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, 2.709 + 0.10);
-    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 4.599);
-    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 4.599 + 0.3);
-    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.556);
-    // PROTEIN is the building material, so the partial repair rides that line:
-    // three of six beams come back and the lean comes out. The damage is not undone.
-    ["4a", "3a", "1a"].forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, 5.556 + 0.25 + i * 0.3);
-    });
-    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, 6.325);
-    // the smoking chip steps back so it is not read as sourcing the nutrition line
-    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, 5.556 + 0.2);
-    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 8.113);
-    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 8.113 + 0.4);
-    // "considerably stronger evidence for encouraging collagen production": ONE
-    // more beam draws in, and the camera leans toward the building to watch it.
-    // One beam, not six -- the claim is stronger evidence for production, not a
-    // rebuilt structure. The push now starts on "stronger" rather than waiting
-    // for "encouraging" -- between the retinoid citation settling (~118.7s) and
-    // the old 11.409-0.3 anchor (121.0s) sat ~2.3s of nothing, measured
-    // on the render as a pixel-identical t=120-122s freeze, during the section's
-    // longest sentence. The camera lean now fills that gap directly; the beam
-    // repair keeps its own anchor on "encouraging", the word it depicts.
-    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, 9.741 - 0.1);
-    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, 11.409);
-    // the whole brace set brightens as production is named, so the claim reads as
-    // the building gaining rather than one line quietly redrawing itself
-    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, 12.289 - 0.2);
-    tl.fromTo("#shield", { opacity:0.30 }, { opacity:0.44, duration:0.9, yoyo:true, repeat:1,
-              ease:EASE.hold }, 12.289 + 0.1);
+    var svg = document.getElementById("skinSvg");
+    drawBarrier(svg, { id:"skin", w:1728, h:918, surf:65, boundary:280, brickRows:2, hatch:{ n:10, cut:[2, 5, 8] }, labels:false });
+    var mol = drawHelix(svg, { id:"mol", x:640, y:60, w:120, h:40, strokeW:13 });
+    var dot = el("circle", { cx:700, cy:60, r:9, "class":"dot", id:"dot500" }, svg);
+    // appended AFTER drawBarrier so it paints ON TOP of the opaque epidermis
+    // background and brick course -- static markup placed before the JS call
+    // was silently invisible under those layers (same defect as 12-recs'
+    // shield). y:18 sits at the true surface line, not near the dermis
+    // boundary where a prior draft mistakenly placed it.
+    var film = el("rect", { "class":"film", id:"film", x:620, y:48, width:220, height:16, rx:8 }, svg);
 
-    // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
-    // the optional column ARRIVES: the camera pans right so cream and powder
-    // enter the frame from outside the first-line actions, never sharing their row
-    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, 14.084 - 0.5);
-    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 14.084 - 0.2);
-    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 14.084);
-    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, 16.821);
-    // the two optional cards settle back and dim as the verdict is spoken over
-    // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
-    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 14.954 - 0.2);
-    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, 16.821 + 0.15);
-    // EASE.arrive: "optional" is the scene's health-guidance verdict on these
-    // two products, not an impact (Animation item 2 -- reserve the playful
-    // back.out bounce for impacts/jokes, never a limitation or guidance claim).
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.arrive }, 17.265);
-    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, 17.756 - 0.9);
-    tl.to("#final", { opacity:1, duration:0.1 }, 17.756 - 0.1);
-    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, 17.756 - 0.1);
-    kineticWords(tl, "#final-kt", 17.756 + 0.15, 0.08, "rise");
-    // the bricks are already leaving as they are named; the building they were
-    // never going to build takes the frame back over the closing words
-    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, 18.439 - 0.2);
-    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, 18.806);
-    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, 20.553);
+    // ---- unit 04-barrier: too large to cross ------------------------------------
+    tl.fromTo("#world", { scale:1.04 }, { scale:1, duration:0.8, ease:EASE.camera }, 0);
+    // a held beat between the camera settling and the dot's descent starting
+    // on 2.787 (late in this unit's own sentence) -- a fixed early bridge
+    tl.to(mol, { scale:1.09, duration:0.6, yoyo:true, repeat:1, ease:"sine.inOut" }, 0.9);
+    pathFollow(tl, dot, document.getElementById("dot-path"), 2.787 - 0.2, 1.3, "power1.inOut");
+    reveal(tl, "#sz-a", 3.893 - 0.5);
+    tl.fromTo("#sz-a-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 3.893 - 0.5);
+    count(tl, "n500", 0, 500, 3.893 - 0.4, 0.6, function (n) { return "~" + n.toLocaleString("en-GB"); });
+    reveal(tl, "#sz-b", 5.592 - 0.4);
+    tl.fromTo("#sz-b-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 5.592 - 0.4);
+    tl.to(mol, { y:60, scale:1.16, transformOrigin:"50% 50%", duration:0.7, ease:EASE.arrive }, 5.592);
+    tl.to("#dot500", { scale:0.85, transformOrigin:"50% 50%", duration:0.4, ease:EASE.swap }, 5.592 + 0.2);
+    count(tl, "n300k", 0, 300000, 7.760 - 0.5, 1.0, function (n) { return "~" + n.toLocaleString("en-GB"); });
+    tl.fromTo("#cite-da", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, 7.760 + 0.4);
+    tl.to("#sz-note", { opacity:1, duration:0.3, ease:EASE.arrive }, 7.760 + 0.6);
+    // one attempt, one stop -- against a shorter unit than the old three-bounce
+    tl.to(mol, { y:200, duration:0.4, ease:"power2.in" }, 8.535 - 0.5);
+    tl.to(mol, { y:150, scale:1.0, duration:0.35, ease:EASE.slam }, 8.535 - 0.1);
+    tl.to("[id^=skin-b-]", { fill:"#C97A5C", duration:0.12, yoyo:true, repeat:1, ease:EASE.slam }, 9.327 - 0.15);
+    tl.to("#world", { scale:1, x:0, y:0, duration:0.6, ease:EASE.camera }, 18.628 - 1.0);
 
-    // departure: push under the curtain wipe into the next file
-    tl.to("#world", { scale:1.06, duration:0.90, ease:"power2.inOut" }, 21.198);
+    // ---- unit 05-film: flattens into a surface film -----------------------------
+    // Measured on the real word manifest: the brick-flash on "through." ends
+    // ~9.42s file-relative and nothing else moves until "film" flattens the
+    // molecule at ~11.43s -- a genuine ~2s hole, not covered by anchoring off
+    // 05-film's own start (10.10s), which is itself well inside that hole.
+    tl.to(mol, { scale:1.10, duration:0.5, yoyo:true, repeat:1, ease:"sine.inOut" }, 9.327 + 0.3);
+    // flattens back up AT the surface (y:26, matching the film rect's new
+    // position) -- not down near the dermis boundary, where a prior draft
+    // mistakenly sent it (thematically wrong: a surface film sits ON the
+    // skin, not deep in the tissue the molecule was just rejected from).
+    tl.to(mol, { y:56, scaleY:0.18, scaleX:1.7, transformOrigin:"50% 50%", duration:0.6, ease:EASE.swap }, 11.727 - 0.3);
+    tl.fromTo("#film", { opacity:0.6, scaleX:0, transformOrigin:"50% 50%" },
+              { scaleX:1, duration:0.5, ease:EASE.wipe }, 11.727);
+    tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, 14.125 - 0.4);
+    tl.to(["#sz-a", "#sz-b", "#sz-note", "#cite-da"], { opacity:0, duration:0.3, ease:EASE.exit }, 14.125);
+    reveal(tl, "#verdict5", 14.125 + 0.2);
+    tl.fromTo("#verdict5-wash", { scaleX:0 }, { scaleX:1, duration:0.45, ease:EASE.wipe }, 14.125 + 0.2);
+    // measured hole: nothing else moves from here to the file's own end
+    // (18.628) while "but that's the surface, not structure below it" plays --
+    // the verdict card just sits. A held emphasis on "not" is the beat.
+    tl.to("#verdict5", { scale:1.06, duration:0.35, yoyo:true, repeat:1, ease:EASE.slam }, 16.385 - 0.1);
+    // duration kept short enough that this ends well before 18.628 (18.628) --
+    // the camera-home assert requires every #world tween to settle by then
+    tl.to("#world", { scale:1.035, duration:0.65, yoyo:true, repeat:1, ease:"sine.inOut" }, 16.385 + 0.6);
 
-    tl.to({}, { duration: 22.098 }, 0);   // full-span anchor -- always last
-    window.__timelines["14-hierarchy"] = tl;
+    // departure: push under the iris wipe into the next file
+    tl.to("#world", { scale:1.06, duration:0.55, ease:"power2.inOut" }, 18.628);
+
+    tl.to({}, { duration: 19.178 }, 0);   // full-span anchor -- always last
+    window.__timelines["04-barrier"] = tl;
   </script>
 </template>
 </body>

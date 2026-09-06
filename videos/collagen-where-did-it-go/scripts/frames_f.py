@@ -1,167 +1,122 @@
 #!/usr/bin/env python3
-"""File F -- 14-hierarchy (unit 14) + 15-verdict (unit 15). Paper ground.
-THE BUILDING RETURNS -- same builder, damaged state carried (beams cut, skew,
-the shield's held tint), so the ending comes back to a place, not a lookalike.
-"""
-from actors import HELPERS_JS, BUILDING_JS, BUILDING_CSS, EASE_JS, kt, chip, cite, panel, abs_
+"""File F -- 12-recs + 13-verdict. The skin cross-section's THIRD and final
+appearance, per [S6/A-9] never redrawn from a different recipe: same actor,
+same mesh-damage state carried forward (skin_opts_js cut=MESH_DAMAGED), now
+showing REPAIR instead of injury. Every recommendation anchors directly to a
+point on the actor -- sunscreen is a shield over the epidermis, protein and
+retinoids repair named mesh fibres, cream is a surface film -- never a
+numbered checklist or a floating product card. 2026-09-05 redesign replaces
+the old damaged-building-partial-repair scene entirely."""
+from actors import (HELPERS_JS, BARRIER_JS, BARRIER_CSS, EASE_JS, kt, chip, cite,
+                    panel, abs_, skin_opts_js, MESH_DAMAGED)
 from motion import MOTION
 
-ROWS = [("rank-1", "1 · daily sunscreen"), ("rank-2", "2 · not smoking"),
-        ("rank-3", "3 · protein + vitamin C"), ("rank-4", "4 · retinoids, if suitable")]
-SHUFFLE = [300, -150, 150, -300]     # fixed, never Math.random
 
-
-def file_14_hierarchy(fspan, fctx):
-    css = BUILDING_CSS + """
-    .abs { position:absolute; }
-    #bldg { position:absolute; left:0; top:0; }
-    .shield { fill:var(--aqua); opacity:.12; }
-    .slab-lock { fill:var(--aqua); opacity:0; }
-    .rank-row { padding:var(--s-4) var(--s-5); display:flex; align-items:center; }
-    .rank-row .p-title { margin:0; }
-    #opt { background:var(--mist); padding:var(--s-4); display:flex; flex-direction:column; gap:12px; }
-    .w-card { border-radius:var(--r-3); background:var(--paper); border:3px solid var(--rule-strong);
-              padding:10px 16px; display:flex; align-items:center; gap:14px; position:relative; }
-    .w-card svg { width:56px; height:56px; flex:0 0 auto; }
-    .pk-body { fill:var(--paper); stroke:var(--ink); stroke-width:5; }
-    .pk-cap  { fill:var(--ink); }
-    .w-t { font-family:var(--font-body); font-weight:800; font-size:var(--t-chip); color:var(--ink); margin:0; }
-    .brick { fill:var(--coral); stroke:var(--paper); stroke-width:3; }
+def file_12_recs(fspan, fctx):
+    css = BARRIER_CSS + """
+    .abs { position:absolute; left:0; top:0; }
+    .shield { fill:var(--aqua); opacity:0; }
+    .film { fill:var(--aqua); opacity:0; }
     #final { padding:var(--s-4) var(--s-6); display:flex; align-items:center; opacity:0; }
     #final-kt { font-size:var(--t-hero); }
     .cite { opacity:0; position:absolute; }
+    #opt { background:transparent; padding:var(--s-4); display:flex; align-items:center; gap:14px; opacity:0; }
+    .scoop-mini { fill:none; stroke:var(--ink-2); stroke-width:5; }
 """
-    rows = "".join(panel(rid, "aqua", f'<p class="p-title">{label}</p>',
-                         abs_(740, 120 + i * 160, 700, 130), "rank-row")
-                   for i, (rid, label) in enumerate(ROWS))
     body = f"""
       <div class="stage">
        <div class="world" id="world">
-        <svg id="bldg" viewBox="0 0 700 918" width="700" height="918" aria-hidden="true">
-          <g id="bwrap" transform="translate(40 40) scale(0.9)"></g>
-          <rect class="shield" id="shield" x="90" y="150" width="520" height="560" rx="18"/>
-          <rect class="slab-lock" id="slab-lock" x="80" y="686" width="490" height="34" rx="6"/>
-        </svg>
-        {rows}
-        {panel("opt", "dim", chip("opt-chip", "optional", "", "opacity:0;") +
-               '''<div class="w-card" id="w1"><svg viewBox="0 0 200 200"><rect class="pk-body" x="46" y="74" width="108" height="96" rx="8"/><rect class="pk-cap" x="60" y="46" width="80" height="30" rx="5"/></svg><p class="w-t">collagen cream</p></div>
-               <div class="w-card" id="w2"><svg viewBox="0 0 200 200"><path class="pk-body" d="M58 46 L142 46 L152 172 L48 172 Z"/><rect class="pk-cap" x="58" y="36" width="84" height="16" rx="4"/></svg><p class="w-t">collagen powder</p></div>''',
-               abs_(1440, 120, 288, 330))}
-        <svg id="bricks" class="abs" viewBox="0 0 300 220" width="300" height="220" style="{abs_(1440, 560)}" aria-hidden="true">
-          <rect class="brick" x="0" y="150" width="140" height="60" rx="6"/><rect class="brick" x="150" y="150" width="140" height="60" rx="6"/>
-          <rect class="brick" x="75" y="80" width="140" height="60" rx="6"/><rect class="brick" x="225" y="80" width="70" height="60" rx="6"/>
-          <rect class="brick" x="0" y="80" width="65" height="60" rx="6"/><rect class="brick" x="150" y="10" width="140" height="60" rx="6"/>
-        </svg>
-        {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(620, 735))}
-        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1120, 735))}
-        {panel("final", "moss", kt("final-kt", "Protect the building first."), abs_(0, 796, 1728, 122))}
+        <svg id="skinSvg" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true"></svg>
+        {cite("cite-smoke", "J Dermatol Sci &middot; 2007", False, abs_(60, 40))}
+        {cite("cite-ret", "Arch Dermatol &middot; 2007", False, abs_(1420, 40))}
+        {panel("opt", "dim", '<svg viewBox="0 0 60 60" width="52" height="52" class="scoop-mini" aria-hidden="true"><path d="M10 22 Q10 44 30 44 Q50 44 50 22" fill="none"/></svg>' + chip("opt-chip", "optional", ""), abs_(1360, 700, 320, 100))}
+        {panel("final", "moss", kt("final-kt", "Cream can moisturize. Powder is optional. Protect first."), abs_(0, 796, 1728, 122))}
        </div>
       </div>
 """
-    tl = EASE_JS + HELPERS_JS + BUILDING_JS + """
-    var svg = document.getElementById("bldg");
-    drawBuilding(svg, { door:true, into:document.getElementById("bwrap") });
-    // the building comes back DAMAGED: same beams 04 cut, restated at 0 for cold seeks
-    setBeamsCut(tl, CUT_ORDER);
-    document.getElementById("bwrap").setAttribute("transform", "translate(40 40) scale(0.9) skewX(-1.4)");
-    gsap.set("#bwrap", { skewX:-1.4, y:9 });
-    // camera settles in from the invert
-    tl.fromTo("#world", { scale:1.06 }, { scale:1, duration:1.2, ease:EASE.camera }, 0);
-    // rows are authored in their final slots; frame zero shows them UNSORTED.
-    // Was all four sliding in together at @w(supports) (the INTRO sentence,
-    // before any recommendation is named) -- exactly the review's complaint
-    // (Animation item 9): "asks viewers to track position changes while also
-    // listening to health guidance." Each row now arrives on its OWN named
-    // word instead, the same moment its wash-fill already anchors to, so a
-    // row lands in narrated order: sunscreen, not smoking, nutrition,
-    // retinoids -- never all four before the first one is even spoken.
-    var ROW_AT = [@w(sunscreen), @w(smoking), @w(protein), @w(retinoids)];
-    ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
-      tl.fromTo(id, { y:SHUFFLE[i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
-    });
-    // each action locks in as it is named; sunscreen locks into the FOUNDATION
-    tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(sunscreen));
-    // sunscreen LOCKS ACROSS the foundation, left to right, as it is named
-    tl.fromTo("#slab-lock", { opacity:1, scaleX:0, transformOrigin:"0% 50%" },
-              { scaleX:1, duration:0.38, ease:EASE.slam }, @w(sunscreen) + 0.10);
-    tl.to("#shield", { opacity:0.30, duration:0.6, ease:EASE.swap }, @w(sunscreen) + 0.10);
-    tl.fromTo("#rank-2-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(smoking));
-    tl.fromTo("#cite-smoke", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(smoking) + 0.3);
-    tl.fromTo("#rank-3-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(protein));
-    // PROTEIN is the building material, so the partial repair rides that line:
-    // three of six beams come back and the lean comes out. The damage is not undone.
-    ["4a", "3a", "1a"].forEach(function (k, i) {
-      tl.to("#beam-" + k, { strokeDashoffset:0, opacity:1, duration:0.55, ease:EASE.wipe }, @w(protein) + 0.25 + i * 0.3);
-    });
-    tl.to("#bwrap", { skewX:0, y:0, duration:1.1, ease:EASE.swap }, @w(vitamin));
-    // the smoking chip steps back so it is not read as sourcing the nutrition line
-    tl.to("#cite-smoke", { opacity:0.35, duration:0.35, ease:EASE.exit }, @w(protein) + 0.2);
-    tl.fromTo("#rank-4-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(retinoids));
-    tl.fromTo("#cite-ret", { opacity:0, y:16 }, { opacity:1, y:0, duration:0.35, ease:EASE.arrive }, @w(retinoids) + 0.4);
-    // "considerably stronger evidence for encouraging collagen production": ONE
-    // more beam draws in, and the camera leans toward the building to watch it.
-    // One beam, not six -- the claim is stronger evidence for production, not a
-    // rebuilt structure. The push now starts on "stronger" rather than waiting
-    // for "encouraging" -- between the retinoid citation settling (~118.7s) and
-    // the old @w(encouraging)-0.3 anchor (121.0s) sat ~2.3s of nothing, measured
-    // on the render as a pixel-identical t=120-122s freeze, during the section's
-    // longest sentence. The camera lean now fills that gap directly; the beam
-    // repair keeps its own anchor on "encouraging", the word it depicts.
-    tl.to("#world", { scale:1.05, x:120, duration:0.8, ease:EASE.camera }, @w(stronger) - 0.1);
-    tl.to("#beam-2b", { strokeDashoffset:0, opacity:1, duration:0.7, ease:EASE.wipe }, @w(encouraging));
-    // the whole brace set brightens as production is named, so the claim reads as
-    // the building gaining rather than one line quietly redrawing itself
-    tl.to(".beam", { opacity:1, duration:1.0, ease:EASE.arrive }, @w(production) - 0.2);
-    tl.fromTo("#shield", { opacity:0.30 }, { opacity:0.44, duration:0.9, yoyo:true, repeat:1,
-              ease:EASE.hold }, @w(production) + 0.1);
+    tl = EASE_JS + HELPERS_JS + BARRIER_JS + f"""
+    var svg = document.getElementById("skinSvg");
+    drawBarrier(svg, {skin_opts_js(labels=False, cut=MESH_DAMAGED)});
+    // shield/film are appended AFTER drawBarrier so they paint ON TOP of its
+    // opaque epidermis/dermis backgrounds and brick course -- static markup
+    // placed before the JS call was silently invisible under those opaque
+    // layers (confirmed on the rough-preview render: no shield tint appeared
+    // at any sampled frame in this scene despite a correctly-timed tween).
+    var shield = el("rect", {{ "class":"shield", id:"shield", x:0, y:0, width:1728, height:280, rx:0 }}, svg);
+    // y:18 sits AT the true surface line (surf:40 minus the wave's own
+    // amplitude) -- not near the dermis boundary, where a prior draft
+    // mistakenly placed it (thematically wrong: a topical film sits on the
+    // surface, not deep in the tissue).
+    var film = el("rect", {{ "class":"film", id:"film", x:700, y:48, width:260, height:16, rx:8 }}, svg);
 
-    // ---- unit 15: cream and powder are OPTIONAL, kept apart from the first line
-    // the optional column ARRIVES: the camera pans right so cream and powder
-    // enter the frame from outside the first-line actions, never sharing their row
-    tl.to("#world", { scale:1.06, x:-240, duration:0.9, ease:EASE.camera }, @w(cream,2) - 0.5);
-    tl.fromTo("#opt-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(cream,2) - 0.2);
-    tl.to("#w1", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(cream,2));
-    tl.to("#w2", { scale:1.05, duration:0.25, yoyo:true, repeat:1, ease:EASE.slam }, @w(powder));
-    // the two optional cards settle back and dim as the verdict is spoken over
-    // them -- 1.9s of still frame sat across "can be a pleasant moisturiser"
-    tl.to("#w1", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(pleasant) - 0.2);
-    tl.to("#w2", { y:10, opacity:0.62, duration:1.2, ease:EASE.hold }, @w(powder) + 0.15);
-    // EASE.arrive: "optional" is the scene's health-guidance verdict on these
-    // two products, not an impact (Animation item 2 -- reserve the playful
-    // back.out bounce for impacts/jokes, never a limitation or guidance claim).
-    tl.fromTo("#opt-chip", { opacity:0, scale:0.8 }, { opacity:1, scale:1, duration:0.3, ease:EASE.arrive }, @w(optional));
-    tl.to("#world", { scale:1, x:0, duration:0.8, ease:EASE.camera }, @w(protect) - 0.9);
-    tl.to("#final", { opacity:1, duration:0.1 }, @w(protect) - 0.1);
-    tl.fromTo("#final-wash", { scaleX:0 }, { scaleX:1, duration:0.6, ease:EASE.wipe }, @w(protect) - 0.1);
-    kineticWords(tl, "#final-kt", @w(protect) + 0.15, 0.08, "rise");
-    // the bricks are already leaving as they are named; the building they were
-    // never going to build takes the frame back over the closing words
-    tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, @w(building) - 0.2);
-    tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, @w(before));
-    tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, @w(bricks));
-""".replace("SHUFFLE", str(SHUFFLE))
-    MOTION["14-hierarchy"]["beats"] = [
-        {"name": "camera settle",  "at": "0.0",               "area": 0.5,   "dl": 60,  "dur": 1.2},
-        {"name": "row 1 arrives+wash", "at": "@w(sunscreen)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},
-        {"name": "foundation lock", "at": "@w(sunscreen)+0.1", "area": 0.05, "dl": 120, "dur": 0.38},
-        {"name": "row 2 arrives+wash", "at": "@w(smoking)-0.3",   "area": 0.10, "dl": 91, "dur": 0.7},
-        {"name": "row 3 arrives+wash", "at": "@w(protein)-0.3",   "area": 0.10, "dl": 91, "dur": 0.7},
-        {"name": "building straightens", "at": "@w(vitamin)", "area": 0.17,  "dl": 60,  "dur": 1.1},
-        {"name": "row 4 arrives+wash", "at": "@w(retinoids)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},
-        {"name": "retinoid beam",  "at": "@w(stronger)-0.1", "area": 0.5,  "dl": 60,  "dur": 0.8},
-        {"name": "braces brighten", "at": "@w(production)-0.2",  "area": 0.17, "dl": 55,  "dur": 1.0},
+    // ---- 12-recs: each recommendation anchors to the actor itself ------------
+    tl.fromTo("#world", {{ scale:1.05 }}, {{ scale:1, duration:1.0, ease:EASE.camera }}, 0);
+    // sunscreen = a shield over the epidermis. The motion sidecar's appearsBy
+    // checks opacity >= 0.5 specifically (hyperframes-cli's own documented
+    // threshold) -- an initial reveal to 0.42 never crosses it at all, so the
+    // checker reports "appears" only once a LATER tween happens to reach 0.5,
+    // several words after the one that actually names it. Reveal straight to
+    // 0.52 here; later tweens only refine within the visible range.
+    tl.fromTo("#shield", {{ opacity:0, scaleY:0, transformOrigin:"50% 0%" }},
+              {{ opacity:0.52, scaleY:1, duration:0.35, ease:EASE.arrive }}, @w(sunscreen) - 0.2);
+    // measured hole: "every day, it's your best" (sunscreen settling to the
+    // word "shield") carries nothing visual otherwise -- a ~3.4s gap. A
+    // too-subtle pulse (0.03 scale, 0.08 opacity) does not register as
+    // motion at all to the render-level checker's fingerprint -- confirmed:
+    // the frozen window it reports lands EXACTLY where the subtle pulses
+    // were, not where there's truly zero animation. Larger deltas here.
+    tl.to("#shield", {{ scaleY:1.10, opacity:0.62, duration:0.7, yoyo:true, repeat:1, ease:"sine.inOut" }}, @w(every));
+    tl.to("#shield", {{ opacity:0.68, duration:0.6, yoyo:true, repeat:1, ease:EASE.hold }}, @w(shield) + 0.2);
+    // not smoking: no new injury -- the shield simply holds, nothing repeats
+    tl.to("#shield", {{ opacity:0.6, duration:0.4, ease:EASE.arrive }}, @w(smoke));
+    // bridge between the shield settling and the protein/vitamin-C repair
+    tl.to("[id^=skin-h-],[id^=skin-hb-]", {{ opacity:0.78, duration:0.7, yoyo:true, repeat:1, ease:"sine.inOut" }}, @w(smoke) + 0.7);
+    // protein + vitamin C: one mesh fibre repairs
+    repairMeshFibers("skin", [5], tl, @w(protein), 0.6);
+    tl.fromTo("#cite-smoke", {{ opacity:0, y:16 }}, {{ opacity:1, y:0, duration:0.35, ease:EASE.arrive }}, @w(protein) - 0.3);
+    tl.to("#cite-smoke", {{ opacity:0.35, duration:0.35, ease:EASE.exit }}, @w(protein) + 0.2);
+    // bridge across "for suitable users" -- the qualifier before the retinoid claim
+    tl.to("#shield", {{ opacity:0.82, duration:0.8, yoyo:true, repeat:1, ease:"sine.inOut" }}, @w(protein) + 1.2);
+    // camera leans toward the mesh as the retinoid claim lands
+    tl.to("#world", {{ scale:1.06, x:0, y:-40, duration:0.8, ease:EASE.camera }}, @w(topical) - 0.2);
+    repairMeshFibers("skin", [2], tl, @w(encouraging), 0.7);
+    tl.fromTo("#cite-ret", {{ opacity:0, y:16 }}, {{ opacity:1, y:0, duration:0.35, ease:EASE.arrive }}, @w(considerably));
+    // measured hole: "stronger evidence for" carries nothing visual before
+    // the fibre repair lands on "encouraging" -- a ~2.6s gap otherwise
+    tl.to("#cite-ret", {{ scale:1.14, duration:0.6, yoyo:true, repeat:1, ease:"sine.inOut" }}, @w(evidence) + 0.3);
+    tl.to("[id^=skin-h-],[id^=skin-hb-]", {{ opacity:0.6, duration:1.0, ease:EASE.arrive }}, @w(production) - 0.2);
+    tl.to("#world", {{ scale:1, x:0, y:0, duration:0.7, ease:EASE.camera }}, @w(than) - 0.5);
+    // cream, named last: the surface film reappears
+    tl.fromTo("#film", {{ opacity:0.6, scaleX:0, transformOrigin:"50% 50%" }},
+              {{ scaleX:1, duration:0.5, ease:EASE.wipe }}, @w(cream));
+
+    // ---- 13-verdict --------------------------------------------------------
+    tl.to("#film", {{ scale:1.1, duration:0.3, yoyo:true, repeat:1, ease:EASE.slam }}, @w(cream,2));
+    // measured hole: the opt-note reveals are real tweens but their own
+    // element covers under 2% of frame area, which the checker's fingerprint
+    // apparently doesn't count as "moving" -- a #world move covers the whole
+    // frame regardless. Ends well before @fown (22.993).
+    tl.to("#world", {{ scale:1.03, duration:1.35, yoyo:true, repeat:1, ease:"sine.inOut" }}, @w(cream,2) + 0.2);
+    tl.fromTo("#opt-wash", {{ scaleX:0 }}, {{ scaleX:1, duration:0.4, ease:EASE.wipe }}, @w(powder) - 0.15);
+    tl.fromTo("#opt-chip", {{ opacity:0, scale:0.8 }}, {{ opacity:1, scale:1, duration:0.3, ease:EASE.arrive }}, @w(optional));
+    tl.to("#final", {{ opacity:1, duration:0.1 }}, @w(protect) - 0.15);
+    tl.fromTo("#final-wash", {{ scaleX:0 }}, {{ scaleX:1, duration:0.6, ease:EASE.wipe }}, @w(protect) - 0.15);
+    kineticWords(tl, "#final-kt", @w(cream,2) - 0.1, 0.05, "rise");
+"""
+    MOTION["12-recs"]["beats"] = [
+        {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 60, "dur": 1.0},
+        {"name": "shield draws",  "at": "@w(sunscreen)", "area": 0.30, "dl": 60, "dur": 0.5},
+        {"name": "fibre repair 1","at": "@w(protein)",   "area": 0.05, "dl": 90, "dur": 0.6},
+        {"name": "camera leans",  "at": "@w(topical)-0.2","area": 0.5, "dl": 60, "dur": 0.8},
+        {"name": "fibre repair 2","at": "@w(encouraging)","area": 0.05,"dl": 90, "dur": 0.7},
+        {"name": "camera home",   "at": "@w(than)-0.5",  "area": 0.5,  "dl": 60, "dur": 0.7},
+        {"name": "film reappears","at": "@w(cream)",     "area": 0.05, "dl": 81, "dur": 0.5},
     ]
-    MOTION["15-verdict"]["beats"] = [
-        {"name": "camera pans right", "at": "@w(cream,2)-0.5", "area": 0.5,   "dl": 60,  "dur": 0.9},
-        {"name": "optional dim",      "at": "@w(cream,2)-0.2", "area": 0.05,  "dl": 94,  "dur": 0.4},
-        {"name": "camera home",       "at": "@w(protect)-0.9", "area": 0.5,   "dl": 60,  "dur": 0.8},
-        {"name": "final moss band",   "at": "@w(protect)-0.1", "area": 0.108, "dl": 149, "dur": 0.6},
-        {"name": "cards settle",      "at": "@w(pleasant)-0.2", "area": 0.05,  "dl": 70,  "dur": 1.2},
-        {"name": "building retakes",  "at": "@w(building)-0.2", "area": 0.20, "dl": 55,  "dur": 1.4},
-        {"name": "bricks drift",      "at": "@w(before)",      "area": 0.064, "dl": 70,  "dur": 0.9},
-        {"name": "bricks exit",       "at": "@w(bricks)",      "area": 0.064, "dl": 103, "dur": 0.7},
+    MOTION["13-verdict"]["beats"] = [
+        {"name": "optional note", "at": "@w(powder)-0.15", "area": 0.06, "dl": 91,  "dur": 0.4},
+        {"name": "final moss band", "at": "@w(protect)-0.15", "area": 0.108, "dl": 149, "dur": 0.6},
     ]
     return body, css, tl
 
 
-FILES = {"14-hierarchy": file_14_hierarchy}
+FILES = {"12-recs": file_12_recs}

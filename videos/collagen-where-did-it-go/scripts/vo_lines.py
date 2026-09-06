@@ -1,22 +1,33 @@
 #!/usr/bin/env python3
 """The narration script. THIS IS THE ONLY TEXT SENT TO TTS.
 
-One narrator, one master take. The two-voice dialogue (SoulHabit + Jay, 41
-lines) that this project shipped with on 2026-09-03 was replaced on
-2026-09-04 by a single-narrator rewrite; the reasons and the retention
-diagnosis are in DELIVERY.md's changelog. Every downstream file -- the frame
-generator, the root composition, captions, SCRIPT.md, STORYBOARD.md, the
-motion sidecar -- derives from this table plus the measured word manifest
-(assets/voice/master.words.json, written by scripts/gen_vo.py).
+2026-09-05 EDITORIAL REDESIGN. Replaces the 16-unit / 343-word single-narrator
+cut (2:23.8) with a 13-unit / 240-word cut targeting ~95-100s at 145-150 wpm,
+per the operator's "editorial science documentary" brief: one continuous
+visual journey (a collagen strand through skin and body) instead of narrated
+slides. The "building" metaphor and the vertical brick-course barrier are both
+retired in favour of one recurring horizontal skin cross-section actor
+(epidermis / dermis / collagen mesh) -- see actors.py. Every claim keeps the
+exact sourced strength BRIEF.md's own 2026-09-04 audit already settled on
+(C1-C10); nothing here asserts further than its citation. Two lines are the
+operator's own required wording, verbatim: the "support mesh" line (02-mesh +
+03-uv) and the closing line (13-verdict).
 
-TTS-safe copy rules (carried from videos/ectoin-survival-molecule): no
-em-dashes and no colons (both read as long pauses or get verbalised); numbers
-are SPELLED OUT here and rendered numeric on screen by the frame generator.
-Fixing a mispronunciation by editing the visible copy is the wrong half of
-that fix -- the spoken form is respelled HERE and the on-screen form is left
-alone.
+One narrator. One master take -- BLOCKS_ONE was already this project's
+confirmed preference before the cut got shorter; at 240 words / ~1500
+characters this is far under seed_audio's measured danger zone (a
+1933-character block drifted off-script at 77.7% alignment), so there is no
+reason left to split it.
 
-  cid     the beat UNIT (16 units, 15 spoken). Several units share one
+TTS-safe copy rules (unchanged from the shipped cut): no em-dashes and no
+colons (both read as long pauses or get verbalised); no hyphenated compound
+numbers ("five hundred dalton", not "five-hundred-dalton") -- a hyphen reads
+as one token to some engines and a KEY_TERMS mismatch costs a whole re-roll;
+numbers are SPELLED OUT here and rendered numeric on screen by the frame
+generator. Fixing a mispronunciation is a respelling HERE, never an edit to
+the on-screen copy.
+
+  cid     the beat UNIT (14 units, 13 spoken). Several units share one
           composition file -- see actors.FILES -- but every unit is its own
           timing span and its own row in STORYBOARD.md.
   text    the exact sentence(s) spoken for that unit. A sentence ends in
@@ -24,136 +35,105 @@ alone.
 """
 
 # Kimberly is the channel's standing narrator (videos/_channel/baseline.yaml,
-# policies [S1/S-3] one presenter, [S1/S-4] never rotate). Higgsfield seed_audio,
-# voice_type "element" (a workspace reference element), never a preset.
+# policies [S1/S-3] one presenter, [S1/S-4] never rotate) -- UNCHANGED by this
+# redesign. Higgsfield seed_audio, voice_type "element" (a workspace reference
+# element), never a preset.
 NARRATOR = ("element", "674b71b8-1d2e-4087-8567-d1f53c0b9f3c")   # Kimberly
 
 SCENES = [
     ("01-hook",
-     "Collagen cream does not replace your collagen. "
-     "Collagen powder does not travel straight to your face."),
-    ("02-promise",
-     "So where does it go? Across twenty three trials, it appears to help. "
-     "Remove the industry funded studies, and the answer changes."),
-    ("03-building",
-     "Think of your skin as a building. Collagen is the main structure inside it. "
-     "It keeps everything firm and upright."),
-    ("04-demolition",
-     "As we age, collagen production slows. "
-     "And ultraviolet light switches on enzymes that cut collagen apart. "
-     "The sun runs a demolition crew. It works weekends."),
-    ("05-boundary",
-     "Sunscreen is not just about sunburn. It draws a boundary around the building. "
-     "Preserving collagen is usually easier than replacing it later."),
-    ("06-door",
-     "Now, the cream. To pass through skin, a molecule generally needs to be "
-     "under five hundred daltons. Collagen is around three hundred thousand. "
-     "It is not getting through that door."),
-    ("07-film",
-     "It may still form a moisturising film on the surface. Skin may feel smoother. "
-     "But polishing the windows is not replacing the beams."),
-    ("08-digestion",
-     "Now, the powder. Swallow collagen, and digestion breaks it into peptides "
-     "and amino acids. Your stomach does not offer facial delivery."),
-    ("09-dispatch",
-     "But your body decides where they go, to skin, joints, tendons, "
-     "or wherever repairs are most urgent. "
-     "Your face ordered scaffolding. It got spare parts instead. "
-     "Trials do point to a modest benefit."),
-    ("10-trials",
-     "Does the powder work? Trials do report modest improvements in hydration, "
-     "elasticity, or wrinkles."),
-    ("11-caveat",
-     "But many were small, short, and industry funded."),
-    ("12-filter",
-     "In twenty twenty five, researchers pooled twenty three randomised trials. "
-     "All together, a benefit. "
-     "Keep only the studies without industry funding, and it is no longer "
-     "statistically significant. "
-     "Keep only the higher quality studies. Same result. "
-     "The effect stops showing up."),
-    ("13-uncertain",
-     "Do supplements definitely work? We cannot say that. Definitely fail? "
-     "We cannot confidently say that either. The independent evidence is uncertain."),
-    ("14-hierarchy",
-     "What the evidence actually supports. Broad spectrum sunscreen, every day. "
-     "Not smoking. Enough protein and vitamin C. "
-     "And for suitable users, topical retinoids have considerably stronger evidence "
-     "for encouraging collagen production than collagen cream."),
-    ("15-verdict",
-     "Collagen cream can be a pleasant moisturiser. Collagen powder is optional. "
-     "Protect the building before you buy expensive powdered bricks."),
+     "One strand of collagen. Cream spreads across the skin, and stops at the "
+     "surface. Powder takes a different route, breaking apart as it goes. "
+     "Where does it actually go?"),
+    ("02-mesh",
+     "Under the surface, collagen acts like a support mesh."),
+    ("03-uv",
+     "Age slows its renewal, and ultraviolet light helps break that mesh down."),
+    ("04-barrier",
+     "Topically, a molecule generally needs to be under five hundred daltons "
+     "to cross into skin. Collagen is around three hundred thousand. "
+     "It doesn't get through."),
+    ("05-film",
+     "It can still form a moisturizing film on the surface. Skin may feel "
+     "smoother, but that's the surface, not structure below it."),
+    ("06-swallow",
+     "Swallow the powder, and digestion breaks it into peptides and amino acids."),
+    ("07-dispatch",
+     "They enter the bloodstream, then go wherever the body decides they're "
+     "needed most, skin, joints, tendons. No guaranteed delivery to your face."),
+    ("08-trials",
+     "Twenty three trials, pooled together, do show modest gains in "
+     "hydration and elasticity."),
+    ("09-caveat",
+     "But many of them were small, short, and industry funded."),
+    ("10-filter",
+     "Exclude the industry funded studies, and the benefit is no longer "
+     "statistically significant. Keep only the higher quality studies, "
+     "same result. The effect stops showing up."),
+    ("11-uncertain",
+     "We can't say collagen definitely works. We can't say it definitely "
+     "fails, either."),
+    ("12-recs",
+     "So, broad spectrum sunscreen, every day, it's your best shield. "
+     "Don't smoke. Get enough protein and vitamin C to support the repair. "
+     "And for suitable users, topical retinoids have considerably stronger "
+     "evidence for encouraging collagen production than collagen cream."),
+    ("13-verdict",
+     "Cream can moisturize. Powder is optional. Protect first."),
 ]
 
 TEXT = dict(SCENES)
-WORDLESS = {"16-end"}
-ORDER = [cid for cid, _ in SCENES] + ["16-end"]
+WORDLESS = {"14-end"}
+ORDER = [cid for cid, _ in SCENES] + ["14-end"]
 
-# TTS blocks. The user's confirmed choice (2026-09-04) is ONE master take;
-# gen_vo.py concatenates however many blocks exist into assets/voice/master.wav
-# so nothing downstream knows or cares. Switch to BLOCKS_TWO only if the
-# service rejects the full prompt or `gen_vo.py verify` fails on the master
-# (round 2 of the channel's two-round cap, [S4/V-2]).
-BLOCKS_ONE = [("master", ORDER[0:15])]
-BLOCKS_TWO = [("A", ORDER[0:13]), ("B", ORDER[13:15])]
-BLOCKS_FOUR = [("A1", ORDER[0:5]), ("A2", ORDER[5:9]), ("A3", ORDER[9:13]), ("B", ORDER[13:15])]
-
-# MEASURED, not assumed. seed_audio's hard limit is 2048 characters, and a
-# 1933-character block came back UNDER it and still failed: the take was
-# faithful for 241 of 310 words and then abandoned the script entirely,
-# improvising ~25 seconds of generic skincare copy in Kimberly's voice over
-# live audio (not silence, so no level check would have caught it). The whole
-# climax -- "the effect stops showing up", both refusals, "the independent
-# evidence is uncertain" -- was simply absent. `gen_vo.py verify` catches this
-# by alignment coverage (77.7% against a 90% floor), which is exactly what that
-# floor is for.
-#
-# So the limit that matters is not the documented one. These four blocks are
-# 400-700 characters each, and every seam falls on a VISIBLE transition:
-#   A1 -> A2  the iris into 06-door
-#   A2 -> A3  the invert into the evidence ground
-#   A3 -> B   the invert out of it
-# A block seam is a change of performance; putting each one where the edit is
-# already changing register is the cheapest place to spend it.
-BLOCKS = BLOCKS_FOUR
+# ONE master take. At 240 words / ~1490 characters this sits well clear of
+# seed_audio's measured danger zone (a 1933-char block on the previous, much
+# longer script drifted off-script mid-take, verify-scored 77.7% against a 90%
+# floor) -- there is no length pressure left to justify splitting into blocks,
+# and one take removes the seam-matching problem (level/brightness correction
+# across blocks) entirely rather than solving it smaller.
+BLOCKS_ONE = [("master", ORDER[0:13])]
+BLOCKS = BLOCKS_ONE
 SCENE_BLOCK = {cid: block for block, cids in BLOCKS for cid in cids}
 
 # Description chapters (no engine primitive; re-derived from real data-start
 # values by build_storyboard.py, which parses index.html).
 CHAPTERS = [
-    ("01-hook",      "Where does it actually go?"),
-    ("03-building",  "Your skin is a building"),
-    ("06-door",      "Why the cream can't get in"),
-    ("08-digestion", "Your stomach doesn't do facial delivery"),
-    ("10-trials",    "The evidence plot twist"),
-    ("14-hierarchy", "What actually protects it"),
+    ("01-hook",     "Where does it actually go?"),
+    ("02-mesh",     "A support mesh under the surface"),
+    ("04-barrier",  "Why the cream can't get in"),
+    ("06-swallow",  "No guaranteed delivery to your face"),
+    ("08-trials",   "The evidence plot twist"),
+    ("12-recs",     "What actually protects it"),
 ]
 
 # On-screen citation chips: `Journal · Year` ONLY. PMIDs/DOIs live in BRIEF.md's
 # claim table and the description, never in a frame. Keyed by the unit whose
 # claim the chip supports; the frame generator places each at its claim's word.
 CITES = {
-    "04-demolition": ["J Invest Dermatol · 1998"],
-    "06-door":       ["Exp Dermatol · 2000"],
-    "10-trials":     ["Nutrients · 2023"],
-    "12-filter":     ["Am J Med · 2025"],
-    "14-hierarchy":  ["J Dermatol Sci · 2007", "Arch Dermatol · 2007"],
+    "03-uv":      ["J Invest Dermatol · 1998"],
+    "04-barrier": ["Exp Dermatol · 2000"],
+    "08-trials":  ["Nutrients · 2023"],
+    "10-filter":  ["Am J Med · 2025"],
+    "12-recs":    ["J Dermatol Sci · 2007", "Arch Dermatol · 2007"],
 }
 
 # Claim ids from BRIEF.md's table -> the unit that carries them. C10 (protein and
-# vitamin C) is UNSOURCED editorial advice and carries no chip, by decision.
+# vitamin C) is UNSOURCED editorial advice and carries no chip, by decision;
+# its chip-free treatment and the C8 chip's step-back-to-35%-opacity beside it
+# both carry forward unchanged from the shipped cut.
 CLAIMS = {
-    "03-building":  ["C1"],
-    "04-demolition": ["C2"],
-    "06-door":      ["C3"],
-    "07-film":      ["C4"],
-    "08-digestion": ["C5"],
-    "09-dispatch":  ["C5"],
-    "10-trials":    ["C6"],
-    "11-caveat":    ["C7"],
-    "12-filter":    ["C7"],
-    "13-uncertain": ["C7"],
-    "14-hierarchy": ["C8", "C9", "C10"],
+    "02-mesh":      ["C1"],
+    "03-uv":        ["C2"],
+    "04-barrier":   ["C3", "C3b"],
+    "05-film":      ["C4"],
+    "06-swallow":   ["C5"],
+    "07-dispatch":  ["C5"],
+    "08-trials":    ["C6"],
+    "09-caveat":    ["C7"],
+    "10-filter":    ["C7"],
+    "11-uncertain": ["C7"],
+    "12-recs":      ["C8", "C9", "C10"],
 }
 
 

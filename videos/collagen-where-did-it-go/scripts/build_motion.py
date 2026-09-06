@@ -20,11 +20,14 @@ from timing import walk, Ctx
 from motion import MOTION
 
 STATIC_CEILING_S = 2.0
-BEFORE = [("#hook-slam-last", "#promise-q-last"),
-          ("#promise-q-last", "#ev-n"),
+# 2026-09-05 redesign: selectors follow motion.MOTION's own copy anchors --
+# "#hook-slam-last"/"#promise-q-last"/"#rank-1" no longer exist (the hook's
+# kinetic slam, the promise unit and the rank rows are all retired). The four
+# surviving copy-anchored elements, in narration order:
+BEFORE = [("#hook-q-last", "#ev-n"),
           ("#ev-n", "#stops-3-last"),
-          ("#stops-3-last", "#rank-1")]
-STAYS = ["#stops-3-last", "#rank-1", "#end-line"]
+          ("#stops-3-last", "#shield")]
+STAYS = ["#stops-3-last", "#end-line"]
 
 
 def main():

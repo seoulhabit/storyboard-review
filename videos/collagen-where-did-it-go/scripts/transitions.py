@@ -40,14 +40,24 @@ for _k, (_d, _s, _j, _g) in KIND.items():
 
 # unit cid -> kind of the transition INTO it. Unlisted units are "phase" seams
 # inside their file. Unit 1 has no incoming transition.
+#
+# 2026-09-05 redesign: 7 files / 6 boundaries (was 8/7) -- one persistent skin
+# cross-section actor now spans 02-skin, 03-cream and 06-recs (see actors.py),
+# so those three entries are iris, following the actor the same way the old
+# grammar followed the molecule/door/tract. invert still brackets the dark
+# evidence ground exactly as before (in on 08-trials, out on 12-recs);
+# curtain still closes into the end card. iris carries 3 of 6 boundaries here
+# (vs [S6/A-8]'s 60-70% guidance calibrated for the old 7-boundary structure)
+# because a 6-boundary piece has less room to split 2-3 kinds without one
+# disappearing to a single instance -- iris stays the plurality and invert
+# stays scoped to the one register change, which is what the rule is for.
 BOUNDARIES = {
-    "02-promise":   "iris",
-    "03-building":  "iris",
-    "06-door":      "iris",
-    "08-digestion": "iris",
-    "10-trials":    "invert",
-    "14-hierarchy": "invert",
-    "16-end":       "curtain",
+    "02-mesh":   "iris",
+    "04-barrier": "iris",
+    "06-swallow": "iris",
+    "08-trials":  "invert",
+    "12-recs":    "invert",
+    "14-end":     "curtain",
 }
 
 # Incoming clip-path pair (hidden -> shown) and ease. Iris strings are

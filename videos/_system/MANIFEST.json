@@ -8,6 +8,16 @@
     "updatedAt_at_extraction": "2026-09-06T15:40:08.903377Z"
   },
   "extraction_session": "WO-FVC-005 T2",
+  "amendments": [
+    {
+      "date": "2026-09-06",
+      "ruling": "R-6",
+      "file": "tokens/spacing.css",
+      "change": "9:16 --safe-x 10%->15%; 16:9 --safe-bottom 8%->10%",
+      "reason": "check-safe-area.py's platform-derived reserved zones (15% right rail portrait, 10% bottom landscape) exceeded the extracted tokens; see wo/FVC-005/t3-verification/repo-gates/README.md",
+      "hash_updated": true
+    }
+  ],
   "file_count": 67,
   "files": {
     "COMPILER.md": {
@@ -267,8 +277,8 @@
       "sha256": "dc320038a2e98596d51cf18c64ab747b357724a640376240d7f92ff2746f3b9e"
     },
     "tokens/spacing.css": {
-      "bytes": 1256,
-      "sha256": "1b754f0370077b4a3ccab3a3977a8f4282781aca98911cab42708d40017d74e7"
+      "bytes": 1820,
+      "sha256": "b55fcda98c156ef7e26885d7967d226876b0ee37be8c1e55d873f8ac27ab5a07"
     },
     "tokens/typography.css": {
       "bytes": 1248,

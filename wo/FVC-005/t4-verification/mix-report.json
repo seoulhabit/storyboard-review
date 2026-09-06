@@ -1,0 +1,51 @@
+{
+  "schema": "makemeavideo/mix-audio-report@1",
+  "beat_sheet": "/private/tmp/claude-501/-Users-sumitchoudhary-Desktop-Story-Board/49c5b38f-1a54-453e-92ad-17f87bbab9f1/scratchpad/t4-verify/videos/synthetic-t1-fixture/03-beat-sheet.json",
+  "out": "/private/tmp/claude-501/-Users-sumitchoudhary-Desktop-Story-Board/49c5b38f-1a54-453e-92ad-17f87bbab9f1/scratchpad/t4-verify/videos/synthetic-t1-fixture/04-assets/audio.wav",
+  "total_duration_s": 14.6,
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "duration": 2.4
+    },
+    {
+      "id": "define",
+      "start": 2.4,
+      "duration": 3.2
+    },
+    {
+      "id": "mechanism",
+      "start": 5.6,
+      "duration": 4.8
+    },
+    {
+      "id": "evidence",
+      "start": 10.4,
+      "duration": 2.4
+    },
+    {
+      "id": "cta",
+      "start": 12.8,
+      "duration": 1.8
+    }
+  ],
+  "vo_substitutes": [
+    "hook",
+    "define",
+    "mechanism",
+    "evidence",
+    "cta"
+  ],
+  "music_bed": "/private/tmp/claude-501/-Users-sumitchoudhary-Desktop-Story-Board/49c5b38f-1a54-453e-92ad-17f87bbab9f1/scratchpad/t4-verify/placeholder-bed.wav",
+  "target": {
+    "lufs": -17.0,
+    "tp": -1.0,
+    "lra": 11.0
+  },
+  "measured": {
+    "integrated_lufs": -17.0,
+    "true_peak_dbtp": -11.0
+  },
+  "verdict": "pass"
+}

@@ -16,8 +16,12 @@
   --grid-margin:8%; /* @kind spacing */
   --grid-gutter:2%; /* @kind spacing */
 
-  /* safe area — 9:16. Nothing readable below y 76%. */
-  --safe-x:10%; /* @kind spacing */
+  /* safe area — 9:16. Nothing readable below y 76%.
+     --safe-x widened 10%->15% by R-6 (WO-FVC-005): check-safe-area.py's own
+     platform-derived right rail is 15% of 1080 (YouTube Shorts UI), and the
+     10% token left rendered content 57px inside it on every ShRows frame —
+     see wo/FVC-005/t3-verification/repo-gates/README.md. */
+  --safe-x:15%; /* @kind spacing */
   --safe-top:18%; /* @kind spacing */
   --safe-bottom:24%; /* @kind spacing */
 
@@ -34,6 +38,10 @@
   --s6:256px; /* @kind spacing */
   --safe-x:6%; /* @kind spacing */
   --safe-top:8%; /* @kind spacing */
-  --safe-bottom:8%; /* @kind spacing */
+  /* --safe-bottom widened 8%->10% by R-6 (WO-FVC-005): check-safe-area.py's
+     --landscape bottom zone is 10% of 1080 (real platform UI), and the 8%
+     token put the citation chip's ink mostly inside it — see
+     wo/FVC-005/t3-verification/repo-gates/README.md. */
+  --safe-bottom:10%; /* @kind spacing */
   --r-panel:43px; /* @kind radius */
 }

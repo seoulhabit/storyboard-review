@@ -283,3 +283,27 @@ Not re-invoked this pass: `frontend-design`/`design-critique` companion gates (b
 against this exact scene's layout in the entry above; only the palette/mark changed, not the
 spatial plan they reviewed) and `00-environment.md`/`09-run-report.md` (same reasoning as the prior
 post-build entry — an explicit, scoped edit-and-re-render, not a full `S0–S9` run).
+
+## Post-build correction — 2026-09-05, later same day (`06-verdict.html` contrast floor)
+
+Scope: `.v6-cta-sub` ("Say so below") was `--pink` (`#b9835a`) on this scene's own `--paper`
+(`#fbfaf4`) at 28px — measures ~3.11:1 (WCAG luminance formula), which clears WCAG's 3:1
+large-text AA minimum and `check`'s own size-based contrast gate, but sits under this skill's
+own stricter 4.5:1 contrast floor ([S6/A-6]/[S6/A-7] in `decision-policy.md`). Same defect
+class as `.ec-kicker`/`.ec-sub` in `07-endcard.html`, fixed in the entry above; caught here on a
+follow-up pass over this project's other scenes rather than by `check`, which stayed clean
+throughout.
+
+Fix, scoped to this scene only (unlike `07-endcard.html`, this scene keeps its own local
+`--paper #fbfaf4` / `--ink #0f2016` tokens — it is not the shared brand sign-off component, so
+there's no reason to move it onto the catalog's canonical palette): added `--ink-2: #6B6B6B` to
+this file's own `:root` block and switched `.v6-cta-sub`'s color from `--pink` to `--ink-2`.
+`--pink` stays defined and reserved for graphical use; nothing else in this scene referenced it.
+
+Verified on pixels extracted from an isolated re-render of just this scene
+(`renders/06-verdict-check.mp4`, deleted after verification — not a tracked artifact), sampled
+at `t=8.0s` (CTA fully settled): background ~`(249,249,242)`, text core ~`(105,105,101)` —
+contrast ≈5.22:1, clears the 4.5:1 floor. `npx hyperframes@0.8.27 check` after the fix: 0
+errors, **contrast 49/49 AA** (unchanged count — same total text nodes, one now correctly
+colored), same two pre-existing `duplicate_media_discovery_risk` warnings in
+`04-method.html`/`05-use.html` (not touched).

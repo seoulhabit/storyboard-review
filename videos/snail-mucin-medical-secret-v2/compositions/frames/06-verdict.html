@@ -8,6 +8,7 @@
     --green: #2c4a34;
     --green-deep: #0f2016;
     --pink: #b9835a;
+    --ink-2: #6B6B6B;
     --muted: #6f7d72;
     --font-display: "Bricolage Grotesque", system-ui, serif;
     --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -89,7 +90,10 @@
     font-size: 28px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--pink);
+    color: var(--ink-2); /* not --pink: measures ~3.11:1 against --paper here, under this
+                             skill's own 4.5:1 contrast floor -- --ink-2 measures ~5.09:1.
+                             Same fix as 07-endcard.html's .ec-kicker/.ec-sub; --pink stays
+                             reserved for graphical elements only. */
   }
 </style>
 

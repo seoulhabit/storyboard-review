@@ -1,4 +1,4 @@
-# T3 — Compiler build — DONE for the standard (non-split) path; end-to-end proven with a real local render
+# T3 — Compiler build — DONE, including the D5 split path; end-to-end proven with real local renders
 Commits: claude-skills branch `fvc-005/makemeavideo` (compiler); Story Board branch `session/fvc-005` (this status + verification evidence). Back to Sonnet/medium tier per the WO's own flag, T2 being the Opus/High task.
 
 ## What shipped
@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Five real bugs found by actually running the engine, not assumed away
+## Seven real bugs found by actually running the engine, not assumed away
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -94,6 +94,31 @@ before moving on — not discovered later and patched around:
    substitute for a component the design system already has a stated
    pattern for.
 
+6. **The split algorithm never accounted for the scene's own end.**
+   Given the exact case `COMPILER.md` had already named as load-bearing
+   (`ShRows`, three beats at offsets 0.0/2.0/4.0, derived duration 6.3s
+   against a 5.0s ceiling), the first D5 implementation **died** —
+   `"6.300s still exceeds the 5.0s ceiling after splitting -- beats too
+   widely spaced to partition further"` — a genuinely misleading message,
+   since the three beats span only 4.0s. The real problem was the scene's
+   trailing hold *after* the last beat, which `split_beats_by_ceiling`
+   never looked at: it only checked each group's own beat-to-beat span,
+   never the group's true effective duration once a scene's actual end is
+   considered. Fixed by passing the function `scene_end` (`D_raw`)
+   explicitly and peeling beats off the back of the final group until what
+   remains fits against it.
+7. **Splitting timing did nothing to content.** After fixing bug 6, both
+   compiled halves of the same fixture rendered the *identical, complete*
+   3-row list — found by grepping the actual compiled HTML, not assumed.
+   `plan_scene` passed every split group the scene's full, unsliced
+   `slots`. Fixed by adding `split_slots_for_group()`: only components with
+   a natural per-beat list slot (`ShRows.rows`, `ShSteps.steps` — the only
+   two) can split content automatically, slicing `items[lo:hi]` to each
+   group's own beat-index range and relocating `ShRows`'s `active` index to
+   the containing group's local index (or `-1` if it landed elsewhere).
+   Every other component refuses to split rather than guess at a division
+   with no defined meaning.
+
 ## Accept check — what's verified and what isn't
 
 **Verified:**
@@ -115,13 +140,9 @@ before moving on — not discovered later and patched around:
   against all 6 compiled 9x16 files: `0 error(s), 0 warning(s)`.
 
 **Not verified, and I'm not claiming otherwise:**
-- **The D5 split path has not been exercised against a real render.** The
-  synthetic fixture's scenes all fit their ceilings; `plan_scene`'s split
-  arithmetic is exercised by the fixture's own logic (`plan_scene`,
-  `split_beats_by_ceiling`) but has no unit-test file yet, and no compiled,
-  checked, rendered proof exists for a scene that actually splits. This is
-  named as the next thing to prove, not assumed to work because the
-  arithmetic looks right on paper.
+- ~~The D5 split path has not been exercised against a real render.~~
+  **Now verified** — see the two new bugs (6, 7) below and
+  `wo/FVC-005/t3-verification/d5-split/`.
 - **`ShCompare`, `ShMyth`, `ShQuote`, `ShSteps` have not been exercised
   through a real compile.** The synthetic fixture only uses `ShHook`,
   `ShIngredient`, `ShRows`, `ShEvidence`, `ShEndcard` (T1's own sequence).

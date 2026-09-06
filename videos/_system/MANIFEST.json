@@ -11,8 +11,8 @@
   "file_count": 67,
   "files": {
     "COMPILER.md": {
-      "bytes": 14275,
-      "sha256": "23b710e97f373437880dc093d71c79d363d2c281f0f55f08605d6a9bef431378"
+      "bytes": 16357,
+      "sha256": "822c5842f86eadc59f06921d06ee545dfc693c69d9f402965033bd6de106c8fe"
     },
     "ENGINE-DIFF-0.8.30.md": {
       "bytes": 2374,
@@ -280,5 +280,6 @@
     }
   },
   "note_on_scope": "Tracks the entire videos/_system/ tree for integrity, not only files pulled verbatim from Claude Design -- COMPILER.md, MOTION.md, RETIRED-transitions.md, TEMPLATES.md, and templates/T1-T6.json are this WO's own authored contract documents, not extractions. See EXTRACTION.md for exactly which files came from the source project.",
-  "total_bytes": 2523417
+  "regenerated_note": "Regenerated after COMPILER.md sec 2 was corrected post-D5-verification (see git history) -- content is the same file, updated text, per the WO's own house convention of amending in place with a recorded reason rather than silently.",
+  "total_bytes": 2525499
 }

@@ -22,6 +22,17 @@ without re-running anything:
   verbatim (not summarized): `"ok": true`, every one of
   lint/runtime/layout/motion/contrast at `errorCount: 0`.
 
+## D5 split path
+
+`d5-split/` proves the one path this evidence directory's first pass
+didn't exercise: a scene whose derived duration exceeds its ceiling. Two
+real bugs were found and fixed in the process (the split algorithm not
+accounting for the scene's own trailing hold, and split timing not
+carrying split content with it) — see `d5-split/README.md` for the full
+account, `d5-split/check-9x16.json` for the clean gate result, and the two
+extracted frames showing visually distinct, correctly-content-sliced
+output.
+
 ## Reproduce from scratch
 
 ```

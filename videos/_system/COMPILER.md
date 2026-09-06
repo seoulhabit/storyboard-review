@@ -84,27 +84,57 @@ from `beats_to_composition.py`'s `f()`).
 **If `D_raw > ceiling` (rule D5 — the compiler splits, it does not
 refuse):** the beat sheet's own `beats[]` array (each carrying an `offset`
 into the scene) is partitioned into the fewest contiguous groups such that
-each group's span is `<= ceiling`, preserving beat order. Each group becomes
-its own sub-composition, id-prefixed `<parent-cid>-<n>` (1-indexed), so a
-frame always traces back to one authored scene. The **last** beat in each
-group holds through a synthetic tail equal to the *next* group's first
-beat's lead-in, so no group under-fills; the **final** group in a split
-scene inherits the parent's own tail rule (`vo_duration_s` remainder + 0.3s,
-or the reading floor for its remaining slot words, whichever the parent
-scene would have used). Splitting is **deterministic**: recompiling an
-unchanged beat sheet always yields identical boundaries — the partition
-algorithm has no randomness and no wall-clock input.
+each group's EFFECTIVE duration — from its own first beat to the *next*
+group's first beat, or to the scene's own end (`D_raw`) for the final
+group — is `<= ceiling`, preserving beat order. This is deliberately not
+"each group's own beat span `<= ceiling`": a first implementation did
+exactly that and **died on a real compile** with a misleading "beats too
+widely spaced" error, because three beats spanning only 4.0s inside a 6.3s
+scene fit comfortably as one group *by their own span* while the scene's
+trailing hold (the time after the last beat, needed for `vo_duration_s` or
+the reading floor) pushed the group's real duration to 6.3s — over the
+5.0s ceiling. The fix accounts for the scene's own end explicitly: the
+final group is peeled down, one beat at a time from the back, until what
+remains actually fits against `D_raw`. Each group becomes its own
+sub-composition, id-prefixed `<parent-cid>-<n>` (1-indexed), so a frame
+always traces back to one authored scene. Splitting is **deterministic**:
+recompiling an unchanged beat sheet always yields identical boundaries —
+the partition algorithm has no randomness and no wall-clock input.
 
-**Worked example, this exact case** (`templates/T6.json`'s own reference
-cut, chapter 1's steps scene, `ShSteps`, three beats at offsets 0.0/2.0/4.0
-into a 6.0s scene, ceiling 5.0 since `ShSteps` is not an evidence/compare
-component): the partition puts beats at 0.0 and 2.0 in group 1 (span 2.0s,
-under 5.0), and the beat at 4.0 alone in group 2. Group 1 compiles to
-`c1s3-1` at `data-duration` derived from its own two beats' timing; group 2
-compiles to `c1s3-2`. The compile report lists both under the parent id
-`c1s3`, so `T6.json`'s own reference note ("this is a real, load-bearing
-case for D5, not hypothetical") is exactly what the compile report shows
-for that scene.
+**Content, not just timing, must split too.** A scene's `slots` describe
+what the component renders; splitting `beats[]` alone does nothing to the
+content, and a first implementation shipped exactly that gap — both
+compiled halves of a split `ShRows` scene rendered the *identical, full*
+row list, discovered by actually inspecting the compiled HTML. Content
+splitting is possible **only** for components with a natural per-beat
+list slot, where each item corresponds 1:1, in order, with the scene's own
+beats: `ShRows.rows` and `ShSteps.steps`. For those, each split group
+renders `items[lo:hi]` sliced to its own beat-index range, and `ShRows`'s
+`active` row index is relocated to the containing group's local index (or
+set to `-1` if the active row fell in a different group). Every other
+component — a single hook line, one ingredient card, one figure, one
+claim, one comparison — has no defined notion of "half of itself", and the
+compiler **refuses** rather than guess: a scene using any component
+outside `{ShRows, ShSteps}` that needs a D5 split dies, naming the
+component and why.
+
+**Worked example, this exact case, verified against a real compile and
+render, not asserted** (a fixture mirroring `templates/T6.json`'s own
+reference cut: `ShRows`, three beats at offsets 0.0/2.0/4.0, a scene whose
+derived duration is 6.3s against the 5.0s ceiling `ShRows` gets as a
+non-evidence/compare component): the partition puts beats 0 and 1 (offsets
+0.0, 2.0) in group 1 — its effective duration runs to group 2's first beat
+at 4.0s minus... no: to its own end via the tail rule below, landing at
+4.000s — and beat 2 (offset 4.0) alone in group 2, whose effective
+duration is `D_raw` (6.3) minus its own start (4.0) = 2.300s. Group 1
+compiles to `<parent>-1` rendering rows `[0:2]` (both non-active, full
+opacity); group 2 compiles to `<parent>-2` rendering `rows[2:3]` with the
+scene's own `active: 2` relocated to local index `0`. Compiled, this
+passed `hyperframes lint` (0/0), `hyperframes check --at-transitions` on
+9x16 (`ok: true`, all five categories `errorCount: 0`), and a real local
+render: 6.300s exactly, two visually distinct frames (the first showing
+Sebum/Down and Barrier/Repaired in ink; the second showing Pigment/Blocked
+correctly in clay) — see `wo/FVC-005/t3-verification/d5-split/`.
 
 **Entrance-stagger interaction, stated rather than glossed over:** the
 design system's own 0.8s row stagger cannot hold at the 5.0s ceiling for

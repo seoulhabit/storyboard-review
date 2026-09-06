@@ -91,15 +91,20 @@ into `cta`. Investigated rather than dismissed:
   boundaries in the same 7-scene composition, so it is not a universal
   "every hard cut trips this" artifact.
 
-Conclusion: `check --at-transitions`'s own boundary-sampling logic
-(designed to catch real overlapping-visibility windows in soft
-transitions) appears to query the DOM at the *exact* tie-instant of a
-hard cut using different inclusive/exclusive semantics than the actual
-frame-render pipeline, producing a spurious finding for an instant that
-never actually appears ambiguous in the rendered output. This is
-recorded here as a known false-positive class at hard-cut scene
-boundaries specifically, evidenced by the two frames above, rather than
-"fixed" by changing compiler output that is already provably correct.
+Conclusion at the time: a check-tool artifact, not a defect, on the
+strength of these two frames. **The precise mechanism was later confirmed**
+by reading `hyperframes@0.8.30`'s own source
+(`collectTweenBoundaries`/`toTimelineTime`/`seekCompositionTimeline` in
+`dist/cli.js`) and verifying it live against a running instance of this
+exact fixture: `--at-transitions`'s generic scrub-seek path
+(`window.__player.renderSeek`, the same API the interactive Studio preview
+uses) leaves the outgoing scene's `.clip` visible for one extra frame
+(~33ms) past its own `data-duration` end when the *incoming* scene is
+`ShEndcard` specifically — but the actual frame-capture render pipeline
+does not share that lag, confirmed by inspecting the real rendered PNG at
+the exact reported time. Full chain of evidence, with the source citations
+and the decisive rendered frames, in
+`../artifact-mechanism/README.md`.
 
 ## Verified, after all seven fixes
 

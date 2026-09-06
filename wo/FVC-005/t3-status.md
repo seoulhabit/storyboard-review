@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Seventeen real bugs found, plus one confirmed clean combination, by actually running the engine, not assumed away
+## Seventeen real bugs found, plus one confirmed clean combination and one confirmed check-tool limitation, by actually running the engine, not assumed away
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -201,6 +201,26 @@ before moving on — not discovered later and patched around:
    (getting an explicit `opacity:1` on its own `#root`) and structurally
    chip-less, not anything about the outgoing scene or about splitting.
    See `wo/FVC-005/t3-verification/d5-adversarial/README.md`.
+19. **Not a bug — the recurring endcard-transition artifact's exact
+   mechanism, confirmed against the installed engine's own source rather
+   than left as an inferred pattern.** Read `hyperframes@0.8.30`'s
+   `dist/cli.js` directly: `check --at-transitions` samples layout via
+   `window.__player.renderSeek()`, a generic scrub-seek API also used by
+   the interactive Studio preview, not the frame-capture pipeline. Live
+   binary-search against a running instance of the `stress7` fixture
+   confirmed that API leaves the outgoing scene's `.clip` visible for
+   exactly one extra frame (~33ms) past its own `data-duration` end when
+   the *incoming* scene is `ShEndcard` — reproducing the finding — while
+   the other five hard cuts in the same composition show zero lag. A real
+   `hyperframes render` PNG-sequence at 30fps, inspected frame-by-frame at
+   the exact reported times (`23.400`, `23.432`), is completely clean:
+   the frame-capture pipeline does not share the scrub-seek path's lag.
+   Conclusion: this is a `check --at-transitions` measurement limitation
+   specific to hard cuts into chip-less/`anchor:true` scenes, not a
+   compiler defect and not present in any actually rendered frame. No
+   code change follows. Full source citations, the live-page verification,
+   and the decisive rendered frames are in
+   `wo/FVC-005/t3-verification/artifact-mechanism/README.md`.
 
 ## Accept check — what's verified and what isn't
 

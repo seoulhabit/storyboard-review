@@ -93,6 +93,24 @@ transitioning into `ShEndcard`) is that the endcard is the only
 component that is both `anchor: true` and chip-less -- not anything
 about the outgoing scene or about splitting. See `d5-adversarial/README.md`.
 
+## The endcard-transition artifact's exact mechanism, confirmed
+
+`artifact-mechanism/` closes out the `check --at-transitions` finding
+carried as "investigated, ruled a check-tool artifact" since `stress7/`.
+Rather than leave it at pattern-matching (clean frames, correlates with
+`ShEndcard` as the incoming scene), this reads `hyperframes@0.8.30`'s own
+`dist/cli.js` to find the actual sampling mechanism
+(`collectTweenBoundaries`/`seekCompositionTimeline`/
+`window.__player.renderSeek`), verifies it live against a running instance
+of the `stress7` fixture (a real ~33ms, one-frame visibility lag in the
+generic scrub-seek path, specific to hard cuts into `ShEndcard`), and then
+confirms the actual `hyperframes render` PNG-sequence output at the exact
+reported times is completely clean — the frame-capture pipeline does not
+share the scrub-seek path's lag. Conclusion: a named, understood
+`check --at-transitions` measurement limitation, not a compiler defect. See
+`artifact-mechanism/README.md` for the full source citations and the three
+decisive rendered frames.
+
 ## Reproduce from scratch
 
 ```

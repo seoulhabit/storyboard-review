@@ -111,6 +111,25 @@ share the scrub-seek path's lag. Conclusion: a named, understood
 `artifact-mechanism/README.md` for the full source citations and the three
 decisive rendered frames.
 
+## Repo gates the plan named but this pass had skipped
+
+`repo-gates/` closes a real gap: `check-legibility.py` and `check-safe-area.py`
+were in the approved plan's Step 10 (per D6) but never actually run against
+T3's output, and never named in `t3-status.md`'s "Not verified" section as a
+deliberate deferral either. Running them now: legibility's token-floor half
+clears both canvases with zero margin (`--t-chip` lands exactly on the floor,
+28px/24px); its render-based half fails 16:9 (4px measured against a 5px
+floor, on two independent probes). `check-safe-area.py` fails **both**
+canvases — measured precisely on the actual worst-case frames: `ShRows`'
+right-aligned values sit 57px inside YouTube Shorts' real reserved UI rail on
+9:16, the citation chip sits mostly inside the real reserved bottom zone on
+16:9. Root cause, confirmed on pixels rather than inferred: the compiler
+correctly implements `videos/_system/tokens/spacing.css`'s own `--safe-x`/
+`--safe-bottom` exactly as declared — those declared margins are themselves
+narrower than the real platform UI they're meant to clear. A T2
+(design-system) finding surfaced by a T3 gate, not a T3 defect, and not a
+call this session makes unilaterally. See `repo-gates/README.md`.
+
 ## Reproduce from scratch
 
 ```

@@ -60,6 +60,22 @@ result, and the extracted frame showing the name correctly breaking
 mid-word and staying fully on-canvas. Flags that the remaining seven
 emitters have not had the same adversarial-text stress test yet.
 
+## Systematic stress test of the remaining seven emitters
+
+`stress7/` completes the adversarial-text pass across all nine
+components: one combined 7-scene fixture stressing `ShHook`, `ShRows`,
+`ShSteps`, `ShEvidence`, `ShMyth`, `ShQuote`, and `ShEndcard` at once.
+Found and fixed the same overflow defect class in all six non-endcard
+emitters (some via `min-width:0`, some also needing `display:block` in
+place of an `inline-block` wrapper's shrink-to-fit sizing), plus a far
+more serious, universal bug: **every video's closing scene opened with a
+~0.17s completely blank flash**, confirmed by exact frame-level pixel
+analysis, present in *every* video this compiler could produce until
+fixed. See `stress7/README.md` for the full account, including one
+`check --at-transitions` finding investigated and ruled a sampling
+artifact at hard-cut boundaries rather than a real defect, backed by two
+extracted frames proving the actual rendered output is clean.
+
 ## Reproduce from scratch
 
 ```

@@ -1,0 +1,95 @@
+{
+  "slug": "stress7-fixture",
+  "format": "long",
+  "fps": 30,
+  "canvas": {"w": 1080, "h": 1920},
+  "vo_duration_s": 30.0,
+  "presenter": "kinetic-type",
+  "scenes": [
+    {
+      "id": "hook",
+      "section": "hook",
+      "component": "ShHook",
+      "vo_duration_s": 3.0,
+      "slot_word_count": 6,
+      "slots": {"line": "PENTASODIUMPENTETATE does not stay on skin", "accentWord": "PENTASODIUMPENTETATE"}
+    },
+    {
+      "id": "rows",
+      "section": "rows",
+      "component": "ShRows",
+      "vo_duration_s": 4.5,
+      "slot_word_count": 12,
+      "slots": {
+        "rows": [
+          {"left": "Sebum", "right": "Down"},
+          {"left": "Polymethylsilsesquioxane", "right": "Softened"},
+          {"left": "Red", "right": "Polymethylsilsesquioxanated"}
+        ],
+        "active": 1
+      },
+      "chip": "CIR 2015"
+    },
+    {
+      "id": "steps",
+      "section": "steps",
+      "component": "ShSteps",
+      "vo_duration_s": 4.0,
+      "slot_word_count": 12,
+      "slots": {
+        "steps": [
+          {"n": 1, "action": "Polymethylsilsesquioxane", "note": "Applied first."},
+          {"n": 2, "action": "Apply damp"},
+          {"n": 3, "action": "Seal"}
+        ]
+      },
+      "chip": "SEOULHABIT.COM"
+    },
+    {
+      "id": "evidence",
+      "section": "evidence",
+      "component": "ShEvidence",
+      "vo_duration_s": 2.0,
+      "slot_word_count": 8,
+      "slots": {
+        "figure": "4%",
+        "caption": "Confirmed via polymethylsilsesquioxanemicroencapsulation trials.",
+        "source": "POLYMETHYLSILSESQUIOXANESTUDY2019"
+      },
+      "chip": "J. Cosmet. Sci. 2019"
+    },
+    {
+      "id": "myth",
+      "section": "myth",
+      "component": "ShMyth",
+      "vo_duration_s": 3.5,
+      "slot_word_count": 10,
+      "slots": {
+        "claim": "Polymethylsilsesquioxanepowder clogs every pore instantly.",
+        "correction": "It doesn't at typical POLYMETHYLSILSESQUIOXANECONCENTRATIONS",
+        "accentWord": "doesn't"
+      },
+      "chip": "J. Cosmet. Sci. 2010"
+    },
+    {
+      "id": "quote",
+      "section": "verdict",
+      "component": "ShQuote",
+      "vo_duration_s": 3.0,
+      "slot_word_count": 8,
+      "slots": {
+        "line": "Polymethylsilsesquioxane is simply inert.",
+        "attribution": "POLYMETHYLSILSESQUIOXANEJOURNAL2019"
+      },
+      "chip": "Br. J. Dermatol. 2019"
+    },
+    {
+      "id": "cta",
+      "section": "cta",
+      "component": "ShEndcard",
+      "vo_duration_s": 2.0,
+      "slot_word_count": 6,
+      "slots": {"cta": "Read about polymethylsilsesquioxane at seoulhabit.com"}
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# T3 — Compiler build — DONE, all nine scene emitters exercised (including an adversarial long-text case) and the D5 split path proven
+# T3 — Compiler build — DONE, all nine scene emitters adversarially stress-tested and the D5 split path proven; a serious universal defect (blank endcard flash) found and fixed
 Commits: claude-skills branch `fvc-005/makemeavideo` (compiler); Story Board branch `session/fvc-005` (this status + verification evidence). Back to Sonnet/medium tier per the WO's own flag, T2 being the Opus/High task.
 
 ## What shipped
@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Ten real bugs found by actually running the engine, not assumed away
+## Seventeen real bugs found by actually running the engine, not assumed away
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -152,10 +152,38 @@ before moving on — not discovered later and patched around:
    column plus `overflow-wrap:anywhere` (not the legacy `break-word`,
    which does not change an element's min-content contribution the way
    `anywhere` does — that distinction is the reason `min-width:0` alone
-   would not have been enough) on every text child. **Flagged, not yet
-   done:** the other seven emitters have not been systematically stress-
-   tested with adversarial long text the same way — each is proven only
-   against the specific content its own fixture happened to use.
+   would not have been enough) on every text child.
+11–16. **The same overflow defect class, confirmed in all six of the
+   remaining emitters** (`ShHook`, `ShRows`, `ShSteps`, `ShEvidence`,
+   `ShMyth`, `ShQuote`) by one combined adversarial-text fixture stressing
+   all seven not-yet-tested emitters at once. `ShHook` and `ShMyth` had an
+   additional structural variant: an `inline-block` wrapper whose
+   shrink-to-fit sizing makes `max-width:100%` on its own child circular,
+   fixed by switching to `display:block`. Every other case was the same
+   missing `min-width:0`/`overflow-wrap:anywhere` pair already found
+   twice. `ShEndcard`'s `cta` was fixed defensively too (didn't fail this
+   specific fixture's content, but had the identical structural gap).
+   Full account, including why each one is structurally the same class of
+   bug: `wo/FVC-005/t3-verification/stress7/README.md`.
+17. **Far more serious: every compiled video's closing scene opened with
+   a ~0.17s completely blank flash — confirmed on every single video this
+   compiler could ever produce, not a rare case.** Root cause: `ShEndcard`'s
+   three elements all use the standard delayed entrance, which is fine
+   everywhere else because every other scene also has a citation chip
+   rendering immediately and bridging the gap — confirmed by direct
+   inspection that all six of the design system's own templates give the
+   closing scene, and *only* the closing scene, no chip. Found by exact
+   frame-by-frame pixel-variance analysis (frames 702–706 of 774,
+   perfectly uniform, zero variance), not by trusting the `check` tool's
+   summary alone. Fixed by extending the compiler's existing
+   compose-immediately rule (previously applied only to the video's
+   overall first scene) to any scene with no chip to bridge the entrance
+   gap. One residual `check --at-transitions` finding
+   (`content_overlap`/`text_occluded` on the quote scene, exactly at the
+   hard-cut instant) was investigated with real extracted frames — both a
+   mid-scene frame and the actual boundary frame are clean — and is
+   recorded as a check-tool sampling artifact at hard-cut boundaries, not
+   a defect, per `wo/FVC-005/t3-verification/stress7/README.md`.
 
 ## Accept check — what's verified and what isn't
 

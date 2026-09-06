@@ -1,0 +1,64 @@
+{
+  "slug": "synthetic-t1-fixture",
+  "format": "short",
+  "fps": 30,
+  "canvas": {"w": 1080, "h": 1920},
+  "vo_duration_s": 12.0,
+  "presenter": "kinetic-type",
+  "template": "T1",
+  "sections": ["hook", "define", "mechanism", "evidence", "cta"],
+  "scenes": [
+    {
+      "id": "hook",
+      "section": "hook",
+      "vo_duration_s": 2.0,
+      "slot_word_count": 6,
+      "slots": {"line": "Niacinamide is not a brightener", "accentWord": "brightener"}
+    },
+    {
+      "id": "define",
+      "section": "define",
+      "vo_duration_s": 2.2,
+      "slot_word_count": 8,
+      "slots": {
+        "name": "Niacinamide", "inci": "Niacinamide",
+        "function": "Slows sebum output and rebuilds the barrier."
+      }
+    },
+    {
+      "id": "mechanism",
+      "section": "mechanism",
+      "vo_duration_s": 4.5,
+      "slot_word_count": 8,
+      "slots": {
+        "rows": [
+          {"left": "Sebum", "right": "Down"},
+          {"left": "Barrier", "right": "Repaired"},
+          {"left": "Pigment", "right": "Blocked"},
+          {"left": "Red", "right": "Calmed"}
+        ],
+        "active": 2
+      },
+      "chip": "J. Cosmet. Dermatol. 2019"
+    },
+    {
+      "id": "evidence",
+      "section": "evidence",
+      "vo_duration_s": 1.8,
+      "slot_word_count": 6,
+      "slots": {
+        "figure": "4.0%", "caption": "Matched hydroquinone over eight weeks.",
+        "source": "Br. J. Dermatol. 2011"
+      },
+      "chip": "Br. J. Dermatol. 2011"
+    },
+    {
+      "id": "cta",
+      "section": "cta",
+      "vo_duration_s": 1.5,
+      "slot_word_count": 4,
+      "slots": {"cta": "More at seoulhabit.com"}
+    }
+  ],
+  "chapters": []
+}

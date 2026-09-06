@@ -1,0 +1,112 @@
+{
+  "ok": true,
+  "strict": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 6
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 14.6,
+    "samples": [
+      0.183,
+      0.548,
+      0.913,
+      1.277,
+      1.643,
+      2.008,
+      2.373,
+      2.738,
+      3.103,
+      3.468,
+      3.833,
+      4.198,
+      4.563,
+      4.928,
+      5.292,
+      5.658,
+      6.023,
+      6.388,
+      6.753,
+      7.118,
+      7.482,
+      7.847,
+      8.213,
+      8.578,
+      8.943,
+      9.308,
+      9.673,
+      10.038,
+      10.403,
+      10.768,
+      11.132,
+      11.497,
+      11.862,
+      12.228,
+      12.593,
+      12.958,
+      13.323,
+      13.688,
+      14.053,
+      14.418
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "specPath": "/private/tmp/claude-501/-Users-sumitchoudhary-Desktop-Story-Board/d6a8185c-8b5c-4110-9fec-0d59622d92ce/scratchpad/t1-fixture/06-render/16x9/index.motion.json",
+    "samples": 293
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      0.183,
+      3.468,
+      7.118,
+      10.768,
+      14.418
+    ],
+    "checked": 19,
+    "passed": 19
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "_meta": {
+    "version": "0.8.30",
+    "latestVersion": "0.8.30",
+    "updateAvailable": false
+  }
+}

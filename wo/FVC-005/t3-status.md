@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Seventeen real bugs found, plus one confirmed clean combination and one confirmed check-tool limitation, by actually running the engine, not assumed away
+## Seventeen real bugs found, plus one confirmed clean combination, one confirmed check-tool limitation, and one real design-system finding surfaced by a repo gate the plan named but this pass had skipped
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -221,10 +221,41 @@ before moving on — not discovered later and patched around:
    code change follows. Full source citations, the live-page verification,
    and the decisive rendered frames are in
    `wo/FVC-005/t3-verification/artifact-mechanism/README.md`.
+20. **A real gap in the plan's own Step 10 ("Repo gates"), found and closed
+   by re-reading the plan against what had actually shipped — and a real,
+   consequential finding once it was run.** `check-legibility.py` and
+   `check-safe-area.py` were named in the approved plan (per D6) but never
+   run against the compiled output, and not named in this file's own "Not
+   verified" section as a deliberate deferral either — a silent omission,
+   not a declined check. Running them now: the token-floor half of
+   legibility passes both canvases (`--t-chip` lands exactly on the floor
+   in both, 28px/24px, no margin); the render-based half **fails 16:9**
+   (`--t-chip` measures 4px glyph height at phone scale against a 5px
+   floor, confirmed on two independent probes) while 9:16 passes with zero
+   margin (exactly 5px). `check-safe-area.py` **fails both canvases** —
+   measured precisely on the actual worst-case frames, not accepted from
+   the JSON: `ShRows`' right-aligned values sit 57px inside YouTube
+   Shorts' real reserved UI rail on 9:16, and the citation chip sits mostly
+   inside the real reserved bottom zone on 16:9. Root cause, confirmed on
+   pixels: **the compiler is not at fault** — it correctly implements
+   `videos/_system/tokens/spacing.css`'s own `--safe-x: 10%` /
+   `--safe-bottom: 8%` exactly as declared. Those declared margins
+   themselves are narrower than the real platform UI they're meant to
+   clear (15%/10% respectively). This is a T2 (design-system) finding
+   surfaced by a T3 gate, not a T3 defect, and not something to patch
+   unilaterally inside the compiler — see
+   `wo/FVC-005/t3-verification/repo-gates/README.md` for the full
+   measurements and the tradeoff either fix requires.
 
 ## Accept check — what's verified and what isn't
 
 **Verified:**
+- The plan's Step 10 repo gates (`check-legibility.py`, `check-safe-area.py`)
+  are now run against real compiled+rendered output on both canvases — see
+  finding 20 and `t3-verification/repo-gates/`. "Run" here does not mean
+  "clean": legibility passes both canvases' declared floor and 9:16's render
+  check, fails 16:9's render check; safe-area fails both canvases, root-
+  caused to T2's own safe-margin token values, not to the compiler.
 - `hyperframes lint` on the compiled output: 0 errors, 0 warnings.
 - `hyperframes check --samples 40 --at-transitions --json` on both 9x16 and
   16x9: `ok: true`, all five categories `errorCount: 0` — captured verbatim

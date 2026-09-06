@@ -1,0 +1,22 @@
+:root{
+  /* base — the six fixed tokens. Nothing outside this list ships. */
+  --bg:#F4EDE3;        /* warm cream — every scene background */
+  --bg-lift:#FAF3E7;   /* panel inset only */
+  --ink:#26215C;       /* all text */
+  --accent:#9C3A32;    /* clay — one element per scene */
+  --rule:#C0A265;      /* brass — 2px hairlines only */
+  --muted:rgba(38,33,92,0.55);
+
+  /* semantic aliases */
+  --scene-bg:var(--bg);
+  --panel-bg:var(--bg-lift);
+  --text-primary:var(--ink);
+  --text-secondary:var(--muted);
+  --text-accent:var(--accent);
+  --on-accent:#F4EDE3;
+  --hairline:var(--rule);
+  --hairline-w:2px; /* @kind spacing */
+  /* opacity of an already-revealed sh-rows row */
+  --row-dim:0.6; /* @kind other */
+  --chip-opacity:0.4; /* @kind other */
+}

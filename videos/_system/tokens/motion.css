@@ -1,0 +1,19 @@
+:root{
+  /* durations / eases consumed by the GSAP timeline builder and by card previews.
+     --m-enter-ease ≈ power3.out · --m-ease-soft ≈ power2.out · --m-ease-inout ≈ sine.inOut */
+  --m-enter-dur:0.35s; /* @kind other */
+  --m-enter-ease:cubic-bezier(0.215,0.61,0.355,1); /* @kind other */
+  --m-enter-shift:40px; /* @kind spacing */
+  --m-enter-offset-min:0.1s; /* @kind other */
+  --m-enter-offset-max:0.3s; /* @kind other */
+  --m-stagger-row:0.8s; /* @kind other */
+  --m-stagger-char:0.12s; /* @kind other */
+  /* fade only, final scene only */
+  --m-exit-dur:0.25s; /* @kind other */
+  /* every text element holds at least this long */
+  --m-hold-min:1.6s; /* @kind other */
+  --m-ease-soft:cubic-bezier(0.25,0.46,0.45,0.94); /* @kind other */
+  --m-ease-inout:cubic-bezier(0.37,0,0.63,1); /* @kind other */
+  --m-shader:cross-warp-morph; /* @kind other */
+  --m-shader-dur:0.5s; /* @kind other */
+}

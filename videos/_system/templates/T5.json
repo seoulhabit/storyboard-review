@@ -1,0 +1,31 @@
+{
+  "id": "T5",
+  "slug": "myth-correction",
+  "name": "Myth Correction",
+  "purpose": "Correction without red and green",
+  "artboard": "templates/reference/T5-myth-correction.dc.html",
+  "artboard_sha256": "4fd7bd2700ef71b43fb696fb4c051f330ad5f59b252dadf2f6085a94a9079312",
+  "default_canvas": "9x16",
+  "sequence": [
+    { "section": "hook",      "component": "ShHook",       "anchor": false, "chip_default": "SEOULHABIT.COM" },
+    { "section": "myth",      "component": "ShMyth",       "anchor": false },
+    { "section": "define",    "component": "ShIngredient", "anchor": false },
+    { "section": "evidence",  "component": "ShEvidence",   "anchor": true  },
+    { "section": "cta",       "component": "ShEndcard",    "anchor": true  }
+  ],
+  "clay_slot_by_component": {
+    "ShHook": "accentWord", "ShMyth": "accentWord",
+    "ShIngredient": "accent", "ShEvidence": "figure", "ShEndcard": null
+  },
+  "reference_timings_s": {
+    "note": "As authored in the artboard. NOT prescriptive -- see T1.json's note.",
+    "scenes": [
+      {"section": "hook",     "start": 0.0,  "duration": 2.2},
+      {"section": "myth",     "start": 2.2,  "duration": 3.4},
+      {"section": "define",   "start": 5.6,  "duration": 4.0},
+      {"section": "evidence", "start": 9.6,  "duration": 2.0},
+      {"section": "cta",      "start": 11.6, "duration": 2.4}
+    ],
+    "total_s": 14.0
+  }
+}

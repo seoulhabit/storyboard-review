@@ -1,0 +1,39 @@
+:root{
+  /* px at 1080 width */
+  --s1:16px; /* @kind spacing */
+  --s2:24px; /* @kind spacing */
+  --s3:40px; /* @kind spacing */
+  --s4:64px; /* @kind spacing */
+  --s5:96px; /* @kind spacing */
+  --s6:144px; /* @kind spacing */
+  /* between grouped elements */
+  --rhythm-within:var(--s3); /* @kind spacing */
+  /* between groups */
+  --rhythm-between:var(--s5); /* @kind spacing */
+
+  /* grid: 12 columns, 8% side margins, 2% gutters */
+  --grid-cols:12; /* @kind other */
+  --grid-margin:8%; /* @kind spacing */
+  --grid-gutter:2%; /* @kind spacing */
+
+  /* safe area — 9:16. Nothing readable below y 76%. */
+  --safe-x:10%; /* @kind spacing */
+  --safe-top:18%; /* @kind spacing */
+  --safe-bottom:24%; /* @kind spacing */
+
+  --r-panel:24px; /* @kind radius */
+  --r-chip:999px; /* @kind radius */
+}
+/* ×1.78 for the 1920 canvas; safe area 16:9 → x 6–94%, y 8–92% */
+[data-canvas="16x9"]{
+  --s1:28px; /* @kind spacing */
+  --s2:43px; /* @kind spacing */
+  --s3:71px; /* @kind spacing */
+  --s4:114px; /* @kind spacing */
+  --s5:171px; /* @kind spacing */
+  --s6:256px; /* @kind spacing */
+  --safe-x:6%; /* @kind spacing */
+  --safe-top:8%; /* @kind spacing */
+  --safe-bottom:8%; /* @kind spacing */
+  --r-panel:43px; /* @kind radius */
+}

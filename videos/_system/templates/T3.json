@@ -1,0 +1,31 @@
+{
+  "id": "T3",
+  "slug": "what-it-solves",
+  "name": "What It Solves",
+  "purpose": "Concern to ingredient",
+  "artboard": "templates/reference/T3-what-it-solves.dc.html",
+  "artboard_sha256": "6841e0f22ae856aab72dbedf06e754eabdb5cb3dc00b805daa0b5c8c95fbe578",
+  "default_canvas": "9x16",
+  "sequence": [
+    { "section": "hook",      "component": "ShHook",       "anchor": false, "chip_default": "SEOULHABIT.COM" },
+    { "section": "mapping",   "component": "ShRows",       "anchor": false },
+    { "section": "define",    "component": "ShIngredient", "anchor": false },
+    { "section": "evidence",  "component": "ShEvidence",   "anchor": true  },
+    { "section": "cta",       "component": "ShEndcard",    "anchor": true  }
+  ],
+  "clay_slot_by_component": {
+    "ShHook": "accentWord", "ShRows": "active",
+    "ShIngredient": "accent", "ShEvidence": "figure", "ShEndcard": null
+  },
+  "reference_timings_s": {
+    "note": "As authored in the artboard. NOT prescriptive -- see T1.json's note. Note the mechanism/mapping scene here runs 5.0s at the compiler's own non-evidence ceiling -- this is the design system's own maximum case, not headroom.",
+    "scenes": [
+      {"section": "hook",     "start": 0.0,  "duration": 2.0},
+      {"section": "mapping",  "start": 2.0,  "duration": 5.0},
+      {"section": "define",   "start": 7.0,  "duration": 2.6},
+      {"section": "evidence", "start": 9.6,  "duration": 2.0},
+      {"section": "cta",      "start": 11.6, "duration": 2.4}
+    ],
+    "total_s": 14.0
+  }
+}

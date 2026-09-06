@@ -1,0 +1,35 @@
+{
+  "id": "T6",
+  "slug": "long-form-explainer",
+  "name": "Long-form Explainer",
+  "purpose": "1920x1080 chapters, repeated 4-6 times, closed by one end card",
+  "artboard": "templates/reference/T6-long-form-explainer.dc.html",
+  "artboard_sha256": "b3bd1331655f7e6f03e16879183de1082f061cba4b0c47fc8a03378d4ab92697",
+  "default_canvas": "16x9",
+  "chapter_sequence": [
+    { "section": "hook",     "component": "ShHook",     "anchor": false },
+    { "section": "quote_or_define", "component": "ShQuote", "anchor": false, "alt_component": "ShIngredient" },
+    { "section": "steps_or_rows",   "component": "ShSteps", "anchor": false, "alt_component": "ShRows" },
+    { "section": "evidence", "component": "ShEvidence", "anchor": false }
+  ],
+  "close_sequence": [
+    { "section": "cta", "component": "ShEndcard", "anchor": true }
+  ],
+  "chapters_min": 4,
+  "chapters_max": 6,
+  "clay_slot_by_component": {
+    "ShHook": "accentWord", "ShQuote": null, "ShIngredient": "accent",
+    "ShSteps": null, "ShRows": "active", "ShEvidence": "figure", "ShEndcard": null
+  },
+  "reference_timings_s": {
+    "note": "As authored in the artboard, chapter 1 only. NOT prescriptive -- see T1.json's note. IMPORTANT: the steps scene here runs 6.0s, which EXCEEDS this WO's own 5.0s non-evidence/compare ceiling (D5). This is a real, load-bearing case for the compiler's D5 split rule -- a T6 steps chapter over the cap splits into a deterministic sub-scene sequence rather than being authored as one 6.0s scene. See COMPILER.md sec 2 for the split arithmetic, worked against this exact scene.",
+    "scenes_chapter_1": [
+      {"section": "hook",     "start": 0.0,  "duration": 3.0},
+      {"section": "quote",    "start": 3.0,  "duration": 4.0},
+      {"section": "steps",    "start": 7.0,  "duration": 6.0},
+      {"section": "evidence", "start": 13.0, "duration": 4.0}
+    ],
+    "close": {"section": "cta", "start": 17.0, "duration": 2.4},
+    "chapter_1_total_s": 19.4
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "T4",
+  "slug": "comparison",
+  "name": "Comparison",
+  "purpose": "A vs B",
+  "artboard": "templates/reference/T4-comparison.dc.html",
+  "artboard_sha256": "9ea49aa0c228191fdf0238b46e32e30027c49e6649eb61165f0b7c5dc5807db2",
+  "default_canvas": "9x16",
+  "sequence": [
+    { "section": "hook",     "component": "ShHook",     "anchor": false, "chip_default": "SEOULHABIT.COM" },
+    { "section": "compare",  "component": "ShCompare",  "anchor": false },
+    { "section": "verdict",  "component": "ShQuote",    "anchor": false },
+    { "section": "evidence", "component": "ShEvidence", "anchor": true  },
+    { "section": "cta",      "component": "ShEndcard",  "anchor": true  }
+  ],
+  "clay_slot_by_component": {
+    "ShHook": "accentWord", "ShCompare": "attributes[].favours",
+    "ShQuote": null, "ShEvidence": "figure", "ShEndcard": null
+  },
+  "reference_timings_s": {
+    "note": "As authored in the artboard. NOT prescriptive -- see T1.json's note. The compare scene runs 5.0s, at this WO's 8.0s evidence/compare ceiling headroom to spare.",
+    "scenes": [
+      {"section": "hook",     "start": 0.0,  "duration": 2.0},
+      {"section": "compare",  "start": 2.0,  "duration": 5.0},
+      {"section": "verdict",  "start": 7.0,  "duration": 2.6},
+      {"section": "evidence", "start": 9.6,  "duration": 2.0},
+      {"section": "cta",      "start": 11.6, "duration": 2.4}
+    ],
+    "total_s": 14.0
+  }
+}

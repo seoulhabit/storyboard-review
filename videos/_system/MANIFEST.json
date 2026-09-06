@@ -1,0 +1,284 @@
+{
+  "extracted_at": "2026-09-06",
+  "extracted_from": {
+    "note": "No version string exists in the source project. This manifest -- project id + the project's own updatedAt timestamp + this sha256 tree -- IS the version anchor, per WO-FVC-005 correction 8.6(a).",
+    "project_id": "a7945a95-da21-4823-8b16-57c6ffa11558",
+    "project_name": "SeoulHabit Video Design System",
+    "provider": "claude_design",
+    "updatedAt_at_extraction": "2026-09-06T15:40:08.903377Z"
+  },
+  "extraction_session": "WO-FVC-005 T2",
+  "file_count": 67,
+  "files": {
+    "COMPILER.md": {
+      "bytes": 14275,
+      "sha256": "23b710e97f373437880dc093d71c79d363d2c281f0f55f08605d6a9bef431378"
+    },
+    "ENGINE-DIFF-0.8.30.md": {
+      "bytes": 2374,
+      "sha256": "cddaf59ca2eb2fcc9cc23f27cf62fc961b1018b60202c790adcec9ab1c6e5739"
+    },
+    "EXTRACTION.md": {
+      "bytes": 3459,
+      "sha256": "12c809b407433b68b401fc97cbe882c7cbf2b8f16a354564434c9bd0309990db"
+    },
+    "MOTION.md": {
+      "bytes": 5773,
+      "sha256": "5d6ce975838ff4d0a0cfabf5b2a6bb58a9610fc05efab1f8c91e0126b649bc87"
+    },
+    "RETIRED-transitions.md": {
+      "bytes": 14635,
+      "sha256": "eae37675262bb9707b5aae895184a9e8ea4c99a5d13dc63bda7efdf5018d0b00"
+    },
+    "components/ShChip.d.ts": {
+      "bytes": 372,
+      "sha256": "e51e04c1a4756ef3b35d4cd10d56a8edfa46d3b0774d7be7d2426d5c460e70a4"
+    },
+    "components/ShChip.jsx": {
+      "bytes": 627,
+      "sha256": "fa7bc456128d242864e031ab280eea88219adeee85f5eec79c970664ce496705"
+    },
+    "components/ShChip.prompt.md": {
+      "bytes": 305,
+      "sha256": "a087c83ab45bdfec8883e19e41b20aa67788a04fdab611f8c402cfef8aaa7a7b"
+    },
+    "components/ShCompare.d.ts": {
+      "bytes": 512,
+      "sha256": "c228bafcbfc7ab9288b085a52ca844bcfc0becb415bebc2492abab0d7029fd72"
+    },
+    "components/ShCompare.jsx": {
+      "bytes": 1589,
+      "sha256": "4142d7ab3a79825f90f1839d60a27fb9fb47010f487dd4104b162ff55738be0a"
+    },
+    "components/ShCompare.prompt.md": {
+      "bytes": 313,
+      "sha256": "bcc487601e4d7f58808ba230c949ecdec9ed3c36abd8c8cd825ddfa698875b2c"
+    },
+    "components/ShEndcard.d.ts": {
+      "bytes": 248,
+      "sha256": "1636a4e4ab95e83e4a6e06f9891e5ede9e07ef99950f9d3a0a688f15037eea6d"
+    },
+    "components/ShEndcard.jsx": {
+      "bytes": 800,
+      "sha256": "1581d26af5f788485dc184cd5e45a0cfb4ccc3864097598f9142e51db388695d"
+    },
+    "components/ShEndcard.prompt.md": {
+      "bytes": 789,
+      "sha256": "52860dfd8e81f8171f07a19bf54e067f63221e2118b599db0817211fc70e6b33"
+    },
+    "components/ShEvidence.d.ts": {
+      "bytes": 419,
+      "sha256": "30be006d66481f183a8f0955a24fae329effe205567074b93744a2bea9483233"
+    },
+    "components/ShEvidence.jsx": {
+      "bytes": 928,
+      "sha256": "18356badf9e159316a9d32e229447f3061b0fd7ed92c7b182ce89c3fe1138c43"
+    },
+    "components/ShEvidence.prompt.md": {
+      "bytes": 314,
+      "sha256": "a3f1844f601260c0c738d606926fed4f707d6ff6c2267ef12be6fa0fffb8d7a7"
+    },
+    "components/ShHook.d.ts": {
+      "bytes": 359,
+      "sha256": "e16052e91fac58c05712da75b9931d932c62a77352dc4f0e13604f8336990183"
+    },
+    "components/ShHook.jsx": {
+      "bytes": 892,
+      "sha256": "4b933cd7a55cd33132b895573c484303508f9958e1a5409907844703d0bdeee6"
+    },
+    "components/ShHook.prompt.md": {
+      "bytes": 284,
+      "sha256": "ac851a73fc3db8c382ad1211f6c704b19b024890cffa746ad166ddd78ba86737"
+    },
+    "components/ShIngredient.d.ts": {
+      "bytes": 495,
+      "sha256": "ebcc09652c2e879aa92300cde7c2033b3a197cfbb8285d2d4f81dde5ef3816d3"
+    },
+    "components/ShIngredient.jsx": {
+      "bytes": 979,
+      "sha256": "1a594e1779fd897ec2cd2c4509c3d0a3bdc9a9b5e1a39a5072e923d2f2d9e79f"
+    },
+    "components/ShIngredient.prompt.md": {
+      "bytes": 314,
+      "sha256": "0279b01744329d332102c81ba186b1db04f9a106e2f4441cca8edff8bc3cd9a4"
+    },
+    "components/ShMyth.d.ts": {
+      "bytes": 524,
+      "sha256": "83f022e5588335598449cb2deabd339ac48a99165f5c73863a4c80c72e1ecbfc"
+    },
+    "components/ShMyth.jsx": {
+      "bytes": 1499,
+      "sha256": "a1d547f7989f272b9df5fc1039257161c6dced06f6dcf51edc9eea903f869232"
+    },
+    "components/ShMyth.prompt.md": {
+      "bytes": 374,
+      "sha256": "ddc0aca0151001330c5e469f6ead4ff13df502a5c1622b90798da7fdad431f77"
+    },
+    "components/ShQuote.d.ts": {
+      "bytes": 326,
+      "sha256": "ab3c13967ad8dbbafcdd45ff746c2aacc9cc4b32a3a004dbd6005c398acaa3a1"
+    },
+    "components/ShQuote.jsx": {
+      "bytes": 758,
+      "sha256": "cd9af3794e7046a14dfdec195ae974950e8962e48af20aafef11e89dd850f976"
+    },
+    "components/ShQuote.prompt.md": {
+      "bytes": 303,
+      "sha256": "1e324378537d2b159a1d98cb548ed084560044170a2952b19f232534e5416754"
+    },
+    "components/ShRows.d.ts": {
+      "bytes": 528,
+      "sha256": "5f99033287f6c46d303956b07aeea09c838877eb49eb1a6aada6f31f77824085"
+    },
+    "components/ShRows.jsx": {
+      "bytes": 1388,
+      "sha256": "9249a8dfa124ce059e6f33751b9dc01c17d1cbabc0a5225a6b71e500c16bcea2"
+    },
+    "components/ShRows.prompt.md": {
+      "bytes": 423,
+      "sha256": "5e4ce69154e41938b9e0f341b3030d93f9906f031af8c3cae14a4c28c8335899"
+    },
+    "components/ShScene.d.ts": {
+      "bytes": 740,
+      "sha256": "64976814ab95928e862e2c10971a892e6af87e59ec2385fa9d260bcf58c1a4c7"
+    },
+    "components/ShScene.jsx": {
+      "bytes": 1363,
+      "sha256": "016680dd6179a3a533cf9585dd8dbe94895d7b3879944de91cb998bb2a9d1f74"
+    },
+    "components/ShScene.prompt.md": {
+      "bytes": 588,
+      "sha256": "394bfb92003989d211b97a62746393a0f70b84143630cbe6eefa8cc115d1bae7"
+    },
+    "components/ShSteps.d.ts": {
+      "bytes": 348,
+      "sha256": "446e838b450e52be89af680e02280edd23dbfd95775c5d528df5c2b88e1095d7"
+    },
+    "components/ShSteps.jsx": {
+      "bytes": 1541,
+      "sha256": "8780112c824bcad1bb199756f8fa572f038266035e17d044d3cca25220e26574"
+    },
+    "components/ShSteps.prompt.md": {
+      "bytes": 312,
+      "sha256": "882b2d98085547e722a5a2f628d8f13e9a2ac2b18ddadf2187c384b509e01caa"
+    },
+    "components/ShThumbnail.d.ts": {
+      "bytes": 450,
+      "sha256": "cdcceb4374e408e265db711efc80d4a94eb121c2c1a28f443052b07d41e82f56"
+    },
+    "components/ShThumbnail.jsx": {
+      "bytes": 1175,
+      "sha256": "92a0264bb23b0753ab595c85fe8555eb37cd0b8f65a8da144701a03ae73ea6f1"
+    },
+    "components/ShThumbnail.prompt.md": {
+      "bytes": 546,
+      "sha256": "e414bf98cf19a97aadb7e921743e8b722bc581dabcd642fda0b04b111e161cd0"
+    },
+    "fonts/SOURCES.md": {
+      "bytes": 3828,
+      "sha256": "6b886b028c0b0fecb3e3db6d38704d526b8a35c5cd10dca67bb73ecc62091b40"
+    },
+    "fonts/archivo-variable.woff2": {
+      "bytes": 34928,
+      "sha256": "8f704806dbedeaaeca334b11ec348bc3ac3a439d6431544b3afb54f534ee4967"
+    },
+    "fonts/dejavu-serif-400.woff2": {
+      "bytes": 143920,
+      "sha256": "8dbcad0d5f9f95d4ca21080e87dc83fc7c728106c1536769f346c397e8a26bfa"
+    },
+    "fonts/dejavu-serif-700.woff2": {
+      "bytes": 130464,
+      "sha256": "190f2c82c7e1f252ba7da6bba2f6ed56e5f8d1357814f7c04d8e26759ab99ef9"
+    },
+    "fonts/noto-serif-kr-400.woff2": {
+      "bytes": 971428,
+      "sha256": "c9a1e3ac69994d680883b53b1fd83d520733b704792522a932bfaa276117de45"
+    },
+    "fonts/noto-serif-kr-700.woff2": {
+      "bytes": 1033556,
+      "sha256": "504d6af6abb882acd912d47bafa383c4512a6c8c33635e4e8fb37111d9310941"
+    },
+    "templates/T1.json": {
+      "bytes": 1555,
+      "sha256": "8f5cc6b95cc4cfa18eaf31fdda50328dbe3f7f29dfb0d66701a764eee3a33166"
+    },
+    "templates/T2.json": {
+      "bytes": 1334,
+      "sha256": "81633be0cad2a190b7f01b4cf1891584cd279e3ea2cd4e48fdc90dca6b1e27e1"
+    },
+    "templates/T3.json": {
+      "bytes": 1517,
+      "sha256": "f763b19e9cea391a09c82700c5f58c2f28215ad2f15e61c3102f7ef3b68078b8"
+    },
+    "templates/T4.json": {
+      "bytes": 1420,
+      "sha256": "e6b8360075725963c3812f3a4076ab6762bc246667be7b1f5c806cceacbaca27"
+    },
+    "templates/T5.json": {
+      "bytes": 1381,
+      "sha256": "d0984b44f92ae47aa486f7f24b33c950ef047f30e8535017d84dc3c6cf70cc0c"
+    },
+    "templates/T6.json": {
+      "bytes": 1966,
+      "sha256": "760b1fb1696f1af36b45672e36377fa135d6fb8c695352215957324928f9a4a6"
+    },
+    "templates/TEMPLATES.md": {
+      "bytes": 4856,
+      "sha256": "4a29fc4a22fafeae462adefbc196bdda238792b40a940512d6172c8eba3bc04d"
+    },
+    "templates/_shared/sh-timeline.orig.js": {
+      "bytes": 3282,
+      "sha256": "1d60a9f0a570c711ab90dd332fdac8554be08a709b03cb6ccb810a070c90c27a"
+    },
+    "templates/reference/T1-ingredient-explainer.dc.html": {
+      "bytes": 7383,
+      "sha256": "c38d3db5f4066174e19c05c0c08bee628f9bc358ed09298ca7e8d28e0a0d9fd7"
+    },
+    "templates/reference/T2-how-to-use.dc.html": {
+      "bytes": 8210,
+      "sha256": "8acd0e02160443d20d9176fd17a70b44ffeb74ca5d1a8cde85a9ae3ccd64e119"
+    },
+    "templates/reference/T3-what-it-solves.dc.html": {
+      "bytes": 7837,
+      "sha256": "6841e0f22ae856aab72dbedf06e754eabdb5cb3dc00b805daa0b5c8c95fbe578"
+    },
+    "templates/reference/T4-comparison.dc.html": {
+      "bytes": 7867,
+      "sha256": "9ea49aa0c228191fdf0238b46e32e30027c49e6649eb61165f0b7c5dc5807db2"
+    },
+    "templates/reference/T5-myth-correction.dc.html": {
+      "bytes": 6185,
+      "sha256": "4fd7bd2700ef71b43fb696fb4c051f330ad5f59b252dadf2f6085a94a9079312"
+    },
+    "templates/reference/T6-long-form-explainer.dc.html": {
+      "bytes": 7558,
+      "sha256": "b3bd1331655f7e6f03e16879183de1082f061cba4b0c47fc8a03378d4ab92697"
+    },
+    "tokens/colors.css": {
+      "bytes": 768,
+      "sha256": "b82ef854110894456dfcf3af4e950978e602dcd805f1dc714bb4c952bb790b07"
+    },
+    "tokens/fonts.css": {
+      "bytes": 1731,
+      "sha256": "57a7b40e22fe234b5e7d2c887d2492f27a0b6f7495a68834a61bd4db87dbadbb"
+    },
+    "tokens/motion.css": {
+      "bytes": 919,
+      "sha256": "dc320038a2e98596d51cf18c64ab747b357724a640376240d7f92ff2746f3b9e"
+    },
+    "tokens/spacing.css": {
+      "bytes": 1256,
+      "sha256": "1b754f0370077b4a3ccab3a3977a8f4282781aca98911cab42708d40017d74e7"
+    },
+    "tokens/typography.css": {
+      "bytes": 1248,
+      "sha256": "fdae04297a9750709bac3e72c74ef067ec09d01e38194e106411e967e5fae963"
+    },
+    "vendor/gsap-3.14.2.min.js": {
+      "bytes": 72779,
+      "sha256": "c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280"
+    }
+  },
+  "note_on_scope": "Tracks the entire videos/_system/ tree for integrity, not only files pulled verbatim from Claude Design -- COMPILER.md, MOTION.md, RETIRED-transitions.md, TEMPLATES.md, and templates/T1-T6.json are this WO's own authored contract documents, not extractions. See EXTRACTION.md for exactly which files came from the source project.",
+  "total_bytes": 2523417
+}

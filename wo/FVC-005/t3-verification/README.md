@@ -76,6 +76,23 @@ fixed. See `stress7/README.md` for the full account, including one
 artifact at hard-cut boundaries rather than a real defect, backed by two
 extracted frames proving the actual rendered output is clean.
 
+## D5 split + adversarial content, combined
+
+`d5-adversarial/` tests the intersection of the D5 split path and the
+overflow-safety fixes together for the first time -- a scene using the
+same real unbreakable 24-character INCI term, split across two
+sub-scenes, as both the video's first scene (frame-zero + split +
+adversarial, combined) and a mid-video scene (`ShSteps`). A genuinely
+informative negative result: no new bugs. Every independently-verified
+fix (D5's content slicing, the overflow guards, frame-zero suppression,
+the blank-endcard fix) held up in combination. One recurrence of the
+already-known `check --at-transitions` artifact at the transition into
+the endcard refined the earlier finding: the common factor across both
+occurrences (a `ShQuote` scene and now a `ShSteps` split sub-scene, both
+transitioning into `ShEndcard`) is that the endcard is the only
+component that is both `anchor: true` and chip-less -- not anything
+about the outgoing scene or about splitting. See `d5-adversarial/README.md`.
+
 ## Reproduce from scratch
 
 ```

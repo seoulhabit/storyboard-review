@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Seventeen real bugs found by actually running the engine, not assumed away
+## Seventeen real bugs found, plus one confirmed clean combination, by actually running the engine, not assumed away
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -184,6 +184,23 @@ before moving on — not discovered later and patched around:
    mid-scene frame and the actual boundary frame are clean — and is
    recorded as a check-tool sampling artifact at hard-cut boundaries, not
    a defect, per `wo/FVC-005/t3-verification/stress7/README.md`.
+18. **No new bug — a genuine, informative negative result, and a
+   refinement of finding 17's artifact.** Tested the D5 split path and
+   the adversarial-text overflow fixes together for the first time (a
+   `ShRows` scene as the video's own frame zero, and a `ShSteps` scene
+   mid-video, both split, both loaded with the same unbreakable INCI
+   term). Every independently-verified fix held up in combination: split
+   content slicing carried the overflow guards correctly, frame-zero
+   suppression applied only to the first compiled sub-scene of a split
+   first scene, and the blank-endcard fix held after a split scene
+   precedes the endcard. The known artifact from finding 17 recurred —
+   this time on a `ShSteps` split sub-scene transitioning into the
+   endcard, not a `ShQuote` scene — which sharpens the diagnosis: the
+   common factor across both occurrences is that the *incoming* scene is
+   always `ShEndcard`, the only component that is both `anchor: true`
+   (getting an explicit `opacity:1` on its own `#root`) and structurally
+   chip-less, not anything about the outgoing scene or about splitting.
+   See `wo/FVC-005/t3-verification/d5-adversarial/README.md`.
 
 ## Accept check — what's verified and what isn't
 

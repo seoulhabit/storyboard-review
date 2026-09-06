@@ -10,6 +10,12 @@
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
+    /* --coral on --paper measures 3.00:1 -- clears the 3.0 graphic floor by a
+       hair, fails the 4.5 text floor. --coral-deep is for coral AS TEXT (the
+       caption keyword highlight): 4.60:1 on --paper. Was already a literal
+       in frames_e.py and check-contrast.py; promoted to a token so a second
+       caller doesn't re-derive the same hex from scratch. */
+    --coral-deep:#A85A3C;
     --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
     /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
        under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
@@ -328,6 +334,14 @@
             duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
+    }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
     }
 
     // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`

@@ -939,6 +939,42 @@
   "file": "06-door",
   "unit": "07-film",
   "kind": "w",
+  "word": "film",
+  "occurrence": 1,
+  "seconds": 13.207,
+  "abs": 52.21
+ },
+ {
+  "file": "06-door",
+  "unit": "07-film",
+  "kind": "w",
+  "word": "smoother",
+  "occurrence": 1,
+  "seconds": 16.338,
+  "abs": 55.341
+ },
+ {
+  "file": "06-door",
+  "unit": "07-film",
+  "kind": "w",
+  "word": "film",
+  "occurrence": 1,
+  "seconds": 13.207,
+  "abs": 52.21
+ },
+ {
+  "file": "06-door",
+  "unit": "07-film",
+  "kind": "w",
+  "word": "film",
+  "occurrence": 1,
+  "seconds": 13.207,
+  "abs": 52.21
+ },
+ {
+  "file": "06-door",
+  "unit": "07-film",
+  "kind": "w",
   "word": "polishing",
   "occurrence": 1,
   "seconds": 17.169,
@@ -1006,6 +1042,15 @@
   "occurrence": 1,
   "seconds": 18.307,
   "abs": 57.31
+ },
+ {
+  "file": "08-digestion",
+  "unit": "08-digestion",
+  "kind": "w",
+  "word": "powder",
+  "occurrence": 1,
+  "seconds": 0.381,
+  "abs": 59.224
  },
  {
   "file": "08-digestion",

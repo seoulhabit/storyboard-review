@@ -39,13 +39,13 @@ Paste-ready. Re-derived from the walk on every build.
 
 | # | file | start | dur | units | tweens |
 |---|---|---:|---:|---|---:|
-| 1 | `01-hook` | 0.000 | 5.521 | 01-hook | 21 |
-| 2 | `02-promise` | 4.971 | 9.305 | 02-promise | 22 |
-| 3 | `03-building` | 13.726 | 25.827 | 03-building, 04-demolition, 05-boundary | 47 |
-| 4 | `06-door` | 39.003 | 20.390 | 06-door, 07-film | 47 |
-| 5 | `08-digestion` | 58.843 | 21.862 | 08-digestion, 09-dispatch | 32 |
-| 6 | `10-evidence` | 80.105 | 37.989 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 83 |
-| 7 | `14-hierarchy` | 117.494 | 22.098 | 14-hierarchy, 15-verdict | 40 |
+| 1 | `01-hook` | 0.000 | 5.521 | 01-hook | 22 |
+| 2 | `02-promise` | 4.971 | 9.305 | 02-promise | 23 |
+| 3 | `03-building` | 13.726 | 25.827 | 03-building, 04-demolition, 05-boundary | 49 |
+| 4 | `06-door` | 39.003 | 20.390 | 06-door, 07-film | 49 |
+| 5 | `08-digestion` | 58.843 | 21.862 | 08-digestion, 09-dispatch | 35 |
+| 6 | `10-evidence` | 80.105 | 37.989 | 10-trials, 11-caveat, 12-filter, 13-uncertain | 84 |
+| 7 | `14-hierarchy` | 117.494 | 22.098 | 14-hierarchy, 15-verdict | 41 |
 | 8 | `16-end` | 138.692 | 5.000 | 16-end | 2 |
 
 ## Beat units
@@ -69,5 +69,5 @@ Paste-ready. Re-derived from the walk on every build.
 | 15 | `15-verdict` | `14-hierarchy` | 131.551 | 7.141 | 131.55 | 20 | optional · collagen cream · collagen powder · Protect the building first. | optional pan, final band, bricks exit | — |
 | 16 | `16-end` | `16-end` | 138.692 | 5.000 | — | 0 | SeoulHabit · Evidence, not hype. · sources in the description | curtain, calm drift | — |
 
-**294 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
+**305 authored tweens across 8 files.** Authoring aid only — an authored tween is not a rendered pixel change; `check-cadence.py --longform --ceiling 4.0` on the real render answers cadence.
 

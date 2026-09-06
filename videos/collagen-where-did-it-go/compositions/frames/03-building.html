@@ -10,6 +10,12 @@
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
+    /* --coral on --paper measures 3.00:1 -- clears the 3.0 graphic floor by a
+       hair, fails the 4.5 text floor. --coral-deep is for coral AS TEXT (the
+       caption keyword highlight): 4.60:1 on --paper. Was already a literal
+       in frames_e.py and check-contrast.py; promoted to a token so a second
+       caller doesn't re-derive the same hex from scratch. */
+    --coral-deep:#A85A3C;
     --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
     /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
        under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
@@ -227,8 +233,32 @@
                stroke-dasharray:640; stroke-dashoffset:0; }
     .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
 
+    /* position:relative by default so .worldclip's inset:0 resolves against
+       THIS box, not whatever ancestor happens to be positioned (a bounded
+       thumbnail relies on this); a full-bleed usage overrides to absolute
+       via its own inline style, which wins on specificity. */
+    .plate { position:relative; overflow:hidden; }
+    .plate .worldclip { position:absolute; inset:0; overflow:hidden; }
+    .plate .world { position:relative; width:100%; height:100%;
+                    transform-origin:50% 50%; will-change:transform; }
+    .plate-scrim { position:absolute; inset:0; }
+
     .abs { position:absolute; }
     #stageC { position:absolute; left:0; top:0; }
+    /* real-skin ground the building grows out of -- BRIEF.md's own imagery
+       plan for this scene, never wired in until now. b-shell is a hollow
+       stroke (fill:none) and .b-floor/.b-win start at opacity 0, so the
+       photo shows clearly through the whole building silhouette until the
+       storeys and windows draw in over it: a masked reveal for free, not an
+       extra transition to author. */
+    /* a quick fade rather than an instant full-opacity pop -- purely
+       cosmetic. CONFIRMED (hyperframes check --at-transitions against the
+       unmodified master, no photo present) that the text_occluded warning
+       at t=13.94-14.03s on this seam is a PRE-EXISTING characteristic of
+       this iris transition itself (03-building's own paper ground
+       compositing over 02-promise's tail text), not caused by this photo --
+       identical with or without it. Out of scope for this redesign. */
+    #ground { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0; }
     .ray { stroke:var(--highlighter); stroke-width:7; stroke-linecap:round; opacity:.9; }
     .sun { fill:var(--coral); stroke:var(--paper); stroke-width:5; }
     #rays { opacity:0; }
@@ -246,6 +276,7 @@
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
+        <div class="plate" id="ground" style=""><div class="worldclip"><div class="world" id="ground-world" data-layout-allow-overflow="true"><img src="assets/images/skin-base.png" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;filter:saturate(.82) contrast(1.02);"></div></div><div class="plate-scrim" id="ground-scrim" style="background:rgba(247,245,240,.30);"></div></div>
         <div class="panel " id="sky" style="position:absolute;left:700px;top:0px;width:1028px;height:240px;"><div class="wash sun" id="sky-wash"></div><span></span></div>
         <svg id="stageC" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <g id="bwrap" transform="translate(94 -56)"></g>
@@ -347,6 +378,14 @@
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
     }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
+    }
 
     // The building: 5 storeys, an X-brace pair per storey (the collagen),
     // stable ids so a later phase MOVES a beam instead of redrawing it.
@@ -386,6 +425,12 @@
         tl.set("#beam-" + k, { strokeDashoffset:640, opacity:0.25 }, 0);
       });
     }
+
+    // the ground photo drifts almost imperceptibly for the WHOLE file -- it is
+    // covered progressively as the building fills in, but stays real motion
+    // (not a frozen plate) in whatever margin remains visible throughout.
+    pushPlate(tl, "ground", 1.0, 1.05, 0, 25.827);
+    tl.fromTo("#ground", { opacity:0 }, { opacity:1, duration:0.5, ease:EASE.arrive }, 0);
 
     var svg = document.getElementById("stageC"), bwrap = document.getElementById("bwrap");
     drawBuilding(svg, { door:true, into:bwrap });

@@ -45,6 +45,24 @@ FONT = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 FONT_SIZE = 52
 LINE_GAP = 14
 PAD_X = 60
+CHIP_RADIUS = 14
+
+# Editorial chip, not an opaque strip: --paper behind, --ink text (16.81:1),
+# --coral-deep for the one keyword a cue turns on (4.60:1 on --paper --
+# plain --coral text measures 3.00:1 there, under the 4.5 text floor; see
+# _preamble.py's TOKENS comment on --coral-deep). PIL cannot load the
+# project's WOFF2 Inter, so this keeps Arial Bold rather than shipping a
+# second font just for the burn-in fallback.
+CHIP_FILL = (247, 245, 240, 235)
+INK = (19, 21, 22, 255)
+CORAL_DEEP = (168, 90, 60, 255)
+# A curated set, not a per-word markup pass: the SRT is plain transcribed
+# narration with no emphasis markers (unlike the on-screen kinetic text,
+# which already codes "NOT" etc. in coral). These are the words the review
+# named as the video's own pivotal claims -- negations and evidence-quality
+# language -- so a cue highlights at most one or two words, never every line.
+KEYWORDS = {"not", "no", "remove", "removed", "changes", "uncertain", "stops",
+            "showing", "optional", "protect", "first", "rejected"}
 
 
 def ts(s):
@@ -78,16 +96,29 @@ def render_cue_png(lines, out_path):
     sizes = [d.textbbox((0, 0), ln, font=font) for ln in lines]
     heights = [b[3] - b[1] for b in sizes]
     total_h = sum(heights) + LINE_GAP * (len(lines) - 1)
-    y = CAPTION_BAND_PX - 28 - total_h  # 28px breathing room above the true frame edge
+    y0 = CAPTION_BAND_PX - 28 - total_h  # 28px breathing room above the true frame edge
 
+    # ONE merged chip behind every line of the cue, not one rectangle per
+    # line -- a 2-line cue used to draw two independently-sized strips.
+    max_w = max(b[2] - b[0] for b in sizes)
+    cx0 = (CANVAS_W - max_w) // 2 - PAD_X // 2
+    cx1 = (CANVAS_W + max_w) // 2 + PAD_X // 2
+    d.rounded_rectangle([cx0, y0 - 6, cx1, y0 + total_h + 10], radius=CHIP_RADIUS, fill=CHIP_FILL)
+
+    y = y0
     for ln, (bbox, h) in zip(lines, zip(sizes, heights)):
         w = bbox[2] - bbox[0]
         x = (CANVAS_W - w) // 2
-        # a solid backing band, not a per-glyph outline: readable over any
-        # ground the clean master ever puts behind it, ink or paper alike.
-        d.rectangle([x - PAD_X // 2, y - 6, x + w + PAD_X // 2, y + h + 10],
-                    fill=(10, 10, 10, 210))
-        d.text((x, y), ln, font=font, fill=(255, 255, 255, 255))
+        # per-word colour, not per-line: ink by default, coral-deep for a
+        # curated keyword. Never a karaoke sweep -- every word is drawn in
+        # its final colour from the cue's first frame.
+        words = ln.split(" ")
+        cx = x
+        for wi, word in enumerate(words):
+            bare = word.strip(".,!?‘’").lower()
+            d.text((cx, y), word, font=font, fill=CORAL_DEEP if bare in KEYWORDS else INK)
+            piece = word + (" " if wi < len(words) - 1 else "")
+            cx += d.textlength(piece, font=font)
         y += h + LINE_GAP
     im.save(out_path)
 

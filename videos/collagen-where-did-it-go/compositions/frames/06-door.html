@@ -10,6 +10,12 @@
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
+    /* --coral on --paper measures 3.00:1 -- clears the 3.0 graphic floor by a
+       hair, fails the 4.5 text floor. --coral-deep is for coral AS TEXT (the
+       caption keyword highlight): 4.60:1 on --paper. Was already a literal
+       in frames_e.py and check-contrast.py; promoted to a token so a second
+       caller doesn't re-derive the same hex from scratch. */
+    --coral-deep:#A85A3C;
     --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
     /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
        under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
@@ -233,8 +239,26 @@
        floor; full opacity measures 4.89:1. The dim was cosmetic, not
        load-bearing (EPIDERMIS/DERMIS are the only text on these labels). */
 
+    /* position:relative by default so .worldclip's inset:0 resolves against
+       THIS box, not whatever ancestor happens to be positioned (a bounded
+       thumbnail relies on this); a full-bleed usage overrides to absolute
+       via its own inline style, which wins on specificity. */
+    .plate { position:relative; overflow:hidden; }
+    .plate .worldclip { position:absolute; inset:0; overflow:hidden; }
+    .plate .world { position:relative; width:100%; height:100%;
+                    transform-origin:50% 50%; will-change:transform; }
+    .plate-scrim { position:absolute; inset:0; }
+
     .abs { position:absolute; }
     #stageD, #barSvg { position:absolute; left:0; top:0; }
+    /* the tactile companion to "surface smoothing != structural replacement":
+       cream ON skin, so it never argues the penetration claim -- the diagram
+       carries that. Boxed in the empty middle column (the molecule/dot-path
+       stay left of x=410, the size cards stay right of x=900) so it can
+       arrive BEFORE the cards retract without occluding them -- measured:
+       placing it in the cards' own box overlapped "one collagen molecule"
+       at t=55.3s while they were still fading out. */
+    #film-photo { opacity:0; }
     #epi-wash { position:absolute; left:47px; top:560px; width:1728px; height:140px; background:var(--aqua); }
     #derm-wash { position:absolute; left:47px; top:700px; width:1728px; height:218px; background:var(--ink-3); opacity:.9; }
     .hidden-path { fill:none; stroke:none; }
@@ -272,6 +296,7 @@
         <p class="chip note" id="sz-note" style="position:absolute;left:900px;top:486px;">labelled, not to scale</p>
         <div class="stamp" id="stamp">REJECTED</div>
         <div class="panel late" id="verdict7" style="position:absolute;left:264px;top:740px;width:1200px;height:130px;"><div class="wash ink" id="verdict7-wash"></div><p class="p-title">surface smoothing &ne; structural replacement</p></div>
+        <div class="plate" id="film-photo" style="position:absolute;left:420px;top:60px;width:460px;height:460px;"><div class="worldclip"><div class="world" id="film-photo-world" data-layout-allow-overflow="true"><img src="assets/images/layering-hand.png" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;filter:saturate(.85) contrast(1.02);"></div></div></div>
        </div>
       </div>
       </div>
@@ -356,6 +381,14 @@
             duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
+    }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
     }
 
     // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
@@ -519,6 +552,13 @@
     tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, 16.338 - 0.5);
     tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, 16.338 - 0.5);
     tl.to(["#sz-a", "#sz-b", "#sz-note", "#cite-da"], { opacity:0, duration:0.3, ease:EASE.exit }, 16.338 - 0.1);
+    // the empty middle column: cream on skin arrives right as "the film
+    // spreads" animation settles (13.207+0.6) -- MEASURED as a 2.4s true
+    // freeze before this fix (hyperframes check --at-transitions: motion_frozen
+    // 52.86-55.27s), since nothing else moves between the film-spread beat
+    // ending and the sz-card retract at 16.338-0.5.
+    tl.fromTo("#film-photo", { opacity:0 }, { opacity:1, duration:0.5, ease:EASE.arrive }, 13.207 + 0.6);
+    pushPlate(tl, "film-photo", 1.0, 1.06, 13.207 + 0.6, 6.0);
     tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, 17.169);
     // "...replacing the beams": the dermis dims -- the hatch stays cut
     // "...is NOT replacing the beams": the dermis dims on "not", the verdict lands on "replacing" --

@@ -10,6 +10,12 @@
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
+    /* --coral on --paper measures 3.00:1 -- clears the 3.0 graphic floor by a
+       hair, fails the 4.5 text floor. --coral-deep is for coral AS TEXT (the
+       caption keyword highlight): 4.60:1 on --paper. Was already a literal
+       in frames_e.py and check-contrast.py; promoted to a token so a second
+       caller doesn't re-derive the same hex from scratch. */
+    --coral-deep:#A85A3C;
     --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
     /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
        under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
@@ -232,8 +238,22 @@
                stroke-dasharray:640; stroke-dashoffset:0; }
     .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
 
+    /* position:relative by default so .worldclip's inset:0 resolves against
+       THIS box, not whatever ancestor happens to be positioned (a bounded
+       thumbnail relies on this); a full-bleed usage overrides to absolute
+       via its own inline style, which wins on specificity. */
+    .plate { position:relative; overflow:hidden; }
+    .plate .worldclip { position:absolute; inset:0; overflow:hidden; }
+    .plate .world { position:relative; width:100%; height:100%;
+                    transform-origin:50% 50%; will-change:transform; }
+    .plate-scrim { position:absolute; inset:0; }
+
     .abs { position:absolute; }
     #stageE { position:absolute; left:0; top:0; }
+    /* the real scoop, as a match-cut entry into the line-drawn tract below --
+       gone before the tract itself draws in, never lingering behind the
+       abstract journey (BRIEF.md: no organs, no anatomy stand-in). */
+    #scoop-plate { position:absolute; left:0; top:0; width:100%; height:100%; }
     .scoop { fill:var(--mist); stroke:var(--ink); stroke-width:5; }
     .fr { fill:var(--coral); opacity:0; }
     .card { padding:var(--s-4); display:flex; align-items:center; gap:var(--s-4); }
@@ -252,6 +272,7 @@
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
+        <div class="plate" id="scoop-plate" style=""><div class="worldclip"><div class="world" id="scoop-plate-world" data-layout-allow-overflow="true"><img src="assets/images/collagen-powder-scoop.png" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.02);"></div></div><div class="plate-scrim" id="scoop-plate-scrim" style="background:rgba(247,245,240,.30);"></div></div>
         <div class="panel " id="stomach-p" style="position:absolute;left:640px;top:560px;width:520px;height:280px;"><div class="wash aqua" id="stomach-p-wash"></div><span></span></div>
         <svg id="stageE" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <g id="scoop"><path class="scoop" d="M 250 535 Q 250 640 404 640 Q 558 640 558 535 Z"/><path class="scoop" d="M 250 540 L 130 500" fill="none"/></g>
@@ -347,6 +368,14 @@
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
     }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
+    }
 
     // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
     // groups (#id-seg-i) so digestion can tween segments apart without a
@@ -430,6 +459,23 @@
 
     var svg = document.getElementById("stageE");
     drawTract(svg);
+    // match-cut: the real photo covers the line-drawn scoop for a beat, then
+    // clears before the tract takes the frame. #scoop itself is NEVER
+    // hidden -- it keeps its ORIGINAL default-visible state and its own
+    // 0.381 rotation tween untouched. That rotation fires at 0.38s
+    // file-relative, inside check-seams' own iris-midpoint/settled-frame
+    // sample window (0.275s / 0.6s) -- it is the only visible motion that
+    // keeps those two samples looking genuinely different in the shipped
+    // master (measured 25.6dB there). An earlier version of this beat hid
+    // #scoop until the photo cleared, which silenced that rotation and
+    // made the two samples nearly identical (measured 32.3-32.6dB, over
+    // the 30.0dB ceiling, regardless of the photo's own fade timing) --
+    // the defect was never the photo's opacity curve, it was suppressing
+    // the one thing already making that window read as a real wipe.
+    gsap.set("#scoop-plate", { opacity:0 });
+    pushPlate(tl, "scoop-plate", 1.0, 1.05, 0.65, 0.6);
+    tl.fromTo("#scoop-plate", { opacity:0 }, { opacity:1, duration:0.25, ease:EASE.arrive }, 0.65);
+    tl.to("#scoop-plate", { opacity:0, duration:0.2, ease:EASE.exit }, 1.05);
     var tract = document.getElementById("tract"), L = tract.getTotalLength();
     // the tract and branches are hidden until drawn
     ["#tract", "#br-skin", "#br-joints", "#br-tendons", "#br-other"].forEach(function (id) {

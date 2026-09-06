@@ -10,6 +10,12 @@
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
+    /* --coral on --paper measures 3.00:1 -- clears the 3.0 graphic floor by a
+       hair, fails the 4.5 text floor. --coral-deep is for coral AS TEXT (the
+       caption keyword highlight): 4.60:1 on --paper. Was already a literal
+       in frames_e.py and check-contrast.py; promoted to a token so a second
+       caller doesn't re-derive the same hex from scratch. */
+    --coral-deep:#A85A3C;
     --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
     /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
        under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
@@ -233,13 +239,28 @@
        floor; full opacity measures 4.89:1. The dim was cosmetic, not
        load-bearing (EPIDERMIS/DERMIS are the only text on these labels). */
 
+    /* position:relative by default so .worldclip's inset:0 resolves against
+       THIS box, not whatever ancestor happens to be positioned (a bounded
+       thumbnail relies on this); a full-bleed usage overrides to absolute
+       via its own inline style, which wins on specificity. */
+    .plate { position:relative; overflow:hidden; }
+    .plate .worldclip { position:absolute; inset:0; overflow:hidden; }
+    .plate .world { position:relative; width:100%; height:100%;
+                    transform-origin:50% 50%; will-change:transform; }
+    .plate-scrim { position:absolute; inset:0; }
+
     .abs { position:absolute; left:0; top:0; }
     #hook-slam { position:absolute; left:120px; top:120px; width:820px; }
     #hook-slam .kt-word.em { color:var(--coral); }
     .lab { opacity:0; }
+    /* the tactile open the review asked for: a real scoop/powder photo from
+       frame zero, not a flat mist panel. The wash still reveals as a beat --
+       tinted to .82 so it reads as a colour EVENT without erasing the photo
+       under it, a targeted exception to the wash's usual full opacity. */
     #powder { position:absolute; left:60px; top:560px; width:820px; height:320px;
-              background:var(--mist); padding:var(--s-4) var(--s-5); }
+              overflow:hidden; padding:var(--s-4) var(--s-5); }
     #powder .chip { position:relative; }
+    #powder-wash { opacity:.82; }
     .glass { fill:none; stroke:var(--ink); stroke-width:5; }
     .glass-fill { fill:var(--aqua); opacity:.35; }
     .arrow { fill:none; stroke:var(--ink); stroke-width:5; stroke-dasharray:18 14; opacity:.8; }
@@ -252,7 +273,11 @@
       <div class="stage">
        <div class="worldclip">
        <div class="world" id="world">
-        <div class="panel " id="powder" style="position:absolute;left:60px;top:560px;width:820px;height:320px;"><div class="wash aqua" id="powder-wash"></div><p class="chip lab" id="lab-powder" style="position:absolute;left:32px;top:24px;">POWDER</p></div>
+        <div class="panel" id="powder" style="position:absolute;left:60px;top:560px;width:820px;height:320px;">
+          <div class="plate" id="powder-plate" style="position:absolute;inset:0;"><div class="worldclip"><div class="world" id="powder-plate-world" data-layout-allow-overflow="true"><img src="assets/images/collagen-powder-scoop.png" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;filter:saturate(.85) contrast(1.02);"></div></div></div>
+          <div class="wash aqua" id="powder-wash"></div>
+          <p class="chip lab" id="lab-powder" style="position:absolute;left:32px;top:24px;">POWDER</p>
+        </div>
         <svg id="stageA" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <path id="run" class="hidden-path" d="M 320 470 L 790 470"/>
           <path id="drop" class="hidden-path" d="M 470 230 C 470 400 470 520 470 690"/>
@@ -348,6 +373,14 @@
             duration:0.32, stagger:step, ease:"back.out(1.7)" }, at);
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
+    }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
     }
 
     // The collagen molecule: three sine ribbons 120deg apart, drawn as `segs`
@@ -447,6 +480,8 @@
       }
       return g;
     }
+
+    pushPlate(tl, "powder-plate", 1.0, 1.06, 0, 5.521);
 
     var svg = document.getElementById("stageA");
     gsap.set("#epi-wash", { scaleX:0, transformOrigin:"0% 50%" });

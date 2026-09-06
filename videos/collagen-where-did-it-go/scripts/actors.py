@@ -94,6 +94,14 @@ HELPERS_JS = r"""
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
     }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
+    }
 """
 
 # ---------------------------------------------------------------- MOL
@@ -363,6 +371,45 @@ def abs_(x, y, w=None, h=None):
     if h is not None:
         s += f"height:{h}px;"
     return s
+
+
+def plate(id_, src, style="", fit="cover", scrim=None, filt=""):
+    """A validated photographic plate: .plate (positioned box, clips) >
+    .worldclip (overflow:hidden, content box) > .world (the ONLY element a
+    camera push may transform) > <img>. Mirrors the .stage/.worldclip/.world
+    split every scene already uses for its own camera, so a plate survives the
+    file's outer camera AND carries its own independent Ken Burns leg on
+    `#{id_}-world` without either transform fighting the other's clip edge.
+
+    `scrim` is an optional CSS background (e.g. "linear-gradient(...)") on a
+    div ABOVE the image so caption-weight text can sit on a photo without a
+    second measured contrast case; build_frames.py's media assert requires
+    every <img> to be wrapped exactly this way. decoding/loading are set for
+    a seek-based renderer: the frame must never be captured mid-decode.
+    """
+    scrim_html = f'<div class="plate-scrim" id="{id_}-scrim" style="background:{scrim};"></div>' if scrim else ""
+    # data-layout-allow-overflow: a Ken Burns push on -world legitimately
+    # exceeds its own box (that is what "zoomed in" means); .worldclip's
+    # overflow:hidden already clips it with no visible defect -- this only
+    # silences hyperframes check's geometry-only container_overflow warning.
+    return (f'<div class="plate" id="{id_}" style="{style}">'
+            f'<div class="worldclip"><div class="world" id="{id_}-world" data-layout-allow-overflow="true">'
+            f'<img src="{src}" alt="" decoding="sync" loading="eager" '
+            f'style="width:100%;height:100%;object-fit:{fit};{filt}"></div></div>'
+            f'{scrim_html}</div>')
+
+
+PLATE_CSS = """
+    /* position:relative by default so .worldclip's inset:0 resolves against
+       THIS box, not whatever ancestor happens to be positioned (a bounded
+       thumbnail relies on this); a full-bleed usage overrides to absolute
+       via its own inline style, which wins on specificity. */
+    .plate { position:relative; overflow:hidden; }
+    .plate .worldclip { position:absolute; inset:0; overflow:hidden; }
+    .plate .world { position:relative; width:100%; height:100%;
+                    transform-origin:50% 50%; will-change:transform; }
+    .plate-scrim { position:absolute; inset:0; }
+"""
 
 
 # ---------------------------------------------------------------- ease vocabulary as JS

@@ -4,16 +4,20 @@ THE most continuous journey in the piece: the molecule leaves the scoop,
 follows ONE tract path, fragments in the stomach into peptides and amino-acid
 dots, and the dots are dispatched along four branches -- the body decides."""
 from actors import (HELPERS_JS, HELIX_JS, HELIX_CSS, BUILDING_JS, BUILDING_CSS, TRACT_JS, TRACT_CSS,
-                    EASE_JS, kt, chip, cite, panel, abs_)
+                    PLATE_CSS, EASE_JS, kt, chip, cite, panel, plate, abs_)
 from motion import MOTION
 
 DESTS = [("skin", "skin", 120), ("joints", "joints", 300), ("tendons", "tendons", 480), ("other", "other tissue", 660)]
 
 
 def file_08_digestion(fspan, fctx):
-    css = HELIX_CSS + TRACT_CSS + BUILDING_CSS + """
+    css = HELIX_CSS + TRACT_CSS + BUILDING_CSS + PLATE_CSS + """
     .abs { position:absolute; }
     #stageE { position:absolute; left:0; top:0; }
+    /* the real scoop, as a match-cut entry into the line-drawn tract below --
+       gone before the tract itself draws in, never lingering behind the
+       abstract journey (BRIEF.md: no organs, no anatomy stand-in). */
+    #scoop-plate { position:absolute; left:0; top:0; width:100%; height:100%; }
     .scoop { fill:var(--mist); stroke:var(--ink); stroke-width:5; }
     .fr { fill:var(--coral); opacity:0; }
     .card { padding:var(--s-4); display:flex; align-items:center; gap:var(--s-4); }
@@ -36,6 +40,8 @@ def file_08_digestion(fspan, fctx):
     body = f"""
       <div class="stage">
        <div class="world" id="world">
+        {plate("scoop-plate", "assets/images/collagen-powder-scoop.png",
+               filt="filter:saturate(.88) contrast(1.02);", scrim="rgba(247,245,240,.30)")}
         {panel("stomach-p", "aqua", "<span></span>", abs_(640, 560, 520, 280))}
         <svg id="stageE" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <g id="scoop"><path class="scoop" d="M 250 535 Q 250 640 404 640 Q 558 640 558 535 Z"/><path class="scoop" d="M 250 540 L 130 500" fill="none"/></g>
@@ -53,6 +59,23 @@ def file_08_digestion(fspan, fctx):
     tl = EASE_JS + HELPERS_JS + HELIX_JS + BUILDING_JS + TRACT_JS + """
     var svg = document.getElementById("stageE");
     drawTract(svg);
+    // match-cut: the real photo covers the line-drawn scoop for a beat, then
+    // clears before the tract takes the frame. #scoop itself is NEVER
+    // hidden -- it keeps its ORIGINAL default-visible state and its own
+    // @w(powder) rotation tween untouched. That rotation fires at 0.38s
+    // file-relative, inside check-seams' own iris-midpoint/settled-frame
+    // sample window (0.275s / 0.6s) -- it is the only visible motion that
+    // keeps those two samples looking genuinely different in the shipped
+    // master (measured 25.6dB there). An earlier version of this beat hid
+    // #scoop until the photo cleared, which silenced that rotation and
+    // made the two samples nearly identical (measured 32.3-32.6dB, over
+    // the 30.0dB ceiling, regardless of the photo's own fade timing) --
+    // the defect was never the photo's opacity curve, it was suppressing
+    // the one thing already making that window read as a real wipe.
+    gsap.set("#scoop-plate", { opacity:0 });
+    pushPlate(tl, "scoop-plate", 1.0, 1.05, 0.65, 0.6);
+    tl.fromTo("#scoop-plate", { opacity:0 }, { opacity:1, duration:0.25, ease:EASE.arrive }, 0.65);
+    tl.to("#scoop-plate", { opacity:0, duration:0.2, ease:EASE.exit }, 1.05);
     var tract = document.getElementById("tract"), L = tract.getTotalLength();
     // the tract and branches are hidden until drawn
     ["#tract", "#br-skin", "#br-joints", "#br-tendons", "#br-other"].forEach(function (id) {
@@ -146,6 +169,7 @@ def file_08_digestion(fspan, fctx):
 """
     MOTION["08-digestion"]["beats"] = [
         {"name": "camera settle", "at": "0.0", "area": 0.5, "dl": 40, "dur": 0.9},
+        {"name": "scoop photo crossfade", "at": "0.65", "area": 1.0, "dl": 120, "dur": 0.25},
         {"name": "stomach wash", "at": "@w(breaks)-0.1", "area": 0.07, "dl": 81, "dur": 0.5},
         {"name": "fragments drift", "at": "@w(amino)-0.5", "area": 0.04, "dl": 90, "dur": 1.4},
         {"name": "face card dim", "at": "@w(stomach)-0.2", "area": 0.06, "dl": 84, "dur": 0.4},

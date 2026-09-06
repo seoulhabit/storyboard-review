@@ -398,6 +398,17 @@
  {
   "file": "06-door",
   "unit": "07-film",
+  "name": "film photo arrives",
+  "abs": 52.81,
+  "area": 0.19,
+  "dl": 70,
+  "dur": 0.5,
+  "per_step": 3.33,
+  "registers": true
+ },
+ {
+  "file": "06-door",
+  "unit": "07-film",
   "name": "dermis push",
   "abs": 55.241,
   "area": 0.5,
@@ -459,6 +470,17 @@
   "dl": 40,
   "dur": 0.9,
   "per_step": 2.78,
+  "registers": true
+ },
+ {
+  "file": "08-digestion",
+  "unit": "08-digestion",
+  "name": "scoop photo crossfade",
+  "abs": 59.493,
+  "area": 1.0,
+  "dl": 120,
+  "dur": 0.25,
+  "per_step": 60.0,
   "registers": true
  },
  {

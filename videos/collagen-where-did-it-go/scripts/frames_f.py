@@ -3,16 +3,23 @@
 THE BUILDING RETURNS -- same builder, damaged state carried (beams cut, skew,
 the shield's held tint), so the ending comes back to a place, not a lookalike.
 """
-from actors import HELPERS_JS, BUILDING_JS, BUILDING_CSS, EASE_JS, kt, chip, cite, panel, abs_
+from actors import (HELPERS_JS, BUILDING_JS, BUILDING_CSS, PLATE_CSS, EASE_JS,
+                    kt, chip, cite, panel, plate, abs_)
 from motion import MOTION
 
-ROWS = [("rank-1", "1 · daily sunscreen"), ("rank-2", "2 · not smoking"),
-        ("rank-3", "3 · protein + vitamin C"), ("rank-4", "4 · retinoids, if suitable")]
+# a photo thumbnail for three of the four rows -- "not smoking" stays
+# typographic, per the brief, since no exact tasteful plate exists for it.
+ROWS = [("rank-1", "1 · daily sunscreen", "assets/images/sunscreen.jpg"),
+        ("rank-2", "2 · not smoking", None),
+        ("rank-3", "3 · protein + vitamin C", "assets/images/vitamin-c.png"),
+        ("rank-4", "4 · retinoids, if suitable", "assets/images/retinol.png")]
 SHUFFLE = [300, -150, 150, -300]     # fixed, never Math.random
+THUMB_STYLE = ("width:96px;height:96px;flex:0 0 auto;margin-right:var(--s-4);"
+              "border-radius:var(--r-2);")
 
 
 def file_14_hierarchy(fspan, fctx):
-    css = BUILDING_CSS + """
+    css = BUILDING_CSS + PLATE_CSS + """
     .abs { position:absolute; }
     #bldg { position:absolute; left:0; top:0; }
     .shield { fill:var(--aqua); opacity:.12; }
@@ -31,9 +38,13 @@ def file_14_hierarchy(fspan, fctx):
     #final-kt { font-size:var(--t-hero); }
     .cite { opacity:0; position:absolute; }
 """
-    rows = "".join(panel(rid, "aqua", f'<p class="p-title">{label}</p>',
+    def _row_inner(rid, label, img):
+        thumb = plate(f"{rid}-thumb", img, style=THUMB_STYLE) if img else ""
+        return thumb + f'<p class="p-title">{label}</p>'
+
+    rows = "".join(panel(rid, "aqua", _row_inner(rid, label, img),
                          abs_(740, 120 + i * 160, 700, 130), "rank-row")
-                   for i, (rid, label) in enumerate(ROWS))
+                   for i, (rid, label, img) in enumerate(ROWS))
     body = f"""
       <div class="stage">
        <div class="world" id="world">
@@ -78,6 +89,10 @@ def file_14_hierarchy(fspan, fctx):
     var ROW_AT = [@w(sunscreen), @w(smoking), @w(protein), @w(retinoids)];
     ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
       tl.fromTo(id, { y:SHUFFLE[i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
+    });
+    // each photo thumbnail drifts for the rest of the file once its row lands
+    [["rank-1-thumb", 0], ["rank-3-thumb", 2], ["rank-4-thumb", 3]].forEach(function (t) {
+      pushPlate(tl, t[0], 1.0, 1.08, ROW_AT[t[1]] - 0.3, FDUR - (ROW_AT[t[1]] - 0.3));
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
     tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, @w(sunscreen));
@@ -139,7 +154,7 @@ def file_14_hierarchy(fspan, fctx):
     tl.to("#bldg", { scale:1.05, transformOrigin:"20% 60%", duration:1.4, ease:EASE.camera }, @w(building) - 0.2);
     tl.to("#bricks", { x:180, duration:0.9, ease:EASE.hold }, @w(before));
     tl.to("#bricks", { x:520, opacity:0.3, duration:0.7, ease:EASE.exit }, @w(bricks));
-""".replace("SHUFFLE", str(SHUFFLE))
+""".replace("SHUFFLE", str(SHUFFLE)).replace("FDUR", f"{fspan.dur:.3f}")
     MOTION["14-hierarchy"]["beats"] = [
         {"name": "camera settle",  "at": "0.0",               "area": 0.5,   "dl": 60,  "dur": 1.2},
         {"name": "row 1 arrives+wash", "at": "@w(sunscreen)-0.3", "area": 0.10, "dl": 91, "dur": 0.7},

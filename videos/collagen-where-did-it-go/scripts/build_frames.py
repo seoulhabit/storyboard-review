@@ -19,7 +19,11 @@ Build-time asserts (each one is a defect a previous build shipped):
   * the camera is HOME (scale 1, x 0, y 0) before a file's own span ends; the
     only tween allowed to end later is the 1.06 push under the next wipe
   * no `overflow` on .world, no `transform` on .stage / .worldclip, no
-    position:fixed, no <img>: each is a safe-area failure mode on record
+    position:fixed: each is a safe-area failure mode on record
+  * a raster <img> must be emitted by actors.plate() (the .plate/.worldclip
+    /.world nesting, decoding=sync/loading=eager, object-fit cover|contain),
+    its src must resolve to a real local file under assets/, and it must
+    carry no remote/data URL and no parent-traversal path (see _media_asserts)
   * the end-screen tokens are present in the inlined token block
   * the evidence file names no trial count except the documented 23
 """
@@ -27,6 +31,8 @@ import json
 import re
 import sys
 from pathlib import Path
+
+from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _preamble import scene, EASE, TOKENS
@@ -196,10 +202,66 @@ def _motion_asserts(tl, cid):
     return bad
 
 
-def _static_asserts(body, css, cid):
+IMG_TAG_RE = re.compile(r"<img\b([^>]*)>")
+ATTR_RE = re.compile(r'([a-zA-Z-]+)\s*=\s*"([^"]*)"')
+PLATE_IMG_CONTEXT_RE = re.compile(
+    r'<div class="world" id="([\w-]+)-world"[^>]*>\s*<img\b')
+
+
+def _media_asserts(body, cid, root):
+    """A raster <img> is allowed ONLY when emitted by actors.plate(): the
+    .plate > .worldclip > .world > <img> nesting (so it inherits the same
+    camera-vs-clip split every .world already needs, see _preamble.py's BASE
+    docstring), decode/load attributes set for a seek-based renderer, a
+    controlled object-fit, and a src that resolves to a real local file --
+    never a remote or data URL, never a parent-traversal path. This replaces
+    a blanket ban that was a plain substring test on `body` (never raised
+    without --strict-cadence) and did not catch <image>, background-image,
+    data: URIs, or JS-injected nodes; see BRIEF.md's imagery section and
+    00-decision-ledger.md [D-1] for why the ban became validation instead."""
     bad = []
-    if "<img" in body:
-        bad.append("raster <img> in a composition (fast-capture + clip-path hazard)")
+    imgs = list(IMG_TAG_RE.finditer(body))
+    if not imgs:
+        return bad
+    wrapped = len(PLATE_IMG_CONTEXT_RE.findall(body))
+    if wrapped < len(imgs):
+        bad.append(f"{len(imgs) - wrapped} <img> not emitted via actors.plate() "
+                   f"(missing the .plate/.worldclip/.world nesting)")
+    for m in imgs:
+        attrs = dict(ATTR_RE.findall(m.group(1)))
+        src = attrs.get("src", "")
+        if not src or src.startswith(("http:", "https:", "//", "data:")):
+            bad.append(f"<img> src is remote or a data URL, not a frozen local asset: {src!r}")
+            continue
+        if ".." in src:
+            bad.append(f"<img> src escapes the project root: {src!r}")
+            continue
+        path = root / src
+        if not path.is_file():
+            bad.append(f"<img> src does not resolve to a file on disk: {src!r}")
+            continue
+        try:
+            w, h = Image.open(path).size
+        except Exception as e:
+            bad.append(f"<img> src is not a readable image ({e}): {src!r}")
+            continue
+        if min(w, h) < 900:
+            bad.append(f"<img> src is under 900px on its short side ({w}x{h}): "
+                       f"{src!r} -- too low-res for a 1920x1080 delivery")
+        fit = attrs.get("style", "")
+        if not re.search(r"object-fit\s*:\s*(cover|contain)\b", fit):
+            bad.append(f"<img> missing object-fit:cover|contain: {src!r}")
+        if attrs.get("decoding") != "sync" or attrs.get("loading") != "eager":
+            bad.append(f"<img> missing decoding=sync/loading=eager (seek-render "
+                       f"determinism): {src!r}")
+    return bad
+
+
+def _static_asserts(body, css, cid):
+    """Non-media safe-area asserts. Media has its own HARD gate: see
+    _media_asserts and its call in emit() -- a bad plate should fail the
+    build, not print a note a busy operator skips past."""
+    bad = []
     if re.search(r"\.world\s*\{[^}]*overflow", css):
         bad.append("overflow on .world (a transform scales its own clip edge)")
     if re.search(r"\.(stage|worldclip)\s*\{[^}]*transform", css):
@@ -297,6 +359,11 @@ def emit(fspan, fctx, reveals, fake):
     fn = FILE_FNS.get(fspan.cid, _stub)
     body, css, tl = fn(fspan, fctx)
     tl = bind(tl, fctx, reveals) + departure(fspan)
+    media_bad = _media_asserts(body, fspan.cid, ROOT)
+    if media_bad:
+        raise SystemExit(f"{fspan.cid}: media validation failed (hard -- a bad "
+                         f"plate ships broken, it does not get a warning):\n  " +
+                         "\n  ".join(media_bad))
     bad = (_static_asserts(body, css, fspan.cid) + _motion_asserts(tl, fspan.cid)
            + _camera_ok(tl, fspan) + _cadence_ok(fspan, fctx, reveals))
     if bad:

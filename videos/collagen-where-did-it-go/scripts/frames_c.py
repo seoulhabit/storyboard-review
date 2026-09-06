@@ -4,15 +4,23 @@ The barrier close-up: surface low in the frame, a 60px "door" in the brick
 course at local (404, 599) -- exactly where file B's building door stood, so
 the iris opens ON the door and reveals the door. The molecule fails it three
 times, is stamped, then flattens into a surface film."""
-from actors import (HELPERS_JS, HELIX_JS, HELIX_CSS, BARRIER_JS, BARRIER_CSS, EASE_JS,
-                    kt, chip, cite, panel, abs_)
+from actors import (HELPERS_JS, HELIX_JS, HELIX_CSS, BARRIER_JS, BARRIER_CSS, PLATE_CSS,
+                    EASE_JS, kt, chip, cite, panel, plate, abs_)
 from motion import MOTION
 
 
 def file_06_door(fspan, fctx):
-    css = HELIX_CSS + BARRIER_CSS + """
+    css = HELIX_CSS + BARRIER_CSS + PLATE_CSS + """
     .abs { position:absolute; }
     #stageD, #barSvg { position:absolute; left:0; top:0; }
+    /* the tactile companion to "surface smoothing != structural replacement":
+       cream ON skin, so it never argues the penetration claim -- the diagram
+       carries that. Boxed in the empty middle column (the molecule/dot-path
+       stay left of x=410, the size cards stay right of x=900) so it can
+       arrive BEFORE the cards retract without occluding them -- measured:
+       placing it in the cards' own box overlapped "one collagen molecule"
+       at t=55.3s while they were still fading out. */
+    #film-photo { opacity:0; }
     #epi-wash { position:absolute; left:47px; top:560px; width:1728px; height:140px; background:var(--aqua); }
     #derm-wash { position:absolute; left:47px; top:700px; width:1728px; height:218px; background:var(--ink-3); opacity:.9; }
     .hidden-path { fill:none; stroke:none; }
@@ -48,6 +56,8 @@ def file_06_door(fspan, fctx):
         {chip("sz-note", "labelled, not to scale", "note", abs_(900, 486))}
         <div class="stamp" id="stamp">REJECTED</div>
         {panel("verdict7", "ink", '<p class="p-title">surface smoothing &ne; structural replacement</p>', abs_(264, 740, 1200, 130), "late")}
+        {plate("film-photo", "assets/images/layering-hand.png", style=abs_(420, 60, 460, 460),
+               filt="filter:saturate(.85) contrast(1.02);")}
        </div>
       </div>
 """
@@ -115,6 +125,13 @@ def file_06_door(fspan, fctx):
     tl.to(["#sz-a-wash", "#sz-b-wash"], { scaleX:0, transformOrigin:"100% 50%", duration:0.4, stagger:0.08, ease:EASE.exit }, @w(smoother) - 0.5);
     tl.to([".sz-note", "#sz-note", "#cite-da"], { opacity:0.35, duration:0.4, ease:EASE.exit }, @w(smoother) - 0.5);
     tl.to(["#sz-a", "#sz-b", "#sz-note", "#cite-da"], { opacity:0, duration:0.3, ease:EASE.exit }, @w(smoother) - 0.1);
+    // the empty middle column: cream on skin arrives right as "the film
+    // spreads" animation settles (@w(film)+0.6) -- MEASURED as a 2.4s true
+    // freeze before this fix (hyperframes check --at-transitions: motion_frozen
+    // 52.86-55.27s), since nothing else moves between the film-spread beat
+    // ending and the sz-card retract at @w(smoother)-0.5.
+    tl.fromTo("#film-photo", { opacity:0 }, { opacity:1, duration:0.5, ease:EASE.arrive }, @w(film) + 0.6);
+    pushPlate(tl, "film-photo", 1.0, 1.06, @w(film) + 0.6, 6.0);
     tl.fromTo(".shine", { opacity:0, x:-30 }, { opacity:1, x:0, duration:0.3, stagger:0.12, ease:EASE.arrive }, @w(polishing));
     // "...replacing the beams": the dermis dims -- the hatch stays cut
     // "...is NOT replacing the beams": the dermis dims on "not", the verdict lands on "replacing" --
@@ -162,6 +179,7 @@ def file_06_door(fspan, fctx):
         {"name": "dermis push", "at": "@w(smoother)-0.1", "area": 0.5, "dl": 60, "dur": 0.9},
         {"name": "camera home", "at": "@uend(07-film)-1.05", "area": 0.5, "dl": 60, "dur": 1.0},
         {"name": "cards retract", "at": "@w(smoother)", "area": 0.13, "dl": 98, "dur": 0.48},
+        {"name": "film photo arrives", "at": "@w(film)+0.6", "area": 0.19, "dl": 70, "dur": 0.5},
         {"name": "dermis dim", "at": "@w(not,2)-0.1", "area": 0.18, "dl": 84, "dur": 0.5},
         {"name": "verdict ink", "at": "@w(replacing)", "area": 0.075, "dl": 215, "dur": 0.45},
     ]

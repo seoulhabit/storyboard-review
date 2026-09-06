@@ -5,7 +5,7 @@ Frame ZERO is the hook: the molecule is already racing at the barrier and
 the first word lands at 0.10s. Nothing fades in from black.
 """
 from actors import (HELPERS_JS, HELIX_JS, HELIX_CSS, BARRIER_JS, BARRIER_CSS, TILES_JS,
-                    EASE_JS, kt, chip, panel, abs_)
+                    PLATE_CSS, EASE_JS, kt, chip, panel, plate, abs_)
 from motion import MOTION
 
 # local safe-box coordinates (1728 x 918)
@@ -13,14 +13,19 @@ MOL_PARK = (864, 506)          # where the molecule rests between files A1 and A
 
 
 def file_01_hook(fspan, fctx):
-    css = HELIX_CSS + BARRIER_CSS + """
+    css = HELIX_CSS + BARRIER_CSS + PLATE_CSS + """
     .abs { position:absolute; left:0; top:0; }
     #hook-slam { position:absolute; left:120px; top:120px; width:820px; }
     #hook-slam .kt-word.em { color:var(--coral); }
     .lab { opacity:0; }
+    /* the tactile open the review asked for: a real scoop/powder photo from
+       frame zero, not a flat mist panel. The wash still reveals as a beat --
+       tinted to .82 so it reads as a colour EVENT without erasing the photo
+       under it, a targeted exception to the wash's usual full opacity. */
     #powder { position:absolute; left:60px; top:560px; width:820px; height:320px;
-              background:var(--mist); padding:var(--s-4) var(--s-5); }
+              overflow:hidden; padding:var(--s-4) var(--s-5); }
     #powder .chip { position:relative; }
+    #powder-wash { opacity:.82; }
     .glass { fill:none; stroke:var(--ink); stroke-width:5; }
     .glass-fill { fill:var(--aqua); opacity:.35; }
     .arrow { fill:none; stroke:var(--ink); stroke-width:5; stroke-dasharray:18 14; opacity:.8; }
@@ -31,7 +36,12 @@ def file_01_hook(fspan, fctx):
     body = f"""
       <div class="stage">
        <div class="world" id="world">
-        {panel("powder", "aqua", chip("lab-powder", "POWDER", "lab", "position:absolute;left:32px;top:24px;"), abs_(60, 560, 820, 320), "")}
+        <div class="panel" id="powder" style="{abs_(60, 560, 820, 320)}">
+          {plate("powder-plate", "assets/images/collagen-powder-scoop.png", style="position:absolute;inset:0;",
+                 filt="filter:saturate(.85) contrast(1.02);")}
+          <div class="wash aqua" id="powder-wash"></div>
+          {chip("lab-powder", "POWDER", "lab", "position:absolute;left:32px;top:24px;")}
+        </div>
         <svg id="stageA" class="abs" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <path id="run" class="hidden-path" d="M 320 470 L 790 470"/>
           <path id="drop" class="hidden-path" d="M 470 230 C 470 400 470 520 470 690"/>
@@ -46,7 +56,9 @@ def file_01_hook(fspan, fctx):
        </div>
       </div>
 """
-    tl = EASE_JS + HELPERS_JS + HELIX_JS + BARRIER_JS + """
+    tl = EASE_JS + HELPERS_JS + HELIX_JS + BARRIER_JS + f"""
+    pushPlate(tl, "powder-plate", 1.0, 1.06, 0, {fspan.dur:.3f});
+""" + """
     var svg = document.getElementById("stageA");
     gsap.set("#epi-wash", { scaleX:0, transformOrigin:"0% 50%" });
     // the barrier stands on the right, surface facing the molecule

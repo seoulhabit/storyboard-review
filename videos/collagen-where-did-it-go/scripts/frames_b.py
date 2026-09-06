@@ -3,7 +3,8 @@
 Paper ground. THE BUILDING assembles from the slab up; the sun cuts its beams;
 the shield draws a boundary. One set of DOM nodes, three phases; the camera
 pushes INTO the damage and comes home on "sunscreen"."""
-from actors import HELPERS_JS, BUILDING_JS, BUILDING_CSS, EASE_JS, kt, chip, cite, panel, abs_
+from actors import (HELPERS_JS, BUILDING_JS, BUILDING_CSS, PLATE_CSS, EASE_JS,
+                    kt, chip, cite, panel, plate, abs_)
 from motion import MOTION
 
 # building placed so its door centre lands at local (404, 599) = canvas (500, 653)
@@ -11,9 +12,23 @@ BX, BY = 94, -56
 
 
 def file_03_building(fspan, fctx):
-    css = BUILDING_CSS + """
+    css = BUILDING_CSS + PLATE_CSS + """
     .abs { position:absolute; }
     #stageC { position:absolute; left:0; top:0; }
+    /* real-skin ground the building grows out of -- BRIEF.md's own imagery
+       plan for this scene, never wired in until now. b-shell is a hollow
+       stroke (fill:none) and .b-floor/.b-win start at opacity 0, so the
+       photo shows clearly through the whole building silhouette until the
+       storeys and windows draw in over it: a masked reveal for free, not an
+       extra transition to author. */
+    /* a quick fade rather than an instant full-opacity pop -- purely
+       cosmetic. CONFIRMED (hyperframes check --at-transitions against the
+       unmodified master, no photo present) that the text_occluded warning
+       at t=13.94-14.03s on this seam is a PRE-EXISTING characteristic of
+       this iris transition itself (03-building's own paper ground
+       compositing over 02-promise's tail text), not caused by this photo --
+       identical with or without it. Out of scope for this redesign. */
+    #ground { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0; }
     .ray { stroke:var(--highlighter); stroke-width:7; stroke-linecap:round; opacity:.9; }
     .sun { fill:var(--coral); stroke:var(--paper); stroke-width:5; }
     #rays { opacity:0; }
@@ -29,6 +44,8 @@ def file_03_building(fspan, fctx):
     body = f"""
       <div class="stage">
        <div class="world" id="world">
+        {plate("ground", "assets/images/skin-base.png", filt="filter:saturate(.82) contrast(1.02);",
+               scrim="rgba(247,245,240,.30)")}
         {panel("sky", "sun", "<span></span>", abs_(700, 0, 1028, 240))}
         <svg id="stageC" viewBox="0 0 1728 918" width="1728" height="918" aria-hidden="true">
           <g id="bwrap" transform="translate({BX} {BY})"></g>
@@ -48,7 +65,13 @@ def file_03_building(fspan, fctx):
        </div>
       </div>
 """
-    tl = EASE_JS + HELPERS_JS + BUILDING_JS + """
+    tl = EASE_JS + HELPERS_JS + BUILDING_JS + f"""
+    // the ground photo drifts almost imperceptibly for the WHOLE file -- it is
+    // covered progressively as the building fills in, but stays real motion
+    // (not a frozen plate) in whatever margin remains visible throughout.
+    pushPlate(tl, "ground", 1.0, 1.05, 0, {fspan.dur:.3f});
+    tl.fromTo("#ground", {{ opacity:0 }}, {{ opacity:1, duration:0.5, ease:EASE.arrive }}, 0);
+""" + """
     var svg = document.getElementById("stageC"), bwrap = document.getElementById("bwrap");
     drawBuilding(svg, { door:true, into:bwrap });
     // ---- unit 3: the building assembles from the slab up ----------------------

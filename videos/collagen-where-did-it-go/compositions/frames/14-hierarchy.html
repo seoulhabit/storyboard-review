@@ -10,6 +10,12 @@
     --paper:#F7F5F0; --ink:#131516; --ink-soft:#211F1B; --mist:#F0EBE1; --white:#FCFBF9;
     --aqua:#59B8AE; --leaf:#6F8F72; --coral:#C97A5C; --highlighter:#E0A32B;
     --moss:#4F6B52; --celadon:#93B896;
+    /* --coral on --paper measures 3.00:1 -- clears the 3.0 graphic floor by a
+       hair, fails the 4.5 text floor. --coral-deep is for coral AS TEXT (the
+       caption keyword highlight): 4.60:1 on --paper. Was already a literal
+       in frames_e.py and check-contrast.py; promoted to a token so a second
+       caller doesn't re-derive the same hex from scratch. */
+    --coral-deep:#A85A3C;
     --ink-2:#6B6B6B; --ink-3:#9C978D; --ink-2-dark:#878B8C; --ink-3-dark:#7C8082;
     /* --ink-2 is scoped to --paper (4.89:1). On --mist it measures 4.49:1,
        under the 4.5 floor -- so any secondary ink sitting ON a --mist panel
@@ -227,6 +233,16 @@
                stroke-dasharray:640; stroke-dashoffset:0; }
     .shard   { stroke:var(--aqua); stroke-width:9; stroke-linecap:round; opacity:0; }
 
+    /* position:relative by default so .worldclip's inset:0 resolves against
+       THIS box, not whatever ancestor happens to be positioned (a bounded
+       thumbnail relies on this); a full-bleed usage overrides to absolute
+       via its own inline style, which wins on specificity. */
+    .plate { position:relative; overflow:hidden; }
+    .plate .worldclip { position:absolute; inset:0; overflow:hidden; }
+    .plate .world { position:relative; width:100%; height:100%;
+                    transform-origin:50% 50%; will-change:transform; }
+    .plate-scrim { position:absolute; inset:0; }
+
     .abs { position:absolute; }
     #bldg { position:absolute; left:0; top:0; }
     .shield { fill:var(--aqua); opacity:.12; }
@@ -255,7 +271,7 @@
           <rect class="shield" id="shield" x="90" y="150" width="520" height="560" rx="18"/>
           <rect class="slab-lock" id="slab-lock" x="80" y="686" width="490" height="34" rx="6"/>
         </svg>
-        <div class="panel rank-row" id="rank-1" style="position:absolute;left:740px;top:120px;width:700px;height:130px;"><div class="wash aqua" id="rank-1-wash"></div><p class="p-title">1 · daily sunscreen</p></div><div class="panel rank-row" id="rank-2" style="position:absolute;left:740px;top:280px;width:700px;height:130px;"><div class="wash aqua" id="rank-2-wash"></div><p class="p-title">2 · not smoking</p></div><div class="panel rank-row" id="rank-3" style="position:absolute;left:740px;top:440px;width:700px;height:130px;"><div class="wash aqua" id="rank-3-wash"></div><p class="p-title">3 · protein + vitamin C</p></div><div class="panel rank-row" id="rank-4" style="position:absolute;left:740px;top:600px;width:700px;height:130px;"><div class="wash aqua" id="rank-4-wash"></div><p class="p-title">4 · retinoids, if suitable</p></div>
+        <div class="panel rank-row" id="rank-1" style="position:absolute;left:740px;top:120px;width:700px;height:130px;"><div class="wash aqua" id="rank-1-wash"></div><div class="plate" id="rank-1-thumb" style="width:96px;height:96px;flex:0 0 auto;margin-right:var(--s-4);border-radius:var(--r-2);"><div class="worldclip"><div class="world" id="rank-1-thumb-world" data-layout-allow-overflow="true"><img src="assets/images/sunscreen.jpg" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;"></div></div></div><p class="p-title">1 · daily sunscreen</p></div><div class="panel rank-row" id="rank-2" style="position:absolute;left:740px;top:280px;width:700px;height:130px;"><div class="wash aqua" id="rank-2-wash"></div><p class="p-title">2 · not smoking</p></div><div class="panel rank-row" id="rank-3" style="position:absolute;left:740px;top:440px;width:700px;height:130px;"><div class="wash aqua" id="rank-3-wash"></div><div class="plate" id="rank-3-thumb" style="width:96px;height:96px;flex:0 0 auto;margin-right:var(--s-4);border-radius:var(--r-2);"><div class="worldclip"><div class="world" id="rank-3-thumb-world" data-layout-allow-overflow="true"><img src="assets/images/vitamin-c.png" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;"></div></div></div><p class="p-title">3 · protein + vitamin C</p></div><div class="panel rank-row" id="rank-4" style="position:absolute;left:740px;top:600px;width:700px;height:130px;"><div class="wash aqua" id="rank-4-wash"></div><div class="plate" id="rank-4-thumb" style="width:96px;height:96px;flex:0 0 auto;margin-right:var(--s-4);border-radius:var(--r-2);"><div class="worldclip"><div class="world" id="rank-4-thumb-world" data-layout-allow-overflow="true"><img src="assets/images/retinol.png" alt="" decoding="sync" loading="eager" style="width:100%;height:100%;object-fit:cover;"></div></div></div><p class="p-title">4 · retinoids, if suitable</p></div>
         <div class="panel " id="opt" style="position:absolute;left:1440px;top:120px;width:288px;height:330px;"><div class="wash dim" id="opt-wash"></div><p class="chip " id="opt-chip" style="opacity:0;">optional</p><div class="w-card" id="w1"><svg viewBox="0 0 200 200"><rect class="pk-body" x="46" y="74" width="108" height="96" rx="8"/><rect class="pk-cap" x="60" y="46" width="80" height="30" rx="5"/></svg><p class="w-t">collagen cream</p></div>
                <div class="w-card" id="w2"><svg viewBox="0 0 200 200"><path class="pk-body" d="M58 46 L142 46 L152 172 L48 172 Z"/><rect class="pk-cap" x="58" y="36" width="84" height="16" rx="4"/></svg><p class="w-t">collagen powder</p></div></div>
         <svg id="bricks" class="abs" viewBox="0 0 300 220" width="300" height="220" style="position:absolute;left:1440px;top:560px;" aria-hidden="true">
@@ -351,6 +367,14 @@
       else tl.fromTo(w, { opacity:0, y:18 }, { opacity:1, y:0, duration:0.34,
             stagger:step, ease:"power2.out" }, at);
     }
+    // restrained Ken Burns for a plate()'s own .world layer -- linear, never
+    // the file's entrance eases, so a still photo reads as a slow drift, not
+    // an arrival. 1.03-1.08 per the brief; keep dur >= ~4s so the per-frame
+    // step stays under check-motion-gaps' per-cell ceiling while still
+    // clearing its floor (measured against PSNR_FROZEN_DB=55 and eps=0.35).
+    function pushPlate(tl, id, fromS, toS, at, dur) {
+      tl.fromTo("#" + id + "-world", { scale:fromS }, { scale:toS, duration:dur, ease:"none" }, at);
+    }
 
     // The building: 5 storeys, an X-brace pair per storey (the collagen),
     // stable ids so a later phase MOVES a beam instead of redrawing it.
@@ -410,6 +434,10 @@
     var ROW_AT = [2.709, 4.599, 5.556, 8.113];
     ["#rank-1", "#rank-2", "#rank-3", "#rank-4"].forEach(function (id, i) {
       tl.fromTo(id, { y:[300, -150, 150, -300][i] }, { y:0, duration:0.7, ease:EASE.swap }, ROW_AT[i] - 0.3);
+    });
+    // each photo thumbnail drifts for the rest of the file once its row lands
+    [["rank-1-thumb", 0], ["rank-3-thumb", 2], ["rank-4-thumb", 3]].forEach(function (t) {
+      pushPlate(tl, t[0], 1.0, 1.08, ROW_AT[t[1]] - 0.3, 22.098 - (ROW_AT[t[1]] - 0.3));
     });
     // each action locks in as it is named; sunscreen locks into the FOUNDATION
     tl.fromTo("#rank-1-wash", { scaleX:0 }, { scaleX:1, duration:0.4, ease:EASE.wipe }, 2.709);

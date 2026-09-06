@@ -1,4 +1,4 @@
-# T3 — Compiler build — DONE, all nine scene emitters exercised and the D5 split path proven; end-to-end with real local renders
+# T3 — Compiler build — DONE, all nine scene emitters exercised (including an adversarial long-text case) and the D5 split path proven
 Commits: claude-skills branch `fvc-005/makemeavideo` (compiler); Story Board branch `session/fvc-005` (this status + verification evidence). Back to Sonnet/medium tier per the WO's own flag, T2 being the Opus/High task.
 
 ## What shipped
@@ -35,7 +35,7 @@ for `Date.now`/`Math.random`/`setTimeout`/`requestAnimationFrame`/
 `repeat:-1` across every generated `.html` file (excluding the vendored,
 third-party GSAP library) returns nothing.
 
-## Nine real bugs found by actually running the engine, not assumed away
+## Ten real bugs found by actually running the engine, not assumed away
 
 Every one of these was a genuine `hyperframes lint`/`check` finding against
 a first-draft compile, diagnosed from the engine's own message, and fixed
@@ -139,6 +139,23 @@ before moving on — not discovered later and patched around:
    coincidence of duration, not because the check was actually correct.
    Fixed by trusting only `float` (which spans the full scene duration by
    construction) to suppress the fallback.
+
+10. **`ShIngredient` had the same defect class as `ShCompare`'s grid
+   overflow, through flexbox instead of grid.** Tested deliberately with
+   a real, unbreakable 24-character INCI term
+   (`"Polymethylsilsesquioxane"`) rather than waiting for it to surface
+   by accident. `#cid-name` grew to **1895.89px — nearly double the
+   1080px canvas** — because `text-wrap:balance` only balances line
+   lengths once wrapping already happens, and `#cid-wrap`'s default
+   flex-item `min-width:auto` refused to shrink below that unbreakable
+   text's own min-content width. Fixed with `min-width:0` on the flex
+   column plus `overflow-wrap:anywhere` (not the legacy `break-word`,
+   which does not change an element's min-content contribution the way
+   `anywhere` does — that distinction is the reason `min-width:0` alone
+   would not have been enough) on every text child. **Flagged, not yet
+   done:** the other seven emitters have not been systematically stress-
+   tested with adversarial long text the same way — each is proven only
+   against the specific content its own fixture happened to use.
 
 ## Accept check — what's verified and what isn't
 

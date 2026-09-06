@@ -44,6 +44,22 @@ fully close for longer one-shot-sweep scenes) — see
 extracted frames confirming visually correct, on-canvas output for all
 four.
 
+## A second overflow, in a different emitter, via a different mechanism
+
+`ingredient-overflow/` tests `ShIngredient` deliberately with a genuinely
+unbreakable long name (a real 24-character INCI term with no spaces or
+hyphens) rather than waiting for the same defect class to surface by
+accident. It did: the name div grew to 1895.89px, nearly double the
+1080px canvas — the flexbox equivalent of the earlier `ShCompare` grid
+bug (`#cid-wrap`'s default `min-width:auto` refusing to shrink below the
+unbreakable text's own width). Fixed with `min-width:0` plus
+`overflow-wrap:anywhere` (not `break-word`, which does not fix this).
+See `ingredient-overflow/README.md` for why those two specific properties
+were needed together, `ingredient-overflow/check-9x16.json` for the clean
+result, and the extracted frame showing the name correctly breaking
+mid-word and staying fully on-canvas. Flags that the remaining seven
+emitters have not had the same adversarial-text stress test yet.
+
 ## Reproduce from scratch
 
 ```

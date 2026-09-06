@@ -119,24 +119,32 @@ session makes on its own. Reported, not silently patched.
 
 ## Reproduce
 
+Every command below is repo-root-qualified or uses an absolute path — none
+of it depends on the shell's current directory carrying over from a
+previous step.
+
 ```bash
+REPO="$(pwd)"                      # run from the Story Board repo root
+GATES="$REPO/wo/FVC-005/t3-verification/repo-gates"
+FIXTURE="$REPO/wo/FVC-005/t3-verification/synthetic-t1-fixture.beat-sheet.json"
+
 # compile + render (both canvases)
 python3 <claude-skills>/makemeavideo/scripts/compile_composition.py \
-  synthetic-t1-fixture.beat-sheet.json /tmp/repro --system videos/_system --format both
-cd /tmp/repro/06-render/9x16  && hyperframes render . -q draft -f 30 -o out.mp4
-cd /tmp/repro/06-render/16x9 && hyperframes render . -q draft -f 30 -o out.mp4
+  "$FIXTURE" /tmp/repro --system "$REPO/videos/_system" --format both
+hyperframes render /tmp/repro/06-render/9x16  -q draft -f 30 -o /tmp/repro/06-render/9x16/out.mp4
+hyperframes render /tmp/repro/06-render/16x9 -q draft -f 30 -o /tmp/repro/06-render/16x9/out.mp4
 
 # legibility, part 1 (per canvas, tokens block extracted per canvas -- see tokens-*.css here)
-python3 catalog/tooling/check-legibility.py --tokens tokens-9x16.css --floor-px 28
-python3 catalog/tooling/check-legibility.py --tokens tokens-16x9.css --floor-px 24
+python3 "$REPO/catalog/tooling/check-legibility.py" --tokens "$GATES/tokens-9x16.css" --floor-px 28
+python3 "$REPO/catalog/tooling/check-legibility.py" --tokens "$GATES/tokens-16x9.css" --floor-px 24
 
 # legibility, part 2 (probes in this directory)
-python3 catalog/tooling/check-legibility.py --tokens tokens-9x16.css --floor-px 28 \
-  --project-root <9x16-render-dir> --render out.mp4 --probes probes-9x16.json --phone-scale 270x480
-python3 catalog/tooling/check-legibility.py --tokens tokens-16x9.css --floor-px 24 \
-  --project-root <16x9-render-dir> --render out.mp4 --probes probes-16x9.json --phone-scale 480x270
+python3 "$REPO/catalog/tooling/check-legibility.py" --tokens "$GATES/tokens-9x16.css" --floor-px 28 \
+  --project-root /tmp/repro/06-render/9x16 --render out.mp4 --probes "$GATES/probes-9x16.json" --phone-scale 270x480
+python3 "$REPO/catalog/tooling/check-legibility.py" --tokens "$GATES/tokens-16x9.css" --floor-px 24 \
+  --project-root /tmp/repro/06-render/16x9 --render out.mp4 --probes "$GATES/probes-16x9.json" --phone-scale 480x270
 
 # safe-area
-python3 catalog/tooling/check-safe-area.py <9x16-render-dir> <9x16-render-dir>/out.mp4 --canvas-w 1080 --canvas-h 1920
-python3 catalog/tooling/check-safe-area.py <16x9-render-dir> <16x9-render-dir>/out.mp4 --landscape
+python3 "$REPO/catalog/tooling/check-safe-area.py" /tmp/repro/06-render/9x16 /tmp/repro/06-render/9x16/out.mp4 --canvas-w 1080 --canvas-h 1920
+python3 "$REPO/catalog/tooling/check-safe-area.py" /tmp/repro/06-render/16x9 /tmp/repro/06-render/16x9/out.mp4 --landscape
 ```

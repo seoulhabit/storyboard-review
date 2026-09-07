@@ -1,0 +1,272 @@
+{
+  "schema": "makemeavideo/qa.json@1",
+  "skill_version": "0.1.0",
+  "slug": "pdrn-left-the-clinic",
+  "verdict": "fail",
+  "inputs": {
+    "mp4": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/renders/pdrn-left-the-clinic-16x9.mp4",
+      "sha256": "cedf41d7a52818bb91cb29cd5583ef35399aea89f4c85388e7ad00ecfd2c7c4c",
+      "video": {
+        "w": 1920,
+        "h": 1080,
+        "fps": 30.0,
+        "duration_s": 246.933333
+      },
+      "audio": {
+        "present": true,
+        "duration_s": 246.933,
+        "codec": "aac"
+      }
+    },
+    "frames_dir": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/qa-frames",
+      "supplied": [
+        {
+          "file": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/qa-frames/frame-000-hook.png",
+          "t": 0.0,
+          "scene": "s01-hook",
+          "kind": "frame0"
+        },
+        {
+          "file": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/qa-frames/frame-last.png",
+          "t": 246.832,
+          "scene": "s20-endcard",
+          "kind": "last"
+        }
+      ]
+    },
+    "beat_sheet": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/03-beat-sheet.qa.json",
+      "sha256": "5b102eaca56334240ebd2375a3189c10269842ce4f7167ddad68161aa7970c5e",
+      "format": "long",
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "scenes": 65,
+      "vo_duration_s": 246.932
+    },
+    "target_length_s": 246.9
+  },
+  "environment": {
+    "tooling_dir": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/catalog/tooling",
+    "tooling": [
+      {
+        "file": "check-safe-area.py",
+        "sha256": "fa6be604ae68cfd04264a29e5cc45aed5cc7026d72a379769d8ce3432e749382"
+      },
+      {
+        "file": "check-static-hold.py",
+        "sha256": "cbddddf52e209a9f294b14b294fcc5b1ece344e2268f15caed7cde6e9b168b90"
+      }
+    ],
+    "detector": {
+      "backend": "cv2-haar",
+      "cv2_version": "4.10.0",
+      "cascades": [
+        "haarcascade_frontalface_default.xml",
+        "haarcascade_profileface.xml"
+      ],
+      "cascade_sha256": {
+        "haarcascade_frontalface_default.xml": "0f7d4527844eb514d4a4948e822da90fbb16a34a0bbbbc6adc6498747a5aafb0",
+        "haarcascade_profileface.xml": "b39a4a3be45539db146a7fc1d3e761a292c196eb88421185e6a615b3055e612d"
+      },
+      "min_box_px": 60,
+      "scan_fps": 2.0
+    }
+  },
+  "gates": [
+    {
+      "id": "H-2",
+      "name": "frame-zero",
+      "verdict": "pass",
+      "measured": {
+        "luma_stddev": 20.67,
+        "textish_regions": 0
+      },
+      "thresholds": {
+        "stddev_min": 12.0
+      },
+      "findings": [],
+      "method": "luma stddev (catalog/tooling/check-blank-frames.py's metric, cutoff 12.0)",
+      "advisory": false
+    },
+    {
+      "id": "H-3",
+      "name": "faceless",
+      "verdict": "fail",
+      "blocking": true,
+      "measured": {
+        "frames_scanned": 496,
+        "faces": 2,
+        "sub_threshold_faces": 9
+      },
+      "findings": [
+        {
+          "scene": "f102-scrutiny3",
+          "t": 223.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-bmqrx6vs/f_000448.png",
+          "box": [
+            654,
+            443,
+            721,
+            510
+          ],
+          "long_side_px": 67,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f102-scrutiny3: a human face is visible at 223.5s (67px)."
+        },
+        {
+          "scene": "f102-scrutiny3",
+          "t": 225.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-bmqrx6vs/f_000452.png",
+          "box": [
+            653,
+            443,
+            720,
+            510
+          ],
+          "long_side_px": 67,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f102-scrutiny3: a human face is visible at 225.5s (67px)."
+        }
+      ],
+      "advisory": false
+    },
+    {
+      "id": "H-4.canvas",
+      "verdict": "pass",
+      "measured": {
+        "delivered": [
+          1920,
+          1080
+        ],
+        "expected": [
+          1920,
+          1080
+        ]
+      },
+      "findings": [],
+      "advisory": false
+    },
+    {
+      "id": "H-4.contrast",
+      "verdict": "pass",
+      "measured": {
+        "min_ratio": 11.59,
+        "regions": 2,
+        "floor": 4.5
+      },
+      "findings": [],
+      "method": "textish_regions() -> Otsu dark/light split -> WCAG ratio",
+      "advisory": true
+    },
+    {
+      "id": "H-4.type-floor",
+      "verdict": "pass",
+      "measured": {
+        "min_glyph_px": 108,
+        "floor_px": 32
+      },
+      "findings": [],
+      "method": "textish_regions() height; A-6 per-role floors NOT enforced (no source) \u2014 absolute 32px floor only, per WO-FVC-004 T3",
+      "advisory": true
+    },
+    {
+      "id": "H-4.safe-area",
+      "verdict": "pass",
+      "shelled": {
+        "argv": [
+          "python3",
+          "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/catalog/tooling/check-safe-area.py",
+          ".",
+          "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/renders/pdrn-left-the-clinic-16x9.mp4",
+          "--landscape"
+        ],
+        "exit": 0,
+        "sentinel_seen": "no findings (988 frames sampled)",
+        "frames_sampled": 988
+      },
+      "findings": [],
+      "advisory": false
+    },
+    {
+      "id": "H-4.static-hold",
+      "verdict": "pass",
+      "measured": {
+        "cadence_ceiling_s": 10.0,
+        "canvas": [
+          1920,
+          1080
+        ]
+      },
+      "findings": [],
+      "method": "in-process check-static-hold.py (whole_frame_check + region_check); scene_boundaries injected from the beat sheet, no index.html on a HeyGen render",
+      "advisory": false
+    },
+    {
+      "id": "H-4.loudness",
+      "verdict": "pass",
+      "log": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/renders/loudness.txt",
+      "measured": {
+        "integrated_lufs": -15.8,
+        "lra_lu": 6.2,
+        "true_peak_dbtp": -1.0
+      },
+      "thresholds": {
+        "lufs_band": [
+          -16.0,
+          -12.0
+        ],
+        "true_peak_max": -1.0
+      },
+      "findings": [],
+      "note": "ffmpeg labels the peak=true ebur128 value dBFS; it is the oversampled true-peak figure",
+      "advisory": false
+    },
+    {
+      "id": "H-4.duration",
+      "verdict": "pass",
+      "measured": {
+        "delivered_s": 246.933333,
+        "target_s": 246.9,
+        "delta_pct": 0.01,
+        "source": "stream=duration (v:0)"
+      },
+      "thresholds": {
+        "tolerance_pct": 15,
+        "accept_pct": 25
+      },
+      "findings": [],
+      "advisory": false
+    }
+  ],
+  "k4": {
+    "verdict": "unmeasurable",
+    "claim_ids": [],
+    "scenes_matched": "65/65",
+    "timing_source": null,
+    "note": "flag concurrency, hedging and prohibited-claim checks need the words; design-critique + operator, per policy.md K-4"
+  },
+  "h5": {
+    "caps": {
+      "per_scene": 2,
+      "per_run": 4
+    },
+    "messages": [
+      {
+        "scene": "f102-scrutiny3",
+        "gate": "H-3",
+        "text": "Scene f102-scrutiny3: a person's face is visible at 223.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "f102-scrutiny3",
+        "gate": "H-3",
+        "text": "Scene f102-scrutiny3: a person's face is visible at 225.5s \u2014 remove all people; motion graphics only."
+      }
+    ]
+  },
+  "unmeasurable": [],
+  "summary_line": "[S7/H-4] contrast=11.59 safe=ok static=ok LUFS=-15.8 TP=-1.0 dur=246.933333/246.9"
+}

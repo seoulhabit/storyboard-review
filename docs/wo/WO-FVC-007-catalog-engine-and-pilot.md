@@ -4,7 +4,7 @@
 *(corrected 2026-09-07: WO-FVC-005 T7 already shipped 0.3.0, merged to `origin/master`. See `wo/FVC-007/REVIEW.md` C6.)*
 **Target repo:** `seoulhabit/storyboard-review`
 **Pilot subject:** `cGbokt_B_vE` — "The 1% trick K-Beauty brands don't want you to know" (Short, 1:56, 153 views, published 2026-08-30)
-**Status:** awaiting Gate 0 answers + `approved`
+**Status:** Gate 0 CLOSED (Kim, 2026-09-07) — `approved`. See `wo/FVC-007/GATE0-FVC-007.md` for the full answer sheet.
 
 ---
 
@@ -26,21 +26,18 @@ Policy layers that survive untouched: S0–S4, S8–S9, `K-1..K-5`, the Decision
 
 ## §1 — Gate 0
 
-Nine slots: one already answered (G0-5), one already executed and awaiting confirmation-to-close (G0-1), three added by this review (G0-6, G0-7, G0-8), four open with no default. The run does not start until every open slot is answered and Kim writes `approved`.
+**CLOSED (Kim, 2026-09-07).** All nine slots ruled — full text and evidence
+in `wo/FVC-007/GATE0-FVC-007.md`; summary below.
 
-- **G0-1 — Engine reversal. Already executed.** *(Corrected 2026-09-07: this shipped at WO-FVC-005 T7 — `makemeavideo` 0.3.0, merged to `origin/master`, zero `*video_agent*` calls outside the forbidden-tool fence. This slot now confirms the record rather than authorizes a pending change — see REVIEW.md C7.)* Confirm HyperFrames CLI is the build engine and Video Agent stays removed.
-- **G0-2 — Imagery lane. This is a scope expansion, not a closure.** *(Corrected 2026-09-07: WO-FVC-006's Gate 0 closed 09:03 today ruling full imagery for that one video only. This slot asks for the same thing permanently, across every future video. Worth ruling on as the expansion it is — see REVIEW.md C9.)* Confirm photographic and generated imagery is permitted in compositions as B-roll, permanently, under B-1.
-- **G0-3 — Palette. `[BLOCKS T2]`** With G0-5 answered, the token layer is no longer one part of the design system — it *is* the design system, and the retrofit writes it into every catalog component. *(Corrected 2026-09-07: the live sheet is six tokens, not three — `videos/_system/tokens/colors.css`: `--bg #F4EDE3` cream, `--bg-lift #FAF3E7`, `--ink #26215C` indigo, `--accent #9C3A32` clay, `--rule #C0A265` brass, `--muted rgba(38,33,92,.55)`. Nocturne and the WO-FVC-006 direction are **not live alternatives**: WO-FVC-005 G0-8 already confirmed cream/ink/clay/brass, and recorded that no Nocturne sheet exists anywhere in this repo. R-13's own contrast finding — brass on ivory measures 2.10:1 and fails — already rules out a Nocturne-adjacent pairing under this WO's own floor. See REVIEW.md C8.)* This is now the single highest-consequence open slot: confirm the existing six-token sheet, or name a real alternative and its contrast numbers.
-- **G0-4 — B-roll source precedence.** Rank these; T5 consumes the ranking in order and stops at the first that fills the slot:
-  - existing plates already in `storyboard-review` (free, unknown coverage)
-  - frames extracted from the original `cGbokt_B_vE` composition (free)
-  - `seoulhabit-product-imagery` prompt pack rendered via Higgsfield (costs credits, fictional products, no attribution burden)
-  - `vidiq_generate_broll` free stock (cheap, **requires on-screen photographer attribution**, landscape-dominant)
-- **G0-5 — ANSWERED (2026-09-07).** The `sh-*` component library is retired; the design system is demoted to **foundations only** — colour, type, space, grid, safe areas, motion. All structure comes from the catalog, recoloured into SeoulHabit tokens by the retrofit. See R-12. Recorded rationale: the bespoke component library was commissioned without knowledge that the catalog existed. It is archived rather than deleted, because its token layer is exactly what now gets applied to every catalog item.
-- **G0-6 — `catalog-v2` disposition.** `catalog-v2/` (committed 2026-09-05, one day before this WO) is a second, first-party-authored component library — 14 components across `label-literacy` and `ingredient-fate`, plus governance schemas and a `format-contract.json` already shaped like a slot contract. R-11 ("we do not author components") forbids continuing that work but doesn't name it. Options: retire it alongside `sh-*`; keep it as the ingredient/evidence data layer (its facts and provenance, not its presentation, may fall outside R-11's reach); or fold its slot-contract shape into T3's registry. *(Added 2026-09-07, see REVIEW.md B2/G0-6.)*
-- **G0-7 — compiler path under R-12. `[BLOCKS T6]`** R-12 archives the twelve `sh-*` components that `compile_composition.py` (29 hardcoded references) and all six template spines are built on — and T7, where the archiving happens, runs after T6, which needs a working compiler. Options: rewrite the compiler to cast from the catalog registry before T6 runs; or keep `sh-*` live through T6 and archive only at T7, after the pilot no longer depends on it. *(Added 2026-09-07, see REVIEW.md B1/G0-7.)*
-- **G0-8 — semantic state tokens.** `videos/_system/tokens/colors.css` has six tokens and none of the "positive, warning, info" states T2 step 2 maps to. Under R-12 the token list is the brand, so extending it is a brand call, not a script decision. Options: extend the sheet; or have the retrofit reject any catalog item that needs a state colour it doesn't have. *(Added 2026-09-07, see REVIEW.md B3/G0-8.)*
-
+- **G0-1 — Engine reversal. CLOSED, already executed.** `makemeavideo` 0.3.0 shipped at WO-FVC-005 T7, merged. Confirmed, not newly authorized.
+- **G0-2 — Imagery lane. RULED: permanent, channel-wide.** Photographic and generated B-roll is permitted in every future video, not only this pilot. *(Expands WO-FVC-006's one-video ruling — recorded as a deliberate expansion, not a silent carry-over.)*
+- **G0-3 — UI/component token sheet. RULED: the existing six-token sheet.** `--bg #F4EDE3` cream, `--bg-lift #FAF3E7`, `--ink #26215C` indigo, `--accent #9C3A32` clay, `--rule #C0A265` brass, `--muted rgba(38,33,92,0.75)` — this is what T2's retrofit recolours every catalog component into. No new palette is built; Nocturne and the WO-FVC-006 direction are not competing UI palettes (see G0-3b).
+- **G0-3b — B-roll art direction. RULED: WO-FVC-006's pearl-white / blush / clinical-blue photographic spec (§3.4) extends channel-wide to every video's generated B-roll**, consistent with G0-2. *(New slot, split out of this WO's draft G0-3, which wrongly listed a photographic art-direction spec as a competing UI token palette — see `GATE0-FVC-007.md`.)*
+- **G0-4 — B-roll source precedence. RULED: ranking stays as drafted** — existing plates → extracted `cGbokt_B_vE` frames → Higgsfield (under G0-3b's art direction) → `vidiq_generate_broll` stock. Confirmed knowing the first two tiers are thin for portrait (2 of 58 catalog plates are true 9:16); T5 exhausts them at no cost before falling through.
+- **G0-5 — CLOSED (answered in this WO's 09:46 revision).** The `sh-*` component library is retired; the design system is demoted to foundations only. See R-12.
+- **G0-6 — `catalog-v2` disposition. RULED: retire entirely, alongside `sh-*`.** Both the 4 ingredient packs and the 14 authored story-system components are archived together — no carve-out for the ingredient/evidence data. See T7.
+- **G0-7 — compiler path under R-12. RULED: keep `sh-*` live through T6, archive at T7.** `sh-*` stays importable (not moved to `_archive/`) until after Gate C. The compiler still gains catalog-registry casting as T3 scopes it, and T6 casts primarily from the registry with `sh-*` as an explicit fallback — not the pilot's primary path. See `GATE0-FVC-007.md` for why the narrower reading (pilot skips catalog-casting entirely) isn't what's adopted here.
+- **G0-8 — semantic state tokens. RULED: extend the token sheet now.** `positive`/`warning`/`info` tokens are added as part of T2 — exact values, contrast-checked against R-13's floor, are T2's own first sub-step, not decided here.
 
 ---
 
@@ -55,6 +52,8 @@ When no catalog component fits a beat, the run halts with `BLOCKER-CAST:<beat_id
 
 There is no third option. "Write one locally just this once" is the failure mode this rule exists to prevent — it is how the design system accumulated ten components and three palettes.
 
+*(2026-09-07, G0-6: this rule reaches `catalog-v2/` too — a second, first-party-authored component library that predates this WO by one day. Ruled retired alongside `sh-*`; see R-12 and T7.)*
+
 **R-14 — Catalog governance.** *(renumbered from this WO's original `R-6` — that id is taken by WO-FVC-005's merged safe-area ruling, cited in `videos/_system/tokens/spacing.css` and `MANIFEST.json`. See REVIEW.md C2.)* The catalog repo is cloned once, pinned to a SHA, and lives **outside the build path** (`vendor/hyperframes/`, gitignored from the build, SHA recorded in `videos/_system/catalog/manifest.json`). It is a build input, never a runtime dependency, and is never read at render time.
 
 Catalog items are never consumed raw. Every item passes `retrofit_catalog.py` (T2) and is committed to `videos/_system/catalog/` as project source. The retrofitted file is the artifact. Catalog items are not the design system and never edit `videos/_system/` outside `catalog/`.
@@ -67,8 +66,9 @@ Catalog items are never consumed raw. Every item passes `retrofit_catalog.py` (T
 - Every B-roll still is wrapped in a camera-move component. A still on a still background renders as a frozen frame with a progress bar — this is a known HyperFrames failure, not a style note.
 - No faces in frame. Crops at the jaw or above the shoulder. `H-3` face detection stays on and stays unchanged.
 - No real branded products. Fictional or unbranded only. The channel's position is claims discipline; showing a competitor's bottle while discussing label deception is a liability, not an illustration.
+- Generated B-roll follows the art-direction spec ruled at **G0-3b**: pearl-white seamless environment, soft blush bounce light, restrained clinical-blue rim, physically plausible materials, shallow depth of field, no lettering/logos/UI/watermarks in the plate itself (all readable information stays in HyperFrames HTML/SVG, never baked into the image). Applies to generated imagery only, not extracted frames or existing catalog plates.
 
-**R-12 — The design system is foundations, not components.** `videos/_system/` (excluding its `catalog/` subdirectory, which R-14 governs separately) holds colour tokens, the two type families and their steps, the space scale, grid, safe areas, and motion tokens. Nothing else. *(Clarified 2026-09-07: R-14 — drafted in this WO as R-6 — commits retrofits to `videos/_system/catalog/`, which otherwise reads as contradicting this rule's "nothing else." See REVIEW.md C3.)* The ten `sh-*` components move to `videos/_system/_archive/` with a dated note recording why; they are not deleted and not referenced by any composition. Recolouring the catalog into these tokens is how the channel keeps its identity — the brand now lives entirely in the token layer, which makes G0-3 load-bearing for every frame the channel ever renders.
+**R-12 — The design system is foundations, not components.** `videos/_system/` (excluding its `catalog/` subdirectory, which R-14 governs separately) holds colour tokens, the two type families and their steps, the space scale, grid, safe areas, and motion tokens. Nothing else. *(Clarified 2026-09-07: R-14 — drafted in this WO as R-6 — commits retrofits to `videos/_system/catalog/`, which otherwise reads as contradicting this rule's "nothing else." See REVIEW.md C3.)* The ten `sh-*` components move to `videos/_system/_archive/` with a dated note recording why; they are not deleted and not referenced by any composition. *(2026-09-07, G0-6: `catalog-v2/` — 4 ingredient packs, 14 authored story-system components — is archived the same way, same T7 pass. See T7.)* Recolouring the catalog into these tokens is how the channel keeps its identity — the brand now lives entirely in the token layer, which makes G0-3 load-bearing for every frame the channel ever renders.
 
 **R-13 — Recolouring has a floor, and some components refuse it.** Swapping a component's palette can destroy the contrast it was designed around. Brass on ivory measures 2.10:1 and fails as text; that finding is already on record and it will recur across the library.
 
@@ -127,11 +127,13 @@ The creative centre of this WO. Rather than hand-editing each catalog item — w
 Input: a catalog item's HTML as written by `npx hyperframes add`.
 Output: a token-native, brand-safe component in `videos/_system/catalog/`.
 
+**Prerequisite, before step 2 (G0-8, ruled 2026-09-07):** `videos/_system/tokens/colors.css` gains `positive`/`warning`/`info` tokens. Pick real values, check each against R-13's 4.5:1 floor on `--bg` (cream), re-hash `MANIFEST.json` with an `amendments[]` entry per the R-6/R-14 precedent. This is real design-system work belonging to this task, not decided in Gate 0 — see `wo/FVC-007/GATE0-FVC-007.md` G0-8.
+
 The script must:
 
 1. **Strip remote font links.** Delete every `fonts.googleapis.com` / `fonts.gstatic.com` link and replace with root-relative `@font-face` references to `videos/_system/fonts/` — matching `videos/_system/tokens/fonts.css`, not base64. *(Corrected 2026-09-07: base64-by-default was already investigated and rejected — see `videos/_system/fonts/SOURCES.md`, "Why root-relative, not base64-inlined, by default"; ~2.4 MB duplicated per sub-composition across a ~50-scene compile. `--inline-fonts` remains an optional compiler flag for single-file deliverables.)* Reference all **five** faces, not two: DejaVu Serif 400/700, Archivo variable (100–900), and Noto Serif KR 400/700 layered onto the DejaVu family under a Hangul `unicode-range` — dropping the Noto pair silently loses Korean coverage for 서울의 습관, the channel's own name. A Google Fonts link previews correctly and silently falls back in the renderer — this is the documented brand-breaking failure and the reason this step is mechanical rather than optional.
 2. **Recolour to tokens — this is now the brand application, not a tidy-up.** Parse every colour literal in the item's `<style>` block and map it to a design token by role: surface, raised surface, ink, muted ink, accent, hairline, and the semantic states (positive, warning, info). Publish the role map as a reviewable file — it is the single most consequential artifact in this WO, because it decides what every catalog component looks like on this channel.
-   - **Fail loudly on any literal the mapper cannot classify.** Never guess a mapping.
+   - **Fail loudly on any literal the mapper cannot classify.** Never guess a mapping. *(With the prerequisite above done, a green/red/amber status colour now has a real target — `positive`/`warning`/`info` — so this failure mode should be rare; it still fires on anything none of the nine tokens fit.)*
    - After recolouring, render a probe frame and run a **4.5:1 contrast check on the pixels** per R-13. A failing component is rejected from the registry, not shipped with a warning.
    - Classify the item `recolourable`, `foreign-surface`, or `reject` per R-13 and record it in the manifest.
    - Watch the derived-colour components specifically — aurora fields, glows, halftone, and anything the catalog describes as "accent-derived" compute their palette from a base. Recolouring those changes their entire character rather than their trim, so they need visual review at Gate B, not just a contrast pass.
@@ -182,6 +184,8 @@ Work G0-4's precedence in order. For each B-roll slot the caster opened, take th
 
 If the stock path is reached, portrait orientation is mandatory and the attribution string must be composed into the frame — surface the attribution burden to Kim before spending, because on a claims-discipline channel an on-screen photo credit is a visible cost.
 
+If the Higgsfield path is reached, generate under **G0-3b**'s art-direction spec (pearl-white / blush / clinical-blue — see R-8).
+
 Every plate is checked against B-1 before it enters the build: no face, no real brand, camera move attached.
 
 ### T6 — Pilot build `[GATE C]`
@@ -196,6 +200,8 @@ Rebuild `cGbokt_B_vE` as `videos/kbeauty-one-percent-line-v2/`. *(Corrected 2026
 
 Then `hyperframes check` (lint, runtime, layout, motion, contrast, static sweep), `H-3` face detection over extracted frames, `K-4` over the finished frames, safe-area, and true peak no higher than −1 dBTP.
 
+*(G0-7, ruled 2026-09-07: "cast by S4.5 from the retrofitted library" above means catalog-registry casting is the primary path for this build — `sh-*` stays on disk as an explicit fallback for any beat the registry can't yet fill, not as the default. If more than a small minority of scenes fall back to `sh-*`, that's a registry-coverage gap worth naming at Gate C, not silently absorbing — R-10's single-variable claim depends on the visual system actually having changed.)*
+
 Present extracted frames and the render for Kim's review at Gate C. Nothing publishes without it.
 
 ### T7 — Skill update to 0.4.0
@@ -206,12 +212,12 @@ Only after the pilot passes Gate C — the skill is updated from what actually w
 
 - ~~S5–S7 rewritten against the HyperFrames CLI. Every `[SPIKE:n]` marker tied to Video Agent is removed, not left dangling.~~ *(done at 0.3.0 — re-verify, don't redo)*
 - New S4.5 stage documented in `runbook.md`. **(genuinely new)**
-- ~~`§H` rules: `H-1` (build spec generated, never typed) survives and now generates against the registry.~~ `H-1` needs to generate against the **catalog registry** specifically (0.3.0 generates against `videos/_system/` templates) — this part is new, pending G0-7. ~~`H-5` (per-scene chat fixes, capped) is deleted — it described a Video Agent affordance that no longer exists. Its replacement is a per-scene re-render cap.~~ *(done at 0.3.0: cap 2/scene, 4/run — re-verify, don't redo)*
+- ~~`§H` rules: `H-1` (build spec generated, never typed) survives and now generates against the registry.~~ `H-1` needs to generate against the **catalog registry** specifically (0.3.0 generates against `videos/_system/` templates) — genuinely new, and per G0-7 the registry is now the primary casting path with `sh-*` as fallback, not the other way around. ~~`H-5` (per-scene chat fixes, capped) is deleted — it described a Video Agent affordance that no longer exists. Its replacement is a per-scene re-render cap.~~ *(done at 0.3.0: cap 2/scene, 4/run — re-verify, don't redo)*
 - `B-1` added to `policy.md`. **(genuinely new)**
 - `R-14` (was drafted as R-6 — renumbered, see C2), `R-7`, `R-9`, `R-10`, `R-11`, `R-12`, `R-13` added. **(genuinely new)**
 - ~~`providers.yaml` updated: HeyGen roles narrowed to voice/image/sound.~~ *(done at 0.3.0 — `usd_per_credit: 0.049` already recorded; re-verify, don't redo)*
 - ~~`CHANGELOG.md` records the engine reversal in plain terms.~~ *(done — 0.3.0 entry opens with exactly this. Add a 0.4.0 entry for this WO's own changes instead.)*
-- `sh-*` components moved to `videos/_system/_archive/` per R-12, with a dated note. `videos/_system/` is left holding foundations only. Verify no composition still references an archived component before closing. **(genuinely new — pending G0-7; do not run before G0-7 is ruled, see B1)**
+- `sh-*` components moved to `videos/_system/_archive/` per R-12, with a dated note. `videos/_system/` is left holding foundations only. `catalog-v2/` (4 ingredient packs, 14 authored components) archived the same way, same pass, per G0-6. Verify no composition still references an archived component before closing. **(genuinely new — G0-7 ruled 2026-09-07: this step runs here, at T7, after Gate C — not before T6, see `wo/FVC-007/GATE0-FVC-007.md`)**
 - ~~Canonical install is the `claude-skills` repo. Resolve the 0.2.0-vs-0.3.0 shared-checkout drift as part of this task, and verify both machines resolve the same version before closing.~~ *(that drift is closed. A different drift is live: a 0.1.0 Video-Agent-era copy is loadable this session as `anthropic-skills:makemeavideo`, and `~/Desktop/claude-skills` was deleted, leaving six broken symlinks in `~/.claude/skills`. Resolve **that** drift as part of this task instead — see REVIEW.md §5.)*
 
 ### T8 — Publish envelope (held)
@@ -274,4 +280,4 @@ Drop back to Sonnet after each Opus stretch so the next session does not default
 
 ## Kickoff line
 
-> Read `docs/wo/WO-FVC-007-catalog-engine-and-pilot.md` in this repo (and `wo/FVC-007/REVIEW.md` alongside it) and work from it. Do not start T0a until G0-1 through G0-8 are ruled — G0-6 and G0-7 in particular block T2/T3/T7 and the pilot's compiler path. Once ruled, run T0a and T0b only, then stop for Kim's Gate A ruling.
+> Read `docs/wo/WO-FVC-007-catalog-engine-and-pilot.md` in this repo (and `wo/FVC-007/REVIEW.md` and `wo/FVC-007/GATE0-FVC-007.md` alongside it) and work from it. Gate 0 is closed — run T0a and T0b, then stop for Kim's Gate A ruling.

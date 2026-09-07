@@ -1,0 +1,132 @@
+# videos/_queue.yaml — populated by scripts/enqueue_from_site.py (WO-FVC-005 T6).
+# FIFO: /makemeavideo next pops queue[0]. `produced` is append-only history,
+# matched by slug so a route already made is never requeued.
+# citations/findings are the site repo's own counts AT ENQUEUE TIME -- re-run
+# this script to refresh them if the site content changes before a queued
+# slug is popped; this file does not auto-refresh stale counts on its own.
+
+queue:
+  - slug: ceramide
+    url: https://seoulhabit.com/ingredient/ceramide/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 8
+    findings: 7
+  - slug: madecassoside
+    url: https://seoulhabit.com/ingredient/madecassoside/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 7
+    findings: 7
+  - slug: vitamin-c
+    url: https://seoulhabit.com/ingredient/vitamin-c/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 6
+    findings: 8
+  - slug: retinal
+    url: https://seoulhabit.com/ingredient/retinal/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 6
+    findings: 5
+  - slug: hyaluronic-acid
+    url: https://seoulhabit.com/ingredient/hyaluronic-acid/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 5
+    findings: 4
+  - slug: snail-mucin
+    url: https://seoulhabit.com/ingredient/snail-mucin/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 4
+    findings: 6
+  - slug: betaine-salicylate
+    url: https://seoulhabit.com/ingredient/betaine-salicylate/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 4
+    findings: 3
+  - slug: tea-tree-oil
+    url: https://seoulhabit.com/ingredient/tea-tree-oil/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 4
+    findings: 3
+  - slug: niacinamide
+    url: https://seoulhabit.com/ingredient/niacinamide/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 3
+    findings: 2
+  - slug: pdrn
+    url: https://seoulhabit.com/ingredient/pdrn/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 2
+    findings: 1
+  - slug: ginseng
+    url: https://seoulhabit.com/ingredient/ginseng/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 1
+    findings: 0
+  - slug: collagen
+    url: https://seoulhabit.com/ingredient/collagen/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: exosomes
+    url: https://seoulhabit.com/ingredient/exosomes/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: galactomyces
+    url: https://seoulhabit.com/ingredient/galactomyces/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: mugwort
+    url: https://seoulhabit.com/ingredient/mugwort/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: panthenol
+    url: https://seoulhabit.com/ingredient/panthenol/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: retinol
+    url: https://seoulhabit.com/ingredient/retinol/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: rice
+    url: https://seoulhabit.com/ingredient/rice/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: spicules
+    url: https://seoulhabit.com/ingredient/spicules/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+  - slug: tranexamic-acid
+    url: https://seoulhabit.com/ingredient/tranexamic-acid/
+    sha: cacff81ebcb9d4d89e378d1afe7c0ad79b243b47
+    content_type: T1
+    citations: 0
+    findings: 0
+produced:
+  - slug: centella-asiatica
+    sha: null
+    note: backfilled from an existing videos/<slug>/09-run-report.md, predates enqueue_from_site.py tracking it directly

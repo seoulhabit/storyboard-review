@@ -42,22 +42,61 @@ a 60-word scene read by the channel voice via `create_speech`.
 **Fail consequence (pre-written):** brand glossary entries added
 (`create_brand_glossary`) before any production VO.
 
-**Verdict: BLOCKED-CONNECTOR.** The HeyGen MCP tools (`create_speech`,
-`list_voices`, `create_brand_glossary`) require an authorized connector this
-non-interactive session cannot establish (OAuth needs an interactive
-session, per the system prompt's own constraint). Per D3, this finding is
-attempted for real once Kim authorizes the connector — not guessed, not
-skipped silently.
+**Re-run 2026-09-07, connector now authorized. Verdict: BLOCKED-CREDITS**
+(new finding — supersedes the earlier BLOCKED-CONNECTOR; the connector
+itself is no longer the obstacle). What was actually done, in order:
 
-**Local substitute available, not yet run:** `hyperframes tts` (local
-Kokoro-82M) can produce a 60-word sample at zero HeyGen cost the moment
-`pip install kokoro-onnx soundfile` is done (`hyperframes doctor` names this
-exact command as the only gap). This substitute proves *fidelity* (does the
-audio read the words correctly, including INCI-style terms) but not
-HeyGen's *cost* — a local TTS engine has no credit ledger. If F2 is answered
-via the local substitute rather than the connector, `providers.yaml`'s VO
-cost row stays `usd_per_credit: null` / cost-per-call `unmeasured`, named as
-such, not defaulted to zero.
+1. `get_current_user` (before): `plan: pro`, `premium_credits.remaining: 243`
+   (resets 2026-10-06), `add_on_credits.remaining: 41`. Both figures
+   **correct** the 2026-09-06 record in `providers-measured.md` (`plan:
+   creator`, premium `0`, add-on `81`) — the account state is materially
+   different now, whether from a plan change or a reset in the interim; not
+   assumed, just re-measured.
+2. `list_voices(engine=starfish, gender=female, language=English)` —
+   succeeded, returned 20 voices with `next_token` for more. Picked
+   **"Annie - Lifelike"** (`voice_id 330290724a1b470fb63153f34d4c0183`) as
+   the **test** voice for this spike only — **not** a production pick.
+   `baseline.yaml`'s `heygen.voice_id` stays `null`; that choice is T2's
+   TOUCHPOINT-SETUP, not T1's.
+3. Composed the 60-word scene (word-counted, not estimated) with two
+   INCI-adjacent terms chosen for pronunciation risk:
+
+   > Centella Asiatica Extract is not just a trend ingredient. It carries
+   > decades of wound healing research behind it. Its active compounds,
+   > Madecassoside and Asiaticoside, work by stimulating collagen synthesis
+   > and calming inflammation at the cellular level. A twenty eleven
+   > clinical trial found a four percent concentration performed on par
+   > with hydroquinone for reducing redness over eight weeks, without the
+   > irritation.
+
+4. `create_speech(text=<above>, voiceId=330290724a1b470fb63153f34d4c0183)`
+   → **HTTP 402**, `error_code: insufficient_credit`: *"This operation
+   requires 'api' credits. Upgrade your plan at
+   https://app.heygen.com/home?upgrade"*.
+5. `get_current_user` (after): `premium_credits.remaining: 243`,
+   `add_on_credits.remaining: 41` — **unchanged**. The 402 charged nothing;
+   confirmed, not assumed.
+
+**What this establishes, precisely:** `create_speech` draws from a third
+credit pool — **"api" credits** — that is disjoint from the
+`premium_credits` / `add_on_credits` the subscription actually carries and
+that `get_current_user` reports (`wallet: null`, `usage_based: null`; no
+`api_credits` field anywhere in the response). This account currently holds
+**zero** of that pool. No amount of the 243 + 41 credits already on the
+account enables a single `create_speech` call. This is a **billing-page
+action for Kim** (the 402's own `upgrade` link), not a connector or OAuth
+problem, and not fixable from this session.
+
+**Not run, as a direct consequence:** the duration/fidelity half of F2
+(mispronunciation count) — no audio was ever generated, so there is nothing
+to assess. The WO's pre-written fail consequence ("brand glossary entries
+added before any production VO") is a response to a **fidelity** failure
+specifically; it does not fire here, because fidelity was never reached —
+recorded as not-applicable rather than force-fit to a branch that assumed a
+different failure mode. `hyperframes tts` (local Kokoro-82M) remains the
+only fidelity-only substitute, still not run this pass (out of scope here;
+see the 2026-09-06 note below for its own installation gap on this
+machine).
 
 ## F3 — Image generation reach + cost
 
@@ -65,22 +104,30 @@ such, not defaulted to zero.
 **Fail consequence (pre-written):** `S5a` uses the library lane; HeyGen
 image is out of the run path.
 
-**Verdict: BLOCKED-CONNECTOR**, same reason as F2 — `list_video_agent_styles`
-/ image-generation tools are behind the same unauthorized connector. Not
-answerable locally (there is no local substitute for "does this specific
-MCP expose image generation" — that is a fact about the connector, not
-about this machine).
+**Re-run 2026-09-07, connector now authorized. Verdict: NOT EXPOSED** — a
+final "no," not a block. Answered by tool inventory alone, at zero cost (no
+call was needed once the connector question stopped being the obstacle):
+the full `mcp__heygen__*` surface was enumerated and contains no
+general-purpose text-to-image or image-generation tool. The only
+image-producing tools are **avatar-scoped** — `create_photo_avatar`
+(photo→avatar), `create_prompt_avatar` (text→avatar face),
+`create_digital_twin` (video→avatar) — each produces a person/character
+avatar look, not an arbitrary plate (an ingredient hero, a texture). Even
+disregarding that mismatch, all three are avatar tools and therefore
+forbidden outright by `R-2`'s scope fence and by `H-3` (faceless on
+pixels) for this brand, independent of whether they're "exposed." So: **no**
+is the honest, final answer to F3's own question, and it does not need
+revisiting once account/billing state improves — this is a fact about the
+MCP's tool surface, not about credits or auth.
 
-**Independent finding, not requiring the connector:** the design system
-extracted for `T2` (Claude Design project `a7945a95…`) states its own
-imagery rule explicitly: *"There is no photography, no gradient, no
-texture, no pattern and no video underlay anywhere in the system… If
-imagery is ever introduced it will need a ruling."* So **even once F3 is
-answered, the design system as it stands has no scene that would consume a
-generated image** — F3's fail branch (library lane) is very likely moot for
-this WO's actual templates, T6 possibly excepted. Recorded as an
-observation, not a substitute verdict — F3 itself stays BLOCKED-CONNECTOR
-until Kim authorizes the connector and the question is actually asked.
+**Fail branch fires as pre-written:** `S5a` uses the library lane; HeyGen
+image generation is out of the run path. This is now the **resolved**
+state, not a placeholder — it agrees with, and firms up, the independent
+observation already on record: the extracted design system (`T2`, Claude
+Design project `a7945a95…`) states its own no-imagery rule (*"There is no
+photography, no gradient, no texture, no pattern and no video underlay
+anywhere in the system"*), so the library lane itself is very likely a
+structural no-op for this WO's actual templates too.
 
 ## F4 — Enhanced composition retrievability
 
@@ -89,9 +136,35 @@ retrievable and render locally, still passing `check`.
 **Fail consequence (pre-written):** enhance step out of the lane; sound is
 local (`S5c` first option).
 
-**Verdict: BLOCKED-CONNECTOR**, same reason. Not locally substitutable —
-"enhance" is a HeyGen-side operation on a HeyGen-hosted project with no
-local equivalent to test against.
+**Re-run 2026-09-07, connector now authorized. Verdict: BLOCKED-CLIENT-TYPE**
+(new finding — also supersedes BLOCKED-CONNECTOR, but for a reason that
+does **not** go away when Kim authorizes anything further). Probed for
+real: called `mcp__…__compose` on the HyperFrames project MCP with a
+no-op prompt explicitly asking only to observe availability, no project
+created. It was rejected outright, before any credit or project check:
+
+> Hosted HyperFrames compose/render is disabled for local CLI/IDE agents
+> (Claude Code, Cursor, Codex, and similar). These environments have a
+> local filesystem, so author HyperFrames with the local HyperFrames
+> skills instead… This hosted MCP remains the path for chat clients with
+> no local filesystem (Claude.ai web/desktop, ChatGPT, Grok).
+
+No project was created (no `project_id` returned), so this cost nothing.
+**"Enhance" has no dedicated tool anywhere in either MCP surface** (the
+`heygen` server or this HyperFrames-project server) — the closest
+candidate is an edit turn via `compose` on an already-imported project,
+and `compose` is exactly what this client type is refused. This means F4
+is **not answerable from a Claude Code / CLI session at all, regardless of
+account state or connector authorization** — it would need to run from a
+hosted chat client (claude.ai web/desktop, ChatGPT, Grok) with no local
+filesystem, which is a different operating context than every other task
+in this WO (T0–T8 have all run from Code). This is an architectural fact
+about where this WO's tooling runs, not a to-do that clears with a billing
+or OAuth fix.
+
+**Fail branch fires, unconditionally for this client type:** `S5c` stays
+local-first; HeyGen enhance is out of the lane for any CLI-run production
+under this WO, not just for this account today.
 
 ---
 
@@ -100,20 +173,24 @@ local equivalent to test against.
 | # | Finding | Verdict |
 |---|---|---|
 | F1 | Local render parity | **PARTIAL** — local clean; cloud leg not run (D2). **Consequence: rule `C-6`, hard cuts only, applied now.** |
-| F2 | VO cost + fidelity | **BLOCKED-CONNECTOR** — local substitute (`hyperframes tts`) available once Kokoro is installed; does not answer the cost half |
-| F3 | Image generation reach | **BLOCKED-CONNECTOR** — likely moot regardless, given the design system's own no-imagery rule |
-| F4 | Enhance retrievability | **BLOCKED-CONNECTOR** — no local substitute exists |
+| F2 | VO cost + fidelity | **BLOCKED-CREDITS** (2026-09-07, connector live) — `create_speech` needs a separate "api" credit pool this account has none of; a billing-page action for Kim, confirmed to charge nothing on the 402 |
+| F3 | Image generation reach | **NOT EXPOSED** (2026-09-07, resolved) — no general-purpose image-generation tool in the `heygen` MCP; only avatar-scoped tools exist, and those are forbidden outright by `R-2`/`H-3` regardless. `S5a` fail branch (library lane) is final |
+| F4 | Enhance retrievability | **BLOCKED-CLIENT-TYPE** (2026-09-07) — `compose`/enhance is refused outright to CLI/IDE clients by the MCP server itself; unreachable from any Code session regardless of account or auth state |
 
 **Acceptance, per the WO's own bar** ("all four findings written with their
-evidence; Finding 1 = PASS; spend ≤ G0-4"): **not met as literally stated** —
-F1 is PARTIAL, not PASS, and F2–F4 are blocked, not found. This is reported
-plainly rather than rounded up. It does not halt this session's work: D2/D3
-were made *with* this consequence stated in advance, so `T2`/`T3` proceed on
-the C-6 ruling and the connector-blocked findings are Kim's to unblock live,
-named individually rather than defaulted.
+evidence; Finding 1 = PASS; spend ≤ G0-4"): **still not met as literally
+stated** — F1 is PARTIAL, F2 is now blocked on billing rather than auth, F3
+is finally resolved (a real "no"), and F4 is blocked for architectural
+reasons this session cannot change. Reported plainly, not rounded up.
+Authorizing the connector (D3's ask) genuinely moved F3 to done and
+reclassified F2/F4 from a vague "connector" block to two distinct, more
+actionable ones — one a billing-page click, one a client-type limit that
+needs a different session type entirely, not another authorization.
 
-`providers.yaml`: HeyGen VO/image/enhance costs remain **unmeasured**, named
-as such — not zero, not guessed. The one number that *is* measured without
-spending anything: the public cloud-render rate, 20 credits/rendered
-minute, against this account's 81 add-on credits (≈4 minutes of cloud
-render for the whole month) — see `docs/wo/WO-FVC-005.md` §8.3.
+`providers-measured.md` (this repo's working record; the shipped skill's
+`claude-skills/…/references/providers.yaml` remains out of scope here, per
+T7): HeyGen VO/enhance costs remain **unmeasured**, named as such with the
+*new, narrower* reason each is unmeasured. Image cost is now **N/A** (no
+tool exists to price). The public cloud-render rate, 20 credits/rendered
+minute, stays the only HeyGen cost number actually priced without spending
+anything — see `docs/wo/WO-FVC-005.md` §8.3.

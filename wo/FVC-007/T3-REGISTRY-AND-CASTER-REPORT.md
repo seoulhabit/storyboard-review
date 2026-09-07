@@ -3,7 +3,11 @@
 **Status: shipped, HALTED AT GATE B.** Per the WO's own gate table
 ("Gate B | After T3 | The registry: the component vocabulary the channel
 will use for every future video"), this session stops here for Kim's
-ruling. T4 (channel furniture) has not started.
+ruling.
+
+**T4 had already run in parallel, out of sequence with the WO's own gate
+table — see "Cross-session reconciliation" below before reading anything
+else in this report as if T4 were still pending.**
 
 Deliverables:
 
@@ -16,6 +20,67 @@ Deliverables:
   documents the new `scene.purpose` field, MANIFEST amended (see below).
 
 ---
+
+## Cross-session reconciliation (found mid-task, not part of the original plan)
+
+This repo runs several sessions at once (`CLAUDE.md`'s own standing
+warning). Partway through T3, `./worktree.sh status` showed two other live
+worktrees already ahead of where the WO's gate table says they should be:
+
+- **`session/fvc-007-t4`** (2 commits) — built its *own*
+  `videos/_system/catalog/catalog-registry.yaml`, retrofitted `cta-close`
+  and `logo-brand-close`, and **closed the `furniture_lower_third` gap
+  with a live Kim ruling** (R-11 option 1 — rewrite the beat: no
+  lower-third overlay component exists, so the beat itself becomes a held
+  `cta-close` interstitial immediately before the end card, distinct from
+  `action_line`'s own use of the same component). T4 is titled
+  "channel furniture" in the WO and its own gate table entry
+  (`Gate B | After T3`) implies it should not have started before this
+  session's registry landed — it started anyway, and structured its own
+  file cooperatively: a `furniture:` top-level key, with `purposes:` left
+  as an explicit empty placeholder and a comment naming this session by
+  branch to fill it in.
+- **`session/fvc-007-t5`** (2 commits) — read this session's *in-progress,
+  uncommitted* `catalog-registry.yaml` directly off disk (a worktree's
+  files are on the same filesystem, so this is possible even with separate
+  git checkouts) to confirm `editorial_imagery_broll_wrapper` is the only
+  `broll_allowed: true` purpose, then built the G0-3b B-roll style scaffold
+  and sourcing-pool draft against that finding. No conflicting file — its
+  commits touch `docs/wo/007/broll-manifest.md` and a new
+  `broll-style-core-draft.md` only. Left untouched by this session; T5's
+  own eventual merge is unaffected by anything below.
+
+**What this session did about it:** merged `session/fvc-007-t4` into this
+branch (`git merge --no-ff`, a normal additive merge of their branch into
+mine — never touching their branch, worktree, or commits, per `CLAUDE.md`'s
+own "prefer merging your own branch over rewriting a shared one") rather
+than let both branches land separate, conflicting versions of the same
+file on `master`. The one real conflict — both sessions wrote
+`catalog-registry.yaml` — resolved by keeping T4's `furniture:` section
+verbatim (it carries a real Kim ruling, two real retrofits, and measured
+contrast checks — strictly more authoritative than anything this session
+could add) and placing this session's `purposes:` list where T4's own
+placeholder comment asked for it. **This session's `furniture_end_card` /
+`furniture_cta` / `furniture_lower_third` / `furniture_platform_follow`
+purpose entries (from the earlier draft of this file, before the merge)
+are dropped entirely** — T4's `furniture:` section supersedes them with
+real, ruled data, and furniture placement turns out not to be a per-beat
+casting problem the way scene content is (fixed placement — final 4s,
+penultimate beat — not a ranked pick against beat aspect/content), so it
+correctly belongs in its own section the S4.5 caster never reads, not
+folded into `purposes:` as this session originally modeled it. `cta-close`,
+`logo-brand-close`, their retrofit output, and `retrofit_catalog.py`'s new
+`TOKEN_BRIDGE_MAP`/`INTERNAL_VARS` entries (both files, from T4) are now
+part of this branch's history via the merge.
+
+**One consequence for the rest of this report:** everywhere below that
+still reads as if `furniture_lower_third` is an open Gate B question, that
+reflects this session's registry *before* discovering T4 had already run
+and Kim had already ruled on it live. It is not still open. The "Gate B —
+halting for Kim's ruling" section at the end has been corrected; the
+body above it has not been rewritten scene-by-scene to match, since the
+corrected registry file itself (not this prose) is the source of truth
+going forward.
 
 ## Two repos, one task
 
@@ -69,8 +134,9 @@ contract that doesn't exist or leaving the registry's own discipline
 `chart-story`, `decline-chart`, and `count-up` already cover the
 claim_vs_evidence chart/stat need with real, declared slots.
 
-**Purpose grouping** (four scene systems + B-roll wrapper + two of T4's
-four furniture roles — the WO's own stated coverage):
+**Purpose grouping** (the four scene systems + B-roll wrapper — furniture
+is T4's own `furniture:` section, a different shape, not `purposes:`
+entries — see "Cross-session reconciliation" above):
 
 | Purpose | Candidates | broll_allowed |
 |---|---|---|
@@ -78,29 +144,40 @@ four furniture roles — the WO's own stated coverage):
 | `svg_diagram` | 3 (svg-stroke-trace, svg-mask-reveal, svg-line-draw-loader) | false |
 | `checklist` | 2 (marker-checklist-card, grid-card-assemble) | false |
 | `editorial_imagery_broll_wrapper` | 5 (push-in, yt-camera-move, device-frame-stage, grade-split-reveal, grain-overlay) | true |
-| `furniture_end_card` | 1 (logo-brand-close) | false |
-| `furniture_cta` | 1 (cta-close) | false |
-| `furniture_lower_third` | 0 — gap, see below | false |
-| `furniture_platform_follow` | 0 — gap, see below | false |
 
-18 candidate entries total across 8 purposes, drawn from the 19 verified
-components (`device-frame-stage` is the 19th; it appears once, under
-`editorial_imagery_broll_wrapper`).
+16 candidate entries total across 4 purposes, drawn from the 19 verified
+components (`device-frame-stage` is one of them, under
+`editorial_imagery_broll_wrapper`). Separately, T4's `furniture:` section
+covers `end_card` (`logo-brand-close`), `action_line` (`cta-close`),
+`lower_third_subscribe` (resolved onto `cta-close` too, via a live R-11
+ruling — see below), and `platform_follow` (left unassigned, per T4's own
+scope).
 
-## The two furniture gaps are carried forward, not newly found
+## The furniture gap is already resolved — by T4, live, not by this session
 
-`furniture_lower_third` and `furniture_platform_follow` have zero
-candidates. This is not a new discovery — `wo/FVC-007/GATE-A-RULING.md`'s
-own "Known consequence" section already named it: every lower-third match
-in the full 383-item catalog is a `hyperframes:block`
+An earlier draft of this registry (before this session discovered T4 had
+already run — see "Cross-session reconciliation" above) modeled
+`furniture_lower_third` as a `purposes:` entry with zero candidates and
+flagged it as an open Gate B question, carrying forward
+`wo/FVC-007/GATE-A-RULING.md`'s own "known consequence" note: every
+lower-third match in the full 383-item catalog is a `hyperframes:block`
 (`yt-lower-third`, `lt-dark-card`, `lt-kicker-name`, the rest of the
 `lt-*` family), out of scope after Gate A restricted the registry to
-components. Same for `instagram-follow`/`tiktok-follow`. T3's registry
-just makes the gap machine-readable (an empty `candidates: []` the caster
-can actually halt on) instead of leaving it as prose in a ruling doc.
-`furniture_lower_third` blocks T4 the way Gate A predicted;
-`furniture_platform_follow` doesn't, since T4 leaves that role unassigned
-regardless (cross-promo is a per-video call).
+components.
+
+**That's no longer accurate.** T4 ran the R-11 resolution live and Kim
+ruled option 1 (rewrite the beat): no lower-third component exists, so the
+beat itself stops being a persistent overlay and becomes a held,
+full-frame `cta-close` interstitial placed immediately before the end
+card — the same component `action_line` uses, with a recorded
+`conflicts_with`/`conflict_note` in the registry's `furniture:` section
+so a beat sheet never tries to use `cta-close` for both roles in one
+video. This is in the merged registry now, not still open.
+
+`platform_follow` remains genuinely unassigned, but that was always T4's
+own stated scope ("retrofit but leave unassigned; cross-promo is a
+per-video call") — not a blocking gap, and not something this session's
+merge changes.
 
 ## A gap this session found, not carried forward: `svg_diagram` is thin
 
@@ -203,17 +280,20 @@ entries (`R-6` safe-area, `--muted` contrast fix) already used.
 
 ## Retrofit status — real, not glossed over
 
-Only 3 of the 19 registry candidates (`focus-swap`, `caption-highlight`,
-`device-frame-stage`) have actually been run through `retrofit_catalog.py`
-— T2's own 3-item test suite. The registry's `retrofitted: false` field is
-literal for the other 16, not a placeholder default. Per R-14, an item is
-never consumed raw regardless of what the registry ranks it — running the
-retrofit on a candidate before it's used in a real build is T5/T6's job
-("future catalog additions cost minutes," per T2's own report), not
-speculative work against all 16 here. This is a deliberate scope boundary,
-not an oversight — retrofitting components nobody ends up casting for the
-pilot would be wasted work against a registry that's itself still subject
-to Kim's Gate B ruling.
+5 of the 19 registry candidates have actually been run through
+`retrofit_catalog.py`: T2's own 3-item test suite (`focus-swap`,
+`caption-highlight`, `device-frame-stage`) plus T4's two furniture
+retrofits (`cta-close`, `logo-brand-close`, picked up by this session's
+merge — see "Cross-session reconciliation"). The registry's
+`retrofitted: false` field is literal for the other 14 `purposes:`
+candidates, not a placeholder default. Per R-14, an item is never consumed
+raw regardless of what the registry ranks it — running the retrofit on a
+candidate before it's used in a real build is T5/T6's job ("future catalog
+additions cost minutes," per T2's own report), not speculative work
+against all 14 here. This is a deliberate scope boundary, not an
+oversight — retrofitting components nobody ends up casting for the pilot
+would be wasted work against a registry that's itself still subject to
+Kim's Gate B ruling.
 
 ## An incidental finding, flagged not fixed
 
@@ -231,19 +311,30 @@ data in hand than as a word-swap now.
 
 Per the WO's own gate table: Gate B is "the registry: the component
 vocabulary the channel will use for every future video." That's what
-`catalog-registry.yaml` is. Flagging, not deciding, the two things Kim's
-ruling should weigh:
+`catalog-registry.yaml` is — merged, now, with T4's `furniture:` section.
+Flagging, not deciding, what's actually still open:
 
-- **The furniture gap is real and blocks T4 as drafted.** `furniture_
-  lower_third` has zero candidates. R-11's two options apply: rewrite
-  every video's beat sheet to carry no lower-third furniture, or
-  contribute a component-category lower-third upstream and consume it
-  back through the retrofit path. Neither is decided here.
-- **`svg_diagram` is registered but thin.** Its three candidates cover a
-  narrower job (single-path trace, title reveal, contentless connector)
-  than "diagram" implies. Worth deciding now whether that's acceptable for
-  this channel's actual content mix, or whether it's worth an upstream
-  contribution before T6 rather than after a real `BLOCKER-CAST` forces
-  the question mid-build.
+- **The furniture gap is already resolved, by Kim, in the parallel T4
+  session — not still open.** See "Cross-session reconciliation" and "The
+  furniture gap is already resolved" above. Nothing to rule on here; T4
+  has already closed.
+- **`svg_diagram` is registered but thin — this is the one real open
+  question.** Its three candidates cover a narrower job (single-path
+  trace, title reveal, contentless connector) than "diagram" implies.
+  Worth deciding now whether that's acceptable for this channel's actual
+  content mix, or whether it's worth an upstream contribution before T6
+  rather than after a real `BLOCKER-CAST` forces the question mid-build.
+- **Process note, not a registry question:** T4 and T5 both started before
+  this session's Gate B halt would normally have cleared them to. Nothing
+  in either session's actual work looks wrong for it (T4's registry
+  section was built defensively, cooperatively, and correctly anticipated
+  this merge; T5's B-roll scaffold doesn't depend on the caster's per-beat
+  output). Worth deciding, going forward, whether this WO's gate table
+  should be read as a hard sequential block or as guidance sessions can
+  route around when they can show their own work doesn't depend on the
+  gated deliverable — this session took no position and just reconciled
+  what happened.
 
-T4 does not start until Kim rules here.
+T4 is done. T5 is in progress on its own branch, unaffected by this merge.
+The `svg_diagram` thinness is the one item this session is actually
+raising for Kim's Gate B ruling.

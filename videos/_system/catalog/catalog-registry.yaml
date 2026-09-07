@@ -1,7 +1,24 @@
-# catalog-registry.yaml — WO-FVC-007 T3
+# catalog-registry.yaml — WO-FVC-007
 #
-# Generated from docs/wo/007/catalog-inventory.json (T0a) and the T0b aspect
-# verdicts, then curated by hand against the real upstream
+# Two sections, two sessions, meant to merge without touching each other's
+# lines (this is the actual merge of session/fvc-007-t3 and
+# session/fvc-007-t4, reconciled by T3 after discovering both sessions had
+# built a file at this path in parallel — see
+# wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md "Cross-session reconciliation"):
+#
+# - `purposes:` (T3) — beat-purpose -> ranked component candidates. This is
+#   what scripts/cast_scenes.py (the S4.5 caster, skill repo) resolves a
+#   beat sheet's per-scene `purpose` field against, per beat, per render.
+# - `furniture:` (T4) — the recurring follow/subscribe/identity roles,
+#   picked ONCE per role rather than re-decided per video. Fixed placement
+#   (final 4s, penultimate beat, etc.), not a per-beat cast — the S4.5
+#   caster does not read this section, and no beat sheet ever sets
+#   `purpose: furniture_*`. This is deliberately a different shape (direct
+#   role -> component, not ranked candidates) because furniture isn't a
+#   per-beat casting problem the way scene content is.
+#
+# Generated from docs/wo/007/catalog-inventory.json (T0a) and the T0b
+# aspect verdicts, then curated by hand against the real upstream
 # registry/components/<name>/registry-item.json variable declarations
 # (vendor/hyperframes, pinned commit below) — never hand-transcribed from
 # the docs site, per T3's own instruction.
@@ -10,22 +27,23 @@
 # items only. No hyperframes:block item appears anywhere below, regardless
 # of its individual T0b verdict. See wo/FVC-007/GATE-A-RULING.md.
 #
-# Every candidate below is one of the 19 components T0b actually rendered
-# and probed at 1080x1920 (verdict: reframes-clean for all 19 — see
-# t0b_scan.by_category.component in catalog-inventory.json). A component
-# NOT in that 19-item set is not listed here even if it exists upstream and
-# even if it looks like a plausible fit by name/tags — per
+# Every `purposes:` candidate below is one of the 19 components T0b
+# actually rendered and probed at 1080x1920 (verdict: reframes-clean for
+# all 19 — see t0b_scan.by_category.component in catalog-inventory.json).
+# A component NOT in that 19-item set is not listed here even if it exists
+# upstream and even if it looks like a plausible fit by name/tags — per
 # wo/FVC-007/T0-GATE-A-REPORT.md: "If T3's later curation reaches outside
 # this 36-item set, those additions need their own aspect check before
 # being trusted." None do; widening this registry later means re-running
 # T0b's method on the candidate first, not adding it on the strength of its
 # tags alone.
 #
-# Slot contracts are the real `variables[]` array from each item's
-# registry-item.json, filtered to role: content (the fields a beat actually
-# supplies), typed with their real upstream `type`. Style/layout/timing/
-# motion-role variables exist too (accent, exit, split position, etc.) but
-# are cosmetic knobs, not beat content, and are not listed as slots.
+# Slot contracts (`purposes:` section) are the real `variables[]` array
+# from each item's registry-item.json, filtered to role: content (the
+# fields a beat actually supplies), typed with their real upstream `type`.
+# Style/layout/timing/motion-role variables exist too (accent, exit, split
+# position, etc.) but are cosmetic knobs, not beat content, and are not
+# listed as slots.
 #
 # `media_slots` (where present) is structural, not a declared variable —
 # found by reading the item's HTML directly, per T0a's own note that the
@@ -38,11 +56,19 @@
 # NOTE ON THIS FILE'S OWN SYNTAX: this repo's YAML reader
 # (scripts/_yaml_lite.py, shared by beats_to_build_spec.py and this
 # registry's own caster) is a documented subset — no multi-line/folded
-# scalars, no flow-style `{}` mappings. Every `note`/`summary`/`resolution`
-# below is therefore a single-line quoted string, not a `>` block, and
-# every slot mapping is block-style, not `{ a: 1 }`. Verified by actually
-# round-tripping this file through parse_yaml_subset() before committing —
-# see wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md.
+# scalars, no flow-style `{}` mappings. `purposes:` uses single-line quoted
+# strings for every `note`/`summary`/`resolution`, not `>` blocks; T4's
+# `furniture:` section does use `>` folded blocks (its own notes are long
+# prose), which _yaml_lite silently truncates to the literal string ">" —
+# a real, live limitation, not fixed here since fixing the shared parser is
+# outside T3's scope and the furniture section is not read by
+# cast_scenes.py at all (it's fixed-placement data for some other
+# consumer, not caster input). If a future stage needs to read
+# `furniture:` programmatically through this same parser, its `notes`
+# fields will need to move to single-line strings first, the same fix T3
+# already applied to `purposes:`. Verified by actually round-tripping the
+# `purposes:` section through parse_yaml_subset() before committing — see
+# wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md.
 
 catalog_source_commit: "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc"
 generated_at: "2026-09-07"
@@ -220,55 +246,97 @@ purposes:
         aspect: [9:16]
         note: "Additive film-grain texture layer, not a standalone wrapper on its own — composite on top of one of the other four when the plate needs analog character. Does not by itself satisfy B-1's camera-move requirement."
 
-  # ------------------------------------------------------------------
-  # channel_furniture — T4's four roles. Two are covered by a real
-  # component; two have none. See _gaps below and
-  # wo/FVC-007/GATE-A-RULING.md's own "known consequence" section,
-  # which flagged this at Gate A rather than letting it surface later
-  # at T4 or mid-beat at T6.
-  # ------------------------------------------------------------------
-  - purpose: furniture_end_card
-    broll_allowed: false
-    candidates:
-      - component: logo-brand-close
-        rank: 1
-        retrofitted: false
-        slots:
-          wordmark: string
-          tagline: string
-          url: string
-        aspect: [9:16]
-        note: "T4's pinned end-card component per the WO's own instruction to pick one and not decide per video."
-
-  - purpose: furniture_cta
-    broll_allowed: false
-    candidates:
-      - component: cta-close
-        rank: 1
-        retrofitted: false
-        slots:
-          action_line: string
-          button_label: string
-        aspect: [9:16]
-        note: "T4's action-line component, for videos that carry a CTA."
-
-  - purpose: furniture_lower_third
-    broll_allowed: false
-    candidates: []
-    note: "NO COMPONENT CANDIDATE. Gate A restricted the registry to hyperframes:component items; every lower-third match in the full 383-item catalog (yt-lower-third, lt-dark-card, lt-kicker-name, and the rest of the lt-* family) is a hyperframes:block, out of scope by Gate A ruling. Per R-11, a beat cast against this purpose halts with BLOCKER-CAST and Kim rules between R-11's two options (rewrite the beat so no lower-third furniture is needed, or contribute a component-category lower-third upstream). Not resolved here — see wo/FVC-007/GATE-A-RULING.md Known consequence."
-
-  - purpose: furniture_platform_follow
-    broll_allowed: false
-    candidates: []
-    note: "NO COMPONENT CANDIDATE. instagram-follow / tiktok-follow are blocks; the one component-category follow item (x-follow-card) is untargeted social-overlay, not IG/TikTok-branded, and was not in T0b's verified set. Same R-11 resolution path as furniture_lower_third. T4 leaves this role unassigned regardless (cross-promo is a per-video call), so this gap does not block T4 the way furniture_lower_third's does — recorded for completeness."
-
 _gaps:
   - id: svg_diagram_thin
     summary: "No verified component is a true multi-node/edge diagram (flowchart, route map, ingredient-pathway map). The three svg_diagram candidates are a single-path tracer, a title-reveal effect, and a contentless motion primitive. The catalog's real diagram items (flowchart, flowchart-vertical, data-chart) are all hyperframes:block, excluded by Gate A, and flowchart-vertical specifically failed its own T0b reframe despite matching aspect ratio (see wo/FVC-007/T0-GATE-A-REPORT.md). A beat that genuinely needs a structural diagram will likely hit BLOCKER-CAST under R-11 even though svg_diagram has non-empty candidates — the candidates it has cover a narrower job than the purpose name implies."
     resolution: "Not resolved here. Flag to Kim if T6 hits this in practice; R-11's two paths (rewrite the beat, contribute upstream) apply."
-  - id: furniture_lower_third_empty
-    summary: "See purpose: furniture_lower_third above. Carried forward from Gate A's own known consequence note, not newly discovered here."
-    resolution: "T4's job, per R-11. Not resolved here."
   - id: retrofit_status
-    summary: "Only 3 of the 19 candidates above (focus-swap, caption-highlight, device-frame-stage — see videos/_system/catalog/manifest.json) have actually been run through retrofit_catalog.py. The other 16 are real, T0b-verified candidates but not yet token-native output on disk. retrofitted: false above is literal, not a placeholder. focus-swap and caption-highlight are T2's test items and are not purpose-registry candidates on their own merits (focus-swap is a generic host-bridged interaction primitive with no purpose fit tested here; caption-highlight is a caption/text-emphasis primitive, also not one of the four scene systems)."
-    resolution: "R-14 forbids consuming a catalog item raw. Per T2's own report, future catalog additions cost minutes — running retrofit_catalog.py on a candidate is mechanical once it is actually selected for a real beat. Deferred to T5/T6, when the caster's picks are first exercised against the real pilot beat sheet, rather than run speculatively against all 16 here. See wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md."
+    summary: "Only 5 of the 19 candidates above (focus-swap, caption-highlight, device-frame-stage from T2; cta-close, logo-brand-close from T4's furniture retrofits — see videos/_system/catalog/manifest.json) have actually been run through retrofit_catalog.py. The other 14 are real, T0b-verified candidates but not yet token-native output on disk. retrofitted: false above is literal, not a placeholder. focus-swap and caption-highlight are T2's test items and are not purpose-registry candidates on their own merits (focus-swap is a generic host-bridged interaction primitive with no purpose fit tested here; caption-highlight is a caption/text-emphasis primitive, also not one of the four scene systems)."
+    resolution: "R-14 forbids consuming a catalog item raw. Per T2's own report, future catalog additions cost minutes — running retrofit_catalog.py on a candidate is mechanical once it is actually selected for a real beat. Deferred to T5/T6, when the caster's picks are first exercised against the real pilot beat sheet, rather than run speculatively against all 14 here. See wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md."
+
+# ==========================================================================
+# furniture: (T4, WO-FVC-007) — recurring follow/subscribe/identity roles,
+# picked once per role, fixed placement. NOT read by scripts/cast_scenes.py
+# (the S4.5 caster reads `purposes:` only) — see this file's own header.
+# Content preserved verbatim from session/fvc-007-t4's T4-FURNITURE-REPORT.md
+# work, merged in by T3 after both sessions independently wrote to this path.
+# ==========================================================================
+furniture:
+  - role: end_card
+    component: logo-brand-close
+    placement: final_4s
+    fixed: true
+    notes: >
+      Picked over logo-outro per the T4 spec's own instruction ("pick one
+      in T4 and pin it; do not decide per video"). logo-outro is a
+      hyperframes:block — out of scope under the Gate A ruling regardless
+      of its T0b verdict — and its own T0b scan found a real failure
+      independent of that (tagline "Nothing great is made alone." off
+      canvas in portrait, centered layout assumes 1920 width; see
+      docs/wo/007/catalog-inventory.json). logo-brand-close is a
+      hyperframes:component, t0b_verdict reframes-clean, retrofitted this
+      session (videos/_system/catalog/logo-brand-close.html,
+      classification recolourable, 4.5:1+ contrast verified on rendered
+      pixels — see T4-FURNITURE-REPORT.md).
+    slots:
+      wordmark: "서울의 습관"   # channel name; component's Hangul font-face coverage (Noto Serif KR, T2 step 1) is what makes this safe
+      tagline: per-video or empty
+      url: per-video or empty
+      accent: green   # channel has one accent token; TOKEN_BRIDGE_MAP collapses green/blue/violet to var(--accent) identically — the enum is a no-op by design here
+
+  - role: action_line
+    component: cta-close
+    placement: per_video
+    fixed: false
+    notes: >
+      Per T4 spec: "for videos that carry one." Not every beat sheet has a
+      closing ask, so this is not fixed to a timecode the way end_card is —
+      the beat sheet decides whether the film uses it at all. Retrofitted
+      this session (videos/_system/catalog/cta-close.html, classification
+      recolourable, 4.5:1+ contrast verified on rendered pixels).
+
+  - role: lower_third_subscribe
+    component: cta-close
+    status: resolved-r11-rewrite
+    placement: penultimate_beat_before_end_card
+    fixed: true
+    notes: >
+      RULED (Kim, 2026-09-07, R-11 option 1 — rewrite the beat): no
+      hyperframes:component exists for a persistent lower-third overlay
+      with the channel avatar (only yt-lower-third, a block, out of scope
+      per Gate A). Rather than fork or contribute upstream, the beat itself
+      changes shape — from a persistent overlay running alongside other
+      content to a held, full-frame subscribe interstitial carried by
+      cta-close, the same component action_line already uses. No avatar
+      slot; not persistent; appears once as its own beat.
+      Placement: cta-close's own registry-item.json frames it as an
+      end-of-film primitive ("holds until the frame cuts — this primitive
+      closes films"), same family as logo-brand-close's end_card role, so
+      it sits as the beat immediately before end_card, not at the
+      "first third" originally scoped for an overlay treatment — a
+      judgement call made here, not part of Kim's ruling, and worth
+      revisiting at Gate C if it plays wrong in the pilot render.
+      Default copy: action_line "Subscribe for the next one" (or
+      beat-sheet-specific equivalent), button_label "Subscribe".
+    conflicts_with: action_line
+    conflict_note: >
+      Both action_line and lower_third_subscribe cast to cta-close, which
+      holds until the frame cuts — it cannot carry two back-to-back
+      interstitials in one film. A beat sheet uses cta-close for at most
+      one of these two roles per video, never both.
+
+  - role: platform_follow
+    component: null
+    status: unassigned
+    placement: per_video
+    notes: >
+      Per T4 spec: "retrofit but leave unassigned; cross-promo is a
+      per-video call." Same component-scope gap as lower_third_subscribe —
+      instagram-follow/tiktok-follow are blocks, out of scope. The one
+      component-category follow item, x-follow-card, is X/Twitter-branded
+      (hardcoded, zero declared variables per catalog-inventory.json) and
+      not a reskinnable generic — using it would mean promoting a
+      different platform, not carrying this role. Left unassigned rather
+      than forcing an R-11 ruling nobody needs yet: no beat currently
+      requires this role. Revisit if cross-promo is requested for a
+      specific video.

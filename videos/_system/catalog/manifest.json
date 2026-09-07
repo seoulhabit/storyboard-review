@@ -6,6 +6,28 @@
   "catalog_inventory": "docs/wo/007/catalog-inventory.json",
   "items": [
     {
+      "name": "logo-brand-close",
+      "upstream_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
+      "retrofit_script_version": "1.0.0",
+      "aspect": "n/a-embeds-in-host",
+      "t0b_reframe_verdict": "reframes-clean",
+      "classification": "recolourable",
+      "colormap_file": "videos/_system/catalog/logo-brand-close.colormap.json",
+      "output_file": "videos/_system/catalog/logo-brand-close.html",
+      "output_sha256": "376eee1d8afaa1aff637a8f5f0b631a7418db29eb50b8360dc3f99392485cf7e"
+    },
+    {
+      "name": "cta-close",
+      "upstream_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
+      "retrofit_script_version": "1.0.0",
+      "aspect": "n/a-embeds-in-host",
+      "t0b_reframe_verdict": "reframes-clean",
+      "classification": "recolourable",
+      "colormap_file": "videos/_system/catalog/cta-close.colormap.json",
+      "output_file": "videos/_system/catalog/cta-close.html",
+      "output_sha256": "6004d96016f64c7dcfaca61393ce00b3eaf735c98e313de907dd9b42faa6cad0"
+    },
+    {
       "name": "focus-swap",
       "upstream_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
       "retrofit_script_version": "1.0.0",

@@ -246,7 +246,13 @@ heygen:                          # Added WO-FVC-005 T7. makemeavideo now points 
   spike_findings:                # T1-FINDINGS.md verdicts, verbatim, dated. This IS
                                   # the "[SPIKE:n] markers resolved... into
                                   # channel.yaml [now baseline.yaml]" T7 bullet.
-    measured_at: 2026-09-06
+                                  #
+                                  # 2026-09-07: HeyGen MCP connector authorized. F2-F4
+                                  # re-run for real (not guessed) -- superseding the
+                                  # 2026-09-06 BLOCKED-CONNECTOR verdicts below with
+                                  # what the connector being live actually revealed.
+                                  # F1 untouched, out of scope for the 09-07 pass.
+    measured_at: 2026-09-07
     source: wo/FVC-005/T1-FINDINGS.md
     F1_local_render_parity:
       verdict: PARTIAL
@@ -256,28 +262,46 @@ heygen:                          # Added WO-FVC-005 T7. makemeavideo now points 
         zero HeyGen credits spent proving it). Fail-consequence fired as
         pre-written: rule C-6 added (hard cuts only, no contiguous shader
         chain). This is the WO's own stated outcome for exactly this
-        result, not a downgrade decided after the fact.
+        result, not a downgrade decided after the fact. (Unchanged from
+        2026-09-06 -- not re-run this pass.)
     F2_vo_cost_fidelity:
-      verdict: BLOCKED-CONNECTOR
+      verdict: BLOCKED-CREDITS
       detail: >-
-        create_speech/list_voices/create_brand_glossary need HeyGen OAuth,
-        which a non-interactive session cannot complete. Local substitute
-        (hyperframes tts, Kokoro-82M) proves fidelity, not cost, and could
-        not even be installed in the T4 test environment (no matching
-        onnxruntime wheel for Python 3.9/x86_64 there) -- may work on a
-        different render machine. providers.yaml VO cost stays unmeasured.
+        Connector now live (get_current_user, list_voices both succeeded).
+        create_speech itself 402'd: insufficient_credit -- it draws a
+        separate "api" credit pool, not the plan's premium/add-on credits
+        (243 + 41, both confirmed unchanged before/after the failed call).
+        This account has zero of that pool; get_current_user does not even
+        expose it (wallet: null, usage_based: null). Needs Kim to add
+        API/usage-based credits at the 402's own billing link -- a plan
+        page action, not an OAuth fix. Fidelity half untested (no audio
+        was generated). Test voice picked for the attempt only (Annie -
+        Lifelike, 330290724a1b470fb63153f34d4c0183) -- NOT adopted as
+        voice_id below; that pick stays T2 TOUCHPOINT-SETUP.
     F3_image_generation_reach:
-      verdict: BLOCKED-CONNECTOR
+      verdict: NOT_EXPOSED
       detail: >-
-        Same connector block. Independently moot regardless: videos/_system/
-        (Claude Design project a7945a95...) states its own no-imagery rule
-        (no photography/gradient/texture/pattern/video anywhere) -- S5a is a
-        structural no-op for this design system even once the connector
-        question is answered.
+        Resolved, not blocked. Full mcp__heygen__* tool inventory reviewed
+        with the connector live: no general-purpose text-to-image tool
+        exists. Only avatar-scoped image tools exist (create_photo_avatar,
+        create_prompt_avatar, create_digital_twin), each producing a
+        person/character look -- forbidden outright by R-2/H-3 for this
+        faceless brand regardless of exposure. S5a fail-branch (library
+        lane) is now final, not provisional. Agrees with the independent
+        observation already on record: videos/_system/ (Claude Design
+        project a7945a95...) states its own no-imagery rule.
     F4_enhanced_composition_retrievability:
-      verdict: BLOCKED-CONNECTOR
+      verdict: BLOCKED-CLIENT-TYPE
       detail: >-
-        Same connector block; no local substitute exists for "can an
-        enhanced HeyGen-hosted composition be retrieved and rendered
-        locally." Fail-consequence in force: S5c defaults to the local
-        library lane until this is re-tested and passes.
+        Not a connector or credit question. Probed for real: a no-op
+        compose() call on the HyperFrames project MCP was refused outright
+        -- "Hosted HyperFrames compose/render is disabled for local
+        CLI/IDE agents (Claude Code, Cursor, Codex...); this hosted MCP
+        remains the path for chat clients with no local filesystem
+        (Claude.ai web/desktop, ChatGPT, Grok)." No project was created;
+        zero cost. No dedicated "enhance" tool exists anywhere in either
+        MCP surface -- the only plausible route is a compose() edit turn,
+        exactly what's refused here. F4 cannot be answered from a Code /
+        CLI session at all, ever, regardless of account or auth state --
+        it needs a hosted chat client. Fail-consequence in force
+        unconditionally for CLI-run production: S5c stays local-first.

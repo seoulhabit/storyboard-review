@@ -1,0 +1,1182 @@
+{
+  "slug": "pdrn-left-the-clinic",
+  "format": "long",
+  "fps": 30,
+  "canvas": {
+    "w": 1920,
+    "h": 1080
+  },
+  "vo_duration_s": 221.028,
+  "presenter": "kinetic-type",
+  "sections": [
+    "s01-hook",
+    "s02-ingredient",
+    "s03-quote-q1",
+    "f03-rows-origin",
+    "f04-rows-origin",
+    "f05-rows-origin",
+    "f06-rows-origin",
+    "f07-rows-origin",
+    "f08-rows-origin",
+    "f09-rows-origin",
+    "f10-rows-retail",
+    "f11-rows-retail",
+    "f12-rows-retail",
+    "f13-rows-retail",
+    "f14-rows-retail",
+    "s06-compare",
+    "s07-quote-mystery",
+    "f17-rows-naming",
+    "f18-rows-naming",
+    "f19-rows-naming",
+    "f20-rows-naming",
+    "s09-evidence-boundary",
+    "f22-rows-boundary-detail",
+    "f23-rows-boundary-detail",
+    "f24-rows-boundary-detail",
+    "s11-evidence-rct",
+    "f26-rows-rct-detail",
+    "f27-rows-rct-detail",
+    "f28-rows-rct-detail",
+    "f29-rows-rct-detail",
+    "f30-rows-more-evidence",
+    "f31-rows-more-evidence",
+    "f32-rows-more-evidence",
+    "f33-rows-more-evidence",
+    "f34-rows-more-evidence",
+    "f35-rows-more-evidence",
+    "f36-rows-clinic-uses",
+    "f37-rows-clinic-uses",
+    "f38-rows-clinic-uses",
+    "s13-myth",
+    "f40-rows-regulator-trend",
+    "f41-rows-regulator-trend",
+    "f42-rows-regulator-trend",
+    "f43-rows-regulator-trend",
+    "s15-evidence-pct",
+    "f45-rows-regulator-detail",
+    "f46-rows-regulator-detail",
+    "f47-rows-regulator-detail",
+    "f48-rows-regulator-detail",
+    "f49-steps-questions",
+    "f50-steps-questions",
+    "f51-steps-questions",
+    "f52-steps-questions",
+    "f53-rows-buying-context",
+    "f54-rows-buying-context",
+    "f55-rows-buying-context",
+    "f100-scrutiny1",
+    "f101-scrutiny2",
+    "f102-scrutiny3",
+    "f103-scrutiny4",
+    "f56-rows-labels",
+    "f57-rows-labels",
+    "f58-rows-labels",
+    "s19-quote-verdict",
+    "s20-endcard"
+  ],
+  "scenes": [
+    {
+      "id": "s01-hook",
+      "section": "s01-hook",
+      "component": "ShHook",
+      "vo_duration_s": 2.655,
+      "slot_word_count": 6,
+      "slots": {
+        "line": "PDRN is made from DNA.",
+        "accentWord": "DNA"
+      },
+      "vo_file": "vo/flat/s01-hook.wav"
+    },
+    {
+      "id": "s02-ingredient",
+      "section": "s02-ingredient",
+      "component": "ShIngredient",
+      "vo_duration_s": 2.544,
+      "slot_word_count": 8,
+      "slots": {
+        "name": "PDRN",
+        "inci": "Polydeoxyribonucleotide",
+        "function": "Now in serums, creams, and masks."
+      },
+      "vo_file": "vo/flat/s02-ingredient.wav"
+    },
+    {
+      "id": "s03-quote-q1",
+      "section": "s03-quote-q1",
+      "component": "ShQuote",
+      "vo_duration_s": 2.738,
+      "slot_word_count": 8,
+      "slots": {
+        "line": "Injected in clinics \u2014 what happens on top?"
+      },
+      "vo_file": "vo/flat/s03-quote-q1.wav"
+    },
+    {
+      "id": "f03-rows-origin",
+      "section": "f03-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 2.972,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "Source",
+            "right": "Salmon DNA"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f03-rows-origin.wav",
+      "chip": "Int J Biol Macromol 2024"
+    },
+    {
+      "id": "f04-rows-origin",
+      "section": "f04-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 2.601,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Studied for",
+            "right": "Wound recovery"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f04-rows-origin.wav",
+      "chip": "Cureus 2026"
+    },
+    {
+      "id": "f05-rows-origin",
+      "section": "f05-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 2.694,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Also studied",
+            "right": "Graft wounds"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f05-rows-origin.wav",
+      "chip": "Cureus 2026"
+    },
+    {
+      "id": "f06-rows-origin",
+      "section": "f06-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 3.437,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "And for",
+            "right": "Inflammatory disease"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f06-rows-origin.wav",
+      "chip": "Dermatol Res Pract 2013"
+    },
+    {
+      "id": "f07-rows-origin",
+      "section": "f07-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 4.365,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "In animals",
+            "right": "Faster healing"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f07-rows-origin.wav",
+      "chip": "J Cosmet Laser Ther 2016"
+    },
+    {
+      "id": "f08-rows-origin",
+      "section": "f08-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 3.529,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "Delivered by",
+            "right": "Injection"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f08-rows-origin.wav"
+    },
+    {
+      "id": "f09-rows-origin",
+      "section": "f09-rows-origin",
+      "component": "ShRows",
+      "vo_duration_s": 3.1,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "Result",
+            "right": "Medical credibility"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f09-rows-origin.wav"
+    },
+    {
+      "id": "f10-rows-retail",
+      "section": "f10-rows-retail",
+      "component": "ShRows",
+      "vo_duration_s": 2.442,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Interest grew",
+            "right": "At-home treatments"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f10-rows-retail.wav"
+    },
+    {
+      "id": "f11-rows-retail",
+      "section": "f11-rows-retail",
+      "component": "ShRows",
+      "vo_duration_s": 2.322,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "One serum",
+            "right": "Became dozens"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f11-rows-retail.wav"
+    },
+    {
+      "id": "f12-rows-retail",
+      "section": "f12-rows-retail",
+      "component": "ShRows",
+      "vo_duration_s": 3.2,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Now spans",
+            "right": "Creams to pads"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f12-rows-retail.wav"
+    },
+    {
+      "id": "f13-rows-retail",
+      "section": "f13-rows-retail",
+      "component": "ShRows",
+      "vo_duration_s": 2.229,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "Packaging",
+            "right": "Clinic visuals"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f13-rows-retail.wav"
+    },
+    {
+      "id": "f14-rows-retail",
+      "section": "f14-rows-retail",
+      "component": "ShRows",
+      "vo_duration_s": 3.293,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Promise",
+            "right": "No needle needed"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f14-rows-retail.wav"
+    },
+    {
+      "id": "s06-compare",
+      "section": "s06-compare",
+      "component": "ShCompare",
+      "vo_duration_s": 6.5,
+      "slot_word_count": 6,
+      "slots": {
+        "a": "Salmon DNA",
+        "b": "Plant / algae DNA",
+        "attributes": [
+          {
+            "label": "Marketed as",
+            "aValue": "PDRN",
+            "bValue": "Vegan PDRN"
+          }
+        ]
+      },
+      "vo_file": "vo/flat/s06-compare.wav",
+      "chip": "Int J Biol Macromol 2024"
+    },
+    {
+      "id": "s07-quote-mystery",
+      "section": "s07-quote-mystery",
+      "component": "ShQuote",
+      "vo_duration_s": 1.997,
+      "slot_word_count": 8,
+      "slots": {
+        "line": "One shared name \u2014 same effect on skin?"
+      },
+      "vo_file": "vo/flat/s07-quote-mystery.wav",
+      "chip": "Biomolecules 2025"
+    },
+    {
+      "id": "f17-rows-naming",
+      "section": "f17-rows-naming",
+      "component": "ShRows",
+      "vo_duration_s": 3.344,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Plant version",
+            "right": "No irritation shown"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f17-rows-naming.wav",
+      "chip": "Int J Mol Sci 2025"
+    },
+    {
+      "id": "f18-rows-naming",
+      "section": "f18-rows-naming",
+      "component": "ShRows",
+      "vo_duration_s": 2.539,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "But",
+            "right": "Not proof for salmon"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f18-rows-naming.wav",
+      "chip": "Int J Mol Sci 2025"
+    },
+    {
+      "id": "f19-rows-naming",
+      "section": "f19-rows-naming",
+      "component": "ShRows",
+      "vo_duration_s": 4.458,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Also confused",
+            "right": "PDRN vs. PN"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f19-rows-naming.wav",
+      "chip": "Biomolecules 2025"
+    },
+    {
+      "id": "f20-rows-naming",
+      "section": "f20-rows-naming",
+      "component": "ShRows",
+      "vo_duration_s": 2.584,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "INCI name",
+            "right": "Sodium DNA"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f20-rows-naming.wav",
+      "chip": "COSMILE Europe"
+    },
+    {
+      "id": "s09-evidence-boundary",
+      "section": "s09-evidence-boundary",
+      "component": "ShEvidence",
+      "vo_duration_s": 5.68,
+      "slot_word_count": 13,
+      "slots": {
+        "figure": "0",
+        "caption": "Leave-on cosmetic trials in the review covering PDRN skin research.",
+        "source": "Cureus, 2026"
+      },
+      "vo_file": "vo/flat/s09-evidence-boundary.wav",
+      "chip": "Cureus 2026"
+    },
+    {
+      "id": "f22-rows-boundary-detail",
+      "section": "f22-rows-boundary-detail",
+      "component": "ShRows",
+      "vo_duration_s": 3.715,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Strongest evidence",
+            "right": "Wounds, injections"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f22-rows-boundary-detail.wav",
+      "chip": "Cureus 2026"
+    },
+    {
+      "id": "f23-rows-boundary-detail",
+      "section": "f23-rows-boundary-detail",
+      "component": "ShRows",
+      "vo_duration_s": 3.715,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Field review",
+            "right": "Rigor still lacking"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f23-rows-boundary-detail.wav",
+      "chip": "Aesthet Plast Surg 2024"
+    },
+    {
+      "id": "f24-rows-boundary-detail",
+      "section": "f24-rows-boundary-detail",
+      "component": "ShRows",
+      "vo_duration_s": 2.826,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "But",
+            "right": "Not PDRN-specific"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f24-rows-boundary-detail.wav",
+      "chip": "Aesthet Plast Surg 2024"
+    },
+    {
+      "id": "s11-evidence-rct",
+      "section": "s11-evidence-rct",
+      "component": "ShEvidence",
+      "vo_duration_s": 6.9,
+      "slot_word_count": 15,
+      "slots": {
+        "figure": "~2x",
+        "caption": "One small trial: PDRN eye cream vs. low-dose retinol on wrinkles.",
+        "source": "PLoS One, 2026"
+      },
+      "vo_file": "vo/flat/s11-evidence-rct.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f26-rows-rct-detail",
+      "section": "f26-rows-rct-detail",
+      "component": "ShRows",
+      "vo_duration_s": 3.58,
+      "slot_word_count": 6,
+      "slots": {
+        "rows": [
+          {
+            "left": "Trial size",
+            "right": "31 women, one site"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f26-rows-rct-detail.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f27-rows-rct-detail",
+      "section": "f27-rows-rct-detail",
+      "component": "ShRows",
+      "vo_duration_s": 3.622,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "Excluded",
+            "right": "Pregnancy, allergy"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f27-rows-rct-detail.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f28-rows-rct-detail",
+      "section": "f28-rows-rct-detail",
+      "component": "ShRows",
+      "vo_duration_s": 3.808,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "But",
+            "right": "Not proof of risk"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f28-rows-rct-detail.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f29-rows-rct-detail",
+      "section": "f29-rows-rct-detail",
+      "component": "ShRows",
+      "vo_duration_s": 2.247,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Authors flag",
+            "right": "May be transient"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f29-rows-rct-detail.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f30-rows-more-evidence",
+      "section": "f30-rows-more-evidence",
+      "component": "ShRows",
+      "vo_duration_s": 3.344,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Trial population",
+            "right": "Sensitive skin only"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f30-rows-more-evidence.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f31-rows-more-evidence",
+      "section": "f31-rows-more-evidence",
+      "component": "ShRows",
+      "vo_duration_s": 4.4,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Excluded",
+            "right": "Acne, rosacea, eczema"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f31-rows-more-evidence.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f32-rows-more-evidence",
+      "section": "f32-rows-more-evidence",
+      "component": "ShRows",
+      "vo_duration_s": 2.159,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Animal study",
+            "right": "Reduced pigmentation"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f32-rows-more-evidence.wav",
+      "chip": "Molecules 2022"
+    },
+    {
+      "id": "f33-rows-more-evidence",
+      "section": "f33-rows-more-evidence",
+      "component": "ShRows",
+      "vo_duration_s": 3.251,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "But",
+            "right": "Combo, not PDRN alone"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f33-rows-more-evidence.wav",
+      "chip": "Molecules 2022"
+    },
+    {
+      "id": "f34-rows-more-evidence",
+      "section": "f34-rows-more-evidence",
+      "component": "ShRows",
+      "vo_duration_s": 2.138,
+      "slot_word_count": 6,
+      "slots": {
+        "rows": [
+          {
+            "left": "EU check",
+            "right": "Not a fragrance allergen"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f34-rows-more-evidence.wav",
+      "chip": "EU Reg. 2023/1545"
+    },
+    {
+      "id": "f35-rows-more-evidence",
+      "section": "f35-rows-more-evidence",
+      "component": "ShRows",
+      "vo_duration_s": 2.952,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Expected",
+            "right": "Not used as fragrance"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f35-rows-more-evidence.wav",
+      "chip": "EU Reg. 2023/1545"
+    },
+    {
+      "id": "f36-rows-clinic-uses",
+      "section": "f36-rows-clinic-uses",
+      "component": "ShRows",
+      "vo_duration_s": 3.065,
+      "slot_word_count": 6,
+      "slots": {
+        "rows": [
+          {
+            "left": "Also used for",
+            "right": "Genital skin disease"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f36-rows-clinic-uses.wav",
+      "chip": "Dermatol Res Pract 2013"
+    },
+    {
+      "id": "f37-rows-clinic-uses",
+      "section": "f37-rows-clinic-uses",
+      "component": "ShRows",
+      "vo_duration_s": 4.458,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "But",
+            "right": "Injected, diseased skin"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f37-rows-clinic-uses.wav",
+      "chip": "Dermatol Res Pract 2013"
+    },
+    {
+      "id": "f38-rows-clinic-uses",
+      "section": "f38-rows-clinic-uses",
+      "component": "ShRows",
+      "vo_duration_s": 2.218,
+      "slot_word_count": 7,
+      "slots": {
+        "rows": [
+          {
+            "left": "Not the same as",
+            "right": "Leave-on healthy skin"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f38-rows-clinic-uses.wav",
+      "chip": "Dermatol Res Pract 2013"
+    },
+    {
+      "id": "s13-myth",
+      "section": "s13-myth",
+      "component": "ShMyth",
+      "vo_duration_s": 2.999,
+      "slot_word_count": 11,
+      "slots": {
+        "claim": "DNA repairs your skin overnight.",
+        "correction": "Regulators call this the problem.",
+        "accentWord": "problem"
+      },
+      "vo_file": "vo/flat/s13-myth.wav"
+    },
+    {
+      "id": "f40-rows-regulator-trend",
+      "section": "f40-rows-regulator-trend",
+      "component": "ShRows",
+      "vo_duration_s": 3.58,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "2023",
+            "right": "7 violations"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f40-rows-regulator-trend.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f41-rows-regulator-trend",
+      "section": "f41-rows-regulator-trend",
+      "component": "ShRows",
+      "vo_duration_s": 2.879,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "2024",
+            "right": "19 violations"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f41-rows-regulator-trend.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f42-rows-regulator-trend",
+      "section": "f42-rows-regulator-trend",
+      "component": "ShRows",
+      "vo_duration_s": 4.272,
+      "slot_word_count": 3,
+      "slots": {
+        "rows": [
+          {
+            "left": "2025",
+            "right": "39 violations"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f42-rows-regulator-trend.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f43-rows-regulator-trend",
+      "section": "f43-rows-regulator-trend",
+      "component": "ShRows",
+      "vo_duration_s": 4.339,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "2026 (H1)",
+            "right": "41 violations"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f43-rows-regulator-trend.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "s15-evidence-pct",
+      "section": "s15-evidence-pct",
+      "component": "ShEvidence",
+      "vo_duration_s": 3.169,
+      "slot_word_count": 16,
+      "slots": {
+        "figure": "76%",
+        "caption": "81 of 106 violations were ads that sounded like medicine.",
+        "source": "MFDS via Nat'l Assembly, 2026"
+      },
+      "vo_file": "vo/flat/s15-evidence-pct.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f45-rows-regulator-detail",
+      "section": "f45-rows-regulator-detail",
+      "component": "ShRows",
+      "vo_duration_s": 4.458,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "7 more",
+            "right": "False functional claims"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f45-rows-regulator-detail.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f46-rows-regulator-detail",
+      "section": "f46-rows-regulator-detail",
+      "component": "ShRows",
+      "vo_duration_s": 4.458,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "18 more",
+            "right": "Consumer confusion"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f46-rows-regulator-detail.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f47-rows-regulator-detail",
+      "section": "f47-rows-regulator-detail",
+      "component": "ShRows",
+      "vo_duration_s": 4.458,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Only 11",
+            "right": "Led to action"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f47-rows-regulator-detail.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f48-rows-regulator-detail",
+      "section": "f48-rows-regulator-detail",
+      "component": "ShRows",
+      "vo_duration_s": 4.339,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Driven by",
+            "right": "Rejuran boom"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f48-rows-regulator-detail.wav",
+      "chip": "MFDS via Nat'l Assembly, 2026"
+    },
+    {
+      "id": "f49-steps-questions",
+      "section": "f49-steps-questions",
+      "component": "ShSteps",
+      "vo_duration_s": 2.415,
+      "slot_word_count": 8,
+      "slots": {
+        "steps": [
+          {
+            "n": 1,
+            "action": "Check the label",
+            "note": "Sodium DNA or salmon DNA?"
+          }
+        ]
+      },
+      "vo_file": "vo/flat/f49-steps-questions.wav"
+    },
+    {
+      "id": "f50-steps-questions",
+      "section": "f50-steps-questions",
+      "component": "ShSteps",
+      "vo_duration_s": 4.087,
+      "slot_word_count": 6,
+      "slots": {
+        "steps": [
+          {
+            "n": 2,
+            "action": "Is source named?",
+            "note": "Salmon, plant, unspecified?"
+          }
+        ]
+      },
+      "vo_file": "vo/flat/f50-steps-questions.wav"
+    },
+    {
+      "id": "f51-steps-questions",
+      "section": "f51-steps-questions",
+      "component": "ShSteps",
+      "vo_duration_s": 4.4,
+      "slot_word_count": 6,
+      "slots": {
+        "steps": [
+          {
+            "n": 3,
+            "action": "Concentration disclosed?",
+            "note": "Or just the name?"
+          }
+        ]
+      },
+      "vo_file": "vo/flat/f51-steps-questions.wav"
+    },
+    {
+      "id": "f52-steps-questions",
+      "section": "f52-steps-questions",
+      "component": "ShSteps",
+      "vo_duration_s": 3.324,
+      "slot_word_count": 8,
+      "slots": {
+        "steps": [
+          {
+            "n": 4,
+            "action": "Tested as a topical?",
+            "note": "Or borrowed from injections?"
+          }
+        ]
+      },
+      "vo_file": "vo/flat/f52-steps-questions.wav"
+    },
+    {
+      "id": "f53-rows-buying-context",
+      "section": "f53-rows-buying-context",
+      "component": "ShRows",
+      "vo_duration_s": 3.158,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "The risk",
+            "right": "Borrowed expectations"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f53-rows-buying-context.wav"
+    },
+    {
+      "id": "f54-rows-buying-context",
+      "section": "f54-rows-buying-context",
+      "component": "ShRows",
+      "vo_duration_s": 3.994,
+      "slot_word_count": 6,
+      "slots": {
+        "rows": [
+          {
+            "left": "Not proof of harm",
+            "right": "Just unanswered"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f54-rows-buying-context.wav"
+    },
+    {
+      "id": "f55-rows-buying-context",
+      "section": "f55-rows-buying-context",
+      "component": "ShRows",
+      "vo_duration_s": 3.357,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "It means",
+            "right": "Size the expectation"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f55-rows-buying-context.wav"
+    },
+    {
+      "id": "f100-scrutiny1",
+      "section": "f100-scrutiny1",
+      "component": "ShRows",
+      "vo_duration_s": 3.391,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Allergy rate",
+            "right": "Not confirmed"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f100-scrutiny1.wav",
+      "chip": "PLoS One 2026"
+    },
+    {
+      "id": "f101-scrutiny2",
+      "section": "f101-scrutiny2",
+      "component": "ShRows",
+      "vo_duration_s": 3.063,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "Plant version",
+            "right": "Needs its own tests"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f101-scrutiny2.wav",
+      "chip": "Int J Mol Sci 2025"
+    },
+    {
+      "id": "f102-scrutiny3",
+      "section": "f102-scrutiny3",
+      "component": "ShRows",
+      "vo_duration_s": 2.951,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "Not a verdict",
+            "right": "Not a scam"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f102-scrutiny3.wav"
+    },
+    {
+      "id": "f103-scrutiny4",
+      "section": "f103-scrutiny4",
+      "component": "ShRows",
+      "vo_duration_s": 3.171,
+      "slot_word_count": 4,
+      "slots": {
+        "rows": [
+          {
+            "left": "It means",
+            "right": "Read the label closely"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f103-scrutiny4.wav"
+    },
+    {
+      "id": "f56-rows-labels",
+      "section": "f56-rows-labels",
+      "component": "ShRows",
+      "vo_duration_s": 4.087,
+      "slot_word_count": 6,
+      "slots": {
+        "rows": [
+          {
+            "left": "WHAT WE KNOW",
+            "right": "Origin, injectable history"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f56-rows-labels.wav"
+    },
+    {
+      "id": "f57-rows-labels",
+      "section": "f57-rows-labels",
+      "component": "ShRows",
+      "vo_duration_s": 2.176,
+      "slot_word_count": 5,
+      "slots": {
+        "rows": [
+          {
+            "left": "WHAT WE DON'T",
+            "right": "Topical proof"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f57-rows-labels.wav"
+    },
+    {
+      "id": "f58-rows-labels",
+      "section": "f58-rows-labels",
+      "component": "ShRows",
+      "vo_duration_s": 3.96,
+      "slot_word_count": 6,
+      "slots": {
+        "rows": [
+          {
+            "left": "WHAT TO CHECK",
+            "right": "Name, source, %"
+          }
+        ],
+        "active": -1
+      },
+      "vo_file": "vo/flat/f58-rows-labels.wav"
+    },
+    {
+      "id": "s19-quote-verdict",
+      "section": "s19-quote-verdict",
+      "component": "ShQuote",
+      "vo_duration_s": 2.716,
+      "slot_word_count": 8,
+      "slots": {
+        "line": "Its reputation travels faster than its evidence.",
+        "attribution": "SEOULHABIT.COM"
+      },
+      "vo_file": "vo/flat/s19-quote-verdict.wav"
+    },
+    {
+      "id": "s20-endcard",
+      "section": "s20-endcard",
+      "component": "ShEndcard",
+      "vo_duration_s": 2.206,
+      "slot_word_count": 6,
+      "slots": {
+        "cta": "Evidence, not hype. More at seoulhabit.com"
+      },
+      "vo_file": "vo/flat/s20-endcard.wav"
+    }
+  ],
+  "audio": {
+    "src": "audio.wav"
+  }
+}

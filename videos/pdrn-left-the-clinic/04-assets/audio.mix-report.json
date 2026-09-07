@@ -1,0 +1,345 @@
+{
+  "schema": "makemeavideo/mix-audio-report@1",
+  "beat_sheet": "videos/pdrn-left-the-clinic/03-beat-sheet.json",
+  "out": "videos/pdrn-left-the-clinic/04-assets/audio.wav",
+  "total_duration_s": 246.932,
+  "scenes": [
+    {
+      "id": "s01-hook",
+      "start": 0.0,
+      "duration": 2.955
+    },
+    {
+      "id": "s02-ingredient",
+      "start": 2.955,
+      "duration": 3.2
+    },
+    {
+      "id": "s03-quote-q1",
+      "start": 6.155,
+      "duration": 3.2
+    },
+    {
+      "id": "f03-rows-origin",
+      "start": 9.355,
+      "duration": 3.272
+    },
+    {
+      "id": "f04-rows-origin",
+      "start": 12.627,
+      "duration": 2.901
+    },
+    {
+      "id": "f05-rows-origin",
+      "start": 15.528,
+      "duration": 2.994
+    },
+    {
+      "id": "f06-rows-origin",
+      "start": 18.522,
+      "duration": 3.737
+    },
+    {
+      "id": "f07-rows-origin",
+      "start": 22.259,
+      "duration": 4.665
+    },
+    {
+      "id": "f08-rows-origin",
+      "start": 26.924,
+      "duration": 3.829
+    },
+    {
+      "id": "f09-rows-origin",
+      "start": 30.753,
+      "duration": 3.4
+    },
+    {
+      "id": "f10-rows-retail",
+      "start": 34.153,
+      "duration": 2.742
+    },
+    {
+      "id": "f11-rows-retail",
+      "start": 36.895,
+      "duration": 2.622
+    },
+    {
+      "id": "f12-rows-retail",
+      "start": 39.517,
+      "duration": 3.5
+    },
+    {
+      "id": "f13-rows-retail",
+      "start": 43.017,
+      "duration": 2.529
+    },
+    {
+      "id": "f14-rows-retail",
+      "start": 45.546,
+      "duration": 3.593
+    },
+    {
+      "id": "s06-compare",
+      "start": 49.139,
+      "duration": 6.8
+    },
+    {
+      "id": "s07-quote-mystery",
+      "start": 55.939,
+      "duration": 3.2
+    },
+    {
+      "id": "f17-rows-naming",
+      "start": 59.139,
+      "duration": 3.644
+    },
+    {
+      "id": "f18-rows-naming",
+      "start": 62.783,
+      "duration": 2.839
+    },
+    {
+      "id": "f19-rows-naming",
+      "start": 65.622,
+      "duration": 4.758
+    },
+    {
+      "id": "f20-rows-naming",
+      "start": 70.38,
+      "duration": 2.884
+    },
+    {
+      "id": "s09-evidence-boundary",
+      "start": 73.264,
+      "duration": 5.98
+    },
+    {
+      "id": "f22-rows-boundary-detail",
+      "start": 79.244,
+      "duration": 4.015
+    },
+    {
+      "id": "f23-rows-boundary-detail",
+      "start": 83.259,
+      "duration": 4.015
+    },
+    {
+      "id": "f24-rows-boundary-detail",
+      "start": 87.274,
+      "duration": 3.126
+    },
+    {
+      "id": "s11-evidence-rct",
+      "start": 90.4,
+      "duration": 7.2
+    },
+    {
+      "id": "f26-rows-rct-detail",
+      "start": 97.6,
+      "duration": 3.88
+    },
+    {
+      "id": "f27-rows-rct-detail",
+      "start": 101.48,
+      "duration": 3.922
+    },
+    {
+      "id": "f28-rows-rct-detail",
+      "start": 105.402,
+      "duration": 4.108
+    },
+    {
+      "id": "f29-rows-rct-detail",
+      "start": 109.51,
+      "duration": 2.547
+    },
+    {
+      "id": "f30-rows-more-evidence",
+      "start": 112.057,
+      "duration": 3.644
+    },
+    {
+      "id": "f31-rows-more-evidence",
+      "start": 115.701,
+      "duration": 4.7
+    },
+    {
+      "id": "f32-rows-more-evidence",
+      "start": 120.401,
+      "duration": 2.459
+    },
+    {
+      "id": "f33-rows-more-evidence",
+      "start": 122.86,
+      "duration": 3.551
+    },
+    {
+      "id": "f34-rows-more-evidence",
+      "start": 126.411,
+      "duration": 2.438
+    },
+    {
+      "id": "f35-rows-more-evidence",
+      "start": 128.849,
+      "duration": 3.252
+    },
+    {
+      "id": "f36-rows-clinic-uses",
+      "start": 132.101,
+      "duration": 3.365
+    },
+    {
+      "id": "f37-rows-clinic-uses",
+      "start": 135.466,
+      "duration": 4.758
+    },
+    {
+      "id": "f38-rows-clinic-uses",
+      "start": 140.224,
+      "duration": 2.8
+    },
+    {
+      "id": "s13-myth",
+      "start": 143.024,
+      "duration": 4.4
+    },
+    {
+      "id": "f40-rows-regulator-trend",
+      "start": 147.424,
+      "duration": 3.88
+    },
+    {
+      "id": "f41-rows-regulator-trend",
+      "start": 151.304,
+      "duration": 3.179
+    },
+    {
+      "id": "f42-rows-regulator-trend",
+      "start": 154.483,
+      "duration": 4.572
+    },
+    {
+      "id": "f43-rows-regulator-trend",
+      "start": 159.055,
+      "duration": 4.639
+    },
+    {
+      "id": "s15-evidence-pct",
+      "start": 163.694,
+      "duration": 6.4
+    },
+    {
+      "id": "f45-rows-regulator-detail",
+      "start": 170.094,
+      "duration": 4.758
+    },
+    {
+      "id": "f46-rows-regulator-detail",
+      "start": 174.852,
+      "duration": 4.758
+    },
+    {
+      "id": "f47-rows-regulator-detail",
+      "start": 179.61,
+      "duration": 4.758
+    },
+    {
+      "id": "f48-rows-regulator-detail",
+      "start": 184.368,
+      "duration": 4.639
+    },
+    {
+      "id": "f49-steps-questions",
+      "start": 189.007,
+      "duration": 3.2
+    },
+    {
+      "id": "f50-steps-questions",
+      "start": 192.207,
+      "duration": 4.387
+    },
+    {
+      "id": "f51-steps-questions",
+      "start": 196.594,
+      "duration": 4.7
+    },
+    {
+      "id": "f52-steps-questions",
+      "start": 201.294,
+      "duration": 3.624
+    },
+    {
+      "id": "f53-rows-buying-context",
+      "start": 204.918,
+      "duration": 3.458
+    },
+    {
+      "id": "f54-rows-buying-context",
+      "start": 208.376,
+      "duration": 4.294
+    },
+    {
+      "id": "f55-rows-buying-context",
+      "start": 212.67,
+      "duration": 3.657
+    },
+    {
+      "id": "f100-scrutiny1",
+      "start": 216.327,
+      "duration": 3.691
+    },
+    {
+      "id": "f101-scrutiny2",
+      "start": 220.018,
+      "duration": 3.363
+    },
+    {
+      "id": "f102-scrutiny3",
+      "start": 223.381,
+      "duration": 3.251
+    },
+    {
+      "id": "f103-scrutiny4",
+      "start": 226.632,
+      "duration": 3.471
+    },
+    {
+      "id": "f56-rows-labels",
+      "start": 230.103,
+      "duration": 4.387
+    },
+    {
+      "id": "f57-rows-labels",
+      "start": 234.49,
+      "duration": 2.476
+    },
+    {
+      "id": "f58-rows-labels",
+      "start": 236.966,
+      "duration": 4.26
+    },
+    {
+      "id": "s19-quote-verdict",
+      "start": 241.226,
+      "duration": 3.2
+    },
+    {
+      "id": "s20-endcard",
+      "start": 244.426,
+      "duration": 2.506
+    }
+  ],
+  "vo_substitutes": [],
+  "music_bed": null,
+  "target": {
+    "lufs": -13.4,
+    "tp": -1.0,
+    "lra": 11.0
+  },
+  "measured": {
+    "integrated_lufs": -15.3,
+    "true_peak_dbtp": -0.9
+  },
+  "verdict": "fail"
+}

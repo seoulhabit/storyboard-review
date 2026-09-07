@@ -1,0 +1,475 @@
+{
+  "schema": "makemeavideo/qa.json@1",
+  "skill_version": "0.1.0",
+  "slug": "pdrn-left-the-clinic",
+  "verdict": "fail",
+  "inputs": {
+    "mp4": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/renders/pdrn-left-the-clinic-9x16.mp4",
+      "sha256": "40ddd22c281e4d5c3e8f90db049de9eede9204c97a27b9a31cfcacb15c4f97db",
+      "video": {
+        "w": 1080,
+        "h": 1920,
+        "fps": 30.0,
+        "duration_s": 246.933333
+      },
+      "audio": {
+        "present": true,
+        "duration_s": 246.933,
+        "codec": "aac"
+      }
+    },
+    "frames_dir": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/qa-frames",
+      "supplied": [
+        {
+          "file": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/qa-frames/frame-000-hook.png",
+          "t": 0.0,
+          "scene": "s01-hook",
+          "kind": "frame0"
+        },
+        {
+          "file": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/qa-frames/frame-last.png",
+          "t": 246.832,
+          "scene": "s20-endcard",
+          "kind": "last"
+        }
+      ]
+    },
+    "beat_sheet": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/03-beat-sheet.9x16.qa.json",
+      "sha256": "49560fdc47653d9f1c297a9a088d810e00a348b90e567744d7b646e76df37da6",
+      "format": "short",
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "scenes": 65,
+      "vo_duration_s": 246.932
+    },
+    "target_length_s": 246.9
+  },
+  "environment": {
+    "tooling_dir": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/catalog/tooling",
+    "tooling": [
+      {
+        "file": "check-safe-area.py",
+        "sha256": "fa6be604ae68cfd04264a29e5cc45aed5cc7026d72a379769d8ce3432e749382"
+      },
+      {
+        "file": "check-static-hold.py",
+        "sha256": "cbddddf52e209a9f294b14b294fcc5b1ece344e2268f15caed7cde6e9b168b90"
+      }
+    ],
+    "detector": {
+      "backend": "cv2-haar",
+      "cv2_version": "4.10.0",
+      "cascades": [
+        "haarcascade_frontalface_default.xml",
+        "haarcascade_profileface.xml"
+      ],
+      "cascade_sha256": {
+        "haarcascade_frontalface_default.xml": "0f7d4527844eb514d4a4948e822da90fbb16a34a0bbbbc6adc6498747a5aafb0",
+        "haarcascade_profileface.xml": "b39a4a3be45539db146a7fc1d3e761a292c196eb88421185e6a615b3055e612d"
+      },
+      "min_box_px": 60,
+      "scan_fps": 2.0
+    }
+  },
+  "gates": [
+    {
+      "id": "H-2",
+      "name": "frame-zero",
+      "verdict": "pass",
+      "measured": {
+        "luma_stddev": 27.59,
+        "textish_regions": 0
+      },
+      "thresholds": {
+        "stddev_min": 12.0
+      },
+      "findings": [],
+      "method": "luma stddev (catalog/tooling/check-blank-frames.py's metric, cutoff 12.0)",
+      "advisory": false
+    },
+    {
+      "id": "H-3",
+      "name": "faceless",
+      "verdict": "fail",
+      "blocking": true,
+      "measured": {
+        "frames_scanned": 496,
+        "faces": 7,
+        "sub_threshold_faces": 9
+      },
+      "findings": [
+        {
+          "scene": "s15-evidence-pct",
+          "t": 165.0,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000331.png",
+          "box": [
+            225,
+            666,
+            299,
+            740
+          ],
+          "long_side_px": 74,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 165.0s (74px)."
+        },
+        {
+          "scene": "s15-evidence-pct",
+          "t": 165.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000332.png",
+          "box": [
+            225,
+            669,
+            298,
+            742
+          ],
+          "long_side_px": 73,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 165.5s (73px)."
+        },
+        {
+          "scene": "s15-evidence-pct",
+          "t": 166.0,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000333.png",
+          "box": [
+            223,
+            664,
+            299,
+            740
+          ],
+          "long_side_px": 76,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 166.0s (76px)."
+        },
+        {
+          "scene": "s15-evidence-pct",
+          "t": 167.0,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000335.png",
+          "box": [
+            225,
+            666,
+            299,
+            740
+          ],
+          "long_side_px": 74,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 167.0s (74px)."
+        },
+        {
+          "scene": "s15-evidence-pct",
+          "t": 167.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000336.png",
+          "box": [
+            224,
+            668,
+            298,
+            742
+          ],
+          "long_side_px": 74,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 167.5s (74px)."
+        },
+        {
+          "scene": "s15-evidence-pct",
+          "t": 169.0,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000339.png",
+          "box": [
+            224,
+            665,
+            299,
+            740
+          ],
+          "long_side_px": 75,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 169.0s (75px)."
+        },
+        {
+          "scene": "s15-evidence-pct",
+          "t": 169.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-3ro9rgxe/f_000340.png",
+          "box": [
+            223,
+            668,
+            298,
+            743
+          ],
+          "long_side_px": 75,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s15-evidence-pct: a human face is visible at 169.5s (75px)."
+        }
+      ],
+      "advisory": false
+    },
+    {
+      "id": "H-4.canvas",
+      "verdict": "pass",
+      "measured": {
+        "delivered": [
+          1080,
+          1920
+        ],
+        "expected": [
+          1080,
+          1920
+        ]
+      },
+      "findings": [],
+      "advisory": false
+    },
+    {
+      "id": "H-4.contrast",
+      "verdict": "fail",
+      "measured": {
+        "min_ratio": 3.13,
+        "regions": 2,
+        "floor": 4.5
+      },
+      "findings": [
+        {
+          "scene": "s20-endcard",
+          "t": 246.832,
+          "box": [
+            156,
+            1019,
+            901,
+            1071
+          ],
+          "ratio": 3.13,
+          "message": "scene s20-endcard: contrast 3.13:1 < 4.5:1"
+        },
+        {
+          "scene": "s20-endcard",
+          "t": 246.832,
+          "box": [
+            331,
+            1059,
+            757,
+            1125
+          ],
+          "ratio": 3.17,
+          "message": "scene s20-endcard: contrast 3.17:1 < 4.5:1"
+        }
+      ],
+      "method": "textish_regions() -> Otsu dark/light split -> WCAG ratio",
+      "advisory": true
+    },
+    {
+      "id": "H-4.type-floor",
+      "verdict": "pass",
+      "measured": {
+        "min_glyph_px": 52,
+        "floor_px": 32
+      },
+      "findings": [],
+      "method": "textish_regions() height; A-6 per-role floors NOT enforced (no source) \u2014 absolute 32px floor only, per WO-FVC-004 T3",
+      "advisory": true
+    },
+    {
+      "id": "H-4.safe-area",
+      "verdict": "pass",
+      "shelled": {
+        "argv": [
+          "python3",
+          "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/catalog/tooling/check-safe-area.py",
+          ".",
+          "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/renders/pdrn-left-the-clinic-9x16.mp4"
+        ],
+        "exit": 0,
+        "sentinel_seen": "no findings (988 frames sampled)",
+        "frames_sampled": 988
+      },
+      "findings": [],
+      "advisory": false
+    },
+    {
+      "id": "H-4.static-hold",
+      "verdict": "fail",
+      "measured": {
+        "cadence_ceiling_s": 2.5,
+        "canvas": [
+          1080,
+          1920
+        ]
+      },
+      "findings": [
+        {
+          "message": "whole-frame static 27.00s-29.50s (2.50s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 37.00s-39.50s (2.50s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 45.50s-49.00s (3.50s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 106.00s-108.50s (2.50s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 112.50s-115.50s (3.00s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 159.50s-163.50s (4.00s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 205.00s-208.50s (3.50s, ceiling 2.5s)"
+        },
+        {
+          "message": "whole-frame static 209.00s-212.50s (3.50s, ceiling 2.5s)"
+        }
+      ],
+      "method": "in-process check-static-hold.py (whole_frame_check + region_check); scene_boundaries injected from the beat sheet, no index.html on a HeyGen render",
+      "advisory": false
+    },
+    {
+      "id": "H-4.loudness",
+      "verdict": "fail",
+      "log": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/renders/loudness.txt",
+      "measured": {
+        "integrated_lufs": -16.2,
+        "lra_lu": 6.4,
+        "true_peak_dbtp": -1.2
+      },
+      "thresholds": {
+        "lufs_band": [
+          -16.0,
+          -12.0
+        ],
+        "true_peak_max": -1.0
+      },
+      "findings": [
+        {
+          "message": "integrated loudness -16.2 LUFS outside (-16.0, -12.0)"
+        }
+      ],
+      "note": "ffmpeg labels the peak=true ebur128 value dBFS; it is the oversampled true-peak figure",
+      "advisory": false
+    },
+    {
+      "id": "H-4.duration",
+      "verdict": "pass",
+      "measured": {
+        "delivered_s": 246.933333,
+        "target_s": 246.9,
+        "delta_pct": 0.01,
+        "source": "stream=duration (v:0)"
+      },
+      "thresholds": {
+        "tolerance_pct": 15,
+        "accept_pct": 25
+      },
+      "findings": [],
+      "advisory": false
+    }
+  ],
+  "k4": {
+    "verdict": "unmeasurable",
+    "claim_ids": [],
+    "scenes_matched": "65/65",
+    "timing_source": null,
+    "note": "flag concurrency, hedging and prohibited-claim checks need the words; design-critique + operator, per policy.md K-4"
+  },
+  "h5": {
+    "caps": {
+      "per_scene": 2,
+      "per_run": 4
+    },
+    "messages": [
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 165.0s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 165.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 166.0s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 167.0s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 167.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 169.0s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s15-evidence-pct",
+        "gate": "H-3",
+        "text": "Scene s15-evidence-pct: a person's face is visible at 169.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s20-endcard",
+        "gate": "H-4.contrast",
+        "text": "scene s20-endcard: contrast 3.13:1 < 4.5:1"
+      },
+      {
+        "scene": "s20-endcard",
+        "gate": "H-4.contrast",
+        "text": "scene s20-endcard: contrast 3.17:1 < 4.5:1"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 27.00s-29.50s (2.50s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 37.00s-39.50s (2.50s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 45.50s-49.00s (3.50s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 106.00s-108.50s (2.50s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 112.50s-115.50s (3.00s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 159.50s-163.50s (4.00s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 205.00s-208.50s (3.50s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.static-hold",
+        "text": "whole-frame static 209.00s-212.50s (3.50s, ceiling 2.5s)"
+      },
+      {
+        "scene": null,
+        "gate": "H-4.loudness",
+        "text": "integrated loudness -16.2 LUFS outside (-16.0, -12.0)"
+      }
+    ]
+  },
+  "unmeasurable": [],
+  "summary_line": "[S7/H-4] contrast=3.13 safe=ok static=fail LUFS=-16.2 TP=-1.2 dur=246.933333/246.9"
+}

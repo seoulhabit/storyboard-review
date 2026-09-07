@@ -1,0 +1,159 @@
+<template>
+<div id="root" data-composition-id="f27-rows-rct-detail" data-width="1920" data-height="1080"
+     data-duration="3.922" data-canvas="16x9">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    #root { position: relative; width: 1920px; height: 1080px; overflow: hidden;
+             background: var(--bg); color: var(--text-primary);
+             font-family: var(--font-work);  }
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:400;font-display:block;src:url("assets/fonts/dejavu-serif-400.woff2") format("woff2")}
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:700;font-display:block;src:url("assets/fonts/dejavu-serif-700.woff2") format("woff2")}
+@font-face{font-family:"Archivo";font-style:normal;font-weight:100 900;font-display:block;src:url("assets/fonts/archivo-variable.woff2") format("woff2-variations")}
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:700;font-display:block;unicode-range:U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7AF,U+D7B0-D7FF;src:url("assets/fonts/noto-serif-kr-700.woff2") format("woff2")}
+@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:400;font-display:block;unicode-range:U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7AF,U+D7B0-D7FF;src:url("assets/fonts/noto-serif-kr-400.woff2") format("woff2")}
+#root{
+  /* base — the six fixed tokens. Nothing outside this list ships. */
+  --bg:#F4EDE3;        /* warm cream — every scene background */
+  --bg-lift:#FAF3E7;   /* panel inset only */
+  --ink:#26215C;       /* all text */
+  --accent:#9C3A32;    /* clay — one element per scene */
+  --rule:#C0A265;      /* brass — 2px hairlines only */
+  --muted:rgba(38,33,92,0.55);
+
+  /* semantic aliases */
+  --scene-bg:var(--bg);
+  --panel-bg:var(--bg-lift);
+  --text-primary:var(--ink);
+  --text-secondary:var(--muted);
+  --text-accent:var(--accent);
+  --on-accent:#F4EDE3;
+  --hairline:var(--rule);
+  --hairline-w:2px; /* @kind spacing */
+  /* opacity of an already-revealed sh-rows row */
+  --row-dim:0.6; /* @kind other */
+  --chip-opacity:0.4; /* @kind other */
+}
+
+#root{
+  /* the subject: names, titles, end card */
+  --font-subject:"DejaVu Serif",Georgia,serif; /* @kind font */
+  /* the work: labels, figures, chips */
+  --font-work:"Archivo","Helvetica Neue",Arial,sans-serif; /* @kind font */
+
+  /* steps — 9:16, authored on a 1080px-wide stage */
+  --t-display:132px; /* @kind font */
+  --t-hook:96px; /* @kind font */
+  --t-label:72px; /* @kind font */
+  --t-body:64px; /* @kind font */
+  --t-meta:40px; /* @kind font */
+  --t-chip:28px; /* @kind font */
+
+  --w-display:700; /* @kind font */
+  --w-hook:800; /* @kind font */
+  --w-label:800; /* @kind font */
+  --w-body:600; /* @kind font */
+  --w-meta:600; /* @kind font */
+  --w-chip:600; /* @kind font */
+  --track-upper:0.08em; /* @kind font */
+  --lh-display:1.06; /* @kind font */
+  --lh-tight:1.1; /* @kind font */
+  --lh-body:1.3; /* @kind font */
+}
+/* 16:9 — authored on a 1920px-wide stage. DejaVu Serif 700 Title Case for display; Archivo 800 UPPER for hook and label; Archivo 600 for body, meta and chip. */
+#root[data-canvas="16x9"]{
+  --t-display:96px; /* @kind font */
+  --t-hook:72px; /* @kind font */
+  --t-label:56px; /* @kind font */
+  --t-body:48px; /* @kind font */
+  --t-meta:32px; /* @kind font */
+  --t-chip:24px; /* @kind font */
+}
+
+#root{
+  /* px at 1080 width */
+  --s1:16px; /* @kind spacing */
+  --s2:24px; /* @kind spacing */
+  --s3:40px; /* @kind spacing */
+  --s4:64px; /* @kind spacing */
+  --s5:96px; /* @kind spacing */
+  --s6:144px; /* @kind spacing */
+  /* between grouped elements */
+  --rhythm-within:var(--s3); /* @kind spacing */
+  /* between groups */
+  --rhythm-between:var(--s5); /* @kind spacing */
+
+  /* grid: 12 columns, 8% side margins, 2% gutters */
+  --grid-cols:12; /* @kind other */
+  --grid-margin:8%; /* @kind spacing */
+  --grid-gutter:2%; /* @kind spacing */
+
+  /* safe area — 9:16. Nothing readable below y 76%.
+     --safe-x widened 10%->15% by R-6 (WO-FVC-005): check-safe-area.py's own
+     platform-derived right rail is 15% of 1080 (YouTube Shorts UI), and the
+     10% token left rendered content 57px inside it on every ShRows frame —
+     see wo/FVC-005/t3-verification/repo-gates/README.md. */
+  --safe-x:15%; /* @kind spacing */
+  --safe-top:18%; /* @kind spacing */
+  --safe-bottom:24%; /* @kind spacing */
+
+  --r-panel:24px; /* @kind radius */
+  --r-chip:999px; /* @kind radius */
+}
+/* ×1.78 for the 1920 canvas; safe area 16:9 → x 6–94%, y 8–92% */
+#root[data-canvas="16x9"]{
+  --s1:28px; /* @kind spacing */
+  --s2:43px; /* @kind spacing */
+  --s3:71px; /* @kind spacing */
+  --s4:114px; /* @kind spacing */
+  --s5:171px; /* @kind spacing */
+  --s6:256px; /* @kind spacing */
+  --safe-x:6%; /* @kind spacing */
+  --safe-top:8%; /* @kind spacing */
+  /* --safe-bottom widened 8%->10% by R-6 (WO-FVC-005): check-safe-area.py's
+     --landscape bottom zone is 10% of 1080 (real platform UI), and the 8%
+     token put the citation chip's ink mostly inside it — see
+     wo/FVC-005/t3-verification/repo-gates/README.md. */
+  --safe-bottom:10%; /* @kind spacing */
+  --r-panel:43px; /* @kind radius */
+}
+
+#root{
+  /* durations / eases consumed by the GSAP timeline builder and by card previews.
+     --m-enter-ease ≈ power3.out · --m-ease-soft ≈ power2.out · --m-ease-inout ≈ sine.inOut */
+  --m-enter-dur:0.35s; /* @kind other */
+  --m-enter-ease:cubic-bezier(0.215,0.61,0.355,1); /* @kind other */
+  --m-enter-shift:40px; /* @kind spacing */
+  --m-enter-offset-min:0.1s; /* @kind other */
+  --m-enter-offset-max:0.3s; /* @kind other */
+  --m-stagger-row:0.8s; /* @kind other */
+  --m-stagger-char:0.12s; /* @kind other */
+  /* fade only, final scene only */
+  --m-exit-dur:0.25s; /* @kind other */
+  /* every text element holds at least this long */
+  --m-hold-min:1.6s; /* @kind other */
+  --m-ease-soft:cubic-bezier(0.25,0.46,0.45,0.94); /* @kind other */
+  --m-ease-inout:cubic-bezier(0.37,0,0.63,1); /* @kind other */
+  --m-shader:cross-warp-morph; /* @kind other */
+  --m-shader-dur:0.5s; /* @kind other */
+}
+
+    #f27-rows-rct-detail-stage { position: absolute; left: var(--safe-x); right: var(--safe-x);
+             top: var(--safe-top); bottom: var(--safe-bottom); display: flex;
+             flex-direction: column; justify-content: center; gap: var(--rhythm-within); }
+#f27-rows-rct-detail-rows > div { opacity: 0; }
+  </style>
+  <div id="f27-rows-rct-detail-stage">
+    <div id="f27-rows-rct-detail-rows" style="display:flex;flex-direction:column;gap:var(--s3);width:100%;text-align:left"><div id="f27-rows-rct-detail-row0" style="display:grid;grid-template-columns:minmax(0,auto) minmax(var(--s2),1fr) minmax(0,auto);align-items:center;opacity:1"><div style="font:var(--w-label) var(--t-label)/var(--lh-tight) var(--font-work);letter-spacing:var(--track-upper);text-transform:uppercase;color:var(--text-primary);min-width:0;overflow-wrap:anywhere">Excluded</div><div id="f27-rows-rct-detail-hr0" style="width:100%;min-width:var(--s2);height:var(--hairline-w);background:var(--hairline)"></div><div style="font:700 var(--t-label)/var(--lh-tight) var(--font-subject);color:var(--text-primary);text-align:right;min-width:0;overflow-wrap:anywhere">Pregnancy, allergy</div></div></div>
+  </div>
+  <div id="f27-rows-rct-detail-chip" style="position:absolute;left:var(--safe-x);bottom:var(--safe-bottom);opacity:var(--chip-opacity);border-left:var(--hairline-w) solid var(--hairline);padding-left:var(--s1);font:var(--w-chip) var(--t-chip)/1.2 var(--font-work);letter-spacing:var(--track-upper);text-transform:uppercase;color:var(--text-secondary);text-align:left">PLoS One 2026</div>
+  <script>
+  gsap.set("#f27-rows-rct-detail-rows > div", { opacity: 0, y: 40 });
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+  tl.to("#f27-rows-rct-detail-rows > div", { opacity: 1, y: 0, duration: 0.350, ease: 'power3.out' }, 0.150);
+  tl.to("#f27-rows-rct-detail-hr0", { y: -6, duration: 1.000, yoyo: true, repeat: 3, ease: 'sine.inOut' }, 0);
+    tl.to({}, { duration: 3.922, ease: 'none' }, 0);
+    window.__timelines["f27-rows-rct-detail"] = tl;
+  </script>
+</div>
+</template>

@@ -54,3 +54,4 @@ videos/*/assets/voice/acts/_takes/
 # Retention-master plate sources (raw generator downloads, 9MB PNGs / 2.5K MP4s);
 # the prepared 1080p plates next to them are what the composition references.
 videos/*/assets/plates/raw/
+.ci-local/

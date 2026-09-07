@@ -1,0 +1,40 @@
+{
+  "item": "cta-close",
+  "findings": [
+    {
+      "literal": "#f8fafc",
+      "property": "color",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    },
+    {
+      "literal": "#0b0c0e",
+      "property": "background",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    },
+    {
+      "literal": "#f8fafc",
+      "property": "color",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    },
+    {
+      "literal": "#0b0c0e",
+      "property": "color",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    }
+  ],
+  "bridged_vars": [
+    "accent-2",
+    "brand",
+    "fg",
+    "font-body",
+    "font-display"
+  ]
+}

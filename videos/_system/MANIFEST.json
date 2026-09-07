@@ -32,13 +32,21 @@
       "change": "added --positive #2F5940, --warning #7A5A0F, --info #2E5C6E (three new tokens; sheet is now nine, not six)",
       "reason": "WO-FVC-007 T2's colour-recolour step needs to map catalog items' positive/warning/info status colours to something; none existed. Kim ruled 'extend the token sheet now' at Gate 0 (G0-8) rather than reject affected catalog items. Each value verified >=4.5:1 against --bg per R-13's contrast floor before being added (positive 6.89:1, warning 5.48:1, info 6.29:1) -- see wo/FVC-007/GATE0-FVC-007.md G0-8 and wo/FVC-007/T2-RETROFIT-REPORT.md.",
       "hash_updated": true
+    },
+    {
+      "date": "2026-09-07",
+      "ruling": "WO-FVC-007 T3",
+      "file": "COMPILER.md",
+      "change": "Sec 1 Inputs: documented the third compiler/caster-only beat-sheet field, scene.purpose (S4.5 catalog-registry casting), alongside the existing scene.component/scene.slots note; flagged that CANONICAL_COMPONENTS (compile_composition.py:255-256) still rejects any non-Sh* component name today.",
+      "reason": "T3 adds a new optional beat-sheet field the frozen schema does not declare (same convention as the existing component/slots fields) and this is the one place that convention is documented; editing videos/_system/ under R-14/R-6 precedent requires a manifest amendment, not a silent hash drift.",
+      "hash_updated": true
     }
   ],
   "file_count": 67,
   "files": {
     "COMPILER.md": {
-      "bytes": 16357,
-      "sha256": "822c5842f86eadc59f06921d06ee545dfc693c69d9f402965033bd6de106c8fe"
+      "bytes": 17527,
+      "sha256": "b822965b9072f0fe89496ef61288d447ee72bd9957e36ac988cdefea5d6a9214"
     },
     "ENGINE-DIFF-0.8.30.md": {
       "bytes": 2374,

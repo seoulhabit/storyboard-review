@@ -2,11 +2,11 @@
   "schema": "makemeavideo/qa.json@1",
   "skill_version": "0.1.0",
   "slug": "pdrn-left-the-clinic",
-  "verdict": "pass",
+  "verdict": "fail",
   "inputs": {
     "mp4": {
       "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/renders/pdrn-left-the-clinic-16x9.mp4",
-      "sha256": "eaac86097ab480f07b59b8527c17327e8e44961c4a41153653f19820b0d43ebc",
+      "sha256": "7ec56f673549936777109fa6b96b96072a57acaff74ba9abfa4e821969171324",
       "video": {
         "w": 1920,
         "h": 1080,
@@ -38,7 +38,7 @@
     },
     "beat_sheet": {
       "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/03-beat-sheet.qa.json",
-      "sha256": "77e2d47ad1b439296e9d0fa425ad3e268a62f3a93e96f9e2aab66e275a440ba4",
+      "sha256": "5b102eaca56334240ebd2375a3189c10269842ce4f7167ddad68161aa7970c5e",
       "format": "long",
       "canvas": {
         "w": 1920,
@@ -82,7 +82,7 @@
       "name": "frame-zero",
       "verdict": "pass",
       "measured": {
-        "luma_stddev": 20.66,
+        "luma_stddev": 20.67,
         "textish_regions": 0
       },
       "thresholds": {
@@ -95,14 +95,43 @@
     {
       "id": "H-3",
       "name": "faceless",
-      "verdict": "pass",
+      "verdict": "fail",
       "blocking": true,
       "measured": {
         "frames_scanned": 496,
-        "faces": 0,
-        "sub_threshold_faces": 9
+        "faces": 2,
+        "sub_threshold_faces": 10
       },
-      "findings": [],
+      "findings": [
+        {
+          "scene": "f102-scrutiny3",
+          "t": 223.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-woozic6f/f_000448.png",
+          "box": [
+            654,
+            443,
+            721,
+            510
+          ],
+          "long_side_px": 67,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f102-scrutiny3: a human face is visible at 223.5s (67px)."
+        },
+        {
+          "scene": "f102-scrutiny3",
+          "t": 225.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-woozic6f/f_000452.png",
+          "box": [
+            647,
+            443,
+            715,
+            511
+          ],
+          "long_side_px": 68,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f102-scrutiny3: a human face is visible at 225.5s (68px)."
+        }
+      ],
       "advisory": false
     },
     {
@@ -125,7 +154,7 @@
       "id": "H-4.contrast",
       "verdict": "pass",
       "measured": {
-        "min_ratio": 11.58,
+        "min_ratio": 11.59,
         "regions": 2,
         "floor": 4.5
       },
@@ -137,7 +166,7 @@
       "id": "H-4.type-floor",
       "verdict": "pass",
       "measured": {
-        "min_glyph_px": 106,
+        "min_glyph_px": 107,
         "floor_px": 32
       },
       "findings": [],
@@ -225,8 +254,19 @@
       "per_scene": 2,
       "per_run": 4
     },
-    "messages": []
+    "messages": [
+      {
+        "scene": "f102-scrutiny3",
+        "gate": "H-3",
+        "text": "Scene f102-scrutiny3: a person's face is visible at 223.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "f102-scrutiny3",
+        "gate": "H-3",
+        "text": "Scene f102-scrutiny3: a person's face is visible at 225.5s \u2014 remove all people; motion graphics only."
+      }
+    ]
   },
   "unmeasurable": [],
-  "summary_line": "[S7/H-4] contrast=11.58 safe=ok static=ok LUFS=-15.8 TP=-1.0 dur=246.933333/246.9"
+  "summary_line": "[S7/H-4] contrast=11.59 safe=ok static=ok LUFS=-15.8 TP=-1.0 dur=246.933333/246.9"
 }

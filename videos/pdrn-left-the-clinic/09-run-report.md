@@ -8,16 +8,21 @@ Skill version 0.3.0, `claude-skills-current` `master` @ `9c14bb9`, no drift.
   K-1 table only) after Kim's three rulings — VO = Higgsfield, format =
   long-form, budget = $40 for the whole project — and ran S4 through S7 to
   completion for both canvases.
-- **Result: two real, delivered MP4s.**
+- **Result: two real, delivered MP4s, both re-rendered this pass with a
+  real fix for the 9x16 static-hold failure.**
   - `06-render/16x9/renders/pdrn-left-the-clinic-16x9.mp4` — 1920×1080,
-    246.9s (4:06.9), **passes all 9 QA gates cleanly** (`qa.json`:
-    `"verdict": "pass"` — frame-zero, faceless, canvas, contrast,
-    type-floor, safe-area, static-hold, loudness, duration).
+    246.9s (4:06.9). Static-hold, loudness, duration, canvas, contrast,
+    type-floor, safe-area all pass. `H-3` (faceless) shows 2 confirmed
+    false-positive frames (see below) — not a real defect.
   - `06-render/9x16/renders/pdrn-left-the-clinic-9x16.mp4` — 1080×1920,
-    same 246.9s, same content (`F-2`, one compile both canvases). **Two
-    real gate failures remain, not fixed this pass** — see below. Both are
-    genuine, one is a pre-existing design-system defect and the other is a
-    structural format mismatch this run flagged before it ever rendered.
+    same 246.9s, same content (`F-2`, one compile both canvases).
+    **`H-4.static-hold` now passes** (was 8 violations, root-caused and
+    fixed this pass — see "The cadence fix," below). **One real failure
+    remains, not fixed this pass**: `H-4.contrast` on the endcard tagline,
+    a pre-existing `ShEndcard.jsx` component defect, unrelated to cadence
+    and out of scope for a from-inside-this-project fix. `H-3` shows more
+    confirmed false-positive frames than before (a side effect of the
+    cadence fix, explained below) — all visually inspected, none real.
 - 65 atomic beats, all real VO (zero placeholders), K-1 table fully
   extended to cover every claim that made it into the script (19 rows: 13
   sourced, 1 nominal, 5 editorial, **0 unsourced**).
@@ -67,33 +72,54 @@ directly from the K-1 table — richer than the original sketch, not
 thinner, since it pulled in six findings (C9, C10, C11, C15, C16, C17) the
 prior pass's draft never used.
 
-## Two real, disclosed QA failures on the 9:16 canvas
+## The cadence fix (this pass)
+
+`H-4.static-hold` failed on 9:16 with 8 whole-frame-static violations
+(2.5-4.0s each) against Shorts' own 2.5s ceiling. Diagnosed empirically
+before touching anything: extracted consecutive frames at a flagged window
+and measured pixel change directly — genuinely zero motion (mean-abs diff
+~0.004), despite the compiled scene containing a real, working continuous
+`float` tween. Root cause, confirmed by comparing against a working scene:
+`emit_sh_rows` (the compiler function backing `ShRows`) always floats the
+row's own 2px brass hairline divider — far too small a moving element to
+register on a whole-frame check (measured: ~300x smaller pixel delta than
+the compiler's own whole-stage fallback, which `ShRows` scenes never get
+because registering *any* float, however small, blocks that fallback from
+firing). `ShSteps` registers no float of its own, so it always gets the
+working whole-stage fallback.
+
+**Fix applied**: converted all 50 single-item `ShRows` scenes to `ShSteps`
+(mapping the row's left/right text onto `action`/`note`, numbered
+sequentially within each original topic cluster rather than reusing the
+"ordered routine" semantics literally for unrelated facts — a disclosed
+content trade-off, not a perfect fit, chosen over inventing a new component
+that needs a Design ruling still pending). Recompiled and re-rendered both
+canvases at standard quality (draft, used for earlier passes, was tested
+and ruled out as the cause before the real one was found).
+
+**Result**: `H-4.static-hold` now passes on 9:16 (0 violations). 16x9
+unaffected, confirmed still passing. Full technical detail, including the
+exact pixel measurements, is in `00-decision-ledger.md`.
+
+## What's still real and unfixed
 
 1. **`H-4.contrast` fails on the endcard's tagline** ("EVIDENCE, NOT HYPE.
-   MORE AT SEOULHABIT.COM"), measured 3.13-3.17:1 against the 4.5:1 WCAG
-   floor. Root cause: `ShEndcard.jsx` (shipped, unmodified) hard-codes that
-   line to `color: var(--text-secondary)` — the design system's own
-   `--muted` token (ink at 55% opacity on cream), which mathematically
-   lands under the floor this same system's own QA gate enforces. **Every
-   video using `ShEndcard`'s CTA line inherits this** — it is not
-   introduced by this run's content, and not something to patch in a
-   shared component from inside one project's run.
-2. **`H-4.static-hold` fails, structurally**: 8 whole-frame-static
-   violations (2.5-4.0s each) against Shorts' own 2.5s cadence ceiling.
-   This beat sheet was paced for the 4:07 long-form target (2-5s of
-   narration + settle per scene); Shorts' own cadence rule is much
-   tighter, and `F-2`'s "one compile, both canvases" does not mean one
-   pacing suits both. **This is not a surprise** — `01-story-brief.md`'s
-   own S-1 override note flagged exactly this before any render existed:
-   "a portrait gate against a landscape-paced render... must be re-pointed,
-   not inherited." The gate did its job. Fixing it needs Shorts-specific
-   re-pacing (a genuinely different, faster beat sheet), out of this pass's
-   scope.
-
-Both are named plainly here and in the decision ledger, not silently
-passed or hidden behind the 16x9 pass. The 9:16 file that shipped this
-pass is real, playable, and correctly timed/canvased/loud — it is not
-Shorts-cadence-clean.
+   MORE AT SEOULHABIT.COM"), measured ~3.2:1 against the 4.5:1 WCAG floor.
+   Root cause: `ShEndcard.jsx` (shipped, unmodified) hard-codes that line
+   to `color: var(--text-secondary)` — the design system's own `--muted`
+   token (ink at 55% opacity on cream), which mathematically lands under
+   the floor this same system's own QA gate enforces. **Every video using
+   `ShEndcard`'s CTA line inherits this** — not introduced by this run's
+   content, not something to patch in a shared component from inside one
+   project's run, and unrelated to the cadence issue just fixed.
+2. **`H-3` false-positive volume increased** as a side effect of the
+   cadence fix: more scenes now carry a bold clay numeral (`ShSteps`'s
+   `n`), giving the pre-existing Haar-cascade bold-typography false
+   positive more surface (16x9: 2 frames, was 0; 9x16: 16 frames across 4
+   scenes, was 7 across 1). Every flagged box visually inspected — same
+   confirmed class as the pre-existing `evidence-pct` "76%" finding, no
+   real face anywhere. Evidence frames saved under
+   `06-render/{9x16,16x9}/h3-verification/`.
 
 ## [NOT IN SKILL] — for `policy-change-proposals.md`
 
@@ -110,6 +136,15 @@ Shorts-cadence-clean.
    fails this system's own 4.5:1 floor. A component-level fix (bump the
    token, or don't use muted-ink for a line that must clear AA), not a
    per-video one.
+3b. **`emit_sh_rows`'s float target defeats the compiler's own fallback**
+   — registering the row's own 2px hairline as the "float" marker (however
+   many rows) blocks the much larger, working whole-stage fallback from
+   ever firing, even when the hairline itself moves far too little to
+   satisfy a whole-frame static-hold check. Confirmed the fallback works
+   correctly (measured ~300x more pixel motion) when nothing else claims
+   the `float` key. A component-level fix — either drop the per-row float
+   in favor of the stage fallback, or make it bigger/higher-contrast — not
+   a per-video one.
 4. **Shorts cadence vs. long-form-paced beat sheets** — `F-2`'s single-
    compile-both-canvases promise needs a caveat: static-hold and cadence
    gates are genuinely format-specific, and a beat sheet built for one

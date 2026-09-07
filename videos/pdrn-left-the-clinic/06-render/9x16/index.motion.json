@@ -15,7 +15,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f03-rows-origin-row0",
+      "selector": "#f03-rows-origin-step0",
       "bySec": 9.855,
       "note": "04-f03-rows-origin.html: scene start + entrance"
     },
@@ -26,7 +26,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f04-rows-origin-row0",
+      "selector": "#f04-rows-origin-step0",
       "bySec": 13.127,
       "note": "05-f04-rows-origin.html: scene start + entrance"
     },
@@ -37,7 +37,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f05-rows-origin-row0",
+      "selector": "#f05-rows-origin-step0",
       "bySec": 16.028,
       "note": "06-f05-rows-origin.html: scene start + entrance"
     },
@@ -48,7 +48,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f06-rows-origin-row0",
+      "selector": "#f06-rows-origin-step0",
       "bySec": 19.022,
       "note": "07-f06-rows-origin.html: scene start + entrance"
     },
@@ -59,7 +59,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f07-rows-origin-row0",
+      "selector": "#f07-rows-origin-step0",
       "bySec": 22.759,
       "note": "08-f07-rows-origin.html: scene start + entrance"
     },
@@ -127,7 +127,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f17-rows-naming-row0",
+      "selector": "#f17-rows-naming-step0",
       "bySec": 59.639,
       "note": "18-f17-rows-naming.html: scene start + entrance"
     },
@@ -138,7 +138,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f18-rows-naming-row0",
+      "selector": "#f18-rows-naming-step0",
       "bySec": 63.283,
       "note": "19-f18-rows-naming.html: scene start + entrance"
     },
@@ -149,7 +149,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f19-rows-naming-row0",
+      "selector": "#f19-rows-naming-step0",
       "bySec": 66.122,
       "note": "20-f19-rows-naming.html: scene start + entrance"
     },
@@ -160,7 +160,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f20-rows-naming-row0",
+      "selector": "#f20-rows-naming-step0",
       "bySec": 70.88,
       "note": "21-f20-rows-naming.html: scene start + entrance"
     },
@@ -194,7 +194,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f22-rows-boundary-detail-row0",
+      "selector": "#f22-rows-boundary-detail-step0",
       "bySec": 79.744,
       "note": "23-f22-rows-boundary-detail.html: scene start + entrance"
     },
@@ -205,7 +205,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f23-rows-boundary-detail-row0",
+      "selector": "#f23-rows-boundary-detail-step0",
       "bySec": 83.759,
       "note": "24-f23-rows-boundary-detail.html: scene start + entrance"
     },
@@ -216,7 +216,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f24-rows-boundary-detail-row0",
+      "selector": "#f24-rows-boundary-detail-step0",
       "bySec": 87.774,
       "note": "25-f24-rows-boundary-detail.html: scene start + entrance"
     },
@@ -250,7 +250,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f26-rows-rct-detail-row0",
+      "selector": "#f26-rows-rct-detail-step0",
       "bySec": 98.1,
       "note": "27-f26-rows-rct-detail.html: scene start + entrance"
     },
@@ -261,7 +261,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f27-rows-rct-detail-row0",
+      "selector": "#f27-rows-rct-detail-step0",
       "bySec": 101.98,
       "note": "28-f27-rows-rct-detail.html: scene start + entrance"
     },
@@ -272,7 +272,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f28-rows-rct-detail-row0",
+      "selector": "#f28-rows-rct-detail-step0",
       "bySec": 105.902,
       "note": "29-f28-rows-rct-detail.html: scene start + entrance"
     },
@@ -283,7 +283,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f29-rows-rct-detail-row0",
+      "selector": "#f29-rows-rct-detail-step0",
       "bySec": 110.01,
       "note": "30-f29-rows-rct-detail.html: scene start + entrance"
     },
@@ -294,7 +294,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f30-rows-more-evidence-row0",
+      "selector": "#f30-rows-more-evidence-step0",
       "bySec": 112.557,
       "note": "31-f30-rows-more-evidence.html: scene start + entrance"
     },
@@ -305,7 +305,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f31-rows-more-evidence-row0",
+      "selector": "#f31-rows-more-evidence-step0",
       "bySec": 116.201,
       "note": "32-f31-rows-more-evidence.html: scene start + entrance"
     },
@@ -316,7 +316,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f32-rows-more-evidence-row0",
+      "selector": "#f32-rows-more-evidence-step0",
       "bySec": 120.901,
       "note": "33-f32-rows-more-evidence.html: scene start + entrance"
     },
@@ -327,7 +327,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f33-rows-more-evidence-row0",
+      "selector": "#f33-rows-more-evidence-step0",
       "bySec": 123.36,
       "note": "34-f33-rows-more-evidence.html: scene start + entrance"
     },
@@ -338,7 +338,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f34-rows-more-evidence-row0",
+      "selector": "#f34-rows-more-evidence-step0",
       "bySec": 126.911,
       "note": "35-f34-rows-more-evidence.html: scene start + entrance"
     },
@@ -349,7 +349,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f35-rows-more-evidence-row0",
+      "selector": "#f35-rows-more-evidence-step0",
       "bySec": 129.349,
       "note": "36-f35-rows-more-evidence.html: scene start + entrance"
     },
@@ -360,7 +360,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f36-rows-clinic-uses-row0",
+      "selector": "#f36-rows-clinic-uses-step0",
       "bySec": 132.601,
       "note": "37-f36-rows-clinic-uses.html: scene start + entrance"
     },
@@ -371,7 +371,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f37-rows-clinic-uses-row0",
+      "selector": "#f37-rows-clinic-uses-step0",
       "bySec": 135.966,
       "note": "38-f37-rows-clinic-uses.html: scene start + entrance"
     },
@@ -382,7 +382,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f38-rows-clinic-uses-row0",
+      "selector": "#f38-rows-clinic-uses-step0",
       "bySec": 140.724,
       "note": "39-f38-rows-clinic-uses.html: scene start + entrance"
     },
@@ -398,7 +398,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f40-rows-regulator-trend-row0",
+      "selector": "#f40-rows-regulator-trend-step0",
       "bySec": 147.924,
       "note": "41-f40-rows-regulator-trend.html: scene start + entrance"
     },
@@ -409,7 +409,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f41-rows-regulator-trend-row0",
+      "selector": "#f41-rows-regulator-trend-step0",
       "bySec": 151.804,
       "note": "42-f41-rows-regulator-trend.html: scene start + entrance"
     },
@@ -420,7 +420,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f42-rows-regulator-trend-row0",
+      "selector": "#f42-rows-regulator-trend-step0",
       "bySec": 154.983,
       "note": "43-f42-rows-regulator-trend.html: scene start + entrance"
     },
@@ -431,7 +431,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f43-rows-regulator-trend-row0",
+      "selector": "#f43-rows-regulator-trend-step0",
       "bySec": 159.555,
       "note": "44-f43-rows-regulator-trend.html: scene start + entrance"
     },
@@ -465,7 +465,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f45-rows-regulator-detail-row0",
+      "selector": "#f45-rows-regulator-detail-step0",
       "bySec": 170.594,
       "note": "46-f45-rows-regulator-detail.html: scene start + entrance"
     },
@@ -476,7 +476,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f46-rows-regulator-detail-row0",
+      "selector": "#f46-rows-regulator-detail-step0",
       "bySec": 175.352,
       "note": "47-f46-rows-regulator-detail.html: scene start + entrance"
     },
@@ -487,7 +487,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f47-rows-regulator-detail-row0",
+      "selector": "#f47-rows-regulator-detail-step0",
       "bySec": 180.11,
       "note": "48-f47-rows-regulator-detail.html: scene start + entrance"
     },
@@ -498,7 +498,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f48-rows-regulator-detail-row0",
+      "selector": "#f48-rows-regulator-detail-step0",
       "bySec": 184.868,
       "note": "49-f48-rows-regulator-detail.html: scene start + entrance"
     },
@@ -544,7 +544,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f100-scrutiny1-row0",
+      "selector": "#f100-scrutiny1-step0",
       "bySec": 216.827,
       "note": "57-f100-scrutiny1.html: scene start + entrance"
     },
@@ -555,7 +555,7 @@
     },
     {
       "kind": "appearsBy",
-      "selector": "#f101-scrutiny2-row0",
+      "selector": "#f101-scrutiny2-step0",
       "bySec": 220.518,
       "note": "58-f101-scrutiny2.html: scene start + entrance"
     },

@@ -115,17 +115,17 @@
     {
       "id": "f03-rows-origin",
       "section": "f03-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.972,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Source",
-            "right": "Salmon DNA"
+            "n": 1,
+            "action": "Source",
+            "note": "Salmon DNA"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f03-rows-origin.wav",
       "chip": "Int J Biol Macromol 2024"
@@ -133,17 +133,17 @@
     {
       "id": "f04-rows-origin",
       "section": "f04-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.601,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Studied for",
-            "right": "Wound recovery"
+            "n": 2,
+            "action": "Studied for",
+            "note": "Wound recovery"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f04-rows-origin.wav",
       "chip": "Cureus 2026"
@@ -151,17 +151,17 @@
     {
       "id": "f05-rows-origin",
       "section": "f05-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.694,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Also studied",
-            "right": "Graft wounds"
+            "n": 3,
+            "action": "Also studied",
+            "note": "Graft wounds"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f05-rows-origin.wav",
       "chip": "Cureus 2026"
@@ -169,17 +169,17 @@
     {
       "id": "f06-rows-origin",
       "section": "f06-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.437,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "And for",
-            "right": "Inflammatory disease"
+            "n": 4,
+            "action": "And for",
+            "note": "Inflammatory disease"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f06-rows-origin.wav",
       "chip": "Dermatol Res Pract 2013"
@@ -187,17 +187,17 @@
     {
       "id": "f07-rows-origin",
       "section": "f07-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.365,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "In animals",
-            "right": "Faster healing"
+            "n": 5,
+            "action": "In animals",
+            "note": "Faster healing"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f07-rows-origin.wav",
       "chip": "J Cosmet Laser Ther 2016"
@@ -205,119 +205,119 @@
     {
       "id": "f08-rows-origin",
       "section": "f08-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.529,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Delivered by",
-            "right": "Injection"
+            "n": 6,
+            "action": "Delivered by",
+            "note": "Injection"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f08-rows-origin.wav"
     },
     {
       "id": "f09-rows-origin",
       "section": "f09-rows-origin",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.1,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Result",
-            "right": "Medical credibility"
+            "n": 7,
+            "action": "Result",
+            "note": "Medical credibility"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f09-rows-origin.wav"
     },
     {
       "id": "f10-rows-retail",
       "section": "f10-rows-retail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.442,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Interest grew",
-            "right": "At-home treatments"
+            "n": 1,
+            "action": "Interest grew",
+            "note": "At-home treatments"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f10-rows-retail.wav"
     },
     {
       "id": "f11-rows-retail",
       "section": "f11-rows-retail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.322,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "One serum",
-            "right": "Became dozens"
+            "n": 2,
+            "action": "One serum",
+            "note": "Became dozens"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f11-rows-retail.wav"
     },
     {
       "id": "f12-rows-retail",
       "section": "f12-rows-retail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.2,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Now spans",
-            "right": "Creams to pads"
+            "n": 3,
+            "action": "Now spans",
+            "note": "Creams to pads"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f12-rows-retail.wav"
     },
     {
       "id": "f13-rows-retail",
       "section": "f13-rows-retail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.229,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Packaging",
-            "right": "Clinic visuals"
+            "n": 4,
+            "action": "Packaging",
+            "note": "Clinic visuals"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f13-rows-retail.wav"
     },
     {
       "id": "f14-rows-retail",
       "section": "f14-rows-retail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.293,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Promise",
-            "right": "No needle needed"
+            "n": 5,
+            "action": "Promise",
+            "note": "No needle needed"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f14-rows-retail.wav"
     },
@@ -356,17 +356,17 @@
     {
       "id": "f17-rows-naming",
       "section": "f17-rows-naming",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.344,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Plant version",
-            "right": "No irritation shown"
+            "n": 1,
+            "action": "Plant version",
+            "note": "No irritation shown"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f17-rows-naming.wav",
       "chip": "Int J Mol Sci 2025"
@@ -374,17 +374,17 @@
     {
       "id": "f18-rows-naming",
       "section": "f18-rows-naming",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.539,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "But",
-            "right": "Not proof for salmon"
+            "n": 2,
+            "action": "But",
+            "note": "Not proof for salmon"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f18-rows-naming.wav",
       "chip": "Int J Mol Sci 2025"
@@ -392,17 +392,17 @@
     {
       "id": "f19-rows-naming",
       "section": "f19-rows-naming",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.458,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Also confused",
-            "right": "PDRN vs. PN"
+            "n": 3,
+            "action": "Also confused",
+            "note": "PDRN vs. PN"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f19-rows-naming.wav",
       "chip": "Biomolecules 2025"
@@ -410,17 +410,17 @@
     {
       "id": "f20-rows-naming",
       "section": "f20-rows-naming",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.584,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "INCI name",
-            "right": "Sodium DNA"
+            "n": 4,
+            "action": "INCI name",
+            "note": "Sodium DNA"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f20-rows-naming.wav",
       "chip": "COSMILE Europe"
@@ -442,17 +442,17 @@
     {
       "id": "f22-rows-boundary-detail",
       "section": "f22-rows-boundary-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.715,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Strongest evidence",
-            "right": "Wounds, injections"
+            "n": 1,
+            "action": "Strongest evidence",
+            "note": "Wounds, injections"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f22-rows-boundary-detail.wav",
       "chip": "Cureus 2026"
@@ -460,17 +460,17 @@
     {
       "id": "f23-rows-boundary-detail",
       "section": "f23-rows-boundary-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.715,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Field review",
-            "right": "Rigor still lacking"
+            "n": 2,
+            "action": "Field review",
+            "note": "Rigor still lacking"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f23-rows-boundary-detail.wav",
       "chip": "Aesthet Plast Surg 2024"
@@ -478,17 +478,17 @@
     {
       "id": "f24-rows-boundary-detail",
       "section": "f24-rows-boundary-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.826,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "But",
-            "right": "Not PDRN-specific"
+            "n": 3,
+            "action": "But",
+            "note": "Not PDRN-specific"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f24-rows-boundary-detail.wav",
       "chip": "Aesthet Plast Surg 2024"
@@ -510,17 +510,17 @@
     {
       "id": "f26-rows-rct-detail",
       "section": "f26-rows-rct-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.58,
       "slot_word_count": 6,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Trial size",
-            "right": "31 women, one site"
+            "n": 1,
+            "action": "Trial size",
+            "note": "31 women, one site"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f26-rows-rct-detail.wav",
       "chip": "PLoS One 2026"
@@ -528,17 +528,17 @@
     {
       "id": "f27-rows-rct-detail",
       "section": "f27-rows-rct-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.622,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Excluded",
-            "right": "Pregnancy, allergy"
+            "n": 2,
+            "action": "Excluded",
+            "note": "Pregnancy, allergy"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f27-rows-rct-detail.wav",
       "chip": "PLoS One 2026"
@@ -546,17 +546,17 @@
     {
       "id": "f28-rows-rct-detail",
       "section": "f28-rows-rct-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.808,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "But",
-            "right": "Not proof of risk"
+            "n": 3,
+            "action": "But",
+            "note": "Not proof of risk"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f28-rows-rct-detail.wav",
       "chip": "PLoS One 2026"
@@ -564,17 +564,17 @@
     {
       "id": "f29-rows-rct-detail",
       "section": "f29-rows-rct-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.247,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Authors flag",
-            "right": "May be transient"
+            "n": 4,
+            "action": "Authors flag",
+            "note": "May be transient"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f29-rows-rct-detail.wav",
       "chip": "PLoS One 2026"
@@ -582,17 +582,17 @@
     {
       "id": "f30-rows-more-evidence",
       "section": "f30-rows-more-evidence",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.344,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Trial population",
-            "right": "Sensitive skin only"
+            "n": 1,
+            "action": "Trial population",
+            "note": "Sensitive skin only"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f30-rows-more-evidence.wav",
       "chip": "PLoS One 2026"
@@ -600,17 +600,17 @@
     {
       "id": "f31-rows-more-evidence",
       "section": "f31-rows-more-evidence",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.4,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Excluded",
-            "right": "Acne, rosacea, eczema"
+            "n": 2,
+            "action": "Excluded",
+            "note": "Acne, rosacea, eczema"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f31-rows-more-evidence.wav",
       "chip": "PLoS One 2026"
@@ -618,17 +618,17 @@
     {
       "id": "f32-rows-more-evidence",
       "section": "f32-rows-more-evidence",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.159,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Animal study",
-            "right": "Reduced pigmentation"
+            "n": 3,
+            "action": "Animal study",
+            "note": "Reduced pigmentation"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f32-rows-more-evidence.wav",
       "chip": "Molecules 2022"
@@ -636,17 +636,17 @@
     {
       "id": "f33-rows-more-evidence",
       "section": "f33-rows-more-evidence",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.251,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "But",
-            "right": "Combo, not PDRN alone"
+            "n": 4,
+            "action": "But",
+            "note": "Combo, not PDRN alone"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f33-rows-more-evidence.wav",
       "chip": "Molecules 2022"
@@ -654,17 +654,17 @@
     {
       "id": "f34-rows-more-evidence",
       "section": "f34-rows-more-evidence",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.138,
       "slot_word_count": 6,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "EU check",
-            "right": "Not a fragrance allergen"
+            "n": 5,
+            "action": "EU check",
+            "note": "Not a fragrance allergen"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f34-rows-more-evidence.wav",
       "chip": "EU Reg. 2023/1545"
@@ -672,17 +672,17 @@
     {
       "id": "f35-rows-more-evidence",
       "section": "f35-rows-more-evidence",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.952,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Expected",
-            "right": "Not used as fragrance"
+            "n": 6,
+            "action": "Expected",
+            "note": "Not used as fragrance"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f35-rows-more-evidence.wav",
       "chip": "EU Reg. 2023/1545"
@@ -690,17 +690,17 @@
     {
       "id": "f36-rows-clinic-uses",
       "section": "f36-rows-clinic-uses",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.065,
       "slot_word_count": 6,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Also used for",
-            "right": "Genital skin disease"
+            "n": 1,
+            "action": "Also used for",
+            "note": "Genital skin disease"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f36-rows-clinic-uses.wav",
       "chip": "Dermatol Res Pract 2013"
@@ -708,17 +708,17 @@
     {
       "id": "f37-rows-clinic-uses",
       "section": "f37-rows-clinic-uses",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.458,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "But",
-            "right": "Injected, diseased skin"
+            "n": 2,
+            "action": "But",
+            "note": "Injected, diseased skin"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f37-rows-clinic-uses.wav",
       "chip": "Dermatol Res Pract 2013"
@@ -726,17 +726,17 @@
     {
       "id": "f38-rows-clinic-uses",
       "section": "f38-rows-clinic-uses",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.218,
       "slot_word_count": 7,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Not the same as",
-            "right": "Leave-on healthy skin"
+            "n": 3,
+            "action": "Not the same as",
+            "note": "Leave-on healthy skin"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f38-rows-clinic-uses.wav",
       "chip": "Dermatol Res Pract 2013"
@@ -757,17 +757,17 @@
     {
       "id": "f40-rows-regulator-trend",
       "section": "f40-rows-regulator-trend",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.58,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "2023",
-            "right": "7 violations"
+            "n": 1,
+            "action": "2023",
+            "note": "7 violations"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f40-rows-regulator-trend.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -775,17 +775,17 @@
     {
       "id": "f41-rows-regulator-trend",
       "section": "f41-rows-regulator-trend",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.879,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "2024",
-            "right": "19 violations"
+            "n": 2,
+            "action": "2024",
+            "note": "19 violations"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f41-rows-regulator-trend.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -793,17 +793,17 @@
     {
       "id": "f42-rows-regulator-trend",
       "section": "f42-rows-regulator-trend",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.272,
       "slot_word_count": 3,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "2025",
-            "right": "39 violations"
+            "n": 3,
+            "action": "2025",
+            "note": "39 violations"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f42-rows-regulator-trend.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -811,17 +811,17 @@
     {
       "id": "f43-rows-regulator-trend",
       "section": "f43-rows-regulator-trend",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.339,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "2026 (H1)",
-            "right": "41 violations"
+            "n": 4,
+            "action": "2026 (H1)",
+            "note": "41 violations"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f43-rows-regulator-trend.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -843,17 +843,17 @@
     {
       "id": "f45-rows-regulator-detail",
       "section": "f45-rows-regulator-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.458,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "7 more",
-            "right": "False functional claims"
+            "n": 1,
+            "action": "7 more",
+            "note": "False functional claims"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f45-rows-regulator-detail.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -861,17 +861,17 @@
     {
       "id": "f46-rows-regulator-detail",
       "section": "f46-rows-regulator-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.458,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "18 more",
-            "right": "Consumer confusion"
+            "n": 2,
+            "action": "18 more",
+            "note": "Consumer confusion"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f46-rows-regulator-detail.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -879,17 +879,17 @@
     {
       "id": "f47-rows-regulator-detail",
       "section": "f47-rows-regulator-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.458,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Only 11",
-            "right": "Led to action"
+            "n": 3,
+            "action": "Only 11",
+            "note": "Led to action"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f47-rows-regulator-detail.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -897,17 +897,17 @@
     {
       "id": "f48-rows-regulator-detail",
       "section": "f48-rows-regulator-detail",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.339,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Driven by",
-            "right": "Rejuran boom"
+            "n": 4,
+            "action": "Driven by",
+            "note": "Rejuran boom"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f48-rows-regulator-detail.wav",
       "chip": "MFDS via Nat'l Assembly, 2026"
@@ -983,68 +983,68 @@
     {
       "id": "f53-rows-buying-context",
       "section": "f53-rows-buying-context",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.158,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "The risk",
-            "right": "Borrowed expectations"
+            "n": 1,
+            "action": "The risk",
+            "note": "Borrowed expectations"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f53-rows-buying-context.wav"
     },
     {
       "id": "f54-rows-buying-context",
       "section": "f54-rows-buying-context",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.994,
       "slot_word_count": 6,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Not proof of harm",
-            "right": "Just unanswered"
+            "n": 2,
+            "action": "Not proof of harm",
+            "note": "Just unanswered"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f54-rows-buying-context.wav"
     },
     {
       "id": "f55-rows-buying-context",
       "section": "f55-rows-buying-context",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.357,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "It means",
-            "right": "Size the expectation"
+            "n": 3,
+            "action": "It means",
+            "note": "Size the expectation"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f55-rows-buying-context.wav"
     },
     {
       "id": "f100-scrutiny1",
       "section": "f100-scrutiny1",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.391,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Allergy rate",
-            "right": "Not confirmed"
+            "n": 1,
+            "action": "Allergy rate",
+            "note": "Not confirmed"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f100-scrutiny1.wav",
       "chip": "PLoS One 2026"
@@ -1052,17 +1052,17 @@
     {
       "id": "f101-scrutiny2",
       "section": "f101-scrutiny2",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.063,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Plant version",
-            "right": "Needs its own tests"
+            "n": 1,
+            "action": "Plant version",
+            "note": "Needs its own tests"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f101-scrutiny2.wav",
       "chip": "Int J Mol Sci 2025"
@@ -1070,85 +1070,85 @@
     {
       "id": "f102-scrutiny3",
       "section": "f102-scrutiny3",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.951,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "Not a verdict",
-            "right": "Not a scam"
+            "n": 1,
+            "action": "Not a verdict",
+            "note": "Not a scam"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f102-scrutiny3.wav"
     },
     {
       "id": "f103-scrutiny4",
       "section": "f103-scrutiny4",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.171,
       "slot_word_count": 4,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "It means",
-            "right": "Read the label closely"
+            "n": 1,
+            "action": "It means",
+            "note": "Read the label closely"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f103-scrutiny4.wav"
     },
     {
       "id": "f56-rows-labels",
       "section": "f56-rows-labels",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 4.087,
       "slot_word_count": 6,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "WHAT WE KNOW",
-            "right": "Origin, injectable history"
+            "n": 1,
+            "action": "WHAT WE KNOW",
+            "note": "Origin, injectable history"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f56-rows-labels.wav"
     },
     {
       "id": "f57-rows-labels",
       "section": "f57-rows-labels",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 2.176,
       "slot_word_count": 5,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "WHAT WE DON'T",
-            "right": "Topical proof"
+            "n": 2,
+            "action": "WHAT WE DON'T",
+            "note": "Topical proof"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f57-rows-labels.wav"
     },
     {
       "id": "f58-rows-labels",
       "section": "f58-rows-labels",
-      "component": "ShRows",
+      "component": "ShSteps",
       "vo_duration_s": 3.96,
       "slot_word_count": 6,
       "slots": {
-        "rows": [
+        "steps": [
           {
-            "left": "WHAT TO CHECK",
-            "right": "Name, source, %"
+            "n": 3,
+            "action": "WHAT TO CHECK",
+            "note": "Name, source, %"
           }
-        ],
-        "active": -1
+        ]
       },
       "vo_file": "vo/flat/f58-rows-labels.wav"
     },

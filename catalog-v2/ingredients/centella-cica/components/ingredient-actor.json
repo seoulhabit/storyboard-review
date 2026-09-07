@@ -1,0 +1,58 @@
+{
+  "$schema": "../../../governance/ingredient-actor.schema.json",
+  "actor_version": "1.1.0",
+  "ingredient_id": "centella-cica",
+  "display_name": "Centella / Cica",
+  "status": "approved",
+  "asset": "ingredient-actor.svg",
+  "recognition_cue": "A three-leaf Centella source silhouette with one central vein system and a small extract droplet.",
+  "visual_meaning": "A botanical source cue that keeps the consumer term Cica separate from the exact ingredient declaration and extract version.",
+  "states": ["hero", "compact", "source", "formula", "evidence", "unknown-version", "recap"],
+  "layers": {
+    "root": "cic-actor",
+    "shadow": "cic-shadow",
+    "leaves": "cic-leaves",
+    "veins": "cic-veins",
+    "stems": "cic-stems",
+    "droplet": "cic-droplet",
+    "version_ring": "cic-version-ring"
+  },
+  "motion_contract": {
+    "entrance": "Draw the stems first, unfold the leaves from their bases, then land the extract droplet.",
+    "ambient": "Use one slow botanical breath across the leaf group and a restrained droplet highlight shift.",
+    "resolve": "The version ring completes only when an exact declaration or extract version is supplied.",
+    "duration_seconds": 2.5,
+    "host_rules": [
+      "Keep the leaves as one botanical family rather than many decorative sprigs.",
+      "Use the incomplete version ring when product specification is absent.",
+      "Do not animate the veins as biological transport or penetration without scoped evidence.",
+      "Keep all motion finite and owned by the host timeline."
+    ]
+  },
+  "long_form_contract": {
+    "canvas_reference": {"width": 1920, "height": 1080, "aspect_ratio": "16:9", "title_safe_inset_px": 96},
+    "roles": {
+      "chapter_open": {"state": "hero", "purpose": "Reintroduce the botanical subject at a chapter boundary.", "size_percent": 28, "anchor": "right-third", "entry_seconds": 1.4, "label_policy": "name-and-context"},
+      "continuity_anchor": {"state": "compact", "purpose": "Keep Centella present while a label, source or formula becomes primary.", "size_percent": 7, "anchor": "upper-right", "entry_seconds": 0.35, "label_policy": "name"},
+      "diagram_node": {"state": "source", "purpose": "Act as the source node in declaration and extract-version diagrams.", "size_percent": 14, "anchor": "left-third", "entry_seconds": 0.55, "label_policy": "name-and-context"},
+      "evidence_companion": {"state": "evidence", "purpose": "Maintain subject continuity without competing with study details.", "size_percent": 6, "anchor": "upper-left", "entry_seconds": 0.25, "label_policy": "hidden"},
+      "recap_token": {"state": "recap", "purpose": "Return the ingredient as a simplified memory marker.", "size_percent": 9, "anchor": "inline", "entry_seconds": 0.4, "label_policy": "name"},
+      "unknown_version": {"state": "unknown-version", "purpose": "Signal that Cica has not yet been resolved to an exact declaration or extract.", "size_percent": 12, "anchor": "center", "entry_seconds": 0.45, "label_policy": "warning"}
+    },
+    "reentry": {
+      "first_appearance": "Use the full stem, leaf and droplet reveal once.",
+      "later_appearances": "Return with a short scale or match-position resolve; do not replay the botanical unfold.",
+      "chapter_return": "Preserve leaf orientation and accent color so the actor reads before its label.",
+      "maximum_simultaneous_actors": 1
+    },
+    "recognition_tests": {"minimum_width_px": 104, "small_size_mode": "Keep the three-leaf silhouette and droplet; suppress fine veins before reducing further.", "backgrounds": ["light", "dark", "photographic"]}
+  },
+  "safe_uses": ["ingredient hero", "source identity", "label declaration", "extract-version question", "formula journey", "recap"],
+  "avoid": ["proof of extraction method", "standardization claim", "skin-penetration animation", "instant soothing claim", "equating every Centella-derived ingredient"],
+  "disclosure": "Illustrative botanical actor. The exact declaration, plant part, extraction process and standardization require product-specific information.",
+  "harvested_from": [
+    "catalog/ingredient-photography/02-centella-asiatica.png",
+    "videos/kbeauty-label-trap/scenes_04_07.py",
+    "catalog-v2/story-systems/label-literacy/components/ingredient-hero-actor/preview.html"
+  ]
+}

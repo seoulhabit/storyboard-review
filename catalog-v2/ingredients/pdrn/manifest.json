@@ -34,6 +34,16 @@
   ],
   "components": [
     {
+      "id": "pdrn-ingredient-actor",
+      "file": "components/ingredient-actor.svg",
+      "contract": "components/ingredient-actor.json",
+      "origin": "authored_code_native_after_harvest",
+      "status": "approved",
+      "dimensions": "800x800",
+      "has_alpha": true,
+      "sha256": "ca3e2e06a46c27bc0e428a25c5eeca6b25c8cf138bd965e544a6b2da79dc5b65"
+    },
+    {
       "id": "pdrn-route-comparison",
       "file": "components/route-comparison.svg",
       "origin": "authored_code_native_after_harvest",

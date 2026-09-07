@@ -75,10 +75,10 @@
       },
       {
         "id": "pdrn-fragment-actor",
-        "type": "browser-drawn short DNA-fragment actor",
+        "type": "editable transparent SVG ingredient actor",
         "status": "approved",
-        "purpose": "Provide ingredient recognition without the generic spinning-helix cliché.",
-        "path": "videos/pdrn-cellular-science/compositions/frames/02-identity.html"
+        "purpose": "Provide ingredient recognition without the generic spinning-helix cliché while keeping the source frame as harvest provenance only.",
+        "path": "catalog-v2/ingredients/pdrn/components/ingredient-actor.svg"
       },
       {
         "id": "route-comparison",
@@ -227,7 +227,7 @@
     "texture_media": "catalog-v2/ingredients/pdrn/assets/pdrn-serum-square.png",
     "application_media": null,
     "product_container": "catalog-v2/ingredients/pdrn/assets/pdrn-dropper-packshot-cream.png",
-    "mechanism_actor": "videos/pdrn-cellular-science/compositions/frames/02-identity.html",
+    "mechanism_actor": "catalog-v2/ingredients/pdrn/components/ingredient-actor.svg",
     "route_comparison": "catalog-v2/ingredients/pdrn/components/route-comparison.svg",
     "process_comparison": null,
     "evidence_cards": ["PDRN-SCI-2014-DIABETIC-ULCER", "PDRN-SCI-2026-TOPICAL-850K", "PDRN-SCI-2026-MECHANISM-850K"],

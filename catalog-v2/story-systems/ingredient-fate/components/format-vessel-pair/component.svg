@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none" role="img" aria-labelledby="ifv-title ifv-desc">
+  <title id="ifv-title">Neutral cream and powder format vessels</title>
+  <desc id="ifv-desc">A sculptural cream jar and powder canister shown as neutral route containers, not commercial products.</desc>
+  <defs>
+    <linearGradient id="ifv-glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFFDF8"/><stop offset=".55" stop-color="#E9E0DC"/><stop offset="1" stop-color="#C8D7D2"/></linearGradient>
+    <linearGradient id="ifv-metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#263744"/><stop offset=".52" stop-color="#172332"/><stop offset="1" stop-color="#45545F"/></linearGradient>
+    <linearGradient id="ifv-powder" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F0D1BF"/><stop offset="1" stop-color="#BC6A65"/></linearGradient>
+    <filter id="ifv-shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="24"/></filter>
+  </defs>
+  <g id="ifv-left-route" data-layer="left-route"><path d="M420 176V700" stroke="#204E58" stroke-opacity=".28" stroke-width="3" stroke-dasharray="6 15"/><circle cx="420" cy="176" r="7" fill="#204E58"/></g>
+  <g id="ifv-right-route" data-layer="right-route"><path d="M1180 176V700" stroke="#7D3155" stroke-opacity=".28" stroke-width="3" stroke-dasharray="6 15"/><circle cx="1180" cy="176" r="7" fill="#7D3155"/></g>
+  <g id="ifv-left-vessel" data-layer="left-vessel">
+    <ellipse cx="420" cy="704" rx="238" ry="42" fill="#172332" fill-opacity=".17" filter="url(#ifv-shadow)"/>
+    <rect x="228" y="340" width="384" height="298" rx="90" fill="url(#ifv-glass)" stroke="#172332" stroke-width="5"/>
+    <rect x="252" y="286" width="336" height="92" rx="26" fill="url(#ifv-metal)"/>
+    <path d="M286 431C341 390 393 453 445 414C495 377 540 421 573 398" stroke="#FFFDF8" stroke-width="17" stroke-linecap="round"/>
+    <path d="M286 462C341 421 393 484 445 445C495 408 540 452 573 429" stroke="#9F5962" stroke-opacity=".62" stroke-width="11" stroke-linecap="round"/>
+    <rect x="304" y="520" width="232" height="58" rx="29" fill="#FFFDF8" fill-opacity=".86"/>
+    <text x="420" y="557" text-anchor="middle" fill="#172332" font-family="Arial, sans-serif" font-size="24" font-weight="700">Topical formula</text>
+  </g>
+  <g id="ifv-right-vessel" data-layer="right-vessel">
+    <ellipse cx="1180" cy="704" rx="238" ry="42" fill="#172332" fill-opacity=".17" filter="url(#ifv-shadow)"/>
+    <path d="M1002 326H1358L1324 648H1036L1002 326Z" fill="#FFFDF8" stroke="#172332" stroke-width="5"/>
+    <rect x="984" y="282" width="392" height="78" rx="22" fill="url(#ifv-metal)"/>
+    <path d="M1039 434C1115 393 1248 392 1324 434V548H1039V434Z" fill="url(#ifv-powder)" fill-opacity=".72"/>
+    <g fill="#FFFDF8" fill-opacity=".75"><circle cx="1100" cy="458" r="8"/><circle cx="1151" cy="480" r="6"/><circle cx="1217" cy="451" r="9"/><circle cx="1264" cy="489" r="7"/></g>
+    <rect x="1062" y="548" width="236" height="58" rx="29" fill="#F4EEE8"/>
+    <text x="1180" y="585" text-anchor="middle" fill="#172332" font-family="Arial, sans-serif" font-size="24" font-weight="700">Oral powder</text>
+  </g>
+  <g id="ifv-optional" data-layer="optional">
+    <rect x="652" y="708" width="296" height="64" rx="32" fill="#172332"/>
+    <text x="800" y="749" text-anchor="middle" fill="#FFFDF8" font-family="Arial, sans-serif" font-size="23" font-weight="700">format, not proof</text>
+  </g>
+</svg>

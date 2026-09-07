@@ -1,0 +1,15 @@
+{
+  "component_id": "format-vessel-pair",
+  "display_name": "Format Vessel Pair",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Show neutral topical and oral product formats without inventing a brand, ingredient percentage or efficacy claim.",
+  "required_inputs": ["left_label", "left_route", "right_label", "right_route"],
+  "variants": ["cream-and-powder", "serum-and-capsule", "topical-and-clinic"],
+  "visual_states": ["neutral", "left-active", "right-active", "optional", "unknown-label"],
+  "layouts": ["16:9", "9:16-safe"],
+  "asset": "component.svg",
+  "stable_layers": ["ifv-left-vessel", "ifv-right-vessel", "ifv-left-route", "ifv-right-route", "ifv-optional"],
+  "avoid": ["fake brand", "fake percentage", "ingredient-specific color without fixture data", "presenting a vessel as efficacy evidence"],
+  "harvested_from": ["videos/collagen-where-did-it-go/compositions/frames/01-hook.html", "videos/collagen-where-did-it-go/compositions/frames/14-hierarchy.html"]
+}

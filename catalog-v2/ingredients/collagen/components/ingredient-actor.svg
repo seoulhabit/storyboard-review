@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" fill="none" role="img" aria-labelledby="cola-title cola-desc">
+  <title id="cola-title">Collagen ingredient actor</title>
+  <desc id="cola-desc">An illustrative triple-ribbon collagen fibre held inside a translucent dermal architecture lens.</desc>
+  <defs>
+    <linearGradient id="cola-ribbon-a" x1="104" y1="188" x2="690" y2="524" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7D3155"/>
+      <stop offset="0.48" stop-color="#C66F61"/>
+      <stop offset="1" stop-color="#D8A38E"/>
+    </linearGradient>
+    <linearGradient id="cola-ribbon-b" x1="128" y1="560" x2="674" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#204E58"/>
+      <stop offset="0.52" stop-color="#5D8B87"/>
+      <stop offset="1" stop-color="#B4CBC0"/>
+    </linearGradient>
+    <linearGradient id="cola-ribbon-c" x1="98" y1="294" x2="702" y2="568" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E6C9B8"/>
+      <stop offset="0.5" stop-color="#9F5962"/>
+      <stop offset="1" stop-color="#6A2848"/>
+    </linearGradient>
+    <radialGradient id="cola-lens" cx="0" cy="0" r="1" gradientTransform="translate(348 302) rotate(48) scale(410)">
+      <stop stop-color="#FFFDF8" stop-opacity="0.86"/>
+      <stop offset="0.54" stop-color="#F2E5DB" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#204E58" stop-opacity="0.08"/>
+    </radialGradient>
+    <filter id="cola-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="cola-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <clipPath id="cola-lens-clip"><ellipse cx="400" cy="396" rx="330" ry="306"/></clipPath>
+  </defs>
+  <g id="cola-actor" data-layer="root">
+    <g id="cola-lens" data-layer="dermal-lens">
+      <ellipse cx="400" cy="396" rx="330" ry="306" fill="url(#cola-lens)" stroke="#172332" stroke-opacity="0.14" stroke-width="3"/>
+      <ellipse cx="400" cy="396" rx="302" ry="278" stroke="#204E58" stroke-opacity="0.18" stroke-width="2" stroke-dasharray="5 16"/>
+    </g>
+    <g id="cola-shadow" data-layer="shadow" opacity="0.18" filter="url(#cola-soft-shadow)" clip-path="url(#cola-lens-clip)">
+      <path d="M91 374C177 200 250 204 329 373C408 542 482 548 563 370C620 245 661 230 714 301" stroke="#172332" stroke-width="74" stroke-linecap="round"/>
+    </g>
+    <g id="cola-fibre" data-layer="fibre" clip-path="url(#cola-lens-clip)" fill="none" stroke-linecap="round">
+      <path id="cola-ribbon-a" data-layer="ribbon-a" d="M82 331C170 177 249 205 325 373C401 541 482 549 562 373C634 216 679 224 733 321" stroke="url(#cola-ribbon-a)" stroke-width="34"/>
+      <path id="cola-ribbon-b" data-layer="ribbon-b" d="M76 431C160 589 245 565 324 395C403 225 485 219 564 397C630 545 680 552 738 455" stroke="url(#cola-ribbon-b)" stroke-width="31"/>
+      <path id="cola-ribbon-c" data-layer="ribbon-c" d="M75 383C163 301 244 302 325 395C405 488 488 487 566 391C633 308 683 303 739 375" stroke="url(#cola-ribbon-c)" stroke-width="25"/>
+    </g>
+    <g id="cola-highlights" data-layer="highlights" fill="none" stroke-linecap="round" filter="url(#cola-glow)">
+      <path d="M128 300C191 224 249 247 302 353" stroke="#FFF8F2" stroke-opacity="0.82" stroke-width="7"/>
+      <path d="M411 472C474 514 527 462 567 374" stroke="#FFF8F2" stroke-opacity="0.66" stroke-width="6"/>
+      <path d="M176 506C231 531 279 487 322 397" stroke="#D8EEE8" stroke-opacity="0.66" stroke-width="6"/>
+    </g>
+    <g id="cola-banding" data-layer="fibril-banding" stroke="#172332" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round">
+      <path d="M166 262L188 337"/><path d="M238 270L260 342"/><path d="M309 347L328 421"/><path d="M388 412L409 485"/><path d="M466 405L487 475"/><path d="M543 347L565 420"/><path d="M620 294L641 367"/>
+    </g>
+    <g id="cola-endpoints" data-layer="endpoints" fill="#FFFDF8" stroke-width="5">
+      <circle cx="87" cy="331" r="13" stroke="#7D3155"/><circle cx="729" cy="321" r="13" stroke="#D8A38E"/>
+      <circle cx="82" cy="431" r="13" stroke="#204E58"/><circle cx="734" cy="455" r="13" stroke="#5D8B87"/>
+    </g>
+    <g id="cola-specification" data-layer="specification" stroke="#172332" stroke-opacity="0.45" stroke-width="3" stroke-linecap="round">
+      <path d="M111 155H184"/><path d="M111 155V228"/>
+      <path d="M689 563V636"/><path d="M616 636H689"/>
+      <circle cx="147" cy="155" r="5" fill="#7D3155" stroke="none"/>
+      <circle cx="689" cy="600" r="5" fill="#204E58" stroke="none"/>
+    </g>
+  </g>
+</svg>

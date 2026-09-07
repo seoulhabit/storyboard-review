@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" fill="none" role="img" aria-labelledby="pda-title pda-desc">
+  <title id="pda-title">PDRN ingredient actor</title>
+  <desc id="pda-desc">An illustrative set of short paired nucleotide fragments with visibly terminated ends and a specification gate.</desc>
+  <defs>
+    <linearGradient id="pda-primary" x1="120" y1="184" x2="670" y2="598" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6358A7"/>
+      <stop offset="0.52" stop-color="#5F9294"/>
+      <stop offset="1" stop-color="#7F9D88"/>
+    </linearGradient>
+    <linearGradient id="pda-secondary" x1="154" y1="625" x2="642" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C5944D"/>
+      <stop offset="0.38" stop-color="#7F9D88"/>
+      <stop offset="1" stop-color="#6358A7"/>
+    </linearGradient>
+    <filter id="pda-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+  <g id="pda-actor" data-layer="root">
+    <g id="pda-shadow" data-layer="shadow" opacity="0.2" filter="url(#pda-blur)" stroke="#172332" stroke-width="34" stroke-linecap="round">
+      <path d="M108 258C184 187 246 325 325 250C397 181 460 310 540 236"/>
+      <path d="M226 496C304 424 364 558 442 483C511 417 574 535 655 461"/>
+      <path d="M96 607C143 566 187 635 237 592"/>
+    </g>
+    <g id="pda-fragments" data-layer="fragments" fill="none" stroke-linecap="round">
+      <g id="pda-fragment-a">
+        <path d="M104 236C180 165 242 303 321 228C393 159 456 288 536 214" stroke="url(#pda-primary)" stroke-width="24"/>
+        <path d="M122 318C198 247 260 385 339 310C411 241 474 370 554 296" stroke="url(#pda-secondary)" stroke-width="24"/>
+      </g>
+      <g id="pda-fragment-b">
+        <path d="M222 474C300 402 360 536 438 461C507 395 570 513 651 439" stroke="url(#pda-secondary)" stroke-width="24"/>
+        <path d="M238 556C316 484 376 618 454 543C523 477 586 595 667 521" stroke="url(#pda-primary)" stroke-width="24"/>
+      </g>
+      <g id="pda-fragment-c">
+        <path d="M92 585C139 544 183 613 233 570" stroke="url(#pda-primary)" stroke-width="24"/>
+        <path d="M110 654C157 613 201 682 251 639" stroke="url(#pda-secondary)" stroke-width="24"/>
+      </g>
+    </g>
+    <g id="pda-rungs" data-layer="rungs" stroke="#172332" stroke-opacity="0.42" stroke-width="5" stroke-linecap="round">
+      <path d="M151 220L169 302"/><path d="M204 222L222 304"/><path d="M260 242L278 324"/><path d="M316 228L334 310"/><path d="M372 216L390 298"/><path d="M430 230L448 312"/><path d="M489 229L507 311"/>
+      <path d="M270 467L286 549"/><path d="M327 470L343 552"/><path d="M383 482L399 564"/><path d="M440 461L456 543"/><path d="M497 455L513 537"/><path d="M554 468L570 550"/><path d="M612 459L628 541"/>
+      <path d="M130 577L147 646"/><path d="M179 582L196 651"/><path d="M223 570L240 639"/>
+    </g>
+    <g id="pda-endpoints" data-layer="endpoints" fill="#F1F2ED" stroke-width="5">
+      <circle cx="104" cy="236" r="13" stroke="#6358A7"/><circle cx="122" cy="318" r="13" stroke="#C5944D"/><circle cx="536" cy="214" r="13" stroke="#7F9D88"/><circle cx="554" cy="296" r="13" stroke="#6358A7"/>
+      <circle cx="222" cy="474" r="13" stroke="#C5944D"/><circle cx="238" cy="556" r="13" stroke="#6358A7"/><circle cx="651" cy="439" r="13" stroke="#7F9D88"/><circle cx="667" cy="521" r="13" stroke="#6358A7"/>
+      <circle cx="92" cy="585" r="13" stroke="#6358A7"/><circle cx="110" cy="654" r="13" stroke="#C5944D"/><circle cx="233" cy="570" r="13" stroke="#5F9294"/><circle cx="251" cy="639" r="13" stroke="#7F9D88"/>
+    </g>
+    <g id="pda-spec-gate" data-layer="specification-gate">
+      <path d="M606 132H690V216" stroke="#172332" stroke-opacity="0.54" stroke-width="4" stroke-linecap="round"/>
+      <path d="M690 582V666H606" stroke="#172332" stroke-opacity="0.54" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="690" cy="257" r="7" fill="#D95F52"/>
+      <circle cx="690" cy="296" r="7" fill="#C5944D"/>
+      <circle cx="690" cy="335" r="7" fill="#7F9D88"/>
+      <path d="M690 369V536" stroke="#172332" stroke-opacity="0.24" stroke-width="3" stroke-dasharray="8 12"/>
+    </g>
+  </g>
+</svg>

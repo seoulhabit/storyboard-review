@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../governance/ingredient-actor.schema.json",
+  "actor_version": "1.1.0",
+  "ingredient_id": "pdrn",
+  "display_name": "PDRN",
+  "status": "approved",
+  "asset": "ingredient-actor.svg",
+  "recognition_cue": "Several short paired nucleotide-fragment ribbons with visibly terminated ends.",
+  "visual_meaning": "A category cue for a DNA-fragment preparation; it intentionally avoids a complete genome or generic spinning-helix metaphor.",
+  "states": ["hero", "compact", "source", "formula", "evidence", "unknown-version", "recap"],
+  "layers": {
+    "root": "pda-actor",
+    "shadow": "pda-shadow",
+    "fragments": "pda-fragments",
+    "rungs": "pda-rungs",
+    "endpoints": "pda-endpoints",
+    "specification_gate": "pda-spec-gate"
+  },
+  "motion_contract": {
+    "entrance": "Assemble short fragments independently, then reveal the specification gate.",
+    "ambient": "Use a restrained two-axis drift across fragment groups; no full rotation.",
+    "resolve": "Endpoints land before route or evidence information appears.",
+    "duration_seconds": 2.2,
+    "host_rules": [
+      "Animate fragment wrappers, not individual rungs, unless the shot is a close-up.",
+      "Never rotate the actor as one complete helix.",
+      "Break or desaturate the specification gate for unknown-version state.",
+      "Keep all motion finite and owned by the host timeline."
+    ]
+  },
+  "long_form_contract": {
+    "canvas_reference": {"width": 1920, "height": 1080, "aspect_ratio": "16:9", "title_safe_inset_px": 96},
+    "roles": {
+      "chapter_open": {"state": "hero", "purpose": "Introduce the fragment preparation without turning it into a generic genome symbol.", "size_percent": 28, "anchor": "right-third", "entry_seconds": 1.25, "label_policy": "name-and-context"},
+      "continuity_anchor": {"state": "compact", "purpose": "Keep the fragment identity present while route or formulation leads.", "size_percent": 7, "anchor": "upper-right", "entry_seconds": 0.35, "label_policy": "name"},
+      "diagram_node": {"state": "formula", "purpose": "Represent the specified preparation inside a route or formula map.", "size_percent": 14, "anchor": "left-third", "entry_seconds": 0.5, "label_policy": "name-and-context"},
+      "evidence_companion": {"state": "evidence", "purpose": "Hold subject continuity beside route, population and study-quality fields.", "size_percent": 6, "anchor": "upper-left", "entry_seconds": 0.25, "label_policy": "hidden"},
+      "recap_token": {"state": "recap", "purpose": "Return terminated fragments as a simple closing marker.", "size_percent": 9, "anchor": "inline", "entry_seconds": 0.4, "label_policy": "name"},
+      "unknown_version": {"state": "unknown-version", "purpose": "Interrupt the identity when source, fragment profile or route is missing.", "size_percent": 12, "anchor": "center", "entry_seconds": 0.45, "label_policy": "warning"}
+    },
+    "reentry": {
+      "first_appearance": "Assemble the short fragments and land their endpoints once.",
+      "later_appearances": "Use a short endpoint lock or match-position return; never repeat a full helix spin.",
+      "chapter_return": "Keep fragment count, direction and termination marks stable.",
+      "maximum_simultaneous_actors": 1
+    },
+    "recognition_tests": {"minimum_width_px": 110, "small_size_mode": "Keep three short fragments and their endpoints; suppress most internal rungs.", "backgrounds": ["light", "dark", "photographic"]}
+  },
+  "safe_uses": ["ingredient hero", "identity", "route comparison", "formula journey", "evidence boundary", "recap"],
+  "avoid": ["full-genome implication", "injection-to-topical evidence transfer", "salmon-source assumption", "cell-repair certainty", "medical-procedure glamour"],
+  "disclosure": "Illustrative ingredient actor. Source, fragment profile, concentration, formulation and route require product-specific evidence.",
+  "harvested_from": [
+    "videos/pdrn-cellular-science/compositions/frames/02-identity.html",
+    "catalog-v2/story-systems/label-literacy/components/ingredient-hero-actor/preview.html"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "../../../governance/ingredient-actor.schema.json",
+  "actor_version": "1.1.0",
+  "ingredient_id": "collagen",
+  "display_name": "Collagen",
+  "status": "prototype",
+  "asset": "ingredient-actor.svg",
+  "recognition_cue": "A dimensional triple-ribbon fibre held inside a translucent dermal architecture lens.",
+  "visual_meaning": "A recognition cue for collagen as a structural protein family; it is illustrative and does not specify source, collagen type, hydrolysis, molecular mass, route or product performance.",
+  "states": ["hero", "compact", "source", "formula", "evidence", "unknown-version", "recap"],
+  "layers": {
+    "root": "cola-actor",
+    "dermal_lens": "cola-lens",
+    "shadow": "cola-shadow",
+    "fibre": "cola-fibre",
+    "ribbon_a": "cola-ribbon-a",
+    "ribbon_b": "cola-ribbon-b",
+    "ribbon_c": "cola-ribbon-c",
+    "highlights": "cola-highlights",
+    "fibril_banding": "cola-banding",
+    "endpoints": "cola-endpoints",
+    "specification": "cola-specification"
+  },
+  "motion_contract": {
+    "entrance": "Reveal the three ribbons as one interwoven fibre, then settle the dermal lens and specification corners.",
+    "ambient": "Use a finite, sub-pixel opposing drift across ribbon groups; never rotate the complete actor.",
+    "resolve": "All three ribbons align before a route, barrier or evidence component becomes primary.",
+    "duration_seconds": 2.4,
+    "host_rules": [
+      "Animate the three ribbon groups as one recognizable actor until a governed transformation explicitly fragments them.",
+      "Use the specification layer to signal unknown form, source or hydrolysis rather than recoloring the fibre as a verdict.",
+      "For topical scenes, move the intact actor to the surface; do not pass it through the barrier by default.",
+      "For oral scenes, the host transformation component owns fragmentation into peptides and amino acids.",
+      "Keep all motion finite, deterministic and owned by one paused host timeline."
+    ]
+  },
+  "long_form_contract": {
+    "canvas_reference": {"width": 1920, "height": 1080, "aspect_ratio": "16:9", "title_safe_inset_px": 96},
+    "roles": {
+      "chapter_open": {"state": "hero", "purpose": "Introduce collagen as the recurring structural subject before route or format diverges.", "size_percent": 28, "anchor": "right-third", "entry_seconds": 1.25, "label_policy": "name-and-context"},
+      "continuity_anchor": {"state": "compact", "purpose": "Keep the fibre identity visible while the building, barrier or route becomes primary.", "size_percent": 7, "anchor": "upper-right", "entry_seconds": 0.35, "label_policy": "name"},
+      "diagram_node": {"state": "formula", "purpose": "Provide one stable input node for topical, oral and structural diagrams.", "size_percent": 14, "anchor": "left-third", "entry_seconds": 0.5, "label_policy": "name-and-context"},
+      "evidence_companion": {"state": "evidence", "purpose": "Retain ingredient continuity beside trial filters and uncertainty language.", "size_percent": 6, "anchor": "upper-left", "entry_seconds": 0.25, "label_policy": "hidden"},
+      "recap_token": {"state": "recap", "purpose": "Return the three-ribbon fibre beside the final action hierarchy.", "size_percent": 9, "anchor": "inline", "entry_seconds": 0.4, "label_policy": "name"},
+      "unknown_version": {"state": "unknown-version", "purpose": "Flag a missing source, type, hydrolysis, molecular profile or route.", "size_percent": 12, "anchor": "center", "entry_seconds": 0.45, "label_policy": "warning"}
+    },
+    "reentry": {
+      "first_appearance": "Reveal the three ribbons as one interwoven fibre once.",
+      "later_appearances": "Use a short fibre alignment or match-position return; do not rebuild the whole actor.",
+      "chapter_return": "Keep ribbon order, direction and endpoint colors stable across every route.",
+      "maximum_simultaneous_actors": 1
+    },
+    "recognition_tests": {"minimum_width_px": 110, "small_size_mode": "Keep all three ribbons and both endpoints; suppress banding and minor highlights.", "backgrounds": ["light", "dark", "photographic"]}
+  },
+  "safe_uses": ["ingredient hero", "identity", "topical route", "oral route setup", "structure metaphor", "evidence context", "recap"],
+  "avoid": ["microscopy claim", "specific collagen-type claim", "source assumption", "direct facial delivery", "skin-penetration implication", "supplement efficacy implication", "product equivalence"],
+  "disclosure": "Illustrative collagen actor. Source, type, hydrolysis, molecular profile, formulation and route require product-specific evidence.",
+  "harvested_from": [
+    "videos/collagen-where-did-it-go/scripts/actors.py#drawHelix",
+    "videos/collagen-where-did-it-go/compositions/frames/01-hook.html",
+    "videos/collagen-where-did-it-go/compositions/frames/08-digestion.html"
+  ]
+}

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none" role="img" aria-labelledby="cic-title cic-desc">
+  <title id="cic-title">Collagen identity card</title>
+  <desc id="cic-desc">A governed SeoulHabit ingredient card separating collagen identity from its form, route and evidence.</desc>
+  <rect width="1600" height="900" rx="32" fill="#F4EEE8"/>
+  <rect x="0" y="0" width="574" height="900" rx="32" fill="#202A33"/>
+  <text x="72" y="82" fill="#DDB09C" font-family="Arial, sans-serif" font-size="23" font-weight="700">SeoulHabit ingredient 04</text>
+  <text x="72" y="258" fill="#FFFDF8" font-family="Georgia, serif" font-size="112">Collagen</text>
+  <text x="76" y="315" fill="#C2B9B8" font-family="Arial, sans-serif" font-size="24">Structural protein family</text>
+  <path d="M76 378H496" stroke="#7D3155" stroke-width="7"/>
+  <text x="76" y="442" fill="#FFFDF8" font-family="Arial, sans-serif" font-size="25" font-weight="700">Identity boundary</text>
+  <text x="76" y="492" fill="#C2B9B8" font-family="Arial, sans-serif" font-size="21">One consumer name can describe</text>
+  <text x="76" y="524" fill="#C2B9B8" font-family="Arial, sans-serif" font-size="21">different sources, types, molecular</text>
+  <text x="76" y="556" fill="#C2B9B8" font-family="Arial, sans-serif" font-size="21">profiles, hydrolysis and routes.</text>
+  <circle cx="124" cy="768" r="52" fill="#FFFDF8"/>
+  <text x="124" y="786" text-anchor="middle" fill="#172332" font-family="Arial, sans-serif" font-size="45" font-weight="700">습</text>
+  <text x="196" y="760" fill="#FFFDF8" font-family="Arial, sans-serif" font-size="21" font-weight="700">Evidence, not hype.</text>
+  <text x="196" y="793" fill="#C2B9B8" font-family="Arial, sans-serif" font-size="18">Ingredient identity before product claims.</text>
+  <g transform="translate(662 78)">
+    <rect width="850" height="744" rx="30" fill="#FFFDF8" stroke="#172332" stroke-opacity="0.14" stroke-width="2"/>
+    <g transform="translate(446 32) scale(.46)"><image href="components/ingredient-actor.svg" width="800" height="800"/></g>
+    <text x="48" y="66" fill="#7D3155" font-family="Arial, sans-serif" font-size="18" font-weight="700">Recognition cue</text>
+    <text x="48" y="116" fill="#172332" font-family="Georgia, serif" font-size="42">Triple-ribbon fibre</text>
+    <text x="48" y="157" fill="#6E6670" font-family="Arial, sans-serif" font-size="19">Illustrative—not microscopy.</text>
+    <path d="M48 208H802" stroke="#172332" stroke-opacity="0.14" stroke-width="2"/>
+    <text x="48" y="258" fill="#204E58" font-family="Arial, sans-serif" font-size="18" font-weight="700">Possible label language</text>
+    <g font-family="Arial, sans-serif" font-size="22" fill="#172332">
+      <text x="48" y="309">Collagen</text><text x="48" y="351">Hydrolyzed Collagen</text><text x="48" y="393">Collagen Amino Acids</text><text x="48" y="435">Soluble Collagen</text>
+    </g>
+    <rect x="420" y="250" width="382" height="210" rx="18" fill="#E6EFEA"/>
+    <text x="448" y="298" fill="#204E58" font-family="Arial, sans-serif" font-size="18" font-weight="700">Reading rule</text>
+    <text x="448" y="342" fill="#172332" font-family="Arial, sans-serif" font-size="20">Treat these as possible terms,</text>
+    <text x="448" y="373" fill="#172332" font-family="Arial, sans-serif" font-size="20">not automatic synonyms. The</text>
+    <text x="448" y="404" fill="#172332" font-family="Arial, sans-serif" font-size="20">exact label and route control</text>
+    <text x="448" y="435" fill="#172332" font-family="Arial, sans-serif" font-size="20">what the story may claim.</text>
+    <path d="M48 510H802" stroke="#172332" stroke-opacity="0.14" stroke-width="2"/>
+    <text x="48" y="561" fill="#7D3155" font-family="Arial, sans-serif" font-size="18" font-weight="700">What the actor does not prove</text>
+    <text x="48" y="608" fill="#172332" font-family="Arial, sans-serif" font-size="21">Source · penetration · direct skin targeting · efficacy</text>
+    <rect x="48" y="654" width="754" height="52" rx="26" fill="#F0E0D8"/>
+    <text x="72" y="687" fill="#7D3155" font-family="Arial, sans-serif" font-size="18" font-weight="700">DRAFT — verify the selected product and preparation before use.</text>
+  </g>
+</svg>

@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "ingredient_id": "centella-cica",
+  "version": "1.0.0",
+  "status": "draft",
+  "updated": "2026-09-05",
+  "identity": {
+    "display_name": "Centella / Cica",
+    "consumer_term": "Cica",
+    "definition": "A consumer-facing skincare term commonly used to point toward Centella asiatica or Centella-derived ingredients. The exact ingredient-list declaration and extract version still need to be identified.",
+    "source_type": "botanical",
+    "label_terms": {
+      "preferred": ["Use the exact Centella declaration shown on the product ingredient list"],
+      "possible_variants": ["Cica", "Centella Asiatica Extract"],
+      "rule": "Treat Cica as a category cue, not a complete ingredient identity. Do not infer plant part, extraction process, standardization, amount, or evidence match from the front label alone."
+    },
+    "identity_boundaries": [
+      "The consumer term Cica is not by itself an exact ingredient-list declaration.",
+      "One displayed Centella name may not disclose plant part, extraction process, ratio, solvent, or standardization.",
+      "Evidence for one defined extract cannot automatically support every product carrying Cica on the front."
+    ]
+  },
+  "visual_system": {
+    "actor": "A three-leaf Centella source silhouette with one central vein system, one extract droplet, and an incomplete version ring.",
+    "tactile_signature": "Rain-fresh rounded leaves, soft paper ground, restrained botanical translucency, and a precise liquid highlight.",
+    "palette": ["paper", "deep celadon", "fresh leaf green", "assay violet", "SeoulHabit coral"],
+    "motion_grammar": [
+      "Draw stems first, unfold leaves from their bases, then land the extract droplet.",
+      "Use one calm botanical breath rather than decorative floating leaves.",
+      "Complete the version ring only when exact product-specific information is available."
+    ],
+    "assets": [
+      {
+        "id": "centella-source-square",
+        "path": "catalog-v2/ingredients/centella-cica/assets/centella-source-square.png",
+        "kind": "square botanical source photograph",
+        "status": "approved",
+        "approved_uses": ["source identity", "ingredient hero support", "label literacy", "recap"],
+        "avoid": ["extraction-method proof", "standardization proof", "efficacy proof", "skin outcome implication"],
+        "notes": "Harvested from the existing ingredient-photography catalog. Keep the unbranded master unchanged; add SeoulHabit signet in the composition when needed."
+      },
+      {
+        "id": "centella-identity-card",
+        "path": "catalog-v2/ingredients/centella-cica/identity-card.svg",
+        "kind": "editable SVG identity card",
+        "status": "approved",
+        "approved_uses": ["identity", "label declaration", "version question"],
+        "avoid": ["efficacy claim", "treating possible label wording as universally interchangeable"]
+      }
+    ],
+    "components": [
+      {
+        "id": "centella-ingredient-actor",
+        "type": "editable transparent SVG ingredient actor",
+        "status": "approved",
+        "purpose": "Provide a persistent botanical recognition cue while keeping exact extract identity visibly unresolved.",
+        "path": "catalog-v2/ingredients/centella-cica/components/ingredient-actor.svg"
+      }
+    ]
+  },
+  "evidence_records": [],
+  "claim_rules": {
+    "safe_default": [
+      "Cica is a consumer-facing cue; check the exact ingredient declaration on the product.",
+      "Product-specific information is needed to identify plant part, extraction process, standardization, and amount.",
+      "A familiar ingredient name does not make two finished formulas equivalent."
+    ],
+    "requires_context": [
+      "Any efficacy, soothing, redness, barrier, collagen, or wrinkle claim requires a traceable record tied to a defined material and route.",
+      "Any percentage claim must state exactly what the percentage refers to and where the information comes from."
+    ],
+    "prohibited_default": ["instant soothing", "heals skin", "repairs every barrier", "clinically proven Cica", "all Centella extracts are equivalent", "percentage equals active dose"]
+  },
+  "story_slots": [
+    {
+      "slot": "hook",
+      "purpose": "Open on the familiar Cica cue while withholding a product verdict.",
+      "preferred_inputs": ["centella-ingredient-actor", "centella-source-square"],
+      "claim_ids": [],
+      "avoid": ["benefit montage", "green-equals-gentle shorthand"]
+    },
+    {
+      "slot": "identity-and-label",
+      "purpose": "Connect Cica to the exact ingredient-list declaration.",
+      "preferred_inputs": ["centella-identity-card", "centella-ingredient-actor"],
+      "claim_ids": [],
+      "avoid": ["treating the consumer term as the final identity"]
+    },
+    {
+      "slot": "source-process-version",
+      "purpose": "Show which product-specific variables remain undisclosed.",
+      "preferred_inputs": ["centella-source-square", "centella-ingredient-actor"],
+      "claim_ids": [],
+      "avoid": ["inventing extraction solvent", "inventing ratio", "inventing standardization"]
+    },
+    {
+      "slot": "boundary",
+      "purpose": "Prevent category recognition from becoming a formula or efficacy conclusion.",
+      "preferred_inputs": ["centella-ingredient-actor"],
+      "claim_ids": [],
+      "avoid": ["product ranking without product evidence"]
+    }
+  ],
+  "format_input": {
+    "hero_media": "catalog-v2/ingredients/centella-cica/assets/centella-source-square.png",
+    "identity_card": "catalog-v2/ingredients/centella-cica/identity-card.svg",
+    "source_media": "catalog-v2/ingredients/centella-cica/assets/centella-source-square.png",
+    "texture_media": null,
+    "application_media": null,
+    "product_container": null,
+    "mechanism_actor": "catalog-v2/ingredients/centella-cica/components/ingredient-actor.svg",
+    "route_comparison": null,
+    "process_comparison": null,
+    "evidence_cards": [],
+    "boundary_card": "Cica identifies a direction, not a standardized extract or finished-formula verdict.",
+    "citation_ids": []
+  },
+  "legacy_quarantine": [],
+  "gaps": [
+    {
+      "priority": "now",
+      "item": "traceable Centella evidence records",
+      "reason": "The visual foundation is reusable, but efficacy claims must remain unavailable until evidence records are reviewed and scoped.",
+      "build_when": "before a Centella efficacy or mechanism story enters production"
+    },
+    {
+      "priority": "next",
+      "item": "Centella source-process-version comparison",
+      "reason": "The actor raises the version question, but the ingredient pack does not yet own a standalone process comparison.",
+      "build_when": "a second story needs to compare defined Centella extracts"
+    },
+    {
+      "priority": "later",
+      "item": "neutral product container",
+      "reason": "Label-literacy stories can use the shared neutral package shell; a dedicated Centella container is not yet justified.",
+      "build_when": "two formats require a Centella-specific unbranded product archetype"
+    }
+  ]
+}

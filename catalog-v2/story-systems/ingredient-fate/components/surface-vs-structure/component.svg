@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none" role="img" aria-labelledby="ivs-title ivs-desc">
+  <title id="ivs-title">Surface versus structure component</title>
+  <desc id="ivs-desc">A polished topical film sits on the skin surface while deeper collagen fibres remain visibly separate and unchanged.</desc>
+  <defs>
+    <linearGradient id="ivs-skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F5DED1"/><stop offset="1" stop-color="#E8C9BA"/></linearGradient>
+    <linearGradient id="ivs-derm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#E4ECE7"/><stop offset="1" stop-color="#C0D1CB"/></linearGradient>
+    <linearGradient id="ivs-film-grad" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#FFFDF8" stop-opacity=".36"/><stop offset=".42" stop-color="#91C3BC" stop-opacity=".92"/><stop offset="1" stop-color="#FFFDF8" stop-opacity=".42"/></linearGradient>
+    <filter id="ivs-glow" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="12"/></filter>
+  </defs>
+  <rect width="1600" height="900" rx="28" fill="#FFFDF8"/>
+  <text x="72" y="72" fill="#172332" font-family="Arial, sans-serif" font-size="24" font-weight="700">Surface behavior is not structural replacement</text>
+  <text x="1528" y="72" text-anchor="end" fill="#6E6670" font-family="Arial, sans-serif" font-size="20">Two depths. Two claims.</text>
+  <g id="ivs-surface" data-layer="surface">
+    <path d="M0 344C150 313 287 368 432 337C582 305 717 365 868 337C1024 307 1168 369 1323 337C1435 314 1517 322 1600 312V522H0V344Z" fill="url(#ivs-skin)"/>
+    <path d="M0 344C150 313 287 368 432 337C582 305 717 365 868 337C1024 307 1168 369 1323 337C1435 314 1517 322 1600 312" stroke="#172332" stroke-opacity=".55" stroke-width="5"/>
+  </g>
+  <g id="ivs-film" data-layer="film">
+    <path d="M70 321C217 295 316 334 445 309C591 281 712 329 855 305C1007 280 1155 329 1302 302C1388 286 1463 290 1528 282" stroke="#204E58" stroke-opacity=".22" stroke-width="34" stroke-linecap="round" filter="url(#ivs-glow)"/>
+    <path d="M70 321C217 295 316 334 445 309C591 281 712 329 855 305C1007 280 1155 329 1302 302C1388 286 1463 290 1528 282" stroke="url(#ivs-film-grad)" stroke-width="18" stroke-linecap="round"/>
+    <g stroke="#FFFDF8" stroke-width="5" stroke-linecap="round"><path d="M255 300L319 294"/><path d="M734 298L815 289"/><path d="M1186 298L1248 288"/></g>
+  </g>
+  <g id="ivs-ingredient" data-layer="ingredient" transform="translate(96 92) scale(.29)"><image href="../../../../ingredients/collagen/components/ingredient-actor.svg" width="800" height="800"/></g>
+  <g id="ivs-dermis" data-layer="dermis">
+    <rect y="522" width="1600" height="378" fill="url(#ivs-derm)"/>
+    <path d="M0 522H1600" stroke="#204E58" stroke-opacity=".34" stroke-width="3" stroke-dasharray="12 16"/>
+    <text x="72" y="577" fill="#204E58" font-family="Arial, sans-serif" font-size="18" font-weight="700">DERMAL STRUCTURE</text>
+  </g>
+  <g id="ivs-structure" data-layer="structure" fill="none" stroke-linecap="round">
+    <path d="M105 724C221 567 352 576 459 726C566 876 697 872 814 716C930 561 1065 568 1174 720C1283 872 1410 858 1510 714" stroke="#7D3155" stroke-width="22"/>
+    <path d="M100 788C219 630 348 638 458 789C568 940 696 931 816 778C935 626 1063 633 1175 782C1288 932 1416 920 1516 776" stroke="#5D8B87" stroke-width="20"/>
+    <path d="M102 754C219 680 349 679 458 754C568 829 697 826 815 749C934 672 1064 673 1175 752C1285 831 1415 819 1514 748" stroke="#C66F61" stroke-opacity=".76" stroke-width="14"/>
+  </g>
+  <g id="ivs-boundary" data-layer="boundary">
+    <rect x="610" y="400" width="898" height="82" rx="22" fill="#202A33"/>
+    <text x="650" y="452" fill="#FFFDF8" font-family="Georgia, serif" font-size="34">Surface film ≠ replacement of deeper fibres</text>
+    <rect x="72" y="398" width="458" height="84" rx="22" fill="#DCE8E4"/>
+    <text x="106" y="451" fill="#204E58" font-family="Arial, sans-serif" font-size="22" font-weight="700">Possible surface smoothing</text>
+  </g>
+  <circle cx="1518" cy="825" r="30" fill="#172332"/><text x="1518" y="836" text-anchor="middle" fill="#FFFDF8" font-family="Arial, sans-serif" font-size="25" font-weight="700">습</text>
+</svg>

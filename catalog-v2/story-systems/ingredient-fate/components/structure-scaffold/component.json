@@ -1,0 +1,15 @@
+{
+  "component_id": "structure-scaffold",
+  "display_name": "Structure Scaffold",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Carry one structural metaphor through intact, damaged, protected, failed-replacement and partial-support states.",
+  "required_inputs": ["ingredient_actor", "structure_label", "damage_operator", "protection_boundary"],
+  "variants": ["architectural-cutaway", "fibre-matrix"],
+  "visual_states": ["assembling", "intact", "damaged", "protected", "failed-replacement", "partially-supported", "recap"],
+  "layouts": ["16:9", "9:16-safe"],
+  "asset": "component.svg",
+  "stable_layers": ["ifs-shell", "ifs-fibre-beams", "ifs-damage", "ifs-protection", "ifs-foundation", "ifs-state-labels"],
+  "avoid": ["cartoon office building", "complete repair unless evidence supports it", "using damage color as an efficacy verdict"],
+  "harvested_from": ["videos/collagen-where-did-it-go/scripts/actors.py#drawBuilding", "videos/collagen-where-did-it-go/scripts/frames_b.py", "videos/collagen-where-did-it-go/scripts/frames_f.py"]
+}

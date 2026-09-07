@@ -1,0 +1,43 @@
+{
+  "system_id": "ingredient-fate",
+  "display_name": "Ingredient Fate",
+  "version": "0.1.0",
+  "status": "prototype_slice_1",
+  "harvest_source": "videos/collagen-where-did-it-go",
+  "components": [
+    {
+      "id": "format-vessel-pair",
+      "status": "prototype",
+      "path": "components/format-vessel-pair/component.json",
+      "preview_asset": "components/format-vessel-pair/component.svg"
+    },
+    {
+      "id": "route-fork",
+      "status": "prototype",
+      "path": "components/route-fork/component.json",
+      "preview_asset": "components/route-fork/component.svg"
+    },
+    {
+      "id": "structure-scaffold",
+      "status": "prototype",
+      "path": "components/structure-scaffold/component.json",
+      "preview_asset": "components/structure-scaffold/component.svg"
+    },
+    {
+      "id": "skin-entry-gate",
+      "status": "prototype",
+      "path": "components/skin-entry-gate/component.json",
+      "preview_asset": "components/skin-entry-gate/component.svg"
+    },
+    {
+      "id": "surface-vs-structure",
+      "status": "prototype",
+      "path": "components/surface-vs-structure/component.json",
+      "preview_asset": "components/surface-vs-structure/component.svg"
+    }
+  ],
+  "patterns": [],
+  "planned": ["digestion-transform", "body-distribution-map", "study-field-filter", "effect-result-meter", "action-priority-stack", "ingredient-fate-journey", "evidence-survival-reveal"],
+  "fixtures": ["collagen"],
+  "approval_gate": "Narration-timed 16:9 and 9:16 integration, direct-seek validation, long-label stress test and scientific review."
+}

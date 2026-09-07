@@ -1,0 +1,16 @@
+{
+  "component_id": "skin-entry-gate",
+  "display_name": "Skin Entry Gate",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Compare an ingredient form with an intact-skin size boundary while keeping the drawing explicitly illustrative.",
+  "required_inputs": ["ingredient_actor", "small_reference", "ingredient_reference", "entry_state", "disclosure", "citation"],
+  "variants": ["size-comparison", "surface-rest", "rejected", "unknown-form"],
+  "visual_states": ["comparing", "attempting", "rejected", "surface-rest", "unknown"],
+  "layouts": ["16:9", "9:16-safe"],
+  "asset": "component.svg",
+  "stable_layers": ["ise-skin-band", "ise-barrier", "ise-small-reference", "ise-ingredient", "ise-threshold", "ise-disclosure"],
+  "dependencies": ["catalog/visual-components/skin-band", "catalog/visual-components/barrier-wall"],
+  "avoid": ["literal anatomical door", "unlabelled scale", "penetration verdict without route/form context", "medical delivery claim"],
+  "harvested_from": ["catalog/visual-components/skin-band", "catalog/visual-components/barrier-wall", "videos/collagen-where-did-it-go/scripts/frames_c.py"]
+}

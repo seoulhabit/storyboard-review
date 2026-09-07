@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingredient Fate — Catalog V2</title>
+  <link rel="stylesheet" href="system-tokens.css">
+  <style>
+    body{padding:28px;background:linear-gradient(135deg,#bdb9b8,#d5cfca)}
+    .library{width:min(1640px,100%);margin:0 auto}
+    .mast{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:32px;margin-bottom:18px}
+    .mast h1{margin:0;font-family:Georgia,serif;font-size:clamp(34px,4.4vw,76px);font-weight:500;letter-spacing:-.055em;line-height:.9}
+    .mast p{max-width:62ch;margin:14px 0 0;color:#49434b;font-size:15px;line-height:1.5}
+    .status{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(23,35,50,.22);border-radius:999px;background:rgba(255,253,248,.46);font-size:13px;font-weight:700}.status::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--if-plum)}
+    .workbench{display:grid;grid-template-columns:292px minmax(0,1fr);min-height:780px;overflow:hidden;border:1px solid rgba(23,35,50,.2);border-radius:30px;background:var(--if-paper);box-shadow:0 36px 95px rgba(23,35,50,.18)}
+    .rail{display:flex;flex-direction:column;padding:24px;background:#202a33;color:var(--if-paper)}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:30px}.signet{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:var(--if-paper);color:var(--if-ink);font-size:24px;font-weight:800}.brand-copy strong{display:block;font-family:Georgia,serif;font-size:20px;font-weight:500}.brand-copy span{color:#b9b3b5;font-size:11px}
+    .nav{display:grid;gap:6px}.nav button{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;width:100%;padding:14px 12px;border:0;border-left:3px solid transparent;background:transparent;color:#b9b3b5;text-align:left;cursor:pointer}.nav button:hover{background:rgba(255,255,255,.05);color:var(--if-paper)}.nav button[aria-selected="true"]{border-left-color:#ddb09c;background:rgba(255,255,255,.08);color:var(--if-paper)}.nav .num{font-family:Georgia,serif;font-size:21px;color:#ddb09c}.nav .name{font-size:14px;font-weight:700;line-height:1.2}
+    .rail-note{margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.14);color:#b9b3b5;font-size:11px;line-height:1.55}
+    .canvas{display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-width:0;padding:26px;background:linear-gradient(155deg,#fffdf8,#eee7e2)}
+    .canvas-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:start;margin-bottom:18px}.kicker{color:var(--if-plum);font-size:13px;font-weight:800}.component-title{margin:5px 0 0;font-family:Georgia,serif;font-size:clamp(30px,3vw,54px);font-weight:500;letter-spacing:-.045em}.purpose{max-width:64ch;margin:8px 0 0;color:var(--if-muted);font-size:14px;line-height:1.5}.badge{padding:9px 13px;border:1px solid rgba(23,35,50,.16);border-radius:999px;color:var(--if-blue);background:#dce8e4;font-size:12px;font-weight:800}
+    .plate{display:grid;place-items:center;min-height:0;overflow:hidden;border:1px solid rgba(23,35,50,.14);border-radius:22px;background:#fffdf8}.plate object{display:block;width:100%;height:100%;min-height:560px}
+    .meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:18px}.meta-card{min-height:96px;padding:16px;border-top:2px solid var(--if-ink);background:rgba(255,253,248,.66)}.meta-card strong{display:block;margin-bottom:7px;color:var(--if-plum);font-size:12px}.meta-card span{color:var(--if-muted);font-size:13px;line-height:1.45}
+    @media(max-width:900px){body{padding:12px}.mast{grid-template-columns:1fr}.status{justify-self:start}.workbench{grid-template-columns:1fr}.rail{padding:14px}.brand{margin-bottom:12px}.nav{grid-template-columns:repeat(5,minmax(120px,1fr));overflow-x:auto}.nav button{grid-template-columns:1fr;padding:10px;border-left:0;border-bottom:3px solid transparent}.nav button[aria-selected="true"]{border-left:0;border-bottom-color:#ddb09c}.nav .num{display:none}.rail-note{display:none}.canvas{padding:14px}.canvas-head{grid-template-columns:1fr}.plate object{min-height:420px}.meta{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="library">
+    <header class="mast">
+      <div><h1>Ingredient Fate</h1><p>A reusable system for showing what an ingredient is in a specific form, where that form can go, and which physical boundary changes the story.</p></div>
+      <div class="status">Prototype slice 01 · Collagen fixture</div>
+    </header>
+    <section class="workbench">
+      <aside class="rail">
+        <div class="brand"><div class="signet">습</div><div class="brand-copy"><strong>SeoulHabit</strong><span>Ingredient systems catalog</span></div></div>
+        <nav class="nav" aria-label="Ingredient Fate components">
+          <button aria-selected="true" data-key="vessels"><span class="num">1</span><span class="name">Format vessel pair</span></button>
+          <button aria-selected="false" data-key="fork"><span class="num">2</span><span class="name">Route fork</span></button>
+          <button aria-selected="false" data-key="scaffold"><span class="num">3</span><span class="name">Structure scaffold</span></button>
+          <button aria-selected="false" data-key="gate"><span class="num">4</span><span class="name">Skin entry gate</span></button>
+          <button aria-selected="false" data-key="surface"><span class="num">5</span><span class="name">Surface vs structure</span></button>
+        </nav>
+        <div class="rail-note">No media was generated for this slice. Every visual is code-native and harvested from proven source behavior. Components remain prototypes until narration-timed 16:9 and 9:16 stress tests pass.</div>
+      </aside>
+      <article class="canvas">
+        <header class="canvas-head">
+          <div><div class="kicker" id="counter">Component 01 / 05</div><h2 class="component-title" id="title">Format Vessel Pair</h2><p class="purpose" id="purpose"></p></div>
+          <div class="badge" id="action">Build shared</div>
+        </header>
+        <div class="plate"><object id="asset" type="image/svg+xml" data="components/format-vessel-pair/component.svg" aria-label="Component preview"></object></div>
+        <footer class="meta">
+          <div class="meta-card"><strong>What was harvested</strong><span id="harvest"></span></div>
+          <div class="meta-card"><strong>Accuracy boundary</strong><span id="boundary"></span></div>
+        </footer>
+      </article>
+    </section>
+  </main>
+  <script>
+    const items={
+      vessels:{index:"01",title:"Format Vessel Pair",asset:"components/format-vessel-pair/component.svg",action:"Build shared",purpose:"Neutral cream and oral-powder containers keep route visible without turning the ingredient story into a product comparison.",harvest:"The cream/powder distinction and optional-product treatment from the opening and closing scenes.",boundary:"The vessels are not commercial products and never carry an invented brand, percentage, source or efficacy claim."},
+      fork:{index:"02",title:"Ingredient Route Fork",asset:"components/route-fork/component.svg",action:"Harvest behavior",purpose:"One persistent ingredient subject separates into topical and oral paths, each with its own physical destination.",harvest:"The opening actor split and the rule that the same ingredient actor—not a lookalike—moves into both route contexts.",boundary:"Destinations and evidence never transfer across routes. A facial destination is not highlighted by default."},
+      scaffold:{index:"03",title:"Structure Scaffold",asset:"components/structure-scaffold/component.svg",action:"Harvest + redraw",purpose:"An editorial architectural cutaway carries the structure from intact to damaged, protected and partly supported states.",harvest:"The persistent building, stable beam IDs, UV cuts, shield boundary and partial repair callback.",boundary:"No complete repair is shown by default. Every restored beam must be supported by the consuming story's evidence."},
+      gate:{index:"04",title:"Skin Entry Gate",asset:"components/skin-entry-gate/component.svg",action:"Extend existing",purpose:"A governed cross-section compares a small reference with the ingredient form at an intact-skin boundary.",harvest:"The existing SkinBand and BarrierWall components plus the collagen video's size comparison and surface rejection.",boundary:"The scale is labelled illustrative. The 500 Dalton rule is a general boundary, not a test of every formula."},
+      surface:{index:"05",title:"Surface vs Structure",asset:"components/surface-vs-structure/component.svg",action:"Build assembly",purpose:"A topical material can create a surface state while the deeper structural layer remains visually and logically separate.",harvest:"The source film-spread behavior and the return to the still-damaged dermal fibres beneath the polished surface.",boundary:"Surface smoothing or film formation cannot be rendered as replacement of collagen in the dermis."}
+    };
+    function render(key){const item=items[key];document.querySelector('#counter').textContent=`Component ${item.index} / 05`;document.querySelector('#title').textContent=item.title;document.querySelector('#purpose').textContent=item.purpose;document.querySelector('#action').textContent=item.action;document.querySelector('#asset').data=item.asset;document.querySelector('#asset').setAttribute('aria-label',`${item.title} preview`);document.querySelector('#harvest').textContent=item.harvest;document.querySelector('#boundary').textContent=item.boundary;document.querySelectorAll('[data-key]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.key===key)))}
+    document.querySelectorAll('[data-key]').forEach(button=>button.addEventListener('click',()=>render(button.dataset.key)));
+    render('vessels');
+  </script>
+</body>
+</html>

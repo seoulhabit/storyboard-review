@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../governance/ingredient-actor.schema.json",
+  "actor_version": "1.1.0",
+  "ingredient_id": "snail-mucin",
+  "display_name": "Snail Mucin",
+  "status": "approved",
+  "asset": "ingredient-actor.svg",
+  "recognition_cue": "One clear elastic strand with a slow gather and a few trapped bubbles.",
+  "visual_meaning": "A tactile category cue for filtered snail secretion; not a molecule, extraction record, or finished formula.",
+  "states": ["hero", "compact", "source", "formula", "evidence", "unknown-version", "recap"],
+  "layers": {
+    "root": "sna-actor",
+    "shadow": "sna-shadow",
+    "strand": "sna-strand",
+    "highlight": "sna-highlight",
+    "bubbles": "sna-bubbles",
+    "anchor": "sna-anchor"
+  },
+  "motion_contract": {
+    "entrance": "Reveal the strand from lower left to upper right while the anchor gathers into place.",
+    "ambient": "Use one shallow vertical breath or highlight travel; the actor should feel viscous, not bouncy.",
+    "resolve": "Let the lower strand settle and hold before text or evidence resolves.",
+    "duration_seconds": 2.4,
+    "host_rules": [
+      "Animate spatial motion with GSAP transform aliases.",
+      "Use a mask or stroke-dash reveal only on the strand wrapper.",
+      "Never use elastic or bounce easing.",
+      "Keep all motion finite and owned by the host timeline."
+    ]
+  },
+  "long_form_contract": {
+    "canvas_reference": {"width": 1920, "height": 1080, "aspect_ratio": "16:9", "title_safe_inset_px": 96},
+    "roles": {
+      "chapter_open": {"state": "hero", "purpose": "Introduce the filtrate as the continuing subject, separate from any product.", "size_percent": 28, "anchor": "right-third", "entry_seconds": 1.35, "label_policy": "name-and-context"},
+      "continuity_anchor": {"state": "compact", "purpose": "Keep the elastic-strand identity present during process or formula explanation.", "size_percent": 7, "anchor": "upper-right", "entry_seconds": 0.35, "label_policy": "name"},
+      "diagram_node": {"state": "formula", "purpose": "Connect the ingredient to a vehicle or process without depicting the whole formula.", "size_percent": 14, "anchor": "left-third", "entry_seconds": 0.55, "label_policy": "name-and-context"},
+      "evidence_companion": {"state": "evidence", "purpose": "Remain recognizable beside evidence while yielding visual hierarchy.", "size_percent": 6, "anchor": "upper-left", "entry_seconds": 0.25, "label_policy": "hidden"},
+      "recap_token": {"state": "recap", "purpose": "Close the story with the same strand silhouette used at entry.", "size_percent": 9, "anchor": "inline", "entry_seconds": 0.4, "label_policy": "name"},
+      "unknown_version": {"state": "unknown-version", "purpose": "Flag an unspecified filtrate, collection method or formula context.", "size_percent": 12, "anchor": "center", "entry_seconds": 0.45, "label_policy": "warning"}
+    },
+    "reentry": {
+      "first_appearance": "Use the complete strand draw and restrained gather once.",
+      "later_appearances": "Return from the previous endpoint with a brief settle; do not replay the full draw.",
+      "chapter_return": "Keep the strand direction and bubble placement stable across contexts.",
+      "maximum_simultaneous_actors": 1
+    },
+    "recognition_tests": {"minimum_width_px": 96, "small_size_mode": "Keep the main elastic curve, anchor and one bubble; suppress secondary highlights.", "backgrounds": ["light", "dark", "photographic"]}
+  },
+  "safe_uses": ["ingredient hero", "identity", "texture transition", "formula journey", "recap"],
+  "avoid": ["molecular mechanism", "collection-method proof", "animal-welfare claim", "standardized-extract implication", "medical outcome"],
+  "disclosure": "Illustrative ingredient actor. Exact composition, collection method and formula performance are product-specific.",
+  "harvested_from": [
+    "catalog-v2/story-systems/label-literacy/components/ingredient-hero-actor/preview.html",
+    "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-texture-square.png"
+  ]
+}

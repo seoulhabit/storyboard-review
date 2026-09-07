@@ -1,0 +1,19 @@
+:root{
+  --if-chalk:#f4eee8;
+  --if-paper:#fffdf8;
+  --if-ink:#172332;
+  --if-plum:#7d3155;
+  --if-coral:#c66f61;
+  --if-blue:#204e58;
+  --if-mineral:#5d8b87;
+  --if-moss:#779178;
+  --if-line:rgba(23,35,50,.16);
+  --if-muted:#6e6670;
+  --if-radius:24px;
+  --if-ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#c8c2c0;color:var(--if-ink);font-family:Inter,Arial,sans-serif}
+button{font:inherit}
+button:focus-visible{outline:3px solid var(--if-plum);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

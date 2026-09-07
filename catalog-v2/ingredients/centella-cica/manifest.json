@@ -1,0 +1,38 @@
+{
+  "ingredient_id": "centella-cica",
+  "manifest_version": "1.0.0",
+  "assets": [
+    {
+      "id": "centella-source-square",
+      "file": "assets/centella-source-square.png",
+      "source": "catalog/ingredient-photography/02-centella-asiatica.png",
+      "origin": "harvested_existing_repo",
+      "status": "approved",
+      "dimensions": "2048x2048",
+      "has_alpha": false,
+      "sha256": "b3b8a83d65fc7938d55e6c28d4ad130bbf746723d052e0f9a19fd70815317ad7"
+    },
+    {
+      "id": "centella-identity-card",
+      "file": "identity-card.svg",
+      "source": "catalog-v2 ingredient-actor extension 2026-09-05",
+      "origin": "authored_code_native_after_harvest",
+      "status": "approved",
+      "dimensions": "1080x600",
+      "has_alpha": false,
+      "sha256": "148cd65ac94de292167c52d2992051d5544fb30b85787dae929cc13e87e98458"
+    }
+  ],
+  "components": [
+    {
+      "id": "centella-ingredient-actor",
+      "file": "components/ingredient-actor.svg",
+      "contract": "components/ingredient-actor.json",
+      "origin": "authored_code_native_after_harvest",
+      "status": "approved",
+      "dimensions": "800x800",
+      "has_alpha": true,
+      "sha256": "356c966974cba37762aaf29af006459646b73ec85aa4be957395595f69a6fbb0"
+    }
+  ]
+}

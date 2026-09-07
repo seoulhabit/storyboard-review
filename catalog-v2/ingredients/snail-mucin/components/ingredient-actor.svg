@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" fill="none" role="img" aria-labelledby="sna-title sna-desc">
+  <title id="sna-title">Snail Mucin ingredient actor</title>
+  <desc id="sna-desc">An illustrative clear elastic gel strand with subtle bubbles and glass-like highlights.</desc>
+  <defs>
+    <linearGradient id="sna-gel" x1="128" y1="650" x2="670" y2="126" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C5944D" stop-opacity="0.28"/>
+      <stop offset="0.28" stop-color="#F7F8F3" stop-opacity="0.96"/>
+      <stop offset="0.63" stop-color="#AFC9BC" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.88"/>
+    </linearGradient>
+    <linearGradient id="sna-sheen" x1="154" y1="617" x2="628" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="0.46" stop-color="#FFFFFF" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.26"/>
+    </linearGradient>
+    <radialGradient id="sna-bubble" cx="0" cy="0" r="1" gradientTransform="translate(0.34 0.28) rotate(51) scale(0.8)">
+      <stop stop-color="#FFFFFF" stop-opacity="0.98"/>
+      <stop offset="0.5" stop-color="#E9F0EB" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#7F9D88" stop-opacity="0.16"/>
+    </radialGradient>
+    <filter id="sna-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="17"/>
+    </filter>
+    <filter id="sna-small-soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+  </defs>
+  <g id="sna-actor" data-layer="root">
+    <g id="sna-shadow" data-layer="shadow" opacity="0.24" filter="url(#sna-soft)">
+      <path d="M122 615C211 531 227 667 327 544C420 429 404 283 509 218C575 177 646 201 680 136" stroke="#172332" stroke-width="64" stroke-linecap="round"/>
+      <ellipse cx="392" cy="632" rx="160" ry="34" fill="#426B50" fill-opacity="0.26"/>
+    </g>
+    <g id="sna-strand" data-layer="strand">
+      <path d="M112 592C199 508 225 650 319 525C408 407 395 267 502 199C568 157 640 179 678 112" stroke="#426B50" stroke-opacity="0.11" stroke-width="76" stroke-linecap="round"/>
+      <path d="M112 584C199 500 225 642 319 517C408 399 395 259 502 191C568 149 640 171 678 104" stroke="url(#sna-gel)" stroke-width="58" stroke-linecap="round"/>
+      <path d="M133 566C207 507 233 605 302 505C376 398 379 282 468 211" stroke="#FFFFFF" stroke-opacity="0.72" stroke-width="9" stroke-linecap="round"/>
+      <path d="M544 175C591 154 631 171 657 129" stroke="#FFFFFF" stroke-opacity="0.82" stroke-width="7" stroke-linecap="round"/>
+      <path d="M322 526C359 474 382 413 392 352" stroke="#5F9294" stroke-opacity="0.15" stroke-width="18" stroke-linecap="round"/>
+    </g>
+    <g id="sna-highlight" data-layer="highlight" opacity="0.9">
+      <path d="M150 551C209 516 237 570 276 526" stroke="url(#sna-sheen)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M420 283C438 239 461 213 494 194" stroke="url(#sna-sheen)" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="290" cy="557" r="18" fill="#FFFFFF" fill-opacity="0.16" filter="url(#sna-small-soft)"/>
+    </g>
+    <g id="sna-bubbles" data-layer="bubbles" fill="url(#sna-bubble)" stroke="#7F9D88" stroke-opacity="0.28">
+      <circle cx="222" cy="574" r="15"/>
+      <circle cx="336" cy="479" r="10"/>
+      <circle cx="405" cy="321" r="13"/>
+      <circle cx="509" cy="190" r="9"/>
+      <circle cx="602" cy="174" r="7"/>
+    </g>
+    <g id="sna-anchor" data-layer="anchor">
+      <ellipse cx="392" cy="617" rx="106" ry="25" fill="#FFFFFF" fill-opacity="0.34" stroke="#7F9D88" stroke-opacity="0.34" stroke-width="3"/>
+      <ellipse cx="392" cy="613" rx="58" ry="11" fill="#FFFFFF" fill-opacity="0.5"/>
+      <path d="M336 612C354 588 374 579 393 579C421 579 445 594 455 612" stroke="#F7F8F3" stroke-opacity="0.88" stroke-width="18" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

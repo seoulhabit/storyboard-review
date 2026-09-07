@@ -1,0 +1,16 @@
+{
+  "component_id": "surface-vs-structure",
+  "display_name": "Surface vs Structure",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Show a topical material forming a surface state while the deeper structural layer remains visibly distinct and unchanged.",
+  "required_inputs": ["ingredient_actor", "surface_state", "structure_state", "boundary_copy"],
+  "variants": ["surface-film", "surface-hydration", "surface-smoothing"],
+  "visual_states": ["arriving", "surface-film", "surface-changed", "structure-unchanged", "verdict"],
+  "layouts": ["16:9", "9:16-safe"],
+  "asset": "component.svg",
+  "stable_layers": ["ivs-surface", "ivs-film", "ivs-ingredient", "ivs-dermis", "ivs-structure", "ivs-boundary"],
+  "dependencies": ["skin-entry-gate", "structure-scaffold"],
+  "avoid": ["surface effect merging with dermal structure", "before-after implication", "replacement claim"],
+  "harvested_from": ["videos/collagen-where-did-it-go/compositions/frames/06-door.html", "videos/collagen-where-did-it-go/scripts/frames_c.py"]
+}

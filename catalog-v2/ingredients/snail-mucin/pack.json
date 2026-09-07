@@ -84,6 +84,13 @@
     ],
     "components": [
       {
+        "id": "snail-ingredient-actor",
+        "type": "editable transparent SVG ingredient actor",
+        "status": "approved",
+        "purpose": "Provide a persistent tactile recognition cue without implying a molecule, extraction method, or finished-formula effect.",
+        "path": "catalog-v2/ingredients/snail-mucin/components/ingredient-actor.svg"
+      },
+      {
         "id": "snail-identity-card",
         "type": "editable SVG identity card",
         "status": "approved",
@@ -243,7 +250,7 @@
     "texture_media": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-texture-square.png",
     "application_media": "catalog-v2/ingredients/snail-mucin/assets/snail-application-cheek-vertical.png",
     "product_container": "catalog-v2/ingredients/snail-mucin/assets/snail-mucin-airless-pump-transparent.png",
-    "mechanism_actor": null,
+    "mechanism_actor": "catalog-v2/ingredients/snail-mucin/components/ingredient-actor.svg",
     "route_comparison": null,
     "process_comparison": "catalog-v2/ingredients/snail-mucin/components/collection-method-compare.svg",
     "evidence_cards": ["SNAIL-SCI-2013-PHOTOAGING", "SNAIL-SCI-2020-AGING-REGIMEN", "SNAIL-SCI-2024-COMPOSITION"],

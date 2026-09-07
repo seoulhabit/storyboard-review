@@ -1,0 +1,17 @@
+{
+  "ingredient_id": "collagen",
+  "actor": "catalog-v2/ingredients/collagen/components/ingredient-actor.svg",
+  "identity_map": "catalog-v2/ingredients/collagen/components/identity-format-map.svg",
+  "routes": [
+    {"id": "topical", "label": "Topical formula", "destination": "Skin surface", "known": true},
+    {"id": "oral", "label": "Oral collagen peptides", "destination": "Digestion and distribution", "known": true}
+  ],
+  "skin_gate": {
+    "small_reference_da": 500,
+    "ingredient_reference_da": 300000,
+    "disclosure": "Labelled, not to scale. The 500 Dalton rule is a general intact-skin boundary, not a test of every formula.",
+    "citation_id": "COLLAGEN-SCI-2000-500-DALTON"
+  },
+  "surface_boundary": "A topical surface film is not structural replacement in the dermis.",
+  "source_pack": "catalog-v2/ingredients/collagen/pack.json"
+}

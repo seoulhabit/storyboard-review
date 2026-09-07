@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" fill="none" role="img" aria-labelledby="cic-title cic-desc">
+  <title id="cic-title">Centella and Cica ingredient actor</title>
+  <desc id="cic-desc">An illustrative three-leaf Centella source silhouette with visible veins, stems, and an extract droplet.</desc>
+  <defs>
+    <linearGradient id="cic-leaf-a" x1="240" y1="112" x2="478" y2="518" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BBD0BF"/>
+      <stop offset="0.52" stop-color="#7F9D88"/>
+      <stop offset="1" stop-color="#426B50"/>
+    </linearGradient>
+    <linearGradient id="cic-leaf-b" x1="118" y1="330" x2="393" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#AFC7B3"/>
+      <stop offset="1" stop-color="#527A5D"/>
+    </linearGradient>
+    <linearGradient id="cic-drop" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="0.5" stop-color="#BBD0BF" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#5F9294" stop-opacity="0.72"/>
+    </linearGradient>
+    <filter id="cic-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+  <g id="cic-actor" data-layer="root">
+    <g id="cic-shadow" data-layer="shadow" opacity="0.18" filter="url(#cic-soft)" fill="#172332">
+      <ellipse cx="401" cy="670" rx="182" ry="28"/>
+      <path d="M398 637C389 514 381 380 398 207" stroke="#172332" stroke-width="40" stroke-linecap="round"/>
+    </g>
+    <g id="cic-stems" data-layer="stems" fill="none" stroke="#426B50" stroke-linecap="round">
+      <path d="M400 653C391 521 386 377 400 212" stroke-width="18"/>
+      <path d="M399 653C342 561 289 498 225 451" stroke-width="16"/>
+      <path d="M401 653C469 560 525 499 584 440" stroke-width="16"/>
+      <path d="M397 645C392 514 392 382 405 228" stroke="#BBD0BF" stroke-opacity="0.72" stroke-width="5"/>
+    </g>
+    <g id="cic-leaves" data-layer="leaves" stroke="#426B50" stroke-width="6" stroke-linejoin="round">
+      <path id="cic-leaf-top" d="M401 222C337 249 260 220 231 158C209 111 252 63 314 84C346 39 424 39 453 86C514 67 561 111 541 161C515 227 448 252 401 222Z" fill="url(#cic-leaf-a)"/>
+      <path id="cic-leaf-left" d="M230 454C169 471 103 437 90 379C79 330 128 292 181 316C215 277 280 291 297 339C342 355 343 416 301 442C280 455 254 460 230 454Z" fill="url(#cic-leaf-b)"/>
+      <path id="cic-leaf-right" d="M578 444C523 464 459 439 441 383C426 335 468 294 522 311C551 267 619 273 642 320C692 328 706 388 668 420C644 441 607 451 578 444Z" fill="url(#cic-leaf-a)"/>
+    </g>
+    <g id="cic-veins" data-layer="veins" fill="none" stroke="#F1F2ED" stroke-opacity="0.78" stroke-width="4" stroke-linecap="round">
+      <path d="M401 217L398 91"/><path d="M399 153L321 105"/><path d="M399 173L486 108"/><path d="M397 191L286 161"/><path d="M400 197L512 166"/>
+      <path d="M229 450L174 327"/><path d="M207 401L127 371"/><path d="M215 421L277 347"/><path d="M191 363L225 348"/>
+      <path d="M578 440L566 312"/><path d="M570 377L493 342"/><path d="M574 398L629 336"/><path d="M568 418L652 389"/>
+    </g>
+    <g id="cic-droplet" data-layer="droplet">
+      <path d="M402 377C402 377 354 439 354 479C354 513 375 535 402 535C429 535 450 513 450 479C450 439 402 377 402 377Z" fill="url(#cic-drop)" stroke="#5F9294" stroke-width="5"/>
+      <path d="M383 469C386 450 395 437 405 426" stroke="#FFFFFF" stroke-opacity="0.86" stroke-width="7" stroke-linecap="round"/>
+    </g>
+    <g id="cic-version-ring" data-layer="version-ring" fill="none" stroke-linecap="round">
+      <path d="M500 522C547 554 565 613 540 664" stroke="#6358A7" stroke-width="7"/>
+      <path d="M522 685C484 724 420 736 369 711" stroke="#6358A7" stroke-opacity="0.32" stroke-width="7" stroke-dasharray="10 15"/>
+      <circle cx="540" cy="664" r="8" fill="#C5944D" stroke="none"/>
+    </g>
+  </g>
+</svg>

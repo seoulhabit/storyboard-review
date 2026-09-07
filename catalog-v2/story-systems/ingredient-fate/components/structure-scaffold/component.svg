@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none" role="img" aria-labelledby="ifs-title ifs-desc">
+  <title id="ifs-title">Structural scaffold component</title>
+  <desc id="ifs-desc">An editorial architectural cutaway uses collagen-coloured fibre beams to show intact, damaged, protected and partially supported states.</desc>
+  <defs>
+    <linearGradient id="ifs-shell-grad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFFDF8" stop-opacity=".94"/><stop offset="1" stop-color="#C8D7D2" stop-opacity=".48"/></linearGradient>
+    <linearGradient id="ifs-fibre-grad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7D3155"/><stop offset=".5" stop-color="#C66F61"/><stop offset="1" stop-color="#204E58"/></linearGradient>
+    <filter id="ifs-shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="24"/></filter>
+  </defs>
+  <rect width="1600" height="900" rx="28" fill="#F4EEE8"/>
+  <text x="74" y="76" fill="#172332" font-family="Arial, sans-serif" font-size="24" font-weight="700">Structure is a stateful actor</text>
+  <text x="1526" y="76" text-anchor="end" fill="#6E6670" font-family="Arial, sans-serif" font-size="20">Intact → damaged → protected → partly supported</text>
+  <g id="ifs-protection" data-layer="protection">
+    <path d="M218 174H846C894 174 920 208 920 249V698C920 746 888 776 842 776H218C171 776 140 744 140 699V248C140 205 171 174 218 174Z" fill="#5D8B87" fill-opacity=".15" stroke="#204E58" stroke-width="5"/>
+  </g>
+  <ellipse cx="530" cy="759" rx="356" ry="42" fill="#172332" fill-opacity=".17" filter="url(#ifs-shadow)"/>
+  <g id="ifs-shell" data-layer="shell">
+    <path d="M232 244L530 170L828 244V712H232V244Z" fill="url(#ifs-shell-grad)" stroke="#172332" stroke-width="6"/>
+    <path d="M232 244L530 170L828 244" stroke="#172332" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M232 398H828M232 553H828" stroke="#172332" stroke-opacity=".22" stroke-width="4"/>
+    <path d="M530 170V712" stroke="#172332" stroke-opacity=".18" stroke-width="3"/>
+  </g>
+  <g id="ifs-fibre-beams" data-layer="fibre-beams" stroke="url(#ifs-fibre-grad)" stroke-width="18" stroke-linecap="round">
+    <path id="ifs-beam-1a" d="M266 680L492 571"/><path id="ifs-beam-1b" d="M566 571L794 680"/>
+    <path id="ifs-beam-2a" d="M266 530L492 420"/><path id="ifs-beam-2b" d="M566 420L794 530"/>
+    <path id="ifs-beam-3a" d="M266 372L492 258"/><path id="ifs-beam-3b" d="M566 258L794 372"/>
+  </g>
+  <g id="ifs-damage" data-layer="damage">
+    <path d="M331 491L368 474" stroke="#F4EEE8" stroke-width="30"/>
+    <path d="M681 318L718 337" stroke="#F4EEE8" stroke-width="30"/>
+    <path d="M348 465L337 437L372 446L392 416" stroke="#7D3155" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M690 294L706 267L724 300L751 286" stroke="#7D3155" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g id="ifs-foundation" data-layer="foundation"><rect x="198" y="704" width="664" height="34" rx="17" fill="#204E58"/><rect x="246" y="738" width="568" height="14" rx="7" fill="#172332"/></g>
+  <g id="ifs-state-labels" data-layer="state-labels" transform="translate(1018 180)">
+    <text x="0" y="0" fill="#7D3155" font-family="Georgia, serif" font-size="58">Collagen as structure</text>
+    <text x="0" y="54" fill="#6E6670" font-family="Arial, sans-serif" font-size="23">The metaphor persists. Its state changes.</text>
+    <g transform="translate(0 112)">
+      <rect width="470" height="82" rx="18" fill="#FFFDF8"/><circle cx="42" cy="41" r="13" fill="#C66F61"/><text x="76" y="50" fill="#172332" font-family="Arial, sans-serif" font-size="23" font-weight="700">Damage creates discontinuity</text>
+      <g transform="translate(0 102)"><rect width="470" height="82" rx="18" fill="#DCE8E4"/><circle cx="42" cy="41" r="13" fill="#204E58"/><text x="76" y="50" fill="#172332" font-family="Arial, sans-serif" font-size="23" font-weight="700">Protection draws a boundary</text></g>
+      <g transform="translate(0 204)"><rect width="470" height="82" rx="18" fill="#F0E0D8"/><circle cx="42" cy="41" r="13" fill="#7D3155"/><text x="76" y="50" fill="#172332" font-family="Arial, sans-serif" font-size="23" font-weight="700">Support restores selectively</text></g>
+    </g>
+    <path d="M0 476H470" stroke="#172332" stroke-opacity=".17" stroke-width="2"/>
+    <text x="0" y="532" fill="#172332" font-family="Arial, sans-serif" font-size="20" font-weight="700">Never show complete repair by default.</text>
+    <text x="0" y="570" fill="#6E6670" font-family="Arial, sans-serif" font-size="18">The host scene must earn every restored beam.</text>
+  </g>
+  <circle cx="1518" cy="824" r="30" fill="#172332"/><text x="1518" y="835" text-anchor="middle" fill="#FFFDF8" font-family="Arial, sans-serif" font-size="25" font-weight="700">습</text>
+</svg>

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seoulhabit.example/schemas/ingredient-actor.schema.json",
+  "title": "SeoulHabit Ingredient Actor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "actor_version",
+    "ingredient_id",
+    "display_name",
+    "status",
+    "asset",
+    "recognition_cue",
+    "visual_meaning",
+    "states",
+    "layers",
+    "motion_contract",
+    "long_form_contract",
+    "safe_uses",
+    "avoid",
+    "disclosure"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "actor_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "ingredient_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "display_name": { "type": "string" },
+    "status": { "enum": ["prototype", "approved", "restricted", "retired"] },
+    "asset": { "type": "string" },
+    "recognition_cue": { "type": "string" },
+    "visual_meaning": { "type": "string" },
+    "states": {
+      "type": "array",
+      "minItems": 4,
+      "items": { "enum": ["hero", "compact", "source", "formula", "evidence", "unknown-version", "recap"] }
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "motion_contract": {
+      "type": "object",
+      "required": ["entrance", "ambient", "resolve", "duration_seconds", "host_rules"],
+      "properties": {
+        "entrance": { "type": "string" },
+        "ambient": { "type": "string" },
+        "resolve": { "type": "string" },
+        "duration_seconds": { "type": "number", "exclusiveMinimum": 0 },
+        "host_rules": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "long_form_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canvas_reference", "roles", "reentry", "recognition_tests"],
+      "properties": {
+        "canvas_reference": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height", "aspect_ratio", "title_safe_inset_px"],
+          "properties": {
+            "width": { "type": "integer", "minimum": 1 },
+            "height": { "type": "integer", "minimum": 1 },
+            "aspect_ratio": { "enum": ["16:9"] },
+            "title_safe_inset_px": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "roles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["state", "purpose", "size_percent", "anchor", "entry_seconds", "label_policy"],
+            "properties": {
+              "state": { "enum": ["hero", "compact", "source", "formula", "evidence", "unknown-version", "recap"] },
+              "purpose": { "type": "string" },
+              "size_percent": { "type": "number", "exclusiveMinimum": 0, "maximum": 60 },
+              "anchor": { "enum": ["center", "left-third", "right-third", "upper-left", "upper-right", "inline"] },
+              "entry_seconds": { "type": "number", "minimum": 0, "maximum": 3 },
+              "label_policy": { "enum": ["hidden", "name", "name-and-context", "warning"] }
+            }
+          },
+          "required": ["chapter_open", "continuity_anchor", "diagram_node", "evidence_companion", "recap_token", "unknown_version"]
+        },
+        "reentry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["first_appearance", "later_appearances", "chapter_return", "maximum_simultaneous_actors"],
+          "properties": {
+            "first_appearance": { "type": "string" },
+            "later_appearances": { "type": "string" },
+            "chapter_return": { "type": "string" },
+            "maximum_simultaneous_actors": { "type": "integer", "minimum": 1, "maximum": 4 }
+          }
+        },
+        "recognition_tests": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minimum_width_px", "small_size_mode", "backgrounds"],
+          "properties": {
+            "minimum_width_px": { "type": "integer", "minimum": 48 },
+            "small_size_mode": { "type": "string" },
+            "backgrounds": {
+              "type": "array",
+              "minItems": 2,
+              "items": { "enum": ["light", "dark", "photographic"] }
+            }
+          }
+        }
+      }
+    },
+    "safe_uses": { "type": "array", "items": { "type": "string" } },
+    "avoid": { "type": "array", "items": { "type": "string" } },
+    "disclosure": { "type": "string" },
+    "harvested_from": { "type": "array", "items": { "type": "string" } }
+  }
+}

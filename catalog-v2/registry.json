@@ -1,5 +1,5 @@
 {
-  "catalog_version": "2.0.0-alpha.5",
+  "catalog_version": "2.0.0-alpha.8",
   "updated": "2026-09-05",
   "policy": "harvest_first",
   "ingredient_packs": [
@@ -12,7 +12,7 @@
       "manifest": "catalog-v2/ingredients/snail-mucin/manifest.json",
       "approved_asset_count": 5,
       "restricted_asset_count": 1,
-      "approved_component_count": 2,
+      "approved_component_count": 3,
       "highest_priority_gap": "real-product label macro template"
     },
     {
@@ -24,8 +24,33 @@
       "manifest": "catalog-v2/ingredients/pdrn/manifest.json",
       "approved_asset_count": 2,
       "restricted_asset_count": 0,
-      "approved_component_count": 2,
+      "approved_component_count": 3,
       "highest_priority_gap": "transparent PDRN dropper cutout"
+    },
+    {
+      "ingredient_id": "centella-cica",
+      "display_name": "Centella / Cica",
+      "version": "1.0.0",
+      "status": "draft_visual_ready",
+      "pack": "catalog-v2/ingredients/centella-cica/pack.json",
+      "manifest": "catalog-v2/ingredients/centella-cica/manifest.json",
+      "approved_asset_count": 2,
+      "restricted_asset_count": 0,
+      "approved_component_count": 1,
+      "highest_priority_gap": "traceable Centella evidence records"
+    },
+    {
+      "ingredient_id": "collagen",
+      "display_name": "Collagen",
+      "version": "0.1.0",
+      "status": "draft_visual_ready",
+      "pack": "catalog-v2/ingredients/collagen/pack.json",
+      "manifest": "catalog-v2/ingredients/collagen/manifest.json",
+      "approved_asset_count": 0,
+      "restricted_asset_count": 0,
+      "approved_component_count": 0,
+      "prototype_component_count": 3,
+      "highest_priority_gap": "shared neutral cream and powder vessel pair production stress test"
     }
   ],
   "story_systems": [
@@ -38,8 +63,20 @@
       "working_component_count": 9,
       "working_pattern_count": 2,
       "planned_component_count": 0,
-      "first_fixtures": ["snail-mucin", "pdrn"],
+      "first_fixtures": ["centella-cica", "snail-mucin", "pdrn"],
       "highest_priority_gate": "stress test the complete kit with photographed real-product labels and narration-timed video integration"
+    },
+    {
+      "system_id": "ingredient-fate",
+      "display_name": "Ingredient Fate",
+      "version": "0.1.0",
+      "status": "prototype_slice_1",
+      "path": "catalog-v2/story-systems/ingredient-fate/registry.json",
+      "working_component_count": 5,
+      "working_pattern_count": 0,
+      "planned_component_count": 7,
+      "first_fixtures": ["collagen"],
+      "highest_priority_gate": "narration-timed 16:9 and 9:16 integration plus scientific and real-label stress testing"
     }
   ],
   "global_rules": [
@@ -49,6 +86,8 @@
     "Medical injection evidence cannot support an intact-skin topical claim.",
     "No new generation during the initial harvest phase.",
     "A story system may consume ingredient packs but must not own or duplicate their scientific facts.",
-    "Missing label information must render as not disclosed or not established."
+    "Missing label information must render as not disclosed or not established.",
+    "Every ingredient pack should own one transparent, editable recognition actor before a story format draws a new substitute.",
+    "In long-form video, an actor plays the full entrance once; later appearances use governed chapter, anchor, diagram, evidence, boundary, or recap roles."
   ]
 }

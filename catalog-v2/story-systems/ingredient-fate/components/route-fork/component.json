@@ -1,0 +1,15 @@
+{
+  "component_id": "route-fork",
+  "display_name": "Ingredient Route Fork",
+  "version": "0.1.0",
+  "status": "prototype",
+  "purpose": "Keep one ingredient subject continuous while its topical and oral routes separate into different destinations.",
+  "required_inputs": ["ingredient_actor", "route_a", "route_b", "route_boundaries"],
+  "variants": ["two-route", "three-route"],
+  "visual_states": ["unified", "forking", "routes-open", "route-closed", "unknown-route"],
+  "layouts": ["16:9", "9:16-safe"],
+  "asset": "component.svg",
+  "stable_layers": ["ifr-ingredient", "ifr-junction", "ifr-topical-path", "ifr-oral-path", "ifr-topical-destination", "ifr-oral-destination"],
+  "avoid": ["route equivalence", "one route inheriting another route's evidence", "direct facial destination by default"],
+  "harvested_from": ["videos/collagen-where-did-it-go/compositions/frames/01-hook.html", "videos/collagen-where-did-it-go/scripts/frames_a.py"]
+}

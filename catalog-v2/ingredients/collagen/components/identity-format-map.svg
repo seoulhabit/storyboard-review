@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none" role="img" aria-labelledby="cif-title cif-desc">
+  <title id="cif-title">Collagen identity and format map</title>
+  <desc id="cif-desc">Four distinct states separate structural collagen, topical formula context, oral collagen peptide format and digested fragments.</desc>
+  <rect width="1600" height="900" rx="28" fill="#F4EEE8"/>
+  <path d="M74 92H1526" stroke="#172332" stroke-opacity="0.18" stroke-width="2"/>
+  <text x="74" y="66" fill="#172332" font-family="Arial, sans-serif" font-size="24" font-weight="700">SeoulHabit ingredient library</text>
+  <text x="1526" y="66" text-anchor="end" fill="#6E6670" font-family="Arial, sans-serif" font-size="20">Identity before claims</text>
+  <text x="74" y="176" fill="#172332" font-family="Georgia, serif" font-size="72">One name. Four material states.</text>
+  <text x="76" y="220" fill="#6E6670" font-family="Arial, sans-serif" font-size="24">Do not let one helix silently stand in for every form and route.</text>
+  <g transform="translate(74 278)">
+    <g id="cif-structural" data-state="structural">
+      <rect width="340" height="472" rx="22" fill="#FFFDF8" stroke="#172332" stroke-opacity="0.15" stroke-width="2"/>
+      <text x="28" y="48" fill="#7D3155" font-family="Arial, sans-serif" font-size="19" font-weight="700">01  Structural protein</text>
+      <g transform="translate(18 96) scale(.38)"><image href="ingredient-actor.svg" width="800" height="800"/></g>
+      <text x="28" y="404" fill="#172332" font-family="Georgia, serif" font-size="31">Dermal structure</text>
+      <text x="28" y="438" fill="#6E6670" font-family="Arial, sans-serif" font-size="18">Recognition state—not microscopy.</text>
+    </g>
+    <g id="cif-topical" data-state="topical" transform="translate(366)">
+      <rect width="340" height="472" rx="22" fill="#E6EFEA" stroke="#172332" stroke-opacity="0.15" stroke-width="2"/>
+      <text x="28" y="48" fill="#204E58" font-family="Arial, sans-serif" font-size="19" font-weight="700">02  Topical formula</text>
+      <rect x="66" y="116" width="208" height="144" rx="54" fill="#FFFDF8" stroke="#172332" stroke-width="4"/>
+      <rect x="90" y="92" width="160" height="44" rx="13" fill="#172332"/>
+      <path d="M98 237C129 184 157 193 184 240C211 287 241 289 269 239" stroke="#9F5962" stroke-width="12" stroke-linecap="round"/>
+      <path d="M98 262C129 315 157 306 184 258C211 211 241 210 269 261" stroke="#5D8B87" stroke-width="11" stroke-linecap="round"/>
+      <text x="28" y="404" fill="#172332" font-family="Georgia, serif" font-size="31">Inside a vehicle</text>
+      <text x="28" y="438" fill="#6E6670" font-family="Arial, sans-serif" font-size="18">Formula context does not prove entry.</text>
+    </g>
+    <g id="cif-oral" data-state="oral" transform="translate(732)">
+      <rect width="340" height="472" rx="22" fill="#F5E6DE" stroke="#172332" stroke-opacity="0.15" stroke-width="2"/>
+      <text x="28" y="48" fill="#7D3155" font-family="Arial, sans-serif" font-size="19" font-weight="700">03  Oral format</text>
+      <path d="M80 112H260L246 302H94L80 112Z" fill="#FFFDF8" stroke="#172332" stroke-width="4"/>
+      <path d="M72 108H268" stroke="#172332" stroke-width="18" stroke-linecap="round"/>
+      <g fill="#C66F61" fill-opacity="0.75"><circle cx="126" cy="214" r="9"/><circle cx="159" cy="237" r="7"/><circle cx="196" cy="211" r="10"/><circle cx="221" cy="246" r="7"/><circle cx="145" cy="270" r="8"/></g>
+      <text x="28" y="404" fill="#172332" font-family="Georgia, serif" font-size="31">Collagen peptides</text>
+      <text x="28" y="438" fill="#6E6670" font-family="Arial, sans-serif" font-size="18">Use the exact product wording.</text>
+    </g>
+    <g id="cif-digested" data-state="digested" transform="translate(1098)">
+      <rect width="340" height="472" rx="22" fill="#202A33" stroke="#172332" stroke-opacity="0.15" stroke-width="2"/>
+      <text x="28" y="48" fill="#DDB09C" font-family="Arial, sans-serif" font-size="19" font-weight="700">04  After digestion</text>
+      <g fill="none" stroke-linecap="round"><path d="M67 176C98 140 126 210 159 175" stroke="#C66F61" stroke-width="13"/><path d="M188 151C222 116 252 185 286 148" stroke="#5D8B87" stroke-width="13"/><path d="M84 250C114 220 142 274 170 245" stroke="#D8A38E" stroke-width="12"/></g>
+      <g fill="#F4EEE8"><circle cx="222" cy="244" r="10"/><circle cx="257" cy="267" r="7"/><circle cx="286" cy="228" r="8"/><circle cx="197" cy="286" r="6"/></g>
+      <text x="28" y="404" fill="#FFFDF8" font-family="Georgia, serif" font-size="31">Fragments available</text>
+      <text x="28" y="438" fill="#C2B9B8" font-family="Arial, sans-serif" font-size="18">No automatic facial destination.</text>
+    </g>
+  </g>
+  <g transform="translate(74 794)">
+    <rect width="1020" height="58" rx="29" fill="#172332"/>
+    <text x="28" y="37" fill="#FFFDF8" font-family="Arial, sans-serif" font-size="20" font-weight="700">Boundary: source, type, hydrolysis, dose, formula and route remain product-specific.</text>
+    <circle cx="1419" cy="29" r="29" fill="#FFFDF8" stroke="#172332" stroke-width="2"/>
+    <text x="1419" y="39" text-anchor="middle" fill="#172332" font-family="Arial, sans-serif" font-size="25" font-weight="700">습</text>
+  </g>
+</svg>

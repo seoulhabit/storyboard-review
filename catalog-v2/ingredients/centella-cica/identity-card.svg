@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="600" viewBox="0 0 1080 600" role="img" aria-labelledby="cic-card-title cic-card-desc">
+  <title id="cic-card-title">Centella and Cica identity card</title>
+  <desc id="cic-card-desc">Editorial identity card separating the consumer term Cica from the exact Centella ingredient declaration and extract version.</desc>
+  <defs>
+    <linearGradient id="cic-card-leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#BBD0BF"/>
+      <stop offset="1" stop-color="#426B50"/>
+    </linearGradient>
+    <filter id="cic-card-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#172332" flood-opacity="0.11"/>
+    </filter>
+  </defs>
+  <rect width="1080" height="600" fill="#F1F2ED"/>
+  <rect x="54" y="48" width="972" height="504" rx="30" fill="#F8F8F3" stroke="#172332" stroke-opacity="0.16" stroke-width="2" filter="url(#cic-card-shadow)"/>
+  <path d="M755 158C714 176 666 157 648 118C635 89 661 60 699 74C718 45 767 45 785 75C823 63 852 90 839 121C823 162 783 178 755 158Z" fill="url(#cic-card-leaf)" stroke="#426B50" stroke-width="4"/>
+  <path d="M755 157L753 79M754 116L704 85M754 128L808 87M753 140L685 121M755 144L823 124" fill="none" stroke="#F1F2ED" stroke-opacity="0.82" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="899" cy="111" r="45" fill="#C97A5C" stroke="#F7F5F0" stroke-width="4"/>
+  <text x="899" y="127" text-anchor="middle" fill="#F7F5F0" font-family="'Noto Sans KR', Arial, sans-serif" font-size="45" font-weight="500">습</text>
+  <text x="110" y="126" fill="#426B50" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="4">INGREDIENT IDENTITY</text>
+  <text x="106" y="238" fill="#172332" font-family="Arial, Helvetica, sans-serif" font-size="86" font-weight="650" letter-spacing="-4">Centella / Cica</text>
+  <line x1="110" y1="278" x2="669" y2="278" stroke="#C97A5C" stroke-width="5"/>
+  <text x="110" y="341" fill="#172332" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="2">START WITH THE EXACT LABEL</text>
+  <text x="110" y="399" fill="#172332" font-family="'Courier New', monospace" font-size="34">CENTELLA ASIATICA EXTRACT</text>
+  <g transform="translate(110 445)">
+    <rect width="176" height="52" rx="26" fill="#E0E8E1"/>
+    <text x="88" y="34" text-anchor="middle" fill="#426B50" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700">PLANT PART</text>
+    <rect x="190" width="190" height="52" rx="26" fill="#E5E1F1"/>
+    <text x="285" y="34" text-anchor="middle" fill="#6358A7" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700">EXTRACTION</text>
+    <rect x="394" width="226" height="52" rx="26" fill="#E8E8E1"/>
+    <text x="507" y="34" text-anchor="middle" fill="#526071" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700">STANDARDIZATION</text>
+  </g>
+  <text x="110" y="528" fill="#526071" font-family="Arial, Helvetica, sans-serif" font-size="20">Cica is the beginning of the label review—not the final identity.</text>
+</svg>

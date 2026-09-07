@@ -74,6 +74,16 @@
   ],
   "components": [
     {
+      "id": "snail-ingredient-actor",
+      "file": "components/ingredient-actor.svg",
+      "contract": "components/ingredient-actor.json",
+      "origin": "authored_code_native_after_harvest",
+      "status": "approved",
+      "dimensions": "800x800",
+      "has_alpha": true,
+      "sha256": "c47aa8d4767389c28d9f5059879dc4842ef4796b81ac23f298fc461303210333"
+    },
+    {
       "id": "snail-collection-method-compare",
       "file": "components/collection-method-compare.svg",
       "origin": "authored_code_native_after_harvest",

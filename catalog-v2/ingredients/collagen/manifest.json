@@ -1,0 +1,37 @@
+{
+  "ingredient_id": "collagen",
+  "manifest_version": "0.1.0",
+  "assets": [
+    {
+      "id": "collagen-identity-card",
+      "file": "identity-card.svg",
+      "source": "catalog-v2 collagen extension 2026-09-05",
+      "origin": "authored_code_native_after_harvest",
+      "status": "reference_only",
+      "dimensions": "1600x900",
+      "has_alpha": false,
+      "sha256": "51ced616934c8d2ef943e41bdaced69e53b38501d13626765d770d2deed9965c"
+    }
+  ],
+  "components": [
+    {
+      "id": "collagen-ingredient-actor",
+      "file": "components/ingredient-actor.svg",
+      "contract": "components/ingredient-actor.json",
+      "origin": "authored_code_native_after_harvest",
+      "status": "prototype",
+      "dimensions": "800x800",
+      "has_alpha": true,
+      "sha256": "b73a6164297619cc95a5843cc83daf5ec6908cea8a57823157ba293ef477ce80"
+    },
+    {
+      "id": "collagen-identity-format-map",
+      "file": "components/identity-format-map.svg",
+      "origin": "authored_code_native_after_harvest",
+      "status": "prototype",
+      "dimensions": "1600x900",
+      "has_alpha": false,
+      "sha256": "95595c38fc02dd640f2403a7b3e85302ff7376458ac01d26c4ab23739b73544e"
+    }
+  ]
+}

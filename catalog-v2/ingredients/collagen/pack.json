@@ -1,0 +1,244 @@
+{
+  "schema_version": "1.0",
+  "ingredient_id": "collagen",
+  "version": "0.1.0",
+  "status": "draft",
+  "updated": "2026-09-05",
+  "identity": {
+    "display_name": "Collagen",
+    "consumer_term": "collagen",
+    "definition": "A family of structural proteins. In skin, collagen is an important part of the dermal extracellular matrix; topical and oral products may contain different collagen-derived materials.",
+    "source_type": "Protein or peptide material; source, collagen type, hydrolysis and molecular profile are product-specific.",
+    "label_terms": {
+      "preferred": ["Use the exact ingredient-list or supplement-facts wording photographed on the product"],
+      "possible_variants": ["Collagen", "Hydrolyzed Collagen", "Collagen Peptides", "Collagen Amino Acids", "Soluble Collagen"],
+      "rule": "Treat these as possible market or label terms, not automatic synonyms. Never infer source, collagen type, hydrolysis, molecular mass, dose or route from the front claim alone."
+    },
+    "identity_boundaries": [
+      "Structural collagen in the dermis is not the same visual or biological state as collagen named in a topical formula.",
+      "An oral collagen or collagen-peptide product does not travel intact to facial skin as a direct delivery route.",
+      "Evidence for one hydrolyzed collagen preparation, dose and duration does not prove every powder, gummy, drink or topical product.",
+      "The ingredient actor is illustrative and must not be presented as microscopy or a specific collagen type."
+    ]
+  },
+  "visual_system": {
+    "actor": "A dimensional triple-ribbon fibre inside a translucent dermal-architecture lens.",
+    "tactile_signature": "Layered fibre ribbons, chalky skin strata, controlled translucency and a restrained architectural cutaway.",
+    "palette": ["warm chalk", "plum-black", "oxblood", "oxidized coral", "surgical blue", "mineral green"],
+    "motion_grammar": [
+      "Keep the three ribbons recognizable as one actor until a governed transformation explicitly fragments them.",
+      "Use route and depth changes as the main explanatory movement; avoid decorative helix rotation.",
+      "Damage is shown by structural discontinuity, protection by a boundary, and evidence by a separate dossier register.",
+      "Let the actor become quiet when the evidence or action hierarchy is primary."
+    ],
+    "assets": [],
+    "components": [
+      {
+        "id": "collagen-ingredient-actor",
+        "type": "editable transparent SVG ingredient actor",
+        "status": "reference_only",
+        "purpose": "Provide a persistent collagen recognition cue without claiming source, route, penetration or efficacy.",
+        "path": "catalog-v2/ingredients/collagen/components/ingredient-actor.svg"
+      },
+      {
+        "id": "collagen-identity-card",
+        "type": "editable SVG identity card",
+        "status": "reference_only",
+        "purpose": "Separate the consumer term from exact label language, form and evidence boundaries.",
+        "path": "catalog-v2/ingredients/collagen/identity-card.svg"
+      },
+      {
+        "id": "collagen-identity-format-map",
+        "type": "editable SVG identity and route boundary map",
+        "status": "reference_only",
+        "purpose": "Keep structural, topical, oral and post-digestion material states visually distinct.",
+        "path": "catalog-v2/ingredients/collagen/components/identity-format-map.svg"
+      }
+    ]
+  },
+  "evidence_records": [
+    {
+      "id": "COLLAGEN-SCI-1998-UV-MMP",
+      "claim": "Ultraviolet exposure can induce matrix metalloproteinase pathways that degrade collagen in human skin.",
+      "status": "approved",
+      "evidence_level": "controlled_human",
+      "route": "ultraviolet exposure to skin",
+      "scope": "Mechanistic human-skin evidence about photoaging and collagen degradation.",
+      "limits": ["mechanism evidence, not a sunscreen-product comparison", "does not quantify how much collagen an individual loses"],
+      "citation": {
+        "title": "Molecular mechanisms of photoaging and its prevention by retinoic acid",
+        "year": 1998,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/9732061/",
+        "pmid": "9732061"
+      }
+    },
+    {
+      "id": "COLLAGEN-SCI-2000-500-DALTON",
+      "claim": "The 500 Dalton rule describes the observation that compounds larger than about 500 Da generally do not penetrate intact skin deeply enough for transdermal delivery.",
+      "status": "restricted",
+      "evidence_level": "laboratory",
+      "route": "intact-skin topical",
+      "scope": "General skin-penetration rule used to explain a molecular-size boundary.",
+      "limits": ["general rule, not a test of every collagen formula", "delivery systems and damaged skin require separate evidence", "the component must state that its relative-size drawing is not to scale"],
+      "citation": {
+        "title": "The 500 Dalton rule for the skin penetration of chemical compounds and drugs",
+        "year": 2000,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/10839713/",
+        "doi": "10.1034/j.1600-0625.2000.009003165.x",
+        "pmid": "10839713"
+      }
+    },
+    {
+      "id": "COLLAGEN-SCI-2023-ORAL-META",
+      "claim": "A 2023 meta-analysis of 26 randomized controlled trials with 1721 participants reported improvements in hydration and elasticity with hydrolyzed collagen supplementation, while also identifying biases and calling for larger trials.",
+      "status": "restricted",
+      "evidence_level": "randomized_human",
+      "route": "oral hydrolyzed collagen supplementation",
+      "scope": "26 RCTs; 1721 participants; pooled skin hydration and elasticity outcomes.",
+      "limits": ["heterogeneous preparations, sources, doses and durations", "biases in included trials", "not evidence for topical collagen", "does not prove direct delivery to facial skin"],
+      "citation": {
+        "title": "Effects of Oral Collagen for Skin Anti-Aging: A Systematic Review and Meta-Analysis",
+        "year": 2023,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37432180/",
+        "doi": "10.3390/nu15092080",
+        "pmid": "37432180"
+      }
+    },
+    {
+      "id": "COLLAGEN-SCI-2025-FUNDING-QUALITY",
+      "claim": "A 2025 meta-analysis of 23 randomized controlled trials with 1474 participants found pooled improvements, but no significant effect across hydration, elasticity and wrinkles in non-industry-funded studies; high-quality studies also showed no significant effect in the reported categories.",
+      "status": "approved",
+      "evidence_level": "randomized_human",
+      "route": "oral collagen supplementation",
+      "scope": "23 RCTs; 1474 participants; subgroup analyses by funding source and study quality.",
+      "limits": ["subgroup membership counts are not supplied for an illustrative tile layout", "do not display a survivor count", "not evidence about topical collagen", "ingredient preparations and trial designs differ"],
+      "citation": {
+        "title": "Effects of Collagen Supplements on Skin Aging: A Systematic Review and Meta-Analysis of Randomized Controlled Trials",
+        "year": 2025,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40324552/",
+        "doi": "10.1016/j.amjmed.2025.04.034",
+        "pmid": "40324552"
+      }
+    },
+    {
+      "id": "COLLAGEN-SCI-2007-RETINOL",
+      "claim": "One randomized, double-blind, vehicle-controlled study found that topical 0.4% retinol improved fine wrinkling on naturally aged arm skin and increased procollagen I immunostaining in a small biopsy subgroup.",
+      "status": "restricted",
+      "evidence_level": "randomized_human",
+      "route": "topical retinol lotion",
+      "scope": "36 elderly participants; left-right arm comparison; up to three applications weekly for 24 weeks.",
+      "limits": ["arm skin, not facial skin", "very old study population", "small biochemical subgroup", "does not establish suitability for every viewer"],
+      "citation": {
+        "title": "Improvement of naturally aged skin with vitamin A (retinol)",
+        "year": 2007,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/17515510/",
+        "doi": "10.1001/archderm.143.5.606",
+        "pmid": "17515510"
+      }
+    }
+  ],
+  "claim_rules": {
+    "safe_default": [
+      "Collagen is an important structural protein in the skin's dermal matrix.",
+      "A collagen ingredient named in a cream is not the same thing as replacing dermal collagen.",
+      "Oral collagen products are digested and absorbed as smaller components rather than delivered intact to the face.",
+      "Evidence must stay attached to the tested preparation, route, dose, duration and population."
+    ],
+    "requires_context": [
+      "Too large to penetrate — state the intact-skin boundary and the general nature of the 500 Dalton rule.",
+      "Improves hydration, elasticity or wrinkles — name the review, route, trial count and limitations.",
+      "No evidence — distinguish no significant effect in selected subgroups from proof of no possible effect.",
+      "Retinoids support collagen production — state the tested topical material, population, body site and suitability qualifier."
+    ],
+    "prohibited_default": [
+      "goes straight to your face",
+      "replaces lost collagen",
+      "rebuilds the dermis",
+      "clinically proven collagen cream",
+      "all collagen powders are equivalent",
+      "definitely works",
+      "definitely fails"
+    ]
+  },
+  "story_slots": [
+    {
+      "slot": "identity",
+      "purpose": "Establish collagen as the story subject while separating forms and routes.",
+      "preferred_inputs": ["collagen-ingredient-actor", "collagen-identity-card", "collagen-identity-format-map"],
+      "claim_ids": [],
+      "avoid": ["one generic helix representing every collagen-derived material"]
+    },
+    {
+      "slot": "topical-route",
+      "purpose": "Explain the intact-skin boundary and distinguish a surface film from structural replacement.",
+      "preferred_inputs": ["collagen-ingredient-actor", "skin-entry-gate", "surface-vs-structure"],
+      "claim_ids": ["COLLAGEN-SCI-2000-500-DALTON"],
+      "avoid": ["literal-door anatomy", "penetration verdict without route and formula context"]
+    },
+    {
+      "slot": "oral-route",
+      "purpose": "Show digestion and non-preferential body distribution without a direct facial-delivery claim.",
+      "preferred_inputs": ["collagen-identity-format-map", "digestion-transform", "body-distribution-map"],
+      "claim_ids": [],
+      "avoid": ["highlighting facial skin as the guaranteed destination"]
+    },
+    {
+      "slot": "evidence",
+      "purpose": "Show reported pooled outcomes and what changes after funding and quality filters.",
+      "preferred_inputs": ["study-field-filter", "effect-result-meter"],
+      "claim_ids": ["COLLAGEN-SCI-2023-ORAL-META", "COLLAGEN-SCI-2025-FUNDING-QUALITY"],
+      "avoid": ["mixing the 2023 and 2025 trial counts", "inventing subgroup counts"]
+    },
+    {
+      "slot": "action-and-boundary",
+      "purpose": "Prioritize protection and evidence-backed options while keeping collagen formats optional.",
+      "preferred_inputs": ["collagen-scaffold", "action-priority-stack"],
+      "claim_ids": ["COLLAGEN-SCI-1998-UV-MMP", "COLLAGEN-SCI-2007-RETINOL"],
+      "avoid": ["letting optional collagen products visually outrank protective actions"]
+    }
+  ],
+  "format_input": {
+    "hero_media": null,
+    "identity_card": "catalog-v2/ingredients/collagen/identity-card.svg",
+    "source_media": null,
+    "texture_media": null,
+    "application_media": null,
+    "product_container": null,
+    "mechanism_actor": "catalog-v2/ingredients/collagen/components/ingredient-actor.svg",
+    "route_comparison": "catalog-v2/ingredients/collagen/components/identity-format-map.svg",
+    "process_comparison": null,
+    "evidence_cards": ["COLLAGEN-SCI-2023-ORAL-META", "COLLAGEN-SCI-2025-FUNDING-QUALITY"],
+    "boundary_card": "Form and route first: topical surface behavior, oral digestion and dermal structure are not interchangeable states.",
+    "citation_ids": ["COLLAGEN-SCI-1998-UV-MMP", "COLLAGEN-SCI-2000-500-DALTON", "COLLAGEN-SCI-2023-ORAL-META", "COLLAGEN-SCI-2025-FUNDING-QUALITY", "COLLAGEN-SCI-2007-RETINOL"]
+  },
+  "legacy_quarantine": [
+    {
+      "item": "videos/collagen-where-did-it-go/scripts/actors.py#drawHelix",
+      "reason": "Useful state and continuity source, but the flat three-wave drawing is not the approved V2 visual actor."
+    },
+    {
+      "item": "videos/collagen-where-did-it-go scripts/frames_d.py spare-parts crate",
+      "reason": "Story-specific metaphor; do not promote as a reusable ingredient component."
+    }
+  ],
+  "gaps": [
+    {
+      "priority": "now",
+      "item": "shared neutral cream and powder vessel pair",
+      "reason": "The source video's line-drawn cup and scoop are too crude, while current V2 containers are ingredient-specific.",
+      "build_when": "the Ingredient Fate route-fork prototype is implemented"
+    },
+    {
+      "priority": "next",
+      "item": "tactile collagen fibre or dermal-architecture media plate",
+      "reason": "The actor is code-native and transparent, but the pack lacks a mature tactile chapter image.",
+      "build_when": "a second collagen story needs a photographic or dimensional hook"
+    },
+    {
+      "priority": "next",
+      "item": "real product label fixtures",
+      "reason": "Possible label terms are governed, but no selected topical or oral product has been verified.",
+      "build_when": "a real product is selected for a label-literacy or comparison story"
+    }
+  ]
+}

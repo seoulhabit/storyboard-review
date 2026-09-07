@@ -1,11 +1,23 @@
 :root{
-  /* base — the six fixed tokens. Nothing outside this list ships. */
+  /* base — the nine fixed tokens (six foundation + three semantic state,
+     added WO-FVC-007 T2 per G0-8). Nothing outside this list ships. */
   --bg:#F4EDE3;        /* warm cream — every scene background */
   --bg-lift:#FAF3E7;   /* panel inset only */
   --ink:#26215C;       /* all text */
   --accent:#9C3A32;    /* clay — one element per scene */
-  --rule:#C0A265;      /* brass — 2px hairlines only */
+  --rule:#C0A265;      /* brass — 2px hairlines only, fails text contrast by design (2.10:1) */
   --muted:rgba(38,33,92,0.75);
+
+  /* semantic state — retrofit-only, for catalog items whose upstream
+     markup carries a positive/warning/info status colour with no
+     equivalent in the original six. Never used for scene furniture or
+     narration text; only for a recoloured catalog component's own
+     status indicator (e.g. a checklist item, a spec-list state chip).
+     Each passes R-13's 4.5:1 floor against --bg on rendered pixels
+     (verified: positive 6.89:1, warning 5.48:1, info 6.29:1). */
+  --positive:#2F5940;  /* muted forest green */
+  --warning:#7A5A0F;   /* deep ochre — distinct from clay (accent) and brass (rule) */
+  --info:#2E5C6E;      /* muted slate blue — distinct from ink */
 
   /* semantic aliases */
   --scene-bg:var(--bg);

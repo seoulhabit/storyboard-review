@@ -1,9 +1,42 @@
 {
-  "$comment": "Per R-14 (WO-FVC-007 T0a). Catalog source pin + CLI version. Per-item retrofit entries (upstream version, retrofit script version, aspect, slots, retrofitted-file hash) are T2's output, not yet populated.",
   "catalog_source": "https://github.com/heygen-com/hyperframes",
   "catalog_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
   "catalog_pinned_at": "2026-09-07",
   "hyperframes_cli_version": "0.8.30",
   "catalog_inventory": "docs/wo/007/catalog-inventory.json",
-  "items": []
+  "items": [
+    {
+      "name": "focus-swap",
+      "upstream_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
+      "retrofit_script_version": "1.0.0",
+      "aspect": "n/a-embeds-in-host",
+      "t0b_reframe_verdict": null,
+      "classification": "recolourable",
+      "colormap_file": "videos/_system/catalog/focus-swap.colormap.json",
+      "output_file": "videos/_system/catalog/focus-swap.html",
+      "output_sha256": "347a892ca7b09a0e646a012af14c26f124dd4e25d53de68c3007718aaf15fee7"
+    },
+    {
+      "name": "caption-highlight",
+      "upstream_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
+      "retrofit_script_version": "1.0.0",
+      "aspect": "n/a-embeds-in-host",
+      "t0b_reframe_verdict": null,
+      "classification": "recolourable",
+      "colormap_file": "videos/_system/catalog/caption-highlight.colormap.json",
+      "output_file": "videos/_system/catalog/caption-highlight.html",
+      "output_sha256": "91dc6ea2c5fcd54d91393385c78f2d84978cd55f8f85d50023e78d8ce9553ae5"
+    },
+    {
+      "name": "device-frame-stage",
+      "upstream_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
+      "retrofit_script_version": "1.0.0",
+      "aspect": "n/a-embeds-in-host",
+      "t0b_reframe_verdict": "reframes-clean",
+      "classification": "foreign-surface",
+      "colormap_file": "videos/_system/catalog/device-frame-stage.colormap.json",
+      "output_file": "videos/_system/catalog/device-frame-stage.html",
+      "output_sha256": "77110bb8363ae0ca2c3d24a41aa369ba534f61e496fbb5e3128556d1a2868010"
+    }
+  ]
 }

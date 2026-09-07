@@ -76,6 +76,17 @@ TOKEN_BRIDGE_MAP = {
     "space-1": "var(--s1)",
     "space-2": "var(--s2)",
     "space-3": "var(--s3)",
+    # logo-brand-close's `accent` enum offers three host-suppliable slots
+    # (--brand=green, --accent=blue, --accent-2=violet) for one JS-picked
+    # colour. --accent is already a real design-system token name (skipped
+    # as self-supplied, see _REAL_TOKEN_NAMES); --brand and --accent-2 are
+    # the other two slots the same enum can select. This channel ships one
+    # accent token (G0-3's six-token sheet has no second or third accent),
+    # so all three collapse to it deliberately — the enum becomes a no-op,
+    # which is correct: there is nothing else on this channel's palette for
+    # "blue" or "violet" to mean.
+    "brand": "var(--accent)",
+    "accent-2": "var(--accent)",
 }
 
 # Local custom properties confirmed (by reading the source, not guessed) to be
@@ -87,6 +98,11 @@ INTERNAL_VARS = {
     "logical-width": "device-frame-stage: device-geometry px dimension, JS-set via viewport.style.setProperty()",
     "logical-height": "device-frame-stage: device-geometry px dimension, JS-set via viewport.style.setProperty()",
     "screen-scale": "device-frame-stage: computed scale ratio (rect.width / logicalWidth), JS-set at runtime",
+    "lbc-wordmark-size": "logo-brand-close: JS-computed chars-aware text-fit sizing (a cqw/cqh clamp), not a colour — set via root.style.setProperty() from a measured glyph width, never a token candidate",
+    "lbc-accent": "logo-brand-close: JS-set at runtime to a var() reference (one of --brand/--accent/--accent-2, per the chosen `accent` enum value) — a runtime alias, not an independent literal; resolves correctly once those three are themselves bridged, see TOKEN_BRIDGE_MAP",
+    "cc-action-size": "cta-close: JS-computed chars-aware text-fit sizing for the action line (cqw/cqh clamp), not a colour",
+    "cc-button-size": "cta-close: JS-computed chars-aware text-fit sizing for the CTA button label (cqw/cqh clamp), not a colour",
+    "cc-accent": "cta-close: JS-set at runtime to a var() reference (one of --brand/--accent/--accent-2, per the chosen `accent` enum value, same convention as logo-brand-close's --lbc-accent) — a runtime alias, resolves correctly once those three are bridged, see TOKEN_BRIDGE_MAP",
 }
 
 FONT_FACE_BLOCK = """@font-face{font-family:"DejaVu Serif";font-style:normal;font-weight:400;font-display:block;src:url("../fonts/dejavu-serif-400.woff2") format("woff2")}

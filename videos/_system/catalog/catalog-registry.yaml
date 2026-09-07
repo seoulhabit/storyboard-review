@@ -1,0 +1,79 @@
+# WO-FVC-007 catalog-registry.yaml
+#
+# T3 (scene casting, parallel session) owns the `purposes:` section below —
+# beat-purpose -> ranked component candidates, per the WO's own schema.
+# T4 (this session) owns the `furniture:` section only: the recurring
+# follow/subscribe/identity furniture, picked once per role rather than
+# re-decided per video. Two different sections, two different sessions,
+# meant to merge without touching each other's lines.
+
+purposes:
+  # T3 populates this from docs/wo/007/catalog-inventory.json per its own
+  # task spec. Left empty here deliberately — not this session's scope.
+
+furniture:
+  - role: end_card
+    component: logo-brand-close
+    placement: final_4s
+    fixed: true
+    notes: >
+      Picked over logo-outro per the T4 spec's own instruction ("pick one
+      in T4 and pin it; do not decide per video"). logo-outro is a
+      hyperframes:block — out of scope under the Gate A ruling regardless
+      of its T0b verdict — and its own T0b scan found a real failure
+      independent of that (tagline "Nothing great is made alone." off
+      canvas in portrait, centered layout assumes 1920 width; see
+      docs/wo/007/catalog-inventory.json). logo-brand-close is a
+      hyperframes:component, t0b_verdict reframes-clean, retrofitted this
+      session (videos/_system/catalog/logo-brand-close.html,
+      classification recolourable, 4.5:1+ contrast verified on rendered
+      pixels — see T4-FURNITURE-REPORT.md).
+    slots:
+      wordmark: "서울의 습관"   # channel name; component's Hangul font-face coverage (Noto Serif KR, T2 step 1) is what makes this safe
+      tagline: per-video or empty
+      url: per-video or empty
+      accent: green   # channel has one accent token; TOKEN_BRIDGE_MAP collapses green/blue/violet to var(--accent) identically — the enum is a no-op by design here
+
+  - role: action_line
+    component: cta-close
+    placement: per_video
+    fixed: false
+    notes: >
+      Per T4 spec: "for videos that carry one." Not every beat sheet has a
+      closing ask, so this is not fixed to a timecode the way end_card is —
+      the beat sheet decides whether the film uses it at all. Retrofitted
+      this session (videos/_system/catalog/cta-close.html, classification
+      recolourable, 4.5:1+ contrast verified on rendered pixels).
+
+  - role: lower_third_subscribe
+    component: null
+    status: BLOCKER-CAST
+    placement: first_third
+    notes: >
+      No hyperframes:component-category candidate exists for this role.
+      yt-lower-third is the only real match in the 383-item catalog and it
+      is a hyperframes:block — out of scope per the Gate A ruling
+      ("registry built from components only... drops even the blocks that
+      scanned clean or native-portrait: yt-lower-third..."). Re-searched
+      this session across all 219 components by tag/name
+      (subscribe/lower/kicker/identity/channel/follow/social/badge/
+      watermark): no persistent-overlay-with-avatar component exists.
+      Recorded per R-11's own mechanism — halt, Kim rules on exactly two
+      options — not silently worked around. See T4-FURNITURE-REPORT.md for
+      the two options as put to Kim and the ruling once made.
+
+  - role: platform_follow
+    component: null
+    status: unassigned
+    placement: per_video
+    notes: >
+      Per T4 spec: "retrofit but leave unassigned; cross-promo is a
+      per-video call." Same component-scope gap as lower_third_subscribe —
+      instagram-follow/tiktok-follow are blocks, out of scope. The one
+      component-category follow item, x-follow-card, is X/Twitter-branded
+      (hardcoded, zero declared variables per catalog-inventory.json) and
+      not a reskinnable generic — using it would mean promoting a
+      different platform, not carrying this role. Left unassigned rather
+      than forcing an R-11 ruling nobody needs yet: no beat currently
+      requires this role. Revisit if cross-promo is requested for a
+      specific video.

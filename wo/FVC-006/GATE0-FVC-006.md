@@ -181,9 +181,11 @@ acceptance criteria mirroring T3's own bar. Runs across two repos —
 
 **Blocked on T4.5 landing:** T5 (style frames) is the first task that
 actually needs `image_ref` to exist. T6/T7 inherit the same dependency.
-**Still open, named in T4.5 §6 rather than re-litigated here:** does T4.5
-run as a sub-task of this WO, or as its own prerequisite WO? Doesn't block
-T0–T4 from starting now either way.
+**Ownership RULED (Kim, 2026-09-07):** T4.5 stays a WO-FVC-006 sub-task,
+not a separate WO — direct precedent in WO-FVC-005 itself (compiler
+infrastructure built in `claude-skills` and the first video pilot run,
+both under one WO number). Full reasoning in T4.5 §6. Doesn't block T0–T4
+from starting now either way.
 
 ---
 
@@ -193,4 +195,5 @@ T0–T4 from starting now either way.
 > plan, §7 for corrections, then this file (`wo/FVC-006/GATE0-FVC-006.md`)
 > for the Gate 0 rulings — all eight slots are closed as of 2026-09-07. T0–T4
 > can start now. T5 needs `wo/FVC-006/T4.5-compiler-image-ref-scope.md`
-> executed first; confirm who owns that sub-task before scheduling T5.
+> executed first — it runs as this WO's own T4.5, in a `claude-skills`
+> branch/PR cross-referenced from this one, not a separate WO.

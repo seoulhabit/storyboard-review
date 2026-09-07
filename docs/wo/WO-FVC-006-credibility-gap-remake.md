@@ -532,3 +532,12 @@ GATE0-FVC-006.md's original G0-4 text: `providers.yaml` has no dormant
 Higgsfield row to un-retire — WO-FVC-004 removed it outright, so
 re-authorizing means adding a new row, not restoring a flag.
 
+### 7.13 — T4.5 ownership ruled (2026-09-07): stays inside WO-FVC-006
+
+T4.5 runs as this WO's own sub-task, not a separate WO — see
+`wo/FVC-006/T4.5-compiler-image-ref-scope.md` §6 for the ruling and its
+precedent (WO-FVC-005 itself already built compiler infrastructure in
+`claude-skills` and ran the first full video pilot under one WO number;
+this is the identical shape). Gets its own `claude-skills` branch/PR,
+cross-referenced from this WO's PR, not a new WO number or Gate 0.
+

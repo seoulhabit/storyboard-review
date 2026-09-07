@@ -100,6 +100,9 @@ grounded directly in the real `compile_composition.py` (exact staging
 pattern to mirror, exact line the image attaches to), a `ShScene`-level
 design recommendation, and a correction to this file's original G0-4 text
 (no dormant Higgsfield row exists to un-retire; a new one gets added).
-T5 (style frames) is gated on T4.5 landing. Who owns T4.5 — a sub-task of
-this WO, or a separate prerequisite WO — is still open (T4.5 §6); doesn't
-block T0–T4 from starting now.
+T5 (style frames) is gated on T4.5 landing. **Ownership ruled (Kim,
+2026-09-07): T4.5 stays a WO-FVC-006 sub-task**, not a separate WO —
+WO-FVC-005 precedent (compiler infrastructure + first video pilot, one WO
+number, two repos) — see T4.5 §6. Gate 0 plus this ownership call closes
+every open process question this review surfaced; T4.5 execution is the
+next real work.

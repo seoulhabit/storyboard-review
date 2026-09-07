@@ -521,3 +521,14 @@ supersession, not a silent override. **G0-8** rules that the compiler gets
 choice being picked around the gap. T0–T4 can proceed; T5 is gated on that
 compiler extension landing first.
 
+### 7.12 — Compiler extension scoped as T4.5 (2026-09-07)
+
+G0-8's extension is scoped as its own sub-task, inserted between T4 and T5,
+in `wo/FVC-006/T4.5-compiler-image-ref-scope.md` — exact code sites in the
+real `compile_composition.py` (which spans a second repo, `claude-skills`,
+that this WO otherwise never touches), a design recommendation for where
+the image slot attaches (`ShScene`, not per-component), and a correction to
+GATE0-FVC-006.md's original G0-4 text: `providers.yaml` has no dormant
+Higgsfield row to un-retire — WO-FVC-004 removed it outright, so
+re-authorizing means adding a new row, not restoring a flag.
+

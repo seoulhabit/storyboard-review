@@ -94,8 +94,12 @@ citations. Two rulings (G0-2 full imagery, G0-4 re-authorize Higgsfield)
 are deliberate reversals of WO-FVC-004/WO-FVC-005 decisions, flagged as
 such rather than silently overwritten. Gate 0 is now fully closed.
 
-T0–T4 are unblocked and can start. T5 (style frames) is gated on G0-8's
-compiler `image_ref` extension landing first — who owns that sub-task
-(part of this WO, or a separate prerequisite WO) is still an open question
-worth one more line from Kim before T5 is scheduled, per
-`GATE0-FVC-006.md`'s § Sequencing.
+T0–T4 are unblocked and can start. G0-8's compiler extension is now fully
+scoped as **T4.5** in `wo/FVC-006/T4.5-compiler-image-ref-scope.md` —
+grounded directly in the real `compile_composition.py` (exact staging
+pattern to mirror, exact line the image attaches to), a `ShScene`-level
+design recommendation, and a correction to this file's original G0-4 text
+(no dormant Higgsfield row exists to un-retire; a new one gets added).
+T5 (style frames) is gated on T4.5 landing. Who owns T4.5 — a sub-task of
+this WO, or a separate prerequisite WO — is still open (T4.5 §6); doesn't
+block T0–T4 from starting now.

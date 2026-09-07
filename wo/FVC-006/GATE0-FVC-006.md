@@ -5,8 +5,10 @@ from the WO-FVC-005 record (G0-1, G0-5, G0-6), five ruled directly by Kim
 this session (G0-2, G0-3, G0-4, G0-7, G0-8). **Two of these five rulings
 (G0-2, G0-4) deliberately reverse standing decisions in WO-FVC-004 and
 WO-FVC-005** — flagged explicitly below per this repo's own convention that
-a supersession is recorded, not silently overwritten. T1 may now start; see
-§ Sequencing at the end of this file for what T5+ needs before it can run.
+a supersession is recorded, not silently overwritten. T1 may now start;
+G0-8's compiler extension is scoped as its own sub-task, **T4.5**, in
+`wo/FVC-006/T4.5-compiler-image-ref-scope.md` — see § Sequencing at the end
+of this file for what runs when.
 
 ---
 
@@ -80,13 +82,16 @@ silently:**
   pipeline; `:123` marks the `providers.yaml` Higgsfield rows `retired:
   2026-09-05 (WO-FVC-004)`.
 
-  **Amendment needed before T7 spends anything:** `providers.yaml`'s
-  Higgsfield rows carry a `retired` date with no corresponding
-  `reauthorized` field in the schema as it stands — T7 (or whoever executes
-  it) should add one rather than deleting the `retired` line, so the
-  provider's on-again/off-again history stays legible to the next WO that
-  reads it, the same way `MANIFEST.json`'s `amendments[]` array preserves
-  R-6's history instead of overwriting it.
+  **Correction (2026-09-07, found scoping T4.5):** the above assumed a
+  dormant Higgsfield row could be un-retired. Checked directly —
+  `makemeavideo/references/providers.yaml` has **no Higgsfield row left to
+  amend**; WO-FVC-004 removed it outright, leaving only a header comment
+  (`line 7`: *"Higgsfield … closed by supersession, WO-FVC-004"*).
+  Re-authorizing means **adding a new row** under the existing `roles:
+  image:` block (which already has the schema to copy — `heygen-image`,
+  currently `tool: null`, "moot… no-op for the current design system"),
+  not restoring a flag on an old one. Scoped as part of T4.5 — see
+  `wo/FVC-006/T4.5-compiler-image-ref-scope.md` §2.6.
 
   Spend cap carries forward from the WO's own G0-4 default: 16:9, count 3
   per plate, hard cap 40 plates / 120 generations, stop and report at cap
@@ -104,27 +109,33 @@ trading one for the other. It also means the capability is built once, in
 directory), so the next video that wants imagery inherits it rather than
 re-deriving the same workaround.
 
-**What this actually requires, named so it isn't discovered mid-build:**
-1. `videos/_system/COMPILER.md` §4's "Images: none" rule needs a real
-   `image_ref` spec — asset path resolution (root-relative, matching the
-   font-path convention already in §4), how an image composes with a
-   component's existing slots (a card layered over a plate, e.g. §3.2's
-   "cards over image" scene systems), and safe-area/negative-space
-   interaction with `check-safe-area.py`.
-2. Every `catalog/manifest.json` (and any `catalog-v2` equivalent) record
-   this video actually references needs its `approved_surfaces` array
-   amended to include HyperFrames compositions — scoped to the assets
-   used, not a blanket rewrite.
-3. This is compiler and design-system work, not composition-authoring
-   work — it belongs in `videos/_system/` and the compiler script (per
-   `COMPILER.md`'s own provenance discipline), reviewed and merged on its
-   own before or alongside this video's T5–T7, not folded silently into
-   this video's own composition files.
+**Scoped as its own sub-task, T4.5, inserted before T5** —
+`wo/FVC-006/T4.5-compiler-image-ref-scope.md`. Full detail there, including
+exact file:line grounding in the real `compile_composition.py` (the
+`#root` background line it attaches to, the `copy_assets()` audio-staging
+pattern it mirrors, why `ShScene` — not four separate components — is the
+right level for the new slot, and the corrected G0-4 provider-row finding
+above). Summary:
+1. `videos/_system/COMPILER.md` §4's "Images: none" rule gets a real
+   `image_ref` spec — asset path resolution (root-relative, mirroring the
+   existing audio-staging convention), which components accept it (likely
+   only scene systems 1–2, not 3–4), and safe-area interaction with
+   `check-safe-area.py`.
+2. `catalog/manifest.json` (and any `catalog-v2` equivalent) records this
+   video actually references get their `approved_surfaces` array amended —
+   but that's T7's job, per-asset, when plates are actually chosen, not
+   part of T4.5 itself.
+3. `providers.yaml` gets a new Higgsfield row (see the G0-4 correction
+   above), not an amended one.
+4. This is compiler and design-system work — it belongs in
+   `videos/_system/` and the compiler script in the separate `claude-skills`
+   repo (per `COMPILER.md`'s own provenance discipline), reviewed and
+   merged on its own before T5, not folded silently into this video's own
+   composition files.
 
 **Sequencing implication:** T0–T4 (environment, transcript, claims, brief,
-beat map) do not depend on this and can proceed now. T5 (style frames) is
-the first task that needs `image_ref` to actually exist — see § Sequencing
-below.
+beat map) do not depend on this and can proceed now. T4.5 must land before
+T5 (style frames) — see § Sequencing below.
 
 ▸ **G0-3 — Source footage.** **RULED (Kim, 2026-09-07): exclude source
 footage entirely.** The source MP4 is used only for its narration audio
@@ -153,20 +164,26 @@ existing GATE C pilot in place of the WO's original 30–45s opening pilot.
 
 ## Sequencing — what's unblocked now vs. still gated
 
-**Unblocked, can start immediately:** T0 (environment + asset inventory —
-already run once this session, re-runnable per-task), T1 (audio extraction
-+ transcript — G0-3 confirms audio-only use of the source), T2 (claim
-register), T3 (brief + design-spec — verification only, already extracted),
-T4 (beat map skeleton).
+**Unblocked, can start immediately, no dependency on T4.5:** T0
+(environment + asset inventory — already run once this session, re-runnable
+per-task), T1 (audio extraction + transcript — G0-3 confirms audio-only use
+of the source), T2 (claim register), T3 (brief + design-spec — verification
+only, already extracted), T4 (beat map skeleton).
 
-**Blocked on G0-8's compiler extension landing:** T5 (style frames) is the
-first task that needs `image_ref` to actually exist in the compiler and
-`approved_surfaces` amended on any asset it uses. T6/T7 inherit the same
-dependency. **This WO does not itself decide who does the compiler-extension
-work or on what branch** — that's a real open question (a prerequisite
-sub-task of this WO, or a separate WO that this one blocks on) worth a
-one-line ruling from Kim before T5 is scheduled, but it does not block T0–T4
-from starting now.
+**T4.5 — Compiler `image_ref` extension.** Fully scoped in
+`wo/FVC-006/T4.5-compiler-image-ref-scope.md`: exact code sites in
+`compile_composition.py` (the audio-staging pattern it mirrors, the `#root`
+background line it attaches to), the `ShScene`-level design recommendation,
+the corrected `providers.yaml` finding (a new row, not an amended one), and
+acceptance criteria mirroring T3's own bar. Runs across two repos —
+`storyboard-review` (`COMPILER.md`) and `claude-skills`
+(`compile_composition.py`, `providers.yaml`).
+
+**Blocked on T4.5 landing:** T5 (style frames) is the first task that
+actually needs `image_ref` to exist. T6/T7 inherit the same dependency.
+**Still open, named in T4.5 §6 rather than re-litigated here:** does T4.5
+run as a sub-task of this WO, or as its own prerequisite WO? Doesn't block
+T0–T4 from starting now either way.
 
 ---
 
@@ -175,5 +192,5 @@ from starting now.
 > Read `docs/wo/WO-FVC-006-credibility-gap-remake.md` §0–§6 for the original
 > plan, §7 for corrections, then this file (`wo/FVC-006/GATE0-FVC-006.md`)
 > for the Gate 0 rulings — all eight slots are closed as of 2026-09-07. T0–T4
-> can start now. Confirm who owns the G0-8 compiler `image_ref` extension
-> before scheduling T5.
+> can start now. T5 needs `wo/FVC-006/T4.5-compiler-image-ref-scope.md`
+> executed first; confirm who owns that sub-task before scheduling T5.

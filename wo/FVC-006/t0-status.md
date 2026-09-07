@@ -86,7 +86,16 @@ the record where possible. No generation spend, no renders, no T1+ artifacts.
 - `git branch --show-current` and `git log --oneline -1` checked
   immediately before each commit.
 
-## Next step
+## Next step — UPDATED 2026-09-07
 
-Kim rules on G0-2/G0-3/G0-4/G0-7/G0-8 in `wo/FVC-006/GATE0-FVC-006.md`.
-T1 does not start until then, per the WO's own §0 rule.
+Kim ruled directly on G0-2, G0-3, G0-4, and G0-8 this session (G0-7 was
+already ruled earlier); recorded in `wo/FVC-006/GATE0-FVC-006.md` with full
+citations. Two rulings (G0-2 full imagery, G0-4 re-authorize Higgsfield)
+are deliberate reversals of WO-FVC-004/WO-FVC-005 decisions, flagged as
+such rather than silently overwritten. Gate 0 is now fully closed.
+
+T0–T4 are unblocked and can start. T5 (style frames) is gated on G0-8's
+compiler `image_ref` extension landing first — who owns that sub-task
+(part of this WO, or a separate prerequisite WO) is still an open question
+worth one more line from Kim before T5 is scheduled, per
+`GATE0-FVC-006.md`'s § Sequencing.

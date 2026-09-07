@@ -509,3 +509,15 @@ by this appendix:
   survives into the next video (§3.2) is correct in principle — §7.4 item 4
   and §7.6 above just note that the component in question may already exist.
 
+### 7.11 — Gate 0 ruled (2026-09-07)
+
+All eight Gate 0 slots (the WO's original six plus §7's G0-7/G0-8) are
+closed as of 2026-09-07 — see `wo/FVC-006/GATE0-FVC-006.md` for the rulings
+and citations. Two of them (**G0-2**: full imagery, generate as needed;
+**G0-4**: re-authorize Higgsfield `nano_banana_pro`) deliberately reverse
+the standing decisions in §7.4 item 1 and §7.5 above — recorded there as a
+supersession, not a silent override. **G0-8** rules that the compiler gets
+`image_ref` support added rather than either side of the compile/hand-author
+choice being picked around the gap. T0–T4 can proceed; T5 is gated on that
+compiler extension landing first.
+

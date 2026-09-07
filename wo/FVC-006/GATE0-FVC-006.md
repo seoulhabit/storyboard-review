@@ -1,17 +1,16 @@
 # Gate 0 — WO-FVC-006 answer sheet
 
-Status: **PARTIALLY ANSWERED FROM THE RECORD.** Three of the WO's own six
-Gate 0 slots were already ruled by Kim under WO-FVC-005, dated the same day
-this WO was drafted (`docs/wo/GATE0-FVC-005.md`) — this sheet closes those
-from citation rather than re-asking. Four items remain genuinely open: two
-required (G0-2, G0-3), one promoted from a silent default (G0-4), and two
-new ones this review surfaced (G0-7 scale, G0-8 pipeline). See
-`docs/wo/WO-FVC-006-credibility-gap-remake.md` §7 for full corrections and
-citations; `wo/FVC-006/ASSET-INVENTORY.md` for the evidence behind G0-2/G0-4.
+Status: **ANSWERED (Kim, 2026-09-07).** All eight slots are closed — three
+from the WO-FVC-005 record (G0-1, G0-5, G0-6), five ruled directly by Kim
+this session (G0-2, G0-3, G0-4, G0-7, G0-8). **Two of these five rulings
+(G0-2, G0-4) deliberately reverse standing decisions in WO-FVC-004 and
+WO-FVC-005** — flagged explicitly below per this repo's own convention that
+a supersession is recorded, not silently overwritten. T1 may now start; see
+§ Sequencing at the end of this file for what T5+ needs before it can run.
 
 ---
 
-## Closed from the record — no re-ruling needed
+## Closed from the WO-FVC-005 record — no re-ruling needed
 
 ▸ **G0-1 — Palette.** **CLOSED.** `docs/wo/GATE0-FVC-005.md:13` — G0-8
 **CONFIRMED (Kim, 2026-09-07)**: ship cream `#F4EDE3` / ink `#26215C` / clay
@@ -37,101 +36,144 @@ T3 becomes *verify the existing extraction*, not re-extract.
 
 ---
 
-## Still open — required
+## Ruled directly by Kim, this session (2026-09-07)
 
-▸ **G0-3 — Source file.** Confirmed present at
-`~/Downloads/The_Credibility_Gap__When_Cosmetics_Borrow_Medical_Halos.mp4`
-(53 MB), not yet copied into the repo. **Three additional facts to rule on
-alongside the copy, found by `ffprobe`/`ffmpeg ebur128` this session:**
-  - Source is **1280×720**, not 1080p — output spec is 1920×1080, so any
-    reused source footage is a 1.5× upscale. Rule: acceptable, or source
-    footage excluded from the final cut entirely?
-  - Source is **already clipping** at +1.0 dBFS true peak (LUFS-I −16.6).
-    T9's ≤ −1.0 dBTP target needs ~2 dB reduction plus clip repair, not
-    normalization alone — noted so T9 isn't surprised by it.
-  - Source audio is a **single mono stream** — no channel-based narration/
-    music separation is possible, and no source-separation model is
-    installed. If a music bed is embedded, T1 can report only "present,
-    inseparable," not isolate it.
-  - Duration confirmed correct: 410.83s / ~6:51.
+▸ **G0-2 — Imagery lane.** **RULED (Kim, 2026-09-07): full imagery,
+generate as needed.** Photographic plates are permitted inside HyperFrames
+compositions for this video, generated on demand rather than limited to
+reuse.
 
-▸ **G0-2 — Imagery lane.** **Genuinely open, and larger in scope than the
-WO's own framing.** This is not only a founder-note decision — it is
-enforced by a merged compiler (`videos/_system/COMPILER.md:195`: *"the
-compiler refuses an `image_ref` field it does not recognise"*) and by
-per-asset metadata (`catalog/manifest.json`: every record's
-`approved_surfaces` array *"excludes HyperFrames compositions… no
-generative imagery"*). The one filed precedent for an exception is
-`catalog/ingredients/one-percent-line/README.md:113` (a single scrim-tinted
-product photo, explicit in-session creator authorization) — cite that as
-the bar for what "yes" looks like.
+**This is a deliberate reversal, not an oversight — recorded as such:**
 
-  **Presented alongside real evidence, not blind:** `wo/FVC-006/ASSET-INVENTORY.md`
-  finds ~336 existing reusable images plus 21 built visual-mechanism
-  components already covering the *mechanism* side of scene systems 2–4
-  (a labelled skin cross-section, a claim-vs-evidence bisector, an
-  N-way "shares a name, not the evidence" component that is close to this
-  video's actual thesis). Net-new generation looks most needed for scene
-  system 1 and ingredient-specific beats, not for 85–95% of the visual load
-  as the WO originally estimated. Rule on:
-  1. Photographic plates inside HyperFrames compositions — yes / no / reuse-only
-     (existing catalog + video plates, no new generation)?
-  2. If yes in any form — does the design system's `readme.md`, the
-     compiler's `image_ref` handling, and every affected
-     `approved_surfaces` record in `catalog/manifest.json` get amended for
-     this video only, or as a standing lane change? (§5 of the WO already
-     scopes this video-only unless ruled broader — confirm that scoping
-     survives contact with the actual mechanism, which is repo-wide
-     metadata, not a per-video flag.)
+- Reverses `videos/_system/COMPILER.md:195`'s stated design-system rule
+  (*"the design system forbids imagery by rule… the compiler refuses an
+  `image_ref` field it does not recognise"*) — see G0-8 below for how this
+  gets built rather than worked around.
+- Reverses the `approved_surfaces` exclusion on every record in
+  `catalog/manifest.json` (*"approved_surfaces excludes HyperFrames
+  compositions: that lane is browser-drawn only… no generative imagery"*)
+  — those records need updating for any asset this video actually uses, not
+  globally, unless Kim later rules this broader than one video.
+- **Scope: this video only**, per the WO's own §5 ("does not close… as a
+  *standing* rule (G0-2 covers this video only unless Kim rules broader)").
+  The design-system `readme.md` rule and the compiler's default behavior
+  for every *other* project remain "no imagery" unless a separate ruling
+  says otherwise.
 
-▸ **G0-4 — Image provider.** **Promoted from `[default]` (proceeds
-unattended) to REQUIRED.** Higgsfield is retired out of lane by two standing
-WOs: `docs/wo/WO-FVC-005.md:52` — *"Not in the lane: … Higgsfield for
-anything faceless"* — and `docs/wo/WO-FVC-004.md:32/123`, which retires
-"Higgsfield as image role" and marks the `providers.yaml` Higgsfield rows
-`retired: 2026-09-05`. Re-entering a retired provider must not happen on a
-default nobody actively confirms. Note for context, not as an argument
-either way: the existing `catalog/skin-macro-photography/` stills already
-used Higgsfield `nano_banana_pro` under a prior, separately-authorized run
-— so the model itself has in-repo precedent even though the provider is
-currently out of the pipeline's lane.
+**Asset-inventory context, not a constraint on this ruling:**
+`wo/FVC-006/ASSET-INVENTORY.md` found ~336 existing reusable images and 21
+visual-mechanism components already covering much of scene systems 2–4's
+*mechanism* need. That does not change this ruling — full generation is
+approved — but T7's actual plate count should still check the inventory
+first per the WO's own §1 rule 7 ("Check before generating") before spending
+a credit on something that already exists.
+
+▸ **G0-4 — Image provider.** **RULED (Kim, 2026-09-07): re-authorize
+Higgsfield `nano_banana_pro`.**
+
+**This directly reverses two standing rulings, recorded here rather than
+silently:**
+
+- `docs/wo/WO-FVC-005.md:52` — *"Not in the lane: … Higgsfield for anything
+  faceless."*
+- `docs/wo/WO-FVC-004.md:32` — retires "Higgsfield as image role" from the
+  pipeline; `:123` marks the `providers.yaml` Higgsfield rows `retired:
+  2026-09-05 (WO-FVC-004)`.
+
+  **Amendment needed before T7 spends anything:** `providers.yaml`'s
+  Higgsfield rows carry a `retired` date with no corresponding
+  `reauthorized` field in the schema as it stands — T7 (or whoever executes
+  it) should add one rather than deleting the `retired` line, so the
+  provider's on-again/off-again history stays legible to the next WO that
+  reads it, the same way `MANIFEST.json`'s `amendments[]` array preserves
+  R-6's history instead of overwriting it.
+
+  Spend cap carries forward from the WO's own G0-4 default: 16:9, count 3
+  per plate, hard cap 40 plates / 120 generations, stop and report at cap
+  — unchanged, since only the provider was in question, not the budget.
+
+▸ **G0-8 — Pipeline choice.** **RULED (Kim, 2026-09-07): extend the
+WO-005 compiler with `image_ref` support, rather than choosing between the
+compiled pipeline and hand-authoring, or working around the gap.**
+
+This is the correct pairing with G0-2: it means this video gets the
+compiler's hash-checking, duration-ceiling enforcement, and
+`compile-report.md` ledger *and* its photographic plates, instead of
+trading one for the other. It also means the capability is built once, in
+`videos/_system/` and the compiler script (not in this WO's own video
+directory), so the next video that wants imagery inherits it rather than
+re-deriving the same workaround.
+
+**What this actually requires, named so it isn't discovered mid-build:**
+1. `videos/_system/COMPILER.md` §4's "Images: none" rule needs a real
+   `image_ref` spec — asset path resolution (root-relative, matching the
+   font-path convention already in §4), how an image composes with a
+   component's existing slots (a card layered over a plate, e.g. §3.2's
+   "cards over image" scene systems), and safe-area/negative-space
+   interaction with `check-safe-area.py`.
+2. Every `catalog/manifest.json` (and any `catalog-v2` equivalent) record
+   this video actually references needs its `approved_surfaces` array
+   amended to include HyperFrames compositions — scoped to the assets
+   used, not a blanket rewrite.
+3. This is compiler and design-system work, not composition-authoring
+   work — it belongs in `videos/_system/` and the compiler script (per
+   `COMPILER.md`'s own provenance discipline), reviewed and merged on its
+   own before or alongside this video's T5–T7, not folded silently into
+   this video's own composition files.
+
+**Sequencing implication:** T0–T4 (environment, transcript, claims, brief,
+beat map) do not depend on this and can proceed now. T5 (style frames) is
+the first task that needs `image_ref` to actually exist — see § Sequencing
+below.
+
+▸ **G0-3 — Source footage.** **RULED (Kim, 2026-09-07): exclude source
+footage entirely.** The source MP4 is used only for its narration audio
+(extracted, cleaned, and repaired per T9's existing scope). No frames from
+the 720p source are reused as footage or b-roll anywhere in the composition.
+
+This sidesteps both source-file problems found this session without
+needing a separate ruling on each:
+- The 1280×720-vs-1920×1080 upscale question is moot — no source frames
+  ship.
+- The true-peak clipping (+1.0 dBFS) and mono-stream/no-separation findings
+  still apply to the narration audio itself and remain T1/T9's concern —
+  **this ruling does not close those**, it only settles that no *visual*
+  footage comes from the source.
+
+File-copy mechanics remain as originally scoped: copy to `assets/source/`
+before T1, per G0-3's original text.
+
+▸ **G0-7 — Scale.** **Already ruled this session** (via the plan-approval
+questions, before this Gate 0 sheet existed): **prove one T6 chapter
+(~70–100s) at 16:9 end-to-end before committing to all 4–6 chapters.**
+Recorded here for completeness — no new decision needed. Folds into the
+existing GATE C pilot in place of the WO's original 30–45s opening pilot.
 
 ---
 
-## New gates surfaced by this review
+## Sequencing — what's unblocked now vs. still gated
 
-▸ **G0-7 — Scale.** The compiled pipeline has exactly one real end-to-end
-pilot: `centella-asiatica`, 45.5s, 9x16 only, 12 shipped components, zero
-imagery. This WO proposes 410.8s (9×), 16:9 (previously only a synthetic
-test fixture), 30–40 photographic plates, and one net-new component,
-simultaneously. **Recommendation: prove one T6 chapter (~70–100s, matching
-`T6.json`'s `chapters_min: 4` at ~411s/4) at 16:9 end-to-end before
-committing to all 4–6 chapters** — folded into the existing GATE C pilot in
-place of the WO's 30–45s opening pilot, not as an added gate. This surfaces
-any 16:9-specific or long-form-specific defect while only one chapter's
-work is at stake, not all six.
+**Unblocked, can start immediately:** T0 (environment + asset inventory —
+already run once this session, re-runnable per-task), T1 (audio extraction
++ transcript — G0-3 confirms audio-only use of the source), T2 (claim
+register), T3 (brief + design-spec — verification only, already extracted),
+T4 (beat map skeleton).
 
-▸ **G0-8 — Pipeline choice.** WO-006's header selects the HyperFrames
-`general-video` companion flow (hand-authored `STORYBOARD.md`, hand-built
-composition modules). WO-FVC-005 merged a different pipeline: a beat-sheet
-compiler reading `03-beat-sheet.json` against `videos/_system/`, emitting
-hash-checked sub-compositions with a `compile-report.md` ledger. They are
-incompatible on five specific points (component naming, duration ceilings,
-font inlining, the imagery refusal, and the missing `_ds_manifest.json` —
-full detail in the WO's own §7.4). **This gate is largely downstream of
-G0-2**: if imagery stays out of lane, the compiled pipeline is very likely
-the right choice and gets this WO's compiler-conflict corrections for free;
-if imagery is allowed in, the compiler needs new capability first (an
-`image_ref` handler) and the hand-authored `general-video` flow becomes the
-only path available today. Rule on: compile through the WO-005 pipeline, or
-hand-author via `general-video`?
+**Blocked on G0-8's compiler extension landing:** T5 (style frames) is the
+first task that needs `image_ref` to actually exist in the compiler and
+`approved_surfaces` amended on any asset it uses. T6/T7 inherit the same
+dependency. **This WO does not itself decide who does the compiler-extension
+work or on what branch** — that's a real open question (a prerequisite
+sub-task of this WO, or a separate WO that this one blocks on) worth a
+one-line ruling from Kim before T5 is scheduled, but it does not block T0–T4
+from starting now.
 
 ---
 
-## Kickoff line for Code (corrected)
+## Kickoff line for Code (corrected, Gate 0 fully closed)
 
 > Read `docs/wo/WO-FVC-006-credibility-gap-remake.md` §0–§6 for the original
-> plan and §7 for corrections, then this file (`wo/FVC-006/GATE0-FVC-006.md`)
-> for the current Gate 0 state. Rule on G0-2, G0-3, G0-4, G0-7, and G0-8
-> before T1 starts; G0-1, G0-5, and G0-6 are closed and need no further
-> input unless you want to change them.
+> plan, §7 for corrections, then this file (`wo/FVC-006/GATE0-FVC-006.md`)
+> for the Gate 0 rulings — all eight slots are closed as of 2026-09-07. T0–T4
+> can start now. Confirm who owns the G0-8 compiler `image_ref` extension
+> before scheduling T5.

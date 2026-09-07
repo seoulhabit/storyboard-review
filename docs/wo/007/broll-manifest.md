@@ -111,27 +111,48 @@ not a different run) but it's close enough to R-10's boundary that T6/Gate C
 should say explicitly whether any of these six were reused, so the readout
 (T9) can account for it if asked.
 
-**Not yet done — blocks tier 1 from being fully exhausted:** T1's own asset
-sweep (`docs/wo/007/asset-inventory.md`) has not run as a named task in this
-WO's execution to date (git history shows T0a/T0b, Gate A, T2 — no T1
-commit). The four locations above are what a manual sweep for this pass
-turned up; a proper T1 pass may find more (other ingredient projects'
-`assets/images/`, other `assets/broll/` folders across `videos/*`). Recorded
-as an open item rather than silently treated as complete.
+**Update: T1 has now run** (`session/fvc-007-t1`, merged into this branch —
+see `wo/FVC-007/T1-ASSET-SWEEP-REPORT.md` and `docs/wo/007/asset-inventory.md`).
+It confirms and extends the manual sweep above:
+
+- **New tier-1 stills**, all from `videos/centella-cica-vs-snail-mucin/assets/images/`:
+  `f1-palette.png`, `f2-string-start.png`, `f3-dropper-start.png` (native
+  9:16, 1536×2752 — same dimensions as `catalog/product-photography`'s set),
+  `twist-cream-swirl.png` (781×1400, near-9:16), and two square stills
+  (`twist-centella-leaf.png`, `cta-snail-pour.png`) pending a reframe call.
+  All five/six clear B-1 (no face, no brand, no baked-in text) by direct
+  visual inspection.
+- **A real footage pool with a licence flag, not a clean tier-1 source**:
+  `videos/centella-tiger-grass/assets/plates/` — 14 clips, native 9:16,
+  confirmed by frame-sampling to be real wildlife/nature footage (not
+  generated). Content clears B-1 but the project has no README, manifest, or
+  licence note anywhere — T1 flags this as **unconfirmed provenance, do not
+  cast until resolved**, unlike the Higgsfield-generated catalog plates
+  which are provably first-party and free.
+- **Tier 2 (extracted `cGbokt_B_vE` frames) is confirmed empty, not thin.**
+  T1 extracted and visually graded 9 frames (one per scene) from the actual
+  render: 0 are usable raw B-roll — every frame is either pure typography or
+  a design-system card with claim text baked into the same pixels as any
+  photography underneath. This updates tier 2's entry below from "not done"
+  to "done, zero yield."
+
+The five other centella/madecassoside/pdrn projects T1 checked turned out
+audio-only — no further tier-1 stills expected from that family beyond what's
+recorded here and in the manual sweep above.
 
 ---
 
 ## Tier 2 — extracted `cGbokt_B_vE` frames
 
-**Not done.** T1 item 2 calls for extracting frames from the original
-composition and grading them honestly ("most will be typographic and
-unusable as B-roll"). `videos/kbeauty-one-percent-line/compositions/frames/`
-exists but frame extraction (running the composition through a capture step
-and reviewing each frame for B-1 fitness) has not run in this pass — it
-depends on the same T1 gap noted above. Left open; the WO itself expects
-this tier to be "thin" (2 of 58 catalog plates are true 9:16, and by the
-same logic most of this pilot's own frames are typographic HyperFrames
-scenes, not photography).
+**Done, zero yield.** T1 extracted 9 frames (one per scene) from the actual
+rendered MP4 and visually graded each: every one is either pure typography
+or a design-system card with claim/label text baked into the same pixels as
+any photography underneath (see `wo/FVC-007/T1-ASSET-SWEEP-REPORT.md` §2).
+This tier contributes nothing to the sourcing pool — stronger than "thin,"
+it's empty for this pilot. One overlap noted: the 04b scene's ginseng-root
+photo is the same source image already available clean, without card
+chrome, as `videos/kbeauty-one-percent-line/assets/images/ingredient-ginseng.png`
+— already in tier 1, so nothing is lost by tier 2 being empty.
 
 ---
 

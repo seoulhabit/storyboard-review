@@ -11,9 +11,11 @@
 #   pip install -e ".[dev]"  ->  ruff check .  ->  mypy  ->  pytest -q
 #
 # This mirrors the workflow's python-version axis (3.9, 3.12). It cannot
-# mirror the OS axis (ubuntu/macos/windows) without a VM or Docker per OS,
-# which is out of scope for a local script -- named here rather than
-# silently pretending this is the full matrix.
+# mirror the OS axis (ubuntu, windows) without a VM or Docker per OS, which
+# is out of scope for a local script -- named here rather than silently
+# pretending this is the full matrix. (macos-latest was dropped from
+# ci.yml's own matrix -- its 10x Actions-minute billing multiplier was the
+# single biggest driver of a private-repo month's included minutes.)
 #
 # Each Python version gets its own throwaway venv under .ci-local/, never
 # the developer's own .venv/, so this never disturbs an interactive
@@ -137,7 +139,7 @@ done
 
 echo
 echo "══════════ summary ══════════"
-echo "(mirrors ci.yml's python-version axis only -- not the ubuntu/macos/windows OS matrix)"
+echo "(mirrors ci.yml's python-version axis only -- not the ubuntu/windows OS matrix)"
 for line in "${RESULT_LINES[@]}"; do
   echo -e "  $line"
 done

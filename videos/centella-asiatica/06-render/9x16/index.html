@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>centella-asiatica</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { width: 1080px; height: 1920px; overflow: hidden; background: #F4EDE3; }
+    .clip { position: absolute; inset: 0; }
+  </style>
+</head>
+<body>
+  <!-- GENERATED from 03-beat-sheet.json by compile_composition.py (WO-FVC-005 T3).
+       Do not hand-edit timing here; edit the beat sheet and re-run. -->
+  <div id="root" data-composition-id="main" data-start="0" data-duration="45.500"
+       data-width="1080" data-height="1920">
+
+    <div class="clip" id="mount-hook" data-composition-id="hook"
+         data-composition-src="compositions/frames/01-hook.html"
+         data-start="0.000" data-duration="3.100"></div>
+    <div class="clip" id="mount-define" data-composition-id="define"
+         data-composition-src="compositions/frames/02-define.html"
+         data-start="3.100" data-duration="4.300"></div>
+    <div class="clip" id="mount-myth1" data-composition-id="myth1"
+         data-composition-src="compositions/frames/03-myth1.html"
+         data-start="7.400" data-duration="4.700"></div>
+    <div class="clip" id="mount-mechanism" data-composition-id="mechanism"
+         data-composition-src="compositions/frames/04-mechanism.html"
+         data-start="12.100" data-duration="4.700"></div>
+    <div class="clip" id="mount-evidence1" data-composition-id="evidence1"
+         data-composition-src="compositions/frames/05-evidence1.html"
+         data-start="16.800" data-duration="7.900"></div>
+    <div class="clip" id="mount-quote" data-composition-id="quote"
+         data-composition-src="compositions/frames/06-quote.html"
+         data-start="24.700" data-duration="4.300"></div>
+    <div class="clip" id="mount-myth2" data-composition-id="myth2"
+         data-composition-src="compositions/frames/07-myth2.html"
+         data-start="29.000" data-duration="4.700"></div>
+    <div class="clip" id="mount-evidence2" data-composition-id="evidence2"
+         data-composition-src="compositions/frames/08-evidence2.html"
+         data-start="33.700" data-duration="7.500"></div>
+    <div class="clip" id="mount-cta" data-composition-id="cta"
+         data-composition-src="compositions/frames/09-cta.html"
+         data-start="41.200" data-duration="4.300"></div>
+    <audio id="vo" src="assets/audio.wav" data-start="0.000" data-duration="45.500" data-volume="1"></audio>
+  </div>
+
+  <script src="vendor/gsap-3.14.2.min.js"></script>
+  <script>
+    // C-6: hard cuts only. The root timeline's only job is the duration
+    // anchor -- each sub-composition owns its own beats and its own
+    // visibility is the ENGINE's, not this timeline's.
+    window.__timelines = window.__timelines || {};
+    var tl = gsap.timeline({ paused: true });
+    tl.to({}, { duration: 45.500, ease: 'none' }, 0);   // anchor: tl.duration() === root duration
+    window.__timelines['main'] = tl;
+  </script>
+</body>
+</html>

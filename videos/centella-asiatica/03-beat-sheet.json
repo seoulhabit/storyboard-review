@@ -1,0 +1,149 @@
+{
+  "slug": "centella-asiatica",
+  "format": "short",
+  "fps": 30,
+  "canvas": {
+    "w": 1080,
+    "h": 1920
+  },
+  "vo_duration_s": 42.8,
+  "presenter": "kinetic-type",
+  "template": "T1",
+  "sections": [
+    "hook",
+    "define",
+    "myth1",
+    "mechanism",
+    "evidence1",
+    "quote",
+    "myth2",
+    "evidence2",
+    "cta"
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "section": "hook",
+      "component": "ShHook",
+      "vo_duration_s": 2.8,
+      "slot_word_count": 7,
+      "slots": {
+        "line": "It's in your cream. Is it working?",
+        "accentWord": "working"
+      },
+      "chip": "SEOULHABIT.COM"
+    },
+    {
+      "id": "define",
+      "section": "define",
+      "component": "ShIngredient",
+      "vo_duration_s": 4.0,
+      "slot_word_count": 10,
+      "slots": {
+        "name": "Centella Asiatica",
+        "inci": "Centella Asiatica Extract",
+        "function": "A calming botanical with madecassoside and asiaticoside."
+      }
+    },
+    {
+      "id": "myth1",
+      "section": "myth1",
+      "component": "ShMyth",
+      "vo_duration_s": 4.4,
+      "slot_word_count": 11,
+      "slots": {
+        "claim": "A universal soother that works on any irritation.",
+        "correction": "The safety review skips isolated actives.",
+        "accentWord": "skips"
+      },
+      "chip": "Int J Toxicol 2023"
+    },
+    {
+      "id": "mechanism",
+      "section": "mechanism",
+      "component": "ShRows",
+      "vo_duration_s": 4.4,
+      "slot_word_count": 11,
+      "slots": {
+        "rows": [
+          {
+            "left": "Hydration",
+            "right": "Up"
+          },
+          {
+            "left": "Redness",
+            "right": "Down"
+          }
+        ],
+        "active": 0
+      },
+      "chip": "Indian J Pharm Sci 2016"
+    },
+    {
+      "id": "evidence1",
+      "section": "evidence1",
+      "component": "ShEvidence",
+      "vo_duration_s": 7.6,
+      "slot_word_count": 19,
+      "slots": {
+        "figure": "108",
+        "caption": "No irritation, no allergic sensitization \u2014 the largest safety study on record.",
+        "source": "Int J Toxicol, 2023"
+      },
+      "chip": "Int J Toxicol 2023"
+    },
+    {
+      "id": "quote",
+      "section": "quote",
+      "component": "ShQuote",
+      "vo_duration_s": 4.0,
+      "slot_word_count": 10,
+      "slots": {
+        "line": "A weak sensitizer.",
+        "attribution": "Hausen, Contact Dermatitis, 1993"
+      },
+      "chip": "Hausen 1993"
+    },
+    {
+      "id": "myth2",
+      "section": "myth2",
+      "component": "ShMyth",
+      "vo_duration_s": 4.4,
+      "slot_word_count": 11,
+      "slots": {
+        "claim": "Causes breakouts.",
+        "correction": "No published reports found \u2014 not proof either way.",
+        "accentWord": "found"
+      },
+      "chip": "SeoulHabit findings"
+    },
+    {
+      "id": "evidence2",
+      "section": "evidence2",
+      "component": "ShEvidence",
+      "vo_duration_s": 7.2,
+      "slot_word_count": 18,
+      "slots": {
+        "figure": "25",
+        "caption": "Volunteers showed measurably less water loss after 4 weeks \u2014 not a randomized trial.",
+        "source": "Indian J Pharm Sci, 2016"
+      },
+      "chip": "Indian J Pharm Sci 2016"
+    },
+    {
+      "id": "cta",
+      "section": "cta",
+      "component": "ShEndcard",
+      "vo_duration_s": 4.0,
+      "slot_word_count": 10,
+      "slots": {
+        "wordmark": "SeoulHabit",
+        "tagline": "Evidence, not hype.",
+        "cta": "Patch test if sensitive. Pregnant? Data's too thin."
+      }
+    }
+  ],
+  "audio": {
+    "src": "audio.wav"
+  }
+}

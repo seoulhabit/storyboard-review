@@ -1,0 +1,75 @@
+{
+  "schema": "makemeavideo/mix-audio-report@1",
+  "beat_sheet": "videos/centella-asiatica/03-beat-sheet.json",
+  "out": "videos/centella-asiatica/04-assets/audio.wav",
+  "total_duration_s": 45.5,
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "duration": 3.1
+    },
+    {
+      "id": "define",
+      "start": 3.1,
+      "duration": 4.3
+    },
+    {
+      "id": "myth1",
+      "start": 7.4,
+      "duration": 4.7
+    },
+    {
+      "id": "mechanism",
+      "start": 12.1,
+      "duration": 4.7
+    },
+    {
+      "id": "evidence1",
+      "start": 16.8,
+      "duration": 7.9
+    },
+    {
+      "id": "quote",
+      "start": 24.7,
+      "duration": 4.3
+    },
+    {
+      "id": "myth2",
+      "start": 29.0,
+      "duration": 4.7
+    },
+    {
+      "id": "evidence2",
+      "start": 33.7,
+      "duration": 7.5
+    },
+    {
+      "id": "cta",
+      "start": 41.2,
+      "duration": 4.3
+    }
+  ],
+  "vo_substitutes": [
+    "hook",
+    "define",
+    "myth1",
+    "mechanism",
+    "evidence1",
+    "quote",
+    "myth2",
+    "evidence2",
+    "cta"
+  ],
+  "music_bed": null,
+  "target": {
+    "lufs": -17.0,
+    "tp": -1.0,
+    "lra": 11.0
+  },
+  "measured": {
+    "integrated_lufs": -17.0,
+    "true_peak_dbtp": -12.8
+  },
+  "verdict": "pass"
+}

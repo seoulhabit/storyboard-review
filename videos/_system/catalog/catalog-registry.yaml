@@ -46,21 +46,34 @@ furniture:
       recolourable, 4.5:1+ contrast verified on rendered pixels).
 
   - role: lower_third_subscribe
-    component: null
-    status: BLOCKER-CAST
-    placement: first_third
+    component: cta-close
+    status: resolved-r11-rewrite
+    placement: penultimate_beat_before_end_card
+    fixed: true
     notes: >
-      No hyperframes:component-category candidate exists for this role.
-      yt-lower-third is the only real match in the 383-item catalog and it
-      is a hyperframes:block — out of scope per the Gate A ruling
-      ("registry built from components only... drops even the blocks that
-      scanned clean or native-portrait: yt-lower-third..."). Re-searched
-      this session across all 219 components by tag/name
-      (subscribe/lower/kicker/identity/channel/follow/social/badge/
-      watermark): no persistent-overlay-with-avatar component exists.
-      Recorded per R-11's own mechanism — halt, Kim rules on exactly two
-      options — not silently worked around. See T4-FURNITURE-REPORT.md for
-      the two options as put to Kim and the ruling once made.
+      RULED (Kim, 2026-09-07, R-11 option 1 — rewrite the beat): no
+      hyperframes:component exists for a persistent lower-third overlay
+      with the channel avatar (only yt-lower-third, a block, out of scope
+      per Gate A). Rather than fork or contribute upstream, the beat itself
+      changes shape — from a persistent overlay running alongside other
+      content to a held, full-frame subscribe interstitial carried by
+      cta-close, the same component action_line already uses. No avatar
+      slot; not persistent; appears once as its own beat.
+      Placement: cta-close's own registry-item.json frames it as an
+      end-of-film primitive ("holds until the frame cuts — this primitive
+      closes films"), same family as logo-brand-close's end_card role, so
+      it sits as the beat immediately before end_card, not at the
+      "first third" originally scoped for an overlay treatment — a
+      judgement call made here, not part of Kim's ruling, and worth
+      revisiting at Gate C if it plays wrong in the pilot render.
+      Default copy: action_line "Subscribe for the next one" (or
+      beat-sheet-specific equivalent), button_label "Subscribe".
+    conflicts_with: action_line
+    conflict_note: >
+      Both action_line and lower_third_subscribe cast to cta-close, which
+      holds until the frame cuts — it cannot carry two back-to-back
+      interstitials in one film. A beat sheet uses cta-close for at most
+      one of these two roles per video, never both.
 
   - role: platform_follow
     component: null

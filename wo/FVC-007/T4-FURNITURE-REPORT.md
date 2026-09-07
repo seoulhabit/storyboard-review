@@ -1,13 +1,10 @@
 # T4 — Channel furniture
 
-Status: **PARTIAL.** Two of four roles shipped and registered clean. Two
-roles halt on the same gap the Gate A ruling already flagged as a tracked
-consequence (`wo/FVC-007/GATE-A-RULING.md`): no `hyperframes:component`
-exists for lower-third/subscribe or platform-follow furniture, and Gate A
-scoped the registry to components only, no blocks, regardless of T0b
-verdict. One of those two is load-bearing (recurs every video) and needs
-Kim's ruling before T4 can close; the other was already scoped as
-"leave unassigned" and doesn't block anything today.
+Status: **CLOSED.** All four roles resolved. Two shipped as originally
+scoped (`end_card`, `action_line`); one resolved this session via a live
+R-11 ruling (`lower_third_subscribe`, rewritten rather than forked or
+contributed upstream); one left unassigned per T4's own original scope
+(`platform_follow`, not forced since no beat needs it yet).
 
 ---
 
@@ -76,7 +73,7 @@ of not shipping test scaffolding in the retrofitted output).
 
 ---
 
-## Halted — `lower_third_subscribe`
+## Resolved via live R-11 ruling — `lower_third_subscribe`
 
 **No `hyperframes:component` covers this role**, confirmed by a fresh
 tag/name search this session across all 219 components
@@ -92,32 +89,47 @@ spec frames it as recurring "in every video," and R-14/R-12 mean the
 channel's whole visual identity is supposed to route through the catalog +
 token layer, not a bespoke build.
 
-**R-11 gives exactly two options; there is no third.** As put to Kim:
+**R-11 gives exactly two options; there is no third.** Put to Kim live,
+mid-session, as:
 
 1. **Rewrite the beat.** Drop the "persistent overlay while content plays,
    with the channel avatar" mechanism specifically, and carry the subscribe
-   ask a different way with an existing component — most plausibly
-   `cta-close` again, doing double duty as a dedicated few-second subscribe
-   interstitial (`action_line: "Subscribe for the next one"` or similar)
-   rather than a lower-third overlay. This is a real creative trade-off,
-   not a cosmetic substitution: no avatar, not persistent, appears once as
-   its own beat instead of layered over other content. Every other
-   component checked (`social-proof-card`, `avatar-cloud`, `testimonial-card`,
-   `testimonial-proof-card`, `x-follow-card`) was ruled out — either no
-   avatar-image slot, wrong semantic (community/proof, not
-   subscribe-specifically), or (`x-follow-card`) zero declared variables,
-   meaning using it at all without forking would violate R-11 directly.
+   ask a different way with an existing component — `cta-close` doing
+   double duty as a dedicated few-second subscribe interstitial rather than
+   a lower-third overlay.
 2. **Contribute upstream.** Write a subscribe lower-third component
    (avatar-image slot wired to `brand/channel/avatar-800.png`, persistent
-   overlay profile) and submit it to the hyperframes catalog per their
-   contribution guide, consuming it back through the normal retrofit path
-   once merged. Real work; §5 of the WO already flags "the upstream
-   contribution backlog... is not scoped in this WO" as an open item, so
-   this option likely means T4 ships partial now and closes later.
+   overlay profile) and submit it to the hyperframes catalog, consuming it
+   back through the normal retrofit path once merged. Real work, out of
+   this WO's scope per §5 — T4 would stay PARTIAL until that lands.
 
-`catalog-registry.yaml`'s `furniture.lower_third_subscribe` entry is
-written with `status: BLOCKER-CAST` and `component: null`, matching R-11's
-own mechanism, pending this ruling.
+**RULED: option 1, rewrite the beat.** `cta-close` — already retrofitted
+above for the `action_line` role — now also carries `lower_third_subscribe`
+as a held, full-frame subscribe interstitial: no avatar, not persistent,
+appears once as its own beat rather than layered over other content. Every
+other component checked (`social-proof-card`, `avatar-cloud`,
+`testimonial-card`, `testimonial-proof-card`, `x-follow-card`) was ruled
+out first — either no avatar-image slot, wrong semantic (community/proof,
+not subscribe-specifically), or (`x-follow-card`) zero declared variables,
+meaning using it at all without forking would violate R-11 directly.
+
+**Placement — a judgement call, not part of the ruling itself.**
+`cta-close`'s own `registry-item.json` frames it as an end-of-film
+primitive ("holds until the frame cuts... this primitive closes films"),
+the same family as `logo-brand-close`'s `end_card` role. Placed as the beat
+immediately before `end_card` (`penultimate_beat_before_end_card`), not the
+"first third" originally scoped for an overlay treatment — that placement
+assumption no longer applies once the mechanism changed. Worth revisiting
+at Gate C if it plays wrong in the pilot render.
+
+**Since `action_line` and `lower_third_subscribe` now both cast to
+`cta-close`**, and the component holds until the frame cuts (it cannot run
+twice, back to back, in one film), a beat sheet uses it for at most one of
+the two roles per video — recorded as `conflicts_with` in the registry
+entry so the caster (S4.5, T3) doesn't double-cast it.
+
+`catalog-registry.yaml`'s `furniture.lower_third_subscribe` entry now
+carries `status: resolved-r11-rewrite`, `component: cta-close`.
 
 ---
 

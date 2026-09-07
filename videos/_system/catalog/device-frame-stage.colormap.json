@@ -1,0 +1,130 @@
+{
+  "item": "device-frame-stage",
+  "findings": [
+    {
+      "literal": "rgba(255, 255, 255, 0.22)",
+      "property": "border",
+      "role": "surface",
+      "action": "-> color-mix(in srgb, var(--bg) 22%, transparent)",
+      "reason": "nearest token by HSL distance (0.350 <= 0.35)"
+    },
+    {
+      "literal": "rgba(255, 255, 255, 0.24)",
+      "property": "box-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "rgba(15, 23, 42, 0.16)",
+      "property": "border",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    },
+    {
+      "literal": "rgba(7, 10, 20, 0.22)",
+      "property": "box-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "rgba(7, 10, 20, 0.16)",
+      "property": "box-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "rgba(7, 10, 20, 0.3)",
+      "property": "box-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "rgba(0, 0, 0, 0.48)",
+      "property": "box-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "rgba(0, 0, 0, 0.42)",
+      "property": "box-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "#1b1d22",
+      "property": "--device-color",
+      "role": "foreign-surface",
+      "action": "kept-as-is",
+      "reason": "declares --device-color, documented material colour by the item's own comment \u2014 never substituted"
+    },
+    {
+      "literal": "#343740",
+      "property": "--device-color-hi",
+      "role": "foreign-surface",
+      "action": "kept-as-is",
+      "reason": "declares --device-color-hi, documented material colour by the item's own comment \u2014 never substituted"
+    },
+    {
+      "literal": "#111318",
+      "property": "--device-color-dark",
+      "role": "foreign-surface",
+      "action": "kept-as-is",
+      "reason": "declares --device-color-dark, documented material colour by the item's own comment \u2014 never substituted"
+    },
+    {
+      "literal": "#c9cdd3",
+      "property": "--device-color",
+      "role": "foreign-surface",
+      "action": "kept-as-is",
+      "reason": "declares --device-color, documented material colour by the item's own comment \u2014 never substituted"
+    },
+    {
+      "literal": "#eef1f4",
+      "property": "--device-color-hi",
+      "role": "foreign-surface",
+      "action": "kept-as-is",
+      "reason": "declares --device-color-hi, documented material colour by the item's own comment \u2014 never substituted"
+    },
+    {
+      "literal": "#9a9ea6",
+      "property": "--device-color-dark",
+      "role": "foreign-surface",
+      "action": "kept-as-is",
+      "reason": "declares --device-color-dark, documented material colour by the item's own comment \u2014 never substituted"
+    },
+    {
+      "literal": "#f5f6f8",
+      "property": "background",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    },
+    {
+      "literal": "#94a3b8",
+      "property": "color",
+      "role": "fallback-inert",
+      "action": "kept-as-is",
+      "reason": "fallback value of an already-bridged/token custom property \u2014 never rendered"
+    },
+    {
+      "literal": "#050607",
+      "property": "background",
+      "role": "info",
+      "action": "-> var(--info)",
+      "reason": "nearest token by HSL distance (0.160 <= 0.35)"
+    }
+  ],
+  "bridged_vars": [
+    "border",
+    "font-body",
+    "space-2",
+    "surface"
+  ]
+}

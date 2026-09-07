@@ -1,0 +1,41 @@
+{
+  "item": "caption-highlight",
+  "findings": [
+    {
+      "literal": "rgba(229, 20, 58, 0.32)",
+      "property": "box-shadow",
+      "role": "accent",
+      "action": "-> color-mix(in srgb, var(--accent) 32%, transparent)",
+      "reason": "nearest token by HSL distance (0.142 <= 0.35)"
+    },
+    {
+      "literal": "rgba(0, 0, 0, 0.45)",
+      "property": "text-shadow",
+      "role": "structural-neutral",
+      "action": "kept-as-is",
+      "reason": "low-saturation shadow/depth cue, not a brand hue \u2014 left as literal"
+    },
+    {
+      "literal": "#ffffff",
+      "property": "color",
+      "role": "on-accent",
+      "action": "-> var(--on-accent)",
+      "reason": "nearest token by HSL distance (0.350 <= 0.35)"
+    },
+    {
+      "literal": "#ff1745",
+      "property": "background",
+      "role": "accent",
+      "action": "-> var(--accent)",
+      "reason": "nearest token by HSL distance (0.289 <= 0.35)"
+    },
+    {
+      "literal": "#df1238",
+      "property": "background",
+      "role": "accent",
+      "action": "-> var(--accent)",
+      "reason": "nearest token by HSL distance (0.148 <= 0.35)"
+    }
+  ],
+  "bridged_vars": []
+}

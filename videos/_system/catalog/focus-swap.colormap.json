@@ -1,0 +1,15 @@
+{
+  "item": "focus-swap",
+  "findings": [],
+  "bridged_vars": [
+    "border",
+    "fg",
+    "font-body",
+    "font-display",
+    "font-mono",
+    "radius",
+    "space-1",
+    "space-2",
+    "surface"
+  ]
+}

@@ -24,6 +24,14 @@
       "change": "--muted rgba(38,33,92,0.55) -> rgba(38,33,92,0.75)",
       "reason": "H-4.contrast (qa_render.py) measured the endcard tagline (ShEndcard.jsx's CTA line, styled var(--text-secondary) = var(--muted)) at ~3.1-3.2:1 on cream, under the 4.5:1 WCAG AA floor this same design system's own QA gate enforces. --muted/--text-secondary is used identically in 8 places (ShChip, ShEndcard, ShEvidence, ShMyth, ShCompare, ShQuote, ShIngredient, ShSteps) -- all genuinely-readable content (citations, corrections, attributions, INCI names, notes), not decoration, so the token itself was under-contrast everywhere it renders body-readable text, not only on the one frame this run's QA gate happened to sample. Fixed at the token level, matching ruling R-6's own precedent (a versioned token amendment, not a per-component override), rather than patching ShEndcard.jsx alone.",
       "hash_updated": true
+    },
+    {
+      "date": "2026-09-07",
+      "ruling": "G0-8",
+      "file": "tokens/colors.css",
+      "change": "added --positive #2F5940, --warning #7A5A0F, --info #2E5C6E (three new tokens; sheet is now nine, not six)",
+      "reason": "WO-FVC-007 T2's colour-recolour step needs to map catalog items' positive/warning/info status colours to something; none existed. Kim ruled 'extend the token sheet now' at Gate 0 (G0-8) rather than reject affected catalog items. Each value verified >=4.5:1 against --bg per R-13's contrast floor before being added (positive 6.89:1, warning 5.48:1, info 6.29:1) -- see wo/FVC-007/GATE0-FVC-007.md G0-8 and wo/FVC-007/T2-RETROFIT-REPORT.md.",
+      "hash_updated": true
     }
   ],
   "file_count": 67,
@@ -273,8 +281,8 @@
       "sha256": "b3bd1331655f7e6f03e16879183de1082f061cba4b0c47fc8a03378d4ab92697"
     },
     "tokens/colors.css": {
-      "bytes": 768,
-      "sha256": "9e8de1f736eb8b1a260ca7cd65a6c55eaffd16304bf50886e1ecf2ada471dfa8"
+      "bytes": 1571,
+      "sha256": "0f3e095b59fdf2f9a162e0275c7c8039568aca94a41f06acc8de4a2c019f89e4"
     },
     "tokens/fonts.css": {
       "bytes": 1731,

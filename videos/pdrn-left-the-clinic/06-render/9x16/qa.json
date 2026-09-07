@@ -6,7 +6,7 @@
   "inputs": {
     "mp4": {
       "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/9x16/renders/pdrn-left-the-clinic-9x16.mp4",
-      "sha256": "0b09a40e0bab11d4e9420cf8b61a564a9a7296bab706d16efb478500e4f2b8f0",
+      "sha256": "35861478734543b1ee34f6e214a4e46f02aac45e1514c3caea1f078564c635a1",
       "video": {
         "w": 1080,
         "h": 1920,
@@ -99,28 +99,70 @@
       "blocking": true,
       "measured": {
         "frames_scanned": 496,
-        "faces": 16,
-        "sub_threshold_faces": 8
+        "faces": 20,
+        "sub_threshold_faces": 9
       },
       "findings": [
         {
+          "scene": "f10-rows-retail",
+          "t": 35.0,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000071.png",
+          "box": [
+            258,
+            843,
+            327,
+            912
+          ],
+          "long_side_px": 69,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f10-rows-retail: a human face is visible at 35.0s (69px)."
+        },
+        {
+          "scene": "f10-rows-retail",
+          "t": 35.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000072.png",
+          "box": [
+            256,
+            845,
+            330,
+            919
+          ],
+          "long_side_px": 74,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f10-rows-retail: a human face is visible at 35.5s (74px)."
+        },
+        {
+          "scene": "s06-compare",
+          "t": 51.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000104.png",
+          "box": [
+            698,
+            708,
+            764,
+            774
+          ],
+          "long_side_px": 66,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene s06-compare: a human face is visible at 51.5s (66px)."
+        },
+        {
           "scene": "s06-compare",
           "t": 53.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000108.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000108.png",
           "box": [
             698,
             709,
-            762,
-            773
+            763,
+            774
           ],
-          "long_side_px": 64,
+          "long_side_px": 65,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s06-compare: a human face is visible at 53.5s (64px)."
+          "message": "scene s06-compare: a human face is visible at 53.5s (65px)."
         },
         {
           "scene": "f40-rows-regulator-trend",
           "t": 148.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000297.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000297.png",
           "box": [
             401,
             806,
@@ -134,35 +176,35 @@
         {
           "scene": "f40-rows-regulator-trend",
           "t": 148.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000298.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000298.png",
           "box": [
             401,
-            807,
-            462,
+            806,
+            463,
             868
           ],
-          "long_side_px": 61,
+          "long_side_px": 62,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene f40-rows-regulator-trend: a human face is visible at 148.5s (61px)."
+          "message": "scene f40-rows-regulator-trend: a human face is visible at 148.5s (62px)."
         },
         {
           "scene": "f40-rows-regulator-trend",
           "t": 150.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000301.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000301.png",
           "box": [
             401,
-            807,
-            462,
+            806,
+            463,
             868
           ],
-          "long_side_px": 61,
+          "long_side_px": 62,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene f40-rows-regulator-trend: a human face is visible at 150.0s (61px)."
+          "message": "scene f40-rows-regulator-trend: a human face is visible at 150.0s (62px)."
         },
         {
           "scene": "f40-rows-regulator-trend",
           "t": 150.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000302.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000302.png",
           "box": [
             401,
             807,
@@ -176,49 +218,49 @@
         {
           "scene": "s15-evidence-pct",
           "t": 165.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000331.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000331.png",
           "box": [
-            224,
-            665,
+            223,
+            664,
             299,
             740
           ],
-          "long_side_px": 75,
+          "long_side_px": 76,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s15-evidence-pct: a human face is visible at 165.0s (75px)."
+          "message": "scene s15-evidence-pct: a human face is visible at 165.0s (76px)."
         },
         {
           "scene": "s15-evidence-pct",
           "t": 165.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000332.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000332.png",
           "box": [
-            223,
+            224,
             668,
             298,
-            743
+            742
           ],
-          "long_side_px": 75,
+          "long_side_px": 74,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s15-evidence-pct: a human face is visible at 165.5s (75px)."
+          "message": "scene s15-evidence-pct: a human face is visible at 165.5s (74px)."
         },
         {
           "scene": "s15-evidence-pct",
           "t": 166.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000333.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000333.png",
           "box": [
-            224,
-            665,
+            225,
+            666,
             299,
             740
           ],
-          "long_side_px": 75,
+          "long_side_px": 74,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s15-evidence-pct: a human face is visible at 166.0s (75px)."
+          "message": "scene s15-evidence-pct: a human face is visible at 166.0s (74px)."
         },
         {
           "scene": "s15-evidence-pct",
           "t": 166.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000334.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000334.png",
           "box": [
             224,
             662,
@@ -232,21 +274,21 @@
         {
           "scene": "s15-evidence-pct",
           "t": 167.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000335.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000335.png",
           "box": [
-            224,
-            665,
+            225,
+            666,
             299,
             740
           ],
-          "long_side_px": 75,
+          "long_side_px": 74,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s15-evidence-pct: a human face is visible at 167.0s (75px)."
+          "message": "scene s15-evidence-pct: a human face is visible at 167.0s (74px)."
         },
         {
           "scene": "s15-evidence-pct",
           "t": 167.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000336.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000336.png",
           "box": [
             225,
             668,
@@ -260,7 +302,7 @@
         {
           "scene": "s15-evidence-pct",
           "t": 168.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000337.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000337.png",
           "box": [
             224,
             665,
@@ -274,7 +316,7 @@
         {
           "scene": "s15-evidence-pct",
           "t": 168.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000338.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000338.png",
           "box": [
             224,
             662,
@@ -288,35 +330,35 @@
         {
           "scene": "s15-evidence-pct",
           "t": 169.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000339.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000339.png",
           "box": [
-            224,
-            665,
+            225,
+            666,
             299,
             740
           ],
-          "long_side_px": 75,
+          "long_side_px": 74,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s15-evidence-pct: a human face is visible at 169.0s (75px)."
+          "message": "scene s15-evidence-pct: a human face is visible at 169.0s (74px)."
         },
         {
           "scene": "s15-evidence-pct",
           "t": 169.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000340.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000340.png",
           "box": [
             224,
             668,
-            298,
-            742
+            299,
+            743
           ],
-          "long_side_px": 74,
+          "long_side_px": 75,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene s15-evidence-pct: a human face is visible at 169.5s (74px)."
+          "message": "scene s15-evidence-pct: a human face is visible at 169.5s (75px)."
         },
         {
           "scene": "f100-scrutiny1",
           "t": 218.0,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-87h21slg/f_000437.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000437.png",
           "box": [
             534,
             809,
@@ -326,6 +368,20 @@
           "long_side_px": 68,
           "cascade": "haarcascade_frontalface_default.xml",
           "message": "scene f100-scrutiny1: a human face is visible at 218.0s (68px)."
+        },
+        {
+          "scene": "f100-scrutiny1",
+          "t": 218.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-qpis8l1c/f_000438.png",
+          "box": [
+            536,
+            808,
+            598,
+            870
+          ],
+          "long_side_px": 62,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene f100-scrutiny1: a human face is visible at 218.5s (62px)."
         }
       ],
       "advisory": false
@@ -348,26 +404,13 @@
     },
     {
       "id": "H-4.contrast",
-      "verdict": "fail",
+      "verdict": "pass",
       "measured": {
-        "min_ratio": 3.21,
-        "regions": 2,
+        "min_ratio": 5.54,
+        "regions": 1,
         "floor": 4.5
       },
-      "findings": [
-        {
-          "scene": "s20-endcard",
-          "t": 246.832,
-          "box": [
-            171,
-            1017,
-            901,
-            1125
-          ],
-          "ratio": 3.21,
-          "message": "scene s20-endcard: contrast 3.21:1 < 4.5:1"
-        }
-      ],
+      "findings": [],
       "method": "textish_regions() -> Otsu dark/light split -> WCAG ratio",
       "advisory": true
     },
@@ -375,7 +418,7 @@
       "id": "H-4.type-floor",
       "verdict": "pass",
       "measured": {
-        "min_glyph_px": 80,
+        "min_glyph_px": 109,
         "floor_px": 32
       },
       "findings": [],
@@ -464,6 +507,21 @@
     },
     "messages": [
       {
+        "scene": "f10-rows-retail",
+        "gate": "H-3",
+        "text": "Scene f10-rows-retail: a person's face is visible at 35.0s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "f10-rows-retail",
+        "gate": "H-3",
+        "text": "Scene f10-rows-retail: a person's face is visible at 35.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "s06-compare",
+        "gate": "H-3",
+        "text": "Scene s06-compare: a person's face is visible at 51.5s \u2014 remove all people; motion graphics only."
+      },
+      {
         "scene": "s06-compare",
         "gate": "H-3",
         "text": "Scene s06-compare: a person's face is visible at 53.5s \u2014 remove all people; motion graphics only."
@@ -544,12 +602,12 @@
         "text": "Scene f100-scrutiny1: a person's face is visible at 218.0s \u2014 remove all people; motion graphics only."
       },
       {
-        "scene": "s20-endcard",
-        "gate": "H-4.contrast",
-        "text": "scene s20-endcard: contrast 3.21:1 < 4.5:1"
+        "scene": "f100-scrutiny1",
+        "gate": "H-3",
+        "text": "Scene f100-scrutiny1: a person's face is visible at 218.5s \u2014 remove all people; motion graphics only."
       }
     ]
   },
   "unmeasurable": [],
-  "summary_line": "[S7/H-4] contrast=3.21 safe=ok static=ok LUFS=-15.8 TP=-1.0 dur=246.933333/246.9"
+  "summary_line": "[S7/H-4] contrast=5.54 safe=ok static=ok LUFS=-15.8 TP=-1.0 dur=246.933333/246.9"
 }

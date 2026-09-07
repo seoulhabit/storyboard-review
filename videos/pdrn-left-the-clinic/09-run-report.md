@@ -101,18 +101,35 @@ and ruled out as the cause before the real one was found).
 unaffected, confirmed still passing. Full technical detail, including the
 exact pixel measurements, is in `00-decision-ledger.md`.
 
-## What's still real and unfixed
+## The contrast fix (this pass, operator-authorized)
 
-1. **`H-4.contrast` fails on the endcard's tagline** ("EVIDENCE, NOT HYPE.
-   MORE AT SEOULHABIT.COM"), measured ~3.2:1 against the 4.5:1 WCAG floor.
-   Root cause: `ShEndcard.jsx` (shipped, unmodified) hard-codes that line
-   to `color: var(--text-secondary)` — the design system's own `--muted`
-   token (ink at 55% opacity on cream), which mathematically lands under
-   the floor this same system's own QA gate enforces. **Every video using
-   `ShEndcard`'s CTA line inherits this** — not introduced by this run's
-   content, not something to patch in a shared component from inside one
-   project's run, and unrelated to the cadence issue just fixed.
-2. **`H-3` false-positive volume increased** as a side effect of the
+`H-4.contrast` failed on 9x16's endcard tagline at ~3.1-3.2:1 against the
+4.5:1 WCAG floor. Root cause: `ShEndcard.jsx`'s CTA line uses
+`var(--text-secondary)`, aliasing `var(--muted)` =
+`rgba(38,33,92,0.55)` — ink at 55% opacity on cream. Checked every other
+use of the same token across the system (`ShChip`, `ShEvidence`, `ShMyth`,
+`ShCompare`, `ShQuote`, `ShIngredient`, `ShSteps` — 8 places total): all
+genuinely-readable content (citations, corrections, attributions, INCI
+names, notes), not decoration, so the token itself was under-contrast
+everywhere, not only on the one frame the QA gate happened to sample.
+
+**Fix applied, per Kim's direct authorization**: amended `--muted` from
+`rgba(38,33,92,0.55)` to `rgba(38,33,92,0.75)` in
+`videos/_system/tokens/colors.css` — a design-system-level fix, following
+the same procedure as ruling R-6 (a versioned token amendment recorded in
+`MANIFEST.json`'s `amendments[]`, not a per-component patch). Manifest
+integrity re-verified clean immediately after (67/67, 0 mismatches).
+
+**Result**: recompiled and re-rendered both canvases. 9x16 contrast
+3.13 → 5.54:1, **PASS**. 16x9 unaffected, confirmed still 11.59:1. Every
+`H-4` pixel gate now passes on both canvases. **This amendment is
+system-wide, not scoped to this project** — any other video already built
+against `videos/_system/` used the old, under-contrast value and would
+need a re-render to pick it up, the same way R-6's safe-area widening did.
+
+## What's still on record, unrelated to either fix
+
+**`H-3` false-positive volume increased** as a side effect of the
    cadence fix: more scenes now carry a bold clay numeral (`ShSteps`'s
    `n`), giving the pre-existing Haar-cascade bold-typography false
    positive more surface (16x9: 2 frames, was 0; 9x16: 16 frames across 4
@@ -132,10 +149,15 @@ exact pixel measurements, is in `00-decision-ledger.md`.
    `appearsBy` assertions the render then misses by 0.05-0.5s. Visually
    harmless (confirmed by direct frame inspection) but a real, reproducible
    strict-gate failure — 28 instances this run.
-3. **`ShEndcard`'s tagline contrast** — `--text-secondary` on the CTA line
-   fails this system's own 4.5:1 floor. A component-level fix (bump the
-   token, or don't use muted-ink for a line that must clear AA), not a
-   per-video one.
+3. **`--muted`/`--text-secondary` under-contrast** — `rgba(38,33,92,0.55)`
+   on cream fails this system's own 4.5:1 floor wherever it renders
+   readable content (8 places: `ShChip`, `ShEndcard`, `ShEvidence`,
+   `ShMyth`, `ShCompare`, `ShQuote`, `ShIngredient`, `ShSteps`). **Fixed
+   this pass** via a versioned token amendment (`0.55 → 0.75`, recorded in
+   `MANIFEST.json`'s `amendments[]`, same mechanism as ruling R-6) — see
+   "The contrast fix," above. Listed here because the change is
+   system-wide: any other video already built against `videos/_system/`
+   used the old value and needs a re-render to pick up the fix.
 3b. **`emit_sh_rows`'s float target defeats the compiler's own fallback**
    — registering the row's own 2px hairline as the "float" marker (however
    many rows) blocks the much larger, working whole-stage fallback from

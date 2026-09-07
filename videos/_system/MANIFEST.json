@@ -16,6 +16,14 @@
       "change": "9:16 --safe-x 10%->15%; 16:9 --safe-bottom 8%->10%",
       "reason": "check-safe-area.py's platform-derived reserved zones (15% right rail portrait, 10% bottom landscape) exceeded the extracted tokens; see wo/FVC-005/t3-verification/repo-gates/README.md",
       "hash_updated": true
+    },
+    {
+      "date": "2026-09-07",
+      "ruling": "pdrn-left-the-clinic run, operator-authorized (Kim, chat instruction: \"Fix the endcard contrast too\")",
+      "file": "tokens/colors.css",
+      "change": "--muted rgba(38,33,92,0.55) -> rgba(38,33,92,0.75)",
+      "reason": "H-4.contrast (qa_render.py) measured the endcard tagline (ShEndcard.jsx's CTA line, styled var(--text-secondary) = var(--muted)) at ~3.1-3.2:1 on cream, under the 4.5:1 WCAG AA floor this same design system's own QA gate enforces. --muted/--text-secondary is used identically in 8 places (ShChip, ShEndcard, ShEvidence, ShMyth, ShCompare, ShQuote, ShIngredient, ShSteps) -- all genuinely-readable content (citations, corrections, attributions, INCI names, notes), not decoration, so the token itself was under-contrast everywhere it renders body-readable text, not only on the one frame this run's QA gate happened to sample. Fixed at the token level, matching ruling R-6's own precedent (a versioned token amendment, not a per-component override), rather than patching ShEndcard.jsx alone.",
+      "hash_updated": true
     }
   ],
   "file_count": 67,
@@ -266,7 +274,7 @@
     },
     "tokens/colors.css": {
       "bytes": 768,
-      "sha256": "b82ef854110894456dfcf3af4e950978e602dcd805f1dc714bb4c952bb790b07"
+      "sha256": "9e8de1f736eb8b1a260ca7cd65a6c55eaffd16304bf50886e1ecf2ada471dfa8"
     },
     "tokens/fonts.css": {
       "bytes": 1731,

@@ -6,7 +6,7 @@
   "inputs": {
     "mp4": {
       "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/pdrn-clinic/videos/pdrn-left-the-clinic/06-render/16x9/renders/pdrn-left-the-clinic-16x9.mp4",
-      "sha256": "7ec56f673549936777109fa6b96b96072a57acaff74ba9abfa4e821969171324",
+      "sha256": "cedf41d7a52818bb91cb29cd5583ef35399aea89f4c85388e7ad00ecfd2c7c4c",
       "video": {
         "w": 1920,
         "h": 1080,
@@ -100,13 +100,13 @@
       "measured": {
         "frames_scanned": 496,
         "faces": 2,
-        "sub_threshold_faces": 10
+        "sub_threshold_faces": 9
       },
       "findings": [
         {
           "scene": "f102-scrutiny3",
           "t": 223.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-woozic6f/f_000448.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-bmqrx6vs/f_000448.png",
           "box": [
             654,
             443,
@@ -120,16 +120,16 @@
         {
           "scene": "f102-scrutiny3",
           "t": 225.5,
-          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-woozic6f/f_000452.png",
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-bmqrx6vs/f_000452.png",
           "box": [
-            647,
+            653,
             443,
-            715,
-            511
+            720,
+            510
           ],
-          "long_side_px": 68,
+          "long_side_px": 67,
           "cascade": "haarcascade_frontalface_default.xml",
-          "message": "scene f102-scrutiny3: a human face is visible at 225.5s (68px)."
+          "message": "scene f102-scrutiny3: a human face is visible at 225.5s (67px)."
         }
       ],
       "advisory": false
@@ -166,7 +166,7 @@
       "id": "H-4.type-floor",
       "verdict": "pass",
       "measured": {
-        "min_glyph_px": 107,
+        "min_glyph_px": 108,
         "floor_px": 32
       },
       "findings": [],

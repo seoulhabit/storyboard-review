@@ -1,0 +1,9 @@
+mode: new
+slug: centella-asiatica
+story: story.md
+video_id: null
+format: short           # S-1 branch 2: baseline formats.short.uploads_90d=46 of corpus.uploads_total=48 = 95.8% >= 60%
+language: en
+project_skill: none
+attachments: []
+overrides: {}

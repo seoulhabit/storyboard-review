@@ -1,0 +1,286 @@
+{
+  "schema": "makemeavideo/qa.json@1",
+  "skill_version": "0.1.0",
+  "slug": "centella-asiatica",
+  "verdict": "fail",
+  "inputs": {
+    "mp4": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/renders/centella-asiatica-9x16.mp4",
+      "sha256": "c11759fd75175d003bd2d5cf40b2c0c11fba1ebffbd8943b33b3ade0976cb8a9",
+      "video": {
+        "w": 1080,
+        "h": 1920,
+        "fps": 30.0,
+        "duration_s": 45.5
+      },
+      "audio": {
+        "present": true,
+        "duration_s": 45.5,
+        "codec": "aac"
+      }
+    },
+    "frames_dir": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/qa-frames",
+      "supplied": [
+        {
+          "file": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/qa-frames/frame-000-hook.png",
+          "t": 0.0,
+          "scene": "hook",
+          "kind": "frame0"
+        },
+        {
+          "file": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/qa-frames/frame-last.png",
+          "t": 45.4,
+          "scene": "cta",
+          "kind": "last"
+        }
+      ]
+    },
+    "beat_sheet": {
+      "path": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/beat-sheet.qa.json",
+      "sha256": "1fc923dd15fbf0bb6d3bd6da34ad44d9f0ed92d56db4eeb1a25ab7af35e92e07",
+      "format": "short",
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "scenes": 9,
+      "vo_duration_s": 45.5
+    },
+    "target_length_s": 45.5
+  },
+  "environment": {
+    "tooling_dir": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/catalog/tooling",
+    "tooling": [
+      {
+        "file": "check-safe-area.py",
+        "sha256": "fa6be604ae68cfd04264a29e5cc45aed5cc7026d72a379769d8ce3432e749382"
+      },
+      {
+        "file": "check-static-hold.py",
+        "sha256": "cbddddf52e209a9f294b14b294fcc5b1ece344e2268f15caed7cde6e9b168b90"
+      }
+    ],
+    "detector": {
+      "backend": "cv2-haar",
+      "cv2_version": "4.10.0",
+      "cascades": [
+        "haarcascade_frontalface_default.xml",
+        "haarcascade_profileface.xml"
+      ],
+      "cascade_sha256": {
+        "haarcascade_frontalface_default.xml": "0f7d4527844eb514d4a4948e822da90fbb16a34a0bbbbc6adc6498747a5aafb0",
+        "haarcascade_profileface.xml": "b39a4a3be45539db146a7fc1d3e761a292c196eb88421185e6a615b3055e612d"
+      },
+      "min_box_px": 60,
+      "scan_fps": 2.0
+    }
+  },
+  "gates": [
+    {
+      "id": "H-2",
+      "name": "frame-zero",
+      "verdict": "pass",
+      "measured": {
+        "luma_stddev": 30.84,
+        "textish_regions": 4
+      },
+      "thresholds": {
+        "stddev_min": 12.0
+      },
+      "findings": [],
+      "method": "luma stddev (catalog/tooling/check-blank-frames.py's metric, cutoff 12.0)",
+      "advisory": false
+    },
+    {
+      "id": "H-3",
+      "name": "faceless",
+      "verdict": "fail",
+      "blocking": true,
+      "measured": {
+        "frames_scanned": 93,
+        "faces": 2,
+        "sub_threshold_faces": 0
+      },
+      "findings": [
+        {
+          "scene": "myth1",
+          "t": 8.5,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-84mx72sx/f_000018.png",
+          "box": [
+            310,
+            1052,
+            410,
+            1152
+          ],
+          "long_side_px": 100,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene myth1: a human face is visible at 8.5s (100px)."
+        },
+        {
+          "scene": "evidence2",
+          "t": 34.0,
+          "frame": "/var/folders/4p/2f7h_phn41vcrjf6kcyhqdsh0000gn/T/mmav-qa-dense-84mx72sx/f_000069.png",
+          "box": [
+            225,
+            624,
+            298,
+            697
+          ],
+          "long_side_px": 73,
+          "cascade": "haarcascade_frontalface_default.xml",
+          "message": "scene evidence2: a human face is visible at 34.0s (73px)."
+        }
+      ],
+      "advisory": false
+    },
+    {
+      "id": "H-4.canvas",
+      "verdict": "pass",
+      "measured": {
+        "delivered": [
+          1080,
+          1920
+        ],
+        "expected": [
+          1080,
+          1920
+        ]
+      },
+      "findings": [],
+      "advisory": false
+    },
+    {
+      "id": "H-4.contrast",
+      "verdict": "fail",
+      "measured": {
+        "min_ratio": 1.48,
+        "regions": 4,
+        "floor": 4.5
+      },
+      "findings": [
+        {
+          "scene": "hook",
+          "t": 0.0,
+          "box": [
+            155,
+            1419,
+            469,
+            1473
+          ],
+          "ratio": 1.48,
+          "message": "scene hook: contrast 1.48:1 < 4.5:1"
+        }
+      ],
+      "method": "textish_regions() -> Otsu dark/light split -> WCAG ratio",
+      "advisory": true
+    },
+    {
+      "id": "H-4.type-floor",
+      "verdict": "pass",
+      "measured": {
+        "min_glyph_px": 54,
+        "floor_px": 32
+      },
+      "findings": [],
+      "method": "textish_regions() height; A-6 per-role floors NOT enforced (no source) \u2014 absolute 32px floor only, per WO-FVC-004 T3",
+      "advisory": true
+    },
+    {
+      "id": "H-4.safe-area",
+      "verdict": "pass",
+      "shelled": {
+        "argv": [
+          "python3",
+          "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/catalog/tooling/check-safe-area.py",
+          ".",
+          "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/renders/centella-asiatica-9x16.mp4"
+        ],
+        "exit": 0,
+        "sentinel_seen": "no findings (182 frames sampled)",
+        "frames_sampled": 182
+      },
+      "findings": [],
+      "advisory": false
+    },
+    {
+      "id": "H-4.static-hold",
+      "verdict": "pass",
+      "measured": {
+        "cadence_ceiling_s": 2.5,
+        "canvas": [
+          1080,
+          1920
+        ]
+      },
+      "findings": [],
+      "method": "in-process check-static-hold.py (whole_frame_check + region_check); scene_boundaries injected from the beat sheet, no index.html on a HeyGen render",
+      "advisory": false
+    },
+    {
+      "id": "H-4.loudness",
+      "verdict": "pass",
+      "log": "/Users/sumitchoudhary/Desktop/Story Board/.claude/worktrees/wo-fvc-005-t5/videos/centella-asiatica/06-render/9x16/renders/loudness.txt",
+      "measured": {
+        "integrated_lufs": -14.0,
+        "lra_lu": 0.6,
+        "true_peak_dbtp": -12.5
+      },
+      "thresholds": {
+        "lufs_band": [
+          -16.0,
+          -12.0
+        ],
+        "true_peak_max": -1.0
+      },
+      "findings": [],
+      "note": "ffmpeg labels the peak=true ebur128 value dBFS; it is the oversampled true-peak figure",
+      "advisory": false
+    },
+    {
+      "id": "H-4.duration",
+      "verdict": "pass",
+      "measured": {
+        "delivered_s": 45.5,
+        "target_s": 45.5,
+        "delta_pct": 0.0,
+        "source": "stream=duration (v:0)"
+      },
+      "thresholds": {
+        "tolerance_pct": 15,
+        "accept_pct": 25
+      },
+      "findings": [],
+      "advisory": false
+    }
+  ],
+  "k4": {
+    "verdict": "unmeasurable",
+    "note": "no --brief given or file missing; K-4 cannot map claims"
+  },
+  "h5": {
+    "caps": {
+      "per_scene": 2,
+      "per_run": 4
+    },
+    "messages": [
+      {
+        "scene": "myth1",
+        "gate": "H-3",
+        "text": "Scene myth1: a person's face is visible at 8.5s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "evidence2",
+        "gate": "H-3",
+        "text": "Scene evidence2: a person's face is visible at 34.0s \u2014 remove all people; motion graphics only."
+      },
+      {
+        "scene": "hook",
+        "gate": "H-4.contrast",
+        "text": "scene hook: contrast 1.48:1 < 4.5:1"
+      }
+    ]
+  },
+  "unmeasurable": [],
+  "summary_line": "[S7/H-4] contrast=1.48 safe=ok static=ok LUFS=-14.0 TP=-12.5 dur=45.5/45.5"
+}

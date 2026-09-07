@@ -49,11 +49,27 @@ Exactly three, all read-only:
 
 - `videos/<slug>/03-beat-sheet.json` — the schema at
   `claude-skills/faceless-video-craft/assets/beat-sheet.schema.json`, plus
-  two compiler-only optional fields the frozen schema does not yet declare:
-  `scene.component` (one of the twelve `Sh*` names, or explicit override)
-  and `scene.slots` (the named props that component's `.props.json`
-  contract requires). When `scene.component` is absent, it is resolved from
-  `scene.section` against the chosen `templates/T*.json` spine.
+  three compiler/caster-only optional fields the frozen schema does not yet
+  declare: `scene.component` (one of the twelve `Sh*` names, or explicit
+  override) and `scene.slots` (the named props that component's
+  `.props.json` contract requires). When `scene.component` is absent, it is
+  resolved from `scene.section` against the chosen `templates/T*.json`
+  spine. *(WO-FVC-007 T3, 2026-09-07)* The third field, `scene.purpose`, is
+  new and belongs to the S4.5 stage, not this compiler directly: a
+  `catalog-registry.yaml` purpose key (`claim_vs_evidence`, `svg_diagram`,
+  `checklist`, `editorial_imagery_broll_wrapper`, or one of the
+  `furniture_*` roles — see `videos/_system/catalog/catalog-registry.yaml`)
+  that `scripts/cast_scenes.py` resolves into a real `scene.component` +
+  `scene.slots` skeleton *before* this compiler ever runs, by looking the
+  purpose up in the registry (R-9: "casting is data"). A beat sheet that
+  already sets `scene.component` explicitly (the `Sh*` path above) skips
+  S4.5 entirely — `purpose` and an explicit `component` are alternatives,
+  never combined. **This compiler's own `CANONICAL_COMPONENTS` gate
+  (`compile_composition.py:255-256`) still `die()`s on any component name
+  outside the twelve `Sh*` names** — casting a scene against the catalog
+  registry does not yet mean this compiler can render it; that gate has not
+  been extended to accept a retrofitted catalog component, and doing so is
+  not scoped to T3. See `wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md`.
 - `videos/_system/` — this design system: tokens, 12 components, 6
   template spines, fonts, vendored GSAP. Checked against `MANIFEST.json`
   at the start of every compile; a hash mismatch on any tracked file halts

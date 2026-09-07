@@ -1,0 +1,274 @@
+# catalog-registry.yaml — WO-FVC-007 T3
+#
+# Generated from docs/wo/007/catalog-inventory.json (T0a) and the T0b aspect
+# verdicts, then curated by hand against the real upstream
+# registry/components/<name>/registry-item.json variable declarations
+# (vendor/hyperframes, pinned commit below) — never hand-transcribed from
+# the docs site, per T3's own instruction.
+#
+# Gate A (2026-09-07) restricted this registry to hyperframes:component
+# items only. No hyperframes:block item appears anywhere below, regardless
+# of its individual T0b verdict. See wo/FVC-007/GATE-A-RULING.md.
+#
+# Every candidate below is one of the 19 components T0b actually rendered
+# and probed at 1080x1920 (verdict: reframes-clean for all 19 — see
+# t0b_scan.by_category.component in catalog-inventory.json). A component
+# NOT in that 19-item set is not listed here even if it exists upstream and
+# even if it looks like a plausible fit by name/tags — per
+# wo/FVC-007/T0-GATE-A-REPORT.md: "If T3's later curation reaches outside
+# this 36-item set, those additions need their own aspect check before
+# being trusted." None do; widening this registry later means re-running
+# T0b's method on the candidate first, not adding it on the strength of its
+# tags alone.
+#
+# Slot contracts are the real `variables[]` array from each item's
+# registry-item.json, filtered to role: content (the fields a beat actually
+# supplies), typed with their real upstream `type`. Style/layout/timing/
+# motion-role variables exist too (accent, exit, split position, etc.) but
+# are cosmetic knobs, not beat content, and are not listed as slots.
+#
+# `media_slots` (where present) is structural, not a declared variable —
+# found by reading the item's HTML directly, per T0a's own note that the
+# upstream registry has no formal `slots` field. It records DOM children
+# the component hosts (img/video/HTML), which is the only true "media slot"
+# concept in the real catalog. B-1 governs whether a beat is allowed to use
+# it — see broll_allowed per purpose below, and the per-candidate note on
+# before-after-wipe.
+#
+# NOTE ON THIS FILE'S OWN SYNTAX: this repo's YAML reader
+# (scripts/_yaml_lite.py, shared by beats_to_build_spec.py and this
+# registry's own caster) is a documented subset — no multi-line/folded
+# scalars, no flow-style `{}` mappings. Every `note`/`summary`/`resolution`
+# below is therefore a single-line quoted string, not a `>` block, and
+# every slot mapping is block-style, not `{ a: 1 }`. Verified by actually
+# round-tripping this file through parse_yaml_subset() before committing —
+# see wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md.
+
+catalog_source_commit: "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc"
+generated_at: "2026-09-07"
+generated_from: "docs/wo/007/catalog-inventory.json + vendor/hyperframes registry-item.json (same pinned commit)"
+gate_a_scope: "components-only, per wo/FVC-007/GATE-A-RULING.md"
+
+purposes:
+  # ------------------------------------------------------------------
+  # claim_vs_evidence — B-1: claim/evidence beats are design-system
+  # only. No B-roll, in any candidate below, regardless of whether the
+  # component technically has a media-hosting slot (before-after-wipe
+  # does; it must stay unused here).
+  # ------------------------------------------------------------------
+  - purpose: claim_vs_evidence
+    broll_allowed: false
+    candidates:
+      - component: comparison-split
+        rank: 1
+        retrofitted: false
+        slots:
+          labelA: string
+          labelB: string
+        aspect: [9:16]
+        note: "UI-mockup treatment (window chrome + placeholder copy lines), no media-hosting DOM slot at all — the safest default for this purpose, since it structurally cannot leak a photographic image onto a claim beat."
+      - component: before-after-wipe
+        rank: 2
+        retrofitted: false
+        slots:
+          label_a: string
+          label_b: string
+        media_slots: [baw-slot-a, baw-slot-b]
+        aspect: [9:16]
+        note: "Hosts real img/video children per its own HTML comments (the two named slot panels with their own content). On a claim_vs_evidence beat those children MUST stay empty — text labels only. Ranked below comparison-split for that reason: it is one authoring mistake away from a B-1 violation, comparison-split is not."
+      - component: split-tilt-cards
+        rank: 3
+        retrofitted: false
+        slots:
+          label_a: string
+          label_b: string
+          badge_a: string
+          badge_b: string
+        aspect: [9:16]
+        note: "Richer than comparison-split — use when the beat needs a badge/tag on each side (e.g. brand-vs-brand), not just a label."
+      - component: chart-story
+        rank: 4
+        retrofitted: false
+        slots:
+          type: enum
+          data: string
+          labels: string
+          emphasize: number
+          unit: string
+        aspect: [9:16]
+        note: "type enum covers bars/line/donut/progress — general-purpose evidence chart."
+      - component: decline-chart
+        rank: 5
+        retrofitted: false
+        slots:
+          label: string
+          start_value: number
+          end_value: number
+        aspect: [9:16]
+        note: "Purpose-built for a single negative-trend stat (e.g. efficacy or retention decline) — narrower than chart-story, use when the evidence is exactly one before/after number."
+      - component: count-up
+        rank: 6
+        retrofitted: false
+        slots:
+          start: number
+          end: number
+          prefix: string
+          suffix: string
+        aspect: [9:16]
+        note: "Single-stat counter — use for the smallest evidence beats (one number, no comparison structure)."
+
+  # ------------------------------------------------------------------
+  # svg_diagram — thin on purpose, not by oversight. See _gaps below:
+  # no true node/edge diagram component survives the Gate A cut.
+  # ------------------------------------------------------------------
+  - purpose: svg_diagram
+    broll_allowed: false
+    candidates:
+      - component: svg-stroke-trace
+        rank: 1
+        retrofitted: false
+        slots:
+          path: string
+        aspect: [9:16]
+        note: "The only real line/path-draw primitive in the verified set. Fine for a single traced path (an arrow, an underline-reveal, a simple route); not a multi-node diagram engine."
+      - component: svg-mask-reveal
+        rank: 2
+        retrofitted: false
+        slots:
+          text: string
+          revealProgress: number
+        aspect: [9:16]
+        note: "A wordmark/title reveal effect, not a diagram — listed here only as the closest available SVG-family candidate for a section-title beat inside a diagram sequence. Do not cast this for actual diagram content."
+      - component: svg-line-draw-loader
+        rank: 3
+        retrofitted: false
+        slots:
+        aspect: [9:16]
+        note: "Zero content slots — a generic seekable stroke-draw motion layer (a connector line between two already-placed elements), not a standalone scene. Use to animate a connection, not to carry content."
+
+  # ------------------------------------------------------------------
+  # checklist
+  # ------------------------------------------------------------------
+  - purpose: checklist
+    broll_allowed: false
+    candidates:
+      - component: marker-checklist-card
+        rank: 1
+        retrofitted: false
+        slots:
+          top: string
+          mid: string
+          circled: string
+          rest: string
+          l1: string
+          v1: string
+          l2: string
+          v2: string
+          l3: string
+          v3: string
+        aspect: [9:16]
+        note: "Direct fit — handwritten-marker checklist card with 3 label/value rows plus a headline. Caps out at 3 items; a beat needing more falls through to grid-card-assemble."
+      - component: grid-card-assemble
+        rank: 2
+        retrofitted: false
+        slots:
+          items: string
+          layout: enum
+          columns: number
+        aspect: [9:16]
+        note: "Comma-delimited item list, stagger-assembled into a grid — use when the checklist has more than 3 items or reads better as a feature-tour grid than a handwritten card."
+
+  # ------------------------------------------------------------------
+  # editorial_imagery_broll_wrapper — B-1's own requirement that every
+  # B-roll plate is wrapped in a camera-move component lives here.
+  # These candidates are wrappers/treatments, not content carriers —
+  # most have no content-role slots at all, by design.
+  # ------------------------------------------------------------------
+  - purpose: editorial_imagery_broll_wrapper
+    broll_allowed: true
+    candidates:
+      - component: push-in
+        rank: 1
+        retrofitted: false
+        slots:
+          text: string
+        aspect: [9:16]
+        note: "Camera push-in with a caption slot — the default B-roll wrapper: satisfies B-1's camera-move requirement and carries a short on-screen line in the same component."
+      - component: yt-camera-move
+        rank: 2
+        retrofitted: false
+        slots:
+        aspect: [9:16]
+        note: "Zoom/slide/3D-tilt-pan helper for any wrapped child, zero content slots — use when the beat's caption is carried by a separate text layer instead of the wrapper itself."
+      - component: device-frame-stage
+        rank: 3
+        retrofitted: true
+        classification: foreign-surface
+        slots:
+        aspect: [9:16]
+        note: "Device-mockup stage (phone/tablet). Already retrofitted at T2 — device-chrome colours are R-13 foreign-surface, kept native. Use for screenshot/app-demo B-roll specifically, not general photographic plates."
+      - component: grade-split-reveal
+        rank: 4
+        retrofitted: false
+        slots:
+        aspect: [9:16]
+        note: "Colour-grade before/after compare — style-only variables (look/split/edge/labels), no declared text content."
+      - component: grain-overlay
+        rank: 5
+        retrofitted: false
+        slots:
+        aspect: [9:16]
+        note: "Additive film-grain texture layer, not a standalone wrapper on its own — composite on top of one of the other four when the plate needs analog character. Does not by itself satisfy B-1's camera-move requirement."
+
+  # ------------------------------------------------------------------
+  # channel_furniture — T4's four roles. Two are covered by a real
+  # component; two have none. See _gaps below and
+  # wo/FVC-007/GATE-A-RULING.md's own "known consequence" section,
+  # which flagged this at Gate A rather than letting it surface later
+  # at T4 or mid-beat at T6.
+  # ------------------------------------------------------------------
+  - purpose: furniture_end_card
+    broll_allowed: false
+    candidates:
+      - component: logo-brand-close
+        rank: 1
+        retrofitted: false
+        slots:
+          wordmark: string
+          tagline: string
+          url: string
+        aspect: [9:16]
+        note: "T4's pinned end-card component per the WO's own instruction to pick one and not decide per video."
+
+  - purpose: furniture_cta
+    broll_allowed: false
+    candidates:
+      - component: cta-close
+        rank: 1
+        retrofitted: false
+        slots:
+          action_line: string
+          button_label: string
+        aspect: [9:16]
+        note: "T4's action-line component, for videos that carry a CTA."
+
+  - purpose: furniture_lower_third
+    broll_allowed: false
+    candidates: []
+    note: "NO COMPONENT CANDIDATE. Gate A restricted the registry to hyperframes:component items; every lower-third match in the full 383-item catalog (yt-lower-third, lt-dark-card, lt-kicker-name, and the rest of the lt-* family) is a hyperframes:block, out of scope by Gate A ruling. Per R-11, a beat cast against this purpose halts with BLOCKER-CAST and Kim rules between R-11's two options (rewrite the beat so no lower-third furniture is needed, or contribute a component-category lower-third upstream). Not resolved here — see wo/FVC-007/GATE-A-RULING.md Known consequence."
+
+  - purpose: furniture_platform_follow
+    broll_allowed: false
+    candidates: []
+    note: "NO COMPONENT CANDIDATE. instagram-follow / tiktok-follow are blocks; the one component-category follow item (x-follow-card) is untargeted social-overlay, not IG/TikTok-branded, and was not in T0b's verified set. Same R-11 resolution path as furniture_lower_third. T4 leaves this role unassigned regardless (cross-promo is a per-video call), so this gap does not block T4 the way furniture_lower_third's does — recorded for completeness."
+
+_gaps:
+  - id: svg_diagram_thin
+    summary: "No verified component is a true multi-node/edge diagram (flowchart, route map, ingredient-pathway map). The three svg_diagram candidates are a single-path tracer, a title-reveal effect, and a contentless motion primitive. The catalog's real diagram items (flowchart, flowchart-vertical, data-chart) are all hyperframes:block, excluded by Gate A, and flowchart-vertical specifically failed its own T0b reframe despite matching aspect ratio (see wo/FVC-007/T0-GATE-A-REPORT.md). A beat that genuinely needs a structural diagram will likely hit BLOCKER-CAST under R-11 even though svg_diagram has non-empty candidates — the candidates it has cover a narrower job than the purpose name implies."
+    resolution: "Not resolved here. Flag to Kim if T6 hits this in practice; R-11's two paths (rewrite the beat, contribute upstream) apply."
+  - id: furniture_lower_third_empty
+    summary: "See purpose: furniture_lower_third above. Carried forward from Gate A's own known consequence note, not newly discovered here."
+    resolution: "T4's job, per R-11. Not resolved here."
+  - id: retrofit_status
+    summary: "Only 3 of the 19 candidates above (focus-swap, caption-highlight, device-frame-stage — see videos/_system/catalog/manifest.json) have actually been run through retrofit_catalog.py. The other 16 are real, T0b-verified candidates but not yet token-native output on disk. retrofitted: false above is literal, not a placeholder. focus-swap and caption-highlight are T2's test items and are not purpose-registry candidates on their own merits (focus-swap is a generic host-bridged interaction primitive with no purpose fit tested here; caption-highlight is a caption/text-emphasis primitive, also not one of the four scene systems)."
+    resolution: "R-14 forbids consuming a catalog item raw. Per T2's own report, future catalog additions cost minutes — running retrofit_catalog.py on a candidate is mechanical once it is actually selected for a real beat. Deferred to T5/T6, when the caster's picks are first exercised against the real pilot beat sheet, rather than run speculatively against all 16 here. See wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md."

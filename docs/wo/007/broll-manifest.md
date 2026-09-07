@@ -233,40 +233,72 @@ G0-4's precedence per slot against the tier-1 pool above first (product-photogra
 extract tier-2 frames for anything tier 1 can't cover, and only then write
 G0-3b-spec generation prompts for what's left.
 
-**Update, T3 mid-flight (read from `session/fvc-007-t3`'s uncommitted
-working copy, not yet merged):** its `catalog-registry.yaml` has landed on
-exactly one `broll_allowed: true` purpose — `editorial_imagery_broll_wrapper`
-— with five wrapper-component candidates (`push-in` default, `yt-camera-move`,
-`device-frame-stage` foreign-surface/screenshot-only, `grade-split-reveal`,
-`grain-overlay` non-standalone). These wrappers carry no content of their
-own; they wrap whatever plate this manifest's tiers supply. That answers
-one open question from the first draft of this manifest (what "a B-roll
-slot" actually is in registry terms) without needing to wait for the full
-caster run against real beats — the wrapper vocabulary is fixed regardless
-of how many beats end up using it.
+**Update, T3 merged to master (`2361302`, includes a T4 reconciliation —
+see `wo/FVC-007/T3-REGISTRY-AND-CASTER-REPORT.md` "Cross-session
+reconciliation"):** `videos/_system/catalog/catalog-registry.yaml` is now
+real, committed, on disk. Confirms what was visible mid-flight:
+`editorial_imagery_broll_wrapper` is the only `broll_allowed: true` purpose,
+5 candidates (`push-in` default, `yt-camera-move`, `device-frame-stage`
+foreign-surface/screenshot-only, `grade-split-reveal`, `grain-overlay`
+non-standalone), zero content slots on any of them — unchanged by the T4
+merge, which only touched the registry's separate `furniture:` section.
+That answers "what is a B-roll slot" in registry terms without needing a
+real per-beat caster run.
 
-Per the coordination split below, the palette side of tier 3 is now drafted
-ahead of the caster output — see `broll-style-core-draft.md` — since it
+Per T3's own correction: **there is still no real per-beat cast list**, and
+producing one isn't just T3's remaining work. Two more things block it,
+per `T3-REGISTRY-AND-CASTER-REPORT.md`:
+
+1. **T1 hasn't produced a machine-readable beat sheet.** `cast_scenes.py`
+   (the S4.5 caster, skill repo `seoulhabit/claude-skills`, tested only
+   against synthetic beat sheets) needs one; `kbeauty-one-percent-line` has
+   no `03-beat-sheet.json` — T6's own text already flagged this needs
+   deriving from `STORYBOARD.md` + the SRT (REVIEW.md P2), and that
+   derivation hasn't happened.
+2. **The compiler can't render a cast pick yet even once one exists.**
+   `compile_composition.py`'s `CANONICAL_COMPONENTS` gate
+   (`compile_composition.py:255-256`) still hard-rejects any non-`Sh*`
+   component name — flagged in `videos/_system/MANIFEST.json`'s amendments
+   and `videos/_system/COMPILER.md` §1, not fixed. Separate, unscoped
+   compiler work.
+
+So T5's own "next step" below is gated on T1 + that compiler fix, not on
+T3 alone — holding per-scene assignment is still correct, just for a wider
+reason than originally understood.
+
+Per the coordination split below, the palette side of tier 3 is drafted
+ahead of the real cast list — see `broll-style-core-draft.md` — since it
 depends only on G0-3b's ruling, not on beat-specific content.
 
 ## Coordination with T3
 
-T3 (`session/fvc-007-t3`, registry + S4.5 caster, Gate B) is a parallel,
-unmerged session. Division of labor, proposed to that session directly (see
-its transcript for the message, sent from this T5 session):
+T3 (`session/fvc-007-t3`, registry + S4.5 caster, Gate B) was a parallel
+session; its work is now merged to master (`2361302`). Coordination
+happened by direct message before either side touched a shared file — its
+reply confirmed the split below and corrected one assumption (see previous
+section: the real blocker is T1 + the compiler's `CANONICAL_COMPONENTS`
+gate, not T3 itself, which is done).
 
-- **T3 owns:** finishing `catalog-registry.yaml`, running the caster against
-  the pilot's real beat sheet, and producing the per-beat cast list — which
-  beats land on `editorial_imagery_broll_wrapper`, how many, and any
-  `BLOCKER-CAST`s. That beat-by-beat list is what actually turns this
-  manifest's tiers into filled slots.
+- **T3 delivered:** `catalog-registry.yaml` (Gate B, halted per its own
+  report), the S4.5 caster (`cast_scenes.py`, tested against synthetic beat
+  sheets only), and — via a live cross-session reconciliation with T4's
+  independently-built `furniture:` section — the lower-third `BLOCKER-CAST`
+  resolved onto `cta-close` by Kim's R-11 ruling. None of that changes this
+  manifest's tiers; `editorial_imagery_broll_wrapper` is unchanged by the
+  T4 merge.
 - **T5 owns, in the meantime:** the tier-1/tier-2 sourcing pool (done, this
-  file), the G0-3b palette scaffold (done, `broll-style-core-draft.md`), and
-  holding off on writing per-scene generation bodies or assigning specific
-  plates to specific beats until the cast list exists — writing those against
+  file) and the G0-3b palette scaffold (done, `broll-style-core-draft.md`).
+  Holding off on per-scene generation bodies or assigning specific plates to
+  specific beats until a real cast list exists — writing those against
   guessed content would repeat the mistake T0b's programmatic sweep was
-  built to avoid.
-- **Handoff:** once T3's registry merges (or its caster output is otherwise
-  available), T5 resumes here: walk each `editorial_imagery_broll_wrapper`
+  built to avoid, and per T3's correction there's a real one to wait for now
+  (not just an in-progress one).
+- **Not T5's job, flagged for whoever picks it up:** deriving
+  `03-beat-sheet.json` for `kbeauty-one-percent-line` from `STORYBOARD.md` +
+  the SRT (T1/T6's work, per REVIEW.md P2), and extending
+  `CANONICAL_COMPONENTS` in `compile_composition.py` to accept registry
+  components (unscoped compiler work, flagged but not fixed by T3).
+- **Handoff:** once a real per-beat cast list exists and the compiler gate
+  is extended, T5 resumes here: walk each `editorial_imagery_broll_wrapper`
   pick against tier 1 first, tier 2 next, and only write new G0-3b scene
   bodies for what's left unfilled.

@@ -232,3 +232,41 @@ G0-4's precedence per slot against the tier-1 pool above first (product-photogra
 9:16 set is the fastest fill for anything generic-packaging or texture-macro),
 extract tier-2 frames for anything tier 1 can't cover, and only then write
 G0-3b-spec generation prompts for what's left.
+
+**Update, T3 mid-flight (read from `session/fvc-007-t3`'s uncommitted
+working copy, not yet merged):** its `catalog-registry.yaml` has landed on
+exactly one `broll_allowed: true` purpose — `editorial_imagery_broll_wrapper`
+— with five wrapper-component candidates (`push-in` default, `yt-camera-move`,
+`device-frame-stage` foreign-surface/screenshot-only, `grade-split-reveal`,
+`grain-overlay` non-standalone). These wrappers carry no content of their
+own; they wrap whatever plate this manifest's tiers supply. That answers
+one open question from the first draft of this manifest (what "a B-roll
+slot" actually is in registry terms) without needing to wait for the full
+caster run against real beats — the wrapper vocabulary is fixed regardless
+of how many beats end up using it.
+
+Per the coordination split below, the palette side of tier 3 is now drafted
+ahead of the caster output — see `broll-style-core-draft.md` — since it
+depends only on G0-3b's ruling, not on beat-specific content.
+
+## Coordination with T3
+
+T3 (`session/fvc-007-t3`, registry + S4.5 caster, Gate B) is a parallel,
+unmerged session. Division of labor, proposed to that session directly (see
+its transcript for the message, sent from this T5 session):
+
+- **T3 owns:** finishing `catalog-registry.yaml`, running the caster against
+  the pilot's real beat sheet, and producing the per-beat cast list — which
+  beats land on `editorial_imagery_broll_wrapper`, how many, and any
+  `BLOCKER-CAST`s. That beat-by-beat list is what actually turns this
+  manifest's tiers into filled slots.
+- **T5 owns, in the meantime:** the tier-1/tier-2 sourcing pool (done, this
+  file), the G0-3b palette scaffold (done, `broll-style-core-draft.md`), and
+  holding off on writing per-scene generation bodies or assigning specific
+  plates to specific beats until the cast list exists — writing those against
+  guessed content would repeat the mistake T0b's programmatic sweep was
+  built to avoid.
+- **Handoff:** once T3's registry merges (or its caster output is otherwise
+  available), T5 resumes here: walk each `editorial_imagery_broll_wrapper`
+  pick against tier 1 first, tier 2 next, and only write new G0-3b scene
+  bodies for what's left unfilled.

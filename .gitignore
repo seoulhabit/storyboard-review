@@ -55,3 +55,4 @@ videos/*/assets/voice/acts/_takes/
 # the prepared 1080p plates next to them are what the composition references.
 videos/*/assets/plates/raw/
 .ci-local/
+vendor/hyperframes/

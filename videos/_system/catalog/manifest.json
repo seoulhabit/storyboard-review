@@ -1,0 +1,9 @@
+{
+  "$comment": "Per R-14 (WO-FVC-007 T0a). Catalog source pin + CLI version. Per-item retrofit entries (upstream version, retrofit script version, aspect, slots, retrofitted-file hash) are T2's output, not yet populated.",
+  "catalog_source": "https://github.com/heygen-com/hyperframes",
+  "catalog_source_commit": "0d5d3f3eb3aecd9fd64954d2767d3d64e97e58fc",
+  "catalog_pinned_at": "2026-09-07",
+  "hyperframes_cli_version": "0.8.30",
+  "catalog_inventory": "docs/wo/007/catalog-inventory.json",
+  "items": []
+}

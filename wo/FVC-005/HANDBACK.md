@@ -1,22 +1,22 @@
-# WO-FVC-005 — Handback (S-A ground truth + S-B compiler, T0–T3)
+# WO-FVC-005 — Handback (T0–T7, full close)
 
-This session landed the DRAFT work order, answered or evidenced every Gate 0
-slot it could without Kim's plan-page/palette confirmations, and completed
-`T0` through `T3` — environment probe, the four-finding spike, the
-design-system extraction, and a working compiler proven end-to-end against
-real local renders, including the D5 duration-split path. `T4` (audio + render harness) onward is the next
-session boundary, per the WO's own §5 session plan.
+This document originally closed T0–T3 only (S-A ground truth + S-B compiler).
+This pass extends it through **T7** — T4 (audio + render harness, plus R-6),
+T7 (skill cut to 0.3.0, run out of order), T5 (pilot run, `centella-asiatica`),
+and T6 (recurrence) — and is the **T8** deliverable itself: the WO's own §7
+close-out. The T0–T3 content below is preserved verbatim except where a later
+task resolved something it left open; those spots are marked inline.
 
-Two things happened outside the numbered tasks that matter as much as any
-of them: this session found and corrected **seven factual errors in the WO's
-own text** before building anything on top of them (§8 of
-`docs/wo/WO-FVC-005.md`), and the compiler build surfaced **seventeen real engine
-bugs** (plus one confirmed-clean combination) that a plan built from documentation alone would not have caught -- including one, described below, that would have appeared in every single video this compiler ever produced —
-each found by actually running `hyperframes lint`/`check` against a
-first-draft compile, diagnosed from the engine's own error message, and
-fixed before moving to the next task.
-
-Every command below was re-run fresh for this handback, just now.
+**Where things stand at close:** `makemeavideo` is at **0.3.0** on
+`origin/master` in `claude-skills` (merged, not a branch); the design system
+extraction, R-6 safe-area widening, and the render/compile harness are merged
+to `master` in this repo; one real pilot (`centella-asiatica`) ran the full
+pipeline end-to-end and its envelope sits in `videos/centella-asiatica/`;
+`videos/_queue.yaml` holds 20 queued routes plus that one produced entry, and
+`/makemeavideo next` can pop the queue without a human picking the next slug.
+Two touchpoints remain genuinely human every run: the story in, the publish
+click out (WO §0.1) — nothing done this session moved either of those off a
+person.
 
 ---
 
@@ -34,27 +34,65 @@ Every command below was re-run fresh for this handback, just now.
 | T3 | Real local render | `hyperframes render -q draft -o out.mp4` + `ffprobe` | `1080x1920, duration=14.600000, codec_name=h264` |
 | T3 | Determinism | two independent compiles, `diff -r` | empty |
 | T3 | Dual-format timing invariance | `diff` of both canvases' `index.motion.json` | identical `duration` and `assertions` |
-| T3 | Repo gates (plan Step 10, D6) — run, not clean | `check-legibility.py`/`check-safe-area.py`, both canvases | Legibility: token floor passes both, render check fails 16:9 (4px vs 5px floor). Safe-area: **fails both**, root-caused to `videos/_system`'s own `--safe-x`/`--safe-bottom` tokens, not the compiler — `wo/FVC-005/t3-verification/repo-gates/README.md` |
+| T3 | Repo gates (plan Step 10, D6) — run, not clean at the time | `check-legibility.py`/`check-safe-area.py`, both canvases | Legibility: token floor passes both, render check fails 16:9. Safe-area: **failed both** at T3 time — root-caused to `videos/_system`'s own tokens, **resolved by R-6 at T4** (see below) |
+| T4 | R-6 safe-area widening closes T3's finding #20 | recompiled T3's synthetic fixture, re-rendered both canvases, re-ran `check-safe-area.py` | both canvases now `no findings` — `wo/FVC-005/t4-verification/README.md` |
+| T4 | Audio + render harness produces a real mixed/loudnormed track and a full check→render→extract→QA pass | `render_local.sh` on the T3 fixture, then a real beat sheet | `mix_audio.py` output passes `qa_render.py`'s `gate_h4_loudness`; `render_local.sh` exits clean end to end — `wo/FVC-005/t4-run-report.md` |
+| T7 | Skill rewritten and re-versioned; local engine referenced correctly throughout, no dangling HeyGen Video Agent calls in S4b–S7 | `grep -rn "video_agent\|create_video\b" makemeavideo/{SKILL.md,references/*.md}` post-edit | zero matches outside the now-forbidden tool-fence list itself |
+| T7 | `baseline.yaml` carries a resolved `heygen:` block | `python3 -c "…yaml_lite.parse…"` | `voice_id: null, brand_glossary_id: null, cloud_render_credits_cap: 20, spike_findings: {…T1-FINDINGS verbatim…}` |
+| T5 | Full pilot run (`new` mode) reaches the envelope, no rule loosened to get there | `/makemeavideo centella-asiatica` from a fresh worktree, S0.0 through S8 | `videos/centella-asiatica/07-publish-envelope.md` written; `09-run-report.md` §Summary posted verbatim as the session's final message |
+| T5 | Rendered MP4 passes the compiled pipeline's own gates (H-2, H-4 minus H-3's known false-positive class) | `qa_render.py` on the real render | H-2 pass, H-4.safe-area pass (post-R-6), H-4.loudness pass (-14.0 LUFS / -12.5 dBTP), H-4.duration pass (45.5/45.5s); H-3 fail — visually confirmed false positive (bold typography, no face), documented per T7's H-3 fallback, evidence frames saved |
+| T5 | Git LFS carries the real MP4 correctly | `git lfs ls-files` on the commit | `videos/centella-asiatica/06-render/9x16/renders/centella-asiatica-9x16.mp4` listed, LFS pointer confirmed, not a raw blob |
+| T6 | `/makemeavideo next` pops the queue and resolves a real request without a human naming the slug | `enqueue_from_site.py` dry run + a `next` invocation against the populated queue | `videos/_queue.yaml` round-trips through `_yaml_lite.py` clean (write then parse-back verified); `queue[0]` (`ceramide`, 8 citations) resolves to a valid `request.yaml`/`story.md` pair |
+| T6 | `centella-asiatica` is correctly recognized as already produced, no unrelated pipeline's report files false-match | `enqueue_from_site.py` against the real repo state | `produced[]` backfilled with exactly 1 entry (`centella-asiatica`), the 4 unrelated `09-run-report.md` directories from the older pipeline correctly excluded |
+| T8 | This document, plus the WO's own §7 checklist (cost table, T1-FINDINGS, rulings needed, refusals, attestation) | this file | below |
 
 ## 2. Refusals on record
 
 | What | Reason | §0.1/§8 rule protected |
 |---|---|---|
 | Spending HeyGen credits to prove F1's cloud leg | This session's own D2 ruling: zero spend. F1 resolves PARTIAL, its pre-written fail branch (`C-6`, hard cuts only) fires as designed, not as a workaround. | "No auto-retry past a cap; no loosening a rule to pass a gate" |
-| Attempting HeyGen MCP OAuth non-interactively for F2–F4 | The system prompt is explicit this session cannot run an interactive OAuth flow. Named `BLOCKED-CONNECTOR`, not guessed or skipped silently. | Same |
+| Attempting HeyGen MCP OAuth non-interactively for F2–F4 | The system prompt is explicit this session cannot run an interactive OAuth flow. Named `BLOCKED-CONNECTOR`, not guessed or skipped silently. Reconfirmed at T4 and again at T5 — still true both times, not a stale finding carried forward unchecked. | Same |
 | Editing the shipped `providers.yaml` with fabricated cost numbers | HeyGen speech/image/enhance costs are unmeasured this pass (connector-blocked). A fabricated number in a budget ledger is worse than a named gap. | — |
-| Rewriting the WO's own §0–§7 text to fix the seven found errors | House convention: corrections land as a dated §8 appendix, body text stays a faithful copy of what was drafted. | WO-FVC-004 §8 precedent |
-| Touching `faceless-video-craft`'s 5 uncommitted files in claude-skills | They belong to another session's in-flight 2.2.0 work. Verified `git diff --stat` identical before and after this session's own branch creation, twice (once per commit). | `CLAUDE.md` shared-checkout convention |
-| Porting `staysInFrame` assertions into the motion sidecar | The current compiler has no per-beat geometric reasoning to back the assertion; a placeholder that asserts something unverified is worse than omitting it. | — |
+| Rewriting the WO's own §0–§7 text to fix found errors | House convention: corrections land as a dated §8 appendix, body text stays a faithful copy of what was drafted. | WO-FVC-004 §8 precedent |
+| Touching `faceless-video-craft`'s uncommitted files in claude-skills | They belong to another session's in-flight 2.2.0 work. Verified `git diff --stat` identical before and after this session's own branch creations. | `CLAUDE.md` shared-checkout convention |
+| Porting `staysInFrame` assertions into the motion sidecar | The compiler has no per-beat geometric reasoning to back the assertion; a placeholder that asserts something unverified is worse than omitting it. | — |
+| Retuning the Haar cascade face detector to stop H-3's false positives on bold typography (T5) | Loosening a detection threshold to pass a gate is exactly the failure mode R-1/R-2/H-5's "no loosening a rule to pass a gate" exists to prevent — a genuinely looser detector would also miss real faces. Resolved instead via T7's own H-3 visual-confirmation fallback, with saved evidence frames, not by moving the goalpost. | "No loosening a rule to pass a gate" |
+| Compensating T4's measured +3dB render-stage audio gain with a new hardcoded default in the mixer (T5) | Used the existing `mix_audio.py` CLI flag instead of baking a magic number into the script; the gain is real-hardware-dependent and flagged in the run report as needing re-verification on production render hardware, not treated as solved. | — |
+| Backfilling `produced[]` against every `videos/<slug>/09-run-report.md` in the repo (T6) | Four directories from an older, unrelated pipeline share that filename by convention. Scoped the backfill to slugs that are ALSO a currently-published `seoulhabit-learn` route, rather than trusting filename presence alone, to avoid false-matching them into the queue's produced state. | — |
+| Using PyYAML in `enqueue_from_site.py` (T6, first draft, corrected before landing) | The skill's own `requirements.txt` and every existing script (`providers.yaml` consumers) are stdlib-only via `_yaml_lite.py`; a new script pulling in a real dependency breaks that convention silently for anyone who doesn't `pip install` it. Rewritten against `_yaml_lite.parse_yaml_subset` plus a narrow hand-written writer instead. | House convention (`requirements.txt` header) |
+| Touching the shared `~/Desktop/claude-skills` checkout to fix its stale 0.2.0 drift (see Deploy traps below) | It sits on a branch (`fvc-005/makemeavideo`) with another session's uncommitted work; forcing it onto `origin/master` risks discarding that work. Named as a live, unresolved deploy trap instead of silently "fixed" by force. | `CLAUDE.md` shared-checkout convention |
 
 ## 3. Deploy traps
 
-- **`hyperframes` must be invoked bare, never via `npx`.** The WO's own text uses `npx hyperframes` throughout; this repo's convention (and a prior 4.01 GB cache-clear incident) says otherwise. The tool's own `init` scaffold *still* writes `npx --yes hyperframes@<pin>` into a fresh project's `package.json` — confirmed this session — so this trap will keep resurfacing on every freshly-scaffolded project unless corrected by hand.
-- **`videos/_channel/channel.yaml` does not exist.** The skill's 0.2.0 pipeline reads that path in 43 places; the repo has `baseline.yaml`. Confirmed by direct `find`, not assumed. Named as Gate 0 slot G0-10 rather than silently resolved — whichever way T7 resolves it (rename the file, or correct the skill's path) must happen on **every machine the skill runs on**, or one machine reads a channel value the other doesn't.
-- **Two Claude Design projects share the exact name** "SeoulHabit Video Design System." T2 extracted `a7945a95-…` on the strength of matching every component/palette/template name the WO gives — if Kim's Gate 0 answer says otherwise, `videos/_system/` needs re-extraction from the correct project, and `MANIFEST.json`'s sha256 tree is the only way to tell old from new once that happens.
-- **The compiler lives in `claude-skills` (branch `fvc-005/makemeavideo`, not yet merged to `master`), the extracted design system lives in `Story Board` (branch `session/fvc-005`, not yet merged).** Anyone continuing this WO on a second machine needs both branches checked out, or the compiler will `die()` immediately on `check_manifest()` finding no `videos/_system/`.
-- **The font freeze duplicates real bytes (~2.4 MB) into every compiled project's `06-render/<canvas>/assets/fonts/`.** This is deliberate (root-relative, not base64, to avoid duplicating that payload across dozens of sub-composition *files* instead) but still means a video repo with many compiled projects accumulates that 2.4 MB once per project per canvas. Not yet a problem at 1 project; worth watching past a handful.
-- **Kokoro TTS is not installed** (`pip install kokoro-onnx soundfile`) — needed the moment F2's local-substitute path is actually exercised, not before.
+- **`hyperframes` must be invoked bare, never via `npx`.** Unchanged from T0–T3. The tool's own `init` scaffold still writes `npx --yes hyperframes@<pin>` into a fresh project's `package.json`.
+- **`videos/_channel/channel.yaml` does not exist — RESOLVED at T7.** The 0.2.0 skill read that nonexistent path in 43 places; the repo has `baseline.yaml`. T7's own rewrite pointed every reference at `baseline.yaml` instead of renaming the repo file, per the AskUserQuestion ruling this session ("Point the skill at baseline.yaml"). Confirmed clean post-rewrite: `grep -rn "channel\.yaml" makemeavideo/{SKILL.md,references/*.md,scripts/*.py}` now returns zero matches. `render_cloud.sh`'s file-resolution order (T7 fix) also checks `baseline.yaml` before `channel.yaml` as a defensive fallback, in case a future project still ships the old name.
+- **Two Claude Design projects share the exact name "SeoulHabit Video Design System" — still unresolved, unchanged from T0–T3.** T2 extracted `a7945a95-…` on name-matching alone; if Kim's Gate 0 answer says otherwise, `videos/_system/` needs re-extraction, and `MANIFEST.json`'s sha256 tree (now with the R-6 `amendments[]` entry layered on top) is the only way to tell old from new once that happens.
+- **NEW, live, unresolved: the shared `~/Desktop/claude-skills` checkout is stuck on stale content.** `~/.claude/skills/makemeavideo` is a symlink into that checkout. Confirmed this session, moments before writing this document:
+  ```
+  $ grep -n "version:" ~/Desktop/claude-skills/makemeavideo/SKILL.md
+    version: "0.2.0"
+  $ cd ~/Desktop/claude-skills && git show origin/master:makemeavideo/SKILL.md | grep -n "version:"
+    version: "0.3.0"
+  ```
+  `origin/master` correctly carries all four merges (T4, T7, T5-fixes, T6:
+  `e18f1e5` ← `146563e` T6 ← `e0d3b67` merge-T5-fixes ← `65c0a64` T5-fixes ←
+  `5a9f5b0` merge-T7 ← `09877a2` T7 ← `e010f68` merge-T4 ← `40286c7` T4). The
+  shared checkout's own working branch (`fvc-005/makemeavideo`) was never
+  fast-forwarded and still carries another session's uncommitted files on
+  top of the pre-T4 state. **Anyone invoking `/makemeavideo` via the Skill
+  tool directly — not from a fresh worktree checked out against
+  `origin/master` — gets the stale 0.2.0 rules**: HeyGen Video Agent build
+  calls, the nonexistent `channel.yaml` path, none of R-1/R-2/R-6. T5 hit
+  this exact trap and worked around it by building a fresh detached-HEAD
+  worktree off `origin/master` instead of trusting the Skill tool's loaded
+  content. **This needs a human decision** — reconcile or discard the other
+  session's uncommitted work in the shared checkout, then fast-forward it —
+  not a unilateral fix by this session (see Refusals, above).
+- **The compiler and design system are now both merged to their respective `master`s** — this trap from T0–T3 ("two unmerged branches, needs both checked out") is resolved. The one live cross-repo trap is the drift above, not a missing merge.
+- **The font freeze duplicates ~2.4 MB into every compiled project's `06-render/<canvas>/assets/fonts/`.** Unchanged, still just a thing to watch past a handful of projects — `centella-asiatica` is the first real one to carry it; not a problem yet at n=1.
+- **Kokoro TTS still not installed** (`pip install kokoro-onnx soundfile`) — confirmed a second time at T5: no matching `onnxruntime` wheel for Python 3.9/x86_64 in this environment. T5 used `mix_audio.py --allow-placeholder-vo` per policy's rewritten PR-2/V-2 rather than forcing an install or spending HeyGen credits. Whoever runs this on a machine with a compatible wheel gets real VO fidelity; this one still gets the named substitute.
+- **The render-stage audio gain (~+3dB, T4's own measurement) is real-hardware-dependent and unverified on a second machine.** T5 compensated it via `mix_audio.py`'s existing gain flag for this pilot's own render, but the number itself is not yet confirmed stable across hardware — flag anyone re-running this pipeline on different render hardware to re-measure before trusting the same offset.
+- **Nine of `seoulhabit-learn`'s 21 published passports carry zero citations and zero findings** (WO §8.9). T6 did not filter these out of the queue — they're enqueued and sorted to the back, on purpose, so the evidence-rich routes get produced first and the zero-evidence ones surface `K-2b`'s halt when their turn comes, rather than being silently skipped.
 
 ## 4. Tier log
 
@@ -63,46 +101,139 @@ Every command below was re-run fresh for this handback, just now.
 | Landing the WO + Gate 0 sheet | Sonnet/medium | |
 | T0 (environment) | Sonnet/medium | |
 | T1 (spike) | Sonnet/medium | |
-| T2 (design-system extraction + compiler design) | **Opus/High** | Per the WO's own flag — this is its one Opus/High task |
+| T2 (design-system extraction + compiler design) | **Opus/High** | Per the WO's own flag — its one Opus/High task |
 | T3 (compiler build) | Sonnet/medium | Flagged back down at T2's end, per the WO's own instruction |
+| T4 (audio + render harness, R-6) | Sonnet/medium | |
+| T7 (skill cut, out of order) | Sonnet/medium | Documentation/rewrite task, no new engine design |
+| T5 (pilot run) | Sonnet/medium | Largest single task by wall-clock this WO has run, but mechanically a run of an already-designed pipeline, not new design |
+| T6 (recurrence) | Sonnet/medium | |
+| T8 (this handback) | Sonnet/medium | |
 
 ## 5. Version and hash
 
 ```
-$ grep -n 'version' ~/Desktop/claude-skills/makemeavideo/SKILL.md | head -1
-  version: "0.2.0"
+$ cd ~/Desktop/claude-skills && git show origin/master:makemeavideo/SKILL.md | grep -n 'version:' | head -1
+  version: "0.3.0"
 ```
-Not bumped this session — `T7` (skill cut) is out of scope for S-A/S-B. `docs/wo/WO-FVC-005.md` §8.1 records the correction (target is 0.3.0, not the WO's stated 0.2.0) for `T7` to apply.
+Bumped at T7, per `docs/wo/WO-FVC-005.md` §8.1's own correction target. **Note the standing trap above**: this is `origin/master`'s content, not what the shared `~/Desktop/claude-skills` checkout currently shows on disk (still `0.2.0`, uncommitted-work-blocked from fast-forwarding).
 
 ```
-$ python3 -c "import hashlib,json; m=json.load(open('videos/_system/MANIFEST.json')); print(m['file_count'], m['total_bytes'])"
-67 2525499
+$ python3 -c "import json; m=json.load(open('videos/_system/MANIFEST.json')); print(m['file_count'], sum(f['bytes'] for f in m['files'].values()))"
+67 2526063
 ```
-(Regenerated once more after `COMPILER.md` was corrected to describe the D5 fix verified below — the drift check caught the stale hash on the first re-compile attempt, exactly as designed.) This is the design system's own version anchor (no version string exists in the source project — see `EXTRACTION.md`).
+`file_count` unchanged at 67 since T2 (no files added or removed — R-6 only
+edited one file's contents); `total_bytes` moved from `2525499` to
+`2526063` (+564 bytes) — entirely from `tokens/spacing.css` growing under
+R-6's amendment. `MANIFEST.json` now carries an `amendments[]` array with
+one entry recording R-6 (the ruling, the exact before/after values, and
+why); re-derives clean against every file's own sha256, `check_manifest()`
+confirmed passing on every T4/T5/T6/T7 compile that touched the design
+system.
 
 ## 6. §5/§6 carried
 
-**Unchanged from the WO's own §6 "Does NOT close":** the Sunny/Higgsfield lane, Publish Desk automation, the Nocturne-vs-video palette question (still open — Gate 0 G0-8), MFS gate 13 / evidence-completion on the website, HeyGen Video Agent as an engine, localisation, `faceless-video-craft` 2.1.0 archive.
+**Unchanged from the WO's own §6 "Does NOT close":** the Sunny/Higgsfield
+lane, Publish Desk automation, the Nocturne-vs-video palette question (still
+open — Gate 0 G0-8), HeyGen Video Agent as an engine (now formally
+superseded for S4b–S7 by R-1/R-2, but the WO's own §6 scope line is
+unchanged), localisation, `faceless-video-craft` 2.1.0 archive.
 
-**Updated:** MFS is no longer an unresolved name — `docs/wo/WO-FVC-005.md` §8.4 identifies it as `seoulhabit-learn`, the site repo this WO's R-3 already depends on.
+**Resolved this pass, closed out of §6 rather than carried further:**
+- **`videos/_channel/channel.yaml` vs. `baseline.yaml`** — resolved at T7 (see Deploy traps). No longer an open question.
+- **The design-system safe-area tokens failing both canvases (T3 finding, carried at T0–T3 close)** — resolved by R-6 at T4. Both canvases verified clean post-fix.
+- **`makemeavideo`'s modes colliding with `validate_request.py`'s front door** (T0–T3 carried finding: `build`/`package`/`readout` couldn't pass validation) — resolved incidentally by T7's rewrite; the front-door table in `SKILL.md` and `validate_request.py`'s accepted modes now agree (confirmed via the T7 status file's own verification, not re-checked fresh in this pass — worth a spot-check if the discrepancy resurfaces).
 
-**New, found during this pass — carried to §6 of the WO, not fixed here:**
-- Nine of `seoulhabit-learn`'s 21 published passports carry zero citations and zero findings. A pilot or queue entry landing on one fails `K-2b` on the *website's* content — a finding to report, never a rule to loosen.
-- WO-FVC-004 §7's unshipped **1.0.0** retarget (with `faceless-video-craft` archived) is still open; that skill is now at an unreleased **2.2.0 with five uncommitted files**, not "frozen at 2.1.0" as its own changelog claims.
-- Three of `makemeavideo`'s five documented modes (`build`/`package`/`readout`) cannot pass `validate_request.py`'s front door, which accepts only `new`/`improve`. `T7`'s own instruction to re-run the pilot in `build` mode collides with this directly.
-- ~~The D5 split path… not yet exercised against a real render.~~ **Verified after this handback was first written**: a fixture exercising D5 found two more real bugs (the split algorithm not accounting for the scene's own trailing hold, and split timing not carrying split content with it), both fixed and re-verified clean (`hyperframes check --at-transitions`, both fixtures, no regression) — see `wo/FVC-005/t3-verification/d5-split/`. ~~Still open: four of the nine component emitters… not yet exercised against a real render~~ **Also now verified** — all nine of nine emitters proven against real compiles, checks, and renders, surfacing two more real bugs (a grid-overflow on `ShCompare`, a motion-freeze gap in the D5-session's own continuous-motion fallback) — see `wo/FVC-005/t3-verification/four-emitters/`. Only `ShRows`/`ShSteps` can D5-split content; every other component still refuses rather than guess.
-- `ShIngredient` had the same overflow defect class as `ShCompare` (flexbox's `min-width:auto` instead of grid's, same underlying trap), found by deliberately stress-testing it with a real unbreakable 24-character INCI term rather than waiting for it to surface by accident. Fixed (`min-width:0` + `overflow-wrap:anywhere`) and verified — see `wo/FVC-005/t3-verification/ingredient-overflow/`.
-- ~~The other seven emitters have not had the same adversarial-text stress test.~~ **Also done.** All six non-endcard emitters had the identical overflow defect class (`min-width:0`/`overflow-wrap:anywhere`, plus an `inline-block`-shrink-to-fit variant on `ShHook`/`ShMyth`), all fixed. Far more importantly: **every compiled video's closing scene was opening with a ~0.17s completely blank flash**, on every single video this compiler could ever produce — root cause was `ShEndcard` having no citation chip (confirmed structurally true across all six design-system templates) to bridge its entrance delay, unlike every other scene. Found by exact frame-level pixel analysis, fixed by extending the compiler's existing frame-zero rule to any chip-less scene. See `wo/FVC-005/t3-verification/stress7/`.
-- The D5 split path and the adversarial-text overflow fixes were tested *together* for the first time (a split scene as the video's own frame zero, and a second split scene mid-video, both loaded with the same unbreakable INCI term) — a genuine negative result: no new bugs, every independently-verified fix held up in combination. One recurrence of the endcard-transition artifact sharpened the diagnosis: it correlates with the *incoming* scene being `ShEndcard` (the only `anchor: true`, chip-less component), not with the outgoing scene or with splitting. See `wo/FVC-005/t3-verification/d5-adversarial/`.
-- **The recurring endcard-transition artifact's exact mechanism is now confirmed, not just diagnosed by pattern.** Read directly from `hyperframes@0.8.30`'s own installed source: `check --at-transitions` samples layout via `window.__player.renderSeek()`, a generic scrub-seek API shared with the interactive Studio preview — not the frame-capture pipeline. Live-verified against a running instance of the `stress7` fixture: that API leaves the outgoing scene's `.clip` visible one extra frame (~33ms) past its own `data-duration` end specifically when the incoming scene is `ShEndcard`, while the other five hard cuts in the same video show zero lag. A real 30fps PNG-sequence render, inspected frame-by-frame at the exact reported times, is completely clean — the frame-capture pipeline does not share the lag. This is a `check --at-transitions` measurement limitation, not a compiler defect; no code change follows. See `wo/FVC-005/t3-verification/artifact-mechanism/`.
-- Neither of the two real beat sheets already in this repo can compile without a schema migration (they predate `component`/`slots`).
-- **The plan's own Step 10 ("Repo gates") was never run in the original T3 pass — a real gap, found by re-checking the merged status file against the approved plan, not by anyone flagging it.** Closed this pass: `check-legibility.py` and `check-safe-area.py` now run against real compiled+rendered output, both canvases. Legibility's token-floor half passes both (`--t-chip` exactly on the floor, no margin, in both); its render-based half fails 16:9 (measured 4px glyph height at phone scale against a 5px floor, on two independent probes). `check-safe-area.py` **fails both canvases**, and this is the more consequential one: `ShRows`' right-aligned values sit 57px inside YouTube Shorts' real reserved UI rail on every 9:16 video, and the citation chip sits mostly inside the real reserved bottom zone on every 16:9 video. Root-caused on measured pixels, not inferred: the compiler correctly implements `videos/_system/tokens/spacing.css`'s own `--safe-x: 10%` / `--safe-bottom: 8%` exactly as declared — those declared values are themselves narrower than the real platform UI they're meant to clear (15%/10%). **This needs a design-system-owner decision, not a compiler patch**: widen the system's own safe-margin tokens (a visual, system-wide change), or have the compiler override them with the platform's stricter values (meaning compiled output stops matching the design system's literal tokens). Neither call is this session's to make unilaterally. See `wo/FVC-005/t3-verification/repo-gates/README.md`.
+**Still open, carried forward:**
+- Nine of `seoulhabit-learn`'s 21 published passports carry zero citations and zero findings. Now concretely queued (T6), sorted to the back — a pilot or queue-pop landing on one still fails `K-2b` on the website's own content, not a compiler defect. This will surface as a real halt once the queue works through the evidence-rich entries.
+- WO-FVC-004 §7's unshipped **1.0.0** retarget (with `faceless-video-craft` archived) is still open; unrelated to this WO's own work.
+- The D5 split path and all nine component emitters remain proven only against the T3 synthetic fixtures and the one T5 real pilot — a second and third real production run would be the next real stress test, not another synthetic one.
+- **NEW: the shared `~/Desktop/claude-skills` checkout drift** (Deploy traps, above) — the most consequential open item from this pass. Left unresolved deliberately; needs a human call on the other session's uncommitted work before it can be fast-forwarded.
+- **NEW: the render-stage +3dB audio gain** (T4 measurement, T5 compensation) — verified on one machine only. Needs re-measurement on whatever hardware eventually runs this in production before the compensation value is trusted past this pilot.
+- **NEW: H-3's Haar-cascade false-positive class on bold typography** — confirmed again on `centella-asiatica`'s real frames (T5), now two independent confirmations (T3's synthetic fixtures, T5's real pilot). Resolved procedurally (T7's visual-confirmation fallback), not by fixing the detector. A future pass replacing the detector itself, if anyone wants tighter automation here, would need to preserve the same false-positive-on-bold-type behavior class to avoid missing real faces.
+- **NEW: `policy.md`'s S-4/S4b text still carries a residual inconsistency** flagged during T7's own rewrite but not corrected in that pass (out of T7's stated scope at the time) — worth a follow-up correction pass to `policy.md`'s S-4 rule text specifically, not urgent enough to have blocked T7's merge.
 
 ---
 
-Awaiting: Kim's confirmation of G0-1 (which Claude Design project), the
-$/credit half of G0-4, the palette confirmation at G0-8, the two new slots
-G0-9/G0-10, and the HeyGen MCP connector authorization for F2–F4 — all
-named in `docs/wo/GATE0-FVC-005.md`. None of this session's work depended
-on guessing any of them, so `T4` can start once any subset clears; it does
-not need all five at once.
+## 7. Cost table
+
+No paid API spend occurred in T4, T7, T6, or T8 — all four were local
+engineering/documentation tasks (compiler, skill text, queue tooling,
+handback) with zero credit-bearing calls. T5 (the pilot) is the only task
+this WO has run that spent real, metered credits:
+
+| Task | Provider | Spend | Notes |
+|---|---|---|---|
+| T1 (prior) | HeyGen | $0 | D2 ruling: zero spend, F1 resolves PARTIAL instead |
+| T5 | vidIQ | 355 → 335 credits (**20 spent**) | `vidiq_keyword_research`, `vidiq_outliers`, `vidiq_generate_titles`, `vidiq_score_title`, `vidiq_score_thumbnail` — real calls, S2/S3 topic-gate and packaging stages |
+| T5 | HeyGen | $0 | Connector unauthorized (BLOCKED-CONNECTOR, reconfirmed); VO shipped via `mix_audio.py --allow-placeholder-vo` instead, named plainly in the run report, not billed |
+| T5 | Local render (compute only) | $0 (no cloud render credits spent) | R-1: local by default; `baseline.yaml`'s `cloud_render_credits_cap: 20` [default] was never touched — the pilot never needed the cloud fallback |
+| T0–T4, T6–T8 | — | $0 | No API/credit calls in any of these tasks |
+
+**Running total against `PR-3`'s cap:** 20 vidIQ credits spent this WO,
+against whatever ceiling Kim's own G0-4 answer sets (still not confirmed —
+see Rulings needed, below). No HeyGen spend has occurred at any point in
+this WO, T0 through T8.
+
+## 8. T1-FINDINGS.md — pass/fail, reprinted
+
+Unchanged since T1; reprinted here per the WO's own §7 checklist so it's
+visible without a second file open.
+
+| # | Finding | Verdict |
+|---|---|---|
+| F1 | Local render parity | **PARTIAL** — local clean; cloud leg not run (D2). Consequence: rule `C-6`, hard cuts only, applied. |
+| F2 | VO cost + fidelity | **BLOCKED-CONNECTOR** — local substitute (`hyperframes tts`/Kokoro) available once installed; does not answer the cost half. Reconfirmed blocked at T4 and T5. |
+| F3 | Image generation reach | **BLOCKED-CONNECTOR** — likely moot regardless, given the design system's own no-imagery rule. |
+| F4 | Enhance retrievability | **BLOCKED-CONNECTOR** — no local substitute exists. |
+
+Acceptance, per the WO's own bar ("all four findings written with their
+evidence; Finding 1 = PASS; spend ≤ G0-4"): **not met as literally stated**
+— F1 is PARTIAL, not PASS, and F2–F4 are blocked, not found. This has not
+changed at any point from T1 through T8: every later task that touched a
+connector-dependent path (T4's Kokoro check, T5's VO pre-flight) reconfirmed
+the same blockage rather than finding a way around it.
+
+## 9. Rulings needed from Kim
+
+Three lines each, as the WO's own convention asks.
+
+**G0-1 — which Claude Design project.**
+Two projects share the exact name "SeoulHabit Video Design System."
+T2 extracted `a7945a95-…` on name/component/palette match alone.
+If wrong, `videos/_system/` needs re-extraction; `MANIFEST.json`'s sha256 tree is the only way to tell old from new after that.
+
+**G0-4 — the $/credit half, still open.**
+T5 spent 20 real vidIQ credits against no confirmed cap.
+`baseline.yaml`'s `cloud_render_credits_cap: 20` is this session's own default, never confirmed by Kim.
+A second pilot or the queue's next several pops will spend more against the same unconfirmed ceiling.
+
+**G0-8 — the Nocturne-vs-video palette question.**
+Still entirely open since T0–T3; no task since has touched it.
+`videos/_system`'s extracted palette has shipped in every render since T2 regardless.
+If Nocturne's palette should govern instead, every compiled video to date (including the real `centella-asiatica` pilot) would need a re-render, not just a token edit.
+
+**The shared `~/Desktop/claude-skills` checkout drift (new, this pass).**
+`~/.claude/skills/makemeavideo` still resolves to stale 0.2.0 content, four merges behind `origin/master`.
+The checkout's branch carries another session's uncommitted work this session declined to discard unilaterally.
+Whoever owns that other session's work needs to either land or discard it so the checkout can fast-forward — until then, anyone invoking `/makemeavideo` directly (not via a fresh worktree) gets stale rules.
+
+**HeyGen MCP connector authorization (carried since T1).**
+F2–F4 have been BLOCKED-CONNECTOR at every checkpoint from T1 through T5, never once answerable non-interactively.
+No workaround exists that doesn't either spend money without authorization or trust an unverified substitute permanently.
+An interactive session running the OAuth flow once is the only way this WO's own F2–F4 findings ever move past PARTIAL/BLOCKED.
+
+---
+
+Awaiting: Kim's confirmation of G0-1, the $/credit half of G0-4, the palette
+confirmation at G0-8, a decision on the shared-checkout drift, and the
+HeyGen MCP connector authorization for F2–F4 — all named above and in
+`docs/wo/GATE0-FVC-005.md`. None of T4 through T8's work depended on
+guessing any of them: R-6 was itself a confirmed ruling (this session,
+AskUserQuestion), and every other open question was either worked around
+with a named, reported substitute or left genuinely open rather than
+resolved by assumption.
+
+**This closes T8 and, with it, everything this WO asked for through T7.**
+The pipeline runs local-first end to end, has produced one real video, and
+can recur on its own queue. What's left is not engineering — it's the five
+rulings above, each of which only Kim can make.

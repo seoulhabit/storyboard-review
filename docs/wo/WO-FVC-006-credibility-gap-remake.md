@@ -229,3 +229,283 @@ Code writes `HANDBACK.md` containing: task-by-task status, an attestation that R
 
 **Kickoff line for Code:**
 > Read `docs/wo/WO-FVC-006.md` in this repo and work from it. Answer Gate 0 back to me before starting T1.
+
+---
+
+## §7 — Corrections on receipt (2026-09-07, review pass)
+
+Per house convention (`WO-FVC-004.md` §8, `WO-FVC-005.md` §8): factual
+corrections to this WO's own text are appended here, dated, and never
+silently edited into §0–§6. Each item names what the WO says, what the repo
+or the machine actually shows, and the amendment. Full evidence trail in
+`wo/FVC-006/ASSET-INVENTORY.md` and this review's own transcript; the
+highest-value citations are quoted in place below.
+
+### 7.1 — Three of six Gate 0 questions are already answered
+
+WO-FVC-005 closed T0–T8 and merged to `master` (`76af03e`) **before this WO
+was drafted**, including a Gate 0 sheet Kim ruled on the same day this WO is
+dated.
+
+- **G0-1 (palette) is CLOSED.** `docs/wo/GATE0-FVC-005.md:13` — G0-8
+  **CONFIRMED (Kim, 2026-09-07)**: ship cream `#F4EDE3` / ink `#26215C` /
+  clay `#9C3A32` / brass `#C0A265`. **Amends G0-1 from REQUIRED to CLOSED**;
+  re-open only as a scoped `videos/_system/MANIFEST.json` `amendments[]`
+  entry (the R-6 precedent) if a genuinely new tint is wanted, not as a
+  ground-up palette re-litigation.
+- **G0-5 (fonts) is CLOSED, not a default.** `videos/_system/tokens/typography.css`
+  already ships `--font-subject: "DejaVu Serif"` / `--font-work: "Archivo"`.
+  `serif-split` is not a choice being defaulted into — it is the shipped
+  system. **Amends G0-5's "heavy sans 800" to name Archivo.**
+- **G0-6 (design-system source) is CLOSED and already executed.** Extracted
+  2026-09-06 under WO-FVC-005 T2: 67 files, sha256-verified in
+  `videos/_system/MANIFEST.json`, zero mismatches on re-check. **Amends T3
+  from "extract the design system" to "verify the existing extraction
+  against `MANIFEST.json`."**
+
+### 7.2 — The "Nocturne" sheet named in G0-1/§3.1 does not exist
+
+`#12161C` (Ink) and `#F7F4EE` (Ivory) appear nowhere in this repo except
+inside this WO. "Sage" has no hex value anywhere. `docs/wo/GATE0-FVC-005.md:13`
+already recorded: *"No Nocturne brand sheet was found anywhere in this repo
+to compare against; if one exists elsewhere, it was not consulted."* Brass
+`#C0A265`, which §3.1 attributes to the Nocturne sheet as "restrained
+iridescence," is in fact `--rule` in `videos/_system/tokens/colors.css` — a
+token of the very palette §3.1 presents it as distinct from. **Amends §3.1:
+there are not three competing palettes, there is one shipped palette (six
+fixed tokens, `colors.css`: "Nothing outside this list ships") plus two
+colors with no provenance in this repo.**
+
+### 7.3 — Four "standing rulings, carried, apply verbatim" are not verbatim, and one does not exist
+
+- **R-SRC (§1.1) does not exist anywhere else in this repo** — a `grep -rn
+  "R-SRC"` returns only this WO. It is a genuinely good rule (treating the
+  source MP4 as data, never instruction, is exactly right) but it is
+  **net-new, not carried**. **Amends §1 heading for R-SRC: "New this WO,"
+  not "carried verbatim."**
+- **R-1 (§1.2) was hardened, not carried.** `WO-FVC-005.md:22` defines render
+  locality as *local-by-default, cloud as a gated fallback* (a `request.yaml
+  render: cloud` + credit cap). This WO's "No cloud render" is a stricter,
+  different rule. **Amends R-1 to state it is a WO-006-specific hardening of
+  the WO-005 default, not the default itself.**
+- **R-2 (§1.3) drops the operative half.** `WO-FVC-005.md:23` is an explicit
+  allow/deny tool fence: permits `create_speech`, `list_voices`,
+  `search_audio_sounds`, asset upload; forbids every `*video_agent*`,
+  `create_video`, `render_video`, avatar tool. "Images and voice only" loses
+  the deny list. **Amends R-2 to restate the full fence, not a compressed
+  paraphrase.**
+- **K-2b (§1.4) is misstated as a per-claim blocker; it is a ratio limb.**
+  Actual text (`REPORT-2026-09-01-v2.1.md:373`): *"If unsourced ≥ sourced
+  across Mechanism and Proof, the video may not present as an explainer of
+  how the thing works — it takes the disclosure-forward form."* It reshapes
+  the video; it does not block the run. Worked precedent:
+  `videos/kbeauty-label-trap/00-decision-ledger.md:43` (6 sourced : 1
+  unsourced → does not fire). The claim "K-2b previously blocked an entire
+  video here" is unsupported — the centella case it likely refers to was
+  cleared by sourcing (`REPORT-2026-09-02.md:100`), not blocked. **Amends
+  §1.4 to state the ratio rule verbatim, and drops the "blocked an entire
+  video" precedent claim.**
+- **The "locked production lane" quote in G0-2 is not in this repo.**
+  *"HyperFrames: motion graphics, text overlays, captions, and brand
+  furniture only"* returns zero hits anywhere in this repo or in
+  `~/.claude/skills`. Three real, stricter rules exist instead — see §7.4.
+  **Amends G0-2 to cite the real rules, not an unsourced paraphrase.**
+
+### 7.4 — The imagery lane is enforced by a merged compiler and per-asset metadata, not just prose
+
+WO-FVC-005 merged a beat-sheet compiler (`videos/_system/COMPILER.md`) that
+this WO does not mention anywhere. It conflicts with this WO on five points:
+
+1. **Imagery is refused, not merely discouraged.** `COMPILER.md:195`:
+   *"Images: none. The design system forbids imagery by rule (`readme.md`:
+   'no photography, no gradient, no texture, no pattern and no video
+   underlay anywhere in the system'). […] the compiler refuses an
+   `image_ref` field it does not recognise rather than guessing a
+   treatment."* This is enforced past prose: every record in
+   `catalog/manifest.json` carries an `approved_surfaces` array, with the
+   file header stating *"approved_surfaces excludes HyperFrames
+   compositions: that lane is browser-drawn only (SVG/CSS/canvas/WebGL), no
+   generative imagery, per SKILL.md."* **Amends G0-2: a "yes" answer requires
+   amending the design system's `readme.md` rule, teaching the compiler
+   `image_ref`, and updating `approved_surfaces` on every catalog asset
+   record — not a founder note.**
+2. **Duration ceilings collide with §3.5.** `COMPILER.md` §2: `ceiling = 8.0`
+   for `ShEvidence`/`ShCompare`, `5.0` otherwise. §3.5's "10–12s holds on
+   diagram reveals" triggers a mandatory D5 split, and the compiler
+   **refuses to split** any component outside `{ShRows, ShSteps}`, naming
+   the component and why it can't split. A net-new `sh-mech` diagram is
+   exactly such a component. **Amends §3.5 to cap diagram holds at 8.0s if
+   compiling through the WO-005 pipeline, or to state explicitly that this
+   WO opts out of the compiler.**
+3. **Font inlining is reversed.** T3 says "inlined base64 — no Google Fonts
+   link." `COMPILER.md:24` rules the opposite: *"Fonts are frozen and
+   root-relative by default, not base64-inlined"* — because per-scene
+   sub-compositions would duplicate ~2.4 MB of font payload up to 50 times
+   per compile. `--inline-fonts` is the documented opt-in for single-file
+   deliverables only. **Amends T3 to root-relative by default.**
+4. **Components: 12, not 10, and this exact naming was already corrected
+   once.** `videos/_system/components/` holds `ShChip, ShCompare, ShEndcard,
+   ShEvidence, ShHook, ShIngredient, ShMyth, ShQuote, ShRows, ShScene,
+   ShSteps, ShThumbnail` — PascalCase, not `sh-*` custom elements. This WO's
+   §3.2 omits `ShIngredient` (used in 4 of 6 templates), `ShScene` (the
+   mandatory frame every other component sits inside), and `ShThumbnail`.
+   `WO-FVC-005.md` §8.6(c) already corrected this exact naming error and
+   ruled the components be ported to Python HTML emitters ("no React build
+   belongs in the render path"). **Amends §3.2's component table to the 12
+   real names, and drops the "ten components" framing.**
+5. **`_ds_manifest.json` is not in this repo.** T3: *"Read `_ds_manifest.json`
+   for the real component slot names. Do not invent props."*
+   `videos/_system/EXTRACTION.md:46` lists it under "Deliberately not
+   extracted." **Amends T3: real prop contracts are the 12 `.d.ts` +
+   `.prompt.md` files in `videos/_system/components/`.**
+
+Also: **T6's `chapter_sequence` has no slot for `ShCompare` or `ShMyth`.**
+"T5 Myth Correction folded into T6" (§3.2) is not a supported template
+operation. The compiler does allow a beat sheet to state `scene.component`
+explicitly, taking precedence over the template spine (`COMPILER.md` §1) —
+**amends §3.2 to name that escape hatch explicitly rather than assume
+folding works.**
+
+### 7.5 — Higgsfield (G0-4) is retired out of lane, on a default that proceeds unattended
+
+G0-4 defaults to Higgsfield `nano_banana_pro` and **proceeds without a
+ruling** if Kim does not answer. But:
+
+- `docs/wo/WO-FVC-005.md:52` — *"Not in the lane: … Higgsfield for anything
+  faceless."*
+- `docs/wo/WO-FVC-004.md:32` retires "Higgsfield as image role" from the
+  pipeline; `:123` marks the `providers.yaml` Higgsfield rows `retired:
+  2026-09-05 (WO-FVC-004)`.
+
+Two standing WOs already put this out of lane. **Amends G0-4 from `[default]`
+to REQUIRED** — re-entering a retired provider must not fire on an
+unattended default.
+
+### 7.6 — The asset sweep (§4) omits `catalog/`, which `CLAUDE.md` makes mandatory, and understates existing coverage
+
+§4 calls the repo *"Unknown — plates may exist"* and estimates 30–40 net-new
+plates at 85–95% of the visual load. The actual sweep (run this session,
+excluding `.claude/worktrees/` which the WO's own command does not) found
+~336 real, non-QA image assets, plus 21 built visual-mechanism components in
+`catalog/visual-components/` — none of which §4 mentions, despite
+`CLAUDE.md`'s first section: *"Before generating or licensing new plates, or
+building a scene's mechanism from scratch, check `catalog/` first… This
+applies to visual components as much as imagery."*
+
+Full inventory and per-item verification: `wo/FVC-006/ASSET-INVENTORY.md`.
+Headline findings:
+
+- `catalog/visual-components/skin-band/` is a labelled two-layer skin
+  cross-section (epidermis/dermis, deterministic, canvas-agnostic) — this
+  may already be style frame #2's mechanism, built and cataloged, rather
+  than genuinely net-new.
+- `catalog/visual-components/material-triptych/` — "N materials sharing a
+  name but not the evidence behind it" — is this video's thesis, already
+  built as a component (authored 9:16; a 16:9 port or portrait-insert
+  treatment is a design decision, not a blocker).
+- `catalog/visual-components/unsourced-flag/` is a ready-made on-screen
+  treatment for exactly the K-2b "UNSOURCED" bucket T2 proposes handling in
+  prose only.
+- `catalog/skin-macro-photography/` (4 stills, 1200×1200, same
+  `nano_banana_pro` model G0-4 defaults to) is already §3.4-negative-list
+  compliant and ready to reuse.
+
+**Amends §4's estimate**: the *mechanism* need for scene systems 2–4 may be
+close to zero net-new; genuine net-new generation is most likely still
+needed for scene system 1 and any ingredient-specific beat without an
+existing plate. This does not resolve G0-2/G0-4 — it is the evidence they
+should be decided against.
+
+Smaller §4 errors: `seoulhabit-avatar-800.png`, `channel-avatar-800.png`,
+`ChannelAvatarCard.html`, and a `seoulhabit-product-imagery/` directory do
+not exist anywhere in this repo. Real files: `brand/channel/avatar-800.png`
+/ `avatar-800.html`. **Amends §4's design-system-assets row accordingly.**
+
+### 7.7 — Source-file facts
+
+`ffprobe`/`ffmpeg -af ebur128` on
+`~/Downloads/The_Credibility_Gap__When_Cosmetics_Borrow_Medical_Halos.mp4`
+(53 MB, one video + one mono audio stream):
+
+- **1280×720, not 1080p.** Output spec is 1920×1080 — reusing any source
+  footage means a 1.5× upscale. **Amends §0 to add this as an explicit
+  ruling point**, not a discovery at T8.
+- **True peak +1.0 dBFS — already clipping.** LUFS-I −16.6. T9's ≤ −1.0
+  dBTP target needs ~2 dB of reduction plus clip repair, not normalization
+  alone. **Amends T9 to state this explicitly.**
+- **Single mono AAC stream.** T1's "report whether narration and music are
+  separable" has no channel-based answer; no source-separation model is
+  installed on this machine. **Amends T1 to note this limitation up front.**
+- Duration **410.83s** — the WO's ~411s / 6:51 is correct, unchanged.
+
+### 7.8 — Tooling corrections
+
+- **T1's whisperX/faster-whisper are not installed**, nor is `whisper`,
+  `uv`, or `parakeet_mlx`. `hyperframes transcribe` (v0.8.30, installed) does
+  word-level timestamps via an already-installed `whisper-cli` (whisper-cpp
+  1.9.2) backend. **Amends T1: use `hyperframes transcribe --engine whisper`,
+  no installs required.**
+- **T0's `npx hyperframes --version` repeats an error WO-005 already
+  corrected.** `WO-FVC-005.md:198` amended every `npx hyperframes` instance
+  to the bare invocation (npx re-accumulates ~364 MB caches per version; 4.01
+  GB was cleared once). **Amends T0 to bare `hyperframes`.** Separately
+  worth recording: that correction cites the rule to `CLAUDE.md`, which does
+  not actually contain it — the rule's real source is
+  `wo/FVC-001/HANDBACK.md:60`. Not this WO's error to fix, but flagged so a
+  third WO doesn't repeat the same misattribution.
+- **§5's "claude-skills 0.2.0/0.3.0 drift" is already closed**
+  (`docs/wo/GATE0-FVC-005.md`): `~/.claude/skills/makemeavideo` now resolves
+  to `~/Desktop/claude-skills-current` at v0.3.0. No semver exists on disk
+  for the skill bundle as a whole; if this needs restating, it should be by
+  git SHA, not a version number. **Amends §5 to drop this item.**
+- Six unrelated skill symlinks are dangling after a `claude-skills` →
+  `claude-skills-current` rename (`faceless-video-craft`, `produce`,
+  `video-audit`, `video-package`, `video-readout`, `video-render`) — noted
+  for awareness, not something this WO needs to fix.
+
+### 7.9 — Process and file-tree corrections
+
+- **The requested branch name cannot be produced by the sanctioned tool.**
+  `./worktree.sh new <name>` hard-codes `br="session/$name"`. This WO's
+  header asks for branch `wo-fvc-006-credibility-gap` with no `session/`
+  prefix — unbuildable without raw `git checkout -b` in the shared tree,
+  which `CLAUDE.md` forbids. **Amends the header's branch name to
+  `session/wo-fvc-006-<slug>`.**
+- **§3.6's file tree matches neither live convention.** There is no `video/`
+  (singular) directory in this repo. The live convention is `videos/<slug>/`
+  with a `00`–`09` numbered spine (`request.yaml`, `03-beat-sheet.json`,
+  `06-render/<canvas>/`, `07-publish-envelope.md`, `09-run-report.md`); WO
+  process artifacts live in `wo/FVC-00N/`, not inside the video directory.
+  §3.6 also nests a `video/system/` copy that would duplicate the shared
+  `videos/_system/`. **Amends §3.6 to the live convention** (see
+  `wo/FVC-006/GATE0-FVC-006.md` for the corrected tree).
+- **The kickoff line names the wrong file** — `docs/wo/WO-FVC-006.md`
+  instead of `docs/wo/WO-FVC-006-credibility-gap-remake.md`. **Amends the
+  kickoff line accordingly.**
+- `CLAIMS.md`, `FLAGS.md`, `QA-LOG.md`, `STYLE-FRAMES.md` do not exist
+  anywhere in this repo prior to this WO — all four are net-new filenames.
+  Not an error, just not "carried" in any sense; noted for completeness.
+
+### 7.10 — What stands unchanged
+
+For the record, most of this WO's structure is sound and is **not** amended
+by this appendix:
+
+- Repo identity (`seoulhabit/storyboard-review`), source-file existence, and
+  the fact that this topic is genuinely new (no prior "credibility gap" work
+  in the repo; not in `videos/_queue.yaml`).
+- **T6 `long-form-explainer` is the correct template base** — confirmed
+  `default_canvas: 16x9` in `videos/_system/templates/T6.json`.
+- **§3.1's brass-fails-as-text measurement (2.10:1)** matches
+  `COMPILER.md:201`'s own measured codegen invariant exactly.
+- **§3.5's "claim → evidence: hard cut, always"** aligns with rule `C-6`
+  (hard cuts only, no shader chain) already in force from
+  `wo/FVC-005/T1-FINDINGS.md` F1.
+- **R-SRC** is a genuinely good rule and should be adopted as new (§7.3).
+- **The four-gate structure (A/B/C/D)** matches practice already validated
+  on `kbeauty-label-trap` — stopping at each checkpoint with a real
+  artifact, not a status update.
+- The requirement that a net-new component live in the system file so it
+  survives into the next video (§3.2) is correct in principle — §7.4 item 4
+  and §7.6 above just note that the component in question may already exist.
+

@@ -196,3 +196,88 @@ overrides:                      # [S9/L-2] write-back; append-only
       performs better" is exactly as unbacked. It flags d6DPiORuPO4 (0.82) and
       cGbokt_B_vE (8.85) identically.
     videos: [all 14 public]
+
+heygen:                          # Added WO-FVC-005 T7. makemeavideo now points its
+                                  # SKILL.md/policy.md/runbook.md prose at THIS file
+                                  # (baseline.yaml), not channel.yaml -- sec 8.8 named
+                                  # that as a decision "Kim's call, not defaulted";
+                                  # answered here: correct the skill's docs, don't
+                                  # rename this file. The `heygen.*` block below
+                                  # resolves WO-FVC-004 T0's [SPIKE:n] markers with
+                                  # WO-FVC-005 T1's actual MEASURED verdicts
+                                  # (T1-FINDINGS.md), not guessed at, and retires the
+                                  # two spike questions the local engine made moot.
+  voice_id: null                 # [S4b/PR-2] one-time pick, T2 TOUCHPOINT-SETUP --
+                                  # NOT yet run. Until set: BLOCKER-SETUP-PENDING at
+                                  # any run reaching S4b. F2 (VO cost+fidelity) is
+                                  # BLOCKED-CONNECTOR (T1-FINDINGS) -- a voice pick
+                                  # needs list_voices, which needs the same connector.
+  brand_glossary_id: null        # same TOUCHPOINT-SETUP gap; create_brand_glossary
+                                  # is setup-time only (H-0), also connector-blocked.
+  cloud_render_credits_cap: 20   # [default] R-1/sec 8.3: credit-denominated, NOT a
+                                  # free-tier render count (this account has none).
+                                  # 20 credits = ~1 minute of cloud render at the
+                                  # measured public rate (providers.yaml, 20
+                                  # credits/min) -- a conservative slice of the
+                                  # account's 81 add-on credits (resets 2026-10-06),
+                                  # pending Kim's own preference. render_cloud.sh
+                                  # reads this field directly.
+  usd_per_credit: null           # Gate 0 G0-4's $ half still open -- Kim's plan page
+                                  # (WO-FVC-005 sec 8.3). Credits-only until answered.
+
+  # Retired by the local engine -- kept here, set to null, so a reader who
+  # remembers the HeyGen-Video-Agent version of this block does not go
+  # looking for values that no longer mean anything:
+  style_id: null                 # OBSOLETE: there is no HeyGen style_id concept
+                                  # under the local compiler -- the design system
+                                  # (videos/_system/, referenced by path) IS the
+                                  # style. Never filled again.
+  tokens: null                   # OBSOLETE: colour/font tokens now live in
+                                  # videos/_system/tokens/*.css, versioned by
+                                  # videos/_system/MANIFEST.json, not here.
+  timing_source: null            # OBSOLETE: [SPIKE:3] resolved, H-6 retired the
+                                  # question -- the compiler's own index.motion.json
+                                  # is deterministic, no source to choose between.
+  shorts_path: null              # OBSOLETE: [SPIKE:4] resolved, F-2 retired the
+                                  # question -- `format: both` compiles both canvases
+                                  # from one beat sheet in one call (R-5). F-2a
+                                  # (create_ai_clipping) is forbidden outright (H-0).
+
+  spike_findings:                # T1-FINDINGS.md verdicts, verbatim, dated. This IS
+                                  # the "[SPIKE:n] markers resolved... into
+                                  # channel.yaml [now baseline.yaml]" T7 bullet.
+    measured_at: 2026-09-06
+    source: wo/FVC-005/T1-FINDINGS.md
+    F1_local_render_parity:
+      verdict: PARTIAL
+      detail: >-
+        Local render clean (hyperframes check 0 errors; rendered frames
+        non-blank). Cloud-render parity deliberately NOT measured (D2 --
+        zero HeyGen credits spent proving it). Fail-consequence fired as
+        pre-written: rule C-6 added (hard cuts only, no contiguous shader
+        chain). This is the WO's own stated outcome for exactly this
+        result, not a downgrade decided after the fact.
+    F2_vo_cost_fidelity:
+      verdict: BLOCKED-CONNECTOR
+      detail: >-
+        create_speech/list_voices/create_brand_glossary need HeyGen OAuth,
+        which a non-interactive session cannot complete. Local substitute
+        (hyperframes tts, Kokoro-82M) proves fidelity, not cost, and could
+        not even be installed in the T4 test environment (no matching
+        onnxruntime wheel for Python 3.9/x86_64 there) -- may work on a
+        different render machine. providers.yaml VO cost stays unmeasured.
+    F3_image_generation_reach:
+      verdict: BLOCKED-CONNECTOR
+      detail: >-
+        Same connector block. Independently moot regardless: videos/_system/
+        (Claude Design project a7945a95...) states its own no-imagery rule
+        (no photography/gradient/texture/pattern/video anywhere) -- S5a is a
+        structural no-op for this design system even once the connector
+        question is answered.
+    F4_enhanced_composition_retrievability:
+      verdict: BLOCKED-CONNECTOR
+      detail: >-
+        Same connector block; no local substitute exists for "can an
+        enhanced HeyGen-hosted composition be retrieved and rendered
+        locally." Fail-consequence in force: S5c defaults to the local
+        library lane until this is re-tested and passes.
